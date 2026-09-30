@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#030712">
+<meta name="application-name" content="ULTRON AI">
+<title>ULTRON // Autonomous AI System</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="ambient ambient-a"></div><div class="ambient ambient-b"></div>
+<div class="scanlines"></div>
+
+<div class="app-shell">
+<header class="topbar">
+  <div class="brand">
+    <div class="reactor"><span></span></div>
+    <div><h1>ULTRON <small>// AUTONOMOUS AI</small></h1><p>NEURAL COMMAND INTERFACE</p></div>
+  </div>
+  <div class="top-metrics">
+    <div><span>UPTIME</span><strong id="uptime">00:00:00</strong></div>
+    <div><span>MODE</span><strong id="system-mode">STANDBY</strong></div>
+    <div class="online"><i></i><strong id="status-text">SYSTEM ONLINE</strong></div>
+  </div>
+</header>
+
+<main class="dashboard">
+<section class="card vision">
+  <div class="card-title"><span>01</span><h2>OPTICAL SENSOR</h2><b id="camera-state">OFFLINE</b></div>
+  <div class="camera">
+    <video id="webcam" autoplay playsinline muted></video>
+    <canvas id="motion-canvas"></canvas>
+    <div class="camera-grid"></div><div class="scanner"></div>
+    <div class="corner c1"></div><div class="corner c2"></div><div class="corner c3"></div><div class="corner c4"></div>
+    <div class="camera-data"><span id="camera-resolution">NO SIGNAL</span><span id="fps">-- FPS</span></div>
+    <div id="motion-tag" class="motion-tag">STANDBY</div>
+  </div>
+  <div class="sensor-readout">
+    <div><span>MOTION</span><strong id="motion-value">0%</strong></div>
+    <div><span>THRESHOLD</span><strong id="threshold-value">20</strong></div>
+    <div><span>CAMERA</span><strong id="permission-state">UNKNOWN</strong></div>
+  </div>
+  <div class="controls">
+    <button id="btn-camera" class="btn primary">ATIVAR VISÃO</button>
+    <button id="btn-stop-camera" class="btn danger" disabled>DESLIGAR</button>
+  </div>
+</section>
+
+<section class="card core">
+  <div class="card-title"><span>02</span><h2>NEURAL COMMAND CORE</h2><b class="pulse">READY</b></div>
+  <div id="output-box" class="terminal" aria-live="polite">
+    <p class="boot">&gt; ULTRON CORE INITIALIZED</p>
+    <p>&gt; Awaiting operator command...</p>
+  </div>
+  <div class="command-row">
+    <textarea id="command-input" rows="2" placeholder="Digite uma instrução para o agente..."></textarea>
+    <button id="btn-send" class="btn primary">EXECUTAR <span>↵</span></button>
+  </div>
+  <div class="quick-actions">
+    <button data-command="status">STATUS DO SISTEMA</button>
+    <button data-command="scan">INICIAR VARREDURA</button>
+    <button data-command="camera">VERIFICAR CÂMERA</button>
+    <button data-command="clear">LIMPAR TERMINAL</button>
+  </div>
+</section>
+
+<section class="card modules">
+  <div class="card-title"><span>03</span><h2>MODULE MATRIX</h2><b>LIVE</b></div>
+  <div class="module-list">
+    <div class="module"><div class="module-icon">◉</div><div><strong>VISÃO COMPUTACIONAL</strong><small>Frame analysis / motion</small></div><em id="vision-module">STANDBY</em></div>
+    <div class="module"><div class="module-icon">⌁</div><div><strong>AUTOMAÇÃO</strong><small>Command orchestration</small></div><em class="green">READY</em></div>
+    <div class="module"><div class="module-icon">◈</div><div><strong>EDGE PROCESSING</strong><small>Browser local compute</small></div><em class="green">ACTIVE</em></div>
+    <div class="module"><div class="module-icon">⚡</div><div><strong>DEVICE BRIDGE</strong><small>External hardware API</small></div><em>API WAIT</em></div>
+  </div>
+  <div class="control-block"><label>SENSOR SENSITIVITY <output id="sensitivity-out">20</output></label><input id="sensitivity" type="range" min="5" max="50" value="20"></div>
+  <div class="control-block"><label>MOTION COOLDOWN <output id="cooldown-out">3s</output></label><input id="cooldown" type="range" min="1" max="10" value="3"></div>
+</section>
+
+<section class="card telemetry">
+  <div class="card-title"><span>04</span><h2>LIVE TELEMETRY</h2><b>REALTIME</b></div>
+  <div class="telemetry-grid">
+    <div class="telemetry-item"><span>CAMERA</span><strong id="telemetry-camera">OFF</strong></div>
+    <div class="telemetry-item"><span>MOTION EVENTS</span><strong id="motion-events">0</strong></div>
+    <div class="telemetry-item"><span>LOCAL STORAGE</span><strong id="storage-state">READY</strong></div>
+    <div class="telemetry-item"><span>CONNECTION</span><strong id="connection-state">ONLINE</strong></div>
+  </div>
+  <div class="activity"><div class="activity-head"><span>ACTIVITY STREAM</span><span id="clock">--:--:--</span></div><div id="activity-bars"></div></div>
+</section>
+</main>
+
+<footer><span>ULTRON AI // LOCAL CONTROL LAYER</span><span>v3.0.0</span></footer>
+</div>
+
+<script type="module" src="script.js"></script>
+</body>
+</html>
