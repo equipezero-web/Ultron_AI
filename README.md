@@ -1,75 +1,25 @@
-# ULTRON AI v3.1 — Gemini Backend
+# ULTRON AI — Gemini + ElevenLabs
 
-## O que foi adicionado
+Projeto web do ULTRON AI com frontend estático e backend Node.js.
 
-O terminal do ULTRON agora envia comandos para `/api/ai`, e o backend consulta o Gemini usando o SDK oficial `@google/genai`.
+## Endereço público
+https://equipezero-web.github.io/Ultron_AI/
 
-A chave fica somente em `backend/.env`.
+## Backend local
+1. Entre em `backend/`.
+2. Copie `.env.example` para `.env`.
+3. Preencha `GEMINI_API_KEY`.
+4. Preencha `ELEVENLABS_API_KEY` e `ELEVENLABS_VOICE_ID` para ativar a voz.
+5. Execute `npm install` e depois `npm start`.
+6. Abra `http://127.0.0.1:3000`.
 
-## 1. Instale o Node.js
+As chaves ficam somente no backend. Não publique o `.env` no Git.
 
-Instale uma versão LTS atual do Node.js no computador/ambiente onde o backend será executado.
+## Visualização
+A câmera não aparece automaticamente. O botão **MOSTRAR TELA** abre a visualização; **DESLIGAR** encerra a câmera.
 
-## 2. Entre na pasta backend
+## Estado emocional
+O painel apresenta uma estimativa heurística baseada nos sinais locais disponíveis, principalmente atividade/movimento e tempo de inatividade. Não é uma medição clínica.
 
-```bash
-cd ULTRON_AI_GEMINI_v3_1/backend
-```
-
-## 3. Instale as dependências
-
-```bash
-npm install
-```
-
-## 4. Crie o .env
-
-Copie `.env.example` para `.env`:
-
-```text
-GEMINI_API_KEY=SUA_CHAVE_REAL
-PORT=3000
-```
-
-NÃO publique o `.env` nem envie a chave para ninguém.
-
-## 5. Inicie
-
-```bash
-npm start
-```
-
-Abra:
-
-http://localhost:3000
-
-O próprio backend entrega o frontend.
-
-## 6. Teste
-
-Abra o painel e digite no terminal:
-
-```text
-Explique o que você consegue fazer neste sistema.
-```
-
-Depois:
-
-```text
-Crie um plano para transformar este painel em um agente com ferramentas.
-```
-
-## Importante
-
-A câmera e o detector de movimento continuam locais no navegador.
-
-O Gemini, neste estágio, é o núcleo conversacional. Ele ainda não possui permissão para controlar dispositivos físicos, executar comandos do sistema operacional ou fazer automações externas.
-
-Para isso, a próxima camada será Function Calling + ferramentas permitidas no backend.
-
-## Segurança
-
-- `.env` não deve ser publicado.
-- Nunca coloque GEMINI_API_KEY no HTML ou JavaScript do frontend.
-- Em produção, use HTTPS.
-- Adicione autenticação e rate limiting antes de disponibilizar o backend publicamente.
+## Pressão e batimentos
+O navegador/celular não cria uma medição real de pressão ou batimentos. O painel aceita integração futura com dispositivo/API compatível por `DEVICE_BRIDGE_URL`.
