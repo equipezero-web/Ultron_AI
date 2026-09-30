@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#030712">
 <meta name="application-name" content="ULTRON AI">
+<meta name="description" content="ULTRON AI // Autonomous AI System">
 <title>ULTRON // Autonomous AI System</title>
 <link rel="stylesheet" href="style.css">
 </head>
@@ -27,14 +28,11 @@
 
 <main class="dashboard">
 <section class="card vision">
-  <div class="card-title"><span>01</span><h2>OPTICAL SENSOR</h2><b id="camera-state">OFFLINE</b></div>
-  <div class="camera">
-    <video id="webcam" autoplay playsinline muted></video>
-    <canvas id="motion-canvas"></canvas>
-    <div class="camera-grid"></div><div class="scanner"></div>
-    <div class="corner c1"></div><div class="corner c2"></div><div class="corner c3"></div><div class="corner c4"></div>
-    <div class="camera-data"><span id="camera-resolution">NO SIGNAL</span><span id="fps">-- FPS</span></div>
-    <div id="motion-tag" class="motion-tag">STANDBY</div>
+  <div class="card-title"><span>01</span><h2>OPTICAL SENSOR</h2><b id="camera-state">STANDBY</b></div>
+  <div class="camera-placeholder" id="camera-placeholder">
+    <div class="placeholder-core">◉</div>
+    <strong>VISUALIZAÇÃO OCULTA</strong>
+    <small>A câmera só será exibida quando você tocar em <b>MOSTRAR TELA</b>.</small>
   </div>
   <div class="sensor-readout">
     <div><span>MOTION</span><strong id="motion-value">0%</strong></div>
@@ -42,7 +40,7 @@
     <div><span>CAMERA</span><strong id="permission-state">UNKNOWN</strong></div>
   </div>
   <div class="controls">
-    <button id="btn-camera" class="btn primary">ATIVAR VISÃO</button>
+    <button id="btn-camera" class="btn primary">MOSTRAR TELA</button>
     <button id="btn-stop-camera" class="btn danger" disabled>DESLIGAR</button>
   </div>
 </section>
@@ -62,6 +60,7 @@
     <button data-command="scan">INICIAR VARREDURA</button>
     <button data-command="camera">VERIFICAR CÂMERA</button>
     <button data-command="clear">LIMPAR TERMINAL</button>
+    <button id="btn-voice" data-command="voice">TESTAR VOZ</button>
   </div>
 </section>
 
@@ -71,14 +70,49 @@
     <div class="module"><div class="module-icon">◉</div><div><strong>VISÃO COMPUTACIONAL</strong><small>Frame analysis / motion</small></div><em id="vision-module">STANDBY</em></div>
     <div class="module"><div class="module-icon">⌁</div><div><strong>AUTOMAÇÃO</strong><small>Command orchestration</small></div><em class="green">READY</em></div>
     <div class="module"><div class="module-icon">◈</div><div><strong>EDGE PROCESSING</strong><small>Browser local compute</small></div><em class="green">ACTIVE</em></div>
-    <div class="module"><div class="module-icon">⚡</div><div><strong>DEVICE BRIDGE</strong><small>External hardware API</small></div><em>API WAIT</em></div>
+    <div class="module"><div class="module-icon">⚡</div><div><strong>DEVICE BRIDGE</strong><small>External hardware API</small></div><em id="bridge-module">API WAIT</em></div>
+    <div class="module"><div class="module-icon">◉</div><div><strong>GEMINI</strong><small>Neural response engine</small></div><em id="gemini-module">CHECKING</em></div>
+    <div class="module"><div class="module-icon">♫</div><div><strong>ELEVENLABS</strong><small>ULTRON voice synthesis</small></div><em id="voice-module">CHECKING</em></div>
   </div>
   <div class="control-block"><label>SENSOR SENSITIVITY <output id="sensitivity-out">20</output></label><input id="sensitivity" type="range" min="5" max="50" value="20"></div>
   <div class="control-block"><label>MOTION COOLDOWN <output id="cooldown-out">3s</output></label><input id="cooldown" type="range" min="1" max="10" value="3"></div>
 </section>
 
+<section class="card reactions">
+  <div class="card-title"><span>04</span><h2>SYSTEM REACTION</h2><b>ESTIMATE</b></div>
+  <div class="emotion-main">
+    <div class="emotion-symbol" id="emotion-symbol">😐</div>
+    <div><span>ESTADO ATUAL</span><strong id="emotion-state">NORMAL</strong><small id="emotion-confidence">Confiança estimada: 50%</small></div>
+  </div>
+  <div class="emotion-grid">
+    <button data-emotion="feliz">😊 <span>FELIZ</span><b id="emotion-feliz">—</b></button>
+    <button data-emotion="triste">😢 <span>TRISTE</span><b id="emotion-triste">—</b></button>
+    <button data-emotion="normal">😐 <span>NORMAL</span><b id="emotion-normal">—</b></button>
+    <button data-emotion="inquieto">⚡ <span>INQUIETO</span><b id="emotion-inquieto">—</b></button>
+    <button data-emotion="pensativo">🧠 <span>PENSATIVO</span><b id="emotion-pensativo">—</b></button>
+    <button data-emotion="estressado">🔥 <span>ESTRESSADO</span><b id="emotion-estressado">—</b></button>
+  </div>
+  <div class="reaction-details">
+    <div><span>MOVIMENTO</span><strong id="reaction-motion">0%</strong></div>
+    <div><span>ATIVIDADE</span><strong id="reaction-activity">BAIXA</strong></div>
+    <div><span>FONTE</span><strong>HEURÍSTICA LOCAL</strong></div>
+  </div>
+  <p class="disclaimer">A leitura emocional é uma estimativa técnica baseada nos sinais disponíveis; não é diagnóstico psicológico ou médico.</p>
+</section>
+
+<section class="card vitals">
+  <div class="card-title"><span>05</span><h2>BIOMETRIC TELEMETRY</h2><b>EXTERNAL SENSOR</b></div>
+  <div class="vitals-grid">
+    <div class="vital"><span>♥ BATIMENTOS</span><strong id="heart-rate">--</strong><small>BPM</small></div>
+    <div class="vital"><span>◈ PRESSÃO</span><strong id="blood-pressure">--/--</strong><small>mmHg</small></div>
+    <div class="vital"><span>DEVICE</span><strong id="vitals-device">NÃO CONECTADO</strong></div>
+    <div class="vital"><span>STATUS</span><strong id="vitals-status">AGUARDANDO</strong></div>
+  </div>
+  <p class="disclaimer">Batimentos e pressão só aparecem quando recebidos de um dispositivo/API compatível. O celular não gera uma medição real sozinho.</p>
+</section>
+
 <section class="card telemetry">
-  <div class="card-title"><span>04</span><h2>LIVE TELEMETRY</h2><b>REALTIME</b></div>
+  <div class="card-title"><span>06</span><h2>LIVE TELEMETRY</h2><b>REALTIME</b></div>
   <div class="telemetry-grid">
     <div class="telemetry-item"><span>CAMERA</span><strong id="telemetry-camera">OFF</strong></div>
     <div class="telemetry-item"><span>MOTION EVENTS</span><strong id="motion-events">0</strong></div>
@@ -89,9 +123,25 @@
 </section>
 </main>
 
-<footer><span>ULTRON AI // LOCAL CONTROL LAYER</span><span>v3.0.0</span></footer>
+<footer><span>ULTRON AI // LOCAL CONTROL LAYER</span><span><a href="https://equipezero-web.github.io/Ultron_AI/" target="_blank" rel="noopener">GITHUB PAGES</a> · v3.1.0</span></footer>
 </div>
 
+<div id="screen-modal" class="screen-modal" aria-hidden="true">
+  <div class="screen-panel">
+    <div class="screen-head"><strong>ULTRON // VISUAL SENSOR</strong><button id="btn-close-screen" class="btn danger">FECHAR</button></div>
+    <div class="camera modal-camera">
+      <video id="webcam" autoplay playsinline muted></video>
+      <canvas id="motion-canvas"></canvas>
+      <div class="camera-grid"></div><div class="scanner"></div>
+      <div class="corner c1"></div><div class="corner c2"></div><div class="corner c3"></div><div class="corner c4"></div>
+      <div class="camera-data"><span id="camera-resolution">NO SIGNAL</span><span id="fps">-- FPS</span></div>
+      <div id="motion-tag" class="motion-tag">STANDBY</div>
+    </div>
+    <p class="screen-note">A visualização só existe nesta janela enquanto o operador solicitar. Fechar a janela não encerra o sensor; use DESLIGAR para parar a câmera.</p>
+  </div>
+</div>
+
+<audio id="voice-audio" preload="none"></audio>
 <script type="module" src="script.js"></script>
 </body>
 </html>
