@@ -3,7 +3,7 @@
 // Para uso local, mantenha http://localhost:3000.
 // Em produção, troque pelo endereço HTTPS do seu backend.
 const API_CONFIG = {
-    backendUrl: "https://127.0.0.1:3000"
+    backendUrl: "http://127.0.0.1:3000"
 };
 
 export default API_CONFIG;
