@@ -21,11 +21,17 @@ export default {
         {
           status: "online",
           service: "ultron-ai-cloudflare-worker",
-          gemini: Boolean(env.GEMINI_API_KEY),
-          elevenlabs: Boolean(
-            env.ELEVENLABS_API_KEY &&
-            env.ELEVENLABS_VOICE_ID
-          ),
+         gemini: Boolean(env.GEMINI_API_KEY),
+geminiBindingPresent: Object.prototype.hasOwnProperty.call(
+  env,
+  "GEMINI_API_KEY"
+),
+geminiValueLength: String(env.GEMINI_API_KEY || "").length,
+
+elevenlabs: Boolean(
+  env.ELEVENLABS_API_KEY &&
+  env.ELEVENLABS_VOICE_ID
+),
           deviceBridge: Boolean(env.DEVICE_BRIDGE_URL),
           message: "Cloudflare Worker funcionando."
         },
