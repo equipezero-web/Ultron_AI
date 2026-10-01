@@ -136,21 +136,45 @@ addLog(output, `GEMINI: ${data.text}`);
 }
 
 async function testVoice(){
- if(voiceBusy)return;
- voiceBusy=true; addLog(output,"Solicitando teste de voz ElevenLabs...");
- try{
-   const response=await fetch(apiUrl("/api/voice"),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text:"ULTRON online. Sistema de voz operacional."})});
-   const data=await response.json(); if(!response.ok)throw new Error(data.error||"Falha na voz.");
-   playVoice(data.audioBase64,data.audioMimeType||"audio/mpeg"); addLog(output,"ElevenLabs: voz reproduzida.");
- }catch(e){addLog(output,`ELEVENLABS ERROR: ${e.message}`,"alert");}
- finally{voiceBusy=false;}
-}
+ if (voiceBusy) return;
 
-function playVoice(base64,mime){
- const bytes=Uint8Array.from(atob(base64),c=>c.charCodeAt(0));
- const blob=new Blob([bytes],{type:mime}); const url=URL.createObjectURL(blob); const audio=$("voice-audio");
- audio.src=url; audio.play().catch(()=>addLog(output,"Áudio pronto, mas o navegador bloqueou a reprodução automática.","alert"));
- audio.onended=()=>URL.revokeObjectURL(url);
+ voiceBusy = true;
+ addLog(output, "Solicitando teste de voz ElevenLabs...");
+
+ try {
+   const response = await fetch(apiUrl("/api/voice"), {
+     method: "POST",
+     headers: {
+       "Content-Type": "application/json"
+     },
+     body: JSON.stringify({
+       text: "ULTRON online. Sistema de voz operacional."
+     })
+   });
+
+   const data = await response.json();
+
+   if (!response.ok) {
+     throw new Error(
+       data.details ||
+       data.error ||
+       `Erro HTTP ${response.status}`
+     );
+   }
+
+   playVoice(
+     data.audioBase64,
+     data.audioMimeType || "audio/mpeg"
+   );
+
+   addLog(output, "ElevenLabs: voz reproduzida.");
+
+ } catch (e) {
+   addLog(output, `ELEVENLABS ERROR: ${e.message}`, "alert");
+
+ } finally {
+   voiceBusy = false;
+ }
 }
 
 async function loadHealth(){
