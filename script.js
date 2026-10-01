@@ -119,10 +119,18 @@ async function askGemini(cmd){
  thinking.dataset.thinking="true"; output.appendChild(thinking); output.scrollTop=output.scrollHeight;
  try{
    const response=await fetch(apiUrl("/api/ai"),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:cmd,telemetry:{motion:Math.round(currentMotion),emotion:$("emotion-state").textContent,activity:$("reaction-activity").textContent}})});
-   const data=await response.json();
-   thinking.remove();
-   if(!response.ok) throw new Error(data.error||"Erro no backend.");
-   addLog(output,`GEMINI: ${data.text}`);
+   const data = await response.json();
+thinking.remove();
+
+if (!response.ok) {
+  throw new Error(
+    data.details ||
+    data.error ||
+    `Erro HTTP ${response.status}`
+  );
+}
+
+addLog(output, `GEMINI: ${data.text}`);
    if(data.audioBase64) playVoice(data.audioBase64,data.audioMimeType||"audio/mpeg");
  }catch(e){thinking.remove();addLog(output,`GEMINI ERROR: ${e.message}`,"alert");}
 }
