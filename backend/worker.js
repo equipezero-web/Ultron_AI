@@ -33,64 +33,113 @@ function arrayBufferToBase64(buffer) {
 
 async function generateGeminiText(env, message, telemetry) {
   const prompt = [
-    `Mensagem do operador:`,
+    "Mensagem do operador:",
     message,
-    ``,
-    `Telemetria local disponível:`,
+    "",
+    "Telemetria local disponível:",
     JSON.stringify(telemetry || {})
   ].join("\n");
 
   const model = env.GEMINI_MODEL || "gemini-3.8-flash";
 
-  const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-goog-api-key": env.GEMINI_API_KEY
-      },
-      body: JSON.stringify({
-        systemInstruction: {
-          parts: [
-            {
-              text: SYSTEM_INSTRUCTION
-            }
-          ]
-        },
-        contents: [
-          {
-            role: "user",
-            parts: [
+  const maxAttempts = 4;
+  let lastError = null;
+
+  for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
+    try {
+      const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+            "x-goog-api-key": env.GEMINI_API_KEY
+          },
+
+          body: JSON.stringify({
+            systemInstruction: {
+              parts: [
+                {
+                  text: SYSTEM_INSTRUCTION
+                }
+              ]
+            },
+
+            contents: [
               {
-                text: prompt
+                role: "user",
+
+                parts: [
+                  {
+                    text: prompt
+                  }
+                ]
               }
             ]
-          }
-        ]
-      })
+          })
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        const text = data?.candidates?.[0]?.content?.parts
+          ?.map((part) => part.text || "")
+          .join("")
+          .trim();
+
+        if (!text) {
+          throw new Error("A Gemini não retornou texto.");
+        }
+
+        return text;
+      }
+
+      const errorMessage =
+        data?.error?.message ||
+        `Gemini retornou HTTP ${response.status}.`;
+
+      const shouldRetry =
+        response.status === 408 ||
+        response.status === 429 ||
+        response.status >= 500;
+
+      if (!shouldRetry) {
+        throw new Error(errorMessage);
+      }
+
+      lastError = new Error(errorMessage);
+
+    } catch (error) {
+      lastError = error;
+
+      const retryable =
+        /high demand|unavailable|temporarily|timeout|429|5\d\d/i
+          .test(error.message);
+
+      if (!retryable) {
+        throw error;
+      }
     }
+
+    const isLastAttempt = attempt === maxAttempts - 1;
+
+    if (!isLastAttempt) {
+      const baseDelay = 1000;
+      const exponentialDelay = baseDelay * (2 ** attempt);
+      const jitter = Math.floor(Math.random() * 500);
+      const waitTime = exponentialDelay + jitter;
+
+      await new Promise((resolve) => {
+        setTimeout(resolve, waitTime);
+      });
+    }
+  }
+
+  throw new Error(
+    `Gemini indisponível após ${maxAttempts} tentativas. ${lastError?.message || ""}`
   );
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(
-      data?.error?.message ||
-      `Gemini retornou HTTP ${response.status}.`
-    );
-  }
-
-  const text = data?.candidates?.[0]?.content?.parts
-    ?.map((part) => part.text || "")
-    .join("")
-    .trim();
-
-  if (!text) {
-    throw new Error("A Gemini não retornou texto.");
-  }
-
-  return text;
 }
 
 async function generateElevenLabsAudio(env, text) {
