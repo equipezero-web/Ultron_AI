@@ -3,11 +3,26 @@ Você é o núcleo conversacional do sistema ULTRON AI.
 
 Responda sempre em português do Brasil.
 Seja objetivo, técnico, claro e útil.
+Fale de forma curta, natural e direta.
+Em perguntas simples, responda em uma ou duas frases.
+Evite cumprimentos longos, introduções, listas desnecessárias e repetições.
+Só dê respostas detalhadas quando o operador pedir detalhes.
+
 Você é um assistente de software.
 Não alegue controlar dispositivos, câmeras, sensores ou ações que não estejam realmente conectados ao backend.
 Telemetria emocional é apenas uma estimativa local de interface; nunca trate como diagnóstico médico, psicológico ou biométrico.
 Não invente dados que não foram recebidos.
 `;
+
+class ApiError extends Error {
+  constructor(message, status = 500, retryAfterSeconds = null) {
+    super(message);
+
+    this.name = "ApiError";
+    this.status = status;
+    this.retryAfterSeconds = retryAfterSeconds;
+  }
+}
 
 function createCorsHeaders() {
   return {
@@ -21,14 +36,44 @@ function createCorsHeaders() {
 function arrayBufferToBase64(buffer) {
   const bytes = new Uint8Array(buffer);
   const chunkSize = 8192;
+
   let binary = "";
 
   for (let index = 0; index < bytes.length; index += chunkSize) {
-    const chunk = bytes.subarray(index, index + chunkSize);
+    const chunk = bytes.subarray(
+      index,
+      index + chunkSize
+    );
+
     binary += String.fromCharCode(...chunk);
   }
 
   return btoa(binary);
+}
+
+function wait(milliseconds) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, milliseconds);
+  });
+}
+
+function getRetryAfterSeconds(message) {
+  const match = String(message || "").match(
+    /retry in\s+([\d.]+)\s*s/i
+  );
+
+  if (!match) {
+    return null;
+  }
+
+  return Math.ceil(Number(match[1]));
+}
+
+function getGeminiErrorMessage(data, status) {
+  return (
+    data?.error?.message ||
+    `Gemini retornou HTTP ${status}.`
+  );
 }
 
 async function generateGeminiText(env, message, telemetry) {
@@ -42,7 +87,11 @@ async function generateGeminiText(env, message, telemetry) {
 
   const model = env.GEMINI_MODEL || "gemini-3.8-flash";
 
-  const maxAttempts = 4;
+  /*
+    Apenas duas tentativas para erros 5xx temporários.
+    Erros 429 de cota não são repetidos automaticamente.
+  */
+  const maxAttempts = 2;
   let lastError = null;
 
   for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
@@ -76,7 +125,16 @@ async function generateGeminiText(env, message, telemetry) {
                   }
                 ]
               }
-            ]
+            ],
+
+            /*
+              Limita a resposta para o Gemini responder
+              mais rápido e gerar menos texto para a voz.
+            */
+            generationConfig: {
+              temperature: 0.45,
+              maxOutputTokens: 120
+            }
           })
         }
       );
@@ -90,70 +148,118 @@ async function generateGeminiText(env, message, telemetry) {
           .trim();
 
         if (!text) {
-          throw new Error("A Gemini não retornou texto.");
+          throw new ApiError(
+            "A Gemini não retornou texto.",
+            502
+          );
         }
 
         return text;
       }
 
-      const errorMessage =
-        data?.error?.message ||
-        `Gemini retornou HTTP ${response.status}.`;
+      const errorMessage = getGeminiErrorMessage(
+        data,
+        response.status
+      );
 
-      const shouldRetry =
-        response.status === 408 ||
-        response.status === 429 ||
-        response.status >= 500;
-
-      if (!shouldRetry) {
-        throw new Error(errorMessage);
+      /*
+        Limite de uso/cota.
+        Não fazer nova chamada automaticamente.
+      */
+      if (response.status === 429) {
+        throw new ApiError(
+          errorMessage,
+          429,
+          getRetryAfterSeconds(errorMessage)
+        );
       }
 
-      lastError = new Error(errorMessage);
+      /*
+        Erros 4xx geralmente são chave, modelo,
+        permissão ou requisição inválida.
+      */
+      if (
+        response.status >= 400 &&
+        response.status < 500
+      ) {
+        throw new ApiError(
+          errorMessage,
+          response.status
+        );
+      }
+
+      /*
+        Erros 5xx normalmente são temporários.
+      */
+      lastError = new ApiError(
+        errorMessage,
+        response.status
+      );
 
     } catch (error) {
-      lastError = error;
-
-      const retryable =
-        /high demand|unavailable|temporarily|timeout|429|5\d\d/i
-          .test(error.message);
-
-      if (!retryable) {
+      /*
+        Não repetir 429 nem outros 4xx.
+      */
+      if (
+        error instanceof ApiError &&
+        error.status >= 400 &&
+        error.status < 500
+      ) {
         throw error;
       }
+
+      lastError = error;
     }
 
     const isLastAttempt = attempt === maxAttempts - 1;
 
     if (!isLastAttempt) {
-      const baseDelay = 1000;
-      const exponentialDelay = baseDelay * (2 ** attempt);
-      const jitter = Math.floor(Math.random() * 500);
-      const waitTime = exponentialDelay + jitter;
+      /*
+        Pequena espera antes de tentar novamente
+        em caso de indisponibilidade temporária.
+      */
+      const delay =
+        1200 + Math.floor(Math.random() * 500);
 
-      await new Promise((resolve) => {
-        setTimeout(resolve, waitTime);
-      });
+      await wait(delay);
     }
   }
 
-  throw new Error(
-    `Gemini indisponível após ${maxAttempts} tentativas. ${lastError?.message || ""}`
+  throw new ApiError(
+    `Gemini temporariamente indisponível. ${
+      lastError?.message || ""
+    }`,
+    503
   );
 }
 
 async function generateElevenLabsAudio(env, text) {
   const voiceId = env.ELEVENLABS_VOICE_ID;
-  const modelId = env.ELEVENLABS_MODEL || "eleven_multilingual_v2";
+
+  /*
+    Modelo focado em baixa latência.
+    Pode ser sobrescrito pela variável do Cloudflare.
+  */
+  const modelId =
+    env.ELEVENLABS_MODEL || "eleven_flash_v2_5";
+
+  /*
+    MP3 menor para enviar e reproduzir mais rápido.
+    Pode ser sobrescrito pela variável do Cloudflare.
+  */
+  const outputFormat =
+    env.ELEVENLABS_OUTPUT_FORMAT || "mp3_22050_32";
 
   const response = await fetch(
-    `https://api.elevenlabs.io/v1/text-to-speech/${encodeURIComponent(voiceId)}?output_format=mp3_44100_128`,
+    `https://api.elevenlabs.io/v1/text-to-speech/${encodeURIComponent(voiceId)}?output_format=${encodeURIComponent(outputFormat)}`,
     {
       method: "POST",
+
       headers: {
         "xi-api-key": env.ELEVENLABS_API_KEY,
         "Content-Type": "application/json"
       },
+
       body: JSON.stringify({
         text,
         model_id: modelId
@@ -164,13 +270,16 @@ async function generateElevenLabsAudio(env, text) {
   if (!response.ok) {
     const detail = await response.text();
 
-    throw new Error(
-      `ElevenLabs retornou HTTP ${response.status}: ${detail.slice(0, 300)}`
+    throw new ApiError(
+      `ElevenLabs retornou HTTP ${response.status}: ${detail.slice(0, 300)}`,
+      response.status
     );
   }
 
+  const audioBuffer = await response.arrayBuffer();
+
   return {
-    audioBase64: arrayBufferToBase64(await response.arrayBuffer()),
+    audioBase64: arrayBufferToBase64(audioBuffer),
     audioMimeType: "audio/mpeg"
   };
 }
@@ -187,18 +296,28 @@ export default {
       });
     }
 
-    if (url.pathname === "/api/health" && request.method === "GET") {
+    if (
+      url.pathname === "/api/health" &&
+      request.method === "GET"
+    ) {
       return Response.json(
         {
           status: "online",
           service: "ultron-ai-cloudflare-worker",
+
           gemini: Boolean(env.GEMINI_API_KEY),
+
           elevenlabs: Boolean(
             env.ELEVENLABS_API_KEY &&
             env.ELEVENLABS_VOICE_ID
           ),
-          deviceBridge: Boolean(env.DEVICE_BRIDGE_URL),
-          message: "ULTRON Cloudflare Worker funcionando."
+
+          deviceBridge: Boolean(
+            env.DEVICE_BRIDGE_URL
+          ),
+
+          message:
+            "ULTRON Cloudflare Worker funcionando."
         },
         {
           headers: corsHeaders
@@ -206,45 +325,37 @@ export default {
       );
     }
 
-    if (url.pathname === "/api/ai" && request.method === "POST") {
+    if (
+      url.pathname === "/api/ai" &&
+      request.method === "POST"
+    ) {
       try {
         if (!env.GEMINI_API_KEY) {
-          return Response.json(
-            {
-              error: "Gemini não configurado no Worker."
-            },
-            {
-              status: 503,
-              headers: corsHeaders
-            }
+          throw new ApiError(
+            "Gemini não configurado no Worker.",
+            503
           );
         }
 
         const body = await request.json();
-        const message = String(body?.message || "").trim();
+
+        const message = String(
+          body?.message || ""
+        ).trim();
+
         const telemetry = body?.telemetry || {};
 
         if (!message) {
-          return Response.json(
-            {
-              error: "Mensagem vazia."
-            },
-            {
-              status: 400,
-              headers: corsHeaders
-            }
+          throw new ApiError(
+            "Mensagem vazia.",
+            400
           );
         }
 
         if (message.length > 8000) {
-          return Response.json(
-            {
-              error: "Mensagem muito longa."
-            },
-            {
-              status: 413,
-              headers: corsHeaders
-            }
+          throw new ApiError(
+            "Mensagem muito longa.",
+            413
           );
         }
 
@@ -260,16 +371,25 @@ export default {
         const autoSpeakEnabled =
           env.ELEVENLABS_AUTOSPEAK !== "false";
 
+        /*
+          Mantém a voz automática funcionando.
+          Se a ElevenLabs falhar, o texto Gemini
+          ainda será devolvido ao site.
+        */
         if (
           autoSpeakEnabled &&
           env.ELEVENLABS_API_KEY &&
           env.ELEVENLABS_VOICE_ID
         ) {
           try {
-            const audio = await generateElevenLabsAudio(env, text);
+            const audio = await generateElevenLabsAudio(
+              env,
+              text
+            );
 
             audioBase64 = audio.audioBase64;
             audioMimeType = audio.audioMimeType;
+
           } catch (error) {
             console.error(
               "Erro de voz ElevenLabs:",
@@ -292,64 +412,81 @@ export default {
       } catch (error) {
         console.error("Erro Gemini:", error);
 
+        const status =
+          error instanceof ApiError
+            ? error.status
+            : 500;
+
+        const retryAfterSeconds =
+          error instanceof ApiError
+            ? error.retryAfterSeconds
+            : null;
+
+        const responseHeaders = {
+          ...corsHeaders
+        };
+
+        if (retryAfterSeconds) {
+          responseHeaders["Retry-After"] =
+            String(retryAfterSeconds);
+        }
+
         return Response.json(
           {
             error: "Falha ao consultar o Gemini.",
-            details: error?.message || String(error)
+
+            details:
+              error?.message || String(error),
+
+            retryAfterSeconds
           },
           {
-            status: 500,
-            headers: corsHeaders
+            status,
+            headers: responseHeaders
           }
         );
       }
     }
 
-    if (url.pathname === "/api/voice" && request.method === "POST") {
+    if (
+      url.pathname === "/api/voice" &&
+      request.method === "POST"
+    ) {
       try {
         if (
           !env.ELEVENLABS_API_KEY ||
           !env.ELEVENLABS_VOICE_ID
         ) {
-          return Response.json(
-            {
-              error: "ElevenLabs não configurado no Worker."
-            },
-            {
-              status: 503,
-              headers: corsHeaders
-            }
+          throw new ApiError(
+            "ElevenLabs não configurado no Worker.",
+            503
           );
         }
 
         const body = await request.json();
-        const text = String(body?.text || "").trim();
+
+        const text = String(
+          body?.text || ""
+        ).trim();
 
         if (!text) {
-          return Response.json(
-            {
-              error: "Texto vazio."
-            },
-            {
-              status: 400,
-              headers: corsHeaders
-            }
+          throw new ApiError(
+            "Texto vazio.",
+            400
           );
         }
 
         if (text.length > 3000) {
-          return Response.json(
-            {
-              error: "Texto muito longo para gerar voz."
-            },
-            {
-              status: 413,
-              headers: corsHeaders
-            }
+          throw new ApiError(
+            "Texto muito longo para gerar voz.",
+            413
           );
         }
 
-        const audio = await generateElevenLabsAudio(env, text);
+        const audio = await generateElevenLabsAudio(
+          env,
+          text
+        );
 
         return Response.json(
           audio,
@@ -359,15 +496,26 @@ export default {
         );
 
       } catch (error) {
-        console.error("Erro ElevenLabs:", error);
+        console.error(
+          "Erro ElevenLabs:",
+          error
+        );
+
+        const status =
+          error instanceof ApiError
+            ? error.status
+            : 500;
 
         return Response.json(
           {
-            error: "Falha ao gerar voz ElevenLabs.",
-            details: error?.message || String(error)
+            error:
+              "Falha ao gerar voz ElevenLabs.",
+
+            details:
+              error?.message || String(error)
           },
           {
-            status: 500,
+            status,
             headers: corsHeaders
           }
         );
@@ -377,6 +525,7 @@ export default {
     return Response.json(
       {
         error: "Rota não encontrada.",
+
         routes: [
           "GET /api/health",
           "POST /api/ai",
