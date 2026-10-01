@@ -1,6 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "ultron-backend",
+// backend/wrangler.jsonc
+"name": "ultron-backend",
   "main": "worker.js",
   "compatibility_date": "2026-10-01",
   "workers_dev": true,
