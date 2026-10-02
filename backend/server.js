@@ -37,7 +37,7 @@ app.post("/api/ai",async(req,res)=>{
   const telemetry=req.body?.telemetry||{};
   const prompt=`Mensagem do operador:\n${message}\n\nTelemetria local disponível:\n${JSON.stringify(telemetry)}`;
   const interaction=await ai.interactions.create({
-   model:process.env.GEMINI_MODEL||"gemini-3.8-flash",
+   model:process.env.GEMINI_MODEL||"Gemini 3 Flash Live",
    system_instruction:SYSTEM_INSTRUCTION,
    input:prompt,
    generation_config:{thinking_level:"low"}
