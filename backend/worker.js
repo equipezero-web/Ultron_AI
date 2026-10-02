@@ -85,7 +85,7 @@ async function generateGeminiText(env, message, telemetry) {
     JSON.stringify(telemetry || {})
   ].join("\n");
 
-  const model = env.GEMINI_MODEL || "Gemini 3 Flash Live";
+  const model = env.GEMINI_MODEL || "Gemini Embedding 2";
 
   /*
     Apenas duas tentativas para erros 5xx temporários.
