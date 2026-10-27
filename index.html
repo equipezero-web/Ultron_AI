@@ -49,7 +49,7 @@
   <div class="card-title"><span>02</span><h2>NEURAL COMMAND CORE</h2><b class="pulse">READY</b></div>
   <div id="output-box" class="terminal" aria-live="polite">
     <p class="boot">&gt; ULTRON CORE INITIALIZED</p>
-    <p>&gt; Awaiting operator command...</p>
+    <p>&gt; Diga "Ultron" para ativar por voz ou digite um comando.</p>
   </div>
   <div class="command-row">
     <textarea id="command-input" rows="2" placeholder="Digite uma instrução para o agente..."></textarea>
@@ -60,6 +60,7 @@
     <button data-command="scan">INICIAR VARREDURA</button>
     <button data-command="camera">VERIFICAR CÂMERA</button>
     <button data-command="clear">LIMPAR TERMINAL</button>
+    <button id="btn-listen-voice">ATIVAR ESCUTA</button>
     <button id="btn-voice" data-command="voice">TESTAR VOZ</button>
   </div>
 </section>
@@ -71,7 +72,8 @@
     <div class="module"><div class="module-icon">⌁</div><div><strong>AUTOMAÇÃO</strong><small>Command orchestration</small></div><em class="green">READY</em></div>
     <div class="module"><div class="module-icon">◈</div><div><strong>EDGE PROCESSING</strong><small>Browser local compute</small></div><em class="green">ACTIVE</em></div>
     <div class="module"><div class="module-icon">⚡</div><div><strong>DEVICE BRIDGE</strong><small>External hardware API</small></div><em id="bridge-module">API WAIT</em></div>
-    <div class="module"><div class="module-icon">◉</div><div><strong>GEMINI</strong><small>Neural response engine</small></div><em id="gemini-module">CHECKING</em></div>
+    <div class="module"><div class="module-icon">◎</div><div><strong>MICROFONE</strong><small>Wake word / speech recognition</small></div><em id="mic-module">CHECKING</em></div>
+    <div class="module"><div class="module-icon">◉</div><div><strong>AI GATEWAY</strong><small>5-provider neural routing</small></div><em id="gemini-module">CHECKING</em></div>
     <div class="module"><div class="module-icon">♫</div><div><strong>ELEVENLABS</strong><small>ULTRON voice synthesis</small></div><em id="voice-module">CHECKING</em></div>
   </div>
   <div class="control-block"><label>SENSOR SENSITIVITY <output id="sensitivity-out">20</output></label><input id="sensitivity" type="range" min="5" max="50" value="20"></div>
@@ -123,7 +125,7 @@
 </section>
 </main>
 
-<footer><span>ULTRON AI // LOCAL CONTROL LAYER</span><span><a href="https://equipezero-web.github.io/Ultron_AI/" target="_blank" rel="noopener">GITHUB PAGES</a> · v3.1.0</span></footer>
+<footer><span>ULTRON AI // LOCAL CONTROL LAYER</span><span><a href="https://equipezero-web.github.io/Ultron_AI/" target="_blank" rel="noopener">GITHUB PAGES</a> · v3.2.0</span></footer>
 </div>
 
 <div id="screen-modal" class="screen-modal" aria-hidden="true">
@@ -143,5 +145,6 @@
 
 <audio id="voice-audio" preload="none"></audio>
 <script type="module" src="script.js"></script>
+<script type="module" src="modules/voice-listener.js"></script>
 </body>
 </html>
