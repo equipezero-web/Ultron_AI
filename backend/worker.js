@@ -10,6 +10,15 @@ import {
   normalizeConversationId,
   saveExchange
 } from "./memory.js";
+import {
+  bridgeHealth,
+  claimPairing,
+  completeCommand,
+  enqueueCommand,
+  listDevices,
+  pollCommands,
+  startPairing
+} from "./device-bridge.js";
 
 function createCorsHeaders() {
   return {
@@ -18,6 +27,13 @@ function createCorsHeaders() {
     "Access-Control-Allow-Headers": "Content-Type",
     "Content-Type": "application/json; charset=utf-8"
   };
+}
+
+function jsonResult(result, headers, failureStatus = 400) {
+  return Response.json(result, {
+    status: result?.ok === false ? failureStatus : 200,
+    headers
+  });
 }
 
 function arrayBufferToBase64(buffer) {
@@ -50,10 +66,8 @@ function buildMemoryAwareMessage(message, memoryContext) {
 
 async function generateElevenLabsAudio(env, text) {
   const voiceId = env.ELEVENLABS_VOICE_ID;
-  const modelId =
-    env.ELEVENLABS_MODEL || "eleven_flash_v2_5";
-  const outputFormat =
-    env.ELEVENLABS_OUTPUT_FORMAT || "mp3_22050_32";
+  const modelId = env.ELEVENLABS_MODEL || "eleven_flash_v2_5";
+  const outputFormat = env.ELEVENLABS_OUTPUT_FORMAT || "mp3_22050_32";
 
   const response = await fetch(
     `https://api.elevenlabs.io/v1/text-to-speech/${encodeURIComponent(voiceId)}?output_format=${encodeURIComponent(outputFormat)}`,
@@ -97,12 +111,12 @@ export default {
       });
     }
 
-    if (
-      url.pathname === "/api/health" &&
-      request.method === "GET"
-    ) {
+    if (url.pathname === "/api/health" && request.method === "GET") {
       const providers = getProviderStatus(env, env.AI);
-      const memory = await memoryHealth(env);
+      const [memory, bridge] = await Promise.all([
+        memoryHealth(env),
+        bridgeHealth(env)
+      ]);
 
       return Response.json(
         {
@@ -112,31 +126,110 @@ export default {
           providers,
           providerOrder: String(
             env.AI_PROVIDER_ORDER ||
-              "gemini,groq,openrouter,cloudflare,cohere"
+              "groq,gemini,cloudflare,openrouter,cohere"
           )
             .split(",")
             .map((item) => item.trim())
             .filter(Boolean),
           elevenlabs: Boolean(
-            env.ELEVENLABS_API_KEY &&
-              env.ELEVENLABS_VOICE_ID
+            env.ELEVENLABS_API_KEY && env.ELEVENLABS_VOICE_ID
           ),
           memory,
           memoryVersion: "1.2",
-          deviceBridge: Boolean(env.DEVICE_BRIDGE_URL),
+          deviceBridge: Boolean(bridge?.ready),
+          bridge,
           message:
-            "ULTRON Cloudflare Worker funcionando com gateway multi-IA e camada de memória."
+            "ULTRON Cloudflare Worker funcionando com gateway multi-IA, memória e Device Bridge."
         },
-        {
-          headers: corsHeaders
-        }
+        { headers: corsHeaders }
       );
     }
 
-    if (
-      url.pathname === "/api/ai" &&
-      request.method === "POST"
-    ) {
+    if (url.pathname === "/api/devices/pair/start" && request.method === "POST") {
+      try {
+        const body = await request.json();
+        const operatorId = await deriveOperatorId(body?.memoryKey);
+        const result = await startPairing(env, {
+          operatorId,
+          deviceType: body?.deviceType,
+          deviceName: body?.deviceName
+        });
+        return jsonResult(result, corsHeaders, 400);
+      } catch (error) {
+        return jsonResult({ ok: false, error: error?.message || String(error) }, corsHeaders, 500);
+      }
+    }
+
+    if (url.pathname === "/api/devices/pair/claim" && request.method === "POST") {
+      try {
+        const body = await request.json();
+        const result = await claimPairing(env, body || {});
+        return jsonResult(result, corsHeaders, 400);
+      } catch (error) {
+        return jsonResult({ ok: false, error: error?.message || String(error) }, corsHeaders, 500);
+      }
+    }
+
+    if (url.pathname === "/api/devices/list" && request.method === "POST") {
+      try {
+        const body = await request.json();
+        const operatorId = await deriveOperatorId(body?.memoryKey);
+        if (!operatorId) {
+          return jsonResult({ ok: false, error: "Identidade do operador ausente." }, corsHeaders, 401);
+        }
+        const devices = await listDevices(env, operatorId);
+        return jsonResult({ ok: true, devices }, corsHeaders);
+      } catch (error) {
+        return jsonResult({ ok: false, error: error?.message || String(error) }, corsHeaders, 500);
+      }
+    }
+
+    if (url.pathname === "/api/devices/command" && request.method === "POST") {
+      try {
+        const body = await request.json();
+        const operatorId = await deriveOperatorId(body?.memoryKey);
+        const result = await enqueueCommand(env, {
+          operatorId,
+          deviceId: body?.deviceId,
+          command: body?.command,
+          payload: body?.payload || {}
+        });
+        return jsonResult(result, corsHeaders, 400);
+      } catch (error) {
+        return jsonResult({ ok: false, error: error?.message || String(error) }, corsHeaders, 500);
+      }
+    }
+
+    if (url.pathname === "/api/bridge/poll" && request.method === "POST") {
+      try {
+        const body = await request.json();
+        const result = await pollCommands(env, {
+          deviceId: body?.deviceId,
+          deviceSecret: body?.deviceSecret
+        });
+        return jsonResult(result, corsHeaders, 401);
+      } catch (error) {
+        return jsonResult({ ok: false, error: error?.message || String(error) }, corsHeaders, 500);
+      }
+    }
+
+    if (url.pathname === "/api/bridge/result" && request.method === "POST") {
+      try {
+        const body = await request.json();
+        const result = await completeCommand(env, {
+          deviceId: body?.deviceId,
+          deviceSecret: body?.deviceSecret,
+          commandId: body?.commandId,
+          status: body?.status,
+          result: body?.result || {}
+        });
+        return jsonResult(result, corsHeaders, 401);
+      } catch (error) {
+        return jsonResult({ ok: false, error: error?.message || String(error) }, corsHeaders, 500);
+      }
+    }
+
+    if (url.pathname === "/api/ai" && request.method === "POST") {
       try {
         const requestStartedAt = Date.now();
         const body = await request.json();
@@ -164,10 +257,7 @@ export default {
           conversationId
         });
 
-        const aiMessage = buildMemoryAwareMessage(
-          message,
-          memoryState.context
-        );
+        const aiMessage = buildMemoryAwareMessage(message, memoryState.context);
 
         const aiStartedAt = Date.now();
         const aiResult = await generateWithProviders(
@@ -193,14 +283,11 @@ export default {
                 explicitMemorySaved: false
               });
 
-        const autoSpeakEnabled =
-          env.ELEVENLABS_AUTOSPEAK !== "false";
+        const autoSpeakEnabled = env.ELEVENLABS_AUTOSPEAK !== "false";
 
         const voiceStartedAt = Date.now();
         const voicePromise =
-          autoSpeakEnabled &&
-          env.ELEVENLABS_API_KEY &&
-          env.ELEVENLABS_VOICE_ID
+          autoSpeakEnabled && env.ELEVENLABS_API_KEY && env.ELEVENLABS_VOICE_ID
             ? generateElevenLabsAudio(env, aiResult.text)
                 .then((audio) => ({
                   audio,
@@ -251,52 +338,31 @@ export default {
             audioBase64,
             audioMimeType
           },
-          {
-            headers: corsHeaders
-          }
+          { headers: corsHeaders }
         );
       } catch (error) {
         console.error("[ULTRON AI] Gateway falhou:", error);
 
         const attempts =
-          error instanceof ProviderGatewayError
-            ? error.attempts
-            : [];
+          error instanceof ProviderGatewayError ? error.attempts : [];
 
         return Response.json(
           {
-            error:
-              "Nenhum provedor de IA conseguiu responder.",
-            details:
-              error?.message || String(error),
+            error: "Nenhum provedor de IA conseguiu responder.",
+            details: error?.message || String(error),
             attempts
           },
-          {
-            status: 503,
-            headers: corsHeaders
-          }
+          { status: 503, headers: corsHeaders }
         );
       }
     }
 
-    if (
-      url.pathname === "/api/voice" &&
-      request.method === "POST"
-    ) {
+    if (url.pathname === "/api/voice" && request.method === "POST") {
       try {
-        if (
-          !env.ELEVENLABS_API_KEY ||
-          !env.ELEVENLABS_VOICE_ID
-        ) {
+        if (!env.ELEVENLABS_API_KEY || !env.ELEVENLABS_VOICE_ID) {
           return Response.json(
-            {
-              error:
-                "ElevenLabs não configurado no Worker."
-            },
-            {
-              status: 503,
-              headers: corsHeaders
-            }
+            { error: "ElevenLabs não configurado no Worker." },
+            { status: 503, headers: corsHeaders }
           );
         }
 
@@ -312,39 +378,22 @@ export default {
 
         if (text.length > 3000) {
           return Response.json(
-            {
-              error:
-                "Texto muito longo para gerar voz."
-            },
-            {
-              status: 413,
-              headers: corsHeaders
-            }
+            { error: "Texto muito longo para gerar voz." },
+            { status: 413, headers: corsHeaders }
           );
         }
 
         const audio = await generateElevenLabsAudio(env, text);
-
-        return Response.json(audio, {
-          headers: corsHeaders
-        });
+        return Response.json(audio, { headers: corsHeaders });
       } catch (error) {
-        console.error(
-          "[ULTRON AI] ElevenLabs falhou:",
-          error
-        );
+        console.error("[ULTRON AI] ElevenLabs falhou:", error);
 
         return Response.json(
           {
-            error:
-              "Falha ao gerar voz ElevenLabs.",
-            details:
-              error?.message || String(error)
+            error: "Falha ao gerar voz ElevenLabs.",
+            details: error?.message || String(error)
           },
-          {
-            status: 500,
-            headers: corsHeaders
-          }
+          { status: 500, headers: corsHeaders }
         );
       }
     }
@@ -355,13 +404,16 @@ export default {
         routes: [
           "GET /api/health",
           "POST /api/ai",
-          "POST /api/voice"
+          "POST /api/voice",
+          "POST /api/devices/pair/start",
+          "POST /api/devices/pair/claim",
+          "POST /api/devices/list",
+          "POST /api/devices/command",
+          "POST /api/bridge/poll",
+          "POST /api/bridge/result"
         ]
       },
-      {
-        status: 404,
-        headers: corsHeaders
-      }
+      { status: 404, headers: corsHeaders }
     );
   }
 };
