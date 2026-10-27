@@ -82,18 +82,19 @@ async function refreshBridgeState() {
 
 document.getElementById("btn-pair-mobile")?.addEventListener("click", async () => {
   try {
-    await startPairing("mobile", "Ultron Mobile Bridge");
+    const result = await startPairing("mobile", "Ultron Mobile Bridge");
+    outputLine(`PASSO 1: abra o app Ultron Bridge no celular.`);
+    outputLine(`PASSO 2: digite ${result.code} no campo "Código de 6 dígitos do Ultron".`);
+    outputLine("IMPORTANTE: este código NÃO aparece na TV; ele é gerado aqui no painel do Ultron.");
   } catch (error) {
     outputLine(`ERRO: ${error.message}`, true);
   }
 });
 
-document.getElementById("btn-pair-tv")?.addEventListener("click", async () => {
-  try {
-    await startPairing("tv", "Minha TV");
-  } catch (error) {
-    outputLine(`ERRO: ${error.message}`, true);
-  }
+document.getElementById("btn-pair-tv")?.addEventListener("click", () => {
+  outputLine("LG WEBOS: a TV não usa código de 6 dígitos.");
+  outputLine("Primeiro pareie o CELULAR com o Ultron. Depois, no app Ultron Bridge, toque em PAREAR LG WEBOS.");
+  outputLine("A LG deve mostrar apenas uma solicitação de autorização na tela; aceite usando o controle remoto.");
 });
 
 window.ULTRON_DEVICES = {
