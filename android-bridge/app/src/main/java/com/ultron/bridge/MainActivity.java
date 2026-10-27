@@ -46,14 +46,14 @@ public class MainActivity extends Activity {
 
         TextView description = new TextView(this);
         description.setText(
-                "Pareie este celular com o Ultron Cloud. Depois o Bridge poderá executar apenas ações autorizadas e atuar como ponte local para sua LG webOS TV."
+                "PASSO 1 — No painel web do Ultron, toque em PAREAR CELULAR. O código de 6 dígitos aparece no terminal do Ultron, NÃO na TV. Digite esse código abaixo.\n\nPASSO 2 — Depois de parear o celular, configure sua LG webOS mais abaixo. A TV mostrará apenas uma solicitação de autorização para aceitar com o controle remoto."
         );
         description.setTextSize(16);
         description.setPadding(0, pad / 2, 0, pad);
         root.addView(description, fullWidth());
 
         pairingCode = new EditText(this);
-        pairingCode.setHint("Código de 6 dígitos do Ultron");
+        pairingCode.setHint("Código de 6 dígitos exibido no PAINEL WEB do Ultron");
         pairingCode.setInputType(InputType.TYPE_CLASS_NUMBER);
         root.addView(pairingCode, fullWidth());
 
@@ -79,7 +79,7 @@ public class MainActivity extends Activity {
 
         TextView tvHelp = new TextView(this);
         tvHelp.setText(
-                "IP configurado: 10.0.0.109. Celular e TV devem estar na mesma rede Wi-Fi. Na primeira conexão, aceite a autorização exibida na TV. Para ligar a TV desligada, salve também o MAC localmente no aparelho."
+                "A LG NÃO usa o código de 6 dígitos. IP configurado: 10.0.0.109. Celular e TV devem estar na mesma rede Wi-Fi. Toque em PAREAR LG WEBOS e aceite a autorização que aparecer na tela da TV. Para ligar a TV desligada, salve também o MAC localmente no aparelho."
         );
         tvHelp.setPadding(0, pad / 3, 0, pad / 3);
         root.addView(tvHelp, fullWidth());
@@ -160,7 +160,7 @@ public class MainActivity extends Activity {
     private void pairDevice() {
         String code = pairingCode.getText().toString().replaceAll("\\D", "");
         if (code.length() != 6) {
-            statusView.setText("Código inválido. Digite os 6 números exibidos no painel do Ultron.");
+            statusView.setText("Código inválido. Os 6 números aparecem no painel WEB do Ultron após tocar em PAREAR CELULAR; eles não aparecem na TV.");
             return;
         }
 
@@ -205,7 +205,7 @@ public class MainActivity extends Activity {
         String mac = lgTvMac.getText().toString().trim();
         if (!mac.isEmpty() && isValidMac(mac)) SecureStore.saveLgTvMac(this, mac);
 
-        statusView.setText("Conectando à LG... aceite a autorização que aparecer na tela da TV.");
+        statusView.setText("Conectando à LG... não procure código. Aceite a autorização que aparecer na tela da TV.");
         new Thread(() -> {
             TvController.Result result = TvController.pairLg(this, host);
             runOnUiThread(() -> {
