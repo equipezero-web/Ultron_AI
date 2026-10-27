@@ -1,11 +1,22 @@
 {
   // backend/wrangler.jsonc
+  {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "ultron-backend",
   "main": "worker.js",
   "compatibility_date": "2026-10-01",
   "workers_dev": true,
   "keep_vars": true,
+
+  "vars": {
+    "AI_PROVIDER_ORDER": "gemini,groq,openrouter,cloudflare,cohere",
+    "GEMINI_MODEL": "gemini-3.8-flash",
+    "GROQ_MODEL": "openai/gpt-oss-20b",
+    "OPENROUTER_MODEL": "openrouter/free",
+    "CLOUDFLARE_AI_MODEL": "@cf/meta/llama-3.1-8b-instruct-fp8-fast",
+    "COHERE_MODEL": "command-a-plus-05-2026"
+  },
+
   "ai": {
     "binding": "AI"
   }
