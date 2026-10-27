@@ -21,6 +21,9 @@ public final class SecureStore {
     private static final String SECRET_VALUE = "device_secret_cipher";
     private static final String SECRET_IV = "device_secret_iv";
     private static final String DEVICE_ID = "device_id";
+    private static final String LG_TV_HOST = "lg_tv_host";
+    private static final String LG_TV_KEY_VALUE = "lg_tv_client_key_cipher";
+    private static final String LG_TV_KEY_IV = "lg_tv_client_key_iv";
 
     private SecureStore() {}
 
@@ -51,32 +54,38 @@ public final class SecureStore {
         return generator.generateKey();
     }
 
-    public static synchronized String getOrCreateDeviceSecret(Context context) throws Exception {
+    private static String decrypt(Context context, String valueKey, String ivKey) throws Exception {
         SharedPreferences preferences = prefs(context);
-        String encrypted = preferences.getString(SECRET_VALUE, null);
-        String ivValue = preferences.getString(SECRET_IV, null);
+        String encrypted = preferences.getString(valueKey, null);
+        String ivValue = preferences.getString(ivKey, null);
+        if (encrypted == null || ivValue == null) return null;
 
-        if (encrypted != null && ivValue != null) {
-            Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
-            byte[] iv = Base64.decode(ivValue, Base64.NO_WRAP);
-            cipher.init(Cipher.DECRYPT_MODE, getOrCreateKey(), new GCMParameterSpec(128, iv));
-            byte[] clear = cipher.doFinal(Base64.decode(encrypted, Base64.NO_WRAP));
-            return new String(clear, StandardCharsets.UTF_8);
-        }
+        Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+        byte[] iv = Base64.decode(ivValue, Base64.NO_WRAP);
+        cipher.init(Cipher.DECRYPT_MODE, getOrCreateKey(), new GCMParameterSpec(128, iv));
+        byte[] clear = cipher.doFinal(Base64.decode(encrypted, Base64.NO_WRAP));
+        return new String(clear, StandardCharsets.UTF_8);
+    }
+
+    private static void encrypt(Context context, String valueKey, String ivKey, String value) throws Exception {
+        Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+        cipher.init(Cipher.ENCRYPT_MODE, getOrCreateKey());
+        byte[] cipherText = cipher.doFinal(value.getBytes(StandardCharsets.UTF_8));
+
+        prefs(context).edit()
+                .putString(valueKey, Base64.encodeToString(cipherText, Base64.NO_WRAP))
+                .putString(ivKey, Base64.encodeToString(cipher.getIV(), Base64.NO_WRAP))
+                .apply();
+    }
+
+    public static synchronized String getOrCreateDeviceSecret(Context context) throws Exception {
+        String existing = decrypt(context, SECRET_VALUE, SECRET_IV);
+        if (existing != null && !existing.isEmpty()) return existing;
 
         byte[] random = new byte[32];
         new SecureRandom().nextBytes(random);
         String secret = Base64.encodeToString(random, Base64.NO_WRAP | Base64.URL_SAFE);
-
-        Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
-        cipher.init(Cipher.ENCRYPT_MODE, getOrCreateKey());
-        byte[] cipherText = cipher.doFinal(secret.getBytes(StandardCharsets.UTF_8));
-
-        preferences.edit()
-                .putString(SECRET_VALUE, Base64.encodeToString(cipherText, Base64.NO_WRAP))
-                .putString(SECRET_IV, Base64.encodeToString(cipher.getIV(), Base64.NO_WRAP))
-                .apply();
-
+        encrypt(context, SECRET_VALUE, SECRET_IV, secret);
         return secret;
     }
 
@@ -86,6 +95,31 @@ public final class SecureStore {
 
     public static String getDeviceId(Context context) {
         return prefs(context).getString(DEVICE_ID, null);
+    }
+
+    public static void saveLgTvHost(Context context, String host) {
+        prefs(context).edit().putString(LG_TV_HOST, host == null ? "" : host.trim()).apply();
+    }
+
+    public static String getLgTvHost(Context context) {
+        return prefs(context).getString(LG_TV_HOST, null);
+    }
+
+    public static synchronized void saveLgTvClientKey(Context context, String key) throws Exception {
+        if (key == null || key.trim().isEmpty()) return;
+        encrypt(context, LG_TV_KEY_VALUE, LG_TV_KEY_IV, key.trim());
+    }
+
+    public static synchronized String getLgTvClientKey(Context context) throws Exception {
+        return decrypt(context, LG_TV_KEY_VALUE, LG_TV_KEY_IV);
+    }
+
+    public static void clearLgTv(Context context) {
+        prefs(context).edit()
+                .remove(LG_TV_HOST)
+                .remove(LG_TV_KEY_VALUE)
+                .remove(LG_TV_KEY_IV)
+                .apply();
     }
 
     public static void clearPairing(Context context) {
