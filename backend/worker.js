@@ -86,7 +86,7 @@ async function generateElevenLabsAudio(env, text) {
 }
 
 export default {
-  async fetch(request, env, executionContext) {
+  async fetch(request, env) {
     const url = new URL(request.url);
     const corsHeaders = createCorsHeaders();
 
@@ -122,6 +122,7 @@ export default {
               env.ELEVENLABS_VOICE_ID
           ),
           memory,
+          memoryVersion: "1.1",
           deviceBridge: Boolean(env.DEVICE_BRIDGE_URL),
           message:
             "ULTRON Cloudflare Worker funcionando com gateway multi-IA e camada de memória."
@@ -174,8 +175,13 @@ export default {
           { aiBinding: env.AI }
         );
 
+        let memoryWrite = {
+          saved: false,
+          explicitMemorySaved: false
+        };
+
         if (memoryState.active && operatorId && conversationId) {
-          const persistPromise = saveExchange(env, {
+          memoryWrite = await saveExchange(env, {
             operatorId,
             conversationId,
             userMessage: message,
@@ -183,12 +189,6 @@ export default {
             provider: aiResult.provider,
             model: aiResult.model
           });
-
-          if (executionContext?.waitUntil) {
-            executionContext.waitUntil(persistPromise);
-          } else {
-            await persistPromise;
-          }
         }
 
         let audioBase64 = null;
@@ -227,8 +227,12 @@ export default {
             attempts: aiResult.attempts,
             memory: {
               active: memoryState.active,
+              identityReceived: Boolean(operatorId && conversationId),
               recalledMessages: memoryState.recalledMessages || 0,
-              recalledMemories: memoryState.recalledMemories || 0
+              recalledMemories: memoryState.recalledMemories || 0,
+              saved: Boolean(memoryWrite?.saved),
+              explicitMemorySaved: Boolean(memoryWrite?.explicitMemorySaved),
+              error: memoryState.error || memoryWrite?.error || null
             },
             audioBase64,
             audioMimeType
