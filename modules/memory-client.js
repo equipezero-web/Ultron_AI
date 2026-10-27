@@ -52,6 +52,51 @@ function isAiRequest(input, init = {}) {
   return method === "POST" && /\/api\/ai(?:\?|$)/.test(url);
 }
 
+function appendDiagnostic(message, alert = false) {
+  const output = document.getElementById("output-box");
+  if (!output) return;
+
+  const line = document.createElement("p");
+  line.className = alert ? "alert" : "";
+  line.textContent = `> [MEMORY] ${message}`;
+  output.appendChild(line);
+  output.scrollTop = output.scrollHeight;
+}
+
+function reportMemoryResult(data) {
+  const memory = data?.memory;
+  if (!memory) return;
+
+  const indicator = document.getElementById("memory-module");
+
+  if (memory.active && memory.saved) {
+    if (indicator) {
+      indicator.textContent = "ONLINE";
+      indicator.className = "green";
+    }
+
+    appendDiagnostic(
+      `ACTIVE | salvo: SIM | contexto: ${memory.recalledMessages || 0} mensagens / ${memory.recalledMemories || 0} memórias`
+    );
+
+    if (memory.explicitMemorySaved) {
+      appendDiagnostic("SAVED | memória permanente registrada.");
+    }
+    return;
+  }
+
+  if (indicator) {
+    indicator.textContent = memory.active ? "WRITE ERROR" : "INACTIVE";
+    indicator.className = "";
+  }
+
+  const detail = memory.error ? ` | ${memory.error}` : "";
+  appendDiagnostic(
+    `INACTIVE | identidade: ${memory.identityReceived ? "OK" : "AUSENTE"} | salvo: ${memory.saved ? "SIM" : "NÃO"}${detail}`,
+    true
+  );
+}
+
 const nativeFetch = window.fetch.bind(window);
 
 window.fetch = async function ultronMemoryFetch(input, init = {}) {
@@ -66,10 +111,18 @@ window.fetch = async function ultronMemoryFetch(input, init = {}) {
       payload.memoryKey = getMemoryKey();
       payload.conversationId = getConversationId();
 
-      return nativeFetch(input, {
+      const response = await nativeFetch(input, {
         ...init,
+        cache: "no-store",
         body: JSON.stringify(payload)
       });
+
+      try {
+        const diagnosticData = await response.clone().json();
+        reportMemoryResult(diagnosticData);
+      } catch {}
+
+      return response;
     }
   } catch (error) {
     console.warn("[ULTRON MEMORY] Falha ao anexar identidade de memória:", error);
