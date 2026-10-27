@@ -122,7 +122,7 @@ export default {
               env.ELEVENLABS_VOICE_ID
           ),
           memory,
-          memoryVersion: "1.1",
+          memoryVersion: "1.2",
           deviceBridge: Boolean(env.DEVICE_BRIDGE_URL),
           message:
             "ULTRON Cloudflare Worker funcionando com gateway multi-IA e camada de memória."
@@ -138,6 +138,7 @@ export default {
       request.method === "POST"
     ) {
       try {
+        const requestStartedAt = Date.now();
         const body = await request.json();
         const message = String(body?.message || "").trim();
         const telemetry = body?.telemetry || {};
@@ -168,55 +169,62 @@ export default {
           memoryState.context
         );
 
+        const aiStartedAt = Date.now();
         const aiResult = await generateWithProviders(
           env,
           aiMessage,
           telemetry,
           { aiBinding: env.AI }
         );
+        const aiMs = Date.now() - aiStartedAt;
 
-        let memoryWrite = {
-          saved: false,
-          explicitMemorySaved: false
-        };
-
-        if (memoryState.active && operatorId && conversationId) {
-          memoryWrite = await saveExchange(env, {
-            operatorId,
-            conversationId,
-            userMessage: message,
-            assistantMessage: aiResult.text,
-            provider: aiResult.provider,
-            model: aiResult.model
-          });
-        }
-
-        let audioBase64 = null;
-        let audioMimeType = null;
+        const memoryPromise =
+          memoryState.active && operatorId && conversationId
+            ? saveExchange(env, {
+                operatorId,
+                conversationId,
+                userMessage: message,
+                assistantMessage: aiResult.text,
+                provider: aiResult.provider,
+                model: aiResult.model
+              })
+            : Promise.resolve({
+                saved: false,
+                explicitMemorySaved: false
+              });
 
         const autoSpeakEnabled =
           env.ELEVENLABS_AUTOSPEAK !== "false";
 
-        if (
+        const voiceStartedAt = Date.now();
+        const voicePromise =
           autoSpeakEnabled &&
           env.ELEVENLABS_API_KEY &&
           env.ELEVENLABS_VOICE_ID
-        ) {
-          try {
-            const audio = await generateElevenLabsAudio(
-              env,
-              aiResult.text
-            );
+            ? generateElevenLabsAudio(env, aiResult.text)
+                .then((audio) => ({
+                  audio,
+                  voiceMs: Date.now() - voiceStartedAt
+                }))
+                .catch((error) => {
+                  console.error(
+                    "[ULTRON AI] ElevenLabs falhou:",
+                    error?.message || error
+                  );
+                  return {
+                    audio: null,
+                    voiceMs: Date.now() - voiceStartedAt
+                  };
+                })
+            : Promise.resolve({ audio: null, voiceMs: 0 });
 
-            audioBase64 = audio.audioBase64;
-            audioMimeType = audio.audioMimeType;
-          } catch (error) {
-            console.error(
-              "[ULTRON AI] ElevenLabs falhou:",
-              error?.message || error
-            );
-          }
-        }
+        const [memoryWrite, voiceResult] = await Promise.all([
+          memoryPromise,
+          voicePromise
+        ]);
+
+        const audioBase64 = voiceResult.audio?.audioBase64 || null;
+        const audioMimeType = voiceResult.audio?.audioMimeType || null;
 
         return Response.json(
           {
@@ -233,6 +241,12 @@ export default {
               saved: Boolean(memoryWrite?.saved),
               explicitMemorySaved: Boolean(memoryWrite?.explicitMemorySaved),
               error: memoryState.error || memoryWrite?.error || null
+            },
+            performance: {
+              aiMs,
+              voiceMs: voiceResult.voiceMs,
+              totalMs: Date.now() - requestStartedAt,
+              parallelPostProcessing: true
             },
             audioBase64,
             audioMimeType
