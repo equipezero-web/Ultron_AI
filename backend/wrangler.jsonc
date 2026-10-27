@@ -8,7 +8,7 @@
   "keep_vars": true,
 
   "vars": {
-    "AI_PROVIDER_ORDER": "gemini,groq,openrouter,cloudflare,cohere",
+    "AI_PROVIDER_ORDER": "groq,gemini,cloudflare,openrouter,cohere",
     "GEMINI_MODEL": "gemini-3.8-flash",
     "GROQ_MODEL": "openai/gpt-oss-20b",
     "OPENROUTER_MODEL": "openrouter/free",
