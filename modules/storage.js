@@ -1,3 +1,5 @@
+import "./memory-client.js";
+
 const KEY = "ultron_ai_preferences_v3";
 
 export function loadPreferences(){
