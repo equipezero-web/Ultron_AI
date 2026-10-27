@@ -1,6 +1,5 @@
 {
   // backend/wrangler.jsonc
-  {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "ultron-backend",
   "main": "worker.js",
