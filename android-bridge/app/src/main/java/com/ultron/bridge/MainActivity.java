@@ -22,6 +22,7 @@ public class MainActivity extends Activity {
     private TextView statusView;
     private EditText pairingCode;
     private EditText lgTvHost;
+    private EditText lgTvMac;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +79,7 @@ public class MainActivity extends Activity {
 
         TextView tvHelp = new TextView(this);
         tvHelp.setText(
-                "IP configurado: 10.0.0.109. Celular e TV devem estar na mesma rede Wi-Fi. Na primeira conexão, aceite a autorização exibida na TV. Se o roteador mudar o IP, edite o campo abaixo."
+                "IP configurado: 10.0.0.109. Celular e TV devem estar na mesma rede Wi-Fi. Na primeira conexão, aceite a autorização exibida na TV. Para ligar a TV desligada, salve também o MAC localmente no aparelho."
         );
         tvHelp.setPadding(0, pad / 3, 0, pad / 3);
         root.addView(tvHelp, fullWidth());
@@ -90,6 +91,18 @@ public class MainActivity extends Activity {
         lgTvHost.setText(savedHost == null || savedHost.trim().isEmpty() ? DEFAULT_LG_TV_HOST : savedHost);
         root.addView(lgTvHost, fullWidth());
 
+        lgTvMac = new EditText(this);
+        lgTvMac.setHint("MAC da LG (AA:BB:CC:DD:EE:FF)");
+        lgTvMac.setInputType(InputType.TYPE_CLASS_TEXT);
+        String savedMac = SecureStore.getLgTvMac(this);
+        if (savedMac != null && !savedMac.trim().isEmpty()) lgTvMac.setText(savedMac);
+        root.addView(lgTvMac, fullWidth());
+
+        Button saveWol = new Button(this);
+        saveWol.setText("SALVAR WAKE-ON-LAN");
+        saveWol.setOnClickListener(v -> saveWakeOnLan());
+        root.addView(saveWol, fullWidth());
+
         Button pairTv = new Button(this);
         pairTv.setText("PAREAR LG WEBOS");
         pairTv.setOnClickListener(v -> pairLgTv());
@@ -99,6 +112,11 @@ public class MainActivity extends Activity {
         testTv.setText("TESTAR CONEXÃO LG");
         testTv.setOnClickListener(v -> testLgTv());
         root.addView(testTv, fullWidth());
+
+        Button wakeTv = new Button(this);
+        wakeTv.setText("LIGAR TV // WAKE-ON-LAN");
+        wakeTv.setOnClickListener(v -> wakeLgTv());
+        root.addView(wakeTv, fullWidth());
 
         statusView = new TextView(this);
         statusView.setTextSize(15);
@@ -115,6 +133,28 @@ public class MainActivity extends Activity {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
+    }
+
+    private boolean isValidMac(String value) {
+        String normalized = value == null ? "" : value.trim();
+        return normalized.matches("(?i)^([0-9a-f]{2}[:-]){5}[0-9a-f]{2}$");
+    }
+
+    private void saveWakeOnLan() {
+        String host = lgTvHost.getText().toString().trim();
+        String mac = lgTvMac.getText().toString().trim();
+        if (host.isEmpty()) {
+            statusView.setText("Informe o IP local da LG.");
+            return;
+        }
+        if (!isValidMac(mac)) {
+            statusView.setText("MAC inválido. Use o formato AA:BB:CC:DD:EE:FF.");
+            return;
+        }
+
+        SecureStore.saveLgTvHost(this, host);
+        SecureStore.saveLgTvMac(this, mac);
+        statusView.setText("Wake-on-LAN configurado localmente neste celular.");
     }
 
     private void pairDevice() {
@@ -160,6 +200,10 @@ public class MainActivity extends Activity {
             statusView.setText("Informe o IP local da sua LG UR8750PSA.");
             return;
         }
+        SecureStore.saveLgTvHost(this, host);
+
+        String mac = lgTvMac.getText().toString().trim();
+        if (!mac.isEmpty() && isValidMac(mac)) SecureStore.saveLgTvMac(this, mac);
 
         statusView.setText("Conectando à LG... aceite a autorização que aparecer na tela da TV.");
         new Thread(() -> {
@@ -188,6 +232,21 @@ public class MainActivity extends Activity {
         }).start();
     }
 
+    private void wakeLgTv() {
+        saveWakeOnLan();
+        if (!isValidMac(lgTvMac.getText().toString())) return;
+
+        statusView.setText("Enviando Wake-on-LAN para a LG...");
+        new Thread(() -> {
+            TvController.Result result = TvController.execute(this, "tv.power.on", new JSONObject());
+            runOnUiThread(() -> statusView.setText(
+                    result.success
+                            ? "Wake-on-LAN enviado. A LG deve iniciar se a opção de ligar pela rede estiver habilitada."
+                            : "Falha no Wake-on-LAN: " + result.payload.toString()
+            ));
+        }).start();
+    }
+
     private void startBridge() {
         String deviceId = SecureStore.getDeviceId(this);
         if (deviceId == null || deviceId.isEmpty()) {
@@ -207,9 +266,11 @@ public class MainActivity extends Activity {
     private void refreshStatus() {
         String deviceId = SecureStore.getDeviceId(this);
         String tvHost = SecureStore.getLgTvHost(this);
+        String tvMac = SecureStore.getLgTvMac(this);
         StringBuilder status = new StringBuilder();
         status.append(deviceId == null ? "Status Cloud: NÃO PAREADO" : "Status Cloud: PAREADO\nDevice ID: " + deviceId);
         status.append("\nLG webOS: ").append(tvHost == null || tvHost.isEmpty() ? DEFAULT_LG_TV_HOST + " (pré-configurado)" : tvHost);
+        status.append("\nWake-on-LAN: ").append(tvMac == null || tvMac.isEmpty() ? "MAC NÃO SALVO" : "CONFIGURADO");
         statusView.setText(status.toString());
     }
 
