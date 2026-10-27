@@ -78,39 +78,46 @@ window.fetch = async function ultronMemoryFetch(input, init = {}) {
   return nativeFetch(input, init);
 };
 
-async function refreshMemoryStatus() {
-  const element = document.getElementById("memory-module");
-  if (!element || !API_BASE) return;
+async function refreshMemoryHealth() {
+  const indicator = document.getElementById("memory-module");
+  if (!indicator || !API_BASE) return;
 
   try {
-    const response = await nativeFetch(`${API_BASE}/api/health`);
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const response = await nativeFetch(`${API_BASE}/api/health`, {
+      cache: "no-store"
+    });
+
+    if (!response.ok) {
+      indicator.textContent = "BACKEND OFF";
+      indicator.className = "";
+      return;
+    }
 
     const data = await response.json();
-    const memory = data?.memory || {};
+    const memory = data?.memory;
 
-    if (memory.ready) {
-      element.textContent = "ACTIVE";
-      element.className = "green";
-    } else if (memory.configured) {
-      element.textContent = "SETUP";
-      element.className = "";
+    if (memory?.ready) {
+      indicator.textContent = "ONLINE";
+      indicator.className = "green";
+    } else if (memory?.configured) {
+      indicator.textContent = "ERROR";
+      indicator.className = "";
     } else {
-      element.textContent = "API WAIT";
-      element.className = "";
+      indicator.textContent = "WAIT";
+      indicator.className = "";
     }
   } catch {
-    element.textContent = "BACKEND OFF";
-    element.className = "";
+    indicator.textContent = "BACKEND OFF";
+    indicator.className = "";
   }
 }
 
 window.ULTRON_MEMORY = {
   getConversationId,
-  startNewConversation
+  getMemoryKey,
+  startNewConversation,
+  refreshMemoryHealth
 };
 
-getMemoryKey();
-getConversationId();
-refreshMemoryStatus();
-setInterval(refreshMemoryStatus, 30000);
+refreshMemoryHealth();
+setInterval(refreshMemoryHealth, 30000);
