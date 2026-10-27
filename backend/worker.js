@@ -3,6 +3,13 @@ import {
   generateWithProviders,
   getProviderStatus
 } from "./providers.js";
+import {
+  deriveOperatorId,
+  loadMemoryContext,
+  memoryHealth,
+  normalizeConversationId,
+  saveExchange
+} from "./memory.js";
 
 function createCorsHeaders() {
   return {
@@ -24,6 +31,21 @@ function arrayBufferToBase64(buffer) {
   }
 
   return btoa(binary);
+}
+
+function buildMemoryAwareMessage(message, memoryContext) {
+  if (!memoryContext) return message;
+
+  return [
+    "CONTEXTO INTERNO DE MEMÓRIA DO ULTRON:",
+    "Use este contexto apenas para compreender referências, preferências e continuidade da conversa.",
+    "Não diga que recebeu um bloco de memória e não invente informações ausentes.",
+    "",
+    memoryContext,
+    "",
+    "MENSAGEM ATUAL DO OPERADOR:",
+    message
+  ].join("\n");
 }
 
 async function generateElevenLabsAudio(env, text) {
@@ -64,7 +86,7 @@ async function generateElevenLabsAudio(env, text) {
 }
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, executionContext) {
     const url = new URL(request.url);
     const corsHeaders = createCorsHeaders();
 
@@ -80,6 +102,7 @@ export default {
       request.method === "GET"
     ) {
       const providers = getProviderStatus(env, env.AI);
+      const memory = await memoryHealth(env);
 
       return Response.json(
         {
@@ -98,9 +121,10 @@ export default {
             env.ELEVENLABS_API_KEY &&
               env.ELEVENLABS_VOICE_ID
           ),
+          memory,
           deviceBridge: Boolean(env.DEVICE_BRIDGE_URL),
           message:
-            "ULTRON Cloudflare Worker funcionando com gateway multi-IA."
+            "ULTRON Cloudflare Worker funcionando com gateway multi-IA e camada de memória."
         },
         {
           headers: corsHeaders
@@ -116,6 +140,8 @@ export default {
         const body = await request.json();
         const message = String(body?.message || "").trim();
         const telemetry = body?.telemetry || {};
+        const conversationId = normalizeConversationId(body?.conversationId);
+        const operatorId = await deriveOperatorId(body?.memoryKey);
 
         if (!message) {
           return Response.json(
@@ -131,12 +157,39 @@ export default {
           );
         }
 
+        const memoryState = await loadMemoryContext(env, {
+          operatorId,
+          conversationId
+        });
+
+        const aiMessage = buildMemoryAwareMessage(
+          message,
+          memoryState.context
+        );
+
         const aiResult = await generateWithProviders(
           env,
-          message,
+          aiMessage,
           telemetry,
           { aiBinding: env.AI }
         );
+
+        if (memoryState.active && operatorId && conversationId) {
+          const persistPromise = saveExchange(env, {
+            operatorId,
+            conversationId,
+            userMessage: message,
+            assistantMessage: aiResult.text,
+            provider: aiResult.provider,
+            model: aiResult.model
+          });
+
+          if (executionContext?.waitUntil) {
+            executionContext.waitUntil(persistPromise);
+          } else {
+            await persistPromise;
+          }
+        }
 
         let audioBase64 = null;
         let audioMimeType = null;
@@ -172,6 +225,11 @@ export default {
             providerLabel: aiResult.providerLabel,
             model: aiResult.model,
             attempts: aiResult.attempts,
+            memory: {
+              active: memoryState.active,
+              recalledMessages: memoryState.recalledMessages || 0,
+              recalledMemories: memoryState.recalledMemories || 0
+            },
             audioBase64,
             audioMimeType
           },
