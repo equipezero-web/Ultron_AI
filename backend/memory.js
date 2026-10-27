@@ -100,7 +100,9 @@ export async function ensureMemorySchema(env) {
 
   for (let index = 0; index < SCHEMA_STATEMENTS.length; index += 1) {
     try {
-      await env.ULTRON_DB.exec(SCHEMA_STATEMENTS[index]);
+      await env.ULTRON_DB
+        .prepare(SCHEMA_STATEMENTS[index])
+        .run();
     } catch (error) {
       schemaError = `Etapa ${index + 1}/${SCHEMA_STATEMENTS.length}: ${compactError(error)}`;
       console.error("[ULTRON MEMORY] Falha ao inicializar schema D1:", schemaError);
@@ -226,8 +228,7 @@ export async function loadMemoryContext(
       active: false,
       context: "",
       recalledMessages: 0,
-      recalledMemories: 0,
-      error: schemaError
+      recalledMemories: 0
     };
   }
 
@@ -302,7 +303,7 @@ export async function loadMemoryContext(
       context: "",
       recalledMessages: 0,
       recalledMemories: 0,
-      error: compactError(error)
+      error: String(error?.message || error).slice(0, 180)
     };
   }
 }
@@ -329,7 +330,7 @@ export async function saveExchange(
   }
 
   if (!(await ensureMemorySchema(env))) {
-    return { saved: false, error: schemaError };
+    return { saved: false };
   }
 
   const userMessageId = crypto.randomUUID();
@@ -404,7 +405,7 @@ export async function saveExchange(
     console.error("[ULTRON MEMORY] Falha ao salvar conversa:", error);
     return {
       saved: false,
-      error: compactError(error)
+      error: String(error?.message || error).slice(0, 180)
     };
   }
 }
