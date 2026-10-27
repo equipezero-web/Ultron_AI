@@ -17,6 +17,8 @@ import android.widget.TextView;
 import org.json.JSONObject;
 
 public class MainActivity extends Activity {
+    private static final String DEFAULT_LG_TV_HOST = "10.0.0.109";
+
     private TextView statusView;
     private EditText pairingCode;
     private EditText lgTvHost;
@@ -76,7 +78,7 @@ public class MainActivity extends Activity {
 
         TextView tvHelp = new TextView(this);
         tvHelp.setText(
-                "Digite o IP local da TV (ex.: 192.168.0.120). Celular e TV devem estar na mesma rede Wi-Fi. Na primeira conexão, aceite a autorização exibida na TV."
+                "IP configurado: 10.0.0.109. Celular e TV devem estar na mesma rede Wi-Fi. Na primeira conexão, aceite a autorização exibida na TV. Se o roteador mudar o IP, edite o campo abaixo."
         );
         tvHelp.setPadding(0, pad / 3, 0, pad / 3);
         root.addView(tvHelp, fullWidth());
@@ -85,7 +87,7 @@ public class MainActivity extends Activity {
         lgTvHost.setHint("IP da LG webOS TV");
         lgTvHost.setInputType(InputType.TYPE_CLASS_TEXT);
         String savedHost = SecureStore.getLgTvHost(this);
-        if (savedHost != null) lgTvHost.setText(savedHost);
+        lgTvHost.setText(savedHost == null || savedHost.trim().isEmpty() ? DEFAULT_LG_TV_HOST : savedHost);
         root.addView(lgTvHost, fullWidth());
 
         Button pairTv = new Button(this);
@@ -207,7 +209,7 @@ public class MainActivity extends Activity {
         String tvHost = SecureStore.getLgTvHost(this);
         StringBuilder status = new StringBuilder();
         status.append(deviceId == null ? "Status Cloud: NÃO PAREADO" : "Status Cloud: PAREADO\nDevice ID: " + deviceId);
-        status.append("\nLG webOS: ").append(tvHost == null || tvHost.isEmpty() ? "NÃO CONFIGURADA" : tvHost);
+        status.append("\nLG webOS: ").append(tvHost == null || tvHost.isEmpty() ? DEFAULT_LG_TV_HOST + " (pré-configurado)" : tvHost);
         statusView.setText(status.toString());
     }
 
