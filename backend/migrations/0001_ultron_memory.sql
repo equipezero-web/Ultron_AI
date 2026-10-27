@@ -1,5 +1,3 @@
-PRAGMA foreign_keys = ON;
-
 CREATE TABLE IF NOT EXISTS conversations (
   id TEXT PRIMARY KEY,
   operator_id TEXT NOT NULL,
