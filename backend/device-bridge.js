@@ -59,7 +59,10 @@ const ALLOWED_COMMANDS = new Set([
   "notification.push",
   "app.open",
   "tv.status",
+  "tv.power.on",
+  "tv.power.off",
   "tv.power.toggle",
+  "tv.volume.get",
   "tv.volume.set",
   "tv.volume.up",
   "tv.volume.down",
@@ -68,8 +71,13 @@ const ALLOWED_COMMANDS = new Set([
   "tv.media.pause",
   "tv.media.stop",
   "tv.media.seek",
+  "tv.channel.up",
+  "tv.channel.down",
   "tv.input",
+  "tv.inputs.list",
   "tv.launch",
+  "tv.apps.list",
+  "tv.toast",
   "tv.cast"
 ]);
 
