@@ -22,6 +22,7 @@ public final class SecureStore {
     private static final String SECRET_IV = "device_secret_iv";
     private static final String DEVICE_ID = "device_id";
     private static final String LG_TV_HOST = "lg_tv_host";
+    private static final String LG_TV_MAC = "lg_tv_mac";
     private static final String LG_TV_KEY_VALUE = "lg_tv_client_key_cipher";
     private static final String LG_TV_KEY_IV = "lg_tv_client_key_iv";
 
@@ -105,6 +106,14 @@ public final class SecureStore {
         return prefs(context).getString(LG_TV_HOST, null);
     }
 
+    public static void saveLgTvMac(Context context, String mac) {
+        prefs(context).edit().putString(LG_TV_MAC, mac == null ? "" : mac.trim().toUpperCase()).apply();
+    }
+
+    public static String getLgTvMac(Context context) {
+        return prefs(context).getString(LG_TV_MAC, null);
+    }
+
     public static synchronized void saveLgTvClientKey(Context context, String key) throws Exception {
         if (key == null || key.trim().isEmpty()) return;
         encrypt(context, LG_TV_KEY_VALUE, LG_TV_KEY_IV, key.trim());
@@ -117,6 +126,7 @@ public final class SecureStore {
     public static void clearLgTv(Context context) {
         prefs(context).edit()
                 .remove(LG_TV_HOST)
+                .remove(LG_TV_MAC)
                 .remove(LG_TV_KEY_VALUE)
                 .remove(LG_TV_KEY_IV)
                 .apply();
