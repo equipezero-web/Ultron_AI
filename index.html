@@ -74,6 +74,7 @@
     <div class="module"><div class="module-icon">⚡</div><div><strong>DEVICE BRIDGE</strong><small>External hardware API</small></div><em id="bridge-module">API WAIT</em></div>
     <div class="module"><div class="module-icon">◎</div><div><strong>MICROFONE</strong><small>Wake word / speech recognition</small></div><em id="mic-module">CHECKING</em></div>
     <div class="module"><div class="module-icon">◉</div><div><strong>AI GATEWAY</strong><small>5-provider neural routing</small></div><em id="gemini-module">CHECKING</em></div>
+    <div class="module"><div class="module-icon">◫</div><div><strong>MEMÓRIA</strong><small>D1 persistent context</small></div><em id="memory-module">CHECKING</em></div>
     <div class="module"><div class="module-icon">♫</div><div><strong>ELEVENLABS</strong><small>ULTRON voice synthesis</small></div><em id="voice-module">CHECKING</em></div>
   </div>
   <div class="control-block"><label>SENSOR SENSITIVITY <output id="sensitivity-out">20</output></label><input id="sensitivity" type="range" min="5" max="50" value="20"></div>
@@ -125,7 +126,7 @@
 </section>
 </main>
 
-<footer><span>ULTRON AI // LOCAL CONTROL LAYER</span><span><a href="https://equipezero-web.github.io/Ultron_AI/" target="_blank" rel="noopener">GITHUB PAGES</a> · v3.2.0</span></footer>
+<footer><span>ULTRON AI // LOCAL CONTROL LAYER</span><span><a href="https://equipezero-web.github.io/Ultron_AI/" target="_blank" rel="noopener">GITHUB PAGES</a> · v3.3.0</span></footer>
 </div>
 
 <div id="screen-modal" class="screen-modal" aria-hidden="true">
@@ -144,6 +145,7 @@
 </div>
 
 <audio id="voice-audio" preload="none"></audio>
+<script type="module" src="modules/memory-client.js"></script>
 <script type="module" src="script.js"></script>
 <script type="module" src="modules/voice-listener.js"></script>
 </body>
