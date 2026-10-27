@@ -4,6 +4,8 @@ const MEMORY_KEY_STORAGE = "ultron_memory_key_v1";
 const CONVERSATION_STORAGE = "ultron_conversation_id_v1";
 const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
 
+let lastHealthDiagnostic = "";
+
 function randomHex(bytes = 32) {
   const data = new Uint8Array(bytes);
   crypto.getRandomValues(data);
@@ -58,14 +60,22 @@ function appendDiagnostic(message, alert = false) {
 
   const line = document.createElement("p");
   line.className = alert ? "alert" : "";
-  line.textContent = `> [MEMORY] ${message}`;
+  const time = new Date().toLocaleTimeString("pt-BR", { hour12: false });
+  line.textContent = `> [${time}] [MEMORY] ${message}`;
   output.appendChild(line);
   output.scrollTop = output.scrollHeight;
 }
 
 function reportMemoryResult(data) {
   const memory = data?.memory;
-  if (!memory) return;
+
+  if (!memory) {
+    appendDiagnostic(
+      "API sem diagnóstico de memória. O Worker publicado está desatualizado.",
+      true
+    );
+    return;
+  }
 
   const indicator = document.getElementById("memory-module");
 
@@ -125,7 +135,10 @@ window.fetch = async function ultronMemoryFetch(input, init = {}) {
       return response;
     }
   } catch (error) {
-    console.warn("[ULTRON MEMORY] Falha ao anexar identidade de memória:", error);
+    appendDiagnostic(
+      `IDENTITY ERROR | ${error?.message || error}`,
+      true
+    );
   }
 
   return nativeFetch(input, init);
@@ -136,13 +149,19 @@ async function refreshMemoryHealth() {
   if (!indicator || !API_BASE) return;
 
   try {
-    const response = await nativeFetch(`${API_BASE}/api/health`, {
-      cache: "no-store"
-    });
+    const response = await nativeFetch(
+      `${API_BASE}/api/health?memory_check=${Date.now()}`,
+      { cache: "no-store" }
+    );
 
     if (!response.ok) {
       indicator.textContent = "BACKEND OFF";
       indicator.className = "";
+      const diagnostic = `BACKEND OFF | HTTP ${response.status}`;
+      if (diagnostic !== lastHealthDiagnostic) {
+        lastHealthDiagnostic = diagnostic;
+        appendDiagnostic(diagnostic, true);
+      }
       return;
     }
 
@@ -152,16 +171,44 @@ async function refreshMemoryHealth() {
     if (memory?.ready) {
       indicator.textContent = "ONLINE";
       indicator.className = "green";
+      const diagnostic = `D1 ONLINE | engine ${memory.engine || "D1"} | versão ${data.memoryVersion || "1.x"}`;
+      if (diagnostic !== lastHealthDiagnostic) {
+        lastHealthDiagnostic = diagnostic;
+        appendDiagnostic(diagnostic);
+      }
     } else if (memory?.configured) {
       indicator.textContent = "ERROR";
       indicator.className = "";
-    } else {
+      const diagnostic = `D1 ERROR | ${memory.message || "banco não pronto"}`;
+      if (diagnostic !== lastHealthDiagnostic) {
+        lastHealthDiagnostic = diagnostic;
+        appendDiagnostic(diagnostic, true);
+      }
+    } else if (memory) {
       indicator.textContent = "WAIT";
       indicator.className = "";
+      const diagnostic = `D1 WAIT | ${memory.message || "binding ULTRON_DB ausente"}`;
+      if (diagnostic !== lastHealthDiagnostic) {
+        lastHealthDiagnostic = diagnostic;
+        appendDiagnostic(diagnostic, true);
+      }
+    } else {
+      indicator.textContent = "OLD API";
+      indicator.className = "";
+      const diagnostic = "OLD API | /api/health ainda não possui memory.";
+      if (diagnostic !== lastHealthDiagnostic) {
+        lastHealthDiagnostic = diagnostic;
+        appendDiagnostic(diagnostic, true);
+      }
     }
-  } catch {
+  } catch (error) {
     indicator.textContent = "BACKEND OFF";
     indicator.className = "";
+    const diagnostic = `HEALTH ERROR | ${error?.message || error}`;
+    if (diagnostic !== lastHealthDiagnostic) {
+      lastHealthDiagnostic = diagnostic;
+      appendDiagnostic(diagnostic, true);
+    }
   }
 }
 
