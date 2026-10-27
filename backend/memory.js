@@ -2,6 +2,92 @@ const MAX_CONTEXT_CHARS = 14000;
 const DEFAULT_RECENT_MESSAGES = 24;
 const DEFAULT_MEMORIES = 10;
 
+let schemaReady = false;
+
+const SCHEMA_SQL = `
+PRAGMA foreign_keys = ON;
+
+CREATE TABLE IF NOT EXISTS conversations (
+  id TEXT PRIMARY KEY,
+  operator_id TEXT NOT NULL,
+  title TEXT,
+  summary TEXT NOT NULL DEFAULT '',
+  message_count INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_conversations_operator_updated
+  ON conversations(operator_id, updated_at DESC);
+
+CREATE TABLE IF NOT EXISTS messages (
+  id TEXT PRIMARY KEY,
+  conversation_id TEXT NOT NULL,
+  operator_id TEXT NOT NULL,
+  role TEXT NOT NULL CHECK (role IN ('user', 'assistant', 'system')),
+  content TEXT NOT NULL,
+  provider TEXT,
+  model TEXT,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (conversation_id) REFERENCES conversations(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_messages_conversation_created
+  ON messages(conversation_id, created_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_messages_operator_created
+  ON messages(operator_id, created_at DESC);
+
+CREATE TABLE IF NOT EXISTS memories (
+  id TEXT PRIMARY KEY,
+  operator_id TEXT NOT NULL,
+  category TEXT NOT NULL DEFAULT 'general',
+  content TEXT NOT NULL,
+  importance INTEGER NOT NULL DEFAULT 50 CHECK (importance BETWEEN 0 AND 100),
+  source_message_id TEXT,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  last_used_at TEXT,
+  use_count INTEGER NOT NULL DEFAULT 0,
+  UNIQUE(operator_id, content),
+  FOREIGN KEY (source_message_id) REFERENCES messages(id) ON DELETE SET NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_memories_operator_importance
+  ON memories(operator_id, importance DESC, updated_at DESC);
+
+CREATE TABLE IF NOT EXISTS devices (
+  id TEXT PRIMARY KEY,
+  operator_id TEXT NOT NULL,
+  device_type TEXT NOT NULL,
+  device_name TEXT,
+  public_key TEXT,
+  status TEXT NOT NULL DEFAULT 'pending',
+  last_seen_at TEXT,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_devices_operator
+  ON devices(operator_id, created_at DESC);
+
+CREATE TABLE IF NOT EXISTS monitors (
+  id TEXT PRIMARY KEY,
+  operator_id TEXT NOT NULL,
+  title TEXT NOT NULL,
+  monitor_type TEXT NOT NULL,
+  target TEXT NOT NULL,
+  config_json TEXT NOT NULL DEFAULT '{}',
+  enabled INTEGER NOT NULL DEFAULT 1,
+  last_checked_at TEXT,
+  last_status TEXT,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_monitors_operator_enabled
+  ON monitors(operator_id, enabled, updated_at DESC);
+`;
+
 function clip(value, max = 2200) {
   const text = String(value || "").trim();
   return text.length > max ? `${text.slice(0, max)}…` : text;
@@ -9,6 +95,20 @@ function clip(value, max = 2200) {
 
 export function hasMemoryDatabase(env) {
   return Boolean(env?.ULTRON_DB && typeof env.ULTRON_DB.prepare === "function");
+}
+
+export async function ensureMemorySchema(env) {
+  if (!hasMemoryDatabase(env)) return false;
+  if (schemaReady) return true;
+
+  try {
+    await env.ULTRON_DB.exec(SCHEMA_SQL);
+    schemaReady = true;
+    return true;
+  } catch (error) {
+    console.error("[ULTRON MEMORY] Falha ao inicializar schema D1:", error);
+    return false;
+  }
 }
 
 export async function deriveOperatorId(memoryKey) {
@@ -40,6 +140,17 @@ export async function memoryHealth(env) {
       ready: false,
       engine: "D1",
       message: "Binding ULTRON_DB ainda não configurado."
+    };
+  }
+
+  const initialized = await ensureMemorySchema(env);
+
+  if (!initialized) {
+    return {
+      configured: true,
+      ready: false,
+      engine: "D1",
+      message: "Não foi possível inicializar o schema de memória."
     };
   }
 
@@ -87,13 +198,13 @@ function explicitMemoryCandidate(message) {
     "salve isso"
   ];
 
-  if (!cues.some((cue) => normalized.includes(
-    cue.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-  ))) {
-    return null;
-  }
+  const matched = cues.some((cue) =>
+    normalized.includes(
+      cue.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    )
+  );
 
-  return text;
+  return matched ? text : null;
 }
 
 export async function loadMemoryContext(
@@ -101,6 +212,15 @@ export async function loadMemoryContext(
   { operatorId, conversationId, recentLimit = DEFAULT_RECENT_MESSAGES } = {}
 ) {
   if (!hasMemoryDatabase(env) || !operatorId || !conversationId) {
+    return {
+      active: false,
+      context: "",
+      recalledMessages: 0,
+      recalledMemories: 0
+    };
+  }
+
+  if (!(await ensureMemorySchema(env))) {
     return {
       active: false,
       context: "",
@@ -203,6 +323,10 @@ export async function saveExchange(
     !userMessage ||
     !assistantMessage
   ) {
+    return { saved: false };
+  }
+
+  if (!(await ensureMemorySchema(env))) {
     return { saved: false };
   }
 
