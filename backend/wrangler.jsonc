@@ -18,5 +18,13 @@
 
   "ai": {
     "binding": "AI"
-  }
+  },
+
+  "d1_databases": [
+    {
+      "binding": "ULTRON_DB",
+      "database_name": "ultron-memory",
+      "database_id": "86e865b3-a91e-4ad2-8f24-8ae04e85818f"
+    }
+  ]
 }
