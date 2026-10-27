@@ -1,5 +1,8 @@
+import API_CONFIG from "../config.js";
+
 const MEMORY_KEY_STORAGE = "ultron_memory_key_v1";
 const CONVERSATION_STORAGE = "ultron_conversation_id_v1";
+const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
 
 function randomHex(bytes = 32) {
   const data = new Uint8Array(bytes);
@@ -75,7 +78,39 @@ window.fetch = async function ultronMemoryFetch(input, init = {}) {
   return nativeFetch(input, init);
 };
 
+async function refreshMemoryStatus() {
+  const element = document.getElementById("memory-module");
+  if (!element || !API_BASE) return;
+
+  try {
+    const response = await nativeFetch(`${API_BASE}/api/health`);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+    const data = await response.json();
+    const memory = data?.memory || {};
+
+    if (memory.ready) {
+      element.textContent = "ACTIVE";
+      element.className = "green";
+    } else if (memory.configured) {
+      element.textContent = "SETUP";
+      element.className = "";
+    } else {
+      element.textContent = "API WAIT";
+      element.className = "";
+    }
+  } catch {
+    element.textContent = "BACKEND OFF";
+    element.className = "";
+  }
+}
+
 window.ULTRON_MEMORY = {
   getConversationId,
   startNewConversation
 };
+
+getMemoryKey();
+getConversationId();
+refreshMemoryStatus();
+setInterval(refreshMemoryStatus, 30000);
