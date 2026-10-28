@@ -5,9 +5,11 @@ import API_CONFIG from "../config.js";
 const SpeechRecognition =
   window.SpeechRecognition || window.webkitSpeechRecognition;
 
-const WAKE_WORD = "ultron";
+const WAKE_ALIASES = ["ultron", "outron", "utron", "ultra on"];
 const ACTIVE_WINDOW_MS = 10000;
-const RESTART_DELAY_MS = 450;
+const IS_ANDROID = /Android/i.test(navigator.userAgent || "");
+const RESTART_DELAY_MS = IS_ANDROID ? 650 : 350;
+const MAX_RESTART_DELAY_MS = 4000;
 
 const $ = (id) => document.getElementById(id);
 const output = $("output-box");
@@ -21,12 +23,17 @@ const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
 
 let recognition = null;
 let recognitionRunning = false;
+let recognitionStarting = false;
+let recognitionStopping = false;
 let listeningEnabled = false;
 let ultronSpeaking = false;
 let awaitingCommand = false;
 let activeUntil = 0;
 let restartTimer = null;
 let activeTimer = null;
+let audioPauseTimer = null;
+let restartFailures = 0;
+let restartGeneration = 0;
 
 function setMicState(state, detail = "") {
   if (!button || !micModule) return;
@@ -50,6 +57,7 @@ function setMicState(state, detail = "") {
 }
 
 function clearRestartTimer() {
+  restartGeneration += 1;
   if (restartTimer) {
     clearTimeout(restartTimer);
     restartTimer = null;
@@ -60,6 +68,13 @@ function clearActiveTimer() {
   if (activeTimer) {
     clearTimeout(activeTimer);
     activeTimer = null;
+  }
+}
+
+function clearAudioPauseTimer() {
+  if (audioPauseTimer) {
+    clearTimeout(audioPauseTimer);
+    audioPauseTimer = null;
   }
 }
 
@@ -96,24 +111,38 @@ function normalizeText(text) {
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
+    .replace(/\s+/g, " ")
     .trim();
 }
 
+function findWakeAlias(normalized) {
+  for (const alias of WAKE_ALIASES) {
+    const normalizedAlias = normalizeText(alias);
+    const index = normalized.indexOf(normalizedAlias);
+    if (index !== -1) {
+      return { alias: normalizedAlias, index };
+    }
+  }
+  return null;
+}
+
 function extractWakeCommand(transcript) {
-  const normalized = normalizeText(transcript);
-  const wakeIndex = normalized.indexOf(WAKE_WORD);
+  const original = String(transcript || "");
+  const normalized = normalizeText(original);
+  const match = findWakeAlias(normalized);
 
-  if (wakeIndex === -1) return null;
+  if (!match) return null;
 
-  const originalWakeIndex = String(transcript).toLowerCase().indexOf(WAKE_WORD);
-  const command = originalWakeIndex >= 0
-    ? String(transcript)
-        .slice(originalWakeIndex + WAKE_WORD.length)
-        .replace(/^[\s,:;.!?-]+/, "")
-        .trim()
-    : "";
+  const normalizedTail = normalized
+    .slice(match.index + match.alias.length)
+    .replace(/^[\s,:;.!?-]+/, "")
+    .trim();
 
-  return command;
+  if (!normalizedTail) return "";
+
+  // O comando normalizado é mais confiável no Android, onde o reconhecimento
+  // pode alterar capitalização e pontuação entre sessões curtas.
+  return normalizedTail;
 }
 
 function executeVoiceCommand(command) {
@@ -126,12 +155,13 @@ function executeVoiceCommand(command) {
 
   returnToPassiveState();
   commandInput.value = cleanCommand;
+  addLog(output, `VOZ: ${cleanCommand}`);
   sendButton.click();
 }
 
 function handleTranscript(transcript) {
   const cleanTranscript = String(transcript || "").trim();
-  if (!cleanTranscript || ultronSpeaking) return;
+  if (!cleanTranscript || ultronSpeaking || !listeningEnabled) return;
 
   const wakeCommand = extractWakeCommand(cleanTranscript);
 
@@ -149,43 +179,88 @@ function handleTranscript(transcript) {
   }
 }
 
-function scheduleRecognitionRestart() {
-  clearRestartTimer();
+function nextRestartDelay() {
+  const multiplier = Math.min(4, Math.max(0, restartFailures));
+  return Math.min(
+    MAX_RESTART_DELAY_MS,
+    RESTART_DELAY_MS * Math.max(1, multiplier)
+  );
+}
 
-  if (!listeningEnabled || ultronSpeaking || recognitionRunning) return;
+function scheduleRecognitionRestart(delay = nextRestartDelay()) {
+  if (
+    !listeningEnabled ||
+    ultronSpeaking ||
+    recognitionRunning ||
+    recognitionStarting ||
+    recognitionStopping
+  ) {
+    return;
+  }
+
+  clearRestartTimer();
+  const generation = restartGeneration;
 
   restartTimer = setTimeout(() => {
+    restartTimer = null;
+    if (generation !== restartGeneration) return;
     startRecognition();
-  }, RESTART_DELAY_MS);
+  }, delay);
 }
 
 function startRecognition() {
   if (
     !recognition ||
     recognitionRunning ||
+    recognitionStarting ||
+    recognitionStopping ||
     !listeningEnabled ||
     ultronSpeaking
   ) {
     return;
   }
 
+  clearRestartTimer();
+  recognitionStarting = true;
+
   try {
     recognition.start();
   } catch (error) {
-    if (error?.name !== "InvalidStateError") {
-      console.error("ULTRON voice recognition start:", error);
+    recognitionStarting = false;
+
+    if (error?.name === "InvalidStateError") {
+      scheduleRecognitionRestart(RESTART_DELAY_MS);
+      return;
     }
+
+    restartFailures += 1;
+    console.error("ULTRON voice recognition start:", error);
+    scheduleRecognitionRestart();
   }
 }
 
-function stopRecognition() {
+function stopRecognition({ abort = true } = {}) {
   clearRestartTimer();
 
-  if (!recognition || !recognitionRunning) return;
+  if (!recognition || (!recognitionRunning && !recognitionStarting)) {
+    recognitionStarting = false;
+    recognitionStopping = false;
+    return;
+  }
+
+  recognitionStopping = true;
 
   try {
-    recognition.stop();
-  } catch {}
+    if (abort && typeof recognition.abort === "function") {
+      recognition.abort();
+    } else {
+      recognition.stop();
+    }
+  } catch {
+    recognitionRunning = false;
+    recognitionStarting = false;
+    recognitionStopping = false;
+  }
 }
 
 function createRecognition() {
@@ -193,14 +268,19 @@ function createRecognition() {
 
   const instance = new SpeechRecognition();
   instance.lang = "pt-BR";
-  instance.continuous = true;
+  // No Android, sessões curtas são mais estáveis. O próprio controlador
+  // reinicia silenciosamente após cada sessão.
+  instance.continuous = !IS_ANDROID;
   instance.interimResults = false;
   instance.maxAlternatives = 1;
 
   instance.onstart = () => {
+    recognitionStarting = false;
+    recognitionStopping = false;
     recognitionRunning = true;
+    restartFailures = 0;
 
-    if (!ultronSpeaking) {
+    if (!ultronSpeaking && listeningEnabled) {
       setMicState(awaitingCommand ? "active" : "passive");
     }
   };
@@ -208,7 +288,6 @@ function createRecognition() {
   instance.onresult = (event) => {
     for (let index = event.resultIndex; index < event.results.length; index += 1) {
       const result = event.results[index];
-
       if (result.isFinal) {
         handleTranscript(result[0]?.transcript || "");
       }
@@ -221,6 +300,9 @@ function createRecognition() {
     if (error === "not-allowed" || error === "service-not-allowed") {
       listeningEnabled = false;
       recognitionRunning = false;
+      recognitionStarting = false;
+      recognitionStopping = false;
+      clearRestartTimer();
       setMicState("blocked");
 
       addLog(
@@ -231,14 +313,37 @@ function createRecognition() {
       return;
     }
 
+    if (error === "audio-capture") {
+      restartFailures += 1;
+      addLog(
+        output,
+        "MICROFONE: o navegador não conseguiu capturar áudio. Verifique se outro app está usando o microfone.",
+        "alert"
+      );
+      return;
+    }
+
+    if (error === "network") {
+      restartFailures += 1;
+      console.warn("ULTRON voice recognition: network");
+      return;
+    }
+
     if (!["no-speech", "aborted"].includes(error)) {
+      restartFailures += 1;
       console.warn("ULTRON voice recognition:", error);
     }
   };
 
   instance.onend = () => {
     recognitionRunning = false;
-    scheduleRecognitionRestart();
+    recognitionStarting = false;
+    recognitionStopping = false;
+
+    if (listeningEnabled && !ultronSpeaking) {
+      setMicState(awaitingCommand ? "active" : "passive");
+      scheduleRecognitionRestart();
+    }
   };
 
   return instance;
@@ -312,6 +417,7 @@ async function enableListening({ userInitiated = false } = {}) {
     }
 
     listeningEnabled = true;
+    ultronSpeaking = false;
     recognition ||= createRecognition();
     setMicState("passive");
     startRecognition();
@@ -324,6 +430,8 @@ async function enableListening({ userInitiated = false } = {}) {
     }
   } catch (error) {
     listeningEnabled = false;
+    recognitionStarting = false;
+    recognitionStopping = false;
 
     if (
       error?.name === "NotAllowedError" ||
@@ -349,8 +457,9 @@ async function enableListening({ userInitiated = false } = {}) {
 
 function disableListening() {
   listeningEnabled = false;
+  ultronSpeaking = false;
   returnToPassiveState();
-  stopRecognition();
+  stopRecognition({ abort: true });
   setMicState("off");
 
   const prefs = loadPreferences();
@@ -360,40 +469,57 @@ function disableListening() {
   addLog(output, "Escuta por voz desativada pelo operador.");
 }
 
+function resumeAfterSpeech() {
+  clearAudioPauseTimer();
+  if (!ultronSpeaking) return;
+
+  ultronSpeaking = false;
+
+  if (listeningEnabled) {
+    returnToPassiveState();
+    scheduleRecognitionRestart(RESTART_DELAY_MS);
+  }
+}
+
 function bindAudioPauseResume() {
   if (!audio) return;
 
-  const pauseListener = () => {
-    ultronSpeaking = true;
-    stopRecognition();
+  audio.addEventListener("playing", () => {
+    clearAudioPauseTimer();
+
+    if (!ultronSpeaking) {
+      ultronSpeaking = true;
+      stopRecognition({ abort: true });
+    }
 
     if (listeningEnabled) {
       setMicState("speaking");
     }
-  };
+  });
 
-  const resumeListener = () => {
+  audio.addEventListener("ended", resumeAfterSpeech);
+  audio.addEventListener("error", resumeAfterSpeech);
+
+  audio.addEventListener("pause", () => {
+    clearAudioPauseTimer();
     if (!ultronSpeaking) return;
 
-    ultronSpeaking = false;
-
-    if (listeningEnabled) {
-      returnToPassiveState();
-      scheduleRecognitionRestart();
-    }
-  };
-
-  audio.addEventListener("play", pauseListener);
-  audio.addEventListener("playing", pauseListener);
-  audio.addEventListener("ended", resumeListener);
-  audio.addEventListener("pause", resumeListener);
+    // Evita o ciclo pause -> restart -> playing -> stop quando o src do áudio
+    // é trocado. Só retoma se o áudio continuar realmente pausado.
+    audioPauseTimer = setTimeout(() => {
+      audioPauseTimer = null;
+      if (ultronSpeaking && audio.paused && !audio.ended) {
+        resumeAfterSpeech();
+      }
+    }, 400);
+  });
 }
 
 async function refreshGatewayHealth() {
   if (!API_BASE) return;
 
   try {
-    const response = await fetch(`${API_BASE}/api/health`);
+    const response = await fetch(`${API_BASE}/api/health`, { cache: "no-store" });
     if (!response.ok) return;
 
     const data = await response.json();
