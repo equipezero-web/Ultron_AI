@@ -10,6 +10,8 @@ import {
   saveResearchMemory
 } from "./research-memory.js";
 
+const BACKEND_VERSION = "4.10.0";
+
 function corsHeaders() {
   return {
     "Access-Control-Allow-Origin": "*",
@@ -32,6 +34,21 @@ function requestWithBody(request, body) {
     body: JSON.stringify(body),
     redirect: request.redirect
   });
+}
+
+function normalize(value) {
+  return String(value || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function isNewsIntent(message) {
+  const text = normalize(message);
+  return /\b(noticia|noticias|news|manchete|manchetes|acontecendo|destaque|destaques)\b/.test(text) &&
+    /\b(hoje|agora|atual|atuais|recente|recentes|ultima|ultimas|noticia|noticias)\b/.test(text);
 }
 
 function cacheContext(cache) {
@@ -62,6 +79,7 @@ function appendResearchToMessage(originalMessage, contextText) {
     "MODO ULTRON WEB RESEARCH ATIVO.",
     "A resposta deve ser baseada no contexto de pesquisa abaixo e na memória válida.",
     "Não afirme que pesquisou se não houver fontes reais listadas.",
+    "Quando a pergunta for sobre notícias atuais, trate estas fontes como LIVE NEWS verificadas.",
     "",
     contextText,
     "",
@@ -81,6 +99,38 @@ function sourceSummary(research) {
     }));
 }
 
+function visualHasContent(visual) {
+  return Boolean(
+    visual &&
+    ((Array.isArray(visual.images) && visual.images.length) ||
+      (Array.isArray(visual.cards) && visual.cards.length))
+  );
+}
+
+function researchVisualFromSources(sources, searchedAt, text, fromCache, research) {
+  if (!sources.length) return null;
+
+  if (!fromCache) {
+    const visual = researchVisualContext(research);
+    if (visual) return { ...visual, caption: text || "" };
+  }
+
+  return {
+    mode: "web-research",
+    label: fromCache ? "RESEARCH MEMORY" : "GOOGLE RESEARCH",
+    images: [],
+    cards: sources.slice(0, 4).map((item) => ({
+      title: item.title,
+      source: item.source,
+      publishedAt: item.date || searchedAt || null,
+      url: item.url,
+      image: null
+    })),
+    caption: text || "",
+    fetchedAt: searchedAt || null
+  };
+}
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
@@ -98,12 +148,14 @@ export default {
         const data = await response.json();
         return json({
           ...data,
+          backendVersion: BACKEND_VERSION,
+          liveNewsEngine: "gdelt+google-news+web-research",
           webResearch: {
             enabled: true,
             googleSearch: Boolean(env.SERPER_API_KEY),
             provider: env.SERPER_API_KEY ? "Google Search via Serper" : null,
             memoryCache: Boolean(env.ULTRON_DB),
-            mode: "research-gate-v1"
+            mode: "research-gate-v2"
           }
         });
       } catch {
@@ -125,10 +177,9 @@ export default {
     const originalMessage = String(originalBody?.message || "").trim();
     if (!originalMessage) return baseWorker.fetch(request, env, ctx);
 
+    const newsIntent = isNewsIntent(originalMessage);
     const policy = shouldResearchBeforeAnswer(originalMessage);
-    if (!policy.needed) {
-      return baseWorker.fetch(request, env, ctx);
-    }
+    if (!policy.needed) return baseWorker.fetch(request, env, ctx);
 
     const operatorId = await deriveOperatorId(originalBody?.memoryKey);
     let cache = null;
@@ -149,10 +200,8 @@ export default {
     }
 
     if (!fromCache) {
-      research = await searchGoogle(env, originalMessage, { limit: 8 });
-      if (research?.results?.length) {
-        researchContext = research.contextText;
-      }
+      research = await searchGoogle(env, originalMessage, { limit: 6 });
+      if (research?.results?.length) researchContext = research.contextText;
     }
 
     if (!researchContext) {
@@ -164,6 +213,7 @@ export default {
         const data = await response.json();
         return json({
           ...data,
+          backendVersion: BACKEND_VERSION,
           webResearch: {
             requested: true,
             used: false,
@@ -187,7 +237,8 @@ export default {
         active: true,
         reason: policy.reason,
         provider: fromCache ? "research-cache" : research?.provider,
-        fromCache
+        fromCache,
+        newsIntent
       }
     };
 
@@ -208,30 +259,40 @@ export default {
           answer: data.text,
           sources,
           provider: research?.provider || "serper-google",
-          ttlMinutes: policy.ttlMinutes
+          ttlMinutes: newsIntent ? Math.min(policy.ttlMinutes || 45, 45) : policy.ttlMinutes
         });
       }
 
-      const researchVisual = fromCache
+      const researchVisual = researchVisualFromSources(
+        sources,
+        searchedAt,
+        data?.text,
+        fromCache,
+        research
+      );
+
+      const baseVisual = data?.visualContext || null;
+      const preferredVisual = visualHasContent(baseVisual)
+        ? baseVisual
+        : researchVisual;
+
+      const liveData = newsIntent && sources.length
         ? {
-            mode: "web-research",
-            label: "RESEARCH MEMORY",
-            images: [],
-            cards: sources.slice(0, 4).map((item) => ({
-              title: item.title,
-              source: item.source,
-              publishedAt: item.date || searchedAt || null,
-              url: item.url,
-              image: null
-            })),
-            caption: data.text || "",
-            fetchedAt: searchedAt || null
+            ...(data?.liveData || {}),
+            news: true,
+            resultCount: sources.length,
+            error: null,
+            source: fromCache ? "research-memory" : "google-search"
           }
-        : researchVisualContext(research);
+        : data?.liveData;
 
       return json({
         ...data,
-        visualContext: data?.visualContext || (researchVisual ? { ...researchVisual, caption: data.text || "" } : null),
+        backendVersion: BACKEND_VERSION,
+        liveData,
+        visualContext: preferredVisual
+          ? { ...preferredVisual, caption: data?.text || preferredVisual.caption || "" }
+          : null,
         webResearch: {
           requested: true,
           used: true,
