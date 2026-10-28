@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 public class BridgeService extends Service {
     private static final String CHANNEL_ID = "ultron_bridge";
+    private static final String MIC_CHANNEL_ID = "ultron_remote_mic";
     private static final int FOREGROUND_ID = 4001;
 
     private ScheduledExecutorService executor;
@@ -26,7 +27,7 @@ public class BridgeService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        createNotificationChannel();
+        createNotificationChannels();
         startForeground(FOREGROUND_ID, buildForegroundNotification());
 
         executor = Executors.newSingleThreadScheduledExecutor();
@@ -94,6 +95,7 @@ public class BridgeService extends Service {
                 case "notification.push":
                     success = showRemoteNotification(payload);
                     result.put("delivered", success);
+                    result.put("action", payload.optString("action", "generic"));
                     break;
 
                 case "app.open":
@@ -134,19 +136,57 @@ public class BridgeService extends Service {
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         if (manager == null) return false;
 
-        String title = payload.optString("title", "Ultron");
-        String text = payload.optString("text", "Nova mensagem do Ultron.");
+        String action = payload.optString("action", "generic");
+        boolean microphoneRequest = "microphone.request".equals(action);
+
+        String title = microphoneRequest
+                ? "Ultron quer usar o microfone deste celular"
+                : payload.optString("title", "Ultron");
+
+        String text = microphoneRequest
+                ? "Toque para revisar e autorizar o microfone remoto. O Android pedirá sua permissão."
+                : payload.optString("text", "Nova mensagem do Ultron.");
+
+        Intent openIntent = microphoneRequest
+                ? new Intent(this, RemoteMicActivity.class)
+                : new Intent(this, MainActivity.class);
+
+        if (microphoneRequest) {
+            openIntent.putExtra("requestMic", true);
+        }
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                this,
+                microphoneRequest ? 4102 : 4101,
+                openIntent,
+                PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
+        );
+
+        String channelId = microphoneRequest ? MIC_CHANNEL_ID : CHANNEL_ID;
 
         Notification.Builder builder = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
-                ? new Notification.Builder(this, CHANNEL_ID)
+                ? new Notification.Builder(this, channelId)
                 : new Notification.Builder(this);
 
         builder.setContentTitle(title)
                 .setContentText(text)
-                .setSmallIcon(android.R.drawable.stat_notify_more)
+                .setStyle(new Notification.BigTextStyle().bigText(text))
+                .setSmallIcon(
+                        microphoneRequest
+                                ? android.R.drawable.ic_btn_speak_now
+                                : android.R.drawable.stat_notify_more
+                )
+                .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
 
-        manager.notify((int) (System.currentTimeMillis() % 100000), builder.build());
+        if (microphoneRequest && Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            builder.setPriority(Notification.PRIORITY_HIGH);
+        }
+
+        manager.notify(
+                microphoneRequest ? 4102 : (int) (System.currentTimeMillis() % 100000),
+                builder.build()
+        );
         return true;
     }
 
@@ -159,16 +199,29 @@ public class BridgeService extends Service {
         return true;
     }
 
-    private void createNotificationChannel() {
+    private void createNotificationChannels() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return;
-        NotificationChannel channel = new NotificationChannel(
+
+        NotificationManager manager = getSystemService(NotificationManager.class);
+        if (manager == null) return;
+
+        NotificationChannel bridgeChannel = new NotificationChannel(
                 CHANNEL_ID,
                 "Ultron Bridge",
                 NotificationManager.IMPORTANCE_LOW
         );
-        channel.setDescription("Conexão ativa entre este dispositivo e o Ultron Cloud.");
-        NotificationManager manager = getSystemService(NotificationManager.class);
-        if (manager != null) manager.createNotificationChannel(channel);
+        bridgeChannel.setDescription("Conexão ativa entre este dispositivo e o Ultron Cloud.");
+        manager.createNotificationChannel(bridgeChannel);
+
+        NotificationChannel micChannel = new NotificationChannel(
+                MIC_CHANNEL_ID,
+                "Solicitações de microfone do Ultron",
+                NotificationManager.IMPORTANCE_HIGH
+        );
+        micChannel.setDescription(
+                "Solicitações explícitas para usar este celular como microfone remoto do Ultron."
+        );
+        manager.createNotificationChannel(micChannel);
     }
 
     private Notification buildForegroundNotification() {
