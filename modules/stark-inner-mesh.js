@@ -78,7 +78,12 @@ if (stage && vortex && field) {
   }
 
   layoutInnerNodes();
-  const resizeObserver = new ResizeObserver(layoutInnerNodes);
+  requestAnimationFrame(() => {
+    layoutInnerNodes();
+    requestAnimationFrame(layoutInnerNodes);
+  });
+
+  const resizeObserver = new ResizeObserver(() => requestAnimationFrame(layoutInnerNodes));
   resizeObserver.observe(vortex);
 
   window.ULTRON_STARK_MESH = {
