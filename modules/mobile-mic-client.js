@@ -1,4 +1,5 @@
 import "./neural-live.js";
+import "./voice-fallback.js";
 import API_CONFIG from "../config.js";
 
 const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
@@ -10,6 +11,7 @@ const audio = $("voice-audio");
 
 const BRIDGE_ONLINE_MAX_AGE_MS = 15000;
 const REQUEST_CONFIRM_TIMEOUT_MS = 12000;
+const REMOTE_MIC_AUTH_STORAGE = "ultron_remote_mic_authorized_v1";
 
 let selectedDeviceId = null;
 let polling = false;
@@ -33,6 +35,20 @@ function log(message, alert = false) {
 
 function memoryKey() {
   return window.ULTRON_MEMORY?.getMemoryKey?.() || null;
+}
+
+function remoteMicPreviouslyAuthorized() {
+  try {
+    return localStorage.getItem(REMOTE_MIC_AUTH_STORAGE) === "yes";
+  } catch {
+    return false;
+  }
+}
+
+function rememberRemoteMicAuthorization() {
+  try {
+    localStorage.setItem(REMOTE_MIC_AUTH_STORAGE, "yes");
+  } catch {}
 }
 
 async function post(path, payload = {}) {
@@ -178,7 +194,7 @@ function armRequestConfirmationTimeout() {
 
     if (requestButton) requestButton.textContent = "USAR MIC DO CELULAR";
     log(
-      "O celular não confirmou a solicitação. Abra o app Ultron Bridge, confira se o Bridge está iniciado e, se necessário, toque em USAR ESTE CELULAR COMO MICROFONE dentro do app.",
+      "O celular não confirmou a solicitação. Abra o Ultron Bridge e confirme que o serviço está ativo.",
       true
     );
   }, REQUEST_CONFIRM_TIMEOUT_MS);
@@ -212,10 +228,14 @@ async function pollEventsOnce() {
           clearRequestConfirmTimer();
           remoteMicActive = true;
           remoteSpeechSyncState = "resume";
+          rememberRemoteMicAuthorization();
           if (requestButton) requestButton.textContent = "MIC CELULAR ATIVO";
           log(detail || "Microfone do celular autorizado e conectado.");
 
-          if (audio && !audio.paused && !audio.ended) {
+          if (
+            (audio && !audio.paused && !audio.ended) ||
+            window.ULTRON_VOICE_OUTPUT?.speaking
+          ) {
             syncRemoteMicWithUltronSpeech("pause");
           }
         } else if (state === "stopped") {
@@ -223,8 +243,8 @@ async function pollEventsOnce() {
           remoteMicActive = false;
           remoteSpeechSyncState = "resume";
           queuedSpeechSyncState = null;
-          if (requestButton) requestButton.textContent = "USAR MIC DO CELULAR";
-          log(detail || "Microfone remoto interrompido.");
+          if (requestButton) requestButton.textContent = "MIC CELULAR DISPONÍVEL";
+          log(detail || "Sessão de escuta remota parada; a permissão continua salva no Android.");
         } else if (state === "blocked") {
           clearRequestConfirmTimer();
           remoteMicActive = false;
@@ -258,9 +278,14 @@ async function requestMobileMicrophone() {
     disableNotebookMicrophone();
     startPolling();
 
+    const alreadyAuthorized = remoteMicPreviouslyAuthorized();
     const queued = await sendDeviceNotification("microphone.request", {
-      title: "Ultron quer usar o microfone",
-      text: "Toque para revisar e autorizar o microfone remoto."
+      title: alreadyAuthorized
+        ? "Ultron quer ativar o microfone remoto"
+        : "Ultron quer usar o microfone",
+      text: alreadyAuthorized
+        ? "Permissão já registrada. Ative a sessão de microfone remoto."
+        : "Autorize uma vez o microfone remoto do Ultron."
     });
 
     if (requestButton) requestButton.textContent = "AGUARDANDO CELULAR...";
@@ -268,10 +293,15 @@ async function requestMobileMicrophone() {
     log(`Bridge online: ${device.deviceName || "celular pareado"}.`);
     log(
       queued?.commandId
-        ? `Pedido colocado na fila (${queued.commandId.slice(0, 8)}). Aguardando confirmação do celular.`
-        : "Pedido colocado na fila. Aguardando confirmação do celular."
+        ? `Comando de microfone enviado (${queued.commandId.slice(0, 8)}).`
+        : "Comando de microfone enviado."
     );
-    log("No celular, toque na notificação do Ultron e autorize o microfone no Android.");
+
+    if (alreadyAuthorized) {
+      log("A permissão de microfone já foi registrada anteriormente; não é necessário autorizar novamente no Android.");
+    } else {
+      log("Na primeira ativação, autorize o microfone no Android. Essa permissão ficará salva pelo sistema.");
+    }
 
     armRequestConfirmationTimeout();
   } catch (error) {
@@ -334,11 +364,23 @@ if (audio) {
   });
 }
 
+window.addEventListener("ultron:speech-start", () => {
+  syncRemoteMicWithUltronSpeech("pause");
+});
+
+window.addEventListener("ultron:speech-end", () => {
+  syncRemoteMicWithUltronSpeech("resume");
+});
+
 window.addEventListener("beforeunload", () => {
   polling = false;
   clearRequestConfirmTimer();
   if (pollTimer) clearTimeout(pollTimer);
 });
+
+if (requestButton && remoteMicPreviouslyAuthorized()) {
+  requestButton.textContent = "MIC CELULAR DISPONÍVEL";
+}
 
 window.ULTRON_MOBILE_MIC = {
   request: requestMobileMicrophone,
@@ -347,5 +389,8 @@ window.ULTRON_MOBILE_MIC = {
   },
   get speechSyncState() {
     return remoteSpeechSyncState;
+  },
+  get authorized() {
+    return remoteMicPreviouslyAuthorized();
   }
 };
