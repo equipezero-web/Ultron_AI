@@ -7,6 +7,7 @@ const SpeechRecognition =
 
 const WAKE_ALIASES = ["ultron", "outron", "utron", "ultra on", "ultraon"];
 const CONVERSATION_WINDOW_MS = 60000;
+const FINAL_DEDUPE_MS = 30000;
 const IS_ANDROID = /Android/i.test(navigator.userAgent || "");
 const RESTART_DELAY_MS = IS_ANDROID ? 850 : 450;
 const MAX_RESTART_DELAY_MS = 5000;
@@ -176,15 +177,13 @@ function executeVoiceCommand(command) {
   const normalized = normalizeText(cleanCommand);
   const now = Date.now();
 
-  if (normalized === lastCommandTranscript && now - lastCommandAt < 2200) {
+  if (normalized === lastCommandTranscript && now - lastCommandAt < FINAL_DEDUPE_MS) {
     return;
   }
 
   lastCommandTranscript = normalized;
   lastCommandAt = now;
 
-  // Mantém a conversa aberta após cada comando. Assim, depois da primeira
-  // ativação, o usuário pode continuar falando sem repetir "Ultron".
   activateConversation({ resetTimer: true });
 
   commandInput.value = cleanCommand;
@@ -199,7 +198,7 @@ function handleFinalTranscript(transcript) {
   const normalized = normalizeText(cleanTranscript);
   const now = Date.now();
 
-  if (normalized === lastFinalTranscript && now - lastFinalAt < 1800) return;
+  if (normalized === lastFinalTranscript && now - lastFinalAt < FINAL_DEDUPE_MS) return;
   lastFinalTranscript = normalized;
   lastFinalAt = now;
 
@@ -207,8 +206,6 @@ function handleFinalTranscript(transcript) {
 
   const wakeCommand = extractWakeCommand(cleanTranscript);
 
-  // Se a conversa já está ativa, qualquer fala final vira um novo comando.
-  // Se o usuário disser "Ultron" novamente, removemos apenas a wake word.
   if (conversationActive && now <= conversationUntil) {
     if (wakeCommand !== null) {
       if (wakeCommand) executeVoiceCommand(wakeCommand);
@@ -219,7 +216,6 @@ function handleFinalTranscript(transcript) {
     return;
   }
 
-  // Fora de uma conversa, exige a wake word para evitar acionamentos do ambiente.
   if (wakeCommand !== null) {
     if (wakeCommand) {
       activateConversation({ resetTimer: true });
@@ -541,14 +537,18 @@ async function enableListening({ userInitiated = false } = {}) {
     ultronSpeaking = false;
     recognition ||= createRecognition();
 
+    // Com a permissão já concedida, o microfone deve voltar pronto para receber
+    // a próxima frase; caso contrário o navegador apenas mostrava "MICROFONE OUVIU"
+    // e descartava a fala até que o usuário repetisse a wake word.
+    activateConversation({ resetTimer: true });
+
     if (userInitiated) {
-      activateConversation({ resetTimer: true });
       addLog(
         output,
         "ESCUTA ATIVA: fale agora. Depois da primeira resposta, você pode continuar a conversa sem repetir 'Ultron'."
       );
     } else {
-      setPassiveMode();
+      addLog(output, "ESCUTA RESTAURADA: microfone pronto para receber sua próxima frase.");
     }
 
     startRecognition();
@@ -593,8 +593,6 @@ function resumeAfterSpeech() {
   ultronSpeaking = false;
 
   if (listeningEnabled) {
-    // Este é o ponto principal da conversa contínua: quando o Ultron termina
-    // de falar, ele volta a ouvir já em modo de follow-up, sem exigir wake word.
     activateConversation({ resetTimer: true });
     scheduleRecognitionRestart(RESTART_DELAY_MS);
   }
