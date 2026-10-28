@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.InputType;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -34,8 +35,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestNotificationPermission();
         setContentView(buildUi());
+        requestNotificationPermission();
         refreshStatus();
     }
 
@@ -53,7 +54,10 @@ public class MainActivity extends Activity {
 
         TextView description = new TextView(this);
         description.setText(
-                "PASSO 1 — No painel web do Ultron, toque em PAREAR CELULAR. O código de 6 dígitos aparece no terminal do Ultron, NÃO na TV. Digite esse código abaixo.\n\nPASSO 2 — Depois de parear o celular, configure sua LG webOS mais abaixo. A TV mostrará apenas uma solicitação de autorização para aceitar com o controle remoto."
+                "PASSO 1 — No painel web do Ultron, toque em PAREAR CELULAR. O código de 6 dígitos aparece no terminal do Ultron, NÃO na TV. Digite esse código abaixo.\n\n" +
+                "PASSO 2 — Toque em INICIAR BRIDGE para manter este celular conectado ao Ultron Cloud.\n\n" +
+                "MICROFONE — Se a solicitação enviada pelo notebook não aparecer como notificação, toque em USAR ESTE CELULAR COMO MICROFONE. O Android pedirá a autorização diretamente.\n\n" +
+                "TV — Depois de parear o celular, configure sua LG webOS mais abaixo. A TV mostrará apenas uma solicitação de autorização para aceitar com o controle remoto."
         );
         description.setTextSize(16);
         description.setPadding(0, pad / 2, 0, pad);
@@ -74,9 +78,22 @@ public class MainActivity extends Activity {
         start.setOnClickListener(v -> startBridge());
         root.addView(start, fullWidth());
 
+        Button remoteMic = new Button(this);
+        remoteMic.setText("USAR ESTE CELULAR COMO MICROFONE");
+        remoteMic.setOnClickListener(v -> openRemoteMicrophone());
+        root.addView(remoteMic, fullWidth());
+
+        Button notificationSettings = new Button(this);
+        notificationSettings.setText("CONFIGURAR NOTIFICAÇÕES DO ULTRON");
+        notificationSettings.setOnClickListener(v -> openNotificationSettings());
+        root.addView(notificationSettings, fullWidth());
+
         Button stop = new Button(this);
         stop.setText("PARAR BRIDGE");
-        stop.setOnClickListener(v -> stopService(new Intent(this, BridgeService.class)));
+        stop.setOnClickListener(v -> {
+            stopService(new Intent(this, BridgeService.class));
+            statusView.setText("Bridge parado neste celular.");
+        });
         root.addView(stop, fullWidth());
 
         TextView tvTitle = new TextView(this);
@@ -271,6 +288,30 @@ public class MainActivity extends Activity {
         }).start();
     }
 
+    private void openRemoteMicrophone() {
+        String deviceId = SecureStore.getDeviceId(this);
+        if (deviceId == null || deviceId.isEmpty()) {
+            statusView.setText("Pareie este celular com o Ultron antes de usar o microfone remoto.");
+            return;
+        }
+
+        startBridge();
+
+        Intent intent = new Intent(this, RemoteMicActivity.class);
+        intent.putExtra("requestMic", true);
+        startActivity(intent);
+    }
+
+    private void openNotificationSettings() {
+        if (Build.VERSION.SDK_INT >= 26) {
+            Intent intent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+            intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
+            startActivity(intent);
+        } else {
+            requestNotificationPermission();
+        }
+    }
+
     private void pairLgTv() {
         String host = lgTvHost.getText().toString().trim();
         if (host.isEmpty()) {
@@ -346,6 +387,23 @@ public class MainActivity extends Activity {
         String tvMac = SecureStore.getLgTvMac(this);
         StringBuilder status = new StringBuilder();
         status.append(deviceId == null ? "Status Cloud: NÃO PAREADO" : "Status Cloud: PAREADO\nDevice ID: " + deviceId);
+
+        if (Build.VERSION.SDK_INT >= 33) {
+            status.append("\nNotificações: ")
+                    .append(checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
+                            ? "AUTORIZADAS"
+                            : "BLOQUEADAS/NÃO AUTORIZADAS");
+        } else {
+            status.append("\nNotificações: gerenciadas pelo Android");
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            status.append("\nMicrofone: ")
+                    .append(checkSelfPermission(Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED
+                            ? "AUTORIZADO"
+                            : "AGUARDANDO AUTORIZAÇÃO");
+        }
+
         status.append("\nLG webOS: ").append(tvHost == null || tvHost.isEmpty() ? DEFAULT_LG_TV_HOST + " (pré-configurado)" : tvHost);
         status.append("\nWake-on-LAN: ").append(tvMac == null || tvMac.isEmpty() ? "MAC NÃO SALVO" : "CONFIGURADO");
         statusView.setText(status.toString());
@@ -356,5 +414,19 @@ public class MainActivity extends Activity {
                 checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 1001);
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1001) {
+            refreshStatus();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (statusView != null) refreshStatus();
     }
 }
