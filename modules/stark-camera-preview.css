@@ -1,0 +1,111 @@
+.optical-preview.stark-live-camera {
+  position: relative;
+  overflow: hidden;
+  min-height: 170px;
+  background: #020711;
+  isolation: isolate;
+}
+
+.stark-camera-feed {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scaleX(-1);
+  opacity: .72;
+  filter: saturate(.72) contrast(1.12) brightness(.78);
+  z-index: 0;
+}
+
+.stark-camera-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.stark-camera-scan {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(0,240,255,.07) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(0,240,255,.05) 1px, transparent 1px),
+    linear-gradient(180deg, transparent 0 46%, rgba(0,240,255,.15) 50%, transparent 54%);
+  background-size: 24px 24px, 24px 24px, 100% 100%;
+  animation: stark-camera-scan 3.2s linear infinite;
+  mix-blend-mode: screen;
+}
+
+.stark-camera-readout {
+  position: absolute;
+  z-index: 5;
+  left: 8px;
+  right: 8px;
+  bottom: 7px;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.stark-camera-readout > div {
+  display: grid;
+  gap: 2px;
+  padding: 5px 7px;
+  border-left: 1px solid rgba(0,240,255,.55);
+  background: linear-gradient(90deg, rgba(2,7,17,.82), rgba(2,7,17,.18));
+  backdrop-filter: blur(5px);
+}
+
+.stark-camera-readout small {
+  color: rgba(151,235,244,.62);
+  font: 6px/1.1 ui-monospace,SFMono-Regular,Menlo,monospace;
+  letter-spacing: .12em;
+}
+
+.stark-camera-readout strong {
+  color: rgba(240,254,255,.94);
+  font: 8px/1.15 ui-monospace,SFMono-Regular,Menlo,monospace;
+  letter-spacing: .08em;
+}
+
+.stark-camera-readout .motion strong {
+  text-align: right;
+  color: #00f0ff;
+}
+
+.optical-preview.stark-live-camera.hand-detected {
+  box-shadow: inset 0 0 28px rgba(0,240,255,.18), 0 0 18px rgba(0,240,255,.08);
+}
+
+.optical-preview.stark-live-camera.motion-alert {
+  box-shadow: inset 0 0 34px rgba(255,85,0,.24), 0 0 20px rgba(255,85,0,.12);
+}
+
+.optical-preview.stark-live-camera .optical-reticle,
+.optical-preview.stark-live-camera .optical-copy {
+  z-index: 4;
+}
+
+.optical-preview.stark-live-camera .optical-copy {
+  top: 8px;
+  bottom: auto;
+  transform: none;
+}
+
+@keyframes stark-camera-scan {
+  0% { background-position: 0 0, 0 0, 0 -120%; }
+  100% { background-position: 0 0, 0 0, 0 120%; }
+}
+
+@media (max-width: 650px) {
+  .optical-preview.stark-live-camera { min-height: 150px; }
+  .stark-camera-readout small { font-size: 5px; }
+  .stark-camera-readout strong { font-size: 7px; }
+}
