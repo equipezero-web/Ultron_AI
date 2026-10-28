@@ -91,23 +91,66 @@ public class BridgeService extends Service {
                     result.put("androidRelease", Build.VERSION.RELEASE);
                     result.put("sdk", Build.VERSION.SDK_INT);
                     result.put("bridge", "online");
+                    result.put("remoteMicTrusted", SecureStore.isRemoteMicTrusted(this));
+                    result.put("recordAudioGranted", hasRecordAudioPermission());
                     success = true;
                     break;
 
                 case "notification.push":
                     String action = payload.optString("action", "generic");
+
+                    if ("microphone.request".equals(action)) {
+                        boolean trusted = SecureStore.isRemoteMicTrusted(this);
+                        boolean permissionGranted = hasRecordAudioPermission();
+
+                        if (trusted && permissionGranted) {
+                            success = controlPersistentRemoteMic(RemoteMicService.ACTION_RESUME, true);
+                            if (success) {
+                                publishMicrophoneStatus(
+                                        deviceId,
+                                        secret,
+                                        "active",
+                                        "Permissão já salva. Microfone remoto retomado automaticamente."
+                                );
+                            }
+                        }
+
+                        if (!success) {
+                            success = showRemoteNotification(payload);
+                        }
+
+                        result.put("delivered", success);
+                        result.put("action", action);
+                        result.put("permissionRemembered", trusted && permissionGranted);
+
+                        if (!success) {
+                            publishMicrophoneStatus(
+                                    deviceId,
+                                    secret,
+                                    "blocked",
+                                    "A solicitação chegou ao celular, mas o Android não permitiu ativar o microfone em segundo plano. Abra o Ultron Bridge para reativar o serviço; a permissão continua salva."
+                            );
+                        }
+                        break;
+                    }
+
+                    if ("microphone.pause".equals(action)) {
+                        success = controlPersistentRemoteMic(RemoteMicService.ACTION_PAUSE, false);
+                        result.put("delivered", success);
+                        result.put("action", action);
+                        break;
+                    }
+
+                    if ("microphone.resume".equals(action)) {
+                        success = controlPersistentRemoteMic(RemoteMicService.ACTION_RESUME, true);
+                        result.put("delivered", success);
+                        result.put("action", action);
+                        break;
+                    }
+
                     success = showRemoteNotification(payload);
                     result.put("delivered", success);
                     result.put("action", action);
-
-                    if ("microphone.request".equals(action) && !success) {
-                        publishMicrophoneStatus(
-                                deviceId,
-                                secret,
-                                "blocked",
-                                "A solicitação chegou ao celular, mas as notificações do Ultron estão bloqueadas. Abra o app e toque em USAR ESTE CELULAR COMO MICROFONE ou libere as notificações."
-                        );
-                    }
                     break;
 
                 case "app.open":
@@ -141,6 +184,31 @@ public class BridgeService extends Service {
                     result
             );
         } catch (Exception ignored) {}
+    }
+
+    private boolean hasRecordAudioPermission() {
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.M ||
+                checkSelfPermission(Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private boolean controlPersistentRemoteMic(String action, boolean mayStartForeground) {
+        if (!hasRecordAudioPermission() || !SecureStore.isRemoteMicTrusted(this)) {
+            return false;
+        }
+
+        Intent service = new Intent(this, RemoteMicService.class);
+        service.setAction(action);
+
+        try {
+            if (mayStartForeground && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(service);
+            } else {
+                startService(service);
+            }
+            return true;
+        } catch (Exception error) {
+            return false;
+        }
     }
 
     private void publishMicrophoneStatus(
@@ -186,18 +254,6 @@ public class BridgeService extends Service {
 
     private boolean showRemoteNotification(JSONObject payload) {
         String action = payload.optString("action", "generic");
-
-        if ("microphone.pause".equals(action) || "microphone.resume".equals(action)) {
-            Intent control = new Intent(RemoteMicActivity.ACTION_CONTROL);
-            control.setPackage(getPackageName());
-            control.putExtra(
-                    RemoteMicActivity.EXTRA_STATE,
-                    "microphone.pause".equals(action) ? "pause" : "resume"
-            );
-            sendBroadcast(control);
-            return true;
-        }
-
         NotificationManager manager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         if (manager == null) return false;
@@ -209,12 +265,19 @@ public class BridgeService extends Service {
             return false;
         }
 
+        boolean permissionRemembered =
+                microphoneRequest &&
+                SecureStore.isRemoteMicTrusted(this) &&
+                hasRecordAudioPermission();
+
         String title = microphoneRequest
-                ? "Ultron quer usar o microfone deste celular"
+                ? "Ultron quer ativar o microfone deste celular"
                 : payload.optString("title", "Ultron");
 
         String text = microphoneRequest
-                ? "Toque para abrir o Ultron Bridge e autorizar o microfone remoto."
+                ? (permissionRemembered
+                    ? "Permissão já salva. Toque apenas para reativar o serviço de microfone remoto."
+                    : "Toque para abrir o Ultron Bridge e autorizar o microfone remoto uma única vez.")
                 : payload.optString("text", "Nova mensagem do Ultron.");
 
         Intent openIntent = new Intent(this, MainActivity.class);
@@ -256,7 +319,7 @@ public class BridgeService extends Service {
         if (microphoneRequest) {
             builder.addAction(
                     android.R.drawable.ic_btn_speak_now,
-                    "ATIVAR MICROFONE",
+                    permissionRemembered ? "REATIVAR" : "AUTORIZAR MICROFONE",
                     pendingIntent
             );
         }
