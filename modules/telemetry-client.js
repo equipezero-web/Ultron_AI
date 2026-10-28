@@ -1,5 +1,5 @@
 import API_CONFIG from "../config.js";
-import "./stark-bootstrap.js?v=4.9.0";
+import "./stark-bootstrap.js?v=4.10.0";
 
 const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
 const OUTPUT = document.getElementById("output-box");
@@ -72,9 +72,11 @@ export async function buildTelemetrySnapshot(extra = {}) {
   const remoteMic = window.ULTRON_MOBILE_MIC;
   const memory = window.ULTRON_MEMORY;
   const handGestures = window.ULTRON_HAND_GESTURES?.state || null;
+  const palmMatrix = window.ULTRON_PALM_MATRIX?.state || null;
   const starkState = window.ULTRON_STARK_CORE?.state || null;
   const mesh = window.ULTRON_STARK_MESH;
   const cameraPreview = window.ULTRON_CAMERA_PREVIEW?.state || null;
+  const localFiles = window.ULTRON_LOCAL_FILES?.state || null;
 
   return {
     capturedAt: new Date().toISOString(),
@@ -114,18 +116,26 @@ export async function buildTelemetrySnapshot(extra = {}) {
     },
     neuralControl: {
       handTracking: handGestures,
+      palmMatrix,
       starkCore: starkState,
       focusedNode: mesh?.focused || null,
       zoomLevel: Number(mesh?.zoomLevel || 0),
       handZoom: Boolean(mesh?.zoomed),
       draggingNode: mesh?.dragging || null
     },
+    localKnowledge: localFiles ? {
+      online: Boolean(localFiles.online),
+      files: Number(localFiles.health?.files || localFiles.files?.length || 0),
+      vectorChunks: Number(localFiles.health?.vector_chunks || 0),
+      activeFile: localFiles.activeFile?.path || null
+    } : null,
     modules: {
       memory: readText("memory-module", "UNKNOWN"),
       bridge: readText("bridge-module", "UNKNOWN"),
       voice: readText("voice-module", "UNKNOWN"),
       vision: readText("vision-module", "UNKNOWN"),
-      aiGateway: readText("gemini-module", "UNKNOWN")
+      aiGateway: readText("gemini-module", "UNKNOWN"),
+      localFiles: localFiles?.online ? "ONLINE" : "OFFLINE"
     },
     system: {
       mode: readText("system-mode", "STANDBY"),
@@ -212,6 +222,12 @@ window.addEventListener("ultron:stark-zoom-level", (event) => pushTelemetry({
   event: "stark-zoom-level",
   zoomLevel: Number(event.detail?.level || 0)
 }));
+window.addEventListener("ultron:local-rag-context", (event) => pushTelemetry({
+  event: "local-rag-context",
+  localRag: event.detail || null
+}));
+window.addEventListener("ultron:palm-push", () => pushTelemetry({ event: "palm-push" }));
+window.addEventListener("ultron:palm-fist-anchor", () => pushTelemetry({ event: "palm-fist-anchor" }));
 
 window.ULTRON_TELEMETRY = {
   push: pushTelemetry,
