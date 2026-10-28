@@ -5,6 +5,7 @@ const CAMERA_PREVIEW_STYLE_ID = 'ultron-stark-camera-preview-style';
 const ZOOM_DIAGNOSTICS_STYLE_ID = 'ultron-stark-zoom-diagnostics-style';
 const PALM_MATRIX_STYLE_ID = 'ultron-palm-matrix-style';
 const LOCAL_FILES_STYLE_ID = 'ultron-local-files-style';
+const FILE_MESH_STYLE_ID = 'ultron-stark-file-mesh-style';
 
 function loadStyle(id, href) {
   if (document.getElementById(id)) return;
@@ -22,9 +23,10 @@ loadStyle(CAMERA_PREVIEW_STYLE_ID, 'modules/stark-camera-preview.css?v=4.10.0');
 loadStyle(ZOOM_DIAGNOSTICS_STYLE_ID, 'modules/stark-zoom-diagnostics.css?v=4.10.0');
 loadStyle(PALM_MATRIX_STYLE_ID, 'modules/palm-matrix.css?v=4.10.0');
 loadStyle(LOCAL_FILES_STYLE_ID, 'modules/local-files.css?v=4.10.0');
+loadStyle(FILE_MESH_STYLE_ID, 'modules/stark-file-mesh.css?v=4.10.2');
 
 await import('./stark-core.js?v=4.10.0');
-await import('./stark-inner-mesh.js?v=4.10.0');
+await import('./stark-inner-mesh.js?v=4.10.2');
 await import('./neural-input-bus.js?v=4.10.0');
 await import('./stark-advanced.js?v=4.10.0');
 await import('./vision-client.js?v=4.10.1');
@@ -36,6 +38,7 @@ await import('./stark-production-bridge.js?v=4.10.0');
 await import('./palm-matrix.js?v=4.10.0');
 await import('./local-files-client.js?v=4.10.0');
 await import('./local-files-ai-bridge.js?v=4.10.0');
+await import('./stark-file-mesh.js?v=4.10.2');
 await import('./backend-version-check.js?v=4.10.0');
 
 window.addEventListener('ultron:processing-start', () => {
@@ -70,6 +73,7 @@ window.dispatchEvent(new CustomEvent('ultron:stark-bootstrap-ready', {
     productionBridge: Boolean(window.ULTRON_STARK_PRODUCTION),
     localFiles: Boolean(window.ULTRON_LOCAL_FILES),
     localRagBridge: Boolean(window.ULTRON_LOCAL_RAG_BRIDGE),
+    fileMesh: Boolean(window.ULTRON_FILE_MESH),
     backendVersionCheck: Boolean(window.ULTRON_BACKEND_VERSION)
   }
 }));
