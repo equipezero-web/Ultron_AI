@@ -66,42 +66,55 @@ function appendPlan(plan) {
   );
 }
 
+function processingEvent(name, detail = {}) {
+  window.dispatchEvent(new CustomEvent(name, { detail }));
+}
+
 const previousFetch = window.fetch.bind(window);
 
 window.fetch = async function ultronProviderFetch(input, init = {}) {
-  const response = await previousFetch(input, init);
+  const aiRequest = isAiRequest(input, init);
+  const healthRequest = isHealthRequest(input, init);
 
-  if (!isAiRequest(input, init) && !isHealthRequest(input, init)) return response;
+  if (aiRequest) processingEvent("ultron:processing-start", { url: requestUrl(input) });
 
   try {
-    const data = await response.clone().json();
+    const response = await previousFetch(input, init);
 
-    if (isHealthRequest(input, init)) {
-      const router = data?.voiceRouter;
-      if (router) {
-        const cloudReady = Boolean(
-          router?.elevenlabs?.configured ||
-          router?.googleNeural2?.configured ||
-          router?.googleWaveNet?.configured
-        );
-        voiceIndicator(cloudReady ? "VOICE ROUTER" : "BROWSER TTS", true);
+    if (!aiRequest && !healthRequest) return response;
+
+    try {
+      const data = await response.clone().json();
+
+      if (healthRequest) {
+        const router = data?.voiceRouter;
+        if (router) {
+          const cloudReady = Boolean(
+            router?.elevenlabs?.configured ||
+            router?.googleNeural2?.configured ||
+            router?.googleWaveNet?.configured
+          );
+          voiceIndicator(cloudReady ? "VOICE ROUTER" : "BROWSER TTS", true);
+        }
+        return response;
       }
-      return response;
-    }
 
-    lastProviderLabel = data?.providerLabel || data?.provider || "AI";
-    appendRouting(data?.smartRouting);
-    appendPlan(data?.operationalPlan);
-    appendSpeed(data?.performance);
+      lastProviderLabel = data?.providerLabel || data?.provider || "AI";
+      appendRouting(data?.smartRouting);
+      appendPlan(data?.operationalPlan);
+      appendSpeed(data?.performance);
 
-    if (data?.voice?.providerLabel) {
-      voiceIndicator(data.voice.providerLabel, true);
-    } else if (data?.voice?.nextFallback === "browser-tts") {
-      voiceIndicator("FALLBACK READY", true);
-    }
-  } catch {}
+      if (data?.voice?.providerLabel) {
+        voiceIndicator(data.voice.providerLabel, true);
+      } else if (data?.voice?.nextFallback === "browser-tts") {
+        voiceIndicator("FALLBACK READY", true);
+      }
+    } catch {}
 
-  return response;
+    return response;
+  } finally {
+    if (aiRequest) processingEvent("ultron:processing-end", { url: requestUrl(input) });
+  }
 };
 
 window.addEventListener("ultron:speech-start", (event) => {
