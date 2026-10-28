@@ -2,7 +2,10 @@ package com.ultron.bridge;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,6 +24,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class RemoteMicActivity extends Activity {
+    public static final String ACTION_CONTROL = "com.ultron.bridge.REMOTE_MIC_CONTROL";
+    public static final String EXTRA_STATE = "state";
+
     private static final int REQUEST_RECORD_AUDIO = 2001;
 
     private final Handler handler = new Handler(Looper.getMainLooper());
@@ -30,11 +36,28 @@ public class RemoteMicActivity extends Activity {
     private Intent recognizerIntent;
     private boolean micActive = false;
     private boolean restarting = false;
+    private boolean systemPaused = false;
+    private boolean receiverRegistered = false;
+
+    private final BroadcastReceiver controlReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent == null) return;
+            String state = intent.getStringExtra(EXTRA_STATE);
+
+            if ("pause".equals(state)) {
+                pauseForUltronSpeech();
+            } else if ("resume".equals(state)) {
+                resumeAfterUltronSpeech();
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(buildUi());
+        registerControlReceiver();
 
         if (!SpeechRecognizer.isRecognitionAvailable(this)) {
             statusView.setText("Reconhecimento de voz não está disponível neste aparelho.");
@@ -64,7 +87,8 @@ public class RemoteMicActivity extends Activity {
         explanation.setText(
                 "Este celular pode funcionar como o microfone do Ultron no notebook. " +
                 "O áudio é reconhecido no Android e somente a transcrição de voz é enviada ao Ultron Cloud. " +
-                "A escuta só começa depois da sua autorização e pode ser interrompida a qualquer momento."
+                "A escuta só começa depois da sua autorização e pode ser interrompida a qualquer momento. " +
+                "Quando o Ultron fala, a escuta do celular é pausada automaticamente para evitar eco."
         );
         explanation.setTextSize(16);
         explanation.setPadding(0, pad / 2, 0, pad);
@@ -94,6 +118,18 @@ public class RemoteMicActivity extends Activity {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
         );
+    }
+
+    private void registerControlReceiver() {
+        IntentFilter filter = new IntentFilter(ACTION_CONTROL);
+
+        if (Build.VERSION.SDK_INT >= 33) {
+            registerReceiver(controlReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
+        } else {
+            registerReceiver(controlReceiver, filter);
+        }
+
+        receiverRegistered = true;
     }
 
     private void beginAuthorization() {
@@ -132,12 +168,16 @@ public class RemoteMicActivity extends Activity {
         recognizer.setRecognitionListener(new RecognitionListener() {
             @Override
             public void onReadyForSpeech(Bundle params) {
-                statusView.setText("MICROFONE ATIVO // fale normalmente");
+                if (!systemPaused) {
+                    statusView.setText("MICROFONE ATIVO // fale normalmente");
+                }
             }
 
             @Override
             public void onBeginningOfSpeech() {
-                statusView.setText("OUVINDO...");
+                if (!systemPaused) {
+                    statusView.setText("OUVINDO...");
+                }
             }
 
             @Override
@@ -148,12 +188,14 @@ public class RemoteMicActivity extends Activity {
 
             @Override
             public void onEndOfSpeech() {
-                statusView.setText("PROCESSANDO VOZ...");
+                if (!systemPaused) {
+                    statusView.setText("PROCESSANDO VOZ...");
+                }
             }
 
             @Override
             public void onError(int error) {
-                if (!micActive) return;
+                if (!micActive || systemPaused) return;
 
                 if (error == SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS) {
                     micActive = false;
@@ -167,7 +209,7 @@ public class RemoteMicActivity extends Activity {
 
             @Override
             public void onResults(Bundle results) {
-                if (!micActive) return;
+                if (!micActive || systemPaused) return;
 
                 ArrayList<String> matches =
                         results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
@@ -215,19 +257,25 @@ public class RemoteMicActivity extends Activity {
 
         prepareRecognizer();
         micActive = true;
+        systemPaused = false;
         publishStatus("active", "Microfone do celular autorizado e pronto.");
         startListeningNow();
     }
 
     private void startListeningNow() {
-        if (!micActive || recognizer == null || recognizerIntent == null) return;
+        if (
+                !micActive ||
+                systemPaused ||
+                recognizer == null ||
+                recognizerIntent == null
+        ) return;
 
         try {
             recognizer.cancel();
         } catch (Exception ignored) {}
 
         handler.postDelayed(() -> {
-            if (!micActive) return;
+            if (!micActive || systemPaused) return;
             try {
                 recognizer.startListening(recognizerIntent);
             } catch (Exception error) {
@@ -238,17 +286,42 @@ public class RemoteMicActivity extends Activity {
     }
 
     private void scheduleRestart(long delayMs) {
-        if (!micActive || restarting) return;
+        if (!micActive || systemPaused || restarting) return;
         restarting = true;
 
         handler.postDelayed(() -> {
             restarting = false;
-            if (micActive) startListeningNow();
+            if (micActive && !systemPaused) startListeningNow();
         }, delayMs);
+    }
+
+    private void pauseForUltronSpeech() {
+        if (!micActive) return;
+
+        systemPaused = true;
+        restarting = false;
+        handler.removeCallbacksAndMessages(null);
+
+        if (recognizer != null) {
+            try {
+                recognizer.cancel();
+            } catch (Exception ignored) {}
+        }
+
+        statusView.setText("ULTRON FALANDO // MICROFONE PAUSADO");
+    }
+
+    private void resumeAfterUltronSpeech() {
+        if (!micActive) return;
+
+        systemPaused = false;
+        statusView.setText("RETOMANDO MICROFONE...");
+        startListeningNow();
     }
 
     private void stopRemoteMicrophone(boolean publish) {
         micActive = false;
+        systemPaused = false;
         restarting = false;
         handler.removeCallbacksAndMessages(null);
 
@@ -330,6 +403,13 @@ public class RemoteMicActivity extends Activity {
     protected void onDestroy() {
         micActive = false;
         handler.removeCallbacksAndMessages(null);
+
+        if (receiverRegistered) {
+            try {
+                unregisterReceiver(controlReceiver);
+            } catch (Exception ignored) {}
+            receiverRegistered = false;
+        }
 
         if (recognizer != null) {
             try {
