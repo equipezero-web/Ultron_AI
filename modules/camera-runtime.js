@@ -4,6 +4,10 @@ const telemetryCamera = document.getElementById("telemetry-camera");
 const visionModule = document.getElementById("vision-module");
 const output = document.getElementById("output-box");
 const retryButton = document.getElementById("btn-camera");
+const opticalPanel = document.querySelector(".optical-panel");
+
+let selector = null;
+let deviceCountLabel = null;
 
 function log(message, alert = false) {
   if (!output || !message) return;
@@ -28,6 +32,73 @@ function state(label, permission = null, alert = false) {
   }
 }
 
+function ensureDeviceUi() {
+  if (!opticalPanel || selector) return;
+  const controls = opticalPanel.querySelector(".controls");
+  if (!controls) return;
+
+  const wrap = document.createElement("div");
+  wrap.className = "camera-device-picker";
+  wrap.style.cssText = "display:grid;grid-template-columns:1fr auto;gap:6px;margin:8px 0;align-items:center";
+
+  selector = document.createElement("select");
+  selector.id = "camera-device-select";
+  selector.style.cssText = "min-width:0;border:1px solid rgba(0,240,255,.25);background:rgba(0,0,0,.35);color:#dffcff;padding:7px;font:9px ui-monospace,monospace;outline:none";
+  selector.innerHTML = '<option value="">CÂMERA AUTOMÁTICA</option>';
+
+  deviceCountLabel = document.createElement("span");
+  deviceCountLabel.style.cssText = "font:8px ui-monospace,monospace;color:rgba(191,237,244,.65);white-space:nowrap";
+  deviceCountLabel.textContent = "DETECTANDO...";
+
+  selector.addEventListener("change", async () => {
+    try {
+      await window.ULTRON_CAMERA_CONTROLLER?.selectDevice?.(selector.value);
+      log(selector.value ? "Dispositivo de câmera selecionado manualmente." : "Seleção automática de câmera ativada.");
+    } catch (error) {
+      log(error?.message || String(error), true);
+    }
+  });
+
+  wrap.append(selector, deviceCountLabel);
+  controls.before(wrap);
+}
+
+function updateDeviceUi(detail = {}) {
+  ensureDeviceUi();
+  if (!selector || !deviceCountLabel) return;
+
+  const devices = Array.isArray(detail.devices) ? detail.devices : [];
+  const selected = String(detail.selectedDeviceId || "");
+  const previous = selector.value;
+
+  selector.replaceChildren();
+  const automatic = document.createElement("option");
+  automatic.value = "";
+  automatic.textContent = "CÂMERA AUTOMÁTICA";
+  selector.appendChild(automatic);
+
+  devices.forEach((device, index) => {
+    const option = document.createElement("option");
+    option.value = device.deviceId || "";
+    option.textContent = device.label || `Câmera ${index + 1}`;
+    selector.appendChild(option);
+  });
+
+  selector.value = selected || previous || "";
+  deviceCountLabel.textContent = `${devices.length} CÂMERA${devices.length === 1 ? "" : "S"}`;
+  deviceCountLabel.style.color = devices.length ? "#00f0ff" : "#ff7a45";
+
+  if (detail.announce) {
+    log(devices.length
+      ? `${devices.length} entrada(s) de vídeo detectada(s): ${devices.map((device) => device.label).join(", ")}.`
+      : "0 entradas de vídeo detectadas pelo navegador.", !devices.length);
+  }
+}
+
+window.addEventListener("ultron:camera-devices", (event) => {
+  updateDeviceUi(event.detail || {});
+});
+
 window.addEventListener("ultron:camera-error", (event) => {
   const detail = event.detail || {};
   const name = String(detail.name || "CameraError");
@@ -47,7 +118,15 @@ window.addEventListener("ultron:camera-error", (event) => {
   }
 
   state(label, permission, true);
+  updateDeviceUi({
+    devices: detail.devices || [],
+    count: detail.deviceCount || 0,
+    selectedDeviceId: window.ULTRON_CAMERA_CONTROLLER?.selectedDeviceId || ""
+  });
   log(message, true);
+  if (name === "NotFoundError" && Number(detail.deviceCount || 0) === 0) {
+    log("DIAGNÓSTICO: o navegador está reportando 0 dispositivos videoinput. O próximo passo é verificar Windows/driver ou conectar uma webcam/virtual camera.", true);
+  }
 });
 
 window.addEventListener("ultron:camera-stream", (event) => {
@@ -60,7 +139,8 @@ window.addEventListener("ultron:camera-stream", (event) => {
       visionModule.textContent = "ACTIVE";
       visionModule.className = "green";
     }
-    log(detail.restored ? "Permissão existente reutilizada; câmera restaurada." : "Câmera online e stream validado.");
+    const device = detail.label ? ` (${detail.label})` : "";
+    log(detail.restored ? `Permissão existente reutilizada; câmera restaurada${device}.` : `Câmera online e stream validado${device}.`);
   } else if (detail.reason === "track-ended") {
     state("INTERRUPTED", "GRANTED", true);
     log("O stream da câmera foi interrompido pelo navegador, sistema ou outro aplicativo.", true);
@@ -68,6 +148,11 @@ window.addEventListener("ultron:camera-stream", (event) => {
 });
 
 async function syncPermission() {
+  ensureDeviceUi();
+  try {
+    await window.ULTRON_CAMERA_CONTROLLER?.refreshDevices?.();
+  } catch {}
+
   if (!navigator.permissions?.query) return;
   try {
     const permission = await navigator.permissions.query({ name: "camera" });
@@ -93,7 +178,13 @@ window.ULTRON_CAMERA_RUNTIME = {
   retry() {
     return window.ULTRON_CAMERA_CONTROLLER?.start?.() || Promise.reject(new Error("Controlador da câmera ainda não carregado."));
   },
+  refreshDevices() {
+    return window.ULTRON_CAMERA_CONTROLLER?.refreshDevices?.({ announce: true }) || Promise.resolve([]);
+  },
   get active() {
     return Boolean(window.ULTRON_CAMERA_CONTROLLER?.isActive?.());
+  },
+  get devices() {
+    return window.ULTRON_CAMERA_CONTROLLER?.devices || [];
   }
 };
