@@ -1,3 +1,4 @@
+import "./neural-live.js";
 import API_CONFIG from "../config.js";
 
 const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
