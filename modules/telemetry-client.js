@@ -1,5 +1,5 @@
 import API_CONFIG from "../config.js";
-import "./stark-bootstrap.js?v=4.11.0";
+import "./stark-bootstrap.js?v=4.12.0";
 
 const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
 const OUTPUT = document.getElementById("output-box");
@@ -77,6 +77,7 @@ export async function buildTelemetrySnapshot(extra = {}) {
   const mesh = window.ULTRON_STARK_MESH;
   const cameraPreview = window.ULTRON_CAMERA_PREVIEW?.state || null;
   const localFiles = window.ULTRON_LOCAL_FILES?.state || null;
+  const neuralParity = window.ULTRON_NEURAL_PARITY?.state || null;
 
   return {
     capturedAt: new Date().toISOString(),
@@ -119,6 +120,7 @@ export async function buildTelemetrySnapshot(extra = {}) {
       remoteState: remoteMic?.active ? "active" : (remoteMic?.authorized ? "available" : "idle")
     },
     neuralControl: {
+      parity: neuralParity,
       handTracking: handGestures,
       palmMatrix,
       starkCore: starkState,
@@ -222,6 +224,10 @@ window.addEventListener("ultron:stark-zoom-level", (event) => pushTelemetry({
 window.addEventListener("ultron:local-rag-context", (event) => pushTelemetry({
   event: "local-rag-context",
   localRag: event.detail || null
+}));
+window.addEventListener("ultron:neural-parity", (event) => pushTelemetry({
+  event: "neural-parity",
+  neuralParity: event.detail || null
 }));
 
 window.ULTRON_TELEMETRY = {
