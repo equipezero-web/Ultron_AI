@@ -2,6 +2,15 @@ import { cameraWasAccepted, rememberCameraAccepted } from "./storage.js";
 
 const CAMERA_DEVICE_KEY = "ultron_camera_device_id_v1";
 
+function cameraProfile() {
+  const profile = window.ULTRON_PERFORMANCE?.profile || {};
+  return {
+    width: Number(profile.cameraWidth || 1280),
+    height: Number(profile.cameraHeight || 720),
+    fps: Number(profile.cameraFps || 24)
+  };
+}
+
 export class CameraController {
   constructor(video, onState) {
     this.video = video;
@@ -11,6 +20,7 @@ export class CameraController {
     this.startPromise = null;
     this.stopRequested = false;
     this.devices = [];
+    this.deviceFingerprint = "";
     this.selectedDeviceId = localStorage.getItem(CAMERA_DEVICE_KEY) || "";
     window.ULTRON_CAMERA_CONTROLLER = this;
 
@@ -65,6 +75,8 @@ export class CameraController {
     }
 
     try {
+      const previousCount = this.devices.length;
+      const previousFingerprint = this.deviceFingerprint;
       const devices = await navigator.mediaDevices.enumerateDevices();
       this.devices = devices
         .filter((device) => device.kind === "videoinput")
@@ -73,6 +85,12 @@ export class CameraController {
           groupId: device.groupId,
           label: device.label || `Câmera ${index + 1}`
         }));
+
+      this.deviceFingerprint = this.devices
+        .map((device) => `${device.deviceId}:${device.label}`)
+        .join("|");
+      const changed = previousFingerprint !== this.deviceFingerprint;
+      const becameAvailable = previousCount === 0 && this.devices.length > 0;
 
       if (this.selectedDeviceId && !this.devices.some((device) => device.deviceId === this.selectedDeviceId)) {
         this.selectedDeviceId = "";
@@ -83,8 +101,11 @@ export class CameraController {
         detail: {
           devices: this.devices,
           count: this.devices.length,
+          previousCount,
+          becameAvailable,
+          changed,
           selectedDeviceId: this.selectedDeviceId,
-          announce
+          announce: Boolean(announce && changed)
         }
       }));
 
@@ -101,21 +122,18 @@ export class CameraController {
     if (next) localStorage.setItem(CAMERA_DEVICE_KEY, next);
     else localStorage.removeItem(CAMERA_DEVICE_KEY);
 
-    if (this.isActive()) {
-      this.stop({ silent: true });
-      await this.start();
-    }
-
-    return this.selectedDeviceId;
+    if (this.isActive()) this.stop({ silent: true });
+    return this.start({ restored: false });
   }
 
   buildCandidates() {
+    const profile = cameraProfile();
     const preferred = this.selectedDeviceId
       ? {
           deviceId: { exact: this.selectedDeviceId },
-          width: { ideal: 1280 },
-          height: { ideal: 720 },
-          frameRate: { ideal: 24, max: 30 }
+          width: { ideal: profile.width },
+          height: { ideal: profile.height },
+          frameRate: { ideal: profile.fps, max: Math.max(profile.fps, 24) }
         }
       : null;
 
@@ -125,18 +143,17 @@ export class CameraController {
       {
         video: {
           facingMode: { ideal: "user" },
-          width: { ideal: 1280 },
-          height: { ideal: 720 },
-          frameRate: { ideal: 24, max: 30 }
+          width: { ideal: profile.width },
+          height: { ideal: profile.height },
+          frameRate: { ideal: profile.fps, max: Math.max(profile.fps, 24) }
         },
         audio: false
       },
       {
         video: {
-          facingMode: { ideal: "user" },
-          width: { ideal: 640 },
-          height: { ideal: 480 },
-          frameRate: { ideal: 20, max: 24 }
+          width: { ideal: Math.min(640, profile.width) },
+          height: { ideal: Math.min(480, profile.height) },
+          frameRate: { ideal: Math.min(20, profile.fps), max: 24 }
         },
         audio: false
       },
