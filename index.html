@@ -33,36 +33,19 @@
     </div>
 
     <div class="top-status">
-      <div class="status-chip">
-        <span>UPTIME</span>
-        <strong id="uptime">00:00:00</strong>
-      </div>
-      <div class="status-chip">
-        <span>MODE</span>
-        <strong id="system-mode">STANDBY</strong>
-      </div>
-      <div class="status-chip online">
-        <i></i>
-        <div><span>CORE</span><strong id="status-text">SYSTEM ONLINE</strong></div>
-      </div>
-      <div class="clock-chip">
-        <span>LOCAL TIME</span>
-        <strong id="clock">--:--:--</strong>
-      </div>
+      <div class="status-chip"><span>UPTIME</span><strong id="uptime">00:00:00</strong></div>
+      <div class="status-chip"><span>MODE</span><strong id="system-mode">STANDBY</strong></div>
+      <div class="status-chip online"><i></i><div><span>CORE</span><strong id="status-text">SYSTEM ONLINE</strong></div></div>
+      <div class="clock-chip"><span>LOCAL TIME</span><strong id="clock">--:--:--</strong></div>
     </div>
   </header>
 
   <main class="hud-layout">
     <aside class="hud-column left-column">
       <section class="hud-panel gateway-panel">
-        <div class="panel-heading">
-          <div><span class="panel-index">01</span><h2>AI GATEWAY</h2></div>
-          <b id="gemini-module">CHECKING</b>
-        </div>
+        <div class="panel-heading"><div><span class="panel-index">01</span><h2>AI GATEWAY</h2></div><b id="gemini-module">CHECKING</b></div>
         <div class="gateway-visual">
-          <div class="mini-globe" aria-hidden="true">
-            <span></span><i></i><b></b>
-          </div>
+          <div class="mini-globe" aria-hidden="true"><span></span><i></i><b></b></div>
           <div class="gateway-copy">
             <div><span>ROUTING</span><strong>MULTI-AI</strong></div>
             <div><span>CHANNEL</span><strong>HTTPS</strong></div>
@@ -77,15 +60,10 @@
       </section>
 
       <section class="hud-panel microphone-panel">
-        <div class="panel-heading">
-          <div><span class="panel-index">02</span><h2>MICROPHONE</h2></div>
-          <b id="mic-module">CHECKING</b>
-        </div>
+        <div class="panel-heading"><div><span class="panel-index">02</span><h2>MICROPHONE</h2></div><b id="mic-module">CHECKING</b></div>
         <div class="mic-visual">
           <div class="mic-orbit" aria-hidden="true"><span>◉</span></div>
-          <div class="voice-wave" aria-hidden="true">
-            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-          </div>
+          <div class="voice-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
         </div>
         <div class="mic-actions">
           <button id="btn-listen-voice" class="hud-button primary">ATIVAR ESCUTA</button>
@@ -96,13 +74,8 @@
       </section>
 
       <section class="hud-panel memory-panel">
-        <div class="panel-heading">
-          <div><span class="panel-index">03</span><h2>MEMORY</h2></div>
-          <b id="memory-module">CHECKING</b>
-        </div>
-        <div class="memory-core" aria-hidden="true">
-          <span></span><span></span><span></span><span></span><span></span>
-        </div>
+        <div class="panel-heading"><div><span class="panel-index">03</span><h2>MEMORY</h2></div><b id="memory-module">CHECKING</b></div>
+        <div class="memory-core" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
         <div class="memory-grid">
           <div><span>LOCAL STORAGE</span><strong id="storage-state">READY</strong></div>
           <div><span>CONNECTION</span><strong id="connection-state">ONLINE</strong></div>
@@ -115,27 +88,15 @@
     <section class="center-column">
       <section class="neural-stage hud-frame">
         <div class="stage-header">
-          <div>
-            <span>COGNITIVE ENGINE</span>
-            <strong>NEURAL COMMAND CORE</strong>
-          </div>
+          <div><span>COGNITIVE ENGINE</span><strong>NEURAL COMMAND CORE</strong></div>
           <div class="stage-status"><i></i> CORE ONLINE</div>
         </div>
 
         <div class="orb-stage" aria-hidden="true">
-          <div class="orb-halo halo-1"></div>
-          <div class="orb-halo halo-2"></div>
-          <div class="orb-halo halo-3"></div>
-          <div class="orb-axis axis-x"></div>
-          <div class="orb-axis axis-y"></div>
-          <div class="core-orb">
-            <div class="orb-grid"></div>
-            <div class="orb-pulse"></div>
-            <div class="orb-heart"></div>
-          </div>
-          <div class="orbit orbit-a"><i></i></div>
-          <div class="orbit orbit-b"><i></i></div>
-          <div class="orbit orbit-c"><i></i></div>
+          <div class="orb-halo halo-1"></div><div class="orb-halo halo-2"></div><div class="orb-halo halo-3"></div>
+          <div class="orb-axis axis-x"></div><div class="orb-axis axis-y"></div>
+          <div class="core-orb"><div class="orb-grid"></div><div class="orb-pulse"></div><div class="orb-heart"></div></div>
+          <div class="orbit orbit-a"><i></i></div><div class="orbit orbit-b"><i></i></div><div class="orbit orbit-c"><i></i></div>
           <div class="core-pedestal"><span></span></div>
         </div>
 
@@ -148,69 +109,40 @@
       </section>
 
       <section class="hud-panel terminal-panel">
-        <div class="panel-heading terminal-heading">
-          <div><span class="panel-index">CORE</span><h2>COMMAND TERMINAL</h2></div>
-          <b class="pulse">READY</b>
-        </div>
-        <div id="output-box" class="terminal" aria-live="polite">
-          <p class="boot">&gt; ULTRON CORE INITIALIZED</p>
-          <p>&gt; Diga "Ultron" para ativar por voz ou digite um comando.</p>
-        </div>
+        <div class="panel-heading terminal-heading"><div><span class="panel-index">CORE</span><h2>COMMAND TERMINAL</h2></div><b class="pulse">READY</b></div>
+        <div id="output-box" class="terminal" aria-live="polite"><p class="boot">&gt; ULTRON CORE INITIALIZED</p><p>&gt; Diga "Ultron" para ativar por voz ou digite um comando.</p></div>
         <div class="command-row">
           <div class="command-input-wrap"><span>ULTRON &gt;</span><textarea id="command-input" rows="2" placeholder="Digite ou fale uma instrução..."></textarea></div>
           <button id="btn-send" class="hud-button execute">EXECUTAR <span>↗</span></button>
         </div>
         <div class="quick-actions">
-          <button data-command="status">STATUS</button>
-          <button data-command="scan">VARREDURA</button>
-          <button data-command="camera">CÂMERA</button>
-          <button data-command="clear">LIMPAR TERMINAL</button>
-          <button id="btn-pair-mobile">PAREAR CELULAR</button>
-          <button id="btn-pair-tv">CONFIGURAR TV</button>
+          <button data-command="status">STATUS</button><button data-command="scan">VARREDURA</button><button data-command="camera">CÂMERA</button><button data-command="clear">LIMPAR TERMINAL</button><button id="btn-pair-mobile">PAREAR CELULAR</button><button id="btn-pair-tv">CONFIGURAR TV</button>
         </div>
       </section>
     </section>
 
     <aside class="hud-column right-column">
       <section class="hud-panel telemetry-panel">
-        <div class="panel-heading">
-          <div><span class="panel-index">04</span><h2>LIVE TELEMETRY</h2></div>
-          <b>REALTIME</b>
-        </div>
+        <div class="panel-heading"><div><span class="panel-index">04</span><h2>LIVE TELEMETRY</h2></div><b>REALTIME</b></div>
         <div class="telemetry-stack">
           <div class="telemetry-row"><div><span>CAMERA</span><strong id="telemetry-camera">OFF</strong></div><div class="signal-line"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
           <div class="telemetry-row"><div><span>MOTION EVENTS</span><strong id="motion-events">0</strong></div><div class="signal-line alt"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
           <div class="telemetry-row"><div><span>MOTION LEVEL</span><strong id="motion-value">0%</strong></div><div class="signal-line"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
           <div class="telemetry-row"><div><span>ACTIVITY</span><strong id="reaction-activity">BAIXA</strong></div><div class="signal-line alt"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
         </div>
-        <div class="activity">
-          <div class="activity-head"><span>ACTIVITY STREAM</span><span>LIVE</span></div>
-          <div id="activity-bars"></div>
-        </div>
+        <div class="activity"><div class="activity-head"><span>ACTIVITY STREAM</span><span>LIVE</span></div><div id="activity-bars"></div></div>
       </section>
 
       <section class="hud-panel optical-panel">
-        <div class="panel-heading">
-          <div><span class="panel-index">05</span><h2>OPTICAL SENSOR</h2></div>
-          <b id="camera-state">STANDBY</b>
-        </div>
+        <div class="panel-heading"><div><span class="panel-index">05</span><h2>OPTICAL SENSOR</h2></div><b id="camera-state">STANDBY</b></div>
         <div class="optical-preview" id="camera-placeholder">
           <div class="optical-reticle" aria-hidden="true"><span></span><i></i><b></b></div>
-          <div class="optical-copy">
-            <strong>VISUAL SENSOR</strong>
-            <span id="permission-state">UNKNOWN</span>
-          </div>
+          <div class="optical-copy"><strong>VISUAL SENSOR</strong><span id="permission-state">UNKNOWN</span></div>
         </div>
         <div class="sensor-readout">
-          <div><span>MOTION</span><strong id="reaction-motion">0%</strong></div>
-          <div><span>THRESHOLD</span><strong id="threshold-value">20</strong></div>
-          <div><span>RESOLUTION</span><strong id="camera-resolution">NO SIGNAL</strong></div>
-          <div><span>FRAME RATE</span><strong id="fps">-- FPS</strong></div>
+          <div><span>MOTION</span><strong id="reaction-motion">0%</strong></div><div><span>THRESHOLD</span><strong id="threshold-value">20</strong></div><div><span>RESOLUTION</span><strong id="camera-resolution">NO SIGNAL</strong></div><div><span>FRAME RATE</span><strong id="fps">-- FPS</strong></div>
         </div>
-        <div class="controls">
-          <button id="btn-camera" class="hud-button primary">MOSTRAR TELA</button>
-          <button id="btn-stop-camera" class="hud-button danger" disabled>DESLIGAR</button>
-        </div>
+        <div class="controls"><button id="btn-camera" class="hud-button primary">MOSTRAR TELA</button><button id="btn-stop-camera" class="hud-button danger" disabled>DESLIGAR</button></div>
         <div class="control-sliders">
           <label>SENSIBILIDADE <output id="sensitivity-out">20</output><input id="sensitivity" type="range" min="5" max="50" value="20"></label>
           <label>COOLDOWN <output id="cooldown-out">3s</output><input id="cooldown" type="range" min="1" max="10" value="3"></label>
@@ -218,42 +150,24 @@
       </section>
 
       <section class="hud-panel cognitive-panel">
-        <div class="panel-heading">
-          <div><span class="panel-index">06</span><h2>COGNITIVE PROCESS</h2></div>
-          <b>ACTIVE</b>
-        </div>
-        <div class="emotion-main">
-          <div class="emotion-symbol" id="emotion-symbol">😐</div>
-          <div><span>ESTADO ATUAL</span><strong id="emotion-state">NORMAL</strong><small id="emotion-confidence">Confiança estimada: 50%</small></div>
-        </div>
+        <div class="panel-heading"><div><span class="panel-index">06</span><h2>COGNITIVE PROCESS</h2></div><b>ACTIVE</b></div>
+        <div class="emotion-main"><div class="emotion-symbol" id="emotion-symbol">😐</div><div><span>ESTADO ATUAL</span><strong id="emotion-state">NORMAL</strong><small id="emotion-confidence">Confiança estimada: 50%</small></div></div>
         <div class="emotion-grid">
-          <button data-emotion="feliz">😊 <span>FELIZ</span><b id="emotion-feliz">—</b></button>
-          <button data-emotion="triste">😢 <span>TRISTE</span><b id="emotion-triste">—</b></button>
-          <button data-emotion="normal">😐 <span>NORMAL</span><b id="emotion-normal">—</b></button>
-          <button data-emotion="inquieto">⚡ <span>INQUIETO</span><b id="emotion-inquieto">—</b></button>
-          <button data-emotion="pensativo">🧠 <span>PENSATIVO</span><b id="emotion-pensativo">—</b></button>
-          <button data-emotion="estressado">🔥 <span>ESTRESSADO</span><b id="emotion-estressado">—</b></button>
+          <button data-emotion="feliz">😊 <span>FELIZ</span><b id="emotion-feliz">—</b></button><button data-emotion="triste">😢 <span>TRISTE</span><b id="emotion-triste">—</b></button><button data-emotion="normal">😐 <span>NORMAL</span><b id="emotion-normal">—</b></button><button data-emotion="inquieto">⚡ <span>INQUIETO</span><b id="emotion-inquieto">—</b></button><button data-emotion="pensativo">🧠 <span>PENSATIVO</span><b id="emotion-pensativo">—</b></button><button data-emotion="estressado">🔥 <span>ESTRESSADO</span><b id="emotion-estressado">—</b></button>
         </div>
         <p class="disclaimer">A leitura emocional é apenas uma estimativa heurística local, não um diagnóstico.</p>
       </section>
 
       <section class="hud-panel vitals-panel">
-        <div class="panel-heading">
-          <div><span class="panel-index">07</span><h2>BIOMETRIC LINK</h2></div>
-          <b id="vitals-status">AGUARDANDO</b>
-        </div>
-        <div class="vitals-grid">
-          <div class="vital"><span>♥ BATIMENTOS</span><strong id="heart-rate">--</strong><small>BPM</small></div>
-          <div class="vital"><span>◈ PRESSÃO</span><strong id="blood-pressure">--/--</strong><small>mmHg</small></div>
-          <div class="vital wide"><span>DEVICE</span><strong id="vitals-device">NÃO CONECTADO</strong></div>
-        </div>
+        <div class="panel-heading"><div><span class="panel-index">07</span><h2>BIOMETRIC LINK</h2></div><b id="vitals-status">AGUARDANDO</b></div>
+        <div class="vitals-grid"><div class="vital"><span>♥ BATIMENTOS</span><strong id="heart-rate">--</strong><small>BPM</small></div><div class="vital"><span>◈ PRESSÃO</span><strong id="blood-pressure">--/--</strong><small>mmHg</small></div><div class="vital wide"><span>DEVICE</span><strong id="vitals-device">NÃO CONECTADO</strong></div></div>
       </section>
     </aside>
   </main>
 
   <footer class="hud-footer">
     <span><i></i> ALL SYSTEMS MONITORED</span>
-    <span>ULTRON AI // LOCAL CONTROL LAYER // v4.1.0</span>
+    <span>ULTRON AI // LOCAL CONTROL LAYER // v4.3.0</span>
     <a href="https://equipezero-web.github.io/Ultron_AI/" target="_blank" rel="noopener">GITHUB PAGES</a>
   </footer>
 </div>
@@ -262,11 +176,7 @@
   <div class="screen-panel hud-frame">
     <div class="screen-head"><strong>ULTRON // OPTICAL SENSOR</strong><button id="btn-close-screen" class="hud-button danger">FECHAR</button></div>
     <div class="camera modal-camera">
-      <video id="webcam" autoplay playsinline muted></video>
-      <canvas id="motion-canvas"></canvas>
-      <div class="camera-grid"></div><div class="scanner"></div>
-      <div class="corner c1"></div><div class="corner c2"></div><div class="corner c3"></div><div class="corner c4"></div>
-      <div id="motion-tag" class="motion-tag">STANDBY</div>
+      <video id="webcam" autoplay playsinline muted></video><canvas id="motion-canvas"></canvas><div class="camera-grid"></div><div class="scanner"></div><div class="corner c1"></div><div class="corner c2"></div><div class="corner c3"></div><div class="corner c4"></div><div id="motion-tag" class="motion-tag">STANDBY</div>
     </div>
     <p class="screen-note">A visualização só é exibida nesta janela quando você solicita. Use DESLIGAR para encerrar a câmera.</p>
   </div>
@@ -276,8 +186,8 @@
 <script type="module" src="modules/memory-client.js?v=4.0.0"></script>
 <script type="module" src="modules/provider-ui.js?v=4.0.0"></script>
 <script type="module" src="modules/device-client.js?v=4.0.0"></script>
-<script type="module" src="modules/mobile-mic-client.js?v=4.1.0"></script>
-<script type="module" src="script.js?v=4.0.0"></script>
+<script type="module" src="modules/mobile-mic-client.js?v=4.3.0"></script>
+<script type="module" src="script.js?v=4.3.0"></script>
 <script type="module" src="modules/voice-listener.js?v=4.0.0"></script>
 </body>
 </html>
