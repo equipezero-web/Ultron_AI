@@ -2,6 +2,7 @@ const STYLE_ID = 'ultron-stark-core-style';
 const FUNCTIONAL_STYLE_ID = 'ultron-stark-functional-style';
 const HAND_STYLE_ID = 'ultron-stark-hand-style';
 const CAMERA_PREVIEW_STYLE_ID = 'ultron-stark-camera-preview-style';
+const ZOOM_DIAGNOSTICS_STYLE_ID = 'ultron-stark-zoom-diagnostics-style';
 
 function loadStyle(id, href) {
   if (document.getElementById(id)) return;
@@ -16,6 +17,7 @@ loadStyle(STYLE_ID, 'modules/stark-core.css?v=4.8.0');
 loadStyle(FUNCTIONAL_STYLE_ID, 'modules/stark-functional.css?v=4.8.0');
 loadStyle(HAND_STYLE_ID, 'modules/stark-hand.css?v=4.8.0');
 loadStyle(CAMERA_PREVIEW_STYLE_ID, 'modules/stark-camera-preview.css?v=4.8.0');
+loadStyle(ZOOM_DIAGNOSTICS_STYLE_ID, 'modules/stark-zoom-diagnostics.css?v=4.8.0');
 
 await import('./stark-core.js?v=4.8.0');
 await import('./stark-inner-mesh.js?v=4.8.0');
@@ -24,6 +26,7 @@ await import('./stark-advanced.js?v=4.5.0');
 await import('./vision-client.js?v=4.5.0');
 await import('./stark-hand-gesture.js?v=4.8.0');
 await import('./stark-camera-preview.js?v=4.8.0');
+await import('./stark-zoom-diagnostics.js?v=4.8.0');
 await import('./stark-production-bridge.js?v=4.6.0');
 
 window.addEventListener('ultron:processing-start', () => {
@@ -52,6 +55,7 @@ window.dispatchEvent(new CustomEvent('ultron:stark-bootstrap-ready', {
     vision: Boolean(window.ULTRON_VISION),
     handGestures: Boolean(window.ULTRON_HAND_GESTURES),
     cameraPreview: Boolean(window.ULTRON_CAMERA_PREVIEW),
+    zoomDiagnostics: Boolean(window.ULTRON_ZOOM_DIAGNOSTICS),
     productionBridge: Boolean(window.ULTRON_STARK_PRODUCTION)
   }
 }));
