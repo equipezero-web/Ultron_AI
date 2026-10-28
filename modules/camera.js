@@ -1,5 +1,7 @@
 import { cameraWasAccepted, rememberCameraAccepted } from "./storage.js";
 
+const CAMERA_DEVICE_KEY = "ultron_camera_device_id_v1";
+
 export class CameraController {
   constructor(video, onState) {
     this.video = video;
@@ -8,9 +10,16 @@ export class CameraController {
     this.lastError = null;
     this.startPromise = null;
     this.stopRequested = false;
+    this.devices = [];
+    this.selectedDeviceId = localStorage.getItem(CAMERA_DEVICE_KEY) || "";
     window.ULTRON_CAMERA_CONTROLLER = this;
 
+    navigator.mediaDevices?.addEventListener?.("devicechange", () => {
+      this.refreshDevices({ announce: true }).catch(() => {});
+    });
+
     setTimeout(() => {
+      this.refreshDevices().catch(() => {});
       this.restoreIfGranted().catch(() => {});
     }, 900);
   }
@@ -49,8 +58,70 @@ export class CameraController {
     return existing;
   }
 
-  async requestStream() {
-    const candidates = [
+  async refreshDevices({ announce = false } = {}) {
+    if (!navigator.mediaDevices?.enumerateDevices) {
+      this.devices = [];
+      return [];
+    }
+
+    try {
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      this.devices = devices
+        .filter((device) => device.kind === "videoinput")
+        .map((device, index) => ({
+          deviceId: device.deviceId,
+          groupId: device.groupId,
+          label: device.label || `Câmera ${index + 1}`
+        }));
+
+      if (this.selectedDeviceId && !this.devices.some((device) => device.deviceId === this.selectedDeviceId)) {
+        this.selectedDeviceId = "";
+        localStorage.removeItem(CAMERA_DEVICE_KEY);
+      }
+
+      window.dispatchEvent(new CustomEvent("ultron:camera-devices", {
+        detail: {
+          devices: this.devices,
+          count: this.devices.length,
+          selectedDeviceId: this.selectedDeviceId,
+          announce
+        }
+      }));
+
+      return this.devices;
+    } catch {
+      this.devices = [];
+      return [];
+    }
+  }
+
+  async selectDevice(deviceId) {
+    const next = String(deviceId || "");
+    this.selectedDeviceId = next;
+    if (next) localStorage.setItem(CAMERA_DEVICE_KEY, next);
+    else localStorage.removeItem(CAMERA_DEVICE_KEY);
+
+    if (this.isActive()) {
+      this.stop({ silent: true });
+      await this.start();
+    }
+
+    return this.selectedDeviceId;
+  }
+
+  buildCandidates() {
+    const preferred = this.selectedDeviceId
+      ? {
+          deviceId: { exact: this.selectedDeviceId },
+          width: { ideal: 1280 },
+          height: { ideal: 720 },
+          frameRate: { ideal: 24, max: 30 }
+        }
+      : null;
+
+    const candidates = [];
+    if (preferred) candidates.push({ video: preferred, audio: false });
+    candidates.push(
       {
         video: {
           facingMode: { ideal: "user" },
@@ -70,7 +141,13 @@ export class CameraController {
         audio: false
       },
       { video: true, audio: false }
-    ];
+    );
+    return candidates;
+  }
+
+  async requestStream() {
+    await this.refreshDevices().catch(() => {});
+    const candidates = this.buildCandidates();
 
     let lastError = null;
     for (let index = 0; index < candidates.length; index += 1) {
@@ -79,9 +156,13 @@ export class CameraController {
       } catch (error) {
         lastError = error;
         const name = String(error?.name || "");
-        if (["NotAllowedError", "SecurityError", "NotFoundError"].includes(name)) break;
+        if (["NotAllowedError", "SecurityError"].includes(name)) break;
 
-        // Alguns drivers do Windows precisam de uma pequena janela para liberar o dispositivo.
+        if (name === "NotFoundError") {
+          await this.refreshDevices({ announce: true }).catch(() => {});
+          if (!this.devices.length) break;
+        }
+
         if (name === "NotReadableError" && index < candidates.length - 1) {
           await new Promise((resolve) => setTimeout(resolve, 320));
         }
@@ -94,7 +175,12 @@ export class CameraController {
   friendlyError(error) {
     const name = String(error?.name || "");
     if (name === "NotAllowedError") return "Permissão da câmera bloqueada no navegador ou sistema.";
-    if (name === "NotFoundError") return "Nenhuma câmera foi encontrada neste dispositivo.";
+    if (name === "NotFoundError") {
+      const count = this.devices.length;
+      return count
+        ? `${count} entrada(s) de vídeo foram listadas, mas nenhuma pôde ser aberta. Verifique driver/dispositivo selecionado.`
+        : "Nenhuma entrada de vídeo foi encontrada pelo navegador. Verifique se a webcam está habilitada no Windows/driver ou conecte uma câmera USB/virtual.";
+    }
     if (name === "NotReadableError") return "A câmera não pôde ser aberta. Ela pode estar em uso por outro aplicativo, pelo próprio navegador em outra aba, ou o driver ainda não liberou o dispositivo.";
     if (name === "OverconstrainedError") return "A câmera não suporta a configuração solicitada.";
     if (name === "SecurityError") return "O navegador bloqueou o acesso à câmera por segurança.";
@@ -131,9 +217,26 @@ export class CameraController {
     await this.video.play();
     rememberCameraAccepted();
     this.lastError = null;
+
+    const track = stream.getVideoTracks?.()[0];
+    const settings = track?.getSettings?.() || {};
+    if (settings.deviceId && settings.deviceId !== this.selectedDeviceId) {
+      this.selectedDeviceId = settings.deviceId;
+      localStorage.setItem(CAMERA_DEVICE_KEY, settings.deviceId);
+    }
+
+    await this.refreshDevices().catch(() => {});
     this.onState("active", stream, { restored });
     window.dispatchEvent(new CustomEvent("ultron:camera-stream", {
-      detail: { active: true, restored, stream }
+      detail: {
+        active: true,
+        restored,
+        stream,
+        deviceId: settings.deviceId || this.selectedDeviceId || null,
+        label: track?.label || null,
+        width: settings.width || null,
+        height: settings.height || null
+      }
     }));
     return stream;
   }
@@ -158,7 +261,6 @@ export class CameraController {
     const recovered = this.recoverExistingStream();
     if (recovered) return this.activateStream(recovered, { restored: true });
 
-    // Impede restore automático + clique do operador de abrirem duas capturas ao mesmo tempo.
     if (this.startPromise) return this.startPromise;
 
     this.startPromise = (async () => {
@@ -172,7 +274,12 @@ export class CameraController {
         if (this.video) this.video.srcObject = null;
         const message = this.friendlyError(error);
         window.dispatchEvent(new CustomEvent("ultron:camera-error", {
-          detail: { name: error?.name || "CameraError", message }
+          detail: {
+            name: error?.name || "CameraError",
+            message,
+            deviceCount: this.devices.length,
+            devices: this.devices
+          }
         }));
         const wrapped = new Error(message);
         wrapped.name = error?.name || "CameraError";
@@ -185,15 +292,15 @@ export class CameraController {
     return this.startPromise;
   }
 
-  stop() {
+  stop({ silent = false } = {}) {
     this.stopRequested = true;
     const stream = this.stream || this.video?.srcObject;
     this.stream = null;
     if (this.video) this.video.srcObject = null;
     stream?.getTracks?.().forEach((track) => track.stop());
-    this.onState("stopped");
+    if (!silent) this.onState("stopped");
     window.dispatchEvent(new CustomEvent("ultron:camera-stream", {
-      detail: { active: false, restored: false, stream: null, reason: "operator-stop" }
+      detail: { active: false, restored: false, stream: null, reason: silent ? "device-switch" : "operator-stop" }
     }));
   }
 }
