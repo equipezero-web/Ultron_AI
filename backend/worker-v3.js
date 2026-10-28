@@ -108,6 +108,7 @@ export default {
     if (url.pathname === "/api/health" && request.method === "GET") {
       const response = await baseWorker.fetch(request, env, ctx);
       if (!response.ok) return response;
+      const fallbackResponse = response.clone();
 
       try {
         const data = await response.json();
@@ -123,7 +124,7 @@ export default {
           ]
         });
       } catch {
-        return response;
+        return fallbackResponse;
       }
     }
 
@@ -131,6 +132,7 @@ export default {
       const requestStartedAt = Date.now();
       const response = await baseWorker.fetch(request, env, ctx);
       if (!response.ok) return response;
+      const fallbackResponse = response.clone();
 
       try {
         const data = await response.json();
@@ -187,7 +189,7 @@ export default {
         });
       } catch (error) {
         console.error("[ULTRON VOICE] Falha ao enriquecer resposta:", error);
-        return response;
+        return fallbackResponse;
       }
     }
 
