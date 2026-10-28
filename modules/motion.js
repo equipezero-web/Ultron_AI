@@ -13,11 +13,30 @@ export class MotionSensor {
     this.cooldown = 3000;
   }
 
+  perfProfile() {
+    return window.ULTRON_PERFORMANCE?.profile || {
+      motionWidth: 480,
+      motionHeight: 270,
+      motionEveryFrames: 2
+    };
+  }
+
+  resizeAnalysisCanvas() {
+    const profile = this.perfProfile();
+    const sourceW = this.video.videoWidth || 640;
+    const sourceH = this.video.videoHeight || 480;
+    const maxW = Math.max(96, Number(profile.motionWidth || 480));
+    const maxH = Math.max(72, Number(profile.motionHeight || 270));
+    const scale = Math.min(1, maxW / sourceW, maxH / sourceH);
+    this.canvas.width = Math.max(96, Math.round(sourceW * scale));
+    this.canvas.height = Math.max(72, Math.round(sourceH * scale));
+  }
+
   start() {
-    this.canvas.width = this.video.videoWidth || 640;
-    this.canvas.height = this.video.videoHeight || 480;
+    this.resizeAnalysisCanvas();
     this.running = true;
     this.previous = null;
+    this.frame = 0;
     requestAnimationFrame(() => this.loop());
   }
 
@@ -30,17 +49,22 @@ export class MotionSensor {
     if (!this.running) return;
     this.frame++;
 
-    // Reduz a carga: analisa 1 a cada 2 frames.
-    if (this.frame % 2 === 0) {
+    if (document.hidden) {
+      requestAnimationFrame(() => this.loop());
+      return;
+    }
+
+    const every = Math.max(2, Number(this.perfProfile().motionEveryFrames || 2));
+    if (this.frame % every === 0) {
       this.ctx.drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height);
       const current = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
 
       if (this.previous) {
         let changed = 0;
         let total = 0;
+        const stride = window.ULTRON_PERFORMANCE?.mode === "lite" ? 48 : 32;
 
-        // Amostragem espacial para manter o processamento leve no celular.
-        for (let i = 0; i < current.data.length; i += 32) {
+        for (let i = 0; i < current.data.length; i += stride) {
           const d =
             Math.abs(current.data[i] - this.previous.data[i]) +
             Math.abs(current.data[i + 1] - this.previous.data[i + 1]) +
@@ -57,7 +81,8 @@ export class MotionSensor {
             level,
             changed,
             total,
-            threshold: this.threshold
+            threshold: this.threshold,
+            analysisResolution: `${this.canvas.width}x${this.canvas.height}`
           }
         }));
 
