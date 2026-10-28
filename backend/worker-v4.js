@@ -51,6 +51,15 @@ function isNewsIntent(message) {
     /\b(hoje|agora|atual|atuais|recente|recentes|ultima|ultimas|noticia|noticias)\b/.test(text);
 }
 
+function sanitizeNewsIntentForBase(message) {
+  return String(message || "")
+    .replace(/\bnot[ií]cias?\b/gi, "informações verificadas")
+    .replace(/\bnews\b/gi, "informações verificadas")
+    .replace(/\bmanchetes?\b/gi, "tópicos verificados")
+    .replace(/\bacontecendo\b/gi, "ocorrendo")
+    .replace(/\bcirculando\b/gi, "publicado");
+}
+
 function cacheContext(cache) {
   const sources = (Array.isArray(cache?.sources) ? cache.sources : [])
     .slice(0, 6)
@@ -74,17 +83,22 @@ function cacheContext(cache) {
   ].filter(Boolean).join("\n");
 }
 
-function appendResearchToMessage(originalMessage, contextText) {
+function appendResearchToMessage(originalMessage, contextText, { suppressLegacyNews = false } = {}) {
+  const operatorMessage = suppressLegacyNews
+    ? sanitizeNewsIntentForBase(originalMessage)
+    : originalMessage;
+
   return [
     "MODO ULTRON WEB RESEARCH ATIVO.",
     "A resposta deve ser baseada no contexto de pesquisa abaixo e na memória válida.",
     "Não afirme que pesquisou se não houver fontes reais listadas.",
-    "Quando a pergunta for sobre notícias atuais, trate estas fontes como LIVE NEWS verificadas.",
+    "As fontes já foram recuperadas nesta camada. Não execute uma segunda busca externa para a mesma pergunta.",
+    "Quando a pergunta for sobre informações atuais, trate estas fontes como LIVE NEWS verificadas.",
     "",
     contextText,
     "",
-    "PERGUNTA ORIGINAL DO OPERADOR:",
-    originalMessage
+    "PERGUNTA ORIGINAL DO OPERADOR (normalizada apenas para impedir pesquisa duplicada):",
+    operatorMessage
   ].join("\n");
 }
 
@@ -232,13 +246,16 @@ export default {
 
     const forwardedBody = {
       ...originalBody,
-      message: appendResearchToMessage(originalMessage, researchContext),
+      message: appendResearchToMessage(originalMessage, researchContext, {
+        suppressLegacyNews: newsIntent
+      }),
       researchMeta: {
         active: true,
         reason: policy.reason,
         provider: fromCache ? "research-cache" : research?.provider,
         fromCache,
-        newsIntent
+        newsIntent,
+        skipLegacyResearch: true
       }
     };
 
