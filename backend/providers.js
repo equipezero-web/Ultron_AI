@@ -78,6 +78,29 @@ function chatMessages(message, telemetry) {
   ];
 }
 
+function buildGroundedTelemetry(env, telemetry = {}, aiBinding = null) {
+  return {
+    ...(telemetry || {}),
+    systemCapabilities: {
+      ...(telemetry?.systemCapabilities || {}),
+      tts: Boolean(env.ELEVENLABS_API_KEY && env.ELEVENLABS_VOICE_ID),
+      ttsProvider:
+        env.ELEVENLABS_API_KEY && env.ELEVENLABS_VOICE_ID
+          ? "ElevenLabs"
+          : null,
+      visualContext: true,
+      liveNews: true,
+      visualResearch: true,
+      deviceBridge: Boolean(env.ULTRON_DB),
+      aiGateway: true,
+      cloudflareAi: Boolean(
+        (aiBinding && typeof aiBinding.run === "function") ||
+          (env.CLOUDFLARE_AI_API_TOKEN && env.CLOUDFLARE_ACCOUNT_ID)
+      )
+    }
+  };
+}
+
 async function fetchJson(url, options = {}, timeoutMs = 30000) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
@@ -349,6 +372,7 @@ export async function generateWithProviders(
 ) {
   const aiBinding = options.aiBinding || null;
   const status = getProviderStatus(env, aiBinding);
+  const groundedTelemetry = buildGroundedTelemetry(env, telemetry, aiBinding);
   const attempts = [];
 
   for (const provider of providerOrder(env)) {
@@ -366,24 +390,24 @@ export async function generateWithProviders(
 
       switch (provider) {
         case "gemini":
-          result = await callGemini(env, message, telemetry);
+          result = await callGemini(env, message, groundedTelemetry);
           break;
         case "groq":
-          result = await callGroq(env, message, telemetry);
+          result = await callGroq(env, message, groundedTelemetry);
           break;
         case "openrouter":
-          result = await callOpenRouter(env, message, telemetry);
+          result = await callOpenRouter(env, message, groundedTelemetry);
           break;
         case "cloudflare":
           result = await callCloudflare(
             env,
             message,
-            telemetry,
+            groundedTelemetry,
             aiBinding
           );
           break;
         case "cohere":
-          result = await callCohere(env, message, telemetry);
+          result = await callCohere(env, message, groundedTelemetry);
           break;
         default:
           continue;
