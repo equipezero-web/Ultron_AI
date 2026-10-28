@@ -7,7 +7,9 @@ const state = {
   files: [],
   lastResults: [],
   activeFile: null,
-  components: []
+  components: [],
+  selectedComponent: null,
+  loopbackPermission: 'unknown'
 };
 
 function log(message, alert = false) {
@@ -20,18 +22,41 @@ function log(message, alert = false) {
   output.scrollTop = output.scrollHeight;
 }
 
+async function permissionState() {
+  if (!navigator.permissions?.query) return 'unknown';
+  try {
+    const status = await navigator.permissions.query({ name: 'loopback-network' });
+    state.loopbackPermission = String(status?.state || 'unknown');
+    return state.loopbackPermission;
+  } catch {
+    state.loopbackPermission = 'unsupported';
+    return 'unsupported';
+  }
+}
+
+function loopbackRequest(url, init) {
+  const base = { ...init, mode: 'cors' };
+  try {
+    return new Request(url, { ...base, targetAddressSpace: 'loopback' });
+  } catch {
+    return new Request(url, base);
+  }
+}
+
 async function request(path, options = {}, timeoutMs = 5000) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort('timeout'), timeoutMs);
+  const url = `${BASE_URL}${path}`;
   try {
-    const response = await fetch(`${BASE_URL}${path}`, {
+    const init = {
       ...options,
       signal: controller.signal,
       headers: {
         'Content-Type': 'application/json',
         ...(options.headers || {})
       }
-    });
+    };
+    const response = await fetch(loopbackRequest(url, init));
     const data = await response.json().catch(() => ({}));
     if (!response.ok) throw new Error(data?.detail || data?.error || `HTTP ${response.status}`);
     return data;
@@ -40,16 +65,26 @@ async function request(path, options = {}, timeoutMs = 5000) {
   }
 }
 
-async function health() {
+async function health({ allowPrompt = false } = {}) {
+  const permission = await permissionState();
+  if (!allowPrompt && permission === 'prompt') {
+    state.online = false;
+    return { ok: false, permission, needsUserGesture: true };
+  }
+  if (permission === 'denied') {
+    state.online = false;
+    return { ok: false, permission, error: 'Acesso ao serviço local foi bloqueado no navegador.' };
+  }
+
   try {
-    const data = await request('/health', {}, 2200);
+    const data = await request('/health', {}, 2600);
     state.online = Boolean(data?.ok);
     state.health = data;
     return data;
   } catch (error) {
     state.online = false;
     state.health = null;
-    return { ok: false, error: error?.message || String(error) };
+    return { ok: false, permission, error: error?.message || String(error) };
   }
 }
 
@@ -110,7 +145,7 @@ function panelTitle() {
   return String(document.querySelector('.stark-holo-title')?.textContent || '').trim().toUpperCase();
 }
 
-function button(label, handler) {
+function makeButton(label, handler) {
   const el = document.createElement('button');
   el.type = 'button';
   el.textContent = label;
@@ -154,31 +189,32 @@ async function renderBase() {
   if (!content) return;
   content.querySelector('[data-ultron-local-base]')?.remove();
 
-  await health();
+  const statusData = await health({ allowPrompt: true });
   const shell = rootShell();
   content.appendChild(shell);
-
   const note = document.createElement('div');
   note.className = 'ultron-local-note';
 
-  if (!state.online) {
+  if (!statusData?.ok) {
     note.classList.add('ultron-local-error');
-    note.textContent = 'O serviço local não está rodando. Inicie local-core/start.bat no computador para conectar a pasta Ultron_Data.';
+    note.textContent = statusData?.permission === 'denied'
+      ? 'O navegador bloqueou o acesso ao Local Core. Autorize Loopback/Local Network nas permissões deste site.'
+      : 'O serviço local não está conectado. Execute local-core/start.bat e depois clique em CONECTAR LOCAL.';
     shell.appendChild(note);
     const actions = document.createElement('div');
     actions.className = 'ultron-local-actions';
-    actions.append(button('TENTAR CONECTAR', () => renderBase()));
+    actions.append(makeButton('CONECTAR LOCAL', renderBase));
     shell.appendChild(actions);
     return;
   }
 
-  note.textContent = `${state.health?.files || 0} arquivo(s) indexado(s) // ${state.health?.vector_chunks || 0} vetor(es) // ${state.health?.model || 'embedding local'}`;
+  note.textContent = `${state.health?.files || 0} arquivo(s) // ${state.health?.vector_chunks || 0} vetor(es) // ${state.health?.model || 'embedding local'}`;
   shell.appendChild(note);
 
   const actions = document.createElement('div');
   actions.className = 'ultron-local-actions';
   actions.append(
-    button('INDEXAR BASE', async () => {
+    makeButton('INDEXAR BASE', async () => {
       log('Indexando Ultron_Data...');
       try {
         const result = await indexBase(false);
@@ -188,8 +224,8 @@ async function renderBase() {
         log(`Falha na indexação: ${error?.message || error}`, true);
       }
     }),
-    button('REINDEXAR TUDO', async () => {
-      if (!confirm('Reindexar toda a base local do Ultron? Os arquivos originais não serão alterados.')) return;
+    makeButton('REINDEXAR TUDO', async () => {
+      if (!confirm('Reindexar toda a base local? Os arquivos originais não serão alterados.')) return;
       try {
         await indexBase(true);
         await renderBase();
@@ -204,12 +240,11 @@ async function renderBase() {
   searchBox.className = 'ultron-local-search';
   const input = document.createElement('input');
   input.placeholder = 'Buscar por significado na base local...';
-  const searchBtn = button('BUSCAR', async () => {
+  const searchBtn = makeButton('BUSCAR', async () => {
     const query = input.value.trim();
     if (!query) return;
     try {
-      const results = await search(query, 8);
-      renderSearchResults(shell, results);
+      renderSearchResults(shell, await search(query, 8));
     } catch (error) {
       log(`Busca local falhou: ${error?.message || error}`, true);
     }
@@ -221,8 +256,7 @@ async function renderBase() {
   shell.appendChild(searchBox);
 
   try {
-    const files = await loadFiles();
-    renderFileList(shell, files.slice(0, 14));
+    renderFileList(shell, (await loadFiles()).slice(0, 14));
   } catch (error) {
     note.classList.add('ultron-local-error');
     note.textContent = `Falha ao listar a base local: ${error?.message || error}`;
@@ -248,16 +282,16 @@ function renderSearchResults(shell, results) {
   shell.querySelector('.ultron-file-list')?.remove();
   const list = document.createElement('div');
   list.className = 'ultron-file-list';
-  if (!results.length) {
+  const unique = new Map();
+  for (const result of results || []) {
+    if (!unique.has(result.file_id)) unique.set(result.file_id, result);
+  }
+  if (!unique.size) {
     const empty = document.createElement('div');
     empty.className = 'ultron-local-note ultron-local-error';
     empty.textContent = 'Nenhum resultado semântico encontrado.';
     list.appendChild(empty);
   } else {
-    const unique = new Map();
-    for (const result of results) {
-      if (!unique.has(result.file_id)) unique.set(result.file_id, result);
-    }
     [...unique.values()].forEach((result) => {
       list.appendChild(fileCard(result, `${result.path} // similaridade ${Math.round((result.score || 0) * 100)}%`));
     });
@@ -268,13 +302,14 @@ function renderSearchResults(shell, results) {
 async function renderFileLab(fileId) {
   const content = panelContent();
   if (!content) return;
-
   try {
     const data = await splitFile(fileId);
     content.replaceChildren();
+    state.selectedComponent = null;
 
     const lab = document.createElement('section');
     lab.className = 'ultron-file-lab';
+    lab.dataset.fileId = fileId;
 
     const title = document.createElement('div');
     title.className = 'ultron-file-lab-title';
@@ -290,8 +325,8 @@ async function renderFileLab(fileId) {
     const actions = document.createElement('div');
     actions.className = 'ultron-local-actions';
     actions.append(
-      button('← VOLTAR À BASE', renderBase),
-      button('ABRIR NO SISTEMA', async () => {
+      makeButton('← VOLTAR À BASE', renderBase),
+      makeButton('ABRIR NO SISTEMA', async () => {
         try {
           await openFile(fileId);
           log(`${data.file?.name || 'Arquivo'} aberto no sistema.`);
@@ -299,10 +334,10 @@ async function renderFileLab(fileId) {
           log(`Não foi possível abrir o arquivo: ${error?.message || error}`, true);
         }
       }),
-      button('REMONTAR / EXPORTAR', async () => {
+      makeButton('REMONTAR / EXPORTAR', async () => {
         const cards = [...lab.querySelectorAll('.ultron-component-card')];
         const contentText = cards.map((card) => card.querySelector('textarea')?.value || '').join('\n\n');
-        if (!confirm('Criar uma NOVA versão remontada em Ultron_Data/_exports? O original não será sobrescrito.')) return;
+        if (!confirm('Criar uma NOVA versão em Ultron_Data/_exports? O original não será sobrescrito.')) return;
         try {
           const result = await exportFile(fileId, contentText, null);
           log(`Arquivo remontado exportado em ${result.exported}.`);
@@ -315,14 +350,12 @@ async function renderFileLab(fileId) {
 
     const note = document.createElement('div');
     note.className = 'ultron-local-note';
-    note.textContent = 'Arraste os blocos para reordenar. Edite o conteúdo diretamente. A alteração só vira arquivo quando você confirmar REMONTAR / EXPORTAR.';
+    note.textContent = 'Arraste os blocos para reordenar, edite e confirme REMONTAR / EXPORTAR para gerar uma nova versão.';
     lab.appendChild(note);
 
     const components = document.createElement('div');
     components.className = 'ultron-components';
-    (data.components || []).forEach((component, index) => {
-      components.appendChild(componentCard(component, index));
-    });
+    (data.components || []).forEach((component, index) => components.appendChild(componentCard(component, index)));
     lab.appendChild(components);
     content.appendChild(lab);
 
@@ -335,11 +368,22 @@ async function renderFileLab(fileId) {
   }
 }
 
+function selectComponent(card) {
+  document.querySelectorAll('.ultron-component-card.is-selected').forEach((item) => item.classList.remove('is-selected'));
+  if (!card) {
+    state.selectedComponent = null;
+    return;
+  }
+  card.classList.add('is-selected');
+  state.selectedComponent = card.dataset.componentId || null;
+}
+
 function componentCard(component, index) {
   const card = document.createElement('article');
   card.className = 'ultron-component-card';
   card.draggable = true;
   card.dataset.componentId = component.id;
+  card.addEventListener('click', () => selectComponent(card));
 
   const top = document.createElement('div');
   top.className = 'ultron-component-top';
@@ -347,8 +391,8 @@ function componentCard(component, index) {
   label.textContent = `COMPONENTE ${String(index + 1).padStart(2, '0')}`;
   const controls = document.createElement('div');
   controls.append(
-    button('↑', () => card.previousElementSibling?.before(card)),
-    button('↓', () => card.nextElementSibling?.after(card))
+    makeButton('↑', () => card.previousElementSibling?.before(card)),
+    makeButton('↓', () => card.nextElementSibling?.after(card))
   );
   top.append(label, controls);
 
@@ -365,6 +409,7 @@ function enableComponentDnD(container) {
     const card = event.target.closest('.ultron-component-card');
     if (!card) return;
     dragging = card;
+    selectComponent(card);
     card.classList.add('dragging');
     event.dataTransfer.effectAllowed = 'move';
   });
@@ -378,9 +423,47 @@ function enableComponentDnD(container) {
     const target = event.target.closest('.ultron-component-card');
     if (!target || target === dragging) return;
     const rect = target.getBoundingClientRect();
-    const before = event.clientY < rect.top + rect.height / 2;
-    container.insertBefore(dragging, before ? target : target.nextSibling);
+    container.insertBefore(dragging, event.clientY < rect.top + rect.height / 2 ? target : target.nextSibling);
   });
+}
+
+function selectedCard() {
+  return document.querySelector('.ultron-component-card.is-selected') || document.querySelector('.ultron-component-card');
+}
+
+function moveSelected(direction) {
+  const card = selectedCard();
+  if (!card) return false;
+  selectComponent(card);
+  if (direction === 'left' && card.previousElementSibling) card.previousElementSibling.before(card);
+  if (direction === 'right' && card.nextElementSibling) card.nextElementSibling.after(card);
+  card.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  return true;
+}
+
+function dialSelected(delta) {
+  const card = selectedCard();
+  if (!card) return false;
+  selectComponent(card);
+  const textarea = card.querySelector('textarea');
+  const current = Number(card.dataset.palmScale || 1);
+  const next = Math.max(.8, Math.min(1.6, current + (delta > 0 ? .08 : -.08)));
+  card.dataset.palmScale = String(next);
+  if (textarea) {
+    textarea.style.fontSize = `${9 * next}px`;
+    textarea.style.minHeight = `${92 * next}px`;
+  }
+  return true;
+}
+
+function pushSelected() {
+  const card = selectedCard();
+  if (!card) return false;
+  selectComponent(card);
+  const textarea = card.querySelector('textarea');
+  if (textarea) textarea.style.minHeight = '220px';
+  card.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  return true;
 }
 
 function looksLikeFileCommand(text) {
@@ -389,7 +472,7 @@ function looksLikeFileCommand(text) {
 
 async function buildSemanticContext(commandText, limit = 6) {
   if (!looksLikeFileCommand(commandText)) return null;
-  const status = await health();
+  const status = await health({ allowPrompt: false });
   if (!status?.ok) return null;
   const result = await command(commandText, limit);
   if (!result?.matches?.length) return result;
@@ -406,14 +489,14 @@ async function buildSemanticContext(commandText, limit = 6) {
 
 document.addEventListener('click', (event) => {
   const node = event.target.closest?.('.stark-functional-node');
-  if (node?.dataset?.label === 'ARQUIVOS') {
-    setTimeout(renderBase, 70);
-  }
+  if (node?.dataset?.label === 'ARQUIVOS') setTimeout(renderBase, 70);
 }, true);
 
 window.ULTRON_LOCAL_FILES = {
   baseUrl: BASE_URL,
   health,
+  connect: () => health({ allowPrompt: true }),
+  permissionState,
   index: indexBase,
   files: loadFiles,
   search,
@@ -426,7 +509,15 @@ window.ULTRON_LOCAL_FILES = {
   get state() { return { ...state }; }
 };
 
-setTimeout(async () => {
-  const status = await health();
-  if (status?.ok) log(`Base local conectada: ${status.files || 0} arquivo(s), ${status.vector_chunks || 0} vetor(es).`);
-}, 1600);
+window.ULTRON_FILE_LAB = {
+  get active() { return Boolean(document.querySelector('.ultron-file-lab')); },
+  pushSelected,
+  sweep: moveSelected,
+  dial: dialSelected,
+  anchor() { selectComponent(null); },
+  showTable() {
+    const lab = document.querySelector('.ultron-file-lab');
+    lab?.scrollIntoView?.({ block: 'center', behavior: 'smooth' });
+    return Boolean(lab);
+  }
+};
