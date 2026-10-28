@@ -18,6 +18,9 @@ let requestConfirmTimer = null;
 let remoteMicActive = false;
 let lastTranscript = "";
 let lastTranscriptAt = 0;
+let remoteSpeechSyncState = "resume";
+let remoteSpeechSyncBusy = false;
+let queuedSpeechSyncState = null;
 
 function log(message, alert = false) {
   if (!output) return;
@@ -208,16 +211,25 @@ async function pollEventsOnce() {
         if (state === "active") {
           clearRequestConfirmTimer();
           remoteMicActive = true;
+          remoteSpeechSyncState = "resume";
           if (requestButton) requestButton.textContent = "MIC CELULAR ATIVO";
           log(detail || "Microfone do celular autorizado e conectado.");
+
+          if (audio && !audio.paused && !audio.ended) {
+            syncRemoteMicWithUltronSpeech("pause");
+          }
         } else if (state === "stopped") {
           clearRequestConfirmTimer();
           remoteMicActive = false;
+          remoteSpeechSyncState = "resume";
+          queuedSpeechSyncState = null;
           if (requestButton) requestButton.textContent = "USAR MIC DO CELULAR";
           log(detail || "Microfone remoto interrompido.");
         } else if (state === "blocked") {
           clearRequestConfirmTimer();
           remoteMicActive = false;
+          remoteSpeechSyncState = "resume";
+          queuedSpeechSyncState = null;
           if (requestButton) requestButton.textContent = "USAR MIC DO CELULAR";
           log(detail || "Permissão do microfone foi bloqueada no celular.", true);
         }
@@ -269,17 +281,41 @@ async function requestMobileMicrophone() {
   }
 }
 
-async function syncRemoteMicWithUltronSpeech(state) {
-  if (!selectedDeviceId || !remoteMicActive) return;
+async function flushRemoteSpeechSync() {
+  if (remoteSpeechSyncBusy || !remoteMicActive || !selectedDeviceId) return;
+  if (!queuedSpeechSyncState || queuedSpeechSyncState === remoteSpeechSyncState) {
+    queuedSpeechSyncState = null;
+    return;
+  }
+
+  const state = queuedSpeechSyncState;
+  queuedSpeechSyncState = null;
+  remoteSpeechSyncBusy = true;
 
   try {
     await sendDeviceNotification(
       state === "pause" ? "microphone.pause" : "microphone.resume",
       { quiet: true }
     );
+    remoteSpeechSyncState = state;
   } catch (error) {
     console.warn("ULTRON remote mic sync:", error);
+  } finally {
+    remoteSpeechSyncBusy = false;
+    if (queuedSpeechSyncState && queuedSpeechSyncState !== remoteSpeechSyncState) {
+      flushRemoteSpeechSync();
+    }
   }
+}
+
+function syncRemoteMicWithUltronSpeech(state) {
+  if (!selectedDeviceId || !remoteMicActive) return;
+
+  const normalizedState = state === "pause" ? "pause" : "resume";
+  if (normalizedState === remoteSpeechSyncState && !remoteSpeechSyncBusy) return;
+
+  queuedSpeechSyncState = normalizedState;
+  flushRemoteSpeechSync();
 }
 
 requestButton?.addEventListener("click", requestMobileMicrophone);
@@ -289,14 +325,12 @@ if (audio) {
     syncRemoteMicWithUltronSpeech("pause");
   });
 
-  const resume = () => {
+  audio.addEventListener("ended", () => {
     syncRemoteMicWithUltronSpeech("resume");
-  };
+  });
 
-  audio.addEventListener("ended", resume);
-  audio.addEventListener("error", resume);
-  audio.addEventListener("pause", () => {
-    if (audio.ended || audio.currentTime > 0) resume();
+  audio.addEventListener("error", () => {
+    syncRemoteMicWithUltronSpeech("resume");
   });
 }
 
@@ -310,5 +344,8 @@ window.ULTRON_MOBILE_MIC = {
   request: requestMobileMicrophone,
   get active() {
     return remoteMicActive;
+  },
+  get speechSyncState() {
+    return remoteSpeechSyncState;
   }
 };
