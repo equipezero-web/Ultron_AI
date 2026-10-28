@@ -19,39 +19,24 @@ function detectProfile() {
 
 const PROFILES = {
   full: {
-    mode: 'full',
-    handInferenceMs: 78,
-    motionWidth: 480,
-    motionHeight: 270,
-    motionEveryFrames: 2,
+    mode: 'full', handInferenceMs: 78,
+    motionWidth: 480, motionHeight: 270, motionEveryFrames: 2,
     telemetryIntervalMs: 15000,
-    cameraWidth: 1280,
-    cameraHeight: 720,
-    cameraFps: 24,
+    cameraWidth: 1280, cameraHeight: 720, cameraFps: 24,
     maxFileNodes: 18
   },
   balanced: {
-    mode: 'balanced',
-    handInferenceMs: 135,
-    motionWidth: 192,
-    motionHeight: 144,
-    motionEveryFrames: 4,
+    mode: 'balanced', handInferenceMs: 135,
+    motionWidth: 192, motionHeight: 144, motionEveryFrames: 4,
     telemetryIntervalMs: 30000,
-    cameraWidth: 640,
-    cameraHeight: 480,
-    cameraFps: 20,
+    cameraWidth: 640, cameraHeight: 480, cameraFps: 20,
     maxFileNodes: 12
   },
   lite: {
-    mode: 'lite',
-    handInferenceMs: 180,
-    motionWidth: 128,
-    motionHeight: 96,
-    motionEveryFrames: 5,
+    mode: 'lite', handInferenceMs: 180,
+    motionWidth: 128, motionHeight: 96, motionEveryFrames: 5,
     telemetryIntervalMs: 45000,
-    cameraWidth: 480,
-    cameraHeight: 360,
-    cameraFps: 15,
+    cameraWidth: 480, cameraHeight: 360, cameraFps: 15,
     maxFileNodes: 8
   }
 };
@@ -60,9 +45,29 @@ let mode = detectProfile();
 let profile = { ...PROFILES[mode] };
 
 document.documentElement.dataset.ultronPerformance = mode;
+document.documentElement.dataset.ultronHidden = document.hidden ? 'true' : 'false';
 
 document.addEventListener('visibilitychange', () => {
   document.documentElement.dataset.ultronHidden = document.hidden ? 'true' : 'false';
+});
+
+async function constrainCamera(stream) {
+  if (!stream || mode === 'full') return;
+  const track = stream.getVideoTracks?.()[0];
+  if (!track?.applyConstraints) return;
+  try {
+    await track.applyConstraints({
+      width: { ideal: profile.cameraWidth },
+      height: { ideal: profile.cameraHeight },
+      frameRate: { ideal: profile.cameraFps, max: profile.cameraFps }
+    });
+  } catch {
+    // Alguns drivers móveis ignoram constraints após o stream iniciar.
+  }
+}
+
+window.addEventListener('ultron:camera-stream', (event) => {
+  if (event.detail?.active && event.detail?.stream) constrainCamera(event.detail.stream);
 });
 
 function apply(nextMode = 'auto') {
@@ -74,6 +79,7 @@ function apply(nextMode = 'auto') {
   mode = normalized === 'auto' ? detectProfile() : normalized;
   profile = { ...PROFILES[mode] };
   document.documentElement.dataset.ultronPerformance = mode;
+  constrainCamera(window.ULTRON_CAMERA_CONTROLLER?.stream).catch(() => {});
   window.dispatchEvent(new CustomEvent('ultron:performance-mode', { detail: { ...profile } }));
   return mode;
 }
