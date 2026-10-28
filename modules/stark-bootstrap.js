@@ -35,6 +35,8 @@ await import('./stark-zoom-diagnostics.js?v=4.10.0');
 await import('./stark-production-bridge.js?v=4.10.0');
 await import('./palm-matrix.js?v=4.10.0');
 await import('./local-files-client.js?v=4.10.0');
+await import('./local-files-ai-bridge.js?v=4.10.0');
+await import('./backend-version-check.js?v=4.10.0');
 
 window.addEventListener('ultron:processing-start', () => {
   window.ULTRON_STARK_CORE?.processing?.(true);
@@ -66,6 +68,8 @@ window.dispatchEvent(new CustomEvent('ultron:stark-bootstrap-ready', {
     cameraRuntime: Boolean(window.ULTRON_CAMERA_RUNTIME),
     zoomDiagnostics: Boolean(window.ULTRON_ZOOM_DIAGNOSTICS),
     productionBridge: Boolean(window.ULTRON_STARK_PRODUCTION),
-    localFiles: Boolean(window.ULTRON_LOCAL_FILES)
+    localFiles: Boolean(window.ULTRON_LOCAL_FILES),
+    localRagBridge: Boolean(window.ULTRON_LOCAL_RAG_BRIDGE),
+    backendVersionCheck: Boolean(window.ULTRON_BACKEND_VERSION)
   }
 }));
