@@ -1,4 +1,5 @@
 const SERPER_ENDPOINT = "https://google.serper.dev/search";
+const SEARCH_TIMEOUT_MS = 3200;
 
 const CURRENT_TERMS = /\b(hoje|agora|atual|atuais|recente|recentes|ultimo|último|ultimos|últimos|latest|2026|preco|preço|cotacao|cotação|resultado|placar|eleicao|eleição|presidente|ceo|versao|versão|lancamento|lançamento)\b/i;
 const SEARCH_TERMS = /\b(pesquise|pesquisar|procure|buscar|busque|google|internet|web|fontes?|confirme|verifique|investigue)\b/i;
@@ -37,7 +38,7 @@ function normalizeResult(item, index) {
     title,
     url,
     source: hostLabel(url),
-    snippet: clean(item?.snippet || item?.description || "", 900),
+    snippet: clean(item?.snippet || item?.description || "", 650),
     date: clean(item?.date || "", 80) || null,
     position: Number(item?.position || index + 1)
   };
@@ -47,18 +48,9 @@ export function shouldResearchBeforeAnswer(message) {
   const text = String(message || "").trim();
   if (!text) return { needed: false, reason: "empty", ttlMinutes: 0 };
 
-  if (SEARCH_TERMS.test(text)) {
-    return { needed: true, reason: "explicit-search", ttlMinutes: 180 };
-  }
-
-  if (CURRENT_TERMS.test(text)) {
-    return { needed: true, reason: "freshness", ttlMinutes: 45 };
-  }
-
-  if (FACTUAL_START.test(text) && text.length >= 18) {
-    return { needed: true, reason: "factual", ttlMinutes: 10080 };
-  }
-
+  if (SEARCH_TERMS.test(text)) return { needed: true, reason: "explicit-search", ttlMinutes: 180 };
+  if (CURRENT_TERMS.test(text)) return { needed: true, reason: "freshness", ttlMinutes: 45 };
+  if (FACTUAL_START.test(text) && text.length >= 18) return { needed: true, reason: "factual", ttlMinutes: 10080 };
   return { needed: false, reason: "conversation", ttlMinutes: 0 };
 }
 
@@ -73,17 +65,12 @@ function buildGoogleContext(query, results, extras = {}) {
     "Use somente as informações recuperadas abaixo para afirmações externas que dependam desta pesquisa.",
     "Compare as fontes. Quando houver divergência, deixe isso claro.",
     "Não invente detalhes que não apareçam nas fontes.",
-    "Ao final da resposta, cite de 2 a 5 fontes usando o nome/domínio.",
+    "Ao final da resposta, cite as fontes mais relevantes pelo nome/domínio.",
     ""
   ];
 
-  if (extras.answerBox) {
-    lines.push(`RESPOSTA DESTACADA DO GOOGLE: ${clean(extras.answerBox, 1500)}`, "");
-  }
-
-  if (extras.knowledgeGraph) {
-    lines.push(`PAINEL DE CONHECIMENTO: ${clean(extras.knowledgeGraph, 1500)}`, "");
-  }
+  if (extras.answerBox) lines.push(`RESPOSTA DESTACADA DO GOOGLE: ${clean(extras.answerBox, 1100)}`, "");
+  if (extras.knowledgeGraph) lines.push(`PAINEL DE CONHECIMENTO: ${clean(extras.knowledgeGraph, 1100)}`, "");
 
   results.forEach((item, index) => {
     lines.push(
@@ -102,22 +89,29 @@ function buildGoogleContext(query, results, extras = {}) {
 function answerBoxText(data) {
   const box = data?.answerBox;
   if (!box) return "";
-  return clean(
-    box.answer || box.snippet || box.snippetHighlighted?.join(" ") || box.title || "",
-    1800
-  );
+  return clean(box.answer || box.snippet || box.snippetHighlighted?.join(" ") || box.title || "", 1300);
 }
 
 function knowledgeGraphText(data) {
   const graph = data?.knowledgeGraph;
   if (!graph) return "";
   const attributes = graph.attributes && typeof graph.attributes === "object"
-    ? Object.entries(graph.attributes).slice(0, 8).map(([key, value]) => `${key}: ${value}`).join("; ")
+    ? Object.entries(graph.attributes).slice(0, 6).map(([key, value]) => `${key}: ${value}`).join("; ")
     : "";
-  return clean([graph.title, graph.type, graph.description, attributes].filter(Boolean).join(" — "), 1800);
+  return clean([graph.title, graph.type, graph.description, attributes].filter(Boolean).join(" — "), 1300);
 }
 
-export async function searchGoogle(env, query, { limit = 8 } = {}) {
+async function fetchWithTimeout(url, options = {}, timeoutMs = SEARCH_TIMEOUT_MS) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort("timeout"), timeoutMs);
+  try {
+    return await fetch(url, { ...options, signal: controller.signal });
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+export async function searchGoogle(env, query, { limit = 6 } = {}) {
   const apiKey = String(env?.SERPER_API_KEY || "").trim();
   if (!apiKey) {
     return {
@@ -130,13 +124,13 @@ export async function searchGoogle(env, query, { limit = 8 } = {}) {
     };
   }
 
-  const q = clean(query, 600);
+  const q = clean(query, 500);
   if (!q) {
     return { configured: true, provider: "serper-google", query: "", results: [], contextText: "", error: "Consulta vazia." };
   }
 
   try {
-    const response = await fetch(SERPER_ENDPOINT, {
+    const response = await fetchWithTimeout(SERPER_ENDPOINT, {
       method: "POST",
       headers: {
         "X-API-KEY": apiKey,
@@ -146,7 +140,7 @@ export async function searchGoogle(env, query, { limit = 8 } = {}) {
         q,
         gl: "br",
         hl: "pt-br",
-        num: Math.max(3, Math.min(10, Number(limit) || 8)),
+        num: Math.max(3, Math.min(6, Number(limit) || 6)),
         autocorrect: true
       })
     });
@@ -155,12 +149,10 @@ export async function searchGoogle(env, query, { limit = 8 } = {}) {
     let data = {};
     try { data = raw ? JSON.parse(raw) : {}; } catch { data = {}; }
 
-    if (!response.ok) {
-      throw new Error(data?.message || data?.error || raw || `Serper HTTP ${response.status}`);
-    }
+    if (!response.ok) throw new Error(data?.message || data?.error || raw || `Serper HTTP ${response.status}`);
 
     const organic = Array.isArray(data?.organic) ? data.organic : [];
-    const results = organic.map(normalizeResult).filter(Boolean).slice(0, limit);
+    const results = organic.map(normalizeResult).filter(Boolean).slice(0, Math.min(6, limit));
     const extras = {
       answerBox: answerBoxText(data),
       knowledgeGraph: knowledgeGraphText(data)
@@ -178,6 +170,7 @@ export async function searchGoogle(env, query, { limit = 8 } = {}) {
       searchedAt: new Date().toISOString()
     };
   } catch (error) {
+    const message = error?.name === "AbortError" ? "Pesquisa Google excedeu 3,2 segundos." : String(error?.message || error);
     return {
       configured: true,
       provider: "serper-google",
@@ -185,7 +178,7 @@ export async function searchGoogle(env, query, { limit = 8 } = {}) {
       query: q,
       results: [],
       contextText: "",
-      error: String(error?.message || error).slice(0, 400),
+      error: message.slice(0, 400),
       searchedAt: new Date().toISOString()
     };
   }
