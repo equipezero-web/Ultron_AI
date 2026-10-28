@@ -10,11 +10,13 @@ if (!document.getElementById(STYLE_ID)) {
 
 await import('./stark-core.js');
 await import('./neural-input-bus.js');
+await import('./stark-advanced.js');
 await import('./vision-client.js');
 
 window.dispatchEvent(new CustomEvent('ultron:stark-bootstrap-ready', {
   detail: {
     starkCore: Boolean(window.ULTRON_STARK_CORE),
+    advanced: Boolean(window.ULTRON_STARK_ADVANCED),
     neuralInput: Boolean(window.ULTRON_NEURAL_INPUT),
     vision: Boolean(window.ULTRON_VISION)
   }
