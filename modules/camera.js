@@ -6,6 +6,7 @@ export class CameraController {
     this.onState = onState;
     this.stream = null;
     this.lastError = null;
+    window.ULTRON_CAMERA_CONTROLLER = this;
 
     setTimeout(() => {
       this.restoreIfGranted().catch(() => {});
@@ -84,6 +85,20 @@ export class CameraController {
     return String(error?.message || error || "Falha desconhecida da câmera.");
   }
 
+  bindTrackLifecycle(stream) {
+    const track = stream?.getVideoTracks?.()[0];
+    if (!track) return;
+    track.addEventListener("ended", () => {
+      if (this.stream !== stream) return;
+      this.stream = null;
+      this.video.srcObject = null;
+      this.onState("stopped");
+      window.dispatchEvent(new CustomEvent("ultron:camera-stream", {
+        detail: { active: false, restored: false, stream: null, reason: "track-ended" }
+      }));
+    }, { once: true });
+  }
+
   async start({ restored = false } = {}) {
     if (!navigator.mediaDevices?.getUserMedia) {
       throw new Error("Câmera indisponível. Use HTTPS ou localhost.");
@@ -101,6 +116,7 @@ export class CameraController {
 
     try {
       this.stream = await this.requestStream();
+      this.bindTrackLifecycle(this.stream);
       this.video.srcObject = this.stream;
       this.video.muted = true;
       this.video.playsInline = true;
@@ -126,12 +142,13 @@ export class CameraController {
   }
 
   stop() {
-    this.stream?.getTracks?.().forEach((track) => track.stop());
+    const stream = this.stream;
     this.stream = null;
     this.video.srcObject = null;
+    stream?.getTracks?.().forEach((track) => track.stop());
     this.onState("stopped");
     window.dispatchEvent(new CustomEvent("ultron:camera-stream", {
-      detail: { active: false, restored: false, stream: null }
+      detail: { active: false, restored: false, stream: null, reason: "operator-stop" }
     }));
   }
 }
