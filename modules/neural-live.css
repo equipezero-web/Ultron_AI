@@ -1,0 +1,186 @@
+.neural-stage{
+  isolation:isolate;
+}
+
+.neural-visual-layer{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  overflow:hidden;
+  pointer-events:none;
+  background:#020b14;
+}
+
+.neural-visual-image{
+  position:absolute;
+  inset:-2%;
+  width:104%;
+  height:104%;
+  object-fit:cover;
+  opacity:0;
+  transform:scale(1.035);
+  filter:saturate(.82) contrast(1.06) brightness(.78) hue-rotate(2deg);
+  transition:opacity .9s ease,transform 8s ease;
+}
+
+.neural-stage.has-visual .neural-visual-image.active{
+  opacity:.20;
+  transform:scale(1);
+}
+
+.neural-visual-shade{
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 50% 46%,rgba(0,16,28,.12) 0,rgba(0,8,15,.48) 55%,rgba(0,4,9,.78) 100%),
+    linear-gradient(180deg,rgba(0,8,14,.28),rgba(0,8,14,.08) 42%,rgba(0,7,13,.62));
+}
+
+.neural-stage>.stage-header,
+.neural-stage>.orb-stage,
+.neural-stage>.core-readouts{
+  position:relative;
+  z-index:2;
+}
+
+.neural-caption-wrap{
+  position:absolute;
+  left:50%;
+  top:54%;
+  z-index:12;
+  width:min(82%,760px);
+  transform:translate(-50%,-50%);
+  display:flex;
+  justify-content:center;
+  pointer-events:none;
+  opacity:0;
+  transition:opacity .26s ease,transform .26s ease;
+}
+
+.neural-caption-wrap.visible{
+  opacity:1;
+  transform:translate(-50%,-50%) scale(1);
+}
+
+.neural-caption{
+  max-width:100%;
+  margin:0;
+  padding:10px 16px;
+  text-align:center;
+  color:#effcff;
+  font:700 clamp(12px,1.15vw,18px)/1.45 Inter,Segoe UI,sans-serif;
+  letter-spacing:.15px;
+  overflow-wrap:anywhere;
+  text-wrap:balance;
+  text-shadow:0 2px 14px #000,0 0 16px rgba(103,232,249,.45);
+  background:linear-gradient(90deg,transparent,rgba(0,10,18,.62) 16%,rgba(0,10,18,.68) 50%,rgba(0,10,18,.62) 84%,transparent);
+  border-top:1px solid rgba(103,232,249,.11);
+  border-bottom:1px solid rgba(103,232,249,.11);
+}
+
+.neural-speaking-badge{
+  position:absolute;
+  z-index:13;
+  left:50%;
+  top:82px;
+  transform:translateX(-50%);
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:5px 9px;
+  border:1px solid rgba(103,232,249,.24);
+  background:rgba(1,10,17,.72);
+  color:#83efff;
+  font:700 8px monospace;
+  letter-spacing:1.2px;
+  opacity:0;
+  transition:opacity .2s ease;
+}
+
+.neural-speaking-badge i{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:#b9fbff;
+  box-shadow:0 0 7px #fff,0 0 16px #22d3ee;
+}
+
+.neural-stage.is-speaking .neural-speaking-badge{
+  opacity:1;
+}
+
+.neural-stage.is-speaking .core-orb{
+  animation:ultronSpeakingCore .72s ease-in-out infinite;
+  box-shadow:0 0 26px #fff,0 0 72px rgba(103,232,249,.88),0 0 145px rgba(14,165,233,.52),inset 0 0 62px rgba(103,232,249,.58);
+}
+
+.neural-stage.is-speaking .orb-heart{
+  animation:ultronSpeakingHeart .46s ease-in-out infinite;
+}
+
+.neural-stage.is-speaking .orb-pulse{
+  animation:ultronSpeakingRing 1.05s ease-out infinite;
+}
+
+.neural-stage.is-speaking .halo-1{animation-duration:6s}
+.neural-stage.is-speaking .halo-2{animation-duration:4.8s}
+.neural-stage.is-speaking .halo-3{animation-duration:8s}
+.neural-stage.is-speaking .core-pedestal span{
+  box-shadow:0 0 28px #b9fbff,0 0 56px #22d3ee;
+  animation:ultronVoiceBeam .58s ease-in-out infinite;
+}
+
+.neural-stage.is-speaking .orb-stage:before{
+  animation:ultronVoiceAura .8s ease-in-out infinite;
+}
+
+.neural-stage.has-visual .orb-stage{
+  transition:opacity .45s ease,filter .45s ease;
+}
+
+.neural-stage.has-visual.is-speaking .orb-stage{
+  opacity:.84;
+  filter:saturate(1.12);
+}
+
+@keyframes ultronSpeakingCore{
+  0%,100%{transform:scale(.965);filter:brightness(1)}
+  45%{transform:scale(1.055);filter:brightness(1.35)}
+  68%{transform:scale(1.015);filter:brightness(1.18)}
+}
+
+@keyframes ultronSpeakingHeart{
+  0%,100%{transform:translate(-50%,-50%) scale(.78);opacity:.8}
+  50%{transform:translate(-50%,-50%) scale(1.45);opacity:1}
+}
+
+@keyframes ultronSpeakingRing{
+  0%{transform:scale(.48);opacity:1}
+  100%{transform:scale(3.15);opacity:0}
+}
+
+@keyframes ultronVoiceBeam{
+  0%,100%{opacity:.55;transform:translateX(-50%) scaleY(.82)}
+  50%{opacity:1;transform:translateX(-50%) scaleY(1.14)}
+}
+
+@keyframes ultronVoiceAura{
+  0%,100%{opacity:.58;transform:scale(.94)}
+  50%{opacity:1;transform:scale(1.08)}
+}
+
+@media(max-width:650px){
+  .neural-caption-wrap{width:88%;top:56%}
+  .neural-caption{padding:8px 10px;font-size:12px;line-height:1.4}
+  .neural-speaking-badge{top:66px;font-size:7px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .neural-stage.is-speaking .core-orb,
+  .neural-stage.is-speaking .orb-heart,
+  .neural-stage.is-speaking .orb-pulse,
+  .neural-stage.is-speaking .core-pedestal span,
+  .neural-stage.is-speaking .orb-stage:before{
+    animation:none!important;
+  }
+}
