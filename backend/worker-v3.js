@@ -14,6 +14,7 @@ import {
   chooseProviderOrder,
   withSmartProviderOrder
 } from "./smart-router.js";
+import { buildOperationalPlan } from "./planner.js";
 
 function corsHeaders() {
   return {
@@ -160,6 +161,8 @@ export default {
           telemetry,
           proactiveEngine: Boolean(telemetry?.ready),
           smartRouting: true,
+          operationalPlanner: true,
+          permissionPolicy: "auto/confirm/blocked",
           voiceRouter: getVoiceRouterStatus(env),
           voiceOrder: [
             "ElevenLabs",
@@ -179,6 +182,7 @@ export default {
       let forwardedRequest = request;
       let routedEnv = env;
       let routing = null;
+      let operationalPlan = null;
 
       try {
         const body = await request.clone().json();
@@ -196,6 +200,12 @@ export default {
           }
         }
 
+        operationalPlan = buildOperationalPlan(body?.message, telemetry);
+        telemetry = {
+          ...telemetry,
+          operationalPlan
+        };
+
         routing = chooseProviderOrder(env, body?.message, telemetry);
         routedEnv = withSmartProviderOrder(env, routing);
         forwardedRequest = requestWithJsonBody(request, {
@@ -210,12 +220,19 @@ export default {
 
       try {
         const data = await response.json();
-        if (!data?.text) return json({ ...data, smartRouting: routing });
+        if (!data?.text) {
+          return json({
+            ...data,
+            smartRouting: routing,
+            operationalPlan
+          });
+        }
 
         if (data.audioBase64) {
           return json({
             ...data,
             smartRouting: routing,
+            operationalPlan,
             voice: {
               provider: "elevenlabs",
               providerLabel: "ElevenLabs",
@@ -232,6 +249,7 @@ export default {
           return json({
             ...data,
             smartRouting: routing,
+            operationalPlan,
             audioBase64: voice.audioBase64,
             audioMimeType: voice.audioMimeType,
             voice: {
@@ -252,6 +270,7 @@ export default {
         return json({
           ...data,
           smartRouting: routing,
+          operationalPlan,
           voice: {
             provider: null,
             providerLabel: null,
