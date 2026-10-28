@@ -1,5 +1,5 @@
 import API_CONFIG from "../config.js";
-import "./stark-bootstrap.js?v=4.8.0";
+import "./stark-bootstrap.js?v=4.9.0";
 
 const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
 const OUTPUT = document.getElementById("output-box");
