@@ -78,8 +78,8 @@ function normalizeArticle(article, index) {
 async function fetchGdeltArticles(message, limit = 6) {
   const subject = stripNewsBoilerplate(message);
   const query = subject
-    ? `${subject} sourcelang:Portuguese`
-    : `sourcelang:Portuguese`;
+    ? `${subject} sourcecountry:Brazil`
+    : `sourcecountry:Brazil`;
 
   const params = new URLSearchParams({
     query,
