@@ -8,6 +8,8 @@ const opticalPanel = document.querySelector(".optical-panel");
 
 let selector = null;
 let deviceCountLabel = null;
+let lastDeviceCount = null;
+let recovering = false;
 
 function log(message, alert = false) {
   if (!output || !message) return;
@@ -22,7 +24,7 @@ function log(message, alert = false) {
 function state(label, permission = null, alert = false) {
   if (cameraState) {
     cameraState.textContent = label;
-    cameraState.style.color = alert ? "#ff7a45" : "";
+    cameraState.style.color = alert ? "#ff7a45" : (label === "ONLINE" ? "var(--green)" : "");
   }
   if (permissionState && permission) permissionState.textContent = permission;
   if (telemetryCamera && label !== "ONLINE") telemetryCamera.textContent = "OFF";
@@ -52,8 +54,8 @@ function ensureDeviceUi() {
 
   selector.addEventListener("change", async () => {
     try {
-      await window.ULTRON_CAMERA_CONTROLLER?.selectDevice?.(selector.value);
       log(selector.value ? "Dispositivo de câmera selecionado manualmente." : "Seleção automática de câmera ativada.");
+      await window.ULTRON_CAMERA_CONTROLLER?.selectDevice?.(selector.value);
     } catch (error) {
       log(error?.message || String(error), true);
     }
@@ -95,8 +97,45 @@ function updateDeviceUi(detail = {}) {
   }
 }
 
+async function recoverWhenAvailable(detail = {}) {
+  const controller = window.ULTRON_CAMERA_CONTROLLER;
+  const devices = Array.isArray(detail.devices) ? detail.devices : [];
+  const count = devices.length;
+  if (!controller || count <= 0 || controller.isActive?.() || recovering) return;
+
+  const permission = await controller.permissionState?.().catch(() => "unknown") || "unknown";
+
+  if (permission === "granted") {
+    state("AVAILABLE", "GRANTED", false);
+    recovering = true;
+    log(`Câmera disponível: ${devices[0]?.label || "videoinput"}. Tentando recuperar o sensor óptico automaticamente.`);
+    try {
+      await controller.start({ restored: true });
+    } catch (error) {
+      log(`A câmera apareceu, mas não pôde ser iniciada automaticamente: ${error?.message || error}`, true);
+    } finally {
+      recovering = false;
+    }
+    return;
+  }
+
+  if (permission === "denied") {
+    state("AVAILABLE", "BLOCKED", true);
+    log(`Hardware detectado (${devices[0]?.label || "câmera"}), porém a permissão do navegador está bloqueada. Libere a câmera para este site e pressione MOSTRAR TELA.`, true);
+    return;
+  }
+
+  state("AVAILABLE", permission === "prompt" ? "ASK" : "AVAILABLE", false);
+  log(`Hardware detectado (${devices[0]?.label || "câmera"}). Pressione MOSTRAR TELA para concluir a autorização.`);
+}
+
 window.addEventListener("ultron:camera-devices", (event) => {
-  updateDeviceUi(event.detail || {});
+  const detail = event.detail || {};
+  updateDeviceUi(detail);
+  const count = Number(detail.count ?? detail.devices?.length ?? 0);
+  const becameAvailable = detail.becameAvailable === true || (lastDeviceCount === 0 && count > 0);
+  lastDeviceCount = count;
+  if (becameAvailable) recoverWhenAvailable(detail).catch(() => {});
 });
 
 window.addEventListener("ultron:camera-error", (event) => {
@@ -107,7 +146,7 @@ window.addEventListener("ultron:camera-error", (event) => {
   let label = "ERROR";
   let permission = "ERROR";
   if (name === "NotAllowedError" || name === "SecurityError") {
-    label = "BLOCKED";
+    label = Number(detail.deviceCount || 0) > 0 ? "AVAILABLE" : "BLOCKED";
     permission = "BLOCKED";
   } else if (name === "NotReadableError") {
     label = "BUSY";
@@ -125,7 +164,7 @@ window.addEventListener("ultron:camera-error", (event) => {
   });
   log(message, true);
   if (name === "NotFoundError" && Number(detail.deviceCount || 0) === 0) {
-    log("DIAGNÓSTICO: o navegador está reportando 0 dispositivos videoinput. O próximo passo é verificar Windows/driver ou conectar uma webcam/virtual camera.", true);
+    log("DIAGNÓSTICO: o navegador está reportando 0 dispositivos videoinput. O Ultron ficará aguardando um dispositivo aparecer.", true);
   }
 });
 
@@ -133,7 +172,6 @@ window.addEventListener("ultron:camera-stream", (event) => {
   const detail = event.detail || {};
   if (detail.active) {
     state("ONLINE", "GRANTED", false);
-    if (cameraState) cameraState.style.color = "var(--green)";
     if (telemetryCamera) telemetryCamera.textContent = "ON";
     if (visionModule) {
       visionModule.textContent = "ACTIVE";
@@ -157,10 +195,14 @@ async function syncPermission() {
   try {
     const permission = await navigator.permissions.query({ name: "camera" });
     if (permissionState) permissionState.textContent = String(permission.state || "UNKNOWN").toUpperCase();
-    permission.onchange = () => {
+    permission.onchange = async () => {
       if (permissionState) permissionState.textContent = String(permission.state || "UNKNOWN").toUpperCase();
       if (permission.state === "granted") {
-        window.ULTRON_CAMERA_CONTROLLER?.restoreIfGranted?.().catch(() => {});
+        const controller = window.ULTRON_CAMERA_CONTROLLER;
+        const devices = await controller?.refreshDevices?.({ announce: true }).catch(() => []) || [];
+        if (devices.length && !controller?.isActive?.()) {
+          controller.start({ restored: true }).catch(() => {});
+        }
       }
     };
   } catch {}
