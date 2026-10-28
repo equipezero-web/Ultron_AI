@@ -29,12 +29,16 @@ if (stage && video) {
   let smoothY = 0;
   let hasSmoothPoint = false;
   let pinchDown = false;
-  let lastPinchAt = 0;
+  let pinchStartedAt = 0;
+  let pinchStartPoint = null;
+  let pinchMoved = false;
+  let longPinTriggered = false;
   let openPalmFrames = 0;
   let closedFrames = 0;
   let lastGesture = 'None';
   let lastConfidence = 0;
   let lastTarget = null;
+  let lastZoomLevel = 0;
   let delegate = 'unknown';
 
   function log(message, alert = false) {
@@ -56,6 +60,13 @@ if (stage && video) {
     );
   }
 
+  function handSpan(landmarks = []) {
+    if (!landmarks.length) return 0;
+    const xs = landmarks.map((point) => Number(point.x || 0));
+    const ys = landmarks.map((point) => Number(point.y || 0));
+    return Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys));
+  }
+
   async function buildRecognizer() {
     if (recognizer || loading) return recognizer;
     loading = true;
@@ -70,10 +81,7 @@ if (stage && video) {
       for (const candidate of ['GPU', 'CPU']) {
         try {
           recognizer = await GestureRecognizer.createFromOptions(vision, {
-            baseOptions: {
-              modelAssetPath: GESTURE_MODEL,
-              delegate: candidate
-            },
+            baseOptions: { modelAssetPath: GESTURE_MODEL, delegate: candidate },
             runningMode: 'VIDEO',
             numHands: 1,
             minHandDetectionConfidence: 0.55,
@@ -100,28 +108,29 @@ if (stage && video) {
     }
   }
 
-  function showCursor(localX, localY, pinching = false) {
+  function showCursor(localX, localY, pinching = false, dragging = false) {
     cursor.classList.add('visible');
     cursor.classList.toggle('pinching', pinching);
+    cursor.classList.toggle('dragging', dragging);
     cursor.style.setProperty('--hand-x', `${localX}px`);
     cursor.style.setProperty('--hand-y', `${localY}px`);
-    if (!pinching) {
-      cursor.style.transform = `translate3d(${localX}px,${localY}px,0) scale(.72)`;
-    } else {
-      cursor.style.removeProperty('transform');
-    }
+    if (!pinching) cursor.style.transform = `translate3d(${localX}px,${localY}px,0) scale(.72)`;
+    else cursor.style.removeProperty('transform');
   }
 
   function hideCursor() {
-    cursor.classList.remove('visible', 'pinching');
+    cursor.classList.remove('visible', 'pinching', 'dragging');
     cursor.style.transform = 'translate3d(-9999px,-9999px,0) scale(.72)';
     window.ULTRON_STARK_MESH?.clearFocus?.();
     lastTarget = null;
   }
 
-  function setZoom(active) {
-    window.ULTRON_STARK_MESH?.zoom?.(active);
-    status.classList.toggle('open', active);
+  function setZoomLevel(level) {
+    const next = Math.max(0, Math.min(2, Number(level) || 0));
+    if (next === lastZoomLevel) return;
+    lastZoomLevel = next;
+    window.ULTRON_STARK_MESH?.setZoomLevel?.(next);
+    status.classList.toggle('open', next > 0);
   }
 
   function stagePoint(landmark) {
@@ -146,6 +155,32 @@ if (stage && video) {
     };
   }
 
+  function releasePinch(point) {
+    if (!pinchDown) return;
+    const elapsed = performance.now() - pinchStartedAt;
+    const dragResult = window.ULTRON_STARK_MESH?.endDrag?.({ persist: true }) || { moved: false };
+    const targetLabel = lastTarget?.label || dragResult.label || null;
+
+    if (dragResult.moved || pinchMoved) {
+      if (targetLabel) log(`${targetLabel}: componente reposicionado.`);
+    } else if (!longPinTriggered && elapsed < 760 && targetLabel && lastZoomLevel === 2) {
+      if (window.ULTRON_STARK_MESH?.openFocused?.()) {
+        navigator.vibrate?.(24);
+        log(`Pinça rápida: ${targetLabel} aberto.`);
+        window.dispatchEvent(new CustomEvent('ultron:camera-hand-select', {
+          detail: { label: targetLabel, gesture: 'pinch-click' }
+        }));
+      }
+    }
+
+    pinchDown = false;
+    pinchStartedAt = 0;
+    pinchStartPoint = point || null;
+    pinchMoved = false;
+    longPinTriggered = false;
+    cursor.classList.remove('dragging');
+  }
+
   function handleResult(result) {
     const landmarks = result?.landmarks?.[0];
     const gesture = result?.gestures?.[0]?.[0];
@@ -154,11 +189,11 @@ if (stage && video) {
       closedFrames += 1;
       openPalmFrames = Math.max(0, openPalmFrames - 1);
       if (closedFrames > 3) {
-        setZoom(false);
+        releasePinch();
+        setZoomLevel(0);
         hideCursor();
         status.textContent = 'HAND TRACKING // SEARCHING';
         status.classList.remove('pinch');
-        pinchDown = false;
         hasSmoothPoint = false;
       }
       return;
@@ -177,64 +212,84 @@ if (stage && video) {
     const palmWidth = Math.max(0.025, distance(indexMcp, pinkyMcp));
     const pinchRatio = distance(indexTip, thumbTip) / palmWidth;
     const pinching = pinchRatio < 0.42;
-
+    const span = handSpan(landmarks);
     const point = stagePoint(indexTip);
-    showCursor(point.localX, point.localY, pinching);
 
-    if (category === 'Open_Palm' && confidence >= 0.55) {
-      openPalmFrames = Math.min(8, openPalmFrames + 1);
-    } else {
-      openPalmFrames = Math.max(0, openPalmFrames - 1);
-    }
+    if (category === 'Open_Palm' && confidence >= 0.55) openPalmFrames = Math.min(8, openPalmFrames + 1);
+    else openPalmFrames = Math.max(0, openPalmFrames - 1);
 
-    const zoomed = openPalmFrames >= 2 || window.ULTRON_STARK_MESH?.zoomed;
-    if (openPalmFrames >= 2) setZoom(true);
+    let desiredZoom = lastZoomLevel;
     if (category === 'Closed_Fist' && confidence >= 0.55) {
       openPalmFrames = 0;
-      setZoom(false);
+      desiredZoom = 0;
+    } else if (openPalmFrames >= 2) {
+      desiredZoom = (span >= 0.34 || palmWidth >= 0.15) ? 2 : 1;
+    } else if (!pinching && openPalmFrames === 0 && category === 'None') {
+      desiredZoom = Math.max(0, lastZoomLevel - 1);
     }
+    setZoomLevel(desiredZoom);
 
-    if (zoomed || pinching) {
+    if (!pinchDown && lastZoomLevel > 0) {
       lastTarget = window.ULTRON_STARK_MESH?.focusAtViewport?.(
         point.clientX,
         point.clientY,
-        zoomed ? 92 : 70
+        lastZoomLevel === 2 ? 94 : 72
       ) || null;
     }
 
+    const now = performance.now();
+    if (pinching && !pinchDown && lastZoomLevel === 2) {
+      pinchDown = true;
+      pinchStartedAt = now;
+      pinchStartPoint = { ...point };
+      pinchMoved = false;
+      longPinTriggered = false;
+    }
+
+    if (pinching && pinchDown) {
+      const movement = pinchStartPoint
+        ? Math.hypot(point.clientX - pinchStartPoint.clientX, point.clientY - pinchStartPoint.clientY)
+        : 0;
+
+      if (movement > 14 && !window.ULTRON_STARK_MESH?.dragging && lastTarget) {
+        window.ULTRON_STARK_MESH?.beginDrag?.(pinchStartPoint.clientX, pinchStartPoint.clientY);
+      }
+
+      if (window.ULTRON_STARK_MESH?.dragging) {
+        pinchMoved = Boolean(window.ULTRON_STARK_MESH?.dragTo?.(point.clientX, point.clientY)) || pinchMoved;
+      }
+
+      if (!pinchMoved && !longPinTriggered && now - pinchStartedAt > 900 && lastTarget) {
+        longPinTriggered = true;
+        const pinned = window.ULTRON_STARK_MESH?.togglePinned?.(lastTarget.label);
+        navigator.vibrate?.(pinned ? [25, 30, 25] : 18);
+        log(`${lastTarget.label}: ${pinned ? 'fixado' : 'liberado'} no espaço neural.`);
+      }
+    }
+
+    if (!pinching && pinchDown) releasePinch(point);
+
+    showCursor(point.localX, point.localY, pinching, Boolean(window.ULTRON_STARK_MESH?.dragging));
     status.classList.add('visible');
     status.classList.toggle('pinch', pinching);
-    if (pinching) {
-      status.textContent = lastTarget
-        ? `PINCH // ${lastTarget.label}`
-        : 'PINCH // SEM ALVO';
-    } else if (openPalmFrames >= 2) {
-      status.textContent = lastTarget
-        ? `OPEN PALM // ZOOM // ${lastTarget.label}`
-        : 'OPEN PALM // ZOOM';
+
+    if (window.ULTRON_STARK_MESH?.dragging) {
+      status.textContent = `DRAG // ${window.ULTRON_STARK_MESH.dragging}`;
+    } else if (pinching) {
+      status.textContent = lastTarget ? `PINCH // ${lastTarget.label}` : 'PINCH // SEM ALVO';
+    } else if (lastZoomLevel === 2) {
+      status.textContent = lastTarget ? `ZOOM 2 // ${lastTarget.label}` : 'ZOOM 2 // COMPONENTES';
+    } else if (lastZoomLevel === 1) {
+      status.textContent = 'ZOOM 1 // NÚCLEOS 3D';
     } else {
       status.textContent = `HAND // ${category.toUpperCase()}`;
     }
 
-    const now = performance.now();
-    if (pinching && !pinchDown && now - lastPinchAt > 650) {
-      pinchDown = true;
-      lastPinchAt = now;
-      if (lastTarget && window.ULTRON_STARK_MESH?.openFocused?.()) {
-        navigator.vibrate?.(24);
-        log(`Pinça detectada: ${lastTarget.label} aberto.`);
-        window.dispatchEvent(new CustomEvent('ultron:camera-hand-select', {
-          detail: {
-            label: lastTarget.label,
-            gesture: 'pinch',
-            confidence,
-            pinchRatio
-          }
-        }));
-      }
-    }
-
-    if (!pinching) pinchDown = false;
+    const normalizedLandmarks = landmarks.map((pointItem) => ({
+      x: Number(pointItem.x || 0),
+      y: Number(pointItem.y || 0),
+      z: Number(pointItem.z || 0)
+    }));
 
     window.dispatchEvent(new CustomEvent('ultron:camera-hand', {
       detail: {
@@ -245,7 +300,10 @@ if (stage && video) {
         target: lastTarget?.label || null,
         x: point.localX,
         y: point.localY,
-        zoomed: Boolean(window.ULTRON_STARK_MESH?.zoomed)
+        zoomLevel: lastZoomLevel,
+        handSpan: span,
+        palmWidth,
+        landmarks: normalizedLandmarks
       }
     }));
   }
@@ -260,10 +318,8 @@ if (stage && video) {
     lastInferenceAt = now;
     lastVideoTime = video.currentTime;
     running = true;
-
     try {
-      const result = recognizer.recognizeForVideo(video, now);
-      handleResult(result);
+      handleResult(recognizer.recognizeForVideo(video, now));
     } catch (error) {
       console.warn('ULTRON hand tracking:', error);
     } finally {
@@ -285,7 +341,8 @@ if (stage && video) {
 
   function disable() {
     enabled = false;
-    setZoom(false);
+    releasePinch();
+    setZoomLevel(0);
     hideCursor();
     status.textContent = 'HAND TRACKING // STANDBY';
     status.classList.remove('open', 'pinch');
@@ -325,7 +382,8 @@ if (stage && video) {
         gesture: lastGesture,
         confidence: lastConfidence,
         target: lastTarget?.label || null,
-        zoomed: Boolean(window.ULTRON_STARK_MESH?.zoomed)
+        zoomLevel: lastZoomLevel,
+        dragging: window.ULTRON_STARK_MESH?.dragging || null
       };
     }
   };
