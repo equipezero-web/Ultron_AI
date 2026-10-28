@@ -1,3 +1,5 @@
+import { loadResearchContext } from "./research-context.js";
+
 const GDELT_ENDPOINT = "https://api.gdeltproject.org/api/v2/doc/doc";
 
 function normalizeText(value) {
@@ -130,15 +132,28 @@ function buildContextText(articles) {
   ].join("\n");
 }
 
+async function loadNonNewsVisualContext(message, limit) {
+  const research = await loadResearchContext(message, {
+    limit: Math.max(1, Math.min(4, limit))
+  });
+
+  return {
+    active: false,
+    articles: [],
+    contextText: research.contextText || "",
+    visualContext: research.visualContext || null,
+    error: research.error || null,
+    research: {
+      active: Boolean(research.active),
+      query: research.query || "",
+      resultCount: research.items?.length || 0
+    }
+  };
+}
+
 export async function loadLiveNewsContext(message, { limit = 6 } = {}) {
   if (!isLiveNewsIntent(message)) {
-    return {
-      active: false,
-      articles: [],
-      contextText: "",
-      visualContext: null,
-      error: null
-    };
+    return loadNonNewsVisualContext(message, limit);
   }
 
   try {
@@ -156,7 +171,12 @@ export async function loadLiveNewsContext(message, { limit = 6 } = {}) {
           cards: [],
           caption: ""
         },
-        error: null
+        error: null,
+        research: {
+          active: false,
+          query: "",
+          resultCount: 0
+        }
       };
     }
 
@@ -182,13 +202,19 @@ export async function loadLiveNewsContext(message, { limit = 6 } = {}) {
       contextText: buildContextText(articles),
       visualContext: {
         mode: "news",
+        label: "LIVE NEWS",
         images,
         cards,
         caption: "",
         intervalMs: 6000,
         fetchedAt: new Date().toISOString()
       },
-      error: null
+      error: null,
+      research: {
+        active: false,
+        query: "",
+        resultCount: 0
+      }
     };
   } catch (error) {
     return {
@@ -198,11 +224,17 @@ export async function loadLiveNewsContext(message, { limit = 6 } = {}) {
         "A busca de notícias em tempo real falhou nesta tentativa. Diga ao operador que não foi possível confirmar notícias atuais agora e não invente informações.",
       visualContext: {
         mode: "news",
+        label: "LIVE NEWS",
         images: [],
         cards: [],
         caption: ""
       },
-      error: error?.message || String(error)
+      error: error?.message || String(error),
+      research: {
+        active: false,
+        query: "",
+        resultCount: 0
+      }
     };
   }
 }
