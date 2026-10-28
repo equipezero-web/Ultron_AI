@@ -5,12 +5,11 @@ export class CameraController {
     this.video = video;
     this.onState = onState;
     this.stream = null;
+    this.lastError = null;
 
-    // Só tenta restaurar automaticamente quando o usuário já autorizou antes
-    // e o próprio navegador confirma que a permissão continua concedida.
     setTimeout(() => {
       this.restoreIfGranted().catch(() => {});
-    }, 700);
+    }, 900);
   }
 
   async permissionState() {
@@ -29,45 +28,110 @@ export class CameraController {
   }
 
   async restoreIfGranted() {
-    if (this.stream?.getVideoTracks?.()[0]?.readyState === "live") return true;
+    if (this.isActive()) return true;
     if (!(await this.canAutoStart())) return false;
-    await this.start();
+    await this.start({ restored: true });
     return true;
   }
 
-  async start() {
+  isActive() {
+    return this.stream?.getVideoTracks?.().some((track) => track.readyState === "live") === true;
+  }
+
+  async requestStream() {
+    const candidates = [
+      {
+        video: {
+          facingMode: "user",
+          width: { ideal: 1280 },
+          height: { ideal: 720 },
+          frameRate: { ideal: 30, max: 30 }
+        },
+        audio: false
+      },
+      {
+        video: {
+          facingMode: "user",
+          width: { ideal: 640 },
+          height: { ideal: 480 }
+        },
+        audio: false
+      },
+      { video: true, audio: false }
+    ];
+
+    let lastError = null;
+    for (const constraints of candidates) {
+      try {
+        return await navigator.mediaDevices.getUserMedia(constraints);
+      } catch (error) {
+        lastError = error;
+        const name = String(error?.name || "");
+        if (["NotAllowedError", "SecurityError"].includes(name)) break;
+      }
+    }
+
+    throw lastError || new Error("Não foi possível abrir a câmera.");
+  }
+
+  friendlyError(error) {
+    const name = String(error?.name || "");
+    if (name === "NotAllowedError") return "Permissão da câmera bloqueada no navegador ou sistema.";
+    if (name === "NotFoundError") return "Nenhuma câmera foi encontrada neste dispositivo.";
+    if (name === "NotReadableError") return "A câmera está ocupada por outro aplicativo ou indisponível.";
+    if (name === "OverconstrainedError") return "A câmera não suporta a configuração solicitada.";
+    if (name === "SecurityError") return "O navegador bloqueou o acesso à câmera por segurança.";
+    return String(error?.message || error || "Falha desconhecida da câmera.");
+  }
+
+  async start({ restored = false } = {}) {
     if (!navigator.mediaDevices?.getUserMedia) {
       throw new Error("Câmera indisponível. Use HTTPS ou localhost.");
     }
 
-    const activeTrack = this.stream?.getVideoTracks?.()[0];
-    if (activeTrack?.readyState === "live") {
+    if (this.isActive()) {
       if (this.video.srcObject !== this.stream) this.video.srcObject = this.stream;
       await this.video.play().catch(() => {});
-      this.onState("active", this.stream);
+      this.onState("active", this.stream, { restored });
+      window.dispatchEvent(new CustomEvent("ultron:camera-stream", {
+        detail: { active: true, restored, stream: this.stream }
+      }));
       return this.stream;
     }
 
-    this.stream = await navigator.mediaDevices.getUserMedia({
-      video: {
-        facingMode: "user",
-        width: { ideal: 1280 },
-        height: { ideal: 720 }
-      },
-      audio: false
-    });
-
-    this.video.srcObject = this.stream;
-    await this.video.play();
-    rememberCameraAccepted();
-    this.onState("active", this.stream);
-    return this.stream;
+    try {
+      this.stream = await this.requestStream();
+      this.video.srcObject = this.stream;
+      this.video.muted = true;
+      this.video.playsInline = true;
+      await this.video.play();
+      rememberCameraAccepted();
+      this.lastError = null;
+      this.onState("active", this.stream, { restored });
+      window.dispatchEvent(new CustomEvent("ultron:camera-stream", {
+        detail: { active: true, restored, stream: this.stream }
+      }));
+      return this.stream;
+    } catch (error) {
+      this.lastError = error;
+      this.stream?.getTracks?.().forEach((track) => track.stop());
+      this.stream = null;
+      this.video.srcObject = null;
+      const message = this.friendlyError(error);
+      window.dispatchEvent(new CustomEvent("ultron:camera-error", {
+        detail: { name: error?.name || "CameraError", message }
+      }));
+      throw new Error(message);
+    }
   }
 
   stop() {
-    this.stream?.getTracks().forEach((track) => track.stop());
+    this.stream?.getTracks?.().forEach((track) => track.stop());
     this.stream = null;
     this.video.srcObject = null;
     this.onState("stopped");
+    window.dispatchEvent(new CustomEvent("ultron:camera-stream", {
+      detail: { active: false, restored: false, stream: null }
+    }));
   }
 }
