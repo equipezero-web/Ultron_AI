@@ -66,6 +66,21 @@ function appendPlan(plan) {
   );
 }
 
+function appendResearch(research) {
+  if (!research?.requested) return;
+
+  if (!research.used) {
+    const reason = research.error ? ` // ${research.error}` : "";
+    appendLine(`> [WEB RESEARCH] PESQUISA SOLICITADA, MAS NÃO UTILIZADA${reason}`, true);
+    return;
+  }
+
+  const sourceCount = Number(research.sourceCount || 0);
+  const origin = research.fromCache ? "MEMÓRIA DE PESQUISA" : String(research.provider || "WEB").toUpperCase();
+  const saved = research.savedToMemory ? " // MEMÓRIA: SALVA" : "";
+  appendLine(`> [WEB RESEARCH] ${origin} // ${sourceCount} fonte(s)${saved}`);
+}
+
 function processingEvent(name, detail = {}) {
   window.dispatchEvent(new CustomEvent(name, { detail }));
 }
@@ -100,6 +115,7 @@ window.fetch = async function ultronProviderFetch(input, init = {}) {
       }
 
       lastProviderLabel = data?.providerLabel || data?.provider || "AI";
+      appendResearch(data?.webResearch);
       appendRouting(data?.smartRouting);
       appendPlan(data?.operationalPlan);
       appendSpeed(data?.performance);
