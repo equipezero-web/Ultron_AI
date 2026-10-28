@@ -6,6 +6,7 @@ const ZOOM_DIAGNOSTICS_STYLE_ID = 'ultron-stark-zoom-diagnostics-style';
 const PALM_MATRIX_STYLE_ID = 'ultron-palm-matrix-style';
 const LOCAL_FILES_STYLE_ID = 'ultron-local-files-style';
 const FILE_MESH_STYLE_ID = 'ultron-stark-file-mesh-style';
+const MOBILE_PERF_STYLE_ID = 'ultron-mobile-performance-style';
 
 function loadStyle(id, href) {
   if (document.getElementById(id)) return;
@@ -15,6 +16,9 @@ function loadStyle(id, href) {
   link.href = href;
   document.head.appendChild(link);
 }
+
+loadStyle(MOBILE_PERF_STYLE_ID, 'modules/mobile-performance.css?v=4.11.0');
+await import('./mobile-performance.js?v=4.11.0');
 
 loadStyle(STYLE_ID, 'modules/stark-core.css?v=4.10.0');
 loadStyle(FUNCTIONAL_STYLE_ID, 'modules/stark-functional.css?v=4.10.0');
@@ -30,7 +34,7 @@ await import('./stark-inner-mesh.js?v=4.10.2');
 await import('./neural-input-bus.js?v=4.10.0');
 await import('./stark-advanced.js?v=4.10.0');
 await import('./vision-client.js?v=4.10.1');
-await import('./stark-hand-gesture.js?v=4.10.0');
+await import('./stark-hand-gesture.js?v=4.11.0');
 await import('./stark-camera-preview.js?v=4.10.0');
 await import('./camera-runtime.js?v=4.10.1');
 await import('./stark-zoom-diagnostics.js?v=4.10.0');
@@ -60,6 +64,7 @@ window.addEventListener('ultron:subvocal-command', (event) => {
 
 window.dispatchEvent(new CustomEvent('ultron:stark-bootstrap-ready', {
   detail: {
+    performanceMode: window.ULTRON_PERFORMANCE?.mode || 'full',
     starkCore: Boolean(window.ULTRON_STARK_CORE),
     innerMesh: Boolean(window.ULTRON_STARK_MESH),
     advanced: Boolean(window.ULTRON_STARK_ADVANCED),
