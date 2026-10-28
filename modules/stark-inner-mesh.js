@@ -3,11 +3,20 @@ const vortex = document.querySelector('.stark-vortex');
 const field = document.querySelector('.stark-node-field');
 
 if (stage && vortex && field) {
-  const nodes = [...field.querySelectorAll('.stark-functional-node')];
+  let nodes = [];
   let zoomLevel = 0;
   let focused = null;
   let dragging = null;
   const manualPositions = new Map();
+
+  function currentNodes() {
+    return [...field.querySelectorAll('.stark-functional-node')]
+      .filter((node) => !node.classList.contains('stark-node-hidden'))
+      .filter((node) => {
+        if (vortex.classList.contains('stark-file-mode')) return node.classList.contains('stark-file-node');
+        return !node.classList.contains('stark-file-node');
+      });
+  }
 
   function basePosition(index) {
     const rect = vortex.getBoundingClientRect();
@@ -32,12 +41,23 @@ if (stage && vortex && field) {
     if (persist) manualPositions.set(node.dataset.label, { ...position });
   }
 
-  function layoutInnerNodes() {
+  function layoutInnerNodes({ preserveExisting = false } = {}) {
+    nodes = currentNodes();
     nodes.forEach((node, index) => {
       const saved = manualPositions.get(node.dataset.label);
-      setNodePosition(node, saved || basePosition(index));
+      const hasPosition = node.style.getPropertyValue('--x') && node.style.getPropertyValue('--y');
+      if (!preserveExisting || saved || !hasPosition) {
+        setNodePosition(node, saved || basePosition(index));
+      }
       node.dataset.innerMesh = 'true';
     });
+  }
+
+  function refresh() {
+    clearFocus();
+    nodes = currentNodes();
+    layoutInnerNodes({ preserveExisting: vortex.classList.contains('stark-file-mode') });
+    return nodes.length;
   }
 
   function setZoomLevel(level = 0) {
@@ -49,6 +69,7 @@ if (stage && vortex && field) {
     stage.classList.toggle('stark-hand-zoom', zoomLevel > 0);
     stage.classList.toggle('stark-hand-zoom-full', zoomLevel === 2);
 
+    nodes = currentNodes();
     if (zoomLevel === 0) {
       nodes.forEach((node) => node.classList.remove('hand-target'));
       focused = null;
@@ -60,6 +81,7 @@ if (stage && vortex && field) {
   }
 
   function focusAtViewport(clientX, clientY, maxDistance = 82) {
+    nodes = currentNodes();
     let best = null;
     let bestDistance = Infinity;
 
@@ -78,10 +100,17 @@ if (stage && vortex && field) {
     if (best && bestDistance <= maxDistance) {
       best.classList.add('hand-target');
       focused = best;
-      window.ULTRON_STARK_CORE?.focus?.(best.dataset.label);
+      if (best.classList.contains('stark-file-node')) {
+        window.dispatchEvent(new CustomEvent('ultron:file-mesh-focus', {
+          detail: { label: best.dataset.label, fileId: best.dataset.fileId || null }
+        }));
+      } else {
+        window.ULTRON_STARK_CORE?.focus?.(best.dataset.label);
+      }
       return {
         label: best.dataset.label,
         action: best.dataset.action,
+        fileId: best.dataset.fileId || null,
         distance: bestDistance
       };
     }
@@ -92,7 +121,18 @@ if (stage && vortex && field) {
 
   function openFocused() {
     if (!focused || zoomLevel < 2) return false;
-    return Boolean(window.ULTRON_STARK_CORE?.open?.(focused.dataset.label));
+
+    if (focused.classList.contains('stark-file-node')) {
+      return Boolean(window.ULTRON_FILE_MESH?.openFileNode?.(focused.dataset.fileId || focused.dataset.label));
+    }
+
+    const opened = Boolean(window.ULTRON_STARK_CORE?.open?.(focused.dataset.label));
+    if (opened) {
+      window.dispatchEvent(new CustomEvent('ultron:stark-node', {
+        detail: { label: focused.dataset.label, action: focused.dataset.action || null, source: 'hand' }
+      }));
+    }
+    return opened;
   }
 
   function beginDrag(clientX, clientY) {
@@ -150,6 +190,7 @@ if (stage && vortex && field) {
   }
 
   function togglePinned(label = focused?.dataset?.label) {
+    nodes = currentNodes();
     const node = nodes.find((item) => item.dataset.label === label);
     if (!node) return false;
     node.classList.toggle('is-pinned');
@@ -158,21 +199,23 @@ if (stage && vortex && field) {
 
   function resetPositions() {
     manualPositions.clear();
+    nodes = currentNodes();
     nodes.forEach((node) => node.classList.remove('is-pinned', 'is-dragging'));
     layoutInnerNodes();
   }
 
   function clearFocus() {
     focused = null;
-    nodes.forEach((node) => node.classList.remove('hand-target'));
+    currentNodes().forEach((node) => node.classList.remove('hand-target'));
   }
 
   layoutInnerNodes();
-  const resizeObserver = new ResizeObserver(layoutInnerNodes);
+  const resizeObserver = new ResizeObserver(() => layoutInnerNodes({ preserveExisting: vortex.classList.contains('stark-file-mode') }));
   resizeObserver.observe(vortex);
 
   window.ULTRON_STARK_MESH = {
     layout: layoutInnerNodes,
+    refresh,
     zoom(levelOrActive) {
       setZoomLevel(typeof levelOrActive === 'boolean' ? (levelOrActive ? 2 : 0) : levelOrActive);
     },
