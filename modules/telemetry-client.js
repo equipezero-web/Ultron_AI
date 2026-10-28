@@ -1,4 +1,5 @@
 import API_CONFIG from "../config.js";
+import "./vision-client.js";
 
 const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
 const OUTPUT = document.getElementById("output-box");
