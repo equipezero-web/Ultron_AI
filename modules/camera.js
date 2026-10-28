@@ -5,6 +5,12 @@ export class CameraController {
     this.video = video;
     this.onState = onState;
     this.stream = null;
+
+    // Só tenta restaurar automaticamente quando o usuário já autorizou antes
+    // e o próprio navegador confirma que a permissão continua concedida.
+    setTimeout(() => {
+      this.restoreIfGranted().catch(() => {});
+    }, 700);
   }
 
   async permissionState() {
@@ -20,6 +26,13 @@ export class CameraController {
   async canAutoStart() {
     if (!cameraWasAccepted()) return false;
     return (await this.permissionState()) === "granted";
+  }
+
+  async restoreIfGranted() {
+    if (this.stream?.getVideoTracks?.()[0]?.readyState === "live") return true;
+    if (!(await this.canAutoStart())) return false;
+    await this.start();
+    return true;
   }
 
   async start() {
