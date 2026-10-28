@@ -16,6 +16,13 @@ import android.widget.TextView;
 
 import org.json.JSONObject;
 
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.util.Collections;
+
 public class MainActivity extends Activity {
     private static final String DEFAULT_LG_TV_HOST = "10.0.0.109";
 
@@ -79,7 +86,7 @@ public class MainActivity extends Activity {
 
         TextView tvHelp = new TextView(this);
         tvHelp.setText(
-                "A LG NÃO usa o código de 6 dígitos. IP configurado: 10.0.0.109. Celular e TV devem estar na mesma rede Wi-Fi. Toque em PAREAR LG WEBOS e aceite a autorização que aparecer na tela da TV. Para ligar a TV desligada, salve também o MAC localmente no aparelho."
+                "A LG NÃO usa o código de 6 dígitos. Confira o IP atual da TV antes de parear. Celular e TV devem estar na mesma rede Wi-Fi. Use DIAGNOSTICAR REDE LG para verificar IP e portas 3001/3000. Depois toque em PAREAR LG WEBOS e aceite a autorização na tela da TV."
         );
         tvHelp.setPadding(0, pad / 3, 0, pad / 3);
         root.addView(tvHelp, fullWidth());
@@ -97,6 +104,11 @@ public class MainActivity extends Activity {
         String savedMac = SecureStore.getLgTvMac(this);
         if (savedMac != null && !savedMac.trim().isEmpty()) lgTvMac.setText(savedMac);
         root.addView(lgTvMac, fullWidth());
+
+        Button diagnoseTv = new Button(this);
+        diagnoseTv.setText("DIAGNOSTICAR REDE LG");
+        diagnoseTv.setOnClickListener(v -> diagnoseLgNetwork());
+        root.addView(diagnoseTv, fullWidth());
 
         Button saveWol = new Button(this);
         saveWol.setText("SALVAR WAKE-ON-LAN");
@@ -138,6 +150,71 @@ public class MainActivity extends Activity {
     private boolean isValidMac(String value) {
         String normalized = value == null ? "" : value.trim();
         return normalized.matches("(?i)^([0-9a-f]{2}[:-]){5}[0-9a-f]{2}$");
+    }
+
+    private String getLocalIpv4() {
+        try {
+            for (NetworkInterface networkInterface : Collections.list(NetworkInterface.getNetworkInterfaces())) {
+                if (!networkInterface.isUp() || networkInterface.isLoopback()) continue;
+                for (InetAddress address : Collections.list(networkInterface.getInetAddresses())) {
+                    if (address instanceof Inet4Address && !address.isLoopbackAddress() && address.isSiteLocalAddress()) {
+                        return address.getHostAddress();
+                    }
+                }
+            }
+        } catch (Exception ignored) {}
+        return "indisponível";
+    }
+
+    private boolean same24Subnet(String a, String b) {
+        if (a == null || b == null) return false;
+        String[] aa = a.split("\\.");
+        String[] bb = b.split("\\.");
+        return aa.length == 4 && bb.length == 4 &&
+                aa[0].equals(bb[0]) && aa[1].equals(bb[1]) && aa[2].equals(bb[2]);
+    }
+
+    private boolean canOpenTcp(String host, int port, int timeoutMs) {
+        try (Socket socket = new Socket()) {
+            socket.connect(new InetSocketAddress(host, port), timeoutMs);
+            return true;
+        } catch (Exception ignored) {
+            return false;
+        }
+    }
+
+    private void diagnoseLgNetwork() {
+        String host = lgTvHost.getText().toString().trim();
+        if (host.isEmpty()) {
+            statusView.setText("Informe o IP atual da LG antes do diagnóstico.");
+            return;
+        }
+
+        statusView.setText("Diagnosticando rede local da LG...");
+        new Thread(() -> {
+            String phoneIp = getLocalIpv4();
+            boolean sameSubnet = same24Subnet(phoneIp, host);
+            boolean port3001 = canOpenTcp(host, 3001, 2500);
+            boolean port3000 = canOpenTcp(host, 3000, 2500);
+
+            StringBuilder report = new StringBuilder();
+            report.append("DIAGNÓSTICO LG\n");
+            report.append("Celular: ").append(phoneIp).append("\n");
+            report.append("TV informada: ").append(host).append("\n");
+            report.append("Mesma sub-rede: ").append(sameSubnet ? "SIM" : "NÃO").append("\n");
+            report.append("WSS/3001 (TCP): ").append(port3001 ? "ABERTA" : "SEM RESPOSTA").append("\n");
+            report.append("WS/3000 (TCP): ").append(port3000 ? "ABERTA" : "SEM RESPOSTA").append("\n");
+
+            if (!sameSubnet) {
+                report.append("\nAÇÃO: celular e TV parecem estar em redes diferentes. Conecte ambos ao mesmo Wi-Fi e confira o IP da TV.");
+            } else if (!port3001 && !port3000) {
+                report.append("\nAÇÃO: confira o IP atual na TV e ative TV On with Mobile / Ligar via Wi-Fi. Se o IP estiver certo, o roteador pode estar isolando dispositivos Wi-Fi.");
+            } else {
+                report.append("\nREDE OK: existe uma porta LG acessível. Tente PAREAR LG WEBOS.");
+            }
+
+            runOnUiThread(() -> statusView.setText(report.toString()));
+        }).start();
     }
 
     private void saveWakeOnLan() {
@@ -210,7 +287,7 @@ public class MainActivity extends Activity {
             TvController.Result result = TvController.pairLg(this, host);
             runOnUiThread(() -> {
                 if (result.success) {
-                    statusView.setText("LG webOS pareada com sucesso. O Ultron já pode enviar comandos de TV pelo Mobile Bridge.");
+                    statusView.setText("LG webOS pareada com sucesso. O Ultron já pode enviar comandos de TV pelo Mobile Bridge.\n" + result.payload.toString());
                 } else {
                     statusView.setText("Falha ao parear LG: " + result.payload.optString("error", "erro desconhecido"));
                 }
