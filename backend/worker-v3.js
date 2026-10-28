@@ -15,6 +15,7 @@ import {
   withSmartProviderOrder
 } from "./smart-router.js";
 import { buildOperationalPlan } from "./planner.js";
+import { analyzeVisualFrame } from "./vision-analysis.js";
 
 function corsHeaders() {
   return {
@@ -80,6 +81,16 @@ export default {
       if (!operatorId) return json({ ok: false, error: "Identidade ausente." }, 401);
       const latest = await getLatestTelemetry(env, operatorId);
       return json({ ok: true, latest });
+    }
+
+    if (url.pathname === "/api/vision/analyze" && request.method === "POST") {
+      const body = await readJsonBody(request);
+      const result = await analyzeVisualFrame(env, {
+        imageBase64: body?.imageBase64,
+        mimeType: body?.mimeType,
+        prompt: body?.prompt
+      });
+      return json(result, result?.ok === false ? 400 : 200);
     }
 
     if (url.pathname === "/api/voice" && request.method === "POST") {
@@ -163,6 +174,7 @@ export default {
           smartRouting: true,
           operationalPlanner: true,
           permissionPolicy: "auto/confirm/blocked",
+          visualAnalysis: Boolean(env.GEMINI_API_KEY),
           voiceRouter: getVoiceRouterStatus(env),
           voiceOrder: [
             "ElevenLabs",
