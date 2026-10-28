@@ -10,6 +10,7 @@ let selector = null;
 let deviceCountLabel = null;
 let lastDeviceCount = null;
 let recovering = false;
+let lastTransientLogAt = 0;
 
 function log(message, alert = false) {
   if (!output || !message) return;
@@ -72,6 +73,7 @@ function updateDeviceUi(detail = {}) {
   const devices = Array.isArray(detail.devices) ? detail.devices : [];
   const selected = String(detail.selectedDeviceId || "");
   const previous = selector.value;
+  const transientZero = detail.transientZero === true;
 
   selector.replaceChildren();
   const automatic = document.createElement("option");
@@ -87,7 +89,9 @@ function updateDeviceUi(detail = {}) {
   });
 
   selector.value = selected || previous || "";
-  deviceCountLabel.textContent = `${devices.length} CÂMERA${devices.length === 1 ? "" : "S"}`;
+  deviceCountLabel.textContent = transientZero
+    ? `${devices.length} CÂMERA // DRIVER SYNC`
+    : `${devices.length} CÂMERA${devices.length === 1 ? "" : "S"}`;
   deviceCountLabel.style.color = devices.length ? "#00f0ff" : "#ff7a45";
 
   if (detail.announce) {
@@ -132,10 +136,30 @@ async function recoverWhenAvailable(detail = {}) {
 window.addEventListener("ultron:camera-devices", (event) => {
   const detail = event.detail || {};
   updateDeviceUi(detail);
+
+  if (detail.transientZero === true) {
+    state("SYNCING", String(permissionState?.textContent || "AVAILABLE"), false);
+    const now = Date.now();
+    if (now - lastTransientLogAt > 5000) {
+      lastTransientLogAt = now;
+      log("O driver retornou 0 entradas momentaneamente; mantendo a última VGA Camera conhecida e tentando fallbacks genéricos.");
+    }
+    return;
+  }
+
   const count = Number(detail.count ?? detail.devices?.length ?? 0);
   const becameAvailable = detail.becameAvailable === true || (lastDeviceCount === 0 && count > 0);
   lastDeviceCount = count;
   if (becameAvailable) recoverWhenAvailable(detail).catch(() => {});
+});
+
+window.addEventListener("ultron:camera-transient", () => {
+  state("SYNCING", String(permissionState?.textContent || "AVAILABLE"), false);
+});
+
+window.addEventListener("ultron:camera-fallback", (event) => {
+  const mode = String(event.detail?.mode || "generic").toUpperCase();
+  log(`Device ID exato indisponível; câmera aberta pelo fallback ${mode}.`);
 });
 
 window.addEventListener("ultron:camera-error", (event) => {
@@ -152,8 +176,8 @@ window.addEventListener("ultron:camera-error", (event) => {
     label = "BUSY";
     permission = "GRANTED";
   } else if (name === "NotFoundError") {
-    label = "NO CAMERA";
-    permission = "UNAVAILABLE";
+    label = Number(detail.deviceCount || 0) > 0 ? "AVAILABLE" : "NO CAMERA";
+    permission = Number(detail.deviceCount || 0) > 0 ? "RETRY" : "UNAVAILABLE";
   }
 
   state(label, permission, true);
@@ -164,7 +188,7 @@ window.addEventListener("ultron:camera-error", (event) => {
   });
   log(message, true);
   if (name === "NotFoundError" && Number(detail.deviceCount || 0) === 0) {
-    log("DIAGNÓSTICO: o navegador está reportando 0 dispositivos videoinput. O Ultron ficará aguardando um dispositivo aparecer.", true);
+    log("DIAGNÓSTICO: nenhuma câmera estável foi encontrada após os fallbacks. O Ultron continuará observando o driver.", true);
   }
 });
 
