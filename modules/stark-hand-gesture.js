@@ -41,6 +41,8 @@ if (stage && video) {
   let lastZoomLevel = 0;
   let delegate = 'unknown';
 
+  const perf = () => window.ULTRON_PERFORMANCE?.profile || { handInferenceMs: 78 };
+
   function log(message, alert = false) {
     if (!output) return;
     const line = document.createElement('p');
@@ -62,9 +64,16 @@ if (stage && video) {
 
   function handSpan(landmarks = []) {
     if (!landmarks.length) return 0;
-    const xs = landmarks.map((point) => Number(point.x || 0));
-    const ys = landmarks.map((point) => Number(point.y || 0));
-    return Math.max(Math.max(...xs) - Math.min(...xs), Math.max(...ys) - Math.min(...ys));
+    let minX = 1, maxX = 0, minY = 1, maxY = 0;
+    for (const point of landmarks) {
+      const x = Number(point.x || 0);
+      const y = Number(point.y || 0);
+      if (x < minX) minX = x;
+      if (x > maxX) maxX = x;
+      if (y < minY) minY = y;
+      if (y > maxY) maxY = y;
+    }
+    return Math.max(maxX - minX, maxY - minY);
   }
 
   async function buildRecognizer() {
@@ -76,8 +85,8 @@ if (stage && video) {
     try {
       const { FilesetResolver, GestureRecognizer } = await import(MEDIAPIPE_MODULE);
       const vision = await FilesetResolver.forVisionTasks(MEDIAPIPE_WASM);
-
       let lastError = null;
+
       for (const candidate of ['GPU', 'CPU']) {
         try {
           recognizer = await GestureRecognizer.createFromOptions(vision, {
@@ -97,7 +106,7 @@ if (stage && video) {
 
       if (!recognizer) throw lastError || new Error('Gesture Recognizer indisponível.');
       status.textContent = `HAND TRACKING // ${delegate}`;
-      log(`Rastreamento de mão carregado localmente (${delegate}).`);
+      log(`Rastreamento de mão carregado (${delegate}) // modo ${window.ULTRON_PERFORMANCE?.mode || 'full'}.`);
       return recognizer;
     } catch (error) {
       status.textContent = 'HAND TRACKING // ERROR';
@@ -137,14 +146,15 @@ if (stage && video) {
     const rect = stage.getBoundingClientRect();
     const targetX = (1 - Number(landmark?.x || 0.5)) * rect.width;
     const targetY = Number(landmark?.y || 0.5) * rect.height;
+    const factor = window.ULTRON_PERFORMANCE?.mode === 'lite' ? 0.46 : 0.34;
 
     if (!hasSmoothPoint) {
       smoothX = targetX;
       smoothY = targetY;
       hasSmoothPoint = true;
     } else {
-      smoothX += (targetX - smoothX) * 0.34;
-      smoothY += (targetY - smoothY) * 0.34;
+      smoothX += (targetX - smoothX) * factor;
+      smoothY += (targetY - smoothY) * factor;
     }
 
     return {
@@ -166,7 +176,6 @@ if (stage && video) {
     } else if (!longPinTriggered && elapsed < 760 && targetLabel && lastZoomLevel === 2) {
       if (window.ULTRON_STARK_MESH?.openFocused?.()) {
         navigator.vibrate?.(24);
-        log(`Pinça rápida: ${targetLabel} aberto.`);
         window.dispatchEvent(new CustomEvent('ultron:camera-hand-select', {
           detail: { label: targetLabel, gesture: 'pinch-click' }
         }));
@@ -254,16 +263,13 @@ if (stage && video) {
       if (movement > 14 && !window.ULTRON_STARK_MESH?.dragging && lastTarget) {
         window.ULTRON_STARK_MESH?.beginDrag?.(pinchStartPoint.clientX, pinchStartPoint.clientY);
       }
-
       if (window.ULTRON_STARK_MESH?.dragging) {
         pinchMoved = Boolean(window.ULTRON_STARK_MESH?.dragTo?.(point.clientX, point.clientY)) || pinchMoved;
       }
-
       if (!pinchMoved && !longPinTriggered && now - pinchStartedAt > 900 && lastTarget) {
         longPinTriggered = true;
         const pinned = window.ULTRON_STARK_MESH?.togglePinned?.(lastTarget.label);
         navigator.vibrate?.(pinned ? [25, 30, 25] : 18);
-        log(`${lastTarget.label}: ${pinned ? 'fixado' : 'liberado'} no espaço neural.`);
       }
     }
 
@@ -273,17 +279,11 @@ if (stage && video) {
     status.classList.add('visible');
     status.classList.toggle('pinch', pinching);
 
-    if (window.ULTRON_STARK_MESH?.dragging) {
-      status.textContent = `DRAG // ${window.ULTRON_STARK_MESH.dragging}`;
-    } else if (pinching) {
-      status.textContent = lastTarget ? `PINCH // ${lastTarget.label}` : 'PINCH // SEM ALVO';
-    } else if (lastZoomLevel === 2) {
-      status.textContent = lastTarget ? `ZOOM 2 // ${lastTarget.label}` : 'ZOOM 2 // COMPONENTES';
-    } else if (lastZoomLevel === 1) {
-      status.textContent = 'ZOOM 1 // NÚCLEOS 3D';
-    } else {
-      status.textContent = `HAND // ${category.toUpperCase()}`;
-    }
+    if (window.ULTRON_STARK_MESH?.dragging) status.textContent = `DRAG // ${window.ULTRON_STARK_MESH.dragging}`;
+    else if (pinching) status.textContent = lastTarget ? `PINCH // ${lastTarget.label}` : 'PINCH // SEM ALVO';
+    else if (lastZoomLevel === 2) status.textContent = lastTarget ? `ZOOM 2 // ${lastTarget.label}` : 'ZOOM 2 // COMPONENTES';
+    else if (lastZoomLevel === 1) status.textContent = 'ZOOM 1 // NÚCLEOS 3D';
+    else status.textContent = `HAND // ${category.toUpperCase()}`;
 
     const normalizedLandmarks = landmarks.map((pointItem) => ({
       x: Number(pointItem.x || 0),
@@ -310,9 +310,10 @@ if (stage && video) {
 
   function loop(now = performance.now()) {
     raf = requestAnimationFrame(loop);
-    if (!enabled || !recognizer || running) return;
+    if (document.hidden || !enabled || !recognizer || running) return;
     if (!video.srcObject || video.readyState < 2 || !video.videoWidth) return;
-    if (now - lastInferenceAt < 78) return;
+    const inferenceMs = Math.max(72, Number(perf().handInferenceMs || 78));
+    if (now - lastInferenceAt < inferenceMs) return;
     if (video.currentTime === lastVideoTime) return;
 
     lastInferenceAt = now;
@@ -333,9 +334,8 @@ if (stage && video) {
     if (!instance) return false;
     enabled = true;
     status.classList.add('visible');
-    status.textContent = `HAND TRACKING // ${delegate}`;
+    status.textContent = `HAND TRACKING // ${delegate} // ${window.ULTRON_PERFORMANCE?.mode || 'FULL'}`;
     if (!raf) raf = requestAnimationFrame(loop);
-    window.ULTRON_TELEMETRY?.push?.({ event: 'hand-tracking-enabled' });
     return true;
   }
 
@@ -346,7 +346,6 @@ if (stage && video) {
     hideCursor();
     status.textContent = 'HAND TRACKING // STANDBY';
     status.classList.remove('open', 'pinch');
-    window.ULTRON_TELEMETRY?.push?.({ event: 'hand-tracking-disabled' });
   }
 
   function syncWithCamera() {
@@ -383,7 +382,8 @@ if (stage && video) {
         confidence: lastConfidence,
         target: lastTarget?.label || null,
         zoomLevel: lastZoomLevel,
-        dragging: window.ULTRON_STARK_MESH?.dragging || null
+        dragging: window.ULTRON_STARK_MESH?.dragging || null,
+        inferenceMs: Number(perf().handInferenceMs || 78)
       };
     }
   };
