@@ -44,6 +44,7 @@ public final class TvController {
             result.put("host", host);
             result.put("model", "LG webOS TV UR8750PSA");
             result.put("paired", true);
+            result.put("transport", client.getActiveTransport());
             result.put("system", info);
             return new Result(true, result);
         } catch (Exception error) {
@@ -185,6 +186,7 @@ public final class TvController {
                 try {
                     client = new LgWebOsClient(host, key);
                     client.connectAndRegister();
+                    result.put("transport", client.getActiveTransport());
                     JSONObject response = client.request("ssap://system/turnOff", null);
                     result.put("response", response);
                     result.put("success", true);
@@ -198,6 +200,7 @@ public final class TvController {
 
             client = new LgWebOsClient(host, key);
             String refreshedKey = client.connectAndRegister();
+            result.put("transport", client.getActiveTransport());
             if (!refreshedKey.equals(key)) SecureStore.saveLgTvClientKey(context, refreshedKey);
 
             String uri;
