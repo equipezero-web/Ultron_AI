@@ -1,9 +1,15 @@
 import baseWorker from "./worker-v2.js";
+import { deriveOperatorId } from "./memory.js";
 import {
   generateCloudVoice,
   generateXttsAudio,
   getVoiceRouterStatus
 } from "./voice-router.js";
+import {
+  getLatestTelemetry,
+  ingestTelemetry,
+  telemetryHealth
+} from "./telemetry.js";
 
 function corsHeaders() {
   return {
@@ -33,12 +39,42 @@ function validVoiceText(body) {
   return String(body?.text || "").replace(/\s+/g, " ").trim();
 }
 
+function requestWithJsonBody(request, body) {
+  const headers = new Headers(request.headers);
+  headers.set("Content-Type", "application/json");
+  return new Request(request.url, {
+    method: request.method,
+    headers,
+    body: JSON.stringify(body),
+    redirect: request.redirect
+  });
+}
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
     if (request.method === "OPTIONS") {
       return new Response(null, { status: 204, headers: corsHeaders() });
+    }
+
+    if (url.pathname === "/api/telemetry/ingest" && request.method === "POST") {
+      const body = await readJsonBody(request);
+      const operatorId = await deriveOperatorId(body?.memoryKey);
+      const result = await ingestTelemetry(env, {
+        operatorId,
+        source: body?.source || "web",
+        snapshot: body?.snapshot || {}
+      });
+      return json(result, result?.ok === false ? 400 : 200);
+    }
+
+    if (url.pathname === "/api/telemetry/latest" && request.method === "POST") {
+      const body = await readJsonBody(request);
+      const operatorId = await deriveOperatorId(body?.memoryKey);
+      if (!operatorId) return json({ ok: false, error: "Identidade ausente." }, 401);
+      const latest = await getLatestTelemetry(env, operatorId);
+      return json({ ok: true, latest });
     }
 
     if (url.pathname === "/api/voice" && request.method === "POST") {
@@ -111,9 +147,14 @@ export default {
       const fallbackResponse = response.clone();
 
       try {
-        const data = await response.json();
+        const [data, telemetry] = await Promise.all([
+          response.json(),
+          telemetryHealth(env)
+        ]);
         return json({
           ...data,
+          telemetry,
+          proactiveEngine: Boolean(telemetry?.ready),
           voiceRouter: getVoiceRouterStatus(env),
           voiceOrder: [
             "ElevenLabs",
@@ -130,7 +171,27 @@ export default {
 
     if (url.pathname === "/api/ai" && request.method === "POST") {
       const requestStartedAt = Date.now();
-      const response = await baseWorker.fetch(request, env, ctx);
+      let forwardedRequest = request;
+
+      try {
+        const body = await request.clone().json();
+        const operatorId = await deriveOperatorId(body?.memoryKey);
+        if (operatorId) {
+          const latest = await getLatestTelemetry(env, operatorId);
+          if (latest?.snapshot) {
+            forwardedRequest = requestWithJsonBody(request, {
+              ...body,
+              telemetry: {
+                ...(body?.telemetry || {}),
+                central: latest.snapshot,
+                centralCapturedAt: latest.createdAt || null
+              }
+            });
+          }
+        }
+      } catch {}
+
+      const response = await baseWorker.fetch(forwardedRequest, env, ctx);
       if (!response.ok) return response;
       const fallbackResponse = response.clone();
 
