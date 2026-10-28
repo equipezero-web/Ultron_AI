@@ -30,6 +30,122 @@ async function post(path, payload = {}) {
   return data;
 }
 
+function normalizeSpeech(text) {
+  return String(text || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function hasTvReference(normalized) {
+  return /\b(tv|televisao|televisor|lg)\b/.test(normalized);
+}
+
+function parseTvIntent(text) {
+  const normalized = normalizeSpeech(text);
+  if (!normalized || !hasTvReference(normalized)) return null;
+
+  const hdmi = normalized.match(/\bhdmi\s*([1-4])\b/);
+  if (hdmi) {
+    return {
+      command: "tv.input",
+      payload: { inputId: `HDMI_${hdmi[1]}` },
+      label: `mudar TV para HDMI ${hdmi[1]}`
+    };
+  }
+
+  const volume = normalized.match(/\bvolume(?:\s+da\s+tv)?\s*(?:para|em|no|na|a)?\s*(\d{1,3})\b/);
+  if (volume) {
+    const value = Math.max(0, Math.min(100, Number(volume[1])));
+    return {
+      command: "tv.volume.set",
+      payload: { volume: value },
+      label: `ajustar volume da TV para ${value}`
+    };
+  }
+
+  if (/\b(desligue|desliga|desligar|apague|apagar)\b/.test(normalized)) {
+    return { command: "tv.power.off", payload: {}, label: "desligar a TV" };
+  }
+
+  if (/\b(ligue|liga|ligar|acenda|acender)\b/.test(normalized)) {
+    return { command: "tv.power.on", payload: {}, label: "ligar a TV" };
+  }
+
+  if (/\b(aumente|aumentar|suba|subir)\b.*\bvolume\b|\bvolume\b.*\b(aumente|aumentar|suba|subir)\b/.test(normalized)) {
+    return { command: "tv.volume.up", payload: {}, label: "aumentar o volume da TV" };
+  }
+
+  if (/\b(diminua|diminuir|baixe|baixar)\b.*\bvolume\b|\bvolume\b.*\b(diminua|diminuir|baixe|baixar)\b/.test(normalized)) {
+    return { command: "tv.volume.down", payload: {}, label: "diminuir o volume da TV" };
+  }
+
+  if (/\b(desmute|desmutar)\b|\b(tire|tirar|retire|retirar)\b.*\b(mudo|silencio)\b/.test(normalized)) {
+    return { command: "tv.mute.toggle", payload: { mute: false }, label: "tirar a TV do mudo" };
+  }
+
+  if (/\b(mute|mutar|mudo|silencio|silencie)\b/.test(normalized)) {
+    return { command: "tv.mute.toggle", payload: { mute: true }, label: "colocar a TV no mudo" };
+  }
+
+  if (/\b(pause|pausar)\b/.test(normalized)) {
+    return { command: "tv.media.pause", payload: {}, label: "pausar reprodução na TV" };
+  }
+
+  if (/\b(retome|retomar|continue|continuar|play|reproduza|reproduzir)\b/.test(normalized)) {
+    return { command: "tv.media.play", payload: {}, label: "continuar reprodução na TV" };
+  }
+
+  if (/\b(pare|parar|stop)\b/.test(normalized)) {
+    return { command: "tv.media.stop", payload: {}, label: "parar reprodução na TV" };
+  }
+
+  if (/\b(proximo|proxima|suba|aumente)\b.*\bcanal\b|\bcanal\b.*\b(proximo|proxima|suba|aumente)\b/.test(normalized)) {
+    return { command: "tv.channel.up", payload: {}, label: "avançar canal da TV" };
+  }
+
+  if (/\b(anterior|volte|desca|diminua)\b.*\bcanal\b|\bcanal\b.*\b(anterior|volte|desca|diminua)\b/.test(normalized)) {
+    return { command: "tv.channel.down", payload: {}, label: "voltar canal da TV" };
+  }
+
+  if (/\b(abra|abrir|inicie|iniciar)\b.*\byoutube\b|\byoutube\b.*\b(abra|abrir|inicie|iniciar)\b/.test(normalized)) {
+    return {
+      command: "tv.launch",
+      payload: { appId: "youtube.leanback.v4" },
+      label: "abrir YouTube na TV"
+    };
+  }
+
+  if (/\b(status|estado|online|conectada|conectado)\b/.test(normalized)) {
+    return { command: "tv.status", payload: {}, label: "consultar status da TV" };
+  }
+
+  return null;
+}
+
+function bridgeDeviceScore(device) {
+  let score = 0;
+  if (device?.status === "active") score += 20;
+  if (device?.deviceType === "mobile") score += 50;
+  if (Array.isArray(device?.capabilities) && device.capabilities.some((item) => String(item).startsWith("tv."))) {
+    score += 30;
+  }
+  const lastSeen = Date.parse(device?.lastSeenAt || "") || 0;
+  return { score, lastSeen };
+}
+
+function selectTvBridgeDevice(devices = []) {
+  return [...devices]
+    .filter((device) => device?.deviceType === "mobile" && device?.status !== "disabled")
+    .sort((a, b) => {
+      const sa = bridgeDeviceScore(a);
+      const sb = bridgeDeviceScore(b);
+      return sb.score - sa.score || sb.lastSeen - sa.lastSeen;
+    })[0] || null;
+}
+
 export async function startPairing(deviceType, deviceName) {
   const key = memoryKey();
   if (!key) throw new Error("Identidade de memória ainda não carregada.");
@@ -64,6 +180,61 @@ export async function sendCommand(deviceId, command, payload = {}) {
     command,
     payload
   });
+}
+
+export async function routeNaturalLanguage(text, parsedIntent = null) {
+  const intent = parsedIntent || parseTvIntent(text);
+  if (!intent) return { handled: false };
+
+  try {
+    outputLine(`INTENÇÃO TV: ${intent.label}.`);
+    const devices = await listDevices();
+    const device = selectTvBridgeDevice(devices);
+
+    if (!device) {
+      throw new Error("Nenhum Mobile Bridge pareado foi encontrado para controlar a TV.");
+    }
+
+    const result = await sendCommand(device.id, intent.command, intent.payload);
+    outputLine(`COMANDO ENVIADO: ${intent.command} → ${device.deviceName || "Mobile Bridge"}.`);
+    if (result?.commandId) {
+      outputLine(`FILA: ${result.commandId.slice(0, 8)} // aguardando execução pelo celular.`);
+    }
+
+    return { handled: true, ok: true, intent, device, result };
+  } catch (error) {
+    outputLine(`ERRO TV: ${error.message}`, true);
+    return { handled: true, ok: false, intent, error };
+  }
+}
+
+function bindNaturalLanguageInterception() {
+  const input = document.getElementById("command-input");
+  const sendButton = document.getElementById("btn-send");
+  if (!input || !sendButton) return;
+
+  sendButton.addEventListener("click", (event) => {
+    const raw = input.value.trim();
+    const intent = parseTvIntent(raw);
+    if (!intent) return;
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    input.value = "";
+    routeNaturalLanguage(raw, intent);
+  }, true);
+
+  input.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter" || event.shiftKey) return;
+    const raw = input.value.trim();
+    const intent = parseTvIntent(raw);
+    if (!intent) return;
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    input.value = "";
+    routeNaturalLanguage(raw, intent);
+  }, true);
 }
 
 async function refreshBridgeState() {
@@ -101,8 +272,11 @@ window.ULTRON_DEVICES = {
   startPairing,
   listDevices,
   sendCommand,
+  routeNaturalLanguage,
+  parseTvIntent,
   refreshBridgeState
 };
 
+bindNaturalLanguageInterception();
 refreshBridgeState();
 setInterval(refreshBridgeState, 30000);
