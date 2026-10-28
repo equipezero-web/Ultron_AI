@@ -1,5 +1,5 @@
 import API_CONFIG from "../config.js";
-import "./stark-bootstrap.js?v=4.6.0";
+import "./stark-bootstrap.js?v=4.8.0";
 
 const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
 const OUTPUT = document.getElementById("output-box");
@@ -73,6 +73,8 @@ export async function buildTelemetrySnapshot(extra = {}) {
   const memory = window.ULTRON_MEMORY;
   const handGestures = window.ULTRON_HAND_GESTURES?.state || null;
   const starkState = window.ULTRON_STARK_CORE?.state || null;
+  const mesh = window.ULTRON_STARK_MESH;
+  const cameraPreview = window.ULTRON_CAMERA_PREVIEW?.state || null;
 
   return {
     capturedAt: new Date().toISOString(),
@@ -94,7 +96,8 @@ export async function buildTelemetrySnapshot(extra = {}) {
       state: readText("camera-state", "UNKNOWN"),
       telemetry: readText("telemetry-camera", "OFF"),
       resolution: readText("camera-resolution", "NO SIGNAL"),
-      fps: readText("fps", "-- FPS")
+      fps: readText("fps", "-- FPS"),
+      preview: cameraPreview
     },
     motion: {
       level: readText("motion-value", "0%"),
@@ -112,8 +115,10 @@ export async function buildTelemetrySnapshot(extra = {}) {
     neuralControl: {
       handTracking: handGestures,
       starkCore: starkState,
-      focusedNode: window.ULTRON_STARK_MESH?.focused || null,
-      handZoom: Boolean(window.ULTRON_STARK_MESH?.zoomed)
+      focusedNode: mesh?.focused || null,
+      zoomLevel: Number(mesh?.zoomLevel || 0),
+      handZoom: Boolean(mesh?.zoomed),
+      draggingNode: mesh?.dragging || null
     },
     modules: {
       memory: readText("memory-module", "UNKNOWN"),
@@ -203,6 +208,10 @@ function schedule() {
 window.addEventListener("online", () => pushTelemetry({ event: "browser-online" }));
 window.addEventListener("offline", () => pushTelemetry({ event: "browser-offline" }));
 document.addEventListener("visibilitychange", () => pushTelemetry({ event: "visibility-change" }));
+window.addEventListener("ultron:stark-zoom-level", (event) => pushTelemetry({
+  event: "stark-zoom-level",
+  zoomLevel: Number(event.detail?.level || 0)
+}));
 
 window.ULTRON_TELEMETRY = {
   push: pushTelemetry,
