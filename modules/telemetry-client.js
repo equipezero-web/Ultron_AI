@@ -1,16 +1,19 @@
 import API_CONFIG from "../config.js";
-import "./stark-bootstrap.js?v=4.10.0";
+import "./stark-bootstrap.js?v=4.11.0";
 
 const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
 const OUTPUT = document.getElementById("output-box");
 const SETTINGS_KEY = "ultron_proactive_settings_v1";
-const PUSH_INTERVAL_MS = 15000;
 
 let timer = null;
 let sending = false;
 let lastSnapshot = null;
 let lastServerState = "unknown";
 let batteryState = null;
+
+function pushIntervalMs() {
+  return Number(window.ULTRON_PERFORMANCE?.profile?.telemetryIntervalMs || 15000);
+}
 
 function readText(id, fallback = "") {
   return String(document.getElementById(id)?.textContent || fallback).trim();
@@ -29,10 +32,7 @@ function log(message, severity = "info") {
 function loadSettings() {
   try {
     const parsed = JSON.parse(localStorage.getItem(SETTINGS_KEY) || "{}");
-    return {
-      enabled: parsed.enabled !== false,
-      speak: parsed.speak === true
-    };
+    return { enabled: parsed.enabled !== false, speak: parsed.speak === true };
   } catch {
     return { enabled: true, speak: false };
   }
@@ -80,6 +80,10 @@ export async function buildTelemetrySnapshot(extra = {}) {
 
   return {
     capturedAt: new Date().toISOString(),
+    performance: {
+      mode: window.ULTRON_PERFORMANCE?.mode || "full",
+      profile: window.ULTRON_PERFORMANCE?.profile || null
+    },
     connection: networkSnapshot(),
     page: {
       visibility: document.visibilityState,
@@ -156,17 +160,11 @@ async function postSnapshot(snapshot) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     cache: "no-store",
-    body: JSON.stringify({
-      memoryKey: key,
-      source: "web",
-      snapshot
-    })
+    body: JSON.stringify({ memoryKey: key, source: "web", snapshot })
   });
 
   const data = await response.json().catch(() => ({}));
-  if (!response.ok || data?.ok === false) {
-    throw new Error(data?.error || `HTTP ${response.status}`);
-  }
+  if (!response.ok || data?.ok === false) throw new Error(data?.error || `HTTP ${response.status}`);
   return data;
 }
 
@@ -182,18 +180,14 @@ function handleAlerts(alerts = []) {
     window.dispatchEvent(new CustomEvent("ultron:proactive-alert", { detail: alert }));
 
     if (settings.speak && ["warning", "critical"].includes(severity)) {
-      window.ULTRON_VOICE_OUTPUT?.speak?.(`Atenção. ${message}`, {
-        reason: "proactive",
-        announce: false
-      });
+      window.ULTRON_VOICE_OUTPUT?.speak?.(`Atenção. ${message}`, { reason: "proactive", announce: false });
     }
   }
 }
 
 export async function pushTelemetry(extra = {}) {
-  if (sending) return null;
+  if (sending || document.hidden) return null;
   sending = true;
-
   try {
     const snapshot = await buildTelemetrySnapshot(extra);
     lastSnapshot = snapshot;
@@ -212,12 +206,15 @@ export async function pushTelemetry(extra = {}) {
 
 function schedule() {
   if (timer) clearInterval(timer);
-  timer = setInterval(() => pushTelemetry(), PUSH_INTERVAL_MS);
+  timer = setInterval(() => pushTelemetry(), pushIntervalMs());
 }
 
 window.addEventListener("online", () => pushTelemetry({ event: "browser-online" }));
 window.addEventListener("offline", () => pushTelemetry({ event: "browser-offline" }));
-document.addEventListener("visibilitychange", () => pushTelemetry({ event: "visibility-change" }));
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) pushTelemetry({ event: "visibility-change" });
+});
+window.addEventListener("ultron:performance-mode", () => schedule());
 window.addEventListener("ultron:stark-zoom-level", (event) => pushTelemetry({
   event: "stark-zoom-level",
   zoomLevel: Number(event.detail?.level || 0)
@@ -226,8 +223,6 @@ window.addEventListener("ultron:local-rag-context", (event) => pushTelemetry({
   event: "local-rag-context",
   localRag: event.detail || null
 }));
-window.addEventListener("ultron:palm-push", () => pushTelemetry({ event: "palm-push" }));
-window.addEventListener("ultron:palm-fist-anchor", () => pushTelemetry({ event: "palm-fist-anchor" }));
 
 window.ULTRON_TELEMETRY = {
   push: pushTelemetry,
@@ -237,15 +232,9 @@ window.ULTRON_TELEMETRY = {
     saveSettings(settings);
     return settings;
   },
-  get settings() {
-    return loadSettings();
-  },
-  get lastSnapshot() {
-    return lastSnapshot;
-  },
-  get serverState() {
-    return lastServerState;
-  }
+  get settings() { return loadSettings(); },
+  get lastSnapshot() { return lastSnapshot; },
+  get serverState() { return lastServerState; }
 };
 
 refreshBattery();
