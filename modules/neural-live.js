@@ -3,7 +3,7 @@ const audio = document.getElementById("voice-audio");
 const output = document.getElementById("output-box");
 
 if (stage) {
-  const cssHref = "modules/neural-live.css?v=4.2.0";
+  const cssHref = "modules/neural-live.css?v=4.3.0";
   if (!document.querySelector(`link[href^="modules/neural-live.css"]`)) {
     const link = document.createElement("link");
     link.rel = "stylesheet";
@@ -44,6 +44,11 @@ if (stage) {
 
   captionWrap.appendChild(caption);
   stage.appendChild(captionWrap);
+
+  const cardsWrap = document.createElement("div");
+  cardsWrap.className = "neural-context-cards";
+  cardsWrap.setAttribute("aria-label", "Contexto visual da resposta");
+  stage.appendChild(cardsWrap);
 
   let visualItems = [];
   let visualIndex = 0;
@@ -121,6 +126,63 @@ if (stage) {
     if (visualItems.length > 1) {
       visualTimer = setInterval(swapVisual, Math.max(3200, intervalMs));
     }
+  }
+
+  function formatContextTime(value) {
+    if (!value) return "AGORA";
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "RECENTE";
+
+    return new Intl.DateTimeFormat("pt-BR", {
+      day: "2-digit",
+      month: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit"
+    }).format(date);
+  }
+
+  function renderCards(cards = [], mode = "context") {
+    cardsWrap.innerHTML = "";
+    const safeCards = Array.isArray(cards) ? cards.slice(0, 4) : [];
+
+    if (!safeCards.length) {
+      cardsWrap.classList.remove("visible");
+      stage.classList.remove("has-context-cards");
+      return;
+    }
+
+    safeCards.forEach((item, index) => {
+      const card = document.createElement(item?.url ? "a" : "article");
+      card.className = "neural-context-card";
+
+      if (item?.url) {
+        card.href = String(item.url);
+        card.target = "_blank";
+        card.rel = "noopener noreferrer";
+      }
+
+      const indexNode = document.createElement("span");
+      indexNode.className = "context-card-index";
+      indexNode.textContent = String(index + 1).padStart(2, "0");
+
+      const body = document.createElement("div");
+      body.className = "context-card-body";
+
+      const title = document.createElement("strong");
+      title.textContent = String(item?.title || "Contexto");
+
+      const meta = document.createElement("small");
+      const source = String(item?.source || mode || "ULTRON").toUpperCase();
+      meta.textContent = `${source} // ${formatContextTime(item?.publishedAt)}`;
+
+      body.append(title, meta);
+      card.append(indexNode, body);
+      cardsWrap.appendChild(card);
+    });
+
+    stage.dataset.visualMode = String(mode || "context");
+    stage.classList.add("has-context-cards");
+    requestAnimationFrame(() => cardsWrap.classList.add("visible"));
   }
 
   function cleanAssistantText(raw) {
@@ -246,6 +308,7 @@ if (stage) {
   window.addEventListener("ultron:visual-context", (event) => {
     const detail = event?.detail || {};
     if (Array.isArray(detail.images)) setVisuals(detail.images, detail);
+    renderCards(detail.cards || [], detail.mode || "context");
     if (detail.caption || detail.text) {
       manualCaptionText = String(detail.caption || detail.text || "").trim();
       if (stage.classList.contains("is-speaking")) {
@@ -257,6 +320,12 @@ if (stage) {
   window.ULTRON_VISUAL_PANEL = {
     setImages: setVisuals,
     clearImages: () => setVisuals([]),
+    setCards(cards, mode = "context") {
+      renderCards(cards, mode);
+    },
+    clearCards() {
+      renderCards([]);
+    },
     setCaption(text) {
       manualCaptionText = String(text || "").trim();
       if (manualCaptionText) showCaptionChunk(manualCaptionText);
@@ -266,8 +335,16 @@ if (stage) {
       manualCaptionText = String(text || "").trim();
       syncCaptionToSpeech(manualCaptionText || latestAssistantText());
     },
-    showContext({ images = [], text = "", caption: captionText = "", intervalMs } = {}) {
+    showContext({
+      images = [],
+      cards = [],
+      mode = "context",
+      text = "",
+      caption: captionText = "",
+      intervalMs
+    } = {}) {
       setVisuals(images, { intervalMs });
+      renderCards(cards, mode);
       manualCaptionText = String(captionText || text || "").trim();
       if (manualCaptionText && stage.classList.contains("is-speaking")) {
         syncCaptionToSpeech(manualCaptionText);
