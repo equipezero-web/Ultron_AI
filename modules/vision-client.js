@@ -2,6 +2,8 @@ import API_CONFIG from "../config.js";
 
 const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
 const output = document.getElementById("output-box");
+let cameraUnavailable = false;
+let lastUnavailableLog = 0;
 
 function log(message, alert = false) {
   if (!output) return;
@@ -11,6 +13,18 @@ function log(message, alert = false) {
   output.appendChild(line);
   output.scrollTop = output.scrollHeight;
 }
+
+window.addEventListener("ultron:camera-error", (event) => {
+  if (String(event.detail?.name || "") === "NotFoundError") cameraUnavailable = true;
+});
+
+window.addEventListener("ultron:camera-devices", (event) => {
+  if (Number(event.detail?.count || 0) > 0) cameraUnavailable = false;
+});
+
+window.addEventListener("ultron:camera-stream", (event) => {
+  if (event.detail?.active) cameraUnavailable = false;
+});
 
 function waitForVideo(video, timeoutMs = 9000) {
   if (video?.readyState >= 2 && video.videoWidth > 0 && video.videoHeight > 0) {
@@ -55,6 +69,25 @@ function captureFrame(video) {
   };
 }
 
+async function ensureCameraAvailable() {
+  const controller = window.ULTRON_CAMERA_CONTROLLER;
+  if (!controller) return { ok: false, reason: "controller" };
+
+  const devices = await controller.refreshDevices?.().catch(() => []) || [];
+  if (!devices.length) {
+    cameraUnavailable = true;
+    const now = Date.now();
+    if (now - lastUnavailableLog > 15000) {
+      lastUnavailableLog = now;
+      log("Visão em espera: 0 câmeras detectadas. Conecte/habilite uma câmera; o Ultron retomará quando um videoinput aparecer.", true);
+    }
+    return { ok: false, reason: "no-camera" };
+  }
+
+  cameraUnavailable = false;
+  return { ok: true, devices };
+}
+
 export async function analyzeCurrentVision(prompt = "") {
   const video = document.getElementById("webcam");
   if (!video || !API_BASE) {
@@ -62,17 +95,29 @@ export async function analyzeCurrentVision(prompt = "") {
     return null;
   }
 
+  if (cameraUnavailable) {
+    const availability = await ensureCameraAvailable();
+    if (!availability.ok) return null;
+  }
+
   if (!(video.readyState >= 2 && video.videoWidth > 0)) {
-    const activate = document.getElementById("btn-camera");
-    if (activate) {
-      log("Ativando a câmera para capturar um frame autorizado...");
-      activate.click();
+    const availability = await ensureCameraAvailable();
+    if (!availability.ok) return null;
+
+    try {
+      log(`Ativando a câmera (${availability.devices.length} dispositivo(s) disponível(is)) para capturar um frame autorizado...`);
+      await window.ULTRON_CAMERA_CONTROLLER?.start?.();
+    } catch (error) {
+      if (String(error?.name || "") !== "NotFoundError") {
+        log(`Não foi possível iniciar a câmera: ${error?.message || error}`, true);
+      }
+      return null;
     }
   }
 
   const ready = await waitForVideo(video);
   if (!ready) {
-    log("Não foi possível obter um frame da câmera. Verifique a permissão.", true);
+    log("A câmera foi iniciada, mas nenhum frame ficou disponível a tempo.", true);
     return null;
   }
 
@@ -120,5 +165,8 @@ function installButton() {
 installButton();
 
 window.ULTRON_VISION = {
-  analyze: analyzeCurrentVision
+  analyze: analyzeCurrentVision,
+  get waitingForCamera() {
+    return cameraUnavailable;
+  }
 };
