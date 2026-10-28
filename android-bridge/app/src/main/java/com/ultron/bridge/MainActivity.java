@@ -25,6 +25,9 @@ import java.net.Socket;
 import java.util.Collections;
 
 public class MainActivity extends Activity {
+    public static final String ACTION_OPEN_REMOTE_MIC = "com.ultron.bridge.OPEN_REMOTE_MIC";
+    public static final String EXTRA_REQUEST_MIC = "requestMic";
+
     private static final String DEFAULT_LG_TV_HOST = "10.0.0.109";
 
     private TextView statusView;
@@ -38,6 +41,28 @@ public class MainActivity extends Activity {
         setContentView(buildUi());
         requestNotificationPermission();
         refreshStatus();
+        handleLaunchIntent(getIntent());
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        handleLaunchIntent(intent);
+    }
+
+    private void handleLaunchIntent(Intent intent) {
+        if (intent == null) return;
+
+        boolean remoteMicRequest =
+                ACTION_OPEN_REMOTE_MIC.equals(intent.getAction()) ||
+                intent.getBooleanExtra(EXTRA_REQUEST_MIC, false);
+
+        if (!remoteMicRequest) return;
+
+        intent.setAction(null);
+        intent.removeExtra(EXTRA_REQUEST_MIC);
+        openRemoteMicrophone();
     }
 
     private ScrollView buildUi() {
@@ -56,7 +81,7 @@ public class MainActivity extends Activity {
         description.setText(
                 "PASSO 1 — No painel web do Ultron, toque em PAREAR CELULAR. O código de 6 dígitos aparece no terminal do Ultron, NÃO na TV. Digite esse código abaixo.\n\n" +
                 "PASSO 2 — Toque em INICIAR BRIDGE para manter este celular conectado ao Ultron Cloud.\n\n" +
-                "MICROFONE — Se a solicitação enviada pelo notebook não aparecer como notificação, toque em USAR ESTE CELULAR COMO MICROFONE. O Android pedirá a autorização diretamente.\n\n" +
+                "MICROFONE — Ao tocar na solicitação do notebook, o app abrirá automaticamente a tela do microfone remoto. Se preferir, use USAR ESTE CELULAR COMO MICROFONE.\n\n" +
                 "TV — Depois de parear o celular, configure sua LG webOS mais abaixo. A TV mostrará apenas uma solicitação de autorização para aceitar com o controle remoto."
         );
         description.setTextSize(16);
@@ -298,7 +323,7 @@ public class MainActivity extends Activity {
         startBridge();
 
         Intent intent = new Intent(this, RemoteMicActivity.class);
-        intent.putExtra("requestMic", true);
+        intent.putExtra(EXTRA_REQUEST_MIC, true);
         startActivity(intent);
     }
 
