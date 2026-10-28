@@ -77,24 +77,19 @@ function normalizeArticle(article, index) {
   };
 }
 
-async function fetchGdeltArticles(message, limit = 6) {
-  const subject = stripNewsBoilerplate(message);
-  const query = subject
-    ? `${subject} sourcecountry:Brazil`
-    : `sourcecountry:Brazil`;
-
+async function runGdeltQuery(query, { limit = 6, timespan = "24h", sort = "HybridRel" } = {}) {
   const params = new URLSearchParams({
     query,
     mode: "ArtList",
-    maxrecords: String(Math.max(3, Math.min(10, limit))),
+    maxrecords: String(Math.max(3, Math.min(20, limit))),
     format: "json",
-    sort: "HybridRel",
-    timespan: "24h"
+    sort,
+    timespan
   });
 
   const response = await fetch(`${GDELT_ENDPOINT}?${params.toString()}`, {
     headers: {
-      "User-Agent": "UltronAI/1.0",
+      "User-Agent": "UltronAI/1.1",
       "Accept": "application/json"
     }
   });
@@ -108,8 +103,75 @@ async function fetchGdeltArticles(message, limit = 6) {
 
   return articles
     .map(normalizeArticle)
-    .filter(Boolean)
-    .slice(0, limit);
+    .filter(Boolean);
+}
+
+function dedupeArticles(items, limit) {
+  const seenUrls = new Set();
+  const seenTitles = new Set();
+  const output = [];
+
+  for (const article of items) {
+    const urlKey = String(article?.url || "").replace(/[#?].*$/, "").toLowerCase();
+    const titleKey = normalizeText(article?.title || "");
+    if (!urlKey || !titleKey) continue;
+    if (seenUrls.has(urlKey) || seenTitles.has(titleKey)) continue;
+
+    seenUrls.add(urlKey);
+    seenTitles.add(titleKey);
+    output.push({ ...article, id: `news-${output.length + 1}` });
+    if (output.length >= limit) break;
+  }
+
+  return output;
+}
+
+async function fetchGdeltArticles(message, limit = 6) {
+  const subject = stripNewsBoilerplate(message);
+  const attempts = [];
+
+  const queryPlan = subject
+    ? [
+        { query: `${subject} sourcecountry:Brazil`, timespan: "24h", label: "brasil-24h" },
+        { query: subject, timespan: "48h", label: "tema-global-48h" },
+        { query: `${subject} (Brazil OR Brasil)`, timespan: "72h", label: "tema-brasil-72h" }
+      ]
+    : [
+        { query: `sourcecountry:Brazil`, timespan: "24h", label: "brasil-24h" },
+        { query: `(Brazil OR Brasil)`, timespan: "48h", label: "brasil-global-48h" },
+        { query: `(Brazil OR Brasil)`, timespan: "72h", label: "brasil-global-72h" }
+      ];
+
+  const collected = [];
+
+  for (const step of queryPlan) {
+    try {
+      const articles = await runGdeltQuery(step.query, {
+        limit: Math.max(limit * 2, 8),
+        timespan: step.timespan,
+        sort: "HybridRel"
+      });
+      attempts.push({ label: step.label, ok: true, count: articles.length });
+      collected.push(...articles);
+
+      const unique = dedupeArticles(collected, limit);
+      if (unique.length >= Math.min(3, limit)) {
+        return { articles: unique, attempts };
+      }
+    } catch (error) {
+      attempts.push({
+        label: step.label,
+        ok: false,
+        count: 0,
+        error: String(error?.message || error).slice(0, 180)
+      });
+    }
+  }
+
+  return {
+    articles: dedupeArticles(collected, limit),
+    attempts
+  };
 }
 
 function buildContextText(articles) {
@@ -157,14 +219,15 @@ export async function loadLiveNewsContext(message, { limit = 6 } = {}) {
   }
 
   try {
-    const articles = await fetchGdeltArticles(message, limit);
+    const result = await fetchGdeltArticles(message, limit);
+    const articles = result.articles;
 
     if (!articles.length) {
       return {
         active: true,
         articles: [],
         contextText:
-          "A busca de notícias em tempo real foi executada, mas não retornou resultados confiáveis. Informe isso ao operador e evite inventar notícias.",
+          "A busca de notícias em tempo real executou múltiplas tentativas, mas ainda não retornou resultados confiáveis. Informe isso ao operador e evite inventar notícias.",
         visualContext: {
           mode: "news",
           images: [],
@@ -172,6 +235,7 @@ export async function loadLiveNewsContext(message, { limit = 6 } = {}) {
           caption: ""
         },
         error: null,
+        attempts: result.attempts,
         research: {
           active: false,
           query: "",
@@ -210,6 +274,7 @@ export async function loadLiveNewsContext(message, { limit = 6 } = {}) {
         fetchedAt: new Date().toISOString()
       },
       error: null,
+      attempts: result.attempts,
       research: {
         active: false,
         query: "",
@@ -230,6 +295,7 @@ export async function loadLiveNewsContext(message, { limit = 6 } = {}) {
         caption: ""
       },
       error: error?.message || String(error),
+      attempts: [],
       research: {
         active: false,
         query: "",
