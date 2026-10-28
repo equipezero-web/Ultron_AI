@@ -1,5 +1,6 @@
 package com.ultron.bridge;
 
+import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -7,6 +8,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.IBinder;
 
@@ -93,9 +95,19 @@ public class BridgeService extends Service {
                     break;
 
                 case "notification.push":
+                    String action = payload.optString("action", "generic");
                     success = showRemoteNotification(payload);
                     result.put("delivered", success);
-                    result.put("action", payload.optString("action", "generic"));
+                    result.put("action", action);
+
+                    if ("microphone.request".equals(action) && !success) {
+                        publishMicrophoneStatus(
+                                deviceId,
+                                secret,
+                                "blocked",
+                                "A solicitação chegou ao celular, mas as notificações do Ultron estão bloqueadas. Abra o app e toque em USAR ESTE CELULAR COMO MICROFONE ou libere as notificações."
+                        );
+                    }
                     break;
 
                 case "app.open":
@@ -131,6 +143,47 @@ public class BridgeService extends Service {
         } catch (Exception ignored) {}
     }
 
+    private void publishMicrophoneStatus(
+            String deviceId,
+            String secret,
+            String state,
+            String detail
+    ) {
+        try {
+            JSONObject payload = new JSONObject();
+            payload.put("state", state);
+            payload.put("detail", detail);
+            BridgeApi.sendEvent(
+                    deviceId,
+                    secret,
+                    "microphone.status",
+                    payload
+            );
+        } catch (Exception ignored) {}
+    }
+
+    private boolean notificationsAllowed(NotificationManager manager, String channelId) {
+        if (manager == null) return false;
+
+        if (Build.VERSION.SDK_INT >= 33 &&
+                checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            return false;
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && !manager.areNotificationsEnabled()) {
+            return false;
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = manager.getNotificationChannel(channelId);
+            if (channel != null && channel.getImportance() == NotificationManager.IMPORTANCE_NONE) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     private boolean showRemoteNotification(JSONObject payload) {
         String action = payload.optString("action", "generic");
 
@@ -150,6 +203,11 @@ public class BridgeService extends Service {
         if (manager == null) return false;
 
         boolean microphoneRequest = "microphone.request".equals(action);
+        String channelId = microphoneRequest ? MIC_CHANNEL_ID : CHANNEL_ID;
+
+        if (!notificationsAllowed(manager, channelId)) {
+            return false;
+        }
 
         String title = microphoneRequest
                 ? "Ultron quer usar o microfone deste celular"
@@ -173,8 +231,6 @@ public class BridgeService extends Service {
                 openIntent,
                 PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT
         );
-
-        String channelId = microphoneRequest ? MIC_CHANNEL_ID : CHANNEL_ID;
 
         Notification.Builder builder = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
                 ? new Notification.Builder(this, channelId)
