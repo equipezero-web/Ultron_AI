@@ -1,78 +1,119 @@
 .stark-functional-node[data-inner-mesh="true"] {
   left: 50%;
   top: 50%;
-  width: 14px;
-  height: 14px;
-  margin: -7px;
-  opacity: .58;
-  background: rgba(0,240,255,.16);
-  border-color: rgba(0,240,255,.7);
-  box-shadow: 0 0 10px rgba(0,240,255,.68), inset 0 0 6px rgba(255,255,255,.16);
+  width: 5px;
+  height: 5px;
+  margin: -2.5px;
+  opacity: .74;
+  background: #00f0ff;
+  border-color: rgba(255,255,255,.72);
+  box-shadow: 0 0 7px rgba(0,240,255,.9), 0 0 16px rgba(0,240,255,.42);
   transition:
-    width .22s ease,
-    height .22s ease,
-    margin .22s ease,
+    width .24s ease,
+    height .24s ease,
+    margin .24s ease,
     opacity .22s ease,
     box-shadow .22s ease,
     background .22s ease,
-    transform .16s ease;
+    transform .12s ease;
 }
 
-.stark-functional-node[data-inner-mesh="true"] .stark-node-icon {
-  font-size: 8px;
-  opacity: .38;
-}
-
-.stark-functional-node[data-inner-mesh="true"]::after {
-  top: 24px;
+.stark-functional-node[data-inner-mesh="true"]::before {
   opacity: 0;
+  transform: scale(.25);
+  transition: opacity .22s ease, transform .22s ease;
 }
 
-.stark-vortex.hand-zoom {
+.stark-functional-node[data-inner-mesh="true"] .stark-node-icon,
+.stark-functional-node[data-inner-mesh="true"]::after {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Nível 1: o ponto vira um pequeno círculo 3D, ainda sem abrir os componentes. */
+.stark-vortex[data-hand-zoom-level="1"] {
   transform:
     translate(-50%, -50%)
     rotateX(var(--tilt-x, 0deg))
     rotateY(var(--tilt-y, 0deg))
-    scale(1.42) !important;
+    scale(1.18) !important;
   transition: transform .28s cubic-bezier(.2,.8,.2,1);
 }
 
-.stark-vortex.hand-zoom .stark-functional-node[data-inner-mesh="true"] {
-  width: 28px;
-  height: 28px;
-  margin: -14px;
-  opacity: .94;
-  background: rgba(0,28,40,.86);
-  border-color: rgba(0,240,255,.92);
+.stark-vortex[data-hand-zoom-level="1"] .stark-functional-node[data-inner-mesh="true"] {
+  width: 14px;
+  height: 14px;
+  margin: -7px;
+  opacity: .9;
+  background:
+    radial-gradient(circle at 34% 28%, rgba(255,255,255,.72), transparent 18%),
+    radial-gradient(circle at center, rgba(0,240,255,.3), rgba(0,18,30,.92) 72%);
+  border-color: rgba(0,240,255,.94);
   box-shadow:
-    0 0 11px rgba(0,240,255,.88),
-    0 0 26px rgba(0,240,255,.28),
-    inset 0 0 9px rgba(0,240,255,.15);
+    0 0 9px rgba(0,240,255,.95),
+    0 0 22px rgba(0,240,255,.34),
+    inset -3px -4px 8px rgba(0,0,0,.45),
+    inset 3px 3px 6px rgba(255,255,255,.12);
 }
 
-.stark-vortex.hand-zoom .stark-functional-node[data-inner-mesh="true"] .stark-node-icon {
+.stark-vortex[data-hand-zoom-level="1"] .stark-functional-node[data-inner-mesh="true"]::before {
+  opacity: .65;
+  transform: scale(.62);
+}
+
+/* Nível 2: zoom total, com ícone, rótulo e interação completa. */
+.stark-vortex[data-hand-zoom-level="2"] {
+  transform:
+    translate(-50%, -50%)
+    rotateX(var(--tilt-x, 0deg))
+    rotateY(var(--tilt-y, 0deg))
+    scale(1.55) !important;
+  transition: transform .3s cubic-bezier(.2,.8,.2,1);
+}
+
+.stark-vortex[data-hand-zoom-level="2"] .stark-functional-node[data-inner-mesh="true"] {
+  width: 29px;
+  height: 29px;
+  margin: -14.5px;
+  opacity: .98;
+  background:
+    radial-gradient(circle at 36% 30%, rgba(255,255,255,.34), transparent 24%),
+    rgba(0,28,40,.9);
+  border-color: rgba(0,240,255,.96);
+  box-shadow:
+    0 0 11px rgba(0,240,255,.9),
+    0 0 30px rgba(0,240,255,.31),
+    inset 0 0 10px rgba(0,240,255,.16);
+}
+
+.stark-vortex[data-hand-zoom-level="2"] .stark-functional-node[data-inner-mesh="true"]::before {
+  opacity: .9;
+  transform: scale(1);
+}
+
+.stark-vortex[data-hand-zoom-level="2"] .stark-functional-node[data-inner-mesh="true"] .stark-node-icon {
   font-size: 12px;
-  opacity: .94;
+  opacity: .96;
 }
 
-.stark-vortex.hand-zoom .stark-functional-node[data-inner-mesh="true"]::after {
-  top: 34px;
-  opacity: .72;
+.stark-vortex[data-hand-zoom-level="2"] .stark-functional-node[data-inner-mesh="true"]::after {
+  top: 35px;
+  opacity: .76;
 }
 
 .stark-functional-node.hand-target,
 .stark-functional-node.hand-target:hover,
 .stark-functional-node.hand-target.is-focused {
-  width: 34px !important;
-  height: 34px !important;
-  margin: -17px !important;
+  width: 35px !important;
+  height: 35px !important;
+  margin: -17.5px !important;
   opacity: 1 !important;
   border-color: #fff !important;
-  background: rgba(255,255,255,.95) !important;
+  background: rgba(255,255,255,.96) !important;
   box-shadow:
     0 0 10px #fff,
-    0 0 34px rgba(0,240,255,.95),
-    0 0 58px rgba(0,240,255,.42) !important;
+    0 0 36px rgba(0,240,255,.96),
+    0 0 62px rgba(0,240,255,.45) !important;
 }
 
 .stark-functional-node.hand-target .stark-node-icon {
@@ -84,6 +125,23 @@
 .stark-functional-node.hand-target::after {
   color: #fff !important;
   opacity: 1 !important;
+}
+
+.stark-functional-node.is-dragging {
+  z-index: 40;
+  border-color: #ffb27a !important;
+  box-shadow: 0 0 12px #ff5500, 0 0 38px rgba(255,85,0,.65) !important;
+  transition: none !important;
+}
+
+.stark-functional-node.is-pinned::before {
+  border-color: rgba(255,85,0,.85) !important;
+  border-style: solid;
+  animation-duration: 1.4s;
+}
+
+.stark-functional-node.is-pinned::after {
+  color: #ffb28b !important;
 }
 
 .stark-hand-cursor {
@@ -117,10 +175,7 @@
 
 .stark-hand-cursor::before { width: 44px; height: 1px; }
 .stark-hand-cursor::after { width: 1px; height: 44px; }
-
-.stark-hand-cursor.visible {
-  opacity: .92;
-}
+.stark-hand-cursor.visible { opacity: .92; }
 
 .stark-hand-cursor.pinching {
   border-color: #ff5500;
@@ -129,6 +184,14 @@
     0 0 28px rgba(255,85,0,.72),
     inset 0 0 10px rgba(255,85,0,.3);
   transform: translate3d(var(--hand-x),var(--hand-y),0) scale(.52) !important;
+}
+
+.stark-hand-cursor.dragging {
+  width: 38px;
+  height: 38px;
+  margin: -19px;
+  border-style: dashed;
+  animation: stark-hand-drag-spin .75s linear infinite;
 }
 
 .stark-hand-status {
@@ -157,30 +220,24 @@
   color: rgba(255,255,255,.82);
 }
 
-.stark-panel-open .stark-vortex.hand-zoom {
+.stark-panel-open .stark-vortex[data-hand-zoom-level="2"] {
   transform:
     translate(-62%, -50%)
     rotateX(var(--tilt-x,0deg))
     rotateY(var(--tilt-y,0deg))
-    scale(1.18) !important;
+    scale(1.24) !important;
 }
 
+@keyframes stark-hand-drag-spin { to { transform: translate3d(var(--hand-x),var(--hand-y),0) scale(.62) rotate(360deg); } }
+
 @media (max-width: 650px) {
-  .stark-vortex.hand-zoom {
-    transform:
-      translate(-50%, -56%)
-      rotateX(var(--tilt-x,0deg))
-      rotateY(var(--tilt-y,0deg))
-      scale(1.2) !important;
+  .stark-vortex[data-hand-zoom-level="1"] {
+    transform: translate(-50%, -54%) rotateX(var(--tilt-x,0deg)) rotateY(var(--tilt-y,0deg)) scale(1.08) !important;
   }
-
-  .stark-functional-node[data-inner-mesh="true"] {
-    width: 12px;
-    height: 12px;
-    margin: -6px;
+  .stark-vortex[data-hand-zoom-level="2"] {
+    transform: translate(-50%, -56%) rotateX(var(--tilt-x,0deg)) rotateY(var(--tilt-y,0deg)) scale(1.25) !important;
   }
-
-  .stark-vortex.hand-zoom .stark-functional-node[data-inner-mesh="true"] {
+  .stark-vortex[data-hand-zoom-level="2"] .stark-functional-node[data-inner-mesh="true"] {
     width: 24px;
     height: 24px;
     margin: -12px;
