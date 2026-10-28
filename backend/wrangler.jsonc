@@ -2,7 +2,7 @@
   // backend/wrangler.jsonc
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "ultron-backend",
-  "main": "worker-v2.js",
+  "main": "worker-v3.js",
   "compatibility_date": "2026-10-01",
   "workers_dev": true,
   "keep_vars": true,
@@ -13,7 +13,10 @@
     "GROQ_MODEL": "openai/gpt-oss-20b",
     "OPENROUTER_MODEL": "openrouter/free",
     "CLOUDFLARE_AI_MODEL": "@cf/meta/llama-3.1-8b-instruct-fp8-fast",
-    "COHERE_MODEL": "command-a-plus-05-2026"
+    "COHERE_MODEL": "command-a-plus-05-2026",
+    "GOOGLE_TTS_NEURAL2_VOICE": "pt-BR-Neural2-B",
+    "GOOGLE_TTS_WAVENET_VOICE": "pt-BR-Wavenet-B",
+    "GOOGLE_TTS_SPEAKING_RATE": "0.96"
   },
 
   "ai": {
