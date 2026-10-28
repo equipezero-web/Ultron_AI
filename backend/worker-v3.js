@@ -10,6 +10,10 @@ import {
   ingestTelemetry,
   telemetryHealth
 } from "./telemetry.js";
+import {
+  chooseProviderOrder,
+  withSmartProviderOrder
+} from "./smart-router.js";
 
 function corsHeaders() {
   return {
@@ -155,6 +159,7 @@ export default {
           ...data,
           telemetry,
           proactiveEngine: Boolean(telemetry?.ready),
+          smartRouting: true,
           voiceRouter: getVoiceRouterStatus(env),
           voiceOrder: [
             "ElevenLabs",
@@ -172,36 +177,45 @@ export default {
     if (url.pathname === "/api/ai" && request.method === "POST") {
       const requestStartedAt = Date.now();
       let forwardedRequest = request;
+      let routedEnv = env;
+      let routing = null;
 
       try {
         const body = await request.clone().json();
         const operatorId = await deriveOperatorId(body?.memoryKey);
+        let telemetry = body?.telemetry || {};
+
         if (operatorId) {
           const latest = await getLatestTelemetry(env, operatorId);
           if (latest?.snapshot) {
-            forwardedRequest = requestWithJsonBody(request, {
-              ...body,
-              telemetry: {
-                ...(body?.telemetry || {}),
-                central: latest.snapshot,
-                centralCapturedAt: latest.createdAt || null
-              }
-            });
+            telemetry = {
+              ...telemetry,
+              central: latest.snapshot,
+              centralCapturedAt: latest.createdAt || null
+            };
           }
         }
+
+        routing = chooseProviderOrder(env, body?.message, telemetry);
+        routedEnv = withSmartProviderOrder(env, routing);
+        forwardedRequest = requestWithJsonBody(request, {
+          ...body,
+          telemetry
+        });
       } catch {}
 
-      const response = await baseWorker.fetch(forwardedRequest, env, ctx);
+      const response = await baseWorker.fetch(forwardedRequest, routedEnv, ctx);
       if (!response.ok) return response;
       const fallbackResponse = response.clone();
 
       try {
         const data = await response.json();
-        if (!data?.text) return json(data);
+        if (!data?.text) return json({ ...data, smartRouting: routing });
 
         if (data.audioBase64) {
           return json({
             ...data,
+            smartRouting: routing,
             voice: {
               provider: "elevenlabs",
               providerLabel: "ElevenLabs",
@@ -217,6 +231,7 @@ export default {
         if (voice.audioBase64) {
           return json({
             ...data,
+            smartRouting: routing,
             audioBase64: voice.audioBase64,
             audioMimeType: voice.audioMimeType,
             voice: {
@@ -236,6 +251,7 @@ export default {
 
         return json({
           ...data,
+          smartRouting: routing,
           voice: {
             provider: null,
             providerLabel: null,
