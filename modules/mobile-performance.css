@@ -1,0 +1,51 @@
+html[data-ultron-performance="balanced"] .hud-glow,
+html[data-ultron-performance="lite"] .hud-glow{filter:none!important;opacity:.045!important;transform:scale(.72)}
+
+html[data-ultron-performance="balanced"] .hud-frame,
+html[data-ultron-performance="balanced"] .hud-panel,
+html[data-ultron-performance="lite"] .hud-frame,
+html[data-ultron-performance="lite"] .hud-panel{box-shadow:0 0 14px rgba(34,211,238,.055),inset 0 0 16px rgba(34,211,238,.015)!important}
+
+html[data-ultron-performance="balanced"] .stark-holo-panel,
+html[data-ultron-performance="balanced"] .stark-functional-node,
+html[data-ultron-performance="lite"] .stark-holo-panel,
+html[data-ultron-performance="lite"] .stark-functional-node{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+
+html[data-ultron-performance="balanced"] .voice-wave i{animation-duration:1.8s!important;box-shadow:none!important}
+html[data-ultron-performance="balanced"] .brand-ring,
+html[data-ultron-performance="balanced"] .mic-orbit::before,
+html[data-ultron-performance="balanced"] .mic-orbit::after,
+html[data-ultron-performance="balanced"] .stark-vortex-ring,
+html[data-ultron-performance="balanced"] .stark-functional-node::before{animation-duration:12s!important}
+
+html[data-ultron-performance="lite"] .scanlines,
+html[data-ultron-performance="lite"] .hud-glow,
+html[data-ultron-performance="lite"] .orb-stage::before{display:none!important}
+
+html[data-ultron-performance="lite"] .voice-wave i,
+html[data-ultron-performance="lite"] .brand-ring,
+html[data-ultron-performance="lite"] .mic-orbit::before,
+html[data-ultron-performance="lite"] .mic-orbit::after,
+html[data-ultron-performance="lite"] .mini-globe span,
+html[data-ultron-performance="lite"] .status-chip.online i,
+html[data-ultron-performance="lite"] .hud-footer i,
+html[data-ultron-performance="lite"] .stage-status i{animation:none!important}
+
+html[data-ultron-performance="lite"] .stark-vortex-ring.r3,
+html[data-ultron-performance="lite"] .orb-halo.halo-3,
+html[data-ultron-performance="lite"] .orbit-c{display:none!important}
+
+html[data-ultron-performance="lite"] .core-orb{box-shadow:0 0 12px rgba(255,255,255,.7),0 0 28px rgba(103,232,249,.38),inset 0 0 24px rgba(103,232,249,.18)!important;animation-duration:5.5s!important}
+
+html[data-ultron-performance="lite"] .stark-functional-node,
+html[data-ultron-performance="lite"] .stark-functional-node.hand-target{box-shadow:0 0 8px rgba(0,240,255,.55),inset 0 0 6px rgba(0,240,255,.08)!important}
+
+html[data-ultron-hidden="true"] *,
+html[data-ultron-hidden="true"] *::before,
+html[data-ultron-hidden="true"] *::after{animation-play-state:paused!important}
+
+@media (max-width:650px){
+  html[data-ultron-performance="balanced"] .neural-stage,
+  html[data-ultron-performance="lite"] .neural-stage{min-height:460px}
+  html[data-ultron-performance="lite"] .stark-holo-panel{background:rgba(1,8,17,.96)!important}
+}
