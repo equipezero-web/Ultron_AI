@@ -132,11 +132,23 @@ public class BridgeService extends Service {
     }
 
     private boolean showRemoteNotification(JSONObject payload) {
+        String action = payload.optString("action", "generic");
+
+        if ("microphone.pause".equals(action) || "microphone.resume".equals(action)) {
+            Intent control = new Intent(RemoteMicActivity.ACTION_CONTROL);
+            control.setPackage(getPackageName());
+            control.putExtra(
+                    RemoteMicActivity.EXTRA_STATE,
+                    "microphone.pause".equals(action) ? "pause" : "resume"
+            );
+            sendBroadcast(control);
+            return true;
+        }
+
         NotificationManager manager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         if (manager == null) return false;
 
-        String action = payload.optString("action", "generic");
         boolean microphoneRequest = "microphone.request".equals(action);
 
         String title = microphoneRequest
