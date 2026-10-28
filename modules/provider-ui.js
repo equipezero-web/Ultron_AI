@@ -24,19 +24,46 @@ function voiceIndicator(label, active = true) {
   indicator.className = active ? "green" : "";
 }
 
-function appendSpeed(performance = {}) {
-  if (!output || !performance?.totalMs) return;
-
+function appendLine(text, alert = false) {
+  if (!output || !text) return;
   const line = document.createElement("p");
+  if (alert) line.className = "alert";
+  line.textContent = text;
+  output.appendChild(line);
+  output.scrollTop = output.scrollHeight;
+}
+
+function appendSpeed(performance = {}) {
+  if (!performance?.totalMs) return;
+
   const ai = Math.round(Number(performance.aiMs || 0));
   const voice = Math.round(
     Number(performance.voiceMs || 0) + Number(performance.fallbackVoiceMs || 0)
   );
   const total = Math.round(Number(performance.totalMs || 0));
 
-  line.textContent = `> [SPEED] IA ${ai}ms | voz ${voice}ms | total ${total}ms`;
-  output.appendChild(line);
-  output.scrollTop = output.scrollHeight;
+  appendLine(`> [SPEED] IA ${ai}ms | voz ${voice}ms | total ${total}ms`);
+}
+
+function appendRouting(routing) {
+  if (!routing?.class || !Array.isArray(routing?.order)) return;
+  const route = routing.order.map((item) => String(item).toUpperCase()).join(" > ");
+  appendLine(`> [ROUTER] ${String(routing.class).toUpperCase()} // ${route}`);
+}
+
+function appendPlan(plan) {
+  if (!plan?.complex || !Array.isArray(plan?.steps)) return;
+  const confirms = plan.steps.filter((item) => item?.permission === "confirm").length;
+  const blocked = plan.steps.filter((item) => item?.permission === "blocked").length;
+  const extra = [
+    confirms ? `${confirms} confirmação(ões)` : "",
+    blocked ? `${blocked} bloqueio(s)` : ""
+  ].filter(Boolean).join(" | ");
+
+  appendLine(
+    `> [PLANNER] ${String(plan.intent || "general").toUpperCase()} // ${plan.steps.length} etapas${extra ? ` // ${extra}` : ""}`,
+    blocked > 0
+  );
 }
 
 const previousFetch = window.fetch.bind(window);
@@ -63,6 +90,8 @@ window.fetch = async function ultronProviderFetch(input, init = {}) {
     }
 
     lastProviderLabel = data?.providerLabel || data?.provider || "AI";
+    appendRouting(data?.smartRouting);
+    appendPlan(data?.operationalPlan);
     appendSpeed(data?.performance);
 
     if (data?.voice?.providerLabel) {
@@ -89,7 +118,7 @@ function normalizeTerminalNode(node) {
   if (text.includes("ULTRON CORE: processando com Gemini")) {
     text = text.replace(
       "ULTRON CORE: processando com Gemini",
-      "ULTRON CORE: roteando para a IA mais rápida"
+      "ULTRON CORE: roteando para a IA mais adequada"
     );
   }
 
