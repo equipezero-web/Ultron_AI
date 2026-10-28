@@ -214,15 +214,21 @@ public class BridgeService extends Service {
                 : payload.optString("title", "Ultron");
 
         String text = microphoneRequest
-                ? "Toque para revisar e autorizar o microfone remoto. O Android pedirá sua permissão."
+                ? "Toque para abrir o Ultron Bridge e autorizar o microfone remoto."
                 : payload.optString("text", "Nova mensagem do Ultron.");
 
-        Intent openIntent = microphoneRequest
-                ? new Intent(this, RemoteMicActivity.class)
-                : new Intent(this, MainActivity.class);
+        Intent openIntent = new Intent(this, MainActivity.class);
 
         if (microphoneRequest) {
-            openIntent.putExtra("requestMic", true);
+            openIntent.setAction(MainActivity.ACTION_OPEN_REMOTE_MIC);
+            openIntent.putExtra(MainActivity.EXTRA_REQUEST_MIC, true);
+            openIntent.addFlags(
+                    Intent.FLAG_ACTIVITY_NEW_TASK |
+                    Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                    Intent.FLAG_ACTIVITY_SINGLE_TOP
+            );
+        } else {
+            openIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         }
 
         PendingIntent pendingIntent = PendingIntent.getActivity(
@@ -247,8 +253,17 @@ public class BridgeService extends Service {
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
 
+        if (microphoneRequest) {
+            builder.addAction(
+                    android.R.drawable.ic_btn_speak_now,
+                    "ATIVAR MICROFONE",
+                    pendingIntent
+            );
+        }
+
         if (microphoneRequest && Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
             builder.setPriority(Notification.PRIORITY_HIGH);
+            builder.setDefaults(Notification.DEFAULT_ALL);
         }
 
         manager.notify(
@@ -294,6 +309,8 @@ public class BridgeService extends Service {
 
     private Notification buildForegroundNotification() {
         Intent openIntent = new Intent(this, MainActivity.class);
+        openIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 this,
                 0,
