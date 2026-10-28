@@ -21,6 +21,7 @@ await import('./neural-input-bus.js?v=4.5.0');
 await import('./stark-advanced.js?v=4.5.0');
 await import('./vision-client.js?v=4.5.0');
 await import('./stark-hand-gesture.js?v=4.6.0');
+await import('./stark-production-bridge.js?v=4.6.0');
 
 window.addEventListener('ultron:processing-start', () => {
   window.ULTRON_STARK_CORE?.processing?.(true);
@@ -46,6 +47,7 @@ window.dispatchEvent(new CustomEvent('ultron:stark-bootstrap-ready', {
     advanced: Boolean(window.ULTRON_STARK_ADVANCED),
     neuralInput: Boolean(window.ULTRON_NEURAL_INPUT),
     vision: Boolean(window.ULTRON_VISION),
-    handGestures: Boolean(window.ULTRON_HAND_GESTURES)
+    handGestures: Boolean(window.ULTRON_HAND_GESTURES),
+    productionBridge: Boolean(window.ULTRON_STARK_PRODUCTION)
   }
 }));
