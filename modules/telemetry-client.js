@@ -1,5 +1,5 @@
 import API_CONFIG from "../config.js";
-import "./vision-client.js";
+import "./stark-bootstrap.js";
 
 const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
 const OUTPUT = document.getElementById("output-box");
@@ -71,6 +71,8 @@ export async function buildTelemetrySnapshot(extra = {}) {
 
   const remoteMic = window.ULTRON_MOBILE_MIC;
   const memory = window.ULTRON_MEMORY;
+  const neural = window.ULTRON_NEURAL_INPUT?.state || null;
+  const stark = window.ULTRON_STARK_CORE?.state || null;
 
   return {
     capturedAt: new Date().toISOString(),
@@ -107,6 +109,26 @@ export async function buildTelemetrySnapshot(extra = {}) {
       remoteSpeechSync: remoteMic?.speechSyncState || null,
       remoteState: remoteMic?.active ? "active" : (remoteMic?.authorized ? "available" : "idle")
     },
+    neuralInput: neural ? {
+      emgConnected: Boolean(neural.hardware?.emg),
+      gazeConnected: Boolean(neural.hardware?.gaze),
+      subvocalConnected: Boolean(neural.hardware?.subvocal),
+      emg: neural.emg,
+      gaze: neural.gaze,
+      subvocal: neural.subvocal,
+      lastEvent: neural.lastEvent
+    } : {
+      emgConnected: false,
+      gazeConnected: false,
+      subvocalConnected: false
+    },
+    starkCore: stark ? {
+      active: true,
+      workspace: stark.workspace,
+      tiltX: stark.tiltX,
+      tiltY: stark.tiltY,
+      scale: stark.scale
+    } : { active: false },
     modules: {
       memory: readText("memory-module", "UNKNOWN"),
       bridge: readText("bridge-module", "UNKNOWN"),
@@ -195,6 +217,8 @@ function schedule() {
 window.addEventListener("online", () => pushTelemetry({ event: "browser-online" }));
 window.addEventListener("offline", () => pushTelemetry({ event: "browser-offline" }));
 document.addEventListener("visibilitychange", () => pushTelemetry({ event: "visibility-change" }));
+window.addEventListener("ultron:neural-input", (event) => pushTelemetry({ event: "neural-input", neuralEvent: event.detail }));
+window.addEventListener("ultron:stark-workspace", (event) => pushTelemetry({ event: "stark-workspace", workspaceEvent: event.detail }));
 
 window.ULTRON_TELEMETRY = {
   push: pushTelemetry,
