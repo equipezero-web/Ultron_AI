@@ -2,7 +2,7 @@
   // backend/wrangler.jsonc
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "ultron-backend",
-  "main": "worker.js",
+  "main": "worker-v2.js",
   "compatibility_date": "2026-10-01",
   "workers_dev": true,
   "keep_vars": true,
