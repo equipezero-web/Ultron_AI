@@ -1,12 +1,20 @@
 const output = document.getElementById("output-box");
 let lastProviderLabel = "AI";
 
-function isAiRequest(input, init = {}) {
-  const url = typeof input === "string" ? input : input?.url || "";
-  const method = String(init?.method || (input instanceof Request ? input.method : "GET"))
-    .toUpperCase();
+function requestUrl(input) {
+  return typeof input === "string" ? input : input?.url || "";
+}
 
-  return method === "POST" && /\/api\/ai(?:\?|$)/.test(url);
+function requestMethod(input, init = {}) {
+  return String(init?.method || (input instanceof Request ? input.method : "GET")).toUpperCase();
+}
+
+function isAiRequest(input, init = {}) {
+  return requestMethod(input, init) === "POST" && /\/api\/ai(?:\?|$)/.test(requestUrl(input));
+}
+
+function isHealthRequest(input, init = {}) {
+  return requestMethod(input, init) === "GET" && /\/api\/health(?:\?|$)/.test(requestUrl(input));
 }
 
 function voiceIndicator(label, active = true) {
@@ -36,10 +44,24 @@ const previousFetch = window.fetch.bind(window);
 window.fetch = async function ultronProviderFetch(input, init = {}) {
   const response = await previousFetch(input, init);
 
-  if (!isAiRequest(input, init)) return response;
+  if (!isAiRequest(input, init) && !isHealthRequest(input, init)) return response;
 
   try {
     const data = await response.clone().json();
+
+    if (isHealthRequest(input, init)) {
+      const router = data?.voiceRouter;
+      if (router) {
+        const cloudReady = Boolean(
+          router?.elevenlabs?.configured ||
+          router?.googleNeural2?.configured ||
+          router?.googleWaveNet?.configured
+        );
+        voiceIndicator(cloudReady ? "VOICE ROUTER" : "BROWSER TTS", true);
+      }
+      return response;
+    }
+
     lastProviderLabel = data?.providerLabel || data?.provider || "AI";
     appendSpeed(data?.performance);
 
@@ -62,24 +84,46 @@ window.addEventListener("ultron:speech-start", (event) => {
 function normalizeTerminalNode(node) {
   if (!(node instanceof HTMLElement)) return;
 
-  const text = node.textContent || "";
+  let text = node.textContent || "";
 
   if (text.includes("ULTRON CORE: processando com Gemini")) {
-    node.textContent = text.replace(
+    text = text.replace(
       "ULTRON CORE: processando com Gemini",
       "ULTRON CORE: roteando para a IA mais rápida"
     );
-    return;
   }
 
   if (text.includes("GEMINI ERROR:")) {
-    node.textContent = text.replace("GEMINI ERROR:", "ULTRON AI ERROR:");
-    return;
+    text = text.replace("GEMINI ERROR:", "ULTRON AI ERROR:");
   }
 
   if (text.includes("GEMINI:")) {
-    node.textContent = text.replace("GEMINI:", `${String(lastProviderLabel).toUpperCase()}:`);
+    text = text.replace("GEMINI:", `${String(lastProviderLabel).toUpperCase()}:`);
   }
+
+  if (text.includes("Solicitando teste de voz ElevenLabs")) {
+    text = text.replace(
+      "Solicitando teste de voz ElevenLabs",
+      "Solicitando teste do roteador de voz"
+    );
+  }
+
+  if (text.includes("ElevenLabs: voz recebida e enviada para reprodução.")) {
+    text = text.replace(
+      "ElevenLabs: voz recebida e enviada para reprodução.",
+      "VOICE ROUTER: voz recebida e enviada para reprodução."
+    );
+  }
+
+  if (text.includes("ELEVENLABS ERROR:")) {
+    text = text.replace("ELEVENLABS ERROR:", "VOICE ROUTER:");
+  }
+
+  if (text.includes("| ElevenLabs ")) {
+    text = text.replace("| ElevenLabs ", "| Voice Router ");
+  }
+
+  if (node.textContent !== text) node.textContent = text;
 }
 
 if (output) {
