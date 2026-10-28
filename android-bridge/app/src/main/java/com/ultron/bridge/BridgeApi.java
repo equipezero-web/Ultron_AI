@@ -71,6 +71,8 @@ public final class BridgeApi {
         capabilities.put("device.status");
         capabilities.put("notification.push");
         capabilities.put("app.open");
+        capabilities.put("microphone.remote");
+        capabilities.put("speech.transcript");
         capabilities.put("tv.status");
         capabilities.put("tv.power.toggle");
         capabilities.put("tv.volume.set");
@@ -117,5 +119,19 @@ public final class BridgeApi {
         body.put("status", success ? "completed" : "failed");
         body.put("result", result == null ? new JSONObject() : result);
         return post("/api/bridge/result", body);
+    }
+
+    public static JSONObject sendEvent(
+            String deviceId,
+            String deviceSecret,
+            String eventType,
+            JSONObject payload
+    ) throws Exception {
+        JSONObject body = new JSONObject();
+        body.put("deviceId", deviceId);
+        body.put("deviceSecret", deviceSecret);
+        body.put("eventType", eventType);
+        body.put("payload", payload == null ? new JSONObject() : payload);
+        return post("/api/bridge/event", body);
     }
 }
