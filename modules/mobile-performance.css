@@ -29,7 +29,11 @@ html[data-ultron-performance="lite"] .mic-orbit::after,
 html[data-ultron-performance="lite"] .mini-globe span,
 html[data-ultron-performance="lite"] .status-chip.online i,
 html[data-ultron-performance="lite"] .hud-footer i,
-html[data-ultron-performance="lite"] .stage-status i{animation:none!important}
+html[data-ultron-performance="lite"] .stage-status i,
+html[data-ultron-performance="lite"] .stark-vortex-ring,
+html[data-ultron-performance="lite"] .stark-functional-node::before,
+html[data-ultron-performance="lite"] .orb-halo,
+html[data-ultron-performance="lite"] .orbit{animation:none!important}
 
 html[data-ultron-performance="lite"] .stark-vortex-ring.r3,
 html[data-ultron-performance="lite"] .orb-halo.halo-3,
@@ -39,6 +43,9 @@ html[data-ultron-performance="lite"] .core-orb{box-shadow:0 0 12px rgba(255,255,
 
 html[data-ultron-performance="lite"] .stark-functional-node,
 html[data-ultron-performance="lite"] .stark-functional-node.hand-target{box-shadow:0 0 8px rgba(0,240,255,.55),inset 0 0 6px rgba(0,240,255,.08)!important}
+
+html[data-ultron-performance="lite"] .stark-ripple,
+html[data-ultron-performance="lite"] .scanner{animation-duration:1.8s!important}
 
 html[data-ultron-hidden="true"] *,
 html[data-ultron-hidden="true"] *::before,
