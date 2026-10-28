@@ -7,9 +7,13 @@ const requestButton = $("btn-mobile-mic");
 const output = $("output-box");
 const audio = $("voice-audio");
 
+const BRIDGE_ONLINE_MAX_AGE_MS = 15000;
+const REQUEST_CONFIRM_TIMEOUT_MS = 12000;
+
 let selectedDeviceId = null;
 let polling = false;
 let pollTimer = null;
+let requestConfirmTimer = null;
 let remoteMicActive = false;
 let lastTranscript = "";
 let lastTranscriptAt = 0;
@@ -44,6 +48,15 @@ async function post(path, payload = {}) {
   return data;
 }
 
+function deviceAgeMs(device) {
+  const lastSeen = Date.parse(device?.lastSeenAt || "") || 0;
+  return lastSeen ? Date.now() - lastSeen : Number.POSITIVE_INFINITY;
+}
+
+function deviceLooksOnline(device) {
+  return deviceAgeMs(device) <= BRIDGE_ONLINE_MAX_AGE_MS;
+}
+
 async function listMobileDevices() {
   const key = memoryKey();
   if (!key) throw new Error("Identidade do Ultron ainda não carregada.");
@@ -59,12 +72,25 @@ async function listMobileDevices() {
     });
 }
 
-async function selectMobileDevice() {
+async function selectMobileDevice({ requireOnline = true } = {}) {
   const devices = await listMobileDevices();
-  const device = devices[0] || null;
+  const onlineDevice = devices.find(deviceLooksOnline) || null;
+  const device = onlineDevice || devices[0] || null;
 
   if (!device) {
     throw new Error("Nenhum celular pareado foi encontrado. Use PAREAR CELULAR primeiro.");
+  }
+
+  if (requireOnline && !onlineDevice) {
+    const ageSeconds = Number.isFinite(deviceAgeMs(device))
+      ? Math.max(1, Math.round(deviceAgeMs(device) / 1000))
+      : null;
+
+    throw new Error(
+      ageSeconds
+        ? `Celular pareado, mas o Ultron Bridge está offline ou sem responder há ${ageSeconds}s. Abra o app no celular e toque em INICIAR BRIDGE.`
+        : "Celular pareado, mas o Ultron Bridge ainda não apareceu online. Abra o app no celular e toque em INICIAR BRIDGE."
+    );
   }
 
   selectedDeviceId = device.id;
@@ -133,6 +159,27 @@ function executeRemoteTranscript(text) {
   send.click();
 }
 
+function clearRequestConfirmTimer() {
+  if (requestConfirmTimer) {
+    clearTimeout(requestConfirmTimer);
+    requestConfirmTimer = null;
+  }
+}
+
+function armRequestConfirmationTimeout() {
+  clearRequestConfirmTimer();
+  requestConfirmTimer = setTimeout(() => {
+    requestConfirmTimer = null;
+    if (remoteMicActive) return;
+
+    if (requestButton) requestButton.textContent = "USAR MIC DO CELULAR";
+    log(
+      "O celular não confirmou a solicitação. Abra o app Ultron Bridge, confira se o Bridge está iniciado e, se necessário, toque em USAR ESTE CELULAR COMO MICROFONE dentro do app.",
+      true
+    );
+  }, REQUEST_CONFIRM_TIMEOUT_MS);
+}
+
 async function pollEventsOnce() {
   if (!polling) return;
 
@@ -158,14 +205,17 @@ async function pollEventsOnce() {
         const detail = String(event.payload?.detail || "").trim();
 
         if (state === "active") {
+          clearRequestConfirmTimer();
           remoteMicActive = true;
           if (requestButton) requestButton.textContent = "MIC CELULAR ATIVO";
           log(detail || "Microfone do celular autorizado e conectado.");
         } else if (state === "stopped") {
+          clearRequestConfirmTimer();
           remoteMicActive = false;
           if (requestButton) requestButton.textContent = "USAR MIC DO CELULAR";
           log(detail || "Microfone remoto interrompido.");
         } else if (state === "blocked") {
+          clearRequestConfirmTimer();
           remoteMicActive = false;
           if (requestButton) requestButton.textContent = "USAR MIC DO CELULAR";
           log(detail || "Permissão do microfone foi bloqueada no celular.", true);
@@ -189,19 +239,31 @@ function startPolling() {
 
 async function requestMobileMicrophone() {
   try {
-    const device = await selectMobileDevice();
+    if (requestButton) requestButton.textContent = "VERIFICANDO CELULAR...";
+
+    const device = await selectMobileDevice({ requireOnline: true });
     disableNotebookMicrophone();
     startPolling();
 
-    await sendDeviceNotification("microphone.request", {
+    const queued = await sendDeviceNotification("microphone.request", {
       title: "Ultron quer usar o microfone",
       text: "Toque para revisar e autorizar o microfone remoto."
     });
 
     if (requestButton) requestButton.textContent = "AGUARDANDO CELULAR...";
-    log(`Solicitação enviada para ${device.deviceName || "celular pareado"}.`);
+
+    log(`Bridge online: ${device.deviceName || "celular pareado"}.`);
+    log(
+      queued?.commandId
+        ? `Pedido colocado na fila (${queued.commandId.slice(0, 8)}). Aguardando confirmação do celular.`
+        : "Pedido colocado na fila. Aguardando confirmação do celular."
+    );
     log("No celular, toque na notificação do Ultron e autorize o microfone no Android.");
+
+    armRequestConfirmationTimeout();
   } catch (error) {
+    clearRequestConfirmTimer();
+    if (requestButton) requestButton.textContent = "USAR MIC DO CELULAR";
     log(error.message, true);
   }
 }
@@ -239,6 +301,7 @@ if (audio) {
 
 window.addEventListener("beforeunload", () => {
   polling = false;
+  clearRequestConfirmTimer();
   if (pollTimer) clearTimeout(pollTimer);
 });
 
