@@ -19,6 +19,7 @@ import {
   pollCommands,
   startPairing
 } from "./device-bridge.js";
+import { loadLiveNewsContext } from "./news-context.js";
 
 function createCorsHeaders() {
   return {
@@ -49,19 +50,34 @@ function arrayBufferToBase64(buffer) {
   return btoa(binary);
 }
 
-function buildMemoryAwareMessage(message, memoryContext) {
-  if (!memoryContext) return message;
+function buildMemoryAwareMessage(message, memoryContext, liveContext = "") {
+  const blocks = [];
 
-  return [
-    "CONTEXTO INTERNO DE MEMÓRIA DO ULTRON:",
-    "Use este contexto apenas para compreender referências, preferências e continuidade da conversa.",
-    "Não diga que recebeu um bloco de memória e não invente informações ausentes.",
-    "",
-    memoryContext,
-    "",
+  if (memoryContext) {
+    blocks.push(
+      "CONTEXTO INTERNO DE MEMÓRIA DO ULTRON:",
+      "Use este contexto apenas para compreender referências, preferências e continuidade da conversa.",
+      "Não diga que recebeu um bloco de memória e não invente informações ausentes.",
+      "",
+      memoryContext,
+      ""
+    );
+  }
+
+  if (liveContext) {
+    blocks.push(
+      "CONTEXTO EXTERNO EM TEMPO REAL:",
+      liveContext,
+      ""
+    );
+  }
+
+  blocks.push(
     "MENSAGEM ATUAL DO OPERADOR:",
     message
-  ].join("\n");
+  );
+
+  return blocks.join("\n");
 }
 
 async function generateElevenLabsAudio(env, text) {
@@ -138,8 +154,10 @@ export default {
           memoryVersion: "1.2",
           deviceBridge: Boolean(bridge?.ready),
           bridge,
+          liveNews: true,
+          visualContext: true,
           message:
-            "ULTRON Cloudflare Worker funcionando com gateway multi-IA, memória e Device Bridge."
+            "ULTRON Cloudflare Worker funcionando com gateway multi-IA, memória, contexto visual e Device Bridge."
         },
         { headers: corsHeaders }
       );
@@ -252,12 +270,19 @@ export default {
           );
         }
 
-        const memoryState = await loadMemoryContext(env, {
-          operatorId,
-          conversationId
-        });
+        const [memoryState, newsState] = await Promise.all([
+          loadMemoryContext(env, {
+            operatorId,
+            conversationId
+          }),
+          loadLiveNewsContext(message, { limit: 6 })
+        ]);
 
-        const aiMessage = buildMemoryAwareMessage(message, memoryState.context);
+        const aiMessage = buildMemoryAwareMessage(
+          message,
+          memoryState.context,
+          newsState.contextText
+        );
 
         const aiStartedAt = Date.now();
         const aiResult = await generateWithProviders(
@@ -312,6 +337,12 @@ export default {
 
         const audioBase64 = voiceResult.audio?.audioBase64 || null;
         const audioMimeType = voiceResult.audio?.audioMimeType || null;
+        const visualContext = newsState.visualContext
+          ? {
+              ...newsState.visualContext,
+              caption: aiResult.text
+            }
+          : null;
 
         return Response.json(
           {
@@ -329,6 +360,12 @@ export default {
               explicitMemorySaved: Boolean(memoryWrite?.explicitMemorySaved),
               error: memoryState.error || memoryWrite?.error || null
             },
+            liveData: {
+              news: newsState.active,
+              resultCount: newsState.articles?.length || 0,
+              error: newsState.error || null
+            },
+            visualContext,
             performance: {
               aiMs,
               voiceMs: voiceResult.voiceMs,
