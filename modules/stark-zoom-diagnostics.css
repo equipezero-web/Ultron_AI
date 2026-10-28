@@ -1,0 +1,135 @@
+.stark-zoom-diagnostics {
+  position: absolute;
+  inset: 0;
+  z-index: 12;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .24s ease;
+}
+
+.stark-hand-zoom-full .stark-zoom-diagnostics { opacity: 1; }
+
+.stark-focus-magnet {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(47vw, 420px);
+  aspect-ratio: 1;
+  transform: translate(-50%,-50%);
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.42);
+  box-shadow:
+    0 0 12px rgba(255,255,255,.28),
+    0 0 54px rgba(0,240,255,.23),
+    inset 0 0 44px rgba(0,240,255,.08);
+}
+
+.stark-focus-magnet::before,
+.stark-focus-magnet::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  border: 1px dashed rgba(0,240,255,.34);
+}
+.stark-focus-magnet::before { inset: -18px; animation: stark-magnet-spin 9s linear infinite; }
+.stark-focus-magnet::after { inset: 22px; border-style: dotted; animation: stark-magnet-spin 6s linear infinite reverse; }
+
+.stark-hand-zoom-full .core-orb {
+  background: transparent !important;
+  box-shadow: inset 0 0 28px rgba(0,240,255,.16), 0 0 42px rgba(0,240,255,.28) !important;
+}
+
+.stark-hand-zoom-full .core-orb::before {
+  content: "";
+  position: absolute;
+  inset: 4%;
+  border-radius: 50%;
+  background:
+    repeating-radial-gradient(circle at center, transparent 0 12px, rgba(0,240,255,.12) 13px 14px),
+    repeating-conic-gradient(from 0deg, rgba(0,240,255,.14) 0 1deg, transparent 1deg 15deg);
+  mask: radial-gradient(circle at center, transparent 0 23%, #000 24% 100%);
+  animation: stark-wireframe-spin 18s linear infinite;
+  opacity: .76;
+}
+
+.stark-hand-zoom-full .orb-grid {
+  opacity: .9 !important;
+  transform: scale(1.28);
+  filter: drop-shadow(0 0 9px rgba(0,240,255,.65));
+}
+
+.stark-hand-zoom-full .orb-heart {
+  opacity: .18;
+  filter: blur(1px);
+}
+
+.stark-hand-zoom-full .stark-vortex-ring {
+  border-color: rgba(0,240,255,.62);
+  box-shadow: 0 0 16px rgba(0,240,255,.18), inset 0 0 18px rgba(0,240,255,.1);
+}
+
+.stark-hand-zoom-full .stark-vortex::after {
+  content: "";
+  position: absolute;
+  inset: 20%;
+  border-radius: 50%;
+  background:
+    linear-gradient(30deg, transparent 48%, rgba(0,240,255,.14) 49% 51%, transparent 52%),
+    linear-gradient(90deg, transparent 48%, rgba(0,240,255,.12) 49% 51%, transparent 52%),
+    linear-gradient(150deg, transparent 48%, rgba(0,240,255,.1) 49% 51%, transparent 52%);
+  filter: drop-shadow(0 0 8px rgba(0,240,255,.45));
+  animation: stark-wireframe-spin 13s linear infinite reverse;
+  pointer-events: none;
+}
+
+.stark-hand-zoom-full .stark-peripheral,
+.stark-hand-zoom-full .stage-header,
+.stark-hand-zoom-full .core-readouts {
+  filter: blur(.8px);
+  opacity: .45;
+  transition: filter .25s ease, opacity .25s ease;
+}
+
+.stark-callout {
+  position: absolute;
+  min-width: 122px;
+  max-width: 190px;
+  padding: 7px 9px;
+  border-left: 1px solid rgba(0,240,255,.62);
+  background: linear-gradient(90deg, rgba(2,7,17,.84), rgba(2,7,17,.15));
+  backdrop-filter: blur(5px);
+  font-family: ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+
+.stark-callout::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 58px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(0,240,255,.65), transparent);
+}
+
+.stark-callout.left::before { left: 100%; }
+.stark-callout.right { border-left: 0; border-right: 1px solid rgba(0,240,255,.62); text-align: right; }
+.stark-callout.right::before { right: 100%; transform: scaleX(-1); }
+.stark-callout.c1 { left: 4%; top: 30%; }
+.stark-callout.c2 { right: 4%; top: 31%; }
+.stark-callout.c3 { left: 5%; bottom: 24%; }
+.stark-callout.c4 { right: 5%; bottom: 24%; }
+
+.stark-callout small { display:block; color:rgba(142,230,240,.56); font-size:6px; letter-spacing:.15em; }
+.stark-callout strong { display:block; margin-top:3px; color:#fff; font-size:9px; letter-spacing:.08em; text-shadow:0 0 10px rgba(0,240,255,.5); }
+
+@keyframes stark-magnet-spin { to { transform: rotate(360deg); } }
+@keyframes stark-wireframe-spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 650px) {
+  .stark-focus-magnet { width: min(76vw, 360px); }
+  .stark-callout { min-width: 88px; max-width: 120px; padding:5px 6px; }
+  .stark-callout::before { width: 25px; }
+  .stark-callout small { font-size:5px; }
+  .stark-callout strong { font-size:7px; }
+  .stark-callout.c1 { left:2%; top:25%; }
+  .stark-callout.c2 { right:2%; top:25%; }
+}
