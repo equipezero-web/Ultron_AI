@@ -2,7 +2,7 @@ import API_CONFIG from '../config.js';
 
 const output = document.getElementById('output-box');
 const API_BASE = String(API_CONFIG?.backendUrl || '').replace(/\/$/, '');
-const EXPECTED_VERSION = '4.10.0';
+const EXPECTED_VERSION = '4.13.0';
 
 function log(message, alert = false) {
   if (!output) return;
@@ -24,7 +24,14 @@ async function check() {
     const version = String(data?.backendVersion || '').trim();
     const current = version === EXPECTED_VERSION;
     if (current) {
-      log(`v${version} ONLINE // LIVE NEWS: ${data?.liveNewsEngine || 'ativo'} // WEB RESEARCH: ${data?.webResearch?.mode || 'ativo'}`);
+      const research = data?.webResearch || {};
+      const flags = [
+        research?.sourceRanking ? 'RANKING' : '',
+        research?.uncertaintyRetry ? 'AUTO-RETRY' : '',
+        research?.expiringResearchCache ? 'TTL CACHE' : '',
+        research?.conversationMemorySafe ? 'MEMORY SAFE' : ''
+      ].filter(Boolean).join(' + ');
+      log(`v${version} ONLINE // LIVE NEWS: ${data?.liveNewsEngine || 'ativo'} // WEB RESEARCH: ${research?.mode || 'ativo'}${flags ? ` // ${flags}` : ''}`);
     } else {
       log(`Worker antigo detectado. Esperado v${EXPECTED_VERSION}; recebido ${version ? `v${version}` : 'sem versão'}. O frontend está novo, mas o Cloudflare ainda precisa publicar o backend atualizado.`, true);
     }
