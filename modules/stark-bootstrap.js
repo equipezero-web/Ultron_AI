@@ -43,7 +43,7 @@ await import('./palm-matrix.js?v=4.12.1');
 await import('./local-files-client.js?v=4.12.1');
 await import('./local-files-ai-bridge.js?v=4.12.1');
 await import('./stark-file-mesh.js?v=4.12.1');
-await import('./backend-version-check.js?v=4.12.1');
+await import('./backend-version-check.js?v=4.13.0');
 await import('./neural-parity.js?v=4.12.1');
 
 window.addEventListener('ultron:processing-start', () => {
@@ -65,7 +65,7 @@ window.addEventListener('ultron:subvocal-command', (event) => {
 
 window.dispatchEvent(new CustomEvent('ultron:stark-bootstrap-ready', {
   detail: {
-    version: '4.12.1',
+    version: '4.13.0',
     performanceMode: window.ULTRON_PERFORMANCE?.mode || 'full',
     starkCore: Boolean(window.ULTRON_STARK_CORE),
     innerMesh: Boolean(window.ULTRON_STARK_MESH),
