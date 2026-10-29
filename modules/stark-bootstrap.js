@@ -40,9 +40,10 @@ await import('./camera-runtime.js?v=4.12.1');
 await import('./stark-zoom-diagnostics.js?v=4.12.1');
 await import('./stark-production-bridge.js?v=4.12.1');
 await import('./palm-matrix.js?v=4.12.1');
-await import('./local-files-client.js?v=4.12.1');
-await import('./local-files-ai-bridge.js?v=4.12.1');
-await import('./stark-file-mesh.js?v=4.12.1');
+await import('./local-files-client.js?v=4.14.0');
+await import('./local-files-v2.js?v=4.14.0');
+await import('./local-files-ai-bridge.js?v=4.14.0');
+await import('./stark-file-mesh.js?v=4.14.0');
 await import('./backend-version-check.js?v=4.13.0');
 await import('./neural-parity.js?v=4.12.1');
 
@@ -65,7 +66,7 @@ window.addEventListener('ultron:subvocal-command', (event) => {
 
 window.dispatchEvent(new CustomEvent('ultron:stark-bootstrap-ready', {
   detail: {
-    version: '4.13.0',
+    version: '4.14.0',
     performanceMode: window.ULTRON_PERFORMANCE?.mode || 'full',
     starkCore: Boolean(window.ULTRON_STARK_CORE),
     innerMesh: Boolean(window.ULTRON_STARK_MESH),
@@ -79,6 +80,7 @@ window.dispatchEvent(new CustomEvent('ultron:stark-bootstrap-ready', {
     zoomDiagnostics: Boolean(window.ULTRON_ZOOM_DIAGNOSTICS),
     productionBridge: Boolean(window.ULTRON_STARK_PRODUCTION),
     localFiles: Boolean(window.ULTRON_LOCAL_FILES),
+    localFilesV2: Boolean(window.ULTRON_LOCAL_FILES_V2),
     localRagBridge: Boolean(window.ULTRON_LOCAL_RAG_BRIDGE),
     fileMesh: Boolean(window.ULTRON_FILE_MESH),
     neuralParity: Boolean(window.ULTRON_NEURAL_PARITY),
