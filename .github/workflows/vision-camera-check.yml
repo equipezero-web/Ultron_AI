@@ -1,0 +1,80 @@
+name: Vision Camera Check
+
+on:
+  push:
+    paths:
+      - 'modules/camera.js'
+      - 'modules/camera-runtime.js'
+      - 'modules/vision-client.js'
+      - 'modules/vision-frame-health.js'
+      - 'modules/stark-bootstrap.js'
+      - 'modules/telemetry-client.js'
+      - 'backend/vision-analysis.js'
+      - 'backend/worker-v3.js'
+      - '.github/workflows/vision-camera-check.yml'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Check camera and vision syntax
+        run: |
+          node --check modules/camera.js
+          node --check modules/camera-runtime.js
+          node --check modules/vision-client.js
+          node --check modules/vision-frame-health.js
+          node --check modules/stark-bootstrap.js
+          node --check modules/telemetry-client.js
+          node --check backend/vision-analysis.js
+          node --check backend/worker-v3.js
+
+      - name: Test frame health detector
+        run: |
+          node --experimental-default-type=module <<'EOF'
+          import { analyzePixelBuffer, summarizeFrameHealth } from './modules/vision-frame-health.js';
+
+          const pixels = (r, g, b, count = 64) => {
+            const out = new Uint8ClampedArray(count * 4);
+            for (let i = 0; i < count; i += 1) {
+              out[i * 4] = r;
+              out[i * 4 + 1] = g;
+              out[i * 4 + 2] = b;
+              out[i * 4 + 3] = 255;
+            }
+            return out;
+          };
+
+          const black = analyzePixelBuffer(pixels(0, 0, 0));
+          if (black.signal !== 'BLACK' || black.ok !== false) throw new Error('BLACK frame detection failed');
+
+          const blank = analyzePixelBuffer(pixels(255, 255, 255));
+          if (blank.signal !== 'BLANK' || blank.ok !== false) throw new Error('BLANK frame detection failed');
+
+          const mixed = new Uint8ClampedArray(64 * 4);
+          for (let i = 0; i < 64; i += 1) {
+            const value = (i * 37) % 255;
+            mixed[i * 4] = value;
+            mixed[i * 4 + 1] = (value + 50) % 255;
+            mixed[i * 4 + 2] = (value + 110) % 255;
+            mixed[i * 4 + 3] = 255;
+          }
+          const live = analyzePixelBuffer(mixed);
+          if (!live.ok || live.signal !== 'LIVE') throw new Error('LIVE frame detection failed');
+
+          const summary = summarizeFrameHealth([live, live, live]);
+          if (!summary.ok) throw new Error('Frame summary failed');
+          console.log('Vision frame health checks passed.');
+          EOF
+
+      - name: Verify resilience markers
+        run: |
+          grep -q "MAX_STREAM_RECOVERY" modules/camera-runtime.js
+          grep -q "analyzeImageFile" modules/vision-client.js
+          grep -q "STATIC_VERIFY" modules/vision-client.js
+          grep -q "visualAnalysis" backend/worker-v3.js
