@@ -1,0 +1,49 @@
+name: Web Intelligence Check
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'backend/web-research.js'
+      - 'backend/research-memory.js'
+      - 'backend/news-context.js'
+      - 'backend/worker.js'
+      - 'backend/worker-v4.js'
+      - 'modules/provider-ui.js'
+      - 'modules/backend-version-check.js'
+      - 'modules/telemetry-client.js'
+      - '.github/workflows/web-intelligence-check.yml'
+  pull_request:
+    paths:
+      - 'backend/web-research.js'
+      - 'backend/research-memory.js'
+      - 'backend/news-context.js'
+      - 'backend/worker.js'
+      - 'backend/worker-v4.js'
+      - 'modules/provider-ui.js'
+      - 'modules/backend-version-check.js'
+      - 'modules/telemetry-client.js'
+      - '.github/workflows/web-intelligence-check.yml'
+
+jobs:
+  syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check backend syntax
+        run: |
+          node --check backend/web-research.js
+          node --check backend/research-memory.js
+          node --check backend/news-context.js
+          node --check backend/worker.js
+          node --check backend/worker-v4.js
+      - name: Check frontend integration syntax
+        run: |
+          node --check modules/provider-ui.js
+          node --check modules/backend-version-check.js
+          node --check modules/telemetry-client.js
