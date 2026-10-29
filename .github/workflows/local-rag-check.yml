@@ -1,0 +1,63 @@
+name: Local RAG Check
+
+on:
+  push:
+    paths:
+      - 'local-core/**'
+      - 'modules/local-files-client.js'
+      - 'modules/local-files-v2.js'
+      - 'modules/local-files-ai-bridge.js'
+      - 'modules/stark-file-mesh.js'
+      - 'modules/stark-bootstrap.js'
+      - 'backend/worker.js'
+      - '.github/workflows/local-rag-check.yml'
+  pull_request:
+    paths:
+      - 'local-core/**'
+      - 'modules/local-files-client.js'
+      - 'modules/local-files-v2.js'
+      - 'modules/local-files-ai-bridge.js'
+      - 'modules/stark-file-mesh.js'
+      - 'modules/stark-bootstrap.js'
+      - 'backend/worker.js'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install lightweight IO dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pypdf python-docx python-pptx openpyxl Pillow reportlab
+
+      - name: Check Python syntax
+        run: |
+          python -m py_compile local-core/readers.py
+          python -m py_compile local-core/writers.py
+          python -m py_compile local-core/indexer.py
+          python -m py_compile local-core/server.py
+
+      - name: Test readers and exporters
+        run: python -m unittest local-core/test_core_io.py -v
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Check frontend and backend JS syntax
+        run: |
+          node --check modules/local-files-client.js
+          node --check modules/local-files-v2.js
+          node --check modules/local-files-ai-bridge.js
+          node --check modules/stark-file-mesh.js
+          node --check modules/stark-bootstrap.js
+          node --check backend/worker.js
