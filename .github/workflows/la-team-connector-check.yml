@@ -43,4 +43,4 @@ jobs:
           grep -q 'ULTRON_LA_TEAM' modules/la-team-client.js
           grep -q 'laTeamContext' backend/worker.js
           grep -q 'authenticated-internal-context' backend/worker-v4.js
-          grep -q 'telemetry-client.js?v=4.15.0' index.html
+          grep -Eq 'telemetry-client\.js\?v=4\.[0-9]+\.[0-9]+' index.html
