@@ -9,6 +9,7 @@ if (!document.getElementById(STYLE_ID)) {
 
 await import('./la-team-client.js?v=4.15.0');
 await import('./la-team-ai-bridge.js?v=4.15.0');
+await import('./backend-version-check.js?v=4.15.0');
 
 const installNeural = async () => {
   if (!window.ULTRON_STARK_CORE || !document.querySelector('.stark-node-field')) return false;
