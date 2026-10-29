@@ -1,5 +1,5 @@
 import API_CONFIG from "../config.js";
-import "./stark-bootstrap.js?v=4.14.0";
+import "./stark-bootstrap.js?v=4.16.0";
 import "./la-team-bootstrap.js?v=4.15.0";
 
 const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
@@ -79,6 +79,7 @@ export async function buildTelemetrySnapshot(extra = {}) {
   const cameraPreview = window.ULTRON_CAMERA_PREVIEW?.state || null;
   const localFiles = window.ULTRON_LOCAL_FILES?.state || null;
   const laTeam = window.ULTRON_LA_TEAM?.state || null;
+  const vision = window.ULTRON_VISION?.state || null;
 
   return {
     capturedAt: new Date().toISOString(),
@@ -105,8 +106,20 @@ export async function buildTelemetrySnapshot(extra = {}) {
       telemetry: readText("telemetry-camera", "OFF"),
       resolution: readText("camera-resolution", "NO SIGNAL"),
       fps: readText("fps", "-- FPS"),
-      preview: cameraPreview
+      preview: cameraPreview,
+      detectedDevices: Number(window.ULTRON_CAMERA_RUNTIME?.devices?.length || 0),
+      active: Boolean(window.ULTRON_CAMERA_RUNTIME?.active)
     },
+    vision: vision ? {
+      waitingForCamera: Boolean(vision.cameraUnavailable),
+      lastAnalysisAt: vision.lastAnalysisAt || null,
+      frameHealth: vision.lastFrameHealth?.frame || null,
+      resolution: vision.lastFrameHealth?.resolution || null,
+      provider: vision.lastResult?.provider || null,
+      model: vision.lastResult?.model || null,
+      imageFallbackReady: Boolean(window.ULTRON_VISION?.analyzeFile),
+      diagnosticsReady: Boolean(window.ULTRON_VISION?.diagnose)
+    } : null,
     motion: {
       level: readText("motion-value", "0%"),
       events: Number(readText("motion-events", "0")) || 0,
@@ -241,6 +254,18 @@ window.addEventListener("ultron:local-rag-context", (event) => pushTelemetry({
 window.addEventListener("ultron:la-team-context", (event) => pushTelemetry({
   event: "la-team-context",
   laTeam: event.detail || null
+}));
+window.addEventListener("ultron:vision-health", (event) => pushTelemetry({
+  event: "vision-health",
+  visionHealth: event.detail || null
+}));
+window.addEventListener("ultron:vision-result", (event) => pushTelemetry({
+  event: "vision-result",
+  visionResult: {
+    provider: event.detail?.provider || null,
+    model: event.detail?.model || null,
+    ok: event.detail?.ok !== false
+  }
 }));
 
 window.ULTRON_TELEMETRY = {
