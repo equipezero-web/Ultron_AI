@@ -1,9 +1,11 @@
 import { addLog } from "./system.js";
 
-const output = document.getElementById("output-box");
-const input = document.getElementById("command-input");
-const sendButton = document.getElementById("btn-send");
-const visionModule = document.getElementById("vision-module");
+const HAS_DOM = typeof document !== "undefined";
+const HAS_WINDOW = typeof window !== "undefined";
+const output = HAS_DOM ? document.getElementById("output-box") : null;
+const input = HAS_DOM ? document.getElementById("command-input") : null;
+const sendButton = HAS_DOM ? document.getElementById("btn-send") : null;
+const visionModule = HAS_DOM ? document.getElementById("vision-module") : null;
 
 let processing = false;
 let lastVisualCommandAt = 0;
@@ -26,7 +28,7 @@ const DIRECT_VISUAL_PATTERNS = [
   /observ(a|e) (a )?(cena|imagem|camera|o que)/,
   /identifiq(ue|a) (o|a|os|as|um|uma)? ?(objeto|objetos|texto|textos|item|itens)/,
   /leia (o )?(texto|que esta escrito|que aparece)/,
-  /qual (e )?(o )?(objeto|texto|cor) (na|da|nessa) (imagem|camera|cena)/,
+  /qual (e )?(o |a )?(objeto|texto|cor) (na|da|nessa) (imagem|camera|cena)/,
   /quantos? (objetos|itens|pessoas) (tem|ha|aparecem)/
 ];
 
@@ -93,7 +95,8 @@ export async function runVisualCommand(command) {
     return null;
   }
 
-  const vision = window.ULTRON_VISION;
+  const runtimeWindow = HAS_WINDOW ? window : null;
+  const vision = runtimeWindow?.ULTRON_VISION;
   if (!vision?.analyze) {
     addLog(output, "VISÃO: runtime visual ainda não está disponível.", "alert");
     return null;
@@ -112,17 +115,19 @@ export async function runVisualCommand(command) {
       return null;
     }
 
-    window.dispatchEvent(new CustomEvent("ultron:vision-command-complete", {
-      detail: {
-        command: clean,
-        text: result.text,
-        provider: result.provider || null,
-        model: result.model || null,
-        completedAt: new Date().toISOString()
-      }
-    }));
+    if (typeof CustomEvent !== "undefined") {
+      runtimeWindow?.dispatchEvent?.(new CustomEvent("ultron:vision-command-complete", {
+        detail: {
+          command: clean,
+          text: result.text,
+          provider: result.provider || null,
+          model: result.model || null,
+          completedAt: new Date().toISOString()
+        }
+      }));
+    }
 
-    window.ULTRON_VOICE_OUTPUT?.speak?.(result.text, {
+    runtimeWindow?.ULTRON_VOICE_OUTPUT?.speak?.(result.text, {
       reason: "vision-command",
       announce: false
     });
@@ -133,7 +138,7 @@ export async function runVisualCommand(command) {
     return null;
   } finally {
     processing = false;
-    const active = Boolean(window.ULTRON_CAMERA_CONTROLLER?.isActive?.());
+    const active = Boolean(runtimeWindow?.ULTRON_CAMERA_CONTROLLER?.isActive?.());
     setVisionState(active ? "ACTIVE" : "STANDBY", active);
   }
 }
@@ -156,13 +161,15 @@ input?.addEventListener("keydown", (event) => {
   interceptCommand(event);
 }, true);
 
-window.ULTRON_VISION_ROUTER = {
-  isVisualAnalysisCommand,
-  run: runVisualCommand,
-  get state() {
-    return {
-      processing,
-      lastVisualCommandAt: lastVisualCommandAt || null
-    };
-  }
-};
+if (HAS_WINDOW) {
+  window.ULTRON_VISION_ROUTER = {
+    isVisualAnalysisCommand,
+    run: runVisualCommand,
+    get state() {
+      return {
+        processing,
+        lastVisualCommandAt: lastVisualCommandAt || null
+      };
+    }
+  };
+}
