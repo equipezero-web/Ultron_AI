@@ -2,7 +2,7 @@ import API_CONFIG from '../config.js';
 
 const output = document.getElementById('output-box');
 const API_BASE = String(API_CONFIG?.backendUrl || '').replace(/\/$/, '');
-const EXPECTED_VERSION = '4.13.0';
+const EXPECTED_VERSION = '4.15.0';
 
 function log(message, alert = false) {
   if (!output) return;
@@ -25,11 +25,13 @@ async function check() {
     const current = version === EXPECTED_VERSION;
     if (current) {
       const research = data?.webResearch || {};
+      const internal = data?.internalSystems || {};
       const flags = [
         research?.sourceRanking ? 'RANKING' : '',
         research?.uncertaintyRetry ? 'AUTO-RETRY' : '',
         research?.expiringResearchCache ? 'TTL CACHE' : '',
-        research?.conversationMemorySafe ? 'MEMORY SAFE' : ''
+        research?.conversationMemorySafe ? 'MEMORY SAFE' : '',
+        internal?.laTeamContextBridge ? 'L&A TEAM' : ''
       ].filter(Boolean).join(' + ');
       log(`v${version} ONLINE // LIVE NEWS: ${data?.liveNewsEngine || 'ativo'} // WEB RESEARCH: ${research?.mode || 'ativo'}${flags ? ` // ${flags}` : ''}`);
     } else {
