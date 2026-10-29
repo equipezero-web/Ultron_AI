@@ -26,17 +26,17 @@ const PROFILES = {
     maxFileNodes: 18
   },
   balanced: {
-    mode: 'balanced', handInferenceMs: 135,
-    motionWidth: 192, motionHeight: 144, motionEveryFrames: 4,
+    mode: 'balanced', handInferenceMs: 105,
+    motionWidth: 224, motionHeight: 168, motionEveryFrames: 4,
     telemetryIntervalMs: 30000,
-    cameraWidth: 640, cameraHeight: 480, cameraFps: 20,
+    cameraWidth: 960, cameraHeight: 540, cameraFps: 24,
     maxFileNodes: 12
   },
   lite: {
-    mode: 'lite', handInferenceMs: 180,
-    motionWidth: 128, motionHeight: 96, motionEveryFrames: 5,
+    mode: 'lite', handInferenceMs: 125,
+    motionWidth: 160, motionHeight: 120, motionEveryFrames: 5,
     telemetryIntervalMs: 45000,
-    cameraWidth: 480, cameraHeight: 360, cameraFps: 15,
+    cameraWidth: 640, cameraHeight: 480, cameraFps: 20,
     maxFileNodes: 8
   }
 };
