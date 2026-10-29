@@ -11,7 +11,7 @@ import {
   saveResearchMemory
 } from "./research-memory.js";
 
-const BACKEND_VERSION = "4.13.0";
+const BACKEND_VERSION = "4.15.0";
 
 function corsHeaders() {
   return {
@@ -187,6 +187,11 @@ export default {
           ...data,
           backendVersion: BACKEND_VERSION,
           liveNewsEngine: "google-search+google-news+gdelt-parallel",
+          internalSystems: {
+            laTeamContextBridge: true,
+            internalContextPriority: true,
+            webResearchBypassWhenGrounded: true
+          },
           webResearch: {
             enabled: true,
             googleSearch: Boolean(env.SERPER_API_KEY),
@@ -217,6 +222,21 @@ export default {
 
     const originalMessage = String(originalBody?.message || "").trim();
     if (!originalMessage) return baseWorker.fetch(request, env, ctx);
+
+    const laTeamContext = String(originalBody?.laTeamContext || "").trim();
+    if (laTeamContext) {
+      return baseWorker.fetch(requestWithBody(request, {
+        ...originalBody,
+        message: originalMessage,
+        allowUncertaintyResearch: false,
+        researchMeta: {
+          ...(originalBody?.researchMeta || {}),
+          active: false,
+          reason: "authenticated-internal-context",
+          skipLegacyResearch: true
+        }
+      }), env, ctx);
+    }
 
     const newsIntent = isNewsIntent(originalMessage);
     const policy = shouldResearchBeforeAnswer(originalMessage);
