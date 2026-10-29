@@ -4,4 +4,7 @@ chromadb>=1.0.0
 sentence-transformers>=5.0.0
 pypdf>=5.0.0
 python-docx>=1.1.2
+python-pptx>=1.0.2
 openpyxl>=3.1.5
+Pillow>=11.0.0
+reportlab>=4.2.0
