@@ -30,6 +30,9 @@ if (stage && vortex) {
   let lastPalmEvent = 0;
   let lastAction = 'standby';
   let lastMetrics = null;
+  let moveReady = false;
+  let pushIntentFrames = 0;
+  let closedIntentFrames = 0;
   const cooldowns = new Map();
 
   function log(message) {
@@ -92,21 +95,32 @@ if (stage && vortex) {
     clearTimeout(emit._timer);
     emit._timer = setTimeout(() => {
       hud.classList.remove('active');
-      title.textContent = 'TRACKING';
+      title.textContent = moveReady ? 'MOVE READY' : 'TRACKING';
     }, 720);
     window.dispatchEvent(new CustomEvent(`ultron:palm-${type}`, { detail }));
   }
 
+  function triggerExplosion() {
+    stage.classList.remove('stark-file-explosion');
+    void stage.offsetWidth;
+    stage.classList.add('stark-file-explosion');
+    setTimeout(() => stage.classList.remove('stark-file-explosion'), 760);
+  }
+
   function doPush(metrics) {
     emit('push', metrics);
-    if (window.ULTRON_FILE_LAB?.active) {
-      window.ULTRON_FILE_LAB.pushSelected?.();
-    } else if (window.ULTRON_STARK_MESH?.zoomLevel < 2) {
-      window.ULTRON_STARK_MESH?.setZoomLevel?.(2);
+    triggerExplosion();
+
+    const fileMesh = window.ULTRON_FILE_MESH;
+    if (fileMesh?.active) {
+      fileMesh.refresh?.({ requestLocal: false });
+    } else if (fileMesh?.enter) {
+      Promise.resolve(fileMesh.enter()).catch(() => {});
     } else {
-      window.ULTRON_STARK_MESH?.openFocused?.();
+      window.ULTRON_STARK_CORE?.open?.('ARQUIVOS');
     }
-    log('THE PUSH: conteúdo focal expandido.');
+
+    log('PALM EXPLOSION: esfera de arquivos aberta.');
   }
 
   function doSweep(direction, metrics) {
@@ -120,12 +134,11 @@ if (stage && vortex) {
     log(`THE SWEEP: workspace ${direction === 'right' ? 'direita' : 'esquerda'}.`);
   }
 
-  function doFist(metrics) {
-    emit('fist-anchor', metrics);
-    window.ULTRON_FILE_LAB?.anchor?.();
-    window.ULTRON_STARK_MESH?.setZoomLevel?.(0);
-    document.querySelector('.stark-holo-close')?.click?.();
-    log('FIST ANCHOR: campo holográfico recolhido.');
+  function doFreeze(metrics) {
+    emit('freeze', metrics);
+    window.ULTRON_HAND_GESTURES?.freeze?.('palm-matrix');
+    window.ULTRON_STARK_MESH?.endDrag?.({ persist: true });
+    log('PALM FREEZE: posição mantida exatamente onde está.');
   }
 
   function doDial(delta, metrics) {
@@ -152,8 +165,9 @@ if (stage && vortex) {
   }
 
   function updateHud(metrics) {
-    const { gesture, normal, speed, rotation, approachRate, confidence } = metrics;
-    gestureReadout.textContent = `GESTURE // ${gesture.toUpperCase()} ${(confidence * 100).toFixed(0)}%`;
+    const { gesture, normal, speed, rotation, approachRate, confidence, controlMode } = metrics;
+    const mode = String(controlMode || '').toUpperCase().replaceAll('-', ' ');
+    gestureReadout.textContent = `GESTURE // ${gesture.toUpperCase()} ${(confidence * 100).toFixed(0)}%${mode ? ` · ${mode}` : ''}`;
     vectorReadout.textContent = `NORMAL // ${normal.x.toFixed(2)} ${normal.y.toFixed(2)} ${normal.z.toFixed(2)}`;
     velocityReadout.textContent = `VELOCITY // ${speed.toFixed(2)} · PUSH ${approachRate.toFixed(2)}`;
     rotationReadout.textContent = `DIAL // ${(rotation * 180 / Math.PI).toFixed(0)}°`;
@@ -174,6 +188,7 @@ if (stage && vortex) {
     const confidence = Number(detail.confidence || 0);
     const span = Number(detail.handSpan || 0);
     const open = gesture === 'Open_Palm' && confidence >= 0.55;
+    const closed = gesture === 'Closed_Fist' && confidence >= 0.58;
 
     const dt = previous ? Math.max(0.025, (now - previous.time) / 1000) : 0.08;
     const vx = previous ? (palmCenter.x - previous.center.x) / dt : 0;
@@ -195,26 +210,43 @@ if (stage && vortex) {
       rotation,
       rotationStep,
       zoomLevel: Number(detail.zoomLevel || 0),
-      target: detail.target || null
+      target: detail.target || null,
+      movementArmed: Boolean(detail.movementArmed),
+      frozen: Boolean(detail.frozen),
+      pointerActive: Boolean(detail.pointerActive),
+      controlMode: detail.controlMode || null
     };
     lastMetrics = metrics;
     updateHud(metrics);
 
+    if (open) {
+      moveReady = true;
+      title.textContent = 'MOVE READY';
+    }
+
+    if (closed) closedIntentFrames = Math.min(4, closedIntentFrames + 1);
+    else closedIntentFrames = 0;
+
     const facingPanel = Math.abs(normal.z) >= 0.34;
     const spanStable = Math.abs(approachRate) < 0.33;
+    const deliberatePush = open && facingPanel && approachRate > 0.5 && !detail.frozen;
 
-    if (gesture === 'Closed_Fist' && confidence >= 0.62 && canFire('fist', 900)) {
-      doFist(metrics);
-    } else if (open && facingPanel && approachRate > 0.42 && canFire('push', 850)) {
+    if (deliberatePush) pushIntentFrames = Math.min(4, pushIntentFrames + 1);
+    else pushIntentFrames = Math.max(0, pushIntentFrames - 1);
+
+    if (closedIntentFrames >= 2 && canFire('freeze', 720)) {
+      doFreeze(metrics);
+      pushIntentFrames = 0;
+    } else if (pushIntentFrames >= 2 && canFire('push', 1200)) {
       doPush(metrics);
-    } else if (open && spanStable && Math.abs(vx) > 0.82 && Math.abs(vx) > Math.abs(vy) * 1.45 && canFire('sweep', 720)) {
+      pushIntentFrames = 0;
+    } else if (open && spanStable && Math.abs(vx) > 0.88 && Math.abs(vx) > Math.abs(vy) * 1.5 && canFire('sweep', 760)) {
       doSweep(vx > 0 ? 'right' : 'left', metrics);
-    } else if (open && speed < 0.24 && Math.abs(rotationStep) > 0.035 && canFire('dial', 110)) {
+    } else if (open && speed < 0.22 && Math.abs(rotationStep) > 0.04 && canFire('dial', 120)) {
       doDial(rotationStep, metrics);
     } else {
-      // "Holder" aproximado por webcam: palma aberta, estável, plano quase horizontal na imagem.
       const mcpSlope = Math.abs(points[5].y - points[17].y);
-      if (open && speed < 0.16 && mcpSlope < 0.035 && Math.abs(normal.z) > 0.38 && canFire('holder', 2200)) {
+      if (open && speed < 0.14 && mcpSlope < 0.035 && Math.abs(normal.z) > 0.38 && canFire('holder', 2200)) {
         doHolder(metrics);
       }
     }
@@ -223,6 +255,17 @@ if (stage && vortex) {
   }
 
   window.addEventListener('ultron:camera-hand', (event) => handleHand(event.detail || {}));
+  window.addEventListener('ultron:camera-hand-mode', (event) => {
+    const mode = String(event.detail?.mode || '');
+    if (mode === 'move-armed') {
+      moveReady = true;
+      title.textContent = 'MOVE READY';
+    }
+    if (mode === 'frozen') {
+      moveReady = false;
+      title.textContent = 'FROZEN';
+    }
+  });
 
   window.ULTRON_PALM_MATRIX = {
     get state() {
@@ -230,12 +273,16 @@ if (stage && vortex) {
         active: Boolean(lastMetrics),
         lastAction,
         lastPalmEvent,
+        moveReady,
         metrics: lastMetrics
       };
     },
     reset() {
       previous = null;
       dialAccumulator = 0;
+      pushIntentFrames = 0;
+      closedIntentFrames = 0;
+      moveReady = false;
       lastAction = 'standby';
       lastMetrics = null;
       title.textContent = 'STANDBY';

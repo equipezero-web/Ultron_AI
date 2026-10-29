@@ -1,5 +1,5 @@
 import API_CONFIG from "../config.js";
-import "./stark-bootstrap.js?v=4.18.0";
+import "./stark-bootstrap.js?v=4.19.0";
 import "./la-team-bootstrap.js?v=4.15.0";
 
 const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");

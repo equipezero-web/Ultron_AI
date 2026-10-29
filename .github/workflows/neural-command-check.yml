@@ -9,6 +9,11 @@ on:
       - 'modules/neural-parity.js'
       - 'modules/palm-matrix.js'
       - 'modules/stark-hand-gesture.js'
+      - 'modules/stark-hand.css'
+      - 'modules/stark-camera-preview.js'
+      - 'modules/stark-camera-preview.css'
+      - 'modules/stark-file-mesh.css'
+      - 'modules/mobile-performance.js'
       - 'modules/stark-bootstrap.js'
       - 'modules/telemetry-client.js'
       - '.github/workflows/neural-command-check.yml'
@@ -20,6 +25,11 @@ on:
       - 'modules/neural-parity.js'
       - 'modules/palm-matrix.js'
       - 'modules/stark-hand-gesture.js'
+      - 'modules/stark-hand.css'
+      - 'modules/stark-camera-preview.js'
+      - 'modules/stark-camera-preview.css'
+      - 'modules/stark-file-mesh.css'
+      - 'modules/mobile-performance.js'
       - 'modules/stark-bootstrap.js'
       - 'modules/telemetry-client.js'
       - '.github/workflows/neural-command-check.yml'
@@ -41,6 +51,8 @@ jobs:
           node --check modules/neural-parity.js
           node --check modules/palm-matrix.js
           node --check modules/stark-hand-gesture.js
+          node --check modules/stark-camera-preview.js
+          node --check modules/mobile-performance.js
           node --check modules/stark-bootstrap.js
           node --check modules/telemetry-client.js
           node --check modules/neural-command-policy.mjs
@@ -59,30 +71,53 @@ jobs:
           };
 
           assert(normalizeNeuralAction('pinch-click') === 'pinch-select', 'pinch normalization failed');
-          assert(normalizeNeuralAction('Closed Fist') === 'closed-fist', 'generic normalization failed');
+          assert(normalizeNeuralAction('Closed Fist') === 'freeze', 'closed fist must freeze');
+          assert(normalizeNeuralAction('fist-anchor') === 'freeze', 'legacy fist anchor must map to freeze');
           assert(validateNeuralAction('push', { confidence: 0.8 }).ok, 'push should pass');
           assert(!validateNeuralAction('push', { confidence: 0.2 }).ok, 'low confidence push should fail');
+          assert(validateNeuralAction('freeze', { confidence: 0.8 }).ok, 'freeze should pass');
           assert(validateNeuralAction('sweep', { confidence: 0.8, direction: 'right' }).ok, 'right sweep should pass');
           assert(!validateNeuralAction('sweep', { confidence: 0.8, direction: 'up' }).ok, 'invalid sweep should fail');
           assert(validateNeuralAction('dial', { confidence: 0.8, delta: 0.04 }).ok, 'dial should pass');
           assert(!validateNeuralAction('dial', { confidence: 0.8, delta: 0.001 }).ok, 'weak dial should fail');
-          assert(validateNeuralAction('pinch-select', { target: 'VISÃO' }).ok, 'pinch target should pass');
+          assert(validateNeuralAction('pinch-select', { target: 'ARQUIVO' }).ok, 'pinch target should pass');
           assert(!validateNeuralAction('pinch-select', {}).ok, 'pinch without target should fail');
           assert(neuralSignature('sweep', { direction: 'left', target: 'NEWS' }) === 'sweep:left:NEWS', 'signature failed');
           console.log('Neural command policy OK');
           NODE
 
+      - name: Palm semantics
+        run: |
+          grep -q "Open_Palm" modules/stark-hand-gesture.js
+          grep -q "Pointing_Up" modules/stark-hand-gesture.js
+          grep -q "MOVE ARMED // USE O INDICADOR" modules/stark-hand-gesture.js
+          grep -q "PALMA FECHADA: posição congelada" modules/stark-hand-gesture.js
+          grep -q "pinchRatio < 0.39" modules/stark-hand-gesture.js
+          grep -q "ULTRON_FILE_MESH" modules/stark-hand-gesture.js
+          grep -q "emit('push'" modules/palm-matrix.js
+          grep -q "emit('freeze'" modules/palm-matrix.js
+          grep -q "PALM EXPLOSION" modules/palm-matrix.js
+          grep -q "fileMesh.enter" modules/palm-matrix.js
+          grep -q "stark-file-explosion" modules/stark-file-mesh.css
+          echo 'Palm semantics OK'
+
+      - name: Mobile camera markers
+        run: |
+          grep -q "58dvh" modules/stark-camera-preview.css
+          grep -q "object-fit: contain" modules/stark-camera-preview.css
+          grep -q "cameraWidth: 640, cameraHeight: 480, cameraFps: 20" modules/mobile-performance.js
+          grep -q "handInferenceMs: 125" modules/mobile-performance.js
+          grep -q "videoContentBox" modules/stark-camera-preview.js
+          echo 'Mobile camera sizing and tracking quality OK'
+
       - name: Integration markers
         run: |
-          grep -q "neural-command-router.js?v=4.18.0" modules/stark-bootstrap.js
-          grep -q "neuralCommandRouter" modules/stark-bootstrap.js
+          grep -q "neural-command-router.js?v=4.19.0" modules/stark-bootstrap.js
+          grep -q "stark-hand-gesture.js?v=4.19.0" modules/stark-bootstrap.js
+          grep -q "palm-matrix.js?v=4.19.0" modules/stark-bootstrap.js
+          grep -q "handControlModel" modules/stark-bootstrap.js
           grep -q "ultron:neural-command" modules/neural-input-bus.js
           grep -q "ULTRON_NEURAL_COMMAND" modules/neural-parity.js
-          grep -q 'ultron:palm-${type}' modules/palm-matrix.js
-          grep -q "emit('push'" modules/palm-matrix.js
-          grep -q "emit('sweep'" modules/palm-matrix.js
-          grep -q "emit('dial'" modules/palm-matrix.js
-          grep -q "emit('holder'" modules/palm-matrix.js
-          grep -q "ultron:camera-hand-select" modules/stark-hand-gesture.js
-          grep -q "neuralCommand" modules/telemetry-client.js
+          grep -q "ultron:palm-freeze" modules/neural-command-router.js
+          grep -q "ultron:camera-hand-select" modules/neural-command-router.js
           echo 'Neural Command + gestures + Palm Matrix integration markers OK'

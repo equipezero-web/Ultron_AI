@@ -30,7 +30,6 @@
   pointer-events: none;
 }
 
-/* Nível 1: o ponto vira um pequeno círculo 3D, ainda sem abrir os componentes. */
 .stark-vortex[data-hand-zoom-level="1"] {
   transform:
     translate(-50%, -50%)
@@ -61,7 +60,6 @@
   transform: scale(.62);
 }
 
-/* Nível 2: zoom total, com ícone, rótulo e interação completa. */
 .stark-vortex[data-hand-zoom-level="2"] {
   transform:
     translate(-50%, -50%)
@@ -161,7 +159,7 @@
   opacity: 0;
   pointer-events: none;
   transform: translate3d(-9999px,-9999px,0) scale(.72);
-  transition: opacity .12s ease, transform .06s linear, border-color .1s ease;
+  transition: opacity .12s ease, transform .06s linear, border-color .1s ease, box-shadow .12s ease;
 }
 
 .stark-hand-cursor::before,
@@ -184,6 +182,17 @@
     0 0 28px rgba(255,85,0,.72),
     inset 0 0 10px rgba(255,85,0,.3);
   transform: translate3d(var(--hand-x),var(--hand-y),0) scale(.52) !important;
+}
+
+.stark-hand-cursor.frozen {
+  border-color: #ffd36e;
+  border-style: double;
+  opacity: 1;
+  box-shadow:
+    0 0 9px rgba(255,211,110,.95),
+    0 0 28px rgba(255,140,0,.58),
+    inset 0 0 11px rgba(255,211,110,.24);
+  animation: stark-hand-freeze-pulse 1.2s ease-in-out infinite;
 }
 
 .stark-hand-cursor.dragging {
@@ -214,6 +223,7 @@
 .stark-hand-status.visible { opacity: 1; }
 .stark-hand-status.open { color: #fff; border-color: rgba(0,240,255,.55); }
 .stark-hand-status.pinch { color: #ffb28b; border-color: rgba(255,85,0,.55); }
+.stark-hand-status.frozen { color: #ffd36e; border-color: rgba(255,211,110,.68); }
 
 .stark-hand-zoom .stark-hud-label span::after {
   content: " // HAND NAVIGATION";
@@ -229,6 +239,7 @@
 }
 
 @keyframes stark-hand-drag-spin { to { transform: translate3d(var(--hand-x),var(--hand-y),0) scale(.62) rotate(360deg); } }
+@keyframes stark-hand-freeze-pulse { 50% { box-shadow: 0 0 14px rgba(255,211,110,1), 0 0 38px rgba(255,140,0,.72), inset 0 0 12px rgba(255,211,110,.34); } }
 
 @media (max-width: 650px) {
   .stark-vortex[data-hand-zoom-level="1"] {
@@ -241,5 +252,18 @@
     width: 24px;
     height: 24px;
     margin: -12px;
+  }
+  .stark-hand-cursor {
+    width: 38px;
+    height: 38px;
+    margin: -19px;
+    border-width: 2px;
+  }
+  .stark-hand-cursor::before { width: 54px; }
+  .stark-hand-cursor::after { height: 54px; }
+  .stark-hand-status {
+    top: 52px;
+    padding: 7px 10px;
+    font-size: 8px;
   }
 }

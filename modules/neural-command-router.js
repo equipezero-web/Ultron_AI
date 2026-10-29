@@ -3,7 +3,7 @@ import {
   neuralSignature,
   normalizeNeuralAction,
   validateNeuralAction
-} from './neural-command-policy.mjs?v=4.18.0';
+} from './neural-command-policy.mjs?v=4.19.0';
 
 const HAS_WINDOW = typeof window !== 'undefined';
 const HAS_DOCUMENT = typeof document !== 'undefined';
@@ -92,18 +92,39 @@ function observe(action, detail = {}, source = 'palm-matrix') {
   return publish(verdict.action, detail, { source, handled: true, mode: 'observed' });
 }
 
+function fileExplosion() {
+  const stage = HAS_DOCUMENT ? document.querySelector('.neural-stage') : null;
+  stage?.classList.remove('stark-file-explosion');
+  if (stage) {
+    void stage.offsetWidth;
+    stage.classList.add('stark-file-explosion');
+    setTimeout(() => stage.classList.remove('stark-file-explosion'), 760);
+  }
+
+  const fileMesh = HAS_WINDOW ? window.ULTRON_FILE_MESH : null;
+  if (fileMesh?.active) {
+    fileMesh.refresh?.({ requestLocal: false });
+    return true;
+  }
+
+  if (fileMesh?.enter) {
+    Promise.resolve(fileMesh.enter()).catch(() => {});
+    return true;
+  }
+
+  const core = HAS_WINDOW ? window.ULTRON_STARK_CORE : null;
+  return Boolean(core?.open?.('ARQUIVOS'));
+}
+
 function executeAction(action, detail = {}) {
   const core = HAS_WINDOW ? window.ULTRON_STARK_CORE : null;
   const mesh = HAS_WINDOW ? window.ULTRON_STARK_MESH : null;
   const fileLab = HAS_WINDOW ? window.ULTRON_FILE_LAB : null;
+  const fileMesh = HAS_WINDOW ? window.ULTRON_FILE_MESH : null;
+  const hand = HAS_WINDOW ? window.ULTRON_HAND_GESTURES : null;
 
   if (action === 'push') {
-    if (fileLab?.active) return Boolean(fileLab.pushSelected?.() ?? true);
-    if ((mesh?.zoomLevel || 0) < 2) {
-      mesh?.setZoomLevel?.(2);
-      return Boolean(mesh);
-    }
-    return Boolean(mesh?.openFocused?.());
+    return fileExplosion();
   }
 
   if (action === 'sweep') {
@@ -113,11 +134,10 @@ function executeAction(action, detail = {}) {
     return Boolean(core);
   }
 
-  if (action === 'fist-anchor') {
-    fileLab?.anchor?.();
-    mesh?.setZoomLevel?.(0);
-    core?.close?.();
-    return Boolean(fileLab || mesh || core);
+  if (action === 'freeze') {
+    hand?.freeze?.('neural-command');
+    mesh?.endDrag?.({ persist: true });
+    return Boolean(hand || mesh);
   }
 
   if (action === 'dial') {
@@ -136,9 +156,12 @@ function executeAction(action, detail = {}) {
 
   if (action === 'pinch-select') {
     const target = String(detail.target || detail.label || '').trim();
-    if (target) core?.focus?.(target);
+    if (!target) return false;
+
+    if (fileMesh?.active && fileMesh.openFileNode?.(target)) return true;
+    core?.focus?.(target);
     if (mesh?.openFocused?.()) return true;
-    return Boolean(target && core?.open?.(target));
+    return Boolean(core?.open?.(target));
   }
 
   return false;
@@ -162,7 +185,7 @@ if (HAS_WINDOW) {
   const bindings = [
     ['ultron:palm-push', 'push', 'palm-matrix'],
     ['ultron:palm-sweep', 'sweep', 'palm-matrix'],
-    ['ultron:palm-fist-anchor', 'fist-anchor', 'palm-matrix'],
+    ['ultron:palm-freeze', 'freeze', 'palm-matrix'],
     ['ultron:palm-dial', 'dial', 'palm-matrix'],
     ['ultron:palm-holder', 'holder', 'palm-matrix'],
     ['ultron:camera-hand-select', 'pinch-select', 'camera-hand']
@@ -188,7 +211,7 @@ if (HAS_WINDOW) {
   };
 
   window.dispatchEvent(new CustomEvent('ultron:neural-command-ready', {
-    detail: { actions: Object.keys(NEURAL_ACTION_POLICY), version: '4.18.0' }
+    detail: { actions: Object.keys(NEURAL_ACTION_POLICY), version: '4.19.0' }
   }));
 }
 

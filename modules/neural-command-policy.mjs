@@ -1,10 +1,10 @@
 export const NEURAL_ACTION_POLICY = Object.freeze({
-  push: { minConfidence: 0.55, cooldownMs: 700 },
-  sweep: { minConfidence: 0.55, cooldownMs: 560 },
-  'fist-anchor': { minConfidence: 0.60, cooldownMs: 820 },
+  push: { minConfidence: 0.60, cooldownMs: 1100 },
+  sweep: { minConfidence: 0.58, cooldownMs: 650 },
+  freeze: { minConfidence: 0.60, cooldownMs: 520 },
   dial: { minConfidence: 0.55, cooldownMs: 90 },
-  holder: { minConfidence: 0.55, cooldownMs: 1500 },
-  'pinch-select': { minConfidence: 0, cooldownMs: 320 }
+  holder: { minConfidence: 0.58, cooldownMs: 1600 },
+  'pinch-select': { minConfidence: 0, cooldownMs: 420 }
 });
 
 export function normalizeNeuralAction(action) {
@@ -14,7 +14,7 @@ export function normalizeNeuralAction(action) {
     .replaceAll('_', '-')
     .replace(/\s+/g, '-');
 
-  if (clean === 'fist' || clean === 'anchor' || clean === 'fistanchor') return 'fist-anchor';
+  if (['fist', 'anchor', 'fistanchor', 'fist-anchor', 'closed-fist', 'closed-palm', 'stop'].includes(clean)) return 'freeze';
   if (clean === 'pinch' || clean === 'select' || clean === 'pinch-click') return 'pinch-select';
   if (clean === 'rotate' || clean === 'rotation') return 'dial';
   return clean;
@@ -25,7 +25,7 @@ export function neuralSignature(action, detail = {}) {
   const direction = String(detail.direction || '').toLowerCase();
   const target = String(detail.target || detail.label || '').trim().toUpperCase();
   const bucket = normalized === 'dial'
-    ? (Number(detail.delta || 0) >= 0 ? 'cw' : 'ccw')
+    ? (Number(detail.delta || detail.rotationStep || 0) >= 0 ? 'cw' : 'ccw')
     : '';
   return [normalized, direction, target, bucket].filter(Boolean).join(':');
 }
