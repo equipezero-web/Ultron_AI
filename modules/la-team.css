@@ -1,0 +1,20 @@
+.ultron-la-team-node .stark-node-icon{color:#f0d47a;text-shadow:0 0 10px rgba(240,212,122,.75),0 0 24px rgba(240,212,122,.28)}
+.ultron-la-team-shell{display:grid;gap:12px}
+.ultron-la-team-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;border:1px solid rgba(240,212,122,.2);background:rgba(240,212,122,.045);border-radius:12px}
+.ultron-la-team-head strong{font-size:11px;letter-spacing:.12em;color:#f7e7ad}
+.ultron-la-team-head span{font-size:8px;letter-spacing:.1em;color:#91a6ad}
+.ultron-la-team-status{font-size:8px;padding:5px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.12);color:#9aa8ad}
+.ultron-la-team-status.online{border-color:rgba(103,255,177,.32);color:#89ffc0;background:rgba(103,255,177,.06)}
+.ultron-la-team-login{display:grid;gap:10px;padding:12px;border:1px solid rgba(255,255,255,.08);border-radius:12px;background:rgba(0,0,0,.2)}
+.ultron-la-team-login input{width:100%;box-sizing:border-box;padding:11px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.28);color:#eafcff;outline:none;font:10px ui-monospace,monospace}
+.ultron-la-team-login input:focus{border-color:rgba(240,212,122,.42);box-shadow:0 0 0 2px rgba(240,212,122,.06)}
+.ultron-la-team-note{font-size:8px;line-height:1.55;color:#94a9af;padding:8px 10px;border-left:2px solid rgba(240,212,122,.35);background:rgba(255,255,255,.025)}
+.ultron-la-team-error{color:#ff9c8c;border-left-color:rgba(255,85,68,.65)}
+.ultron-la-team-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.ultron-la-team-card{padding:10px;border-radius:11px;border:1px solid rgba(0,240,255,.12);background:rgba(0,20,28,.26)}
+.ultron-la-team-card small{display:block;font-size:7px;letter-spacing:.1em;color:#78939c;margin-bottom:4px}
+.ultron-la-team-card strong{font-size:13px;color:#dffcff}
+.ultron-la-team-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.ultron-la-team-actions .stark-holo-action.wide{grid-column:1/-1}
+.ultron-la-team-turnstile{min-height:65px;display:grid;place-items:center;overflow:hidden}
+@media(max-width:720px){.ultron-la-team-grid,.ultron-la-team-actions{grid-template-columns:1fr}.ultron-la-team-actions .stark-holo-action.wide{grid-column:auto}}
