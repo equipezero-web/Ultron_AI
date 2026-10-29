@@ -34,6 +34,7 @@ await import('./stark-inner-mesh.js?v=4.12.1');
 await import('./neural-input-bus.js?v=4.12.1');
 await import('./stark-advanced.js?v=4.12.1');
 await import('./vision-client.js?v=4.16.0');
+await import('./vision-command-router.js?v=4.17.0');
 await import('./stark-hand-gesture.js?v=4.12.1');
 await import('./stark-camera-preview.js?v=4.12.1');
 await import('./camera-runtime.js?v=4.16.0');
@@ -66,7 +67,7 @@ window.addEventListener('ultron:subvocal-command', (event) => {
 
 window.dispatchEvent(new CustomEvent('ultron:stark-bootstrap-ready', {
   detail: {
-    version: '4.16.0',
+    version: '4.17.0',
     performanceMode: window.ULTRON_PERFORMANCE?.mode || 'full',
     starkCore: Boolean(window.ULTRON_STARK_CORE),
     innerMesh: Boolean(window.ULTRON_STARK_MESH),
@@ -75,6 +76,7 @@ window.dispatchEvent(new CustomEvent('ultron:stark-bootstrap-ready', {
     vision: Boolean(window.ULTRON_VISION),
     visionDiagnostics: Boolean(window.ULTRON_VISION?.diagnose),
     visionImageFallback: Boolean(window.ULTRON_VISION?.analyzeFile),
+    visionCommandRouter: Boolean(window.ULTRON_VISION_ROUTER),
     handGestures: Boolean(window.ULTRON_HAND_GESTURES),
     palmMatrix: Boolean(window.ULTRON_PALM_MATRIX),
     cameraPreview: Boolean(window.ULTRON_CAMERA_PREVIEW),
