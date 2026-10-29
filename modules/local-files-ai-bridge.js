@@ -23,26 +23,6 @@ function log(message, alert = false) {
   output.scrollTop = output.scrollHeight;
 }
 
-function enrichedMessage(original, local) {
-  return [
-    'MODO ULTRON LOCAL FILE RAG ATIVO.',
-    'Use o contexto local abaixo para responder sobre os arquivos do operador.',
-    'Não invente conteúdo que não esteja nos trechos recuperados.',
-    'Se houver baixa similaridade ou ambiguidade, diga isso antes de sugerir uma ação.',
-    'O caminho mostrado é relativo à pasta segura Ultron_Data.',
-    '',
-    local.contextText || '',
-    '',
-    'AÇÃO LOCAL SUGERIDA:',
-    `action: ${local.action || 'SEARCH_FILES'}`,
-    `target_file: ${local.target_file || 'nenhum'}`,
-    `component_id: ${local.component_id || 'nenhum'}`,
-    '',
-    'COMANDO ORIGINAL DO OPERADOR:',
-    original
-  ].filter(Boolean).join('\n');
-}
-
 function parseInitBody(init) {
   if (!init?.body || typeof init.body !== 'string') return null;
   try {
@@ -60,45 +40,56 @@ window.fetch = async function ultronLocalRagFetch(input, init = {}) {
 
   const body = parseInitBody(init);
   const originalMessage = String(body?.message || '').trim();
-  if (!body || !originalMessage || originalMessage.includes('MODO ULTRON LOCAL FILE RAG ATIVO')) {
+  if (!body || !originalMessage || body?.localFilesMeta?.active) {
     return previousFetch(input, init);
   }
 
   try {
-    const local = await window.ULTRON_LOCAL_FILES.semanticContext(originalMessage, 6);
+    const local = await window.ULTRON_LOCAL_FILES.semanticContext(originalMessage, 8);
     if (!local?.matches?.length || !local?.contextText) {
       return previousFetch(input, init);
     }
 
     const top = local.matches[0];
-    log(`${local.matches.length} trecho(s) recuperado(s) // alvo: ${local.target_file || 'sem alvo'} // ${Math.round((top?.score || 0) * 100)}%`);
+    const activePath = local?.active_file?.path || null;
+    log(`${local.matches.length} trecho(s) // ${local.search_mode || 'hybrid'} // alvo: ${local.target_file || activePath || 'base'} // ${Math.round((top?.score || 0) * 100)}%`);
 
-    body.message = enrichedMessage(originalMessage, local);
+    // A mensagem do operador permanece intacta. O contexto RAG segue separado,
+    // para memória/histórico armazenarem apenas a pergunta real do usuário.
+    body.localFilesContext = local.contextText;
     body.localFilesMeta = {
       active: true,
       originalMessage,
+      searchMode: local.search_mode || 'hybrid',
       action: local.action || 'SEARCH_FILES',
-      targetFile: local.target_file || null,
-      targetFileId: local.target_file_id || null,
+      targetFile: local.target_file || activePath || null,
+      targetFileId: local.target_file_id || local?.active_file?.file_id || null,
       componentId: local.component_id || null,
       topScore: Number(top?.score || 0),
-      matches: local.matches.slice(0, 6).map((item) => ({
+      activeFile: local?.active_file ? {
+        fileId: local.active_file.file_id,
+        path: local.active_file.path,
+        name: local.active_file.name
+      } : null,
+      matches: local.matches.slice(0, 8).map((item) => ({
         fileId: item.file_id,
         path: item.path,
         chunkIndex: item.chunk_index,
-        score: item.score
+        score: item.score,
+        semanticScore: item.semantic_score,
+        lexicalScore: item.lexical_score
       }))
     };
 
     if (
       local.action === 'OPEN_FILE' &&
-      local.target_file_id &&
-      Number(top?.score || 0) >= 0.6 &&
+      body.localFilesMeta.targetFileId &&
+      Number(top?.score || 0) >= 0.55 &&
       /\b(abra|abrir|open)\b/i.test(originalMessage)
     ) {
-      window.ULTRON_LOCAL_FILES.open(local.target_file_id)
-        .then(() => log(`Arquivo aberto: ${local.target_file}`))
-        .catch((error) => log(`Não foi possível abrir ${local.target_file}: ${error?.message || error}`, true));
+      window.ULTRON_LOCAL_FILES.open(body.localFilesMeta.targetFileId)
+        .then(() => log(`Arquivo aberto: ${body.localFilesMeta.targetFile || 'arquivo local'}`))
+        .catch((error) => log(`Não foi possível abrir o arquivo: ${error?.message || error}`, true));
     }
 
     window.dispatchEvent(new CustomEvent('ultron:local-rag-context', {
@@ -113,5 +104,7 @@ window.fetch = async function ultronLocalRagFetch(input, init = {}) {
 };
 
 window.ULTRON_LOCAL_RAG_BRIDGE = {
-  active: true
+  active: true,
+  messageSafe: true,
+  mode: 'separate-context-v2'
 };
