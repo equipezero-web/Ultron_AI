@@ -78,10 +78,11 @@ jobs:
           grep -q "neuralCommandRouter" modules/stark-bootstrap.js
           grep -q "ultron:neural-command" modules/neural-input-bus.js
           grep -q "ULTRON_NEURAL_COMMAND" modules/neural-parity.js
-          grep -q "ultron:palm-push" modules/palm-matrix.js
-          grep -q "ultron:palm-sweep" modules/palm-matrix.js
-          grep -q "ultron:palm-dial" modules/palm-matrix.js
-          grep -q "ultron:palm-holder" modules/palm-matrix.js
+          grep -q 'ultron:palm-${type}' modules/palm-matrix.js
+          grep -q "emit('push'" modules/palm-matrix.js
+          grep -q "emit('sweep'" modules/palm-matrix.js
+          grep -q "emit('dial'" modules/palm-matrix.js
+          grep -q "emit('holder'" modules/palm-matrix.js
           grep -q "ultron:camera-hand-select" modules/stark-hand-gesture.js
           grep -q "neuralCommand" modules/telemetry-client.js
           echo 'Neural Command + gestures + Palm Matrix integration markers OK'
