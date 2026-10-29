@@ -4,7 +4,7 @@ const SEARCH_TIMEOUT_MS = 3200;
 const CURRENT_TERMS = /\b(hoje|agora|atual|atuais|recente|recentes|ultimo|último|ultimos|últimos|latest|2026|preco|preço|cotacao|cotação|resultado|placar|eleicao|eleição|presidente|ceo|versao|versão|lancamento|lançamento)\b/i;
 const SEARCH_TERMS = /\b(pesquise|pesquisar|procure|buscar|busque|google|internet|web|fontes?|confirme|verifique|investigue)\b/i;
 const FACTUAL_START = /^(quem|quando|onde|qual|quais|quanto|quantos|como funciona|o que e|o que é|por que|porque)\b/i;
-const UNCERTAINTY = /\b(n[aã]o sei|n[aã]o tenho (?:essa |essas )?informa[cç][aã]o|n[aã]o posso confirmar|n[aã]o consigo confirmar|talvez|pode ser|n[aã]o tenho certeza|meu conhecimento)\b/i;
+const UNCERTAINTY = /\b(n[aã]o sei|n[aã]o tenho (?:essa |essas )?informa[cç][aã]o|n[aã]o posso confirmar|n[aã]o consigo confirmar|talvez|pode ser|n[aã]o tenho certeza|meu conhecimento|sem acesso (?:a|à) internet|n[aã]o tenho dados atuais)\b/i;
 
 function clean(value, max = 1200) {
   const text = String(value || "").replace(/\s+/g, " ").trim();
@@ -15,9 +15,21 @@ function safeUrl(value) {
   try {
     const url = new URL(String(value || ""));
     if (!["http:", "https:"].includes(url.protocol)) return null;
+    url.hash = "";
     return url.toString();
   } catch {
     return null;
+  }
+}
+
+function canonicalUrl(value) {
+  try {
+    const url = new URL(String(value || ""));
+    url.hash = "";
+    ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "gclid", "fbclid"].forEach((key) => url.searchParams.delete(key));
+    return url.toString().replace(/\/$/, "").toLowerCase();
+  } catch {
+    return String(value || "").toLowerCase();
   }
 }
 
@@ -29,19 +41,56 @@ function hostLabel(url) {
   }
 }
 
+function sourceScore({ url, date, snippet, position }) {
+  let score = Math.max(25, 100 - Math.max(0, Number(position || 1) - 1) * 7);
+  const host = hostLabel(url);
+  if (/\.(gov|gov\.br|edu|edu\.br)$/i.test(host) || /(^|\.)gov\.br$/i.test(host)) score += 20;
+  if (/\.(org)$/i.test(host)) score += 4;
+  if (date) score += 8;
+  if (String(snippet || "").length >= 120) score += 6;
+  if (/reddit\.com|pinterest\.|facebook\.com|instagram\.com|tiktok\.com/i.test(host)) score -= 18;
+  return Math.max(1, Math.min(150, Math.round(score)));
+}
+
 function normalizeResult(item, index) {
   const url = safeUrl(item?.link);
   const title = clean(item?.title, 220);
   if (!url || !title) return null;
+  const snippet = clean(item?.snippet || item?.description || "", 650);
+  const date = clean(item?.date || "", 80) || null;
+  const position = Number(item?.position || index + 1);
   return {
     id: `web-${index + 1}`,
     title,
     url,
     source: hostLabel(url),
-    snippet: clean(item?.snippet || item?.description || "", 650),
-    date: clean(item?.date || "", 80) || null,
-    position: Number(item?.position || index + 1)
+    snippet,
+    date,
+    position,
+    score: sourceScore({ url, date, snippet, position })
   };
+}
+
+function dedupeAndRank(results, limit = 6) {
+  const seenUrls = new Set();
+  const seenTitles = new Set();
+  const perHost = new Map();
+  const output = [];
+
+  const ranked = [...results].sort((a, b) => Number(b?.score || 0) - Number(a?.score || 0));
+  for (const item of ranked) {
+    const urlKey = canonicalUrl(item?.url);
+    const titleKey = clean(item?.title, 220).toLowerCase();
+    const host = String(item?.source || hostLabel(item?.url)).toLowerCase();
+    if (!urlKey || !titleKey || seenUrls.has(urlKey) || seenTitles.has(titleKey)) continue;
+    if ((perHost.get(host) || 0) >= 2) continue;
+    seenUrls.add(urlKey);
+    seenTitles.add(titleKey);
+    perHost.set(host, (perHost.get(host) || 0) + 1);
+    output.push({ ...item, id: `web-${output.length + 1}` });
+    if (output.length >= limit) break;
+  }
+  return output;
 }
 
 export function shouldResearchBeforeAnswer(message) {
@@ -58,14 +107,19 @@ export function answerLooksUncertain(text) {
   return UNCERTAINTY.test(String(text || ""));
 }
 
+export function isCurrentIntent(message) {
+  return CURRENT_TERMS.test(String(message || ""));
+}
+
 function buildGoogleContext(query, results, extras = {}) {
   const lines = [
     "PESQUISA WEB REAL EXECUTADA PARA ESTA RESPOSTA:",
     `Consulta: ${query}`,
     "Use somente as informações recuperadas abaixo para afirmações externas que dependam desta pesquisa.",
-    "Compare as fontes. Quando houver divergência, deixe isso claro.",
+    "Compare as fontes e priorize as mais diretas, recentes e confiáveis.",
+    "Quando houver divergência, deixe isso claro.",
     "Não invente detalhes que não apareçam nas fontes.",
-    "Ao final da resposta, cite as fontes mais relevantes pelo nome/domínio.",
+    "Ao final da resposta, mencione as fontes mais relevantes pelo nome/domínio.",
     ""
   ];
 
@@ -76,6 +130,7 @@ function buildGoogleContext(query, results, extras = {}) {
     lines.push(
       `${index + 1}. ${item.title}`,
       `Fonte: ${item.source}`,
+      `Qualidade relativa: ${item.score}/150`,
       item.date ? `Data: ${item.date}` : "",
       item.snippet ? `Trecho: ${item.snippet}` : "",
       `Link: ${item.url}`,
@@ -112,6 +167,7 @@ async function fetchWithTimeout(url, options = {}, timeoutMs = SEARCH_TIMEOUT_MS
 }
 
 export async function searchGoogle(env, query, { limit = 6 } = {}) {
+  const startedAt = Date.now();
   const apiKey = String(env?.SERPER_API_KEY || "").trim();
   if (!apiKey) {
     return {
@@ -120,13 +176,14 @@ export async function searchGoogle(env, query, { limit = 6 } = {}) {
       query: String(query || "").trim(),
       results: [],
       contextText: "",
-      error: "SERPER_API_KEY não configurada."
+      error: "SERPER_API_KEY não configurada.",
+      elapsedMs: Date.now() - startedAt
     };
   }
 
   const q = clean(query, 500);
   if (!q) {
-    return { configured: true, provider: "serper-google", query: "", results: [], contextText: "", error: "Consulta vazia." };
+    return { configured: true, provider: "serper-google", query: "", results: [], contextText: "", error: "Consulta vazia.", elapsedMs: Date.now() - startedAt };
   }
 
   try {
@@ -140,7 +197,7 @@ export async function searchGoogle(env, query, { limit = 6 } = {}) {
         q,
         gl: "br",
         hl: "pt-br",
-        num: Math.max(3, Math.min(6, Number(limit) || 6)),
+        num: Math.max(4, Math.min(10, Number(limit) + 2 || 8)),
         autocorrect: true
       })
     });
@@ -152,11 +209,15 @@ export async function searchGoogle(env, query, { limit = 6 } = {}) {
     if (!response.ok) throw new Error(data?.message || data?.error || raw || `Serper HTTP ${response.status}`);
 
     const organic = Array.isArray(data?.organic) ? data.organic : [];
-    const results = organic.map(normalizeResult).filter(Boolean).slice(0, Math.min(6, limit));
+    const normalized = organic.map(normalizeResult).filter(Boolean);
+    const results = dedupeAndRank(normalized, Math.max(3, Math.min(8, Number(limit) || 6)));
     const extras = {
       answerBox: answerBoxText(data),
       knowledgeGraph: knowledgeGraphText(data)
     };
+    const averageScore = results.length
+      ? Math.round(results.reduce((sum, item) => sum + Number(item.score || 0), 0) / results.length)
+      : 0;
 
     return {
       configured: true,
@@ -166,8 +227,14 @@ export async function searchGoogle(env, query, { limit = 6 } = {}) {
       results,
       contextText: buildGoogleContext(q, results, extras),
       extras,
+      quality: {
+        sourceCount: results.length,
+        averageScore,
+        diverseDomains: new Set(results.map((item) => item.source)).size
+      },
       error: null,
-      searchedAt: new Date().toISOString()
+      searchedAt: new Date().toISOString(),
+      elapsedMs: Date.now() - startedAt
     };
   } catch (error) {
     const message = error?.name === "AbortError" ? "Pesquisa Google excedeu 3,2 segundos." : String(error?.message || error);
@@ -179,7 +246,8 @@ export async function searchGoogle(env, query, { limit = 6 } = {}) {
       results: [],
       contextText: "",
       error: message.slice(0, 400),
-      searchedAt: new Date().toISOString()
+      searchedAt: new Date().toISOString(),
+      elapsedMs: Date.now() - startedAt
     };
   }
 }
