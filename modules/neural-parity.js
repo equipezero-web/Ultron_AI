@@ -18,6 +18,8 @@ function report() {
     starkCore: Boolean(window.ULTRON_STARK_CORE),
     innerMesh: Boolean(window.ULTRON_STARK_MESH),
     fileMesh: Boolean(window.ULTRON_FILE_MESH),
+    neuralInput: Boolean(window.ULTRON_NEURAL_INPUT),
+    neuralCommandRouter: Boolean(window.ULTRON_NEURAL_COMMAND),
     handTracking: Boolean(window.ULTRON_HAND_GESTURES),
     palmMatrix: Boolean(window.ULTRON_PALM_MATRIX),
     cameraRuntime: Boolean(window.ULTRON_CAMERA_RUNTIME),
@@ -58,6 +60,7 @@ window.addEventListener('ultron:camera-devices', (event) => {
   if (Number(event.detail?.count || 0) > 0) scheduleSync('camera-detected');
 });
 
+window.addEventListener('ultron:neural-command-ready', () => scheduleSync('neural-command-ready'));
 window.addEventListener('ultron:performance-mode', () => scheduleSync('performance-change'));
 window.addEventListener('resize', () => scheduleSync('resize'));
 
@@ -69,7 +72,7 @@ setTimeout(async () => {
   if (missing.length) {
     log(`PARITY CHECK // módulos ausentes: ${missing.join(', ')}`, true);
   } else {
-    log(`PARITY READY // ${String(current.performance).toUpperCase()} // mesmas funções Neural em desktop e mobile.`);
+    log(`PARITY READY // ${String(current.performance).toUpperCase()} // Neural Command + gestos + Palm Matrix sincronizados em desktop e mobile.`);
   }
 }, 900);
 
