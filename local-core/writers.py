@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import csv
 import re
 from pathlib import Path
 
@@ -16,11 +17,12 @@ TEXT_WRITABLE = {
     ".js", ".mjs", ".cjs", ".ts", ".tsx", ".jsx", ".json", ".jsonc", ".xml",
     ".yml", ".yaml", ".toml", ".ini", ".cfg", ".conf", ".sql", ".py", ".java",
     ".kt", ".kts", ".c", ".h", ".cpp", ".hpp", ".cs", ".go", ".rs", ".php",
-    ".rb", ".sh", ".bat", ".ps1", ".vue", ".svelte", ".rtf", ".csv", ".tsv"
+    ".rb", ".sh", ".bat", ".ps1", ".vue", ".svelte", ".rtf"
 }
 
+TABLE_WRITABLE = {".csv", ".tsv"}
 BINARY_WRITABLE = {".docx", ".xlsx", ".pdf", ".pptx"}
-WRITABLE_EXTENSIONS = TEXT_WRITABLE | BINARY_WRITABLE
+WRITABLE_EXTENSIONS = TEXT_WRITABLE | TABLE_WRITABLE | BINARY_WRITABLE
 
 
 def sanitize_filename(value: str) -> str:
@@ -43,6 +45,24 @@ def safe_export_suffix(source_suffix: str, requested_suffix: str | None = None) 
 
 def _write_text(target: Path, content: str) -> None:
     target.write_text(str(content), encoding="utf-8")
+
+
+def _write_delimited(target: Path, content: str, delimiter: str) -> None:
+    with target.open("w", encoding="utf-8-sig", newline="") as handle:
+        writer = csv.writer(handle, delimiter=delimiter)
+        for raw_line in str(content).splitlines():
+            line = raw_line.strip("\n")
+            if not line.strip() or line.strip() == "[TABELA]":
+                continue
+            if line.startswith("[PLANILHA:") and line.endswith("]"):
+                continue
+            if "\t" in line:
+                values = line.split("\t")
+            elif delimiter in line:
+                values = next(csv.reader([line], delimiter=delimiter))
+            else:
+                values = [line]
+            writer.writerow(values)
 
 
 def _write_docx(target: Path, content: str) -> None:
@@ -79,7 +99,7 @@ def _write_xlsx(target: Path, content: str) -> None:
                 current = workbook.create_sheet(title=title[:31])
                 created += 1
             continue
-        if not line.strip():
+        if not line.strip() or line.strip() == "[TABELA]":
             continue
         values = line.split("\t") if "\t" in line else [line]
         current.append(values)
@@ -136,6 +156,10 @@ def export_content(target: Path, content: str) -> str:
 
     if suffix in TEXT_WRITABLE:
         _write_text(target, content)
+    elif suffix == ".csv":
+        _write_delimited(target, content, ",")
+    elif suffix == ".tsv":
+        _write_delimited(target, content, "\t")
     elif suffix == ".docx":
         _write_docx(target, content)
     elif suffix == ".xlsx":
