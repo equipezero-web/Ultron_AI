@@ -61,7 +61,8 @@ function buildMemoryAwareMessage(
   memoryContext,
   liveContext = "",
   webResearchContext = "",
-  localFilesContext = ""
+  localFilesContext = "",
+  laTeamContext = ""
 ) {
   const blocks = [];
 
@@ -83,6 +84,18 @@ function buildMemoryAwareMessage(
       "Use-o somente para responder sobre arquivos locais; não invente trechos ausentes e não trate caminhos locais como fontes públicas.",
       "",
       localFilesContext,
+      ""
+    );
+  }
+
+  if (laTeamContext) {
+    blocks.push(
+      "CONTEXTO INTERNO AUTENTICADO DA L&A ADVISORY TEAM:",
+      "Estes dados vêm do sistema interno autorizado da equipe e não são pesquisa pública.",
+      "Use-os apenas quando a pergunta do operador for sobre L&A Team, CRM, financeiro, FlowBoost, TikTok, equipe, relatórios ou código relacionado.",
+      "Respeite as restrições de função/RLS já aplicadas pela origem. Não invente registros ausentes e não exponha informação além do necessário para responder.",
+      "",
+      laTeamContext,
       ""
     );
   }
@@ -213,9 +226,10 @@ export default {
           liveNews: true,
           visualContext: true,
           localFileContextBridge: true,
+          laTeamContextBridge: true,
           uncertaintyResearchRetry: Boolean(env.SERPER_API_KEY),
           message:
-            "ULTRON Cloudflare Worker funcionando com gateway multi-IA, memória, contexto visual, RAG local e Device Bridge."
+            "ULTRON Cloudflare Worker funcionando com gateway multi-IA, memória, contexto visual, RAG local, L&A Team e Device Bridge."
         },
         { headers: corsHeaders }
       );
@@ -315,6 +329,7 @@ export default {
         const operatorId = await deriveOperatorId(body?.memoryKey);
         const externalResearchContext = String(body?.webResearchContext || "").trim();
         const localFilesContext = String(body?.localFilesContext || "").trim();
+        const laTeamContext = String(body?.laTeamContext || "").trim();
         const skipLegacyResearch = Boolean(body?.researchMeta?.skipLegacyResearch);
 
         if (!message) {
@@ -346,7 +361,8 @@ export default {
           memoryState.context,
           newsState.contextText,
           externalResearchContext,
-          localFilesContext
+          localFilesContext,
+          laTeamContext
         );
 
         const aiStartedAt = Date.now();
@@ -363,6 +379,8 @@ export default {
 
         const alreadyGrounded = Boolean(
           externalResearchContext ||
+          localFilesContext ||
+          laTeamContext ||
           (newsState.active && Array.isArray(newsState.articles) && newsState.articles.length)
         );
 
@@ -382,7 +400,8 @@ export default {
               memoryState.context,
               newsState.contextText,
               fallbackResearch.contextText,
-              localFilesContext
+              localFilesContext,
+              laTeamContext
             );
             aiResult = await generateWithProviders(
               env,
@@ -508,6 +527,17 @@ export default {
                   componentId: body?.localFilesMeta?.componentId || null,
                   topScore: Number(body?.localFilesMeta?.topScore || 0),
                   matchCount: Array.isArray(body?.localFilesMeta?.matches) ? body.localFilesMeta.matches.length : 0
+                }
+              : { active: false },
+            laTeam: laTeamContext
+              ? {
+                  active: true,
+                  authorized: Boolean(body?.laTeamMeta?.authorized),
+                  source: body?.laTeamMeta?.source || "la-advisory-team",
+                  areas: Array.isArray(body?.laTeamMeta?.areas) ? body.laTeamMeta.areas : [],
+                  memberRole: body?.laTeamMeta?.memberRole || null,
+                  fetchedAt: body?.laTeamMeta?.fetchedAt || null,
+                  messageSafe: true
                 }
               : { active: false },
             liveData: {
