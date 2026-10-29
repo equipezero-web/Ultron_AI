@@ -1,0 +1,46 @@
+name: L&A Team Connector Check
+
+on:
+  push:
+    paths:
+      - 'modules/la-team-*.js'
+      - 'modules/la-team.css'
+      - 'modules/telemetry-client.js'
+      - 'backend/worker.js'
+      - 'backend/worker-v4.js'
+      - 'index.html'
+      - '.github/workflows/la-team-connector-check.yml'
+  pull_request:
+    paths:
+      - 'modules/la-team-*.js'
+      - 'modules/la-team.css'
+      - 'modules/telemetry-client.js'
+      - 'backend/worker.js'
+      - 'backend/worker-v4.js'
+      - 'index.html'
+
+jobs:
+  syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check L&A Team frontend modules
+        run: |
+          node --check modules/la-team-client.js
+          node --check modules/la-team-ai-bridge.js
+          node --check modules/la-team-neural.js
+          node --check modules/la-team-bootstrap.js
+          node --check modules/telemetry-client.js
+      - name: Check AI backend integration
+        run: |
+          node --check backend/worker.js
+          node --check backend/worker-v4.js
+      - name: Verify connector markers
+        run: |
+          grep -q 'ULTRON_LA_TEAM' modules/la-team-client.js
+          grep -q 'laTeamContext' backend/worker.js
+          grep -q 'authenticated-internal-context' backend/worker-v4.js
+          grep -q 'telemetry-client.js?v=4.15.0' index.html
