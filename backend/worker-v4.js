@@ -1,5 +1,6 @@
 import baseWorker from "./worker-v3.js";
 import { deriveOperatorId } from "./memory.js";
+import { loadLiveNewsContext } from "./news-context.js";
 import {
   researchVisualContext,
   searchGoogle,
@@ -10,7 +11,7 @@ import {
   saveResearchMemory
 } from "./research-memory.js";
 
-const BACKEND_VERSION = "4.10.0";
+const BACKEND_VERSION = "4.13.0";
 
 function corsHeaders() {
   return {
@@ -51,55 +52,64 @@ function isNewsIntent(message) {
     /\b(hoje|agora|atual|atuais|recente|recentes|ultima|ultimas|noticia|noticias)\b/.test(text);
 }
 
-function sanitizeNewsIntentForBase(message) {
-  return String(message || "")
-    .replace(/\bnot[ií]cias?\b/gi, "informações verificadas")
-    .replace(/\bnews\b/gi, "informações verificadas")
-    .replace(/\bmanchetes?\b/gi, "tópicos verificados")
-    .replace(/\bacontecendo\b/gi, "ocorrendo")
-    .replace(/\bcirculando\b/gi, "publicado");
-}
-
 function cacheContext(cache) {
   const sources = (Array.isArray(cache?.sources) ? cache.sources : [])
-    .slice(0, 6)
+    .slice(0, 8)
     .map((item, index) => {
       const title = String(item?.title || item?.source || `Fonte ${index + 1}`).trim();
       const source = String(item?.source || "fonte").trim();
       const url = String(item?.url || "").trim();
-      return `${index + 1}. ${title}\nFonte: ${source}\nLink: ${url}`;
+      const date = String(item?.date || "").trim();
+      return `${index + 1}. ${title}\nFonte: ${source}${date ? `\nData: ${date}` : ""}\nLink: ${url}`;
     })
     .join("\n\n");
 
   return [
-    "PESQUISA WEB RECENTE RECUPERADA DA MEMÓRIA DO ULTRON:",
+    "PESQUISA WEB RECENTE RECUPERADA DA MEMÓRIA TEMPORÁRIA DO ULTRON:",
     `Consulta original: ${cache?.query || ""}`,
     `Verificada em: ${cache?.fetchedAt || "data não informada"}`,
-    "Use esta memória de pesquisa apenas enquanto ela estiver válida.",
-    "Se houver conflito entre o resumo e a mensagem atual do operador, priorize a mensagem atual.",
+    `Válida até: ${cache?.expiresAt || "prazo não informado"}`,
+    "Use esta pesquisa somente enquanto ela estiver válida.",
+    "Se houver conflito com a mensagem atual do operador, priorize a mensagem atual.",
     "",
     `Resumo verificado: ${cache?.answer || ""}`,
     sources ? `\nFontes:\n${sources}` : ""
   ].filter(Boolean).join("\n");
 }
 
-function appendResearchToMessage(originalMessage, contextText, { suppressLegacyNews = false } = {}) {
-  const operatorMessage = suppressLegacyNews
-    ? sanitizeNewsIntentForBase(originalMessage)
-    : originalMessage;
+function canonicalUrl(value) {
+  try {
+    const url = new URL(String(value || ""));
+    url.hash = "";
+    return url.toString().replace(/\/$/, "").toLowerCase();
+  } catch {
+    return String(value || "").toLowerCase();
+  }
+}
 
-  return [
-    "MODO ULTRON WEB RESEARCH ATIVO.",
-    "A resposta deve ser baseada no contexto de pesquisa abaixo e na memória válida.",
-    "Não afirme que pesquisou se não houver fontes reais listadas.",
-    "As fontes já foram recuperadas nesta camada. Não execute uma segunda busca externa para a mesma pergunta.",
-    "Quando a pergunta for sobre informações atuais, trate estas fontes como LIVE NEWS verificadas.",
-    "",
-    contextText,
-    "",
-    "PERGUNTA ORIGINAL DO OPERADOR (normalizada apenas para impedir pesquisa duplicada):",
-    operatorMessage
-  ].join("\n");
+function dedupeSources(items, limit = 10) {
+  const seenUrls = new Set();
+  const seenTitles = new Set();
+  const output = [];
+  for (const item of Array.isArray(items) ? items : []) {
+    const url = String(item?.url || "").trim();
+    const title = String(item?.title || item?.source || "").replace(/\s+/g, " ").trim();
+    if (!url || !title) continue;
+    const urlKey = canonicalUrl(url);
+    const titleKey = normalize(title);
+    if (seenUrls.has(urlKey) || seenTitles.has(titleKey)) continue;
+    seenUrls.add(urlKey);
+    seenTitles.add(titleKey);
+    output.push({
+      title,
+      url,
+      source: String(item?.source || "fonte").trim(),
+      date: item?.date || item?.publishedAt || null,
+      score: Number.isFinite(Number(item?.score)) ? Number(item.score) : null
+    });
+    if (output.length >= limit) break;
+  }
+  return output;
 }
 
 function sourceSummary(research) {
@@ -109,7 +119,20 @@ function sourceSummary(research) {
       title: item.title,
       url: item.url,
       source: item.source,
-      date: item.date || null
+      date: item.date || null,
+      score: Number.isFinite(Number(item.score)) ? Number(item.score) : null
+    }));
+}
+
+function newsSourceSummary(newsState) {
+  return (Array.isArray(newsState?.articles) ? newsState.articles : [])
+    .slice(0, 8)
+    .map((item) => ({
+      title: item.title,
+      url: item.url,
+      source: item.source,
+      date: item.publishedAt || null,
+      score: null
     }));
 }
 
@@ -131,7 +154,7 @@ function researchVisualFromSources(sources, searchedAt, text, fromCache, researc
 
   return {
     mode: "web-research",
-    label: fromCache ? "RESEARCH MEMORY" : "GOOGLE RESEARCH",
+    label: fromCache ? "RESEARCH MEMORY" : "WEB RESEARCH",
     images: [],
     cards: sources.slice(0, 4).map((item) => ({
       title: item.title,
@@ -163,13 +186,17 @@ export default {
         return json({
           ...data,
           backendVersion: BACKEND_VERSION,
-          liveNewsEngine: "gdelt+google-news+web-research",
+          liveNewsEngine: "google-search+google-news+gdelt-parallel",
           webResearch: {
             enabled: true,
             googleSearch: Boolean(env.SERPER_API_KEY),
             provider: env.SERPER_API_KEY ? "Google Search via Serper" : null,
             memoryCache: Boolean(env.ULTRON_DB),
-            mode: "research-gate-v2"
+            expiringResearchCache: Boolean(env.ULTRON_DB),
+            sourceRanking: true,
+            uncertaintyRetry: Boolean(env.SERPER_API_KEY),
+            conversationMemorySafe: true,
+            mode: "research-gate-v3"
           }
         });
       } catch {
@@ -195,10 +222,13 @@ export default {
     const policy = shouldResearchBeforeAnswer(originalMessage);
     if (!policy.needed) return baseWorker.fetch(request, env, ctx);
 
+    const researchStartedAt = Date.now();
     const operatorId = await deriveOperatorId(originalBody?.memoryKey);
     let cache = null;
     let research = null;
+    let newsState = null;
     let researchContext = "";
+    let sources = [];
     let fromCache = false;
 
     if (operatorId) {
@@ -210,16 +240,42 @@ export default {
       if (cache?.hit) {
         fromCache = true;
         researchContext = cacheContext(cache);
+        sources = dedupeSources(cache?.sources || [], 10);
       }
     }
 
     if (!fromCache) {
-      research = await searchGoogle(env, originalMessage, { limit: 6 });
-      if (research?.results?.length) researchContext = research.contextText;
+      if (newsIntent) {
+        const [googleResult, liveResult] = await Promise.allSettled([
+          searchGoogle(env, originalMessage, { limit: 6 }),
+          loadLiveNewsContext(originalMessage, { limit: 6 })
+        ]);
+
+        research = googleResult.status === "fulfilled" ? googleResult.value : null;
+        newsState = liveResult.status === "fulfilled" ? liveResult.value : null;
+
+        const contexts = [research?.contextText, newsState?.contextText].filter(Boolean);
+        researchContext = contexts.join("\n\n--- FONTES DE NOTÍCIAS COMPLEMENTARES ---\n\n");
+        sources = dedupeSources([
+          ...sourceSummary(research),
+          ...newsSourceSummary(newsState)
+        ], 10);
+      } else {
+        research = await searchGoogle(env, originalMessage, { limit: 6 });
+        if (research?.results?.length) {
+          researchContext = research.contextText;
+          sources = dedupeSources(sourceSummary(research), 8);
+        }
+      }
     }
 
-    if (!researchContext) {
-      const response = await baseWorker.fetch(request, env, ctx);
+    const researchMs = Date.now() - researchStartedAt;
+
+    if (!researchContext || !sources.length) {
+      const response = await baseWorker.fetch(requestWithBody(request, {
+        ...originalBody,
+        allowUncertaintyResearch: false
+      }), env, ctx);
       if (!response.ok) return response;
       const fallback = response.clone();
 
@@ -232,11 +288,16 @@ export default {
             requested: true,
             used: false,
             reason: policy.reason,
-            provider: research?.providerLabel || null,
+            provider: research?.providerLabel || (newsIntent ? "Google News + GDELT" : null),
             configured: research?.configured ?? Boolean(env.SERPER_API_KEY),
-            error: research?.error || cache?.error || (env.SERPER_API_KEY ? "Nenhuma fonte foi retornada." : "SERPER_API_KEY não configurada."),
+            error: research?.error || newsState?.error || cache?.error || (env.SERPER_API_KEY ? "Nenhuma fonte confiável foi retornada." : "SERPER_API_KEY não configurada."),
             sourceCount: 0,
-            fromCache: false
+            fromCache: false,
+            searchMs: researchMs
+          },
+          performance: {
+            ...(data?.performance || {}),
+            researchMs
           }
         });
       } catch {
@@ -246,13 +307,13 @@ export default {
 
     const forwardedBody = {
       ...originalBody,
-      message: appendResearchToMessage(originalMessage, researchContext, {
-        suppressLegacyNews: newsIntent
-      }),
+      message: originalMessage,
+      webResearchContext: researchContext,
+      allowUncertaintyResearch: false,
       researchMeta: {
         active: true,
         reason: policy.reason,
-        provider: fromCache ? "research-cache" : research?.provider,
+        provider: fromCache ? "research-cache" : (newsIntent ? "multi-source-live-news" : research?.provider),
         fromCache,
         newsIntent,
         skipLegacyResearch: true
@@ -265,8 +326,9 @@ export default {
 
     try {
       const data = await response.json();
-      const sources = fromCache ? (cache?.sources || []) : sourceSummary(research);
-      const searchedAt = fromCache ? cache?.fetchedAt : research?.searchedAt;
+      const searchedAt = fromCache
+        ? cache?.fetchedAt
+        : (research?.searchedAt || newsState?.visualContext?.fetchedAt || new Date().toISOString());
 
       let memoryWrite = { saved: false };
       if (!fromCache && operatorId && data?.text && sources.length) {
@@ -275,7 +337,7 @@ export default {
           query: originalMessage,
           answer: data.text,
           sources,
-          provider: research?.provider || "serper-google",
+          provider: newsIntent ? "multi-source-live-news" : (research?.provider || "serper-google"),
           ttlMinutes: newsIntent ? Math.min(policy.ttlMinutes || 45, 45) : policy.ttlMinutes
         });
       }
@@ -288,10 +350,11 @@ export default {
         research
       );
 
+      const newsVisual = newsState?.visualContext || null;
       const baseVisual = data?.visualContext || null;
-      const preferredVisual = visualHasContent(baseVisual)
-        ? baseVisual
-        : researchVisual;
+      const preferredVisual = visualHasContent(newsVisual)
+        ? newsVisual
+        : (visualHasContent(baseVisual) ? baseVisual : researchVisual);
 
       const liveData = newsIntent && sources.length
         ? {
@@ -299,9 +362,15 @@ export default {
             news: true,
             resultCount: sources.length,
             error: null,
-            source: fromCache ? "research-memory" : "google-search"
+            source: fromCache ? "research-memory" : "google-search+google-news+gdelt",
+            attempts: newsState?.attempts || [],
+            fetchedAt: searchedAt || null
           }
         : data?.liveData;
+
+      const providerLabel = fromCache
+        ? "Research Memory"
+        : (newsIntent ? "Google Search + Google News + GDELT" : (research?.providerLabel || "Google Search via Serper"));
 
       return json({
         ...data,
@@ -314,16 +383,29 @@ export default {
           requested: true,
           used: true,
           reason: policy.reason,
-          provider: fromCache ? "Research Memory" : (research?.providerLabel || "Google Search via Serper"),
+          provider: providerLabel,
           configured: true,
           query: originalMessage,
           sourceCount: sources.length,
           sources,
           searchedAt: searchedAt || null,
+          searchMs: researchMs,
           fromCache,
           savedToMemory: Boolean(memoryWrite?.saved),
+          memoryStorage: memoryWrite?.storage || (fromCache ? "research_cache" : null),
           memoryExpiresAt: memoryWrite?.expiresAt || cache?.expiresAt || null,
+          quality: newsIntent
+            ? {
+                diverseDomains: new Set(sources.map((item) => item.source)).size,
+                engines: fromCache ? ["research-cache"] : ["google-search", "google-news", "gdelt"]
+              }
+            : (research?.quality || null),
           error: memoryWrite?.error || null
+        },
+        performance: {
+          ...(data?.performance || {}),
+          researchMs,
+          totalMs: Math.max(Number(data?.performance?.totalMs || 0), researchMs + Number(data?.performance?.totalMs || 0))
         }
       });
     } catch (error) {
