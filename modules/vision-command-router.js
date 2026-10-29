@@ -19,6 +19,20 @@ function normalize(text) {
     .trim();
 }
 
+function wait(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function waitForVisionRuntime(timeoutMs = 6000) {
+  if (!HAS_WINDOW) return null;
+  const startedAt = Date.now();
+  while (Date.now() - startedAt < timeoutMs) {
+    if (window.ULTRON_VISION?.analyze) return window.ULTRON_VISION;
+    await wait(100);
+  }
+  return window.ULTRON_VISION?.analyze ? window.ULTRON_VISION : null;
+}
+
 const DIRECT_VISUAL_PATTERNS = [
   /o que (voce )?(ve|esta vendo|enxerga|esta enxergando)/,
   /o que tem (na|nessa|pela) camera/,
@@ -95,20 +109,21 @@ export async function runVisualCommand(command) {
     return null;
   }
 
-  const runtimeWindow = HAS_WINDOW ? window : null;
-  const vision = runtimeWindow?.ULTRON_VISION;
-  if (!vision?.analyze) {
-    addLog(output, "VISÃO: runtime visual ainda não está disponível.", "alert");
-    return null;
-  }
-
   processing = true;
   lastVisualCommandAt = Date.now();
   setVisionState("ANALYZING", true);
   addLog(output, `OPERATOR: ${clean}`);
-  addLog(output, "ULTRON VISION: capturando e validando o frame atual...");
+  addLog(output, "ULTRON VISION: preparando o runtime visual e validando o frame atual...");
+
+  const runtimeWindow = HAS_WINDOW ? window : null;
 
   try {
+    const vision = await waitForVisionRuntime();
+    if (!vision?.analyze) {
+      addLog(output, "VISÃO: runtime visual não ficou disponível a tempo.", "alert");
+      return null;
+    }
+
     const result = await vision.analyze(clean);
     if (!result?.text) {
       addLog(output, "ULTRON VISION: a análise não retornou uma descrição válida.", "alert");
