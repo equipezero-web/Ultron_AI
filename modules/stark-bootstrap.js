@@ -31,7 +31,8 @@ loadStyle(FILE_MESH_STYLE_ID, 'modules/stark-file-mesh.css?v=4.12.1');
 
 await import('./stark-core.js?v=4.12.1');
 await import('./stark-inner-mesh.js?v=4.12.1');
-await import('./neural-input-bus.js?v=4.12.1');
+await import('./neural-input-bus.js?v=4.18.0');
+await import('./neural-command-router.js?v=4.18.0');
 await import('./stark-advanced.js?v=4.12.1');
 await import('./vision-client.js?v=4.16.0');
 await import('./vision-command-router.js?v=4.17.0');
@@ -46,7 +47,7 @@ await import('./local-files-v2.js?v=4.14.0');
 await import('./local-files-ai-bridge.js?v=4.14.0');
 await import('./stark-file-mesh.js?v=4.14.0');
 await import('./backend-version-check.js?v=4.15.0');
-await import('./neural-parity.js?v=4.12.1');
+await import('./neural-parity.js?v=4.18.0');
 
 window.addEventListener('ultron:processing-start', () => {
   window.ULTRON_STARK_CORE?.processing?.(true);
@@ -67,12 +68,13 @@ window.addEventListener('ultron:subvocal-command', (event) => {
 
 window.dispatchEvent(new CustomEvent('ultron:stark-bootstrap-ready', {
   detail: {
-    version: '4.17.0',
+    version: '4.18.0',
     performanceMode: window.ULTRON_PERFORMANCE?.mode || 'full',
     starkCore: Boolean(window.ULTRON_STARK_CORE),
     innerMesh: Boolean(window.ULTRON_STARK_MESH),
     advanced: Boolean(window.ULTRON_STARK_ADVANCED),
     neuralInput: Boolean(window.ULTRON_NEURAL_INPUT),
+    neuralCommandRouter: Boolean(window.ULTRON_NEURAL_COMMAND),
     vision: Boolean(window.ULTRON_VISION),
     visionDiagnostics: Boolean(window.ULTRON_VISION?.diagnose),
     visionImageFallback: Boolean(window.ULTRON_VISION?.analyzeFile),
