@@ -35,6 +35,7 @@ if (sourceVideo && host) {
   let lastLandmarks = [];
   let lastGesture = 'None';
   let lastTarget = null;
+  let lastControlMode = 'standby';
   let lastMotion = 0;
 
   const HAND_CONNECTIONS = [
@@ -77,10 +78,31 @@ if (sourceVideo && host) {
     ctx.clearRect(0, 0, width, height);
   }
 
-  function mapPoint(point, width, height) {
+  function videoContentBox(width, height) {
+    const videoWidth = Number(preview.videoWidth || sourceVideo.videoWidth || 0);
+    const videoHeight = Number(preview.videoHeight || sourceVideo.videoHeight || 0);
+    const fit = getComputedStyle(preview).objectFit || 'cover';
+
+    if (!videoWidth || !videoHeight || fit !== 'contain') {
+      return { left: 0, top: 0, width, height };
+    }
+
+    const scale = Math.min(width / videoWidth, height / videoHeight);
+    const fittedWidth = videoWidth * scale;
+    const fittedHeight = videoHeight * scale;
     return {
-      x: (1 - Number(point?.x || 0)) * width,
-      y: Number(point?.y || 0) * height
+      left: (width - fittedWidth) / 2,
+      top: (height - fittedHeight) / 2,
+      width: fittedWidth,
+      height: fittedHeight
+    };
+  }
+
+  function mapPoint(point, width, height) {
+    const box = videoContentBox(width, height);
+    return {
+      x: box.left + (1 - Number(point?.x || 0)) * box.width,
+      y: box.top + Number(point?.y || 0) * box.height
     };
   }
 
@@ -92,16 +114,16 @@ if (sourceVideo && host) {
     const points = lastLandmarks.map((point) => mapPoint(point, width, height));
     const xs = points.map((point) => point.x);
     const ys = points.map((point) => point.y);
-    const minX = Math.max(0, Math.min(...xs) - 12);
-    const maxX = Math.min(width, Math.max(...xs) + 12);
-    const minY = Math.max(0, Math.min(...ys) - 12);
-    const maxY = Math.min(height, Math.max(...ys) + 12);
+    const minX = Math.max(0, Math.min(...xs) - 14);
+    const maxX = Math.min(width, Math.max(...xs) + 14);
+    const minY = Math.max(0, Math.min(...ys) - 14);
+    const maxY = Math.min(height, Math.max(...ys) + 14);
 
     ctx.save();
-    ctx.lineWidth = 1.2;
-    ctx.strokeStyle = 'rgba(0,240,255,.78)';
-    ctx.shadowColor = 'rgba(0,240,255,.75)';
-    ctx.shadowBlur = 8;
+    ctx.lineWidth = 1.5;
+    ctx.strokeStyle = 'rgba(0,240,255,.84)';
+    ctx.shadowColor = 'rgba(0,240,255,.78)';
+    ctx.shadowBlur = 9;
 
     for (const [from, to] of HAND_CONNECTIONS) {
       const a = points[from];
@@ -116,40 +138,53 @@ if (sourceVideo && host) {
     for (let index = 0; index < points.length; index += 1) {
       const point = points[index];
       ctx.beginPath();
-      ctx.arc(point.x, point.y, index === 4 || index === 8 ? 3.2 : 2.1, 0, Math.PI * 2);
+      ctx.arc(point.x, point.y, index === 4 || index === 8 ? 4 : 2.4, 0, Math.PI * 2);
       ctx.fillStyle = index === 4 || index === 8 ? '#ffffff' : '#00f0ff';
       ctx.fill();
     }
 
     ctx.setLineDash([7, 5]);
-    ctx.strokeStyle = 'rgba(255,255,255,.64)';
+    ctx.strokeStyle = 'rgba(255,255,255,.72)';
     ctx.shadowBlur = 4;
     ctx.strokeRect(minX, minY, Math.max(12, maxX - minX), Math.max(12, maxY - minY));
     ctx.setLineDash([]);
 
-    const label = `${lastGesture.toUpperCase()}${lastTarget ? ` // ${lastTarget}` : ''}`;
+    const modeLabel = String(lastControlMode || '').toUpperCase().replaceAll('-', ' ');
+    const label = `${modeLabel || lastGesture.toUpperCase()}${lastTarget ? ` // ${lastTarget}` : ''}`;
     ctx.font = '10px ui-monospace, monospace';
     const labelWidth = ctx.measureText(label).width + 12;
-    ctx.fillStyle = 'rgba(2,7,17,.78)';
-    ctx.fillRect(minX, Math.max(0, minY - 19), labelWidth, 17);
+    ctx.fillStyle = 'rgba(2,7,17,.82)';
+    ctx.fillRect(minX, Math.max(0, minY - 20), labelWidth, 18);
     ctx.fillStyle = '#ffffff';
-    ctx.fillText(label, minX + 6, Math.max(11, minY - 7));
+    ctx.fillText(label, minX + 6, Math.max(12, minY - 7));
     ctx.restore();
   }
 
   sourceVideo.addEventListener('playing', syncStream);
   sourceVideo.addEventListener('loadedmetadata', syncStream);
   sourceVideo.addEventListener('emptied', syncStream);
+  preview.addEventListener('loadedmetadata', drawHand);
 
   window.addEventListener('ultron:camera-hand', (event) => {
     const detail = event.detail || {};
     lastLandmarks = Array.isArray(detail.landmarks) ? detail.landmarks : [];
     lastGesture = String(detail.gesture || 'None');
     lastTarget = detail.target || null;
-    handState.textContent = lastTarget
-      ? `${lastGesture.toUpperCase()} // ${lastTarget}`
-      : lastGesture.toUpperCase();
+    lastControlMode = String(detail.controlMode || detail.mode || 'tracking');
+
+    const stateLabel = lastTarget
+      ? `${lastControlMode.toUpperCase()} // ${lastTarget}`
+      : lastControlMode.toUpperCase();
+    handState.textContent = stateLabel;
     host.classList.toggle('hand-detected', lastLandmarks.length > 0);
+    host.dataset.handMode = lastControlMode;
+    drawHand();
+  });
+
+  window.addEventListener('ultron:camera-hand-mode', (event) => {
+    lastControlMode = String(event.detail?.mode || lastControlMode || 'tracking');
+    handState.textContent = lastControlMode.toUpperCase().replaceAll('-', ' ');
+    host.dataset.handMode = lastControlMode;
     drawHand();
   });
 
@@ -174,6 +209,7 @@ if (sourceVideo && host) {
         active: Boolean(preview.srcObject),
         gesture: lastGesture,
         target: lastTarget,
+        controlMode: lastControlMode,
         motion: lastMotion
       };
     }
