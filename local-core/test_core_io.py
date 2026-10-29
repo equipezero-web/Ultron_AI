@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import csv
 import sys
 import tempfile
 import unittest
@@ -10,7 +11,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from docx import Document
-from openpyxl import Workbook, load_workbook
+from openpyxl import load_workbook
 from pptx import Presentation
 
 from readers import read_file
@@ -31,6 +32,24 @@ class LocalCoreIoTests(unittest.TestCase):
             self.assertIn("name\tvalue", csv_text)
             self.assertIn("alpha\t10", csv_text)
 
+    def test_csv_and_tsv_writers_create_real_tables(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            csv_target = root / "result.csv"
+            tsv_target = root / "result.tsv"
+            content = "[TABELA]\nNome\tValor\nTeste\t42"
+
+            export_content(csv_target, content)
+            export_content(tsv_target, content)
+
+            with csv_target.open("r", encoding="utf-8-sig", newline="") as handle:
+                rows = list(csv.reader(handle))
+            self.assertEqual(rows, [["Nome", "Valor"], ["Teste", "42"]])
+
+            with tsv_target.open("r", encoding="utf-8-sig", newline="") as handle:
+                rows = list(csv.reader(handle, delimiter="\t"))
+            self.assertEqual(rows, [["Nome", "Valor"], ["Teste", "42"]])
+
     def test_docx_reader_and_writer(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -48,8 +67,12 @@ class LocalCoreIoTests(unittest.TestCase):
             export_content(target, "[PLANILHA: Dados]\nNome\tValor\nTeste\t42")
             workbook = load_workbook(str(target), read_only=True, data_only=True)
             try:
-                self.assertEqual(workbook.worksheets[0].title, "Dados")
-                self.assertEqual(workbook.worksheets[0]["B2"].value, "42")
+                sheet = workbook.worksheets[0]
+                self.assertEqual(sheet.title, "Dados")
+                self.assertEqual(sheet["A2"].value, "Nome")
+                self.assertEqual(sheet["B2"].value, "Valor")
+                self.assertEqual(sheet["A3"].value, "Teste")
+                self.assertEqual(sheet["B3"].value, "42")
             finally:
                 workbook.close()
             self.assertIn("Teste\t42", read_file(target, root))
