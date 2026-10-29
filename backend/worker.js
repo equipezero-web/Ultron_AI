@@ -56,7 +56,13 @@ function arrayBufferToBase64(buffer) {
   return btoa(binary);
 }
 
-function buildMemoryAwareMessage(message, memoryContext, liveContext = "", webResearchContext = "") {
+function buildMemoryAwareMessage(
+  message,
+  memoryContext,
+  liveContext = "",
+  webResearchContext = "",
+  localFilesContext = ""
+) {
   const blocks = [];
 
   if (memoryContext) {
@@ -66,6 +72,17 @@ function buildMemoryAwareMessage(message, memoryContext, liveContext = "", webRe
       "Não diga que recebeu um bloco de memória e não invente informações ausentes.",
       "",
       memoryContext,
+      ""
+    );
+  }
+
+  if (localFilesContext) {
+    blocks.push(
+      "CONTEXTO LOCAL DA ULTRON_DATA:",
+      "Este conteúdo foi recuperado pelo RAG local do operador.",
+      "Use-o somente para responder sobre arquivos locais; não invente trechos ausentes e não trate caminhos locais como fontes públicas.",
+      "",
+      localFilesContext,
       ""
     );
   }
@@ -195,9 +212,10 @@ export default {
           bridge,
           liveNews: true,
           visualContext: true,
+          localFileContextBridge: true,
           uncertaintyResearchRetry: Boolean(env.SERPER_API_KEY),
           message:
-            "ULTRON Cloudflare Worker funcionando com gateway multi-IA, memória, contexto visual e Device Bridge."
+            "ULTRON Cloudflare Worker funcionando com gateway multi-IA, memória, contexto visual, RAG local e Device Bridge."
         },
         { headers: corsHeaders }
       );
@@ -296,6 +314,7 @@ export default {
         const conversationId = normalizeConversationId(body?.conversationId);
         const operatorId = await deriveOperatorId(body?.memoryKey);
         const externalResearchContext = String(body?.webResearchContext || "").trim();
+        const localFilesContext = String(body?.localFilesContext || "").trim();
         const skipLegacyResearch = Boolean(body?.researchMeta?.skipLegacyResearch);
 
         if (!message) {
@@ -326,7 +345,8 @@ export default {
           message,
           memoryState.context,
           newsState.contextText,
-          externalResearchContext
+          externalResearchContext,
+          localFilesContext
         );
 
         const aiStartedAt = Date.now();
@@ -361,7 +381,8 @@ export default {
               message,
               memoryState.context,
               newsState.contextText,
-              fallbackResearch.contextText
+              fallbackResearch.contextText,
+              localFilesContext
             );
             aiResult = await generateWithProviders(
               env,
@@ -477,6 +498,18 @@ export default {
               explicitMemorySaved: Boolean(memoryWrite?.explicitMemorySaved),
               error: memoryState.error || memoryWrite?.error || null
             },
+            localFiles: localFilesContext
+              ? {
+                  active: true,
+                  messageSafe: true,
+                  searchMode: body?.localFilesMeta?.searchMode || "hybrid",
+                  targetFile: body?.localFilesMeta?.targetFile || null,
+                  targetFileId: body?.localFilesMeta?.targetFileId || null,
+                  componentId: body?.localFilesMeta?.componentId || null,
+                  topScore: Number(body?.localFilesMeta?.topScore || 0),
+                  matchCount: Array.isArray(body?.localFilesMeta?.matches) ? body.localFilesMeta.matches.length : 0
+                }
+              : { active: false },
             liveData: {
               news: newsState.active,
               resultCount: newsState.articles?.length || 0,
