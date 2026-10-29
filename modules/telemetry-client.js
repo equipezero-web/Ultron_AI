@@ -1,5 +1,6 @@
 import API_CONFIG from "../config.js";
 import "./stark-bootstrap.js?v=4.14.0";
+import "./la-team-bootstrap.js?v=4.15.0";
 
 const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
 const OUTPUT = document.getElementById("output-box");
@@ -77,6 +78,7 @@ export async function buildTelemetrySnapshot(extra = {}) {
   const mesh = window.ULTRON_STARK_MESH;
   const cameraPreview = window.ULTRON_CAMERA_PREVIEW?.state || null;
   const localFiles = window.ULTRON_LOCAL_FILES?.state || null;
+  const laTeam = window.ULTRON_LA_TEAM?.state || null;
 
   return {
     capturedAt: new Date().toISOString(),
@@ -136,13 +138,23 @@ export async function buildTelemetrySnapshot(extra = {}) {
       hybridSearch: Boolean(window.ULTRON_LOCAL_FILES?.capabilities?.hybridSearch),
       messageSafe: Boolean(window.ULTRON_LOCAL_RAG_BRIDGE?.messageSafe)
     } : null,
+    businessSystems: {
+      laTeam: laTeam ? {
+        ready: Boolean(laTeam.ready),
+        authenticated: Boolean(laTeam.authenticated),
+        authorized: Boolean(laTeam.authorized),
+        role: laTeam.member?.role || null,
+        lastContext: laTeam.lastContext || null
+      } : null
+    },
     modules: {
       memory: readText("memory-module", "UNKNOWN"),
       bridge: readText("bridge-module", "UNKNOWN"),
       voice: readText("voice-module", "UNKNOWN"),
       vision: readText("vision-module", "UNKNOWN"),
       aiGateway: readText("gemini-module", "UNKNOWN"),
-      localFiles: localFiles?.online ? "ONLINE" : "OFFLINE"
+      localFiles: localFiles?.online ? "ONLINE" : "OFFLINE",
+      laTeam: laTeam?.authorized ? "ONLINE" : "LOCKED"
     },
     system: {
       mode: readText("system-mode", "STANDBY"),
@@ -225,6 +237,10 @@ window.addEventListener("ultron:stark-zoom-level", (event) => pushTelemetry({
 window.addEventListener("ultron:local-rag-context", (event) => pushTelemetry({
   event: "local-rag-context",
   localRag: event.detail || null
+}));
+window.addEventListener("ultron:la-team-context", (event) => pushTelemetry({
+  event: "la-team-context",
+  laTeam: event.detail || null
 }));
 
 window.ULTRON_TELEMETRY = {
