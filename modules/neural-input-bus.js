@@ -7,6 +7,7 @@ const state = {
   emg: { connected: false, pinch: 0, wrist: 0, fist: 0 },
   gaze: { connected: false, x: null, y: null, confidence: 0 },
   subvocal: { connected: false, confidence: 0 },
+  command: { accepted: 0, handled: 0, last: null },
   hardware: { emg: false, gaze: false, subvocal: false }
 };
 
@@ -107,7 +108,7 @@ function ingest(event = {}, { trusted = false } = {}) {
     state.subvocal.confidence = safeNumber(event.confidence);
   }
 
-  let handled = routeToStarkCore(normalized);
+  let handled = Boolean(event.handled) || routeToStarkCore(normalized);
 
   if (type === 'gaze') {
     const element = document.elementFromPoint(safeNumber(event.x), safeNumber(event.y));
@@ -119,6 +120,21 @@ function ingest(event = {}, { trusted = false } = {}) {
 
   if (type === 'subvocal') {
     handled = executeSubvocal(event.text, safeNumber(event.confidence)) || handled;
+  }
+
+  if (type === 'command') {
+    const command = String(event.command || event.action || '').trim();
+    state.command.accepted += 1;
+    if (handled) state.command.handled += 1;
+    state.command.last = {
+      command,
+      source,
+      handled,
+      confidence: safeNumber(event.confidence, 1),
+      target: event.target || null,
+      direction: event.direction || null,
+      at: Date.now()
+    };
   }
 
   emit({ ...normalized, handled });
@@ -188,6 +204,23 @@ registerAdapter('serial', {
 window.addEventListener('ultron:device-sensor', (event) => {
   const payload = event?.detail || {};
   ingest({ ...payload, source: payload.source || 'device-bridge' }, { trusted: true });
+});
+
+// Neural Command Router is an internal trusted producer. It records the canonical gesture action
+// after Palm Matrix / hand tracking has applied confidence and cooldown policies.
+window.addEventListener('ultron:neural-command', (event) => {
+  const payload = event?.detail || {};
+  ingest({
+    source: 'neural-router',
+    type: 'command',
+    command: payload.action,
+    handled: Boolean(payload.handled),
+    confidence: payload.confidence,
+    target: payload.target,
+    direction: payload.direction,
+    commandId: payload.id,
+    mode: payload.mode
+  }, { trusted: true });
 });
 
 window.ULTRON_NEURAL_INPUT = {
