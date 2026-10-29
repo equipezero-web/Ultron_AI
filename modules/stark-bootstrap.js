@@ -33,10 +33,10 @@ await import('./stark-core.js?v=4.12.1');
 await import('./stark-inner-mesh.js?v=4.12.1');
 await import('./neural-input-bus.js?v=4.12.1');
 await import('./stark-advanced.js?v=4.12.1');
-await import('./vision-client.js?v=4.12.1');
+await import('./vision-client.js?v=4.16.0');
 await import('./stark-hand-gesture.js?v=4.12.1');
 await import('./stark-camera-preview.js?v=4.12.1');
-await import('./camera-runtime.js?v=4.12.1');
+await import('./camera-runtime.js?v=4.16.0');
 await import('./stark-zoom-diagnostics.js?v=4.12.1');
 await import('./stark-production-bridge.js?v=4.12.1');
 await import('./palm-matrix.js?v=4.12.1');
@@ -44,7 +44,7 @@ await import('./local-files-client.js?v=4.14.0');
 await import('./local-files-v2.js?v=4.14.0');
 await import('./local-files-ai-bridge.js?v=4.14.0');
 await import('./stark-file-mesh.js?v=4.14.0');
-await import('./backend-version-check.js?v=4.13.0');
+await import('./backend-version-check.js?v=4.15.0');
 await import('./neural-parity.js?v=4.12.1');
 
 window.addEventListener('ultron:processing-start', () => {
@@ -66,17 +66,20 @@ window.addEventListener('ultron:subvocal-command', (event) => {
 
 window.dispatchEvent(new CustomEvent('ultron:stark-bootstrap-ready', {
   detail: {
-    version: '4.14.0',
+    version: '4.16.0',
     performanceMode: window.ULTRON_PERFORMANCE?.mode || 'full',
     starkCore: Boolean(window.ULTRON_STARK_CORE),
     innerMesh: Boolean(window.ULTRON_STARK_MESH),
     advanced: Boolean(window.ULTRON_STARK_ADVANCED),
     neuralInput: Boolean(window.ULTRON_NEURAL_INPUT),
     vision: Boolean(window.ULTRON_VISION),
+    visionDiagnostics: Boolean(window.ULTRON_VISION?.diagnose),
+    visionImageFallback: Boolean(window.ULTRON_VISION?.analyzeFile),
     handGestures: Boolean(window.ULTRON_HAND_GESTURES),
     palmMatrix: Boolean(window.ULTRON_PALM_MATRIX),
     cameraPreview: Boolean(window.ULTRON_CAMERA_PREVIEW),
     cameraRuntime: Boolean(window.ULTRON_CAMERA_RUNTIME),
+    cameraDiagnostics: Boolean(window.ULTRON_CAMERA_RUNTIME?.diagnostics),
     zoomDiagnostics: Boolean(window.ULTRON_ZOOM_DIAGNOSTICS),
     productionBridge: Boolean(window.ULTRON_STARK_PRODUCTION),
     localFiles: Boolean(window.ULTRON_LOCAL_FILES),
