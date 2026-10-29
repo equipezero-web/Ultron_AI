@@ -11,6 +11,9 @@ let deviceCountLabel = null;
 let lastDeviceCount = null;
 let recovering = false;
 let lastTransientLogAt = 0;
+let streamRecoveryAttempts = 0;
+let streamRecoveryTimer = null;
+const MAX_STREAM_RECOVERY = 3;
 
 function log(message, alert = false) {
   if (!output || !message) return;
@@ -20,6 +23,14 @@ function log(message, alert = false) {
   line.textContent = `> [${time}] [CAMERA] ${message}`;
   output.appendChild(line);
   output.scrollTop = output.scrollHeight;
+}
+
+function classifyDevice(label = "") {
+  const text = String(label || "").toLowerCase();
+  if (/obs|virtual|droidcam|iriun|camo|epoccam|ndi|snap camera|phone link/.test(text)) return "VIRTUAL";
+  if (/usb|logitech|razer|elgato|brio|c920|c922|streamcam/.test(text)) return "USB";
+  if (/integrated|vga camera|user facing|front camera|facetime|built-in|builtin/.test(text)) return "INTERNAL";
+  return "CAMERA";
 }
 
 function state(label, permission = null, alert = false) {
@@ -55,7 +66,8 @@ function ensureDeviceUi() {
 
   selector.addEventListener("change", async () => {
     try {
-      log(selector.value ? "Dispositivo de câmera selecionado manualmente." : "Seleção automática de câmera ativada.");
+      const selected = [...selector.options].find((option) => option.value === selector.value)?.textContent || "câmera";
+      log(selector.value ? `Fonte selecionada manualmente: ${selected}.` : "Seleção automática de câmera ativada.");
       await window.ULTRON_CAMERA_CONTROLLER?.selectDevice?.(selector.value);
     } catch (error) {
       log(error?.message || String(error), true);
@@ -84,7 +96,8 @@ function updateDeviceUi(detail = {}) {
   devices.forEach((device, index) => {
     const option = document.createElement("option");
     option.value = device.deviceId || "";
-    option.textContent = device.label || `Câmera ${index + 1}`;
+    const kind = classifyDevice(device.label);
+    option.textContent = `[${kind}] ${device.label || `Câmera ${index + 1}`}`;
     selector.appendChild(option);
   });
 
@@ -96,7 +109,7 @@ function updateDeviceUi(detail = {}) {
 
   if (detail.announce) {
     log(devices.length
-      ? `${devices.length} entrada(s) de vídeo detectada(s): ${devices.map((device) => device.label).join(", ")}.`
+      ? `${devices.length} entrada(s) de vídeo detectada(s): ${devices.map((device) => `${device.label} [${classifyDevice(device.label)}]`).join(", ")}.`
       : "0 entradas de vídeo detectadas pelo navegador.", !devices.length);
   }
 }
@@ -133,6 +146,40 @@ async function recoverWhenAvailable(detail = {}) {
   log(`Hardware detectado (${devices[0]?.label || "câmera"}). Pressione MOSTRAR TELA para concluir a autorização.`);
 }
 
+function clearRecoveryTimer() {
+  if (streamRecoveryTimer) clearTimeout(streamRecoveryTimer);
+  streamRecoveryTimer = null;
+}
+
+function scheduleStreamRecovery() {
+  clearRecoveryTimer();
+  if (streamRecoveryAttempts >= MAX_STREAM_RECOVERY) {
+    log("Recuperação automática esgotada após 3 tentativas. O Ultron continuará monitorando novas fontes de câmera.", true);
+    return;
+  }
+
+  streamRecoveryAttempts += 1;
+  const delay = 700 * streamRecoveryAttempts;
+  log(`Tentativa automática ${streamRecoveryAttempts}/${MAX_STREAM_RECOVERY} para recuperar o stream em ${delay} ms.`);
+
+  streamRecoveryTimer = setTimeout(async () => {
+    streamRecoveryTimer = null;
+    const controller = window.ULTRON_CAMERA_CONTROLLER;
+    if (!controller || controller.isActive?.()) return;
+    const permission = await controller.permissionState?.().catch(() => "unknown") || "unknown";
+    const devices = await controller.refreshDevices?.({ announce: true }).catch(() => []) || [];
+    if (permission !== "granted" || !devices.length) return;
+
+    try {
+      await controller.start({ restored: true });
+      streamRecoveryAttempts = 0;
+    } catch (error) {
+      log(`Recuperação ${streamRecoveryAttempts}/${MAX_STREAM_RECOVERY} falhou: ${error?.message || error}`, true);
+      scheduleStreamRecovery();
+    }
+  }, delay);
+}
+
 window.addEventListener("ultron:camera-devices", (event) => {
   const detail = event.detail || {};
   updateDeviceUi(detail);
@@ -142,7 +189,7 @@ window.addEventListener("ultron:camera-devices", (event) => {
     const now = Date.now();
     if (now - lastTransientLogAt > 5000) {
       lastTransientLogAt = now;
-      log("O driver retornou 0 entradas momentaneamente; mantendo a última VGA Camera conhecida e tentando fallbacks genéricos.");
+      log("O driver retornou 0 entradas momentaneamente; mantendo a última câmera conhecida e tentando fallbacks genéricos.");
     }
     return;
   }
@@ -195,17 +242,23 @@ window.addEventListener("ultron:camera-error", (event) => {
 window.addEventListener("ultron:camera-stream", (event) => {
   const detail = event.detail || {};
   if (detail.active) {
+    clearRecoveryTimer();
+    streamRecoveryAttempts = 0;
     state("ONLINE", "GRANTED", false);
     if (telemetryCamera) telemetryCamera.textContent = "ON";
     if (visionModule) {
       visionModule.textContent = "ACTIVE";
       visionModule.className = "green";
     }
-    const device = detail.label ? ` (${detail.label})` : "";
+    const device = detail.label ? ` (${detail.label} // ${classifyDevice(detail.label)})` : "";
     log(detail.restored ? `Permissão existente reutilizada; câmera restaurada${device}.` : `Câmera online e stream validado${device}.`);
   } else if (detail.reason === "track-ended") {
     state("INTERRUPTED", "GRANTED", true);
     log("O stream da câmera foi interrompido pelo navegador, sistema ou outro aplicativo.", true);
+    scheduleStreamRecovery();
+  } else if (detail.reason === "operator-stop") {
+    clearRecoveryTimer();
+    streamRecoveryAttempts = 0;
   }
 });
 
@@ -247,6 +300,31 @@ window.ULTRON_CAMERA_RUNTIME = {
   refreshDevices() {
     return window.ULTRON_CAMERA_CONTROLLER?.refreshDevices?.({ announce: true }) || Promise.resolve([]);
   },
+  async diagnostics() {
+    const controller = window.ULTRON_CAMERA_CONTROLLER;
+    const permission = await controller?.permissionState?.().catch(() => "unknown") || "unknown";
+    const devices = await controller?.refreshDevices?.().catch(() => []) || [];
+    return {
+      secureContext: window.isSecureContext,
+      mediaDevices: Boolean(navigator.mediaDevices?.getUserMedia),
+      permission,
+      active: Boolean(controller?.isActive?.()),
+      selectedDeviceId: controller?.selectedDeviceId || null,
+      lastError: controller?.lastError ? {
+        name: controller.lastError.name || "CameraError",
+        message: controller.friendlyError?.(controller.lastError) || controller.lastError.message || String(controller.lastError)
+      } : null,
+      devices: devices.map((device) => ({
+        deviceId: device.deviceId,
+        groupId: device.groupId,
+        label: device.label,
+        sourceType: classifyDevice(device.label)
+      })),
+      recoveryAttempts: streamRecoveryAttempts,
+      maxRecoveryAttempts: MAX_STREAM_RECOVERY
+    };
+  },
+  classifyDevice,
   get active() {
     return Boolean(window.ULTRON_CAMERA_CONTROLLER?.isActive?.());
   },
