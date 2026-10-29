@@ -20,6 +20,12 @@ import {
   startPairing
 } from "./device-bridge.js";
 import { loadLiveNewsContext } from "./news-context.js";
+import {
+  answerLooksUncertain,
+  researchVisualContext,
+  searchGoogle
+} from "./web-research.js";
+import { saveResearchMemory } from "./research-memory.js";
 
 function createCorsHeaders() {
   return {
@@ -50,7 +56,7 @@ function arrayBufferToBase64(buffer) {
   return btoa(binary);
 }
 
-function buildMemoryAwareMessage(message, memoryContext, liveContext = "") {
+function buildMemoryAwareMessage(message, memoryContext, liveContext = "", webResearchContext = "") {
   const blocks = [];
 
   if (memoryContext) {
@@ -72,12 +78,45 @@ function buildMemoryAwareMessage(message, memoryContext, liveContext = "") {
     );
   }
 
+  if (webResearchContext) {
+    blocks.push(
+      "PESQUISA WEB VERIFICADA PARA ESTA RESPOSTA:",
+      "As fontes abaixo já foram recuperadas. Não faça alegações externas além do que elas sustentam.",
+      webResearchContext,
+      ""
+    );
+  }
+
   blocks.push(
     "MENSAGEM ATUAL DO OPERADOR:",
     message
   );
 
   return blocks.join("\n");
+}
+
+function sourceSummary(research) {
+  return (Array.isArray(research?.results) ? research.results : [])
+    .slice(0, 8)
+    .map((item) => ({
+      title: item.title,
+      url: item.url,
+      source: item.source,
+      date: item.date || null,
+      score: Number.isFinite(Number(item.score)) ? Number(item.score) : null
+    }));
+}
+
+function emptyNewsState() {
+  return {
+    active: false,
+    articles: [],
+    contextText: "",
+    visualContext: null,
+    error: null,
+    attempts: [],
+    research: { active: false, query: "", resultCount: 0 }
+  };
 }
 
 async function generateElevenLabsAudio(env, text) {
@@ -156,6 +195,7 @@ export default {
           bridge,
           liveNews: true,
           visualContext: true,
+          uncertaintyResearchRetry: Boolean(env.SERPER_API_KEY),
           message:
             "ULTRON Cloudflare Worker funcionando com gateway multi-IA, memória, contexto visual e Device Bridge."
         },
@@ -255,6 +295,8 @@ export default {
         const telemetry = body?.telemetry || {};
         const conversationId = normalizeConversationId(body?.conversationId);
         const operatorId = await deriveOperatorId(body?.memoryKey);
+        const externalResearchContext = String(body?.webResearchContext || "").trim();
+        const skipLegacyResearch = Boolean(body?.researchMeta?.skipLegacyResearch);
 
         if (!message) {
           return Response.json(
@@ -275,22 +317,73 @@ export default {
             operatorId,
             conversationId
           }),
-          loadLiveNewsContext(message, { limit: 6 })
+          skipLegacyResearch
+            ? Promise.resolve(emptyNewsState())
+            : loadLiveNewsContext(message, { limit: 6 })
         ]);
 
-        const aiMessage = buildMemoryAwareMessage(
+        let aiMessage = buildMemoryAwareMessage(
           message,
           memoryState.context,
-          newsState.contextText
+          newsState.contextText,
+          externalResearchContext
         );
 
         const aiStartedAt = Date.now();
-        const aiResult = await generateWithProviders(
+        let aiResult = await generateWithProviders(
           env,
           aiMessage,
           telemetry,
           { aiBinding: env.AI }
         );
+        let aiPasses = 1;
+        let researchMs = 0;
+        let fallbackResearch = null;
+        let fallbackResearchWrite = { saved: false };
+
+        const alreadyGrounded = Boolean(
+          externalResearchContext ||
+          (newsState.active && Array.isArray(newsState.articles) && newsState.articles.length)
+        );
+
+        if (
+          !alreadyGrounded &&
+          body?.allowUncertaintyResearch !== false &&
+          env.SERPER_API_KEY &&
+          answerLooksUncertain(aiResult.text)
+        ) {
+          const researchStartedAt = Date.now();
+          fallbackResearch = await searchGoogle(env, message, { limit: 6 });
+          researchMs = Date.now() - researchStartedAt;
+
+          if (fallbackResearch?.results?.length && fallbackResearch?.contextText) {
+            aiMessage = buildMemoryAwareMessage(
+              message,
+              memoryState.context,
+              newsState.contextText,
+              fallbackResearch.contextText
+            );
+            aiResult = await generateWithProviders(
+              env,
+              aiMessage,
+              telemetry,
+              { aiBinding: env.AI }
+            );
+            aiPasses = 2;
+
+            if (operatorId && aiResult?.text) {
+              fallbackResearchWrite = await saveResearchMemory(env, {
+                operatorId,
+                query: message,
+                answer: aiResult.text,
+                sources: sourceSummary(fallbackResearch),
+                provider: fallbackResearch.provider || "serper-google",
+                ttlMinutes: 1440
+              });
+            }
+          }
+        }
+
         const aiMs = Date.now() - aiStartedAt;
 
         const memoryPromise =
@@ -337,12 +430,36 @@ export default {
 
         const audioBase64 = voiceResult.audio?.audioBase64 || null;
         const audioMimeType = voiceResult.audio?.audioMimeType || null;
-        const visualContext = newsState.visualContext
+        const fallbackVisual = fallbackResearch?.results?.length
+          ? researchVisualContext(fallbackResearch)
+          : null;
+        const visualContext = (fallbackVisual || newsState.visualContext)
           ? {
-              ...newsState.visualContext,
+              ...(fallbackVisual || newsState.visualContext),
               caption: aiResult.text
             }
           : null;
+
+        const fallbackSources = sourceSummary(fallbackResearch);
+        const webResearch = fallbackResearch
+          ? {
+              requested: true,
+              used: Boolean(fallbackSources.length),
+              reason: "uncertainty-retry",
+              automaticFallback: true,
+              provider: fallbackResearch.providerLabel || "Google Search via Serper",
+              configured: fallbackResearch.configured !== false,
+              query: message,
+              sourceCount: fallbackSources.length,
+              sources: fallbackSources,
+              searchedAt: fallbackResearch.searchedAt || null,
+              fromCache: false,
+              savedToMemory: Boolean(fallbackResearchWrite?.saved),
+              memoryExpiresAt: fallbackResearchWrite?.expiresAt || null,
+              quality: fallbackResearch.quality || null,
+              error: fallbackResearch.error || fallbackResearchWrite?.error || null
+            }
+          : undefined;
 
         return Response.json(
           {
@@ -363,11 +480,16 @@ export default {
             liveData: {
               news: newsState.active,
               resultCount: newsState.articles?.length || 0,
-              error: newsState.error || null
+              error: newsState.error || null,
+              attempts: newsState.attempts || [],
+              fetchedAt: newsState.visualContext?.fetchedAt || null
             },
             visualContext,
+            webResearch,
             performance: {
               aiMs,
+              researchMs,
+              aiPasses,
               voiceMs: voiceResult.voiceMs,
               totalMs: Date.now() - requestStartedAt,
               parallelPostProcessing: true
