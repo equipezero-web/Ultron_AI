@@ -18,30 +18,30 @@ function loadStyle(id, href) {
 }
 
 loadStyle(MOBILE_PERF_STYLE_ID, 'modules/mobile-performance.css?v=4.12.1');
-await import('./mobile-performance.js?v=4.12.1');
+await import('./mobile-performance.js?v=4.19.0');
 
 loadStyle(STYLE_ID, 'modules/stark-core.css?v=4.12.1');
 loadStyle(FUNCTIONAL_STYLE_ID, 'modules/stark-functional.css?v=4.12.1');
-loadStyle(HAND_STYLE_ID, 'modules/stark-hand.css?v=4.12.1');
-loadStyle(CAMERA_PREVIEW_STYLE_ID, 'modules/stark-camera-preview.css?v=4.12.1');
+loadStyle(HAND_STYLE_ID, 'modules/stark-hand.css?v=4.19.0');
+loadStyle(CAMERA_PREVIEW_STYLE_ID, 'modules/stark-camera-preview.css?v=4.19.0');
 loadStyle(ZOOM_DIAGNOSTICS_STYLE_ID, 'modules/stark-zoom-diagnostics.css?v=4.12.1');
 loadStyle(PALM_MATRIX_STYLE_ID, 'modules/palm-matrix.css?v=4.12.1');
 loadStyle(LOCAL_FILES_STYLE_ID, 'modules/local-files.css?v=4.12.1');
-loadStyle(FILE_MESH_STYLE_ID, 'modules/stark-file-mesh.css?v=4.12.1');
+loadStyle(FILE_MESH_STYLE_ID, 'modules/stark-file-mesh.css?v=4.19.0');
 
 await import('./stark-core.js?v=4.12.1');
 await import('./stark-inner-mesh.js?v=4.12.1');
 await import('./neural-input-bus.js?v=4.18.0');
-await import('./neural-command-router.js?v=4.18.0');
+await import('./neural-command-router.js?v=4.19.0');
 await import('./stark-advanced.js?v=4.12.1');
 await import('./vision-client.js?v=4.16.0');
 await import('./vision-command-router.js?v=4.17.0');
-await import('./stark-hand-gesture.js?v=4.12.1');
-await import('./stark-camera-preview.js?v=4.12.1');
+await import('./stark-hand-gesture.js?v=4.19.0');
+await import('./stark-camera-preview.js?v=4.19.0');
 await import('./camera-runtime.js?v=4.16.0');
 await import('./stark-zoom-diagnostics.js?v=4.12.1');
 await import('./stark-production-bridge.js?v=4.12.1');
-await import('./palm-matrix.js?v=4.12.1');
+await import('./palm-matrix.js?v=4.19.0');
 await import('./local-files-client.js?v=4.14.0');
 await import('./local-files-v2.js?v=4.14.0');
 await import('./local-files-ai-bridge.js?v=4.14.0');
@@ -68,7 +68,7 @@ window.addEventListener('ultron:subvocal-command', (event) => {
 
 window.dispatchEvent(new CustomEvent('ultron:stark-bootstrap-ready', {
   detail: {
-    version: '4.18.0',
+    version: '4.19.0',
     performanceMode: window.ULTRON_PERFORMANCE?.mode || 'full',
     starkCore: Boolean(window.ULTRON_STARK_CORE),
     innerMesh: Boolean(window.ULTRON_STARK_MESH),
@@ -80,6 +80,7 @@ window.dispatchEvent(new CustomEvent('ultron:stark-bootstrap-ready', {
     visionImageFallback: Boolean(window.ULTRON_VISION?.analyzeFile),
     visionCommandRouter: Boolean(window.ULTRON_VISION_ROUTER),
     handGestures: Boolean(window.ULTRON_HAND_GESTURES),
+    handControlModel: 'OPEN=ARM / PUSH=FILES / FIST=FREEZE / INDEX=POINTER / PINCH=SELECT',
     palmMatrix: Boolean(window.ULTRON_PALM_MATRIX),
     cameraPreview: Boolean(window.ULTRON_CAMERA_PREVIEW),
     cameraRuntime: Boolean(window.ULTRON_CAMERA_RUNTIME),
