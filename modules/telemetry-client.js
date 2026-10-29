@@ -1,5 +1,5 @@
 import API_CONFIG from "../config.js";
-import "./stark-bootstrap.js?v=4.16.0";
+import "./stark-bootstrap.js?v=4.18.0";
 import "./la-team-bootstrap.js?v=4.15.0";
 
 const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
@@ -74,6 +74,8 @@ export async function buildTelemetrySnapshot(extra = {}) {
   const memory = window.ULTRON_MEMORY;
   const handGestures = window.ULTRON_HAND_GESTURES?.state || null;
   const palmMatrix = window.ULTRON_PALM_MATRIX?.state || null;
+  const neuralCommand = window.ULTRON_NEURAL_COMMAND?.state || null;
+  const neuralInput = window.ULTRON_NEURAL_INPUT?.state || null;
   const starkState = window.ULTRON_STARK_CORE?.state || null;
   const mesh = window.ULTRON_STARK_MESH;
   const cameraPreview = window.ULTRON_CAMERA_PREVIEW?.state || null;
@@ -136,6 +138,8 @@ export async function buildTelemetrySnapshot(extra = {}) {
     neuralControl: {
       handTracking: handGestures,
       palmMatrix,
+      neuralCommand,
+      neuralInput,
       starkCore: starkState,
       focusedNode: mesh?.focused || null,
       zoomLevel: Number(mesh?.zoomLevel || 0),
@@ -166,6 +170,7 @@ export async function buildTelemetrySnapshot(extra = {}) {
       voice: readText("voice-module", "UNKNOWN"),
       vision: readText("vision-module", "UNKNOWN"),
       aiGateway: readText("gemini-module", "UNKNOWN"),
+      neuralCommand: window.ULTRON_NEURAL_COMMAND ? "ONLINE" : "OFFLINE",
       localFiles: localFiles?.online ? "ONLINE" : "OFFLINE",
       laTeam: laTeam?.authorized ? "ONLINE" : "LOCKED"
     },
@@ -266,6 +271,10 @@ window.addEventListener("ultron:vision-result", (event) => pushTelemetry({
     model: event.detail?.model || null,
     ok: event.detail?.ok !== false
   }
+}));
+window.addEventListener("ultron:neural-command", (event) => pushTelemetry({
+  event: "neural-command",
+  neuralCommand: event.detail || null
 }));
 
 window.ULTRON_TELEMETRY = {
