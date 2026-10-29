@@ -1,0 +1,87 @@
+name: Neural Command Check
+
+on:
+  push:
+    paths:
+      - 'modules/neural-command-policy.mjs'
+      - 'modules/neural-command-router.js'
+      - 'modules/neural-input-bus.js'
+      - 'modules/neural-parity.js'
+      - 'modules/palm-matrix.js'
+      - 'modules/stark-hand-gesture.js'
+      - 'modules/stark-bootstrap.js'
+      - 'modules/telemetry-client.js'
+      - '.github/workflows/neural-command-check.yml'
+  pull_request:
+    paths:
+      - 'modules/neural-command-policy.mjs'
+      - 'modules/neural-command-router.js'
+      - 'modules/neural-input-bus.js'
+      - 'modules/neural-parity.js'
+      - 'modules/palm-matrix.js'
+      - 'modules/stark-hand-gesture.js'
+      - 'modules/stark-bootstrap.js'
+      - 'modules/telemetry-client.js'
+      - '.github/workflows/neural-command-check.yml'
+
+jobs:
+  neural-command:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Syntax check
+        run: |
+          node --check modules/neural-command-router.js
+          node --check modules/neural-input-bus.js
+          node --check modules/neural-parity.js
+          node --check modules/palm-matrix.js
+          node --check modules/stark-hand-gesture.js
+          node --check modules/stark-bootstrap.js
+          node --check modules/telemetry-client.js
+          node --check modules/neural-command-policy.mjs
+
+      - name: Neural policy behavior
+        run: |
+          node --input-type=module <<'NODE'
+          import {
+            normalizeNeuralAction,
+            neuralSignature,
+            validateNeuralAction
+          } from './modules/neural-command-policy.mjs';
+
+          const assert = (condition, message) => {
+            if (!condition) throw new Error(message);
+          };
+
+          assert(normalizeNeuralAction('pinch-click') === 'pinch-select', 'pinch normalization failed');
+          assert(normalizeNeuralAction('Closed Fist') === 'closed-fist', 'generic normalization failed');
+          assert(validateNeuralAction('push', { confidence: 0.8 }).ok, 'push should pass');
+          assert(!validateNeuralAction('push', { confidence: 0.2 }).ok, 'low confidence push should fail');
+          assert(validateNeuralAction('sweep', { confidence: 0.8, direction: 'right' }).ok, 'right sweep should pass');
+          assert(!validateNeuralAction('sweep', { confidence: 0.8, direction: 'up' }).ok, 'invalid sweep should fail');
+          assert(validateNeuralAction('dial', { confidence: 0.8, delta: 0.04 }).ok, 'dial should pass');
+          assert(!validateNeuralAction('dial', { confidence: 0.8, delta: 0.001 }).ok, 'weak dial should fail');
+          assert(validateNeuralAction('pinch-select', { target: 'VISÃO' }).ok, 'pinch target should pass');
+          assert(!validateNeuralAction('pinch-select', {}).ok, 'pinch without target should fail');
+          assert(neuralSignature('sweep', { direction: 'left', target: 'NEWS' }) === 'sweep:left:NEWS', 'signature failed');
+          console.log('Neural command policy OK');
+          NODE
+
+      - name: Integration markers
+        run: |
+          grep -q "neural-command-router.js?v=4.18.0" modules/stark-bootstrap.js
+          grep -q "neuralCommandRouter" modules/stark-bootstrap.js
+          grep -q "ultron:neural-command" modules/neural-input-bus.js
+          grep -q "ULTRON_NEURAL_COMMAND" modules/neural-parity.js
+          grep -q "ultron:palm-push" modules/palm-matrix.js
+          grep -q "ultron:palm-sweep" modules/palm-matrix.js
+          grep -q "ultron:palm-dial" modules/palm-matrix.js
+          grep -q "ultron:palm-holder" modules/palm-matrix.js
+          grep -q "ultron:camera-hand-select" modules/stark-hand-gesture.js
+          grep -q "neuralCommand" modules/telemetry-client.js
+          echo 'Neural Command + gestures + Palm Matrix integration markers OK'
