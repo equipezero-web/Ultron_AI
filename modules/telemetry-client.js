@@ -1,5 +1,5 @@
 import API_CONFIG from "../config.js";
-import "./stark-bootstrap.js?v=4.13.0";
+import "./stark-bootstrap.js?v=4.14.0";
 
 const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
 const OUTPUT = document.getElementById("output-box");
@@ -131,7 +131,10 @@ export async function buildTelemetrySnapshot(extra = {}) {
       online: Boolean(localFiles.online),
       files: Number(localFiles.health?.files || localFiles.files?.length || 0),
       vectorChunks: Number(localFiles.health?.vector_chunks || 0),
-      activeFile: localFiles.activeFile?.path || null
+      activeFile: localFiles.activeFile?.path || null,
+      ragV2: Boolean(window.ULTRON_LOCAL_FILES_V2),
+      hybridSearch: Boolean(window.ULTRON_LOCAL_FILES?.capabilities?.hybridSearch),
+      messageSafe: Boolean(window.ULTRON_LOCAL_RAG_BRIDGE?.messageSafe)
     } : null,
     modules: {
       memory: readText("memory-module", "UNKNOWN"),
