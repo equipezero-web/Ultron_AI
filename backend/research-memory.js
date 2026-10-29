@@ -76,7 +76,9 @@ export async function loadResearchCache(env, { operatorId, query } = {}) {
       .prepare(
         `SELECT query, answer, sources_json, provider, fetched_at, expires_at
          FROM research_cache
-         WHERE operator_id = ? AND query_key = ? AND expires_at > CURRENT_TIMESTAMP
+         WHERE operator_id = ?
+           AND query_key = ?
+           AND datetime(expires_at) > datetime('now')
          LIMIT 1`
       )
       .bind(operatorId, key)
@@ -121,62 +123,51 @@ export async function saveResearchMemory(
   if (!key) return { saved: false };
 
   const safeSources = (Array.isArray(sources) ? sources : [])
-    .slice(0, 8)
+    .slice(0, 10)
     .map((item) => ({
       title: clip(item?.title, 220),
       url: clip(item?.url, 900),
       source: clip(item?.source, 160),
-      date: clip(item?.date, 80) || null
+      date: clip(item?.date || item?.publishedAt, 80) || null,
+      score: Number.isFinite(Number(item?.score)) ? Number(item.score) : null
     }))
     .filter((item) => item.url);
 
   const ttl = Math.max(15, Math.min(525600, Number(ttlMinutes) || 1440));
   const expiresAt = new Date(Date.now() + ttl * 60 * 1000).toISOString();
-  const sourceLine = safeSources.slice(0, 5).map((item) => `${item.source}: ${item.url}`).join(" | ");
-  const persistentContent = clip(
-    `Pesquisa verificada: ${query}\nResumo: ${answer}\nFontes: ${sourceLine || "não informadas"}\nVerificado em: ${new Date().toISOString()}`,
-    4200
-  );
 
   try {
-    await env.ULTRON_DB.batch([
-      env.ULTRON_DB
-        .prepare(
-          `INSERT INTO research_cache
-            (id, operator_id, query_key, query, answer, sources_json, provider, fetched_at, expires_at, created_at, updated_at)
-           VALUES (?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-           ON CONFLICT(operator_id, query_key) DO UPDATE SET
-             query = excluded.query,
-             answer = excluded.answer,
-             sources_json = excluded.sources_json,
-             provider = excluded.provider,
-             fetched_at = CURRENT_TIMESTAMP,
-             expires_at = excluded.expires_at,
-             updated_at = CURRENT_TIMESTAMP`
-        )
-        .bind(
-          crypto.randomUUID(),
-          operatorId,
-          key,
-          clip(query, 900),
-          clip(answer, 7000),
-          JSON.stringify(safeSources),
-          provider,
-          expiresAt
-        ),
-      env.ULTRON_DB
-        .prepare(
-          `INSERT OR IGNORE INTO memories
-            (id, operator_id, category, content, importance, source_message_id, created_at, updated_at)
-           VALUES (?, ?, 'research', ?, 62, NULL, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)`
-        )
-        .bind(crypto.randomUUID(), operatorId, persistentContent)
-    ]);
+    await env.ULTRON_DB
+      .prepare(
+        `INSERT INTO research_cache
+          (id, operator_id, query_key, query, answer, sources_json, provider, fetched_at, expires_at, created_at, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+         ON CONFLICT(operator_id, query_key) DO UPDATE SET
+           query = excluded.query,
+           answer = excluded.answer,
+           sources_json = excluded.sources_json,
+           provider = excluded.provider,
+           fetched_at = CURRENT_TIMESTAMP,
+           expires_at = excluded.expires_at,
+           updated_at = CURRENT_TIMESTAMP`
+      )
+      .bind(
+        crypto.randomUUID(),
+        operatorId,
+        key,
+        clip(query, 900),
+        clip(answer, 7000),
+        JSON.stringify(safeSources),
+        provider,
+        expiresAt
+      )
+      .run();
 
     return {
       saved: true,
       expiresAt,
-      sourceCount: safeSources.length
+      sourceCount: safeSources.length,
+      storage: "research_cache"
     };
   } catch (error) {
     console.error("[ULTRON RESEARCH MEMORY] save:", error);
