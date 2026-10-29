@@ -33,6 +33,33 @@ function log(message, alert = false) {
   output.scrollTop = output.scrollHeight;
 }
 
+async function expandOverview(context) {
+  if (!context?.authorized || !context?.areas?.includes('overview')) return context;
+
+  const prompts = [
+    'L&A Team CRM clientes leads mensalistas',
+    'L&A Team financeiro faturamento receita despesas',
+    'L&A Team FlowBoost pedidos seguidores pacotes',
+    'L&A Team TikTok videos visualizacoes monetizacao nichos',
+    'L&A Team equipe mensagens membros',
+    'L&A Team relatorios agentes',
+    'L&A Team codigo repositorio app.js index.html'
+  ];
+
+  const extra = await Promise.all(
+    prompts.map((prompt) => window.ULTRON_LA_TEAM.contextFor(prompt).catch(() => null))
+  );
+  const valid = extra.filter((item) => item?.authorized && item?.contextText);
+  if (!valid.length) return context;
+
+  return {
+    ...context,
+    areas: [...new Set([...(context.areas || []), ...valid.flatMap((item) => item.areas || [])])],
+    contextText: [context.contextText, ...valid.map((item) => item.contextText)]
+      .join('\n\n--- AREA INTERNA COMPLEMENTAR ---\n\n')
+  };
+}
+
 window.fetch = async function ultronLaTeamFetch(input, init = {}) {
   if (!isAiRequest(input, init) || !window.ULTRON_LA_TEAM) {
     return previousFetch(input, init);
@@ -45,10 +72,12 @@ window.fetch = async function ultronLaTeamFetch(input, init = {}) {
   }
 
   try {
-    const context = await window.ULTRON_LA_TEAM.contextFor(originalMessage);
+    let context = await window.ULTRON_LA_TEAM.contextFor(originalMessage);
     if (!context?.active || !context?.contextText) {
       return previousFetch(input, init);
     }
+
+    context = await expandOverview(context);
 
     body.laTeamContext = context.contextText;
     body.laTeamMeta = {
@@ -63,7 +92,7 @@ window.fetch = async function ultronLaTeamFetch(input, init = {}) {
 
     log(context.authorized
       ? `Contexto interno anexado // ${body.laTeamMeta.areas.join(', ') || 'overview'} // RLS autorizado.`
-      : 'Consulta L&A Team detectada, mas a sessão interna ainda não está conectada.');
+      : 'Consulta L&A Team detectada, mas a sessao interna ainda nao esta conectada.');
 
     window.dispatchEvent(new CustomEvent('ultron:la-team-context', {
       detail: body.laTeamMeta
@@ -77,4 +106,4 @@ window.fetch = async function ultronLaTeamFetch(input, init = {}) {
   }
 };
 
-window.ULTRON_LA_TEAM_BRIDGE = { active: true };
+window.ULTRON_LA_TEAM_BRIDGE = { active: true, fullOverview: true };
