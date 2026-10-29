@@ -37,12 +37,14 @@ function appendSpeed(performance = {}) {
   if (!performance?.totalMs) return;
 
   const ai = Math.round(Number(performance.aiMs || 0));
+  const research = Math.round(Number(performance.researchMs || 0));
   const voice = Math.round(
     Number(performance.voiceMs || 0) + Number(performance.fallbackVoiceMs || 0)
   );
   const total = Math.round(Number(performance.totalMs || 0));
+  const passes = Math.max(1, Number(performance.aiPasses || 1));
 
-  appendLine(`> [SPEED] IA ${ai}ms | voz ${voice}ms | total ${total}ms`);
+  appendLine(`> [SPEED] pesquisa ${research}ms | IA ${ai}ms${passes > 1 ? ` (${passes} passes)` : ""} | voz ${voice}ms | total ${total}ms`);
 }
 
 function appendRouting(routing) {
@@ -77,8 +79,18 @@ function appendResearch(research) {
 
   const sourceCount = Number(research.sourceCount || 0);
   const origin = research.fromCache ? "MEMÓRIA DE PESQUISA" : String(research.provider || "WEB").toUpperCase();
-  const saved = research.savedToMemory ? " // MEMÓRIA: SALVA" : "";
-  appendLine(`> [WEB RESEARCH] ${origin} // ${sourceCount} fonte(s)${saved}`);
+  const saved = research.savedToMemory ? " // CACHE: SALVO" : "";
+  const retry = research.automaticFallback ? " // AUTO-RETRY: INCERTEZA DETECTADA" : "";
+  const searchMs = Number(research.searchMs || 0);
+  const domains = Number(research?.quality?.diverseDomains || 0);
+  const engines = Array.isArray(research?.quality?.engines) ? research.quality.engines.join("+").toUpperCase() : "";
+  const quality = [
+    domains ? `${domains} domínio(s)` : "",
+    engines ? engines : "",
+    searchMs ? `${Math.round(searchMs)}ms` : ""
+  ].filter(Boolean).join(" // ");
+
+  appendLine(`> [WEB RESEARCH] ${origin} // ${sourceCount} fonte(s)${quality ? ` // ${quality}` : ""}${saved}${retry}`);
 }
 
 function processingEvent(name, detail = {}) {
