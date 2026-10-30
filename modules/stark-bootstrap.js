@@ -1,4 +1,4 @@
-const BOOT_KEY = '__ULTRON_STARK_BOOTSTRAP_V4223__';
+const BOOT_KEY = '__ULTRON_STARK_BOOTSTRAP_V4224__';
 
 if (!window[BOOT_KEY]) {
   window[BOOT_KEY] = true;
@@ -43,6 +43,7 @@ if (!window[BOOT_KEY]) {
   await import('./neural-command-router.js?v=4.20.0');
   await import('./stark-advanced.js?v=4.12.1');
   await import('./vision-client.js?v=4.16.0');
+  await import('./vision-remote-source-v4224.js?v=4.22.4');
   await import('./vision-command-router.js?v=4.17.0');
   await import('./camera-runtime.js?v=4.16.0');
   await import('./camera-external-stream-v4223.js?v=4.22.3');
@@ -81,7 +82,7 @@ if (!window[BOOT_KEY]) {
 
   window.dispatchEvent(new CustomEvent('ultron:stark-bootstrap-ready', {
     detail: {
-      version: '4.22.3',
+      version: '4.22.4',
       performanceMode: window.ULTRON_PERFORMANCE?.mode || 'full',
       starkCore: Boolean(window.ULTRON_STARK_CORE),
       innerMesh: Boolean(window.ULTRON_STARK_MESH),
@@ -93,6 +94,7 @@ if (!window[BOOT_KEY]) {
       vision: Boolean(window.ULTRON_VISION),
       visionDiagnostics: Boolean(window.ULTRON_VISION?.diagnose),
       visionImageFallback: Boolean(window.ULTRON_VISION?.analyzeFile),
+      visionRemoteSource: Boolean(window.ULTRON_VISION_REMOTE_SOURCE),
       visionCommandRouter: Boolean(window.ULTRON_VISION_ROUTER),
       handGestures: Boolean(window.ULTRON_HAND_GESTURES),
       handControlModel: '2 OPEN PALMS=ACTIVATE / INDEX=MOVE / PINCH+CAMERA TOUCH=SELECT / PALM ROTATE=360 / FIST→OPEN=ZOOM IN / OPEN→FIST=ZOOM OUT+CENTER',

@@ -11,6 +11,7 @@ on:
       - 'modules/mobile-camera-source.js'
       - 'modules/remote-camera-webrtc-hotfix-v4221.js'
       - 'modules/vision-client.js'
+      - 'modules/vision-remote-source-v4224.js'
       - 'modules/vision-command-router.js'
       - 'modules/vision-frame-health.js'
       - 'modules/stark-bootstrap.js'
@@ -31,6 +32,7 @@ on:
       - 'modules/mobile-camera-source.js'
       - 'modules/remote-camera-webrtc-hotfix-v4221.js'
       - 'modules/vision-client.js'
+      - 'modules/vision-remote-source-v4224.js'
       - 'modules/vision-command-router.js'
       - 'modules/vision-frame-health.js'
       - 'modules/stark-bootstrap.js'
@@ -61,6 +63,7 @@ jobs:
           node --check modules/mobile-camera-source.js
           node --check modules/remote-camera-webrtc-hotfix-v4221.js
           node --check modules/vision-client.js
+          node --check modules/vision-remote-source-v4224.js
           node --check modules/vision-command-router.js
           node --check modules/vision-frame-health.js
           node --check modules/stark-bootstrap.js
@@ -145,6 +148,10 @@ jobs:
           grep -q "STATIC_VERIFY" modules/vision-client.js
           grep -q "visionCommandRouter" modules/stark-bootstrap.js
           grep -q 'vision-command-router.js?v=4.17.0' index.html
+          grep -q "vision-remote-source-v4224.js?v=4.22.4" modules/stark-bootstrap.js
+          grep -q "ULTRON_VISION_REMOTE_SOURCE" modules/vision-remote-source-v4224.js
+          grep -q "resolveRemoteStream" modules/vision-remote-source-v4224.js
+          grep -q "A webcam local não será reiniciada" modules/vision-remote-source-v4224.js
           grep -q "camera-external-stream-v4223.js?v=4.22.3" modules/stark-bootstrap.js
           grep -q "ULTRON_EXTERNAL_CAMERA_STREAM" modules/camera-external-stream-v4223.js
           grep -q "stopRequested = false" modules/camera-external-stream-v4223.js
