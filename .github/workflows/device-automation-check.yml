@@ -1,0 +1,92 @@
+name: Device Automation Check
+
+on:
+  push:
+    paths:
+      - 'backend/device-control-v2.js'
+      - 'backend/automation-engine.js'
+      - 'backend/worker-v5.js'
+      - 'backend/wrangler.jsonc'
+      - 'modules/device-control-v4260.js'
+      - 'local-core/desktop_bridge.py'
+      - 'local-core/device_server.py'
+      - 'local-core/start.bat'
+      - 'index.html'
+      - '.github/workflows/device-automation-check.yml'
+  pull_request:
+    paths:
+      - 'backend/device-control-v2.js'
+      - 'backend/automation-engine.js'
+      - 'backend/worker-v5.js'
+      - 'backend/wrangler.jsonc'
+      - 'modules/device-control-v4260.js'
+      - 'local-core/desktop_bridge.py'
+      - 'local-core/device_server.py'
+      - 'local-core/start.bat'
+      - 'index.html'
+      - '.github/workflows/device-automation-check.yml'
+  workflow_dispatch:
+
+jobs:
+  device-automation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Syntax
+        run: |
+          node --check backend/device-control-v2.js
+          node --check backend/automation-engine.js
+          node --check backend/worker-v5.js
+          node --check modules/device-control-v4260.js
+          python -m py_compile local-core/desktop_bridge.py local-core/device_server.py
+
+      - name: Device command policy
+        run: |
+          node --input-type=module <<'NODE'
+          import { validateControlCommand } from './backend/device-control-v2.js';
+          const ok = validateControlCommand('tv.volume.up', {});
+          if (!ok.ok) throw new Error('TV command should be allowed');
+          const desktop = validateControlCommand('desktop.lock', {});
+          if (!desktop.ok) throw new Error('Desktop lock should be allowed');
+          const denied = validateControlCommand('desktop.shell', {});
+          if (denied.ok) throw new Error('Arbitrary desktop command must be denied');
+          const sensitive = validateControlCommand('desktop.shutdown', {});
+          if (sensitive.ok || !sensitive.needsConfirmation) throw new Error('Shutdown must require confirmation');
+          const confirmed = validateControlCommand('desktop.shutdown', { confirm: true });
+          if (!confirmed.ok) throw new Error('Confirmed shutdown should pass policy');
+          console.log('Device command policy OK');
+          NODE
+
+      - name: Automation architecture markers
+        run: |
+          grep -q 'device_automations' backend/automation-engine.js
+          grep -q 'automation_runs' backend/automation-engine.js
+          grep -q 'processDueAutomations' backend/worker-v5.js
+          grep -q 'async scheduled' backend/worker-v5.js
+          grep -q '"crons": \["\* \* \* \* \*"\]' backend/wrangler.jsonc
+          grep -q '"main": "worker-v5.js"' backend/wrangler.jsonc
+          grep -q '/api/automations/create' backend/worker-v5.js
+          grep -q '/api/control/status' backend/worker-v5.js
+          grep -q 'monitorCommand' modules/device-control-v4260.js
+          grep -q 'parseSchedule' modules/device-control-v4260.js
+          grep -q 'pairDesktop' modules/device-control-v4260.js
+          grep -q 'device-control-v4260.js?v=4.26.0' index.html
+
+      - name: Desktop bridge safety markers
+        run: |
+          grep -q 'CAPABILITIES = \[' local-core/desktop_bridge.py
+          grep -q 'desktop.shutdown' local-core/desktop_bridge.py
+          grep -q 'Confirmação explícita obrigatória' local-core/desktop_bridge.py
+          grep -q 'Somente URLs http/https' local-core/desktop_bridge.py
+          grep -q 'Aplicativo não autorizado' local-core/desktop_bridge.py
+          ! grep -q 'shell=True' local-core/desktop_bridge.py
+          ! grep -q 'os.system' local-core/desktop_bridge.py
+          grep -q 'device_server:app' local-core/start.bat
+          echo 'Stage 9 Device Control + Automations safety checks OK'
