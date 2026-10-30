@@ -1,4 +1,4 @@
-const BOOT_KEY = '__ULTRON_STARK_BOOTSTRAP_V4232__';
+const BOOT_KEY = '__ULTRON_STARK_BOOTSTRAP_V4240__';
 
 if (!window[BOOT_KEY]) {
   window[BOOT_KEY] = true;
@@ -23,8 +23,9 @@ if (!window[BOOT_KEY]) {
     document.head.appendChild(link);
   }
 
-  loadStyle(MOBILE_PERF_STYLE_ID, 'modules/mobile-performance.css?v=4.12.1');
-  await import('./mobile-performance.js?v=4.19.0');
+  loadStyle(MOBILE_PERF_STYLE_ID, 'modules/mobile-performance.css?v=4.24.0');
+  await import('./mobile-performance.js?v=4.24.0');
+  await import('./mobile-sensor-fusion-v4240.js?v=4.24.0');
 
   loadStyle(STYLE_ID, 'modules/stark-core.css?v=4.12.1');
   loadStyle(FUNCTIONAL_STYLE_ID, 'modules/stark-functional.css?v=4.12.1');
@@ -86,7 +87,7 @@ if (!window[BOOT_KEY]) {
 
   window.dispatchEvent(new CustomEvent('ultron:stark-bootstrap-ready', {
     detail: {
-      version: '4.23.2',
+      version: '4.24.0',
       performanceMode: window.ULTRON_PERFORMANCE?.mode || 'full',
       starkCore: Boolean(window.ULTRON_STARK_CORE),
       innerMesh: Boolean(window.ULTRON_STARK_MESH),
@@ -112,6 +113,7 @@ if (!window[BOOT_KEY]) {
       externalCameraStreamAdapter: Boolean(window.ULTRON_EXTERNAL_CAMERA_STREAM),
       mobileCamera: Boolean(window.ULTRON_MOBILE_CAMERA),
       mobileCameraBridge: Boolean(window.ULTRON_MOBILE_CAMERA?.useBridgeCamera),
+      mobileSensors: Boolean(window.ULTRON_MOBILE_SENSORS),
       remoteCameraWebRtcHotfix: Boolean(window.__ULTRON_REMOTE_CAMERA_WEBRTC_V4231__),
       cameraDiagnostics: Boolean(window.ULTRON_CAMERA_RUNTIME?.diagnostics),
       zoomDiagnostics: Boolean(window.ULTRON_ZOOM_DIAGNOSTICS),
