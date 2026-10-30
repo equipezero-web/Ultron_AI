@@ -1,0 +1,40 @@
+name: Remote Camera Display Check
+
+on:
+  pull_request:
+    paths:
+      - 'modules/remote-camera-display-v4232.js'
+      - 'modules/remote-camera-mode-v4232.js'
+      - 'modules/stark-bootstrap.js'
+      - 'index.html'
+  push:
+    branches: [main]
+    paths:
+      - 'modules/remote-camera-display-v4232.js'
+      - 'modules/remote-camera-mode-v4232.js'
+      - 'modules/stark-bootstrap.js'
+      - 'index.html'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax check remote display modules
+        run: |
+          node --check modules/remote-camera-display-v4232.js
+          node --check modules/remote-camera-mode-v4232.js
+          node --check modules/stark-bootstrap.js
+      - name: Validate remote-only camera routing
+        run: |
+          grep -q "ULTRON_REMOTE_CAMERA_DISPLAY" modules/remote-camera-display-v4232.js
+          grep -q "A webcam do Windows não será usada" modules/remote-camera-display-v4232.js
+          grep -q "useBridgeCamera" modules/remote-camera-mode-v4232.js
+          grep -q "webcam do Windows permanecerá desligada" modules/remote-camera-mode-v4232.js
+          grep -q "remote-camera-display-v4232.js?v=4.23.2" modules/stark-bootstrap.js
+          grep -q "remote-camera-mode-v4232.js?v=4.23.2" modules/stark-bootstrap.js
+          grep -q "remote-camera-webrtc-hotfix-v4221.js?v=4.23.1" modules/stark-bootstrap.js
+          grep -q "stark-bootstrap.js?v=4.23.2" index.html
