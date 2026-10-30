@@ -1,0 +1,353 @@
+/* ULTRON v4.28.0 // Neural Command holographic filespace */
+body.ultron-neural-focus{
+  --nc-cyan:#6ff6ff;
+  --nc-blue:#1ea7ff;
+  --nc-cobalt:#2357ff;
+  --nc-violet:#7a63ff;
+  --nc-deep:#010611;
+  --nc-panel:rgba(2,12,25,.82);
+}
+
+body.ultron-neural-focus .neural-stage{
+  position:relative;
+  min-height:calc(100vh - 230px);
+  height:min(82vh,940px);
+  isolation:isolate;
+  background:
+    radial-gradient(circle at 50% 44%,rgba(37,105,255,.18),transparent 24%),
+    radial-gradient(circle at 50% 50%,rgba(12,68,112,.36),rgba(2,11,20,.96) 60%,rgba(1,5,12,.995));
+}
+
+body.ultron-neural-focus .neural-stage::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-2;
+  pointer-events:none;
+  background:
+    linear-gradient(180deg,rgba(1,5,12,.58),rgba(1,5,12,.87)),
+    url('../assets/neural-command-concept.webp') center/cover no-repeat;
+  opacity:.46;
+  filter:saturate(1.22) contrast(1.08);
+  mix-blend-mode:screen;
+}
+
+body.ultron-neural-focus .neural-stage::before{
+  content:"";
+  position:absolute;
+  inset:42px 10% 80px;
+  z-index:-1;
+  pointer-events:none;
+  background:radial-gradient(circle,rgba(73,216,255,.16),rgba(35,87,255,.06) 32%,transparent 69%);
+  filter:blur(26px);
+}
+
+body.ultron-neural-focus .orb-stage{
+  min-height:650px;
+  perspective:1700px;
+  cursor:grab;
+}
+body.ultron-neural-focus .orb-stage:active{cursor:grabbing}
+body.ultron-neural-focus .core-orb{
+  width:clamp(370px,38vw,650px);
+  height:clamp(370px,38vw,650px);
+  background:
+    radial-gradient(circle at 50% 50%,rgba(255,255,255,.98) 0 1.8%,rgba(116,244,255,.92) 2.5%,rgba(45,134,255,.64) 7%,rgba(18,56,140,.36) 20%,rgba(2,15,40,.12) 47%,transparent 67%),
+    repeating-radial-gradient(circle,rgba(109,243,255,.18) 0 1px,transparent 1px 12px);
+  border:1px solid rgba(133,246,255,.42);
+  box-shadow:
+    0 0 24px rgba(255,255,255,.82),
+    0 0 70px rgba(109,243,255,.85),
+    0 0 170px rgba(35,87,255,.5),
+    0 0 260px rgba(122,99,255,.18),
+    inset 0 0 92px rgba(83,225,255,.46);
+}
+body.ultron-neural-focus .core-orb::after{
+  content:"";
+  position:absolute;
+  inset:7%;
+  border-radius:50%;
+  pointer-events:none;
+  background:
+    repeating-conic-gradient(from 15deg,transparent 0 9deg,rgba(122,238,255,.14) 10deg 10.7deg,transparent 11deg 21deg),
+    radial-gradient(circle,transparent 49%,rgba(103,232,249,.15) 50% 50.7%,transparent 51%);
+  opacity:.9;
+  animation:nc-microspin 28s linear infinite;
+}
+@keyframes nc-microspin{to{transform:rotate(360deg)}}
+
+.neural-stage .nc-enter-controls{
+  position:absolute;
+  left:50%;
+  bottom:86px;
+  z-index:33;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  transform:translateX(-50%);
+  transition:opacity .25s ease,transform .25s ease;
+}
+.neural-stage .nc-enter-button,
+.neural-stage .nc-exit-button,
+.neural-stage .nc-workspace button{
+  border:1px solid rgba(111,246,255,.35);
+  background:linear-gradient(180deg,rgba(12,43,78,.82),rgba(2,15,31,.86));
+  color:#bdf9ff;
+  font:700 8px/1.2 ui-monospace,monospace;
+  letter-spacing:1px;
+  padding:9px 12px;
+  cursor:pointer;
+  box-shadow:0 0 22px rgba(39,187,255,.1),inset 0 0 18px rgba(103,232,249,.04);
+}
+.neural-stage .nc-enter-button:hover,
+.neural-stage .nc-exit-button:hover,
+.neural-stage .nc-workspace button:hover{
+  border-color:rgba(111,246,255,.78);
+  color:#fff;
+  box-shadow:0 0 24px rgba(58,204,255,.22),inset 0 0 22px rgba(103,232,249,.08);
+}
+.neural-stage .nc-enter-status{
+  color:#6ea4bf;
+  font:600 7px ui-monospace,monospace;
+  letter-spacing:.7px;
+  white-space:nowrap;
+}
+
+.neural-stage .nc-fragment-layer{
+  position:absolute;
+  inset:50%;
+  z-index:24;
+  width:1px;
+  height:1px;
+  pointer-events:none;
+  transform-style:preserve-3d;
+}
+.neural-stage .nc-fragment{
+  --fa:0deg;
+  --fd:160px;
+  --fz:0px;
+  --fr:0deg;
+  position:absolute;
+  left:-18px;
+  top:-8px;
+  width:36px;
+  height:16px;
+  opacity:0;
+  clip-path:polygon(0 28%,72% 0,100% 58%,34% 100%);
+  border:1px solid rgba(132,244,255,.7);
+  background:linear-gradient(110deg,rgba(220,252,255,.78),rgba(26,153,255,.36) 42%,rgba(82,67,255,.12));
+  box-shadow:0 0 18px rgba(84,227,255,.7),0 0 36px rgba(35,87,255,.28);
+  transform:rotate(var(--fa)) translate3d(0,0,0) rotate(var(--fr)) scale(.2);
+  transition:transform .78s cubic-bezier(.16,.84,.22,1),opacity .22s ease;
+}
+.neural-stage.neural-core-fracturing .nc-fragment,
+.neural-stage.neural-files-open .nc-fragment{
+  opacity:.82;
+  transform:rotate(var(--fa)) translate3d(var(--fd),0,var(--fz)) rotate(var(--fr)) scale(1);
+}
+.neural-stage.neural-files-open .core-orb{
+  opacity:.18;
+  filter:brightness(1.35) blur(.3px);
+  transform:
+    translateZ(calc(var(--orb-depth) + 130px))
+    rotateX(var(--orb-rx)) rotateY(var(--orb-ry)) rotateZ(var(--orb-rz))
+    scale(calc(var(--orb-scale) * 1.22));
+  box-shadow:0 0 190px rgba(53,183,255,.44),inset 0 0 120px rgba(100,230,255,.26);
+}
+.neural-stage.neural-files-open .orb-halo{opacity:.18!important}
+.neural-stage.neural-files-open .orbit{opacity:.26!important}
+.neural-stage.neural-files-open .core-pedestal{opacity:.25}
+.neural-stage.neural-files-open .nc-enter-controls{opacity:0;pointer-events:none;transform:translate(-50%,16px)}
+
+/* Files remain invisible while the Neural core is closed. */
+.neural-stage:not(.neural-files-open) .stark-file-node,
+.neural-stage:not(.neural-files-open) .stark-file-mesh-banner{
+  opacity:0!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+}
+.neural-stage.neural-files-open .stark-file-node{
+  visibility:visible!important;
+  opacity:1!important;
+  pointer-events:auto!important;
+  border-color:rgba(111,246,255,.36)!important;
+  background:radial-gradient(circle at 45% 40%,rgba(111,246,255,.18),rgba(5,24,48,.92) 72%)!important;
+  box-shadow:0 0 18px rgba(58,202,255,.2),inset 0 0 18px rgba(82,96,255,.08)!important;
+  animation:nc-file-float 5.8s ease-in-out infinite alternate;
+}
+.neural-stage.neural-files-open .stark-file-node:nth-child(2n){animation-delay:-1.4s}
+.neural-stage.neural-files-open .stark-file-node:nth-child(3n){animation-delay:-2.7s}
+@keyframes nc-file-float{
+  from{translate:0 -3px;filter:brightness(.92)}
+  to{translate:0 7px;filter:brightness(1.18)}
+}
+
+.neural-stage .nc-workspace{
+  position:absolute;
+  inset:50px 18px 18px;
+  z-index:70;
+  display:grid;
+  grid-template-rows:auto 1fr;
+  gap:8px;
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transform:translateY(16px) scale(.985);
+  transition:opacity .22s ease,transform .26s ease,visibility .22s;
+  border:1px solid rgba(111,246,255,.22);
+  background:
+    linear-gradient(180deg,rgba(3,15,31,.91),rgba(1,7,17,.95)),
+    radial-gradient(circle at 50% 0,rgba(46,139,255,.14),transparent 54%);
+  backdrop-filter:blur(18px) saturate(1.2);
+  box-shadow:0 26px 80px rgba(0,0,0,.62),0 0 60px rgba(38,154,255,.08),inset 0 0 50px rgba(66,223,255,.025);
+}
+.neural-stage .nc-workspace.visible{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+  transform:none;
+}
+.neural-stage .nc-workspace-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:10px 12px;
+  border-bottom:1px solid rgba(111,246,255,.14);
+}
+.neural-stage .nc-workspace-title small,
+.neural-stage .nc-workspace-title strong{display:block}
+.neural-stage .nc-workspace-title small{color:#4f819d;font:600 6px ui-monospace,monospace;letter-spacing:1.2px}
+.neural-stage .nc-workspace-title strong{margin-top:4px;color:#dffcff;font:800 12px ui-monospace,monospace;letter-spacing:.7px}
+.neural-stage .nc-workspace-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.neural-stage .nc-workspace-grid{
+  min-height:0;
+  display:grid;
+  grid-template-columns:minmax(0,1.7fr) minmax(190px,.55fr);
+  gap:8px;
+  padding:8px;
+}
+.neural-stage .nc-file-content,
+.neural-stage .nc-destination-dock{
+  min-height:0;
+  overflow:auto;
+  border:1px solid rgba(111,246,255,.12);
+  background:rgba(0,6,15,.55);
+}
+.neural-stage .nc-file-content{padding:10px}
+.neural-stage .nc-destination-dock{padding:8px}
+.neural-stage .nc-file-meta{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:6px;
+  margin-bottom:9px;
+}
+.neural-stage .nc-file-meta>div{
+  padding:7px;
+  border:1px solid rgba(111,246,255,.1);
+  background:rgba(4,19,36,.68);
+}
+.neural-stage .nc-file-meta small{display:block;color:#4e7b93;font:600 6px ui-monospace,monospace}
+.neural-stage .nc-file-meta strong{display:block;margin-top:3px;color:#bdf9ff;font:700 8px ui-monospace,monospace;overflow-wrap:anywhere}
+.neural-stage .nc-components{display:grid;gap:7px}
+.neural-stage .nc-component{
+  position:relative;
+  border:1px solid rgba(111,246,255,.14);
+  background:linear-gradient(145deg,rgba(8,30,56,.72),rgba(2,10,23,.86));
+  box-shadow:inset 0 0 20px rgba(58,202,255,.025);
+  cursor:grab;
+  transition:opacity .18s,border-color .18s,transform .18s;
+}
+.neural-stage .nc-component:active{cursor:grabbing}
+.neural-stage .nc-component.dragging{opacity:.38;transform:scale(.98)}
+.neural-stage .nc-component.staged-move{opacity:.38;border-color:rgba(122,99,255,.45)}
+.neural-stage .nc-component-top{
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  padding:6px 8px;
+  border-bottom:1px solid rgba(111,246,255,.08);
+  color:#74e7ff;
+  font:700 7px ui-monospace,monospace;
+}
+.neural-stage .nc-component textarea{
+  display:block;
+  width:100%;
+  min-height:94px;
+  resize:vertical;
+  border:0;
+  outline:0;
+  padding:8px;
+  background:rgba(0,0,0,.16);
+  color:#d9f9ff;
+  font:7.5px/1.5 ui-monospace,monospace;
+}
+.neural-stage .nc-dock-title{margin:0 0 7px;color:#8defff;font:800 8px ui-monospace,monospace;letter-spacing:.7px}
+.neural-stage .nc-dock-note{margin:0 0 8px;color:#567d91;font:600 6.5px/1.5 ui-monospace,monospace}
+.neural-stage .nc-destination-list{display:grid;gap:6px}
+.neural-stage .nc-destination{
+  display:block;
+  width:100%;
+  text-align:left;
+  padding:8px!important;
+  min-height:54px;
+}
+.neural-stage .nc-destination strong,
+.neural-stage .nc-destination small{display:block}
+.neural-stage .nc-destination strong{font-size:8px;color:#c8faff}
+.neural-stage .nc-destination small{margin-top:4px;font-size:6px;color:#557b92;overflow-wrap:anywhere}
+.neural-stage .nc-destination.drop-ready{
+  border-color:rgba(111,246,255,.88)!important;
+  box-shadow:0 0 28px rgba(64,214,255,.26),inset 0 0 22px rgba(69,151,255,.12)!important;
+}
+.neural-stage .nc-transfer-list{display:grid;gap:5px;margin-top:10px;padding-top:8px;border-top:1px solid rgba(111,246,255,.1)}
+.neural-stage .nc-transfer-item{padding:7px;border:1px solid rgba(122,99,255,.24);background:rgba(44,36,91,.18);font:600 6.5px/1.45 ui-monospace,monospace;color:#b8b7ff}
+.neural-stage .nc-core-preview textarea{
+  width:100%;
+  min-height:360px;
+  resize:vertical;
+  border:1px solid rgba(111,246,255,.12);
+  background:rgba(0,4,12,.72);
+  color:#dffcff;
+  padding:10px;
+  outline:0;
+  font:7.5px/1.55 ui-monospace,monospace;
+}
+.neural-stage .nc-workspace-message{
+  padding:9px;
+  border-left:2px solid rgba(111,246,255,.55);
+  background:rgba(7,30,52,.56);
+  color:#79aeca;
+  font:600 7px/1.5 ui-monospace,monospace;
+}
+
+/* The old inspector remains as fallback, but is suppressed while the integrated Neural filespace is active. */
+.neural-stage.neural-files-open .neural-file-inspector-v420{display:none!important}
+
+.neural-stage.nc-speaking .core-orb{animation:nc-speaking-breath .42s ease-in-out infinite alternate!important}
+.neural-stage.nc-speaking .orb-pulse{animation:nc-voice-wave .62s ease-out infinite!important}
+@keyframes nc-speaking-breath{from{filter:brightness(1.05);scale:1}to{filter:brightness(1.35);scale:1.025}}
+@keyframes nc-voice-wave{0%{opacity:.9;transform:scale(.35)}100%{opacity:0;transform:scale(1.85)}}
+
+@media(max-width:1100px){
+  body.ultron-neural-focus .neural-stage{height:auto;min-height:720px}
+  .neural-stage .nc-workspace-grid{grid-template-columns:1fr}
+  .neural-stage .nc-destination-dock{max-height:220px}
+  .neural-stage .nc-file-meta{grid-template-columns:1fr 1fr}
+}
+@media(max-width:650px){
+  body.ultron-neural-focus .neural-stage{min-height:580px}
+  body.ultron-neural-focus .orb-stage{min-height:460px}
+  body.ultron-neural-focus .core-orb{width:min(74vw,360px);height:min(74vw,360px)}
+  .neural-stage .nc-workspace{inset:44px 5px 5px}
+  .neural-stage .nc-workspace-head{align-items:flex-start;flex-direction:column}
+  .neural-stage .nc-workspace-actions{justify-content:flex-start}
+  .neural-stage .nc-file-meta{grid-template-columns:1fr}
+  .neural-stage .nc-enter-controls{bottom:72px}
+}
+@media(prefers-reduced-motion:reduce){
+  .neural-stage .nc-fragment,
+  .neural-stage .stark-file-node,
+  .neural-stage.nc-speaking .core-orb,
+  .neural-stage.nc-speaking .orb-pulse{animation:none!important;transition:none!important}
+}
