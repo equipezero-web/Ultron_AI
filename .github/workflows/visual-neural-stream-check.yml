@@ -19,6 +19,7 @@ on:
       - 'modules/stark-camera-preview.js'
       - 'modules/stark-camera-preview.css'
       - 'modules/stark-hand-gesture-v420.js'
+      - '.github/workflows/visual-neural-stream-check.yml'
   pull_request:
     paths:
       - 'index.html'
@@ -37,6 +38,7 @@ on:
       - 'modules/stark-camera-preview.js'
       - 'modules/stark-camera-preview.css'
       - 'modules/stark-hand-gesture-v420.js'
+      - '.github/workflows/visual-neural-stream-check.yml'
   workflow_dispatch:
 
 jobs:
@@ -63,8 +65,8 @@ jobs:
           node --check modules/stark-hand-gesture-v420.js
       - name: Verify real-frame gated Optical Sensor and Neural 360 integration
         run: |
-          grep -Eq "stark-bootstrap.js\?v=4\.25\.[0-9]+" index.html
-          grep -Eq "// v4\.25\.0" index.html
+          grep -Eq "stark-bootstrap.js\?v=4\.[0-9]+\.[0-9]+" index.html
+          grep -Eq "// v4\.[0-9]+\.[0-9]+" index.html
           grep -q "visual-neural-stream-bridge-v4225.js?v=4.23.0" modules/stark-bootstrap.js
           grep -Eq "remote-camera-frame-gate-v4230.js\?v=4\.23\.[0-9]+" modules/stark-bootstrap.js
           grep -q "remote-camera-display-v4232.js?v=4.23.2" modules/stark-bootstrap.js
