@@ -1,0 +1,65 @@
+name: Voice Communication Check
+
+on:
+  push:
+    branches: [main, "fix/voice-listening-100"]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  voice-communication:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: JavaScript syntax
+        run: |
+          node --check modules/voice-listener.js
+          node --check modules/mobile-mic-client.js
+          node --check modules/voice-fallback.js
+          node --check modules/voice-runtime-policy.js
+
+      - name: Validate runtime policy
+        run: |
+          cp modules/voice-runtime-policy.js /tmp/voice-runtime-policy.mjs
+          node --input-type=module <<'NODE'
+          const policy = await import('file:///tmp/voice-runtime-policy.mjs');
+          const p = policy.VOICE_RUNTIME_POLICY;
+          if (p.commandDedupeMs >= 10000) throw new Error('command dedupe is too aggressive');
+          const d0 = policy.restartDelayFor({ failures: 0, isAndroid: true, now: 1000 });
+          const d3 = policy.restartDelayFor({ failures: 3, isAndroid: true, now: 1000 });
+          if (!(d3 > d0)) throw new Error('restart backoff is not exponential');
+          const burst = policy.nextFailureState([1, 2, 3, 4, 5], 6);
+          if (!burst.burst || burst.blockedUntil <= 6) throw new Error('restart storm guard missing');
+          if (!policy.isLikelySpeechEcho('Sistema de voz operacional', 'Ultron online. Sistema de voz operacional.')) {
+            throw new Error('speech echo detector failed');
+          }
+          NODE
+
+      - name: Validate local microphone state machine
+        run: |
+          grep -q 'ultron:speech-start' modules/voice-listener.js
+          grep -q 'ultron:speech-end' modules/voice-listener.js
+          grep -q 'echoGuardUntil' modules/voice-listener.js
+          grep -q 'registerRecognitionFailure' modules/voice-listener.js
+          grep -q 'MIC EM BACKOFF' modules/voice-listener.js
+          grep -q 'ULTRON_VOICE_INPUT' modules/voice-listener.js
+          grep -q 'ULTRON_VISION_ROUTER' modules/voice-listener.js
+          grep -q 'ULTRON_DEVICES' modules/voice-listener.js
+
+      - name: Validate mobile/local microphone handoff
+        run: |
+          grep -q 'ULTRON_VOICE_INPUT?.suspend' modules/mobile-mic-client.js
+          grep -q 'ULTRON_VOICE_INPUT?.resume' modules/mobile-mic-client.js
+          grep -q 'ULTRON_VOICE_INPUT?.dispatch' modules/mobile-mic-client.js
+          grep -q 'resumeNotebookMicrophone' modules/mobile-mic-client.js
+
+      - name: Validate v4.21 cache markers
+        run: |
+          grep -Eq 'voice-listener\.js\?v=4\.21\.0' index.html
+          grep -Eq 'mobile-mic-client\.js\?v=4\.21\.0' index.html
+          grep -Eq 'VOICE COMMUNICATION.*v4\.21\.0' index.html
