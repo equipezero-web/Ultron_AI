@@ -1,13 +1,19 @@
-const PATCH_KEY = '__ULTRON_REMOTE_CAMERA_WEBRTC_V4222__';
+const PATCH_KEY = '__ULTRON_REMOTE_CAMERA_WEBRTC_V4231__';
 
 if (!window[PATCH_KEY] && window.RTCPeerConnection) {
   window[PATCH_KEY] = true;
+  // Keep the previous capability marker for existing bootstrap/workflow checks.
+  window.__ULTRON_REMOTE_CAMERA_WEBRTC_V4222__ = true;
 
-  const proto = window.RTCPeerConnection.prototype;
+  const NativeRTCPeerConnection = window.RTCPeerConnection;
+  const proto = NativeRTCPeerConnection.prototype;
   const nativeSetLocalDescription = proto.setLocalDescription;
   const nativeSetRemoteDescription = proto.setRemoteDescription;
   const nativeAddIceCandidate = proto.addIceCandidate;
   const ICE_GATHER_TIMEOUT_MS = 12000;
+  const ICE_RECOVERY_GRACE_MS = 6500;
+  const AUTO_RETRY_COOLDOWN_MS = 12000;
+  let lastAutoRetryAt = 0;
 
   function log(message, alert = false) {
     const output = document.getElementById('output-box');
@@ -85,6 +91,129 @@ if (!window[PATCH_KEY] && window.RTCPeerConnection) {
     });
   }
 
+  function remoteCameraFrameReady() {
+    const state = window.ULTRON_REMOTE_CAMERA_FRAME_GATE?.state;
+    const video = document.getElementById('webcam');
+    return Boolean(
+      state?.frameReady ||
+      (video && video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA && video.videoWidth > 0 && video.videoHeight > 0)
+    );
+  }
+
+  function scheduleAutomaticRetry() {
+    const now = Date.now();
+    if (now - lastAutoRetryAt < AUTO_RETRY_COOLDOWN_MS) return;
+    const api = window.ULTRON_MOBILE_CAMERA;
+    const mode = String(api?.state?.mode || '');
+    if (!api?.useBridgeCamera || !mode.startsWith('bridge')) return;
+    lastAutoRetryAt = now;
+    setTimeout(() => {
+      const currentMode = String(window.ULTRON_MOBILE_CAMERA?.state?.mode || '');
+      if (!currentMode.startsWith('bridge')) return;
+      log('A falha ICE persistiu. Iniciando uma nova negociação da câmera automaticamente.');
+      window.ULTRON_MOBILE_CAMERA.useBridgeCamera().catch((error) => {
+        log(`A renegociação automática da câmera falhou: ${error?.message || error}`, true);
+      });
+    }, 900);
+  }
+
+  function patchRemoteCameraPeer(peer) {
+    if (!peer || peer.__ultronIceRecoveryPatched) return peer;
+    peer.__ultronIceRecoveryPatched = true;
+    peer.__ultronRemoteCameraPeer = false;
+
+    const nativeAddTransceiverForPeer = peer.addTransceiver?.bind(peer);
+    if (nativeAddTransceiverForPeer) {
+      peer.addTransceiver = function patchedAddTransceiver(kind, init = {}) {
+        const direction = String(init?.direction || '');
+        if (String(kind) === 'video' && direction === 'recvonly') {
+          peer.__ultronRemoteCameraPeer = true;
+        }
+        return nativeAddTransceiverForPeer(kind, init);
+      };
+    }
+
+    let userConnectionStateHandler = null;
+    let failureTimer = null;
+    let failureStartedAt = 0;
+
+    Object.defineProperty(peer, 'onconnectionstatechange', {
+      configurable: true,
+      enumerable: true,
+      get() {
+        return userConnectionStateHandler;
+      },
+      set(handler) {
+        userConnectionStateHandler = typeof handler === 'function' ? handler : null;
+      }
+    });
+
+    peer.addEventListener('connectionstatechange', (event) => {
+      const state = String(peer.connectionState || 'unknown');
+
+      if (peer.__ultronRemoteCameraPeer && state === 'failed') {
+        if (!failureTimer) {
+          failureStartedAt = performance.now();
+          log(`ICE entrou em FAILED transitório. Aguardando ${Math.round(ICE_RECOVERY_GRACE_MS / 1000)}s antes de encerrar a câmera.`);
+          window.dispatchEvent(new CustomEvent('ultron:remote-camera-ice-recovery', {
+            detail: { state: 'grace', graceMs: ICE_RECOVERY_GRACE_MS }
+          }));
+
+          failureTimer = setTimeout(() => {
+            failureTimer = null;
+            const finalState = String(peer.connectionState || 'unknown');
+            if (finalState !== 'failed') return;
+
+            if (remoteCameraFrameReady()) {
+              log('ICE ainda reporta FAILED, mas há frame remoto decodificado. Mantendo a sessão para evitar corte prematuro.', true);
+              return;
+            }
+
+            log('A falha ICE permaneceu após a janela de recuperação. Encerrando somente esta sessão e renegociando.', true);
+            try {
+              userConnectionStateHandler?.call(peer, new Event('connectionstatechange'));
+            } finally {
+              scheduleAutomaticRetry();
+            }
+          }, ICE_RECOVERY_GRACE_MS);
+        }
+        return;
+      }
+
+      if (peer.__ultronRemoteCameraPeer && failureTimer && state === 'connected') {
+        clearTimeout(failureTimer);
+        failureTimer = null;
+        const elapsed = Math.max(0, Math.round(performance.now() - failureStartedAt));
+        log(`ICE da câmera se recuperou em ${elapsed} ms sem derrubar o stream.`);
+        window.dispatchEvent(new CustomEvent('ultron:remote-camera-ice-recovery', {
+          detail: { state: 'recovered', elapsedMs: elapsed }
+        }));
+      }
+
+      userConnectionStateHandler?.call(peer, event);
+    });
+
+    const nativeClose = peer.close?.bind(peer);
+    if (nativeClose) {
+      peer.close = function patchedClose() {
+        if (failureTimer) {
+          clearTimeout(failureTimer);
+          failureTimer = null;
+        }
+        return nativeClose();
+      };
+    }
+
+    return peer;
+  }
+
+  function UltronRTCPeerConnection(...args) {
+    return patchRemoteCameraPeer(new NativeRTCPeerConnection(...args));
+  }
+  UltronRTCPeerConnection.prototype = NativeRTCPeerConnection.prototype;
+  Object.setPrototypeOf(UltronRTCPeerConnection, NativeRTCPeerConnection);
+  window.RTCPeerConnection = UltronRTCPeerConnection;
+
   proto.setLocalDescription = async function patchedSetLocalDescription(description) {
     const result = await nativeSetLocalDescription.call(this, description);
 
@@ -139,8 +268,10 @@ if (!window[PATCH_KEY] && window.RTCPeerConnection) {
 
   window.dispatchEvent(new CustomEvent('ultron:remote-camera-webrtc-hotfix-ready', {
     detail: {
-      version: '4.22.2',
+      version: '4.23.1',
       iceGatherTimeoutMs: ICE_GATHER_TIMEOUT_MS,
+      iceRecoveryGraceMs: ICE_RECOVERY_GRACE_MS,
+      automaticRetry: true,
       sdpFinalCrlfGuard: true
     }
   }));
