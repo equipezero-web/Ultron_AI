@@ -7,6 +7,7 @@ from typing import Any
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 
 from indexer import DEFAULT_MODEL, UltronLocalIndex
@@ -16,7 +17,7 @@ DATA_ROOT = Path(os.getenv("ULTRON_DATA_ROOT", PROJECT_ROOT / "Ultron_Data")).re
 PORT = int(os.getenv("ULTRON_LOCAL_PORT", "8765"))
 WATCH_INTERVAL = float(os.getenv("ULTRON_LOCAL_WATCH_SECONDS", "8"))
 
-app = FastAPI(title="Ultron Local Core", version="2.0.0")
+app = FastAPI(title="Ultron Local Core", version="2.1.0")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -86,7 +87,7 @@ def health() -> dict[str, Any]:
     return {
         "ok": True,
         "service": "ultron-local-core",
-        "version": "2.0.0",
+        "version": "2.1.0",
         "root": str(DATA_ROOT),
         "model": DEFAULT_MODEL,
         "files": stats["files"],
@@ -98,6 +99,7 @@ def health() -> dict[str, Any]:
             "automaticWatcher": True,
             "activeFileRag": True,
             "safeVersionedExport": True,
+            "rawFilePreview": True,
             "formats": ["text/code", "PDF", "DOCX", "XLSX/XLSM", "CSV/TSV", "PPTX", "image/audio/video metadata"],
         },
         "safety": {
@@ -161,6 +163,27 @@ def preview(file_id: str) -> dict[str, Any]:
         return {"ok": True, **index.preview_file(file_id)}
     except FileNotFoundError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+
+@app.get("/file/{file_id}/raw")
+def raw_file(file_id: str) -> FileResponse:
+    item = index.file_by_id(file_id)
+    if not item:
+        raise HTTPException(status_code=404, detail="Arquivo não encontrado na base indexada.")
+
+    try:
+        path = (DATA_ROOT / str(item.get("path") or "")).resolve()
+        path.relative_to(DATA_ROOT)
+    except (ValueError, OSError) as exc:
+        raise HTTPException(status_code=403, detail="Caminho do arquivo fora da Ultron_Data.") from exc
+
+    if not path.exists() or not path.is_file():
+        raise HTTPException(status_code=404, detail="Arquivo físico não encontrado.")
+
+    return FileResponse(
+        path=str(path),
+        headers={"Cache-Control": "no-store", "Content-Disposition": "inline"},
+    )
 
 
 @app.get("/file/{file_id}/split")
