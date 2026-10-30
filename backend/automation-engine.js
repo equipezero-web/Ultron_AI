@@ -72,8 +72,7 @@ function computeInitialNextRun(kind, schedule = {}) {
     const hour = Math.max(0, Math.min(23, Number(match[1])));
     const minute = Math.max(0, Math.min(59, Number(match[2])));
     const offsetMinutes = Number(schedule.timezoneOffsetMinutes || 0);
-    const utcNowMs = now.getTime();
-    const localNow = new Date(utcNowMs - offsetMinutes * 60000);
+    const localNow = new Date(now.getTime() - offsetMinutes * 60000);
     const localTarget = new Date(localNow);
     localTarget.setUTCHours(hour, minute, 0, 0);
     if (localTarget.getTime() <= localNow.getTime()) localTarget.setUTCDate(localTarget.getUTCDate() + 1);
@@ -184,9 +183,8 @@ export async function deleteAutomation(env, operatorId, id) {
   return { ok: Boolean(result?.meta?.changes) };
 }
 
-async function executeAutomationRow(env, row) {
+async function dispatchAutomation(env, row, { nextRunAt = undefined, disableAfterRun = false } = {}) {
   const payload = parseJson(row.payload_json);
-  const schedule = parseJson(row.schedule_json);
   const result = await enqueueControlCommand(env, {
     operatorId: row.operator_id,
     deviceId: row.device_id || "",
@@ -201,19 +199,51 @@ async function executeAutomationRow(env, row) {
      VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)`
   ).bind(runId, row.id, row.operator_id, result?.commandId || null, result?.ok ? "queued" : "failed", safeJson(result)).run();
 
-  const nextRunAt = computeNextAfterRun(row.schedule_kind, schedule, row.next_run_at);
-  await env.ULTRON_DB.prepare(
-    `UPDATE device_automations
-        SET last_run_at = CURRENT_TIMESTAMP,
-            last_status = ?,
-            last_command_id = ?,
-            next_run_at = ?,
-            enabled = CASE WHEN schedule_kind = 'once' THEN 0 ELSE enabled END,
-            updated_at = CURRENT_TIMESTAMP
-      WHERE id = ?`
-  ).bind(result?.ok ? "queued" : "failed", result?.commandId || null, nextRunAt, row.id).run();
+  if (nextRunAt !== undefined) {
+    await env.ULTRON_DB.prepare(
+      `UPDATE device_automations
+          SET last_run_at = CURRENT_TIMESTAMP,
+              last_status = ?,
+              last_command_id = ?,
+              next_run_at = ?,
+              enabled = CASE WHEN ? = 1 THEN 0 ELSE enabled END,
+              updated_at = CURRENT_TIMESTAMP
+        WHERE id = ?`
+    ).bind(result?.ok ? "queued" : "failed", result?.commandId || null, nextRunAt, disableAfterRun ? 1 : 0, row.id).run();
+  } else {
+    await env.ULTRON_DB.prepare(
+      `UPDATE device_automations
+          SET last_run_at = CURRENT_TIMESTAMP,
+              last_status = ?,
+              last_command_id = ?,
+              updated_at = CURRENT_TIMESTAMP
+        WHERE id = ?`
+    ).bind(result?.ok ? "queued" : "failed", result?.commandId || null, row.id).run();
+  }
 
-  return { automationId: row.id, runId, ...result, nextRunAt };
+  return { automationId: row.id, runId, ...result, nextRunAt: nextRunAt === undefined ? row.next_run_at : nextRunAt };
+}
+
+async function claimDueAutomation(env, row) {
+  const schedule = parseJson(row.schedule_json);
+  const nextRunAt = computeNextAfterRun(row.schedule_kind, schedule, row.next_run_at);
+  const disableAfterRun = row.schedule_kind === "once";
+
+  const claimed = await env.ULTRON_DB.prepare(
+    `UPDATE device_automations
+        SET next_run_at = ?,
+            enabled = CASE WHEN ? = 1 THEN 0 ELSE enabled END,
+            last_status = 'dispatching',
+            updated_at = CURRENT_TIMESTAMP
+      WHERE id = ?
+        AND operator_id = ?
+        AND enabled = 1
+        AND next_run_at = ?
+        AND datetime(next_run_at) <= CURRENT_TIMESTAMP`
+  ).bind(nextRunAt, disableAfterRun ? 1 : 0, row.id, row.operator_id, row.next_run_at).run();
+
+  if (!claimed?.meta?.changes) return null;
+  return { nextRunAt, disableAfterRun };
 }
 
 export async function runAutomationNow(env, operatorId, id) {
@@ -222,7 +252,7 @@ export async function runAutomationNow(env, operatorId, id) {
     `SELECT * FROM device_automations WHERE id = ? AND operator_id = ? LIMIT 1`
   ).bind(id, operatorId).first();
   if (!row) return { ok: false, error: "Automação não encontrada." };
-  return executeAutomationRow(env, row);
+  return dispatchAutomation(env, row);
 }
 
 export async function processDueAutomations(env, { limit = 30 } = {}) {
@@ -238,8 +268,13 @@ export async function processDueAutomations(env, { limit = 30 } = {}) {
 
   const results = [];
   for (const row of rows?.results || []) {
-    try { results.push(await executeAutomationRow(env, row)); }
-    catch (error) { results.push({ automationId: row.id, ok: false, error: error?.message || String(error) }); }
+    try {
+      const claim = await claimDueAutomation(env, row);
+      if (!claim) continue;
+      results.push(await dispatchAutomation(env, row, claim));
+    } catch (error) {
+      results.push({ automationId: row.id, ok: false, error: error?.message || String(error) });
+    }
   }
   return { ok: true, processed: results.length, results };
 }
@@ -247,10 +282,11 @@ export async function processDueAutomations(env, { limit = 30 } = {}) {
 export function automationHealth() {
   return {
     ready: true,
-    version: "1.0",
+    version: "1.1",
     persistent: true,
     scheduler: "cloudflare-cron-1m",
     schedules: ["once", "interval", "daily"],
-    runNow: true
+    runNow: true,
+    duplicateDispatchGuard: true
   };
 }
