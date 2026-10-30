@@ -59,6 +59,45 @@ APP_ALIASES: dict[str, list[str]] = {
 }
 
 
+def _browser_install_candidates(executable: str) -> list[str]:
+    candidates: list[str] = []
+    local = os.environ.get("LOCALAPPDATA")
+    program_files = os.environ.get("PROGRAMFILES")
+    program_files_x86 = os.environ.get("PROGRAMFILES(X86)")
+
+    if executable.lower() == "chrome.exe":
+        for root in (local, program_files, program_files_x86):
+            if root:
+                candidates.append(str(Path(root) / "Google" / "Chrome" / "Application" / "chrome.exe"))
+    elif executable.lower() == "msedge.exe":
+        for root in (program_files_x86, program_files, local):
+            if root:
+                candidates.append(str(Path(root) / "Microsoft" / "Edge" / "Application" / "msedge.exe"))
+    elif executable.lower() == "wt.exe":
+        local_app_data = os.environ.get("LOCALAPPDATA")
+        if local_app_data:
+            candidates.append(str(Path(local_app_data) / "Microsoft" / "WindowsApps" / "wt.exe"))
+
+    return candidates
+
+
+def _resolve_allowed_app(candidates: list[str]) -> str:
+    expanded: list[str] = []
+    for candidate in candidates:
+        expanded.append(candidate)
+        expanded.extend(_browser_install_candidates(candidate))
+
+    for candidate in expanded:
+        direct = Path(os.path.expandvars(candidate))
+        if direct.is_absolute() and direct.exists() and direct.is_file():
+            return str(direct)
+        found = shutil.which(candidate)
+        if found:
+            return found
+
+    raise FileNotFoundError("Aplicativo autorizado, mas não encontrado neste Windows.")
+
+
 def _json_request(url: str, payload: dict[str, Any], timeout: float = 12.0) -> dict[str, Any]:
     body = json.dumps(payload).encode("utf-8")
     request = urllib.request.Request(
@@ -257,11 +296,9 @@ class DesktopBridge:
             candidates = APP_ALIASES.get(alias)
             if not candidates:
                 raise ValueError("Aplicativo não autorizado pelo Desktop Bridge.")
-            executable = next((shutil.which(candidate) for candidate in candidates if shutil.which(candidate)), None)
-            if not executable:
-                executable = candidates[0]
+            executable = _resolve_allowed_app(candidates)
             subprocess.Popen([executable], close_fds=True)
-            return {"ok": True, "app": alias}
+            return {"ok": True, "app": alias, "executable": Path(executable).name}
 
         if command in VK:
             key = VK[command]
