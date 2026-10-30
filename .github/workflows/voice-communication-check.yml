@@ -58,8 +58,8 @@ jobs:
           grep -q 'ULTRON_VOICE_INPUT?.dispatch' modules/mobile-mic-client.js
           grep -q 'resumeNotebookMicrophone' modules/mobile-mic-client.js
 
-      - name: Validate v4.21 cache markers
+      - name: Validate voice v4.21 markers inside current release
         run: |
           grep -Eq 'voice-listener\.js\?v=4\.21\.0' index.html
           grep -Eq 'mobile-mic-client\.js\?v=4\.21\.0' index.html
-          grep -Eq 'VOICE COMMUNICATION.*v4\.21\.0' index.html
+          grep -Eq 'ULTRON AI // .*VOICE.*// v4\.[0-9]+\.[0-9]+' index.html
