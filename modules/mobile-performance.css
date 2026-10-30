@@ -38,6 +38,15 @@ html[data-ultron-performance="lite"] .core-orb,
 html[data-ultron-performance="balanced"] .orbit,
 html[data-ultron-performance="lite"] .orbit{backface-visibility:hidden;transform-style:preserve-3d}
 
+html[data-ultron-performance="balanced"] .neural-gesture-v420 .stark-vortex,
+html[data-ultron-performance="balanced"] .neural-gesture-v420.stark-panel-open .stark-vortex{transition:transform .065s linear!important}
+
+html[data-ultron-performance="lite"] .neural-gesture-v420 .stark-vortex,
+html[data-ultron-performance="lite"] .neural-gesture-v420.stark-panel-open .stark-vortex{transition:transform .09s linear!important}
+
+html[data-ultron-performance="balanced"] .stark-hand-cursor{transition:opacity .12s ease,transform .085s linear,border-color .1s ease,box-shadow .12s ease!important}
+html[data-ultron-performance="lite"] .stark-hand-cursor{transition:opacity .12s ease,transform .11s linear,border-color .1s ease!important;box-shadow:0 0 9px rgba(255,255,255,.58),0 0 18px rgba(0,240,255,.55)!important}
+
 html[data-ultron-performance="balanced"] .neural-stage.is-speaking .core-orb{
   animation-duration:1.15s!important;
   box-shadow:0 0 18px rgba(255,255,255,.7),0 0 42px rgba(103,232,249,.52),inset 0 0 34px rgba(103,232,249,.3)!important;
