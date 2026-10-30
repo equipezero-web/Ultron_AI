@@ -10,8 +10,8 @@ android {
         applicationId = "com.ultron.bridge"
         minSdk = 26
         targetSdk = 36
-        versionCode = 4
-        versionName = "0.3.1"
+        versionCode = 5
+        versionName = "0.4.0"
     }
 
     buildTypes {
@@ -28,4 +28,5 @@ android {
 
 dependencies {
     implementation("org.java-websocket:Java-WebSocket:1.5.7")
+    implementation("io.github.webrtc-sdk:android:150.7871.04")
 }
