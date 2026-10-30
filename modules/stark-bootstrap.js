@@ -1,4 +1,4 @@
-const BOOT_KEY = '__ULTRON_STARK_BOOTSTRAP_V4240__';
+const BOOT_KEY = '__ULTRON_STARK_BOOTSTRAP_V4242__';
 
 if (!window[BOOT_KEY]) {
   window[BOOT_KEY] = true;
@@ -54,7 +54,7 @@ if (!window[BOOT_KEY]) {
   await import('./local-files-ai-bridge.js?v=4.14.0');
   await import('./stark-file-mesh.js?v=4.20.0');
   await import('./file-inspector-v420.js?v=4.20.0');
-  await import('./remote-camera-webrtc-hotfix-v4221.js?v=4.23.1');
+  await import('./remote-camera-webrtc-hotfix-v4221.js?v=4.24.2');
   await import('./mobile-camera-source.js?v=4.23.2');
   await import('./stark-hand-gesture-v420.js?v=4.20.0');
   await import('./stark-camera-preview.js?v=4.23.2');
@@ -87,7 +87,7 @@ if (!window[BOOT_KEY]) {
 
   window.dispatchEvent(new CustomEvent('ultron:stark-bootstrap-ready', {
     detail: {
-      version: '4.24.0',
+      version: '4.24.2',
       performanceMode: window.ULTRON_PERFORMANCE?.mode || 'full',
       starkCore: Boolean(window.ULTRON_STARK_CORE),
       innerMesh: Boolean(window.ULTRON_STARK_MESH),
@@ -114,7 +114,7 @@ if (!window[BOOT_KEY]) {
       mobileCamera: Boolean(window.ULTRON_MOBILE_CAMERA),
       mobileCameraBridge: Boolean(window.ULTRON_MOBILE_CAMERA?.useBridgeCamera),
       mobileSensors: Boolean(window.ULTRON_MOBILE_SENSORS),
-      remoteCameraWebRtcHotfix: Boolean(window.__ULTRON_REMOTE_CAMERA_WEBRTC_V4231__),
+      remoteCameraWebRtcHotfix: Boolean(window.__ULTRON_REMOTE_CAMERA_WEBRTC_V4242__),
       cameraDiagnostics: Boolean(window.ULTRON_CAMERA_RUNTIME?.diagnostics),
       zoomDiagnostics: Boolean(window.ULTRON_ZOOM_DIAGNOSTICS),
       productionBridge: Boolean(window.ULTRON_STARK_PRODUCTION),

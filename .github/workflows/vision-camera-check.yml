@@ -178,7 +178,7 @@ jobs:
           grep -q "stopRequested = false" modules/camera-external-stream-v4223.js
           grep -q "ULTRON_CAMERA_PREVIEW?.sync" modules/camera-external-stream-v4223.js
           grep -Eq "mobile-camera-source.js\?v=4\.[0-9]+\.[0-9]+" modules/stark-bootstrap.js
-          grep -Eq "remote-camera-webrtc-hotfix-v4221.js\?v=4\.23\.[0-9]+" modules/stark-bootstrap.js
+          grep -Eq "remote-camera-webrtc-hotfix-v4221.js\?v=4\.(23|24)\.[0-9]+" modules/stark-bootstrap.js
           grep -Eq "remote-camera-frame-gate-v4230.js\?v=4\.23\.[0-9]+" modules/stark-bootstrap.js
           grep -q "remote-camera-display-v4232.js?v=4.23.2" modules/stark-bootstrap.js
           grep -q "remote-camera-mode-v4232.js?v=4.23.2" modules/stark-bootstrap.js
@@ -189,6 +189,9 @@ jobs:
           grep -q "videoWidth" modules/remote-camera-frame-gate-v4230.js
           grep -q "videoHeight" modules/remote-camera-frame-gate-v4230.js
           grep -q "sdpFinalCrlfGuard" modules/remote-camera-webrtc-hotfix-v4221.js
+          grep -q "ULTRON_REMOTE_CAMERA_ICE" modules/remote-camera-webrtc-hotfix-v4221.js
+          grep -q "icecandidateerror" modules/remote-camera-webrtc-hotfix-v4221.js
+          grep -q "stun.cloudflare.com:3478" modules/remote-camera-webrtc-hotfix-v4221.js
           grep -q "normalizeWebRtcSdp" backend/microphone-bridge.js
           grep -q "const sdp = normalizeWebRtcSdp(source.sdp)" backend/microphone-bridge.js
           grep -q "ULTRON_MOBILE_CAMERA" modules/mobile-camera-source.js
