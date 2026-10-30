@@ -19,25 +19,76 @@ function detectProfile() {
 
 const PROFILES = {
   full: {
-    mode: 'full', handInferenceMs: 78,
-    motionWidth: 480, motionHeight: 270, motionEveryFrames: 2,
+    mode: 'full',
+    handInferenceMs: 72,
+    pointerSmoothing: 0.46,
+    pointerFastSmoothing: 0.78,
+    pointerDeadzonePx: 0.8,
+    pinchEnterRatio: 0.37,
+    pinchExitRatio: 0.44,
+    activationStableFrames: 2,
+    motionWidth: 512,
+    motionHeight: 288,
+    motionEveryFrames: 2,
+    motionStride: 28,
+    motionPixelDelta: 88,
+    motionSmoothing: 0.34,
     telemetryIntervalMs: 15000,
-    cameraWidth: 1280, cameraHeight: 720, cameraFps: 24,
-    maxFileNodes: 18
+    sensorIntervalMs: 32,
+    sensorSmoothing: 0.26,
+    cameraWidth: 1920,
+    cameraHeight: 1080,
+    cameraFps: 24,
+    maxFileNodes: 18,
+    neuralVisualFps: 60
   },
   balanced: {
-    mode: 'balanced', handInferenceMs: 105,
-    motionWidth: 224, motionHeight: 168, motionEveryFrames: 4,
+    mode: 'balanced',
+    handInferenceMs: 92,
+    pointerSmoothing: 0.38,
+    pointerFastSmoothing: 0.68,
+    pointerDeadzonePx: 1.25,
+    pinchEnterRatio: 0.36,
+    pinchExitRatio: 0.45,
+    activationStableFrames: 2,
+    motionWidth: 256,
+    motionHeight: 144,
+    motionEveryFrames: 3,
+    motionStride: 40,
+    motionPixelDelta: 92,
+    motionSmoothing: 0.28,
     telemetryIntervalMs: 30000,
-    cameraWidth: 960, cameraHeight: 540, cameraFps: 24,
-    maxFileNodes: 12
+    sensorIntervalMs: 45,
+    sensorSmoothing: 0.22,
+    cameraWidth: 1280,
+    cameraHeight: 720,
+    cameraFps: 24,
+    maxFileNodes: 12,
+    neuralVisualFps: 40
   },
   lite: {
-    mode: 'lite', handInferenceMs: 125,
-    motionWidth: 160, motionHeight: 120, motionEveryFrames: 5,
+    mode: 'lite',
+    handInferenceMs: 112,
+    pointerSmoothing: 0.32,
+    pointerFastSmoothing: 0.58,
+    pointerDeadzonePx: 1.8,
+    pinchEnterRatio: 0.35,
+    pinchExitRatio: 0.46,
+    activationStableFrames: 3,
+    motionWidth: 192,
+    motionHeight: 108,
+    motionEveryFrames: 4,
+    motionStride: 56,
+    motionPixelDelta: 96,
+    motionSmoothing: 0.24,
     telemetryIntervalMs: 45000,
-    cameraWidth: 640, cameraHeight: 480, cameraFps: 20,
-    maxFileNodes: 8
+    sensorIntervalMs: 66,
+    sensorSmoothing: 0.18,
+    cameraWidth: 1280,
+    cameraHeight: 720,
+    cameraFps: 18,
+    maxFileNodes: 8,
+    neuralVisualFps: 30
   }
 };
 
@@ -51,8 +102,18 @@ document.addEventListener('visibilitychange', () => {
   document.documentElement.dataset.ultronHidden = document.hidden ? 'true' : 'false';
 });
 
-async function constrainCamera(stream) {
-  if (!stream || mode === 'full') return;
+function isRemoteStream(stream, detail = {}) {
+  if (detail?.remote) return true;
+  const source = String(detail?.source || '').toUpperCase();
+  if (source.includes('BRIDGE') || source.includes('WEBRTC')) return true;
+  const track = stream?.getVideoTracks?.()[0];
+  if (!track) return false;
+  const settings = track.getSettings?.() || {};
+  return !settings.deviceId;
+}
+
+async function constrainCamera(stream, detail = {}) {
+  if (!stream || isRemoteStream(stream, detail)) return;
   const track = stream.getVideoTracks?.()[0];
   if (!track?.applyConstraints) return;
   try {
@@ -67,7 +128,9 @@ async function constrainCamera(stream) {
 }
 
 window.addEventListener('ultron:camera-stream', (event) => {
-  if (event.detail?.active && event.detail?.stream) constrainCamera(event.detail.stream);
+  if (event.detail?.active && event.detail?.stream) {
+    constrainCamera(event.detail.stream, event.detail).catch(() => {});
+  }
 });
 
 function apply(nextMode = 'auto') {
@@ -88,7 +151,8 @@ window.ULTRON_PERFORMANCE = {
   get mode() { return mode; },
   get profile() { return { ...profile }; },
   setMode: apply,
-  isMobile: mode !== 'full'
+  isMobile: mode !== 'full',
+  get version() { return '4.24.0'; }
 };
 
-window.dispatchEvent(new CustomEvent('ultron:performance-ready', { detail: { ...profile } }));
+window.dispatchEvent(new CustomEvent('ultron:performance-ready', { detail: { ...profile, version: '4.24.0' } }));

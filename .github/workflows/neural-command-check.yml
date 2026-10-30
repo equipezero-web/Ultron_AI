@@ -14,6 +14,9 @@ on:
       - 'modules/file-inspector-v420.js'
       - 'modules/neural-file-visualizer.js'
       - 'modules/mobile-camera-source.js'
+      - 'modules/mobile-performance.js'
+      - 'modules/mobile-performance.css'
+      - 'modules/mobile-sensor-fusion-v4240.js'
       - 'modules/camera-hardening-v422.js'
       - 'modules/camera-external-stream-v4223.js'
       - 'modules/remote-camera-frame-gate-v4230.js'
@@ -32,6 +35,9 @@ on:
       - 'modules/file-inspector-v420.js'
       - 'modules/neural-file-visualizer.js'
       - 'modules/mobile-camera-source.js'
+      - 'modules/mobile-performance.js'
+      - 'modules/mobile-performance.css'
+      - 'modules/mobile-sensor-fusion-v4240.js'
       - 'modules/camera-hardening-v422.js'
       - 'modules/camera-external-stream-v4223.js'
       - 'modules/remote-camera-frame-gate-v4230.js'
@@ -62,6 +68,8 @@ jobs:
           node --check modules/file-inspector-v420.js
           node --check modules/neural-file-visualizer.js
           node --check modules/mobile-camera-source.js
+          node --check modules/mobile-performance.js
+          node --check modules/mobile-sensor-fusion-v4240.js
           node --check modules/camera-hardening-v422.js
           node --check modules/camera-external-stream-v4223.js
           node --check modules/remote-camera-frame-gate-v4230.js
@@ -137,12 +145,15 @@ jobs:
       - name: Integration markers
         run: |
           grep -Eq "stark-bootstrap.js\?v=4\.[0-9]+\.[0-9]+" index.html
-          grep -Eq 'ULTRON AI // .*NEURAL GESTURE.*// v4\.[0-9]+\.[0-9]+' index.html
+          grep -Eq 'ULTRON AI // .*// v4\.[0-9]+\.[0-9]+' index.html
           grep -q "stark-hand-gesture-v420.js?v=4.20.0" modules/stark-bootstrap.js
           grep -q "palm-matrix-v420.js?v=4.20.0" modules/stark-bootstrap.js
           grep -q "file-inspector-v420.js?v=4.20.0" modules/stark-bootstrap.js
           grep -Eq "mobile-camera-source.js\?v=4\.[0-9]+\.[0-9]+" modules/stark-bootstrap.js
           grep -q "camera-external-stream-v4223.js?v=4.22.3" modules/stark-bootstrap.js
-          grep -q "remote-camera-frame-gate-v4230.js?v=4.23.0" modules/stark-bootstrap.js
+          grep -Eq "remote-camera-frame-gate-v4230.js\?v=4\.23\.[0-9]+" modules/stark-bootstrap.js
+          grep -q "mobile-performance.js?v=4.24.0" modules/stark-bootstrap.js
+          grep -q "mobile-sensor-fusion-v4240.js?v=4.24.0" modules/stark-bootstrap.js
+          grep -q "ULTRON_MOBILE_SENSORS" modules/mobile-sensor-fusion-v4240.js
           grep -q "handControlModel" modules/stark-bootstrap.js
-          echo 'Neural Gesture + Remote Camera real-frame integration markers OK'
+          echo 'Neural Gesture + Remote Camera + Mobile Performance integration markers OK'

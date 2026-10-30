@@ -1,15 +1,17 @@
 html[data-ultron-performance="balanced"] .hud-glow,
-html[data-ultron-performance="lite"] .hud-glow{filter:none!important;opacity:.045!important;transform:scale(.72)}
+html[data-ultron-performance="lite"] .hud-glow{filter:none!important;opacity:.04!important;transform:scale(.72)}
 
 html[data-ultron-performance="balanced"] .hud-frame,
 html[data-ultron-performance="balanced"] .hud-panel,
 html[data-ultron-performance="lite"] .hud-frame,
-html[data-ultron-performance="lite"] .hud-panel{box-shadow:0 0 14px rgba(34,211,238,.055),inset 0 0 16px rgba(34,211,238,.015)!important}
+html[data-ultron-performance="lite"] .hud-panel{box-shadow:0 0 12px rgba(34,211,238,.05),inset 0 0 12px rgba(34,211,238,.012)!important}
 
 html[data-ultron-performance="balanced"] .stark-holo-panel,
 html[data-ultron-performance="balanced"] .stark-functional-node,
+html[data-ultron-performance="balanced"] .neural-context-card,
 html[data-ultron-performance="lite"] .stark-holo-panel,
-html[data-ultron-performance="lite"] .stark-functional-node{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+html[data-ultron-performance="lite"] .stark-functional-node,
+html[data-ultron-performance="lite"] .neural-context-card{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
 
 html[data-ultron-performance="balanced"] .voice-wave i{animation-duration:1.8s!important;box-shadow:none!important}
 html[data-ultron-performance="balanced"] .brand-ring,
@@ -17,6 +19,44 @@ html[data-ultron-performance="balanced"] .mic-orbit::before,
 html[data-ultron-performance="balanced"] .mic-orbit::after,
 html[data-ultron-performance="balanced"] .stark-vortex-ring,
 html[data-ultron-performance="balanced"] .stark-functional-node::before{animation-duration:12s!important}
+
+html[data-ultron-performance="balanced"] .neural-visual-image,
+html[data-ultron-performance="lite"] .neural-visual-image{filter:none!important;transition:opacity .45s ease!important}
+
+html[data-ultron-performance="balanced"] .neural-stage,
+html[data-ultron-performance="lite"] .neural-stage{contain:layout paint style}
+
+html[data-ultron-performance="balanced"] .orb-stage,
+html[data-ultron-performance="lite"] .orb-stage{
+  transform:translate3d(var(--ultron-tilt-x,0px),var(--ultron-tilt-y,0px),0);
+  transition:transform 120ms linear;
+  backface-visibility:hidden;
+}
+
+html[data-ultron-performance="balanced"] .core-orb,
+html[data-ultron-performance="lite"] .core-orb,
+html[data-ultron-performance="balanced"] .orbit,
+html[data-ultron-performance="lite"] .orbit{backface-visibility:hidden;transform-style:preserve-3d}
+
+html[data-ultron-performance="balanced"] .neural-gesture-v420 .stark-vortex,
+html[data-ultron-performance="balanced"] .neural-gesture-v420.stark-panel-open .stark-vortex{transition:transform .065s linear!important}
+
+html[data-ultron-performance="lite"] .neural-gesture-v420 .stark-vortex,
+html[data-ultron-performance="lite"] .neural-gesture-v420.stark-panel-open .stark-vortex{transition:transform .09s linear!important}
+
+html[data-ultron-performance="balanced"] .stark-hand-cursor{transition:opacity .12s ease,transform .085s linear,border-color .1s ease,box-shadow .12s ease!important}
+html[data-ultron-performance="lite"] .stark-hand-cursor{transition:opacity .12s ease,transform .11s linear,border-color .1s ease!important;box-shadow:0 0 9px rgba(255,255,255,.58),0 0 18px rgba(0,240,255,.55)!important}
+
+html[data-ultron-performance="balanced"] .neural-stage.is-speaking .core-orb{
+  animation-duration:1.15s!important;
+  box-shadow:0 0 18px rgba(255,255,255,.7),0 0 42px rgba(103,232,249,.52),inset 0 0 34px rgba(103,232,249,.3)!important;
+  filter:none!important
+}
+
+html[data-ultron-performance="balanced"] .neural-stage.is-speaking .orb-heart{animation-duration:.72s!important}
+html[data-ultron-performance="balanced"] .neural-stage.is-speaking .orb-pulse{animation-duration:1.5s!important}
+html[data-ultron-performance="balanced"] .neural-stage.is-speaking .core-pedestal span{animation-duration:1s!important}
+html[data-ultron-performance="balanced"] .neural-stage.is-speaking .orb-stage:before{animation-duration:1.4s!important}
 
 html[data-ultron-performance="lite"] .scanlines,
 html[data-ultron-performance="lite"] .hud-glow,
@@ -32,27 +72,53 @@ html[data-ultron-performance="lite"] .hud-footer i,
 html[data-ultron-performance="lite"] .stage-status i,
 html[data-ultron-performance="lite"] .stark-vortex-ring,
 html[data-ultron-performance="lite"] .stark-functional-node::before,
-html[data-ultron-performance="lite"] .orb-halo,
-html[data-ultron-performance="lite"] .orbit{animation:none!important}
+html[data-ultron-performance="lite"] .orb-halo.halo-3,
+html[data-ultron-performance="lite"] .orbit-c{animation:none!important}
 
 html[data-ultron-performance="lite"] .stark-vortex-ring.r3,
 html[data-ultron-performance="lite"] .orb-halo.halo-3,
 html[data-ultron-performance="lite"] .orbit-c{display:none!important}
 
-html[data-ultron-performance="lite"] .core-orb{box-shadow:0 0 12px rgba(255,255,255,.7),0 0 28px rgba(103,232,249,.38),inset 0 0 24px rgba(103,232,249,.18)!important;animation-duration:5.5s!important}
+html[data-ultron-performance="lite"] .core-orb{
+  box-shadow:0 0 10px rgba(255,255,255,.58),0 0 24px rgba(103,232,249,.30),inset 0 0 20px rgba(103,232,249,.14)!important;
+  animation-duration:5.8s!important
+}
+
+html[data-ultron-performance="lite"] .neural-stage.is-speaking .core-orb{
+  animation-duration:1.35s!important;
+  box-shadow:0 0 12px rgba(255,255,255,.62),0 0 28px rgba(103,232,249,.34),inset 0 0 22px rgba(103,232,249,.16)!important;
+  filter:none!important
+}
+
+html[data-ultron-performance="lite"] .neural-stage.is-speaking .orb-heart{animation-duration:.9s!important}
+html[data-ultron-performance="lite"] .neural-stage.is-speaking .orb-pulse{animation:none!important}
+html[data-ultron-performance="lite"] .neural-stage.is-speaking .core-pedestal span{animation:none!important;box-shadow:0 0 18px rgba(103,232,249,.55)!important}
+html[data-ultron-performance="lite"] .neural-stage.is-speaking .orb-stage:before{animation:none!important}
 
 html[data-ultron-performance="lite"] .stark-functional-node,
-html[data-ultron-performance="lite"] .stark-functional-node.hand-target{box-shadow:0 0 8px rgba(0,240,255,.55),inset 0 0 6px rgba(0,240,255,.08)!important}
+html[data-ultron-performance="lite"] .stark-functional-node.hand-target{box-shadow:0 0 7px rgba(0,240,255,.45),inset 0 0 5px rgba(0,240,255,.06)!important}
 
 html[data-ultron-performance="lite"] .stark-ripple,
-html[data-ultron-performance="lite"] .scanner{animation-duration:1.8s!important}
+html[data-ultron-performance="lite"] .scanner{animation-duration:2.1s!important}
 
 html[data-ultron-hidden="true"] *,
 html[data-ultron-hidden="true"] *::before,
 html[data-ultron-hidden="true"] *::after{animation-play-state:paused!important}
 
+@media (pointer:coarse){
+  .hud-button:hover:not(:disabled),
+  .neural-context-card:hover{transform:none!important;box-shadow:none}
+}
+
 @media (max-width:650px){
   html[data-ultron-performance="balanced"] .neural-stage,
-  html[data-ultron-performance="lite"] .neural-stage{min-height:460px}
+  html[data-ultron-performance="lite"] .neural-stage{min-height:450px}
+
+  html[data-ultron-performance="balanced"] .orb-halo.halo-3,
+  html[data-ultron-performance="balanced"] .orbit-c{opacity:.35}
+
   html[data-ultron-performance="lite"] .stark-holo-panel{background:rgba(1,8,17,.96)!important}
+  html[data-ultron-performance="lite"] .neural-context-card{min-width:190px!important}
+  html[data-ultron-performance="balanced"] .neural-caption,
+  html[data-ultron-performance="lite"] .neural-caption{text-shadow:0 1px 8px rgba(0,0,0,.9)!important}
 }
