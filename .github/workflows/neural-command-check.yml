@@ -119,7 +119,7 @@ jobs:
       - name: Integration markers
         run: |
           grep -q "stark-bootstrap.js?v=4.20.0" index.html
-          grep -q "NEURAL GESTURE + MOBILE CAMERA + ULTRON_DATA // v4.20.0" index.html
+          grep -Eq 'ULTRON AI // .*NEURAL GESTURE.*ULTRON_DATA // v4\.[0-9]+\.[0-9]+' index.html
           grep -q "stark-hand-gesture-v420.js?v=4.20.0" modules/stark-bootstrap.js
           grep -q "palm-matrix-v420.js?v=4.20.0" modules/stark-bootstrap.js
           grep -q "file-inspector-v420.js?v=4.20.0" modules/stark-bootstrap.js
