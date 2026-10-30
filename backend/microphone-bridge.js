@@ -4,7 +4,10 @@ let eventSchemaReady = false;
 
 const ALLOWED_EVENT_TYPES = new Set([
   "speech.transcript",
-  "microphone.status"
+  "microphone.status",
+  "camera.status",
+  "camera.webrtc.answer",
+  "camera.webrtc.ice"
 ]);
 
 function safeJson(value, fallback = {}) {
@@ -94,10 +97,32 @@ function sanitizePayload(eventType, payload) {
     };
   }
 
-  if (eventType === "microphone.status") {
+  if (eventType === "microphone.status" || eventType === "camera.status") {
     return {
       state: String(source.state || "unknown").slice(0, 40),
-      detail: String(source.detail || "").slice(0, 240)
+      detail: String(source.detail || "").slice(0, 300),
+      sessionId: String(source.sessionId || "").slice(0, 100)
+    };
+  }
+
+  if (eventType === "camera.webrtc.answer") {
+    const sdp = String(source.sdp || "").trim().slice(0, 10000);
+    if (!sdp) return null;
+    return {
+      type: "answer",
+      sdp,
+      sessionId: String(source.sessionId || "").slice(0, 100)
+    };
+  }
+
+  if (eventType === "camera.webrtc.ice") {
+    const candidate = String(source.candidate || "").trim().slice(0, 2400);
+    if (!candidate) return null;
+    return {
+      candidate,
+      sdpMid: source.sdpMid == null ? null : String(source.sdpMid).slice(0, 120),
+      sdpMLineIndex: Math.max(0, Math.min(64, Number(source.sdpMLineIndex) || 0)),
+      sessionId: String(source.sessionId || "").slice(0, 100)
     };
   }
 
@@ -144,7 +169,6 @@ export async function submitDeviceEvent(
     `UPDATE devices SET last_seen_at = CURRENT_TIMESTAMP WHERE id = ?`
   ).bind(device.id).run();
 
-  // Limpeza simples para evitar crescimento indefinido da fila.
   await env.ULTRON_DB.prepare(
     `DELETE FROM device_events
       WHERE created_at < datetime('now', '-1 day')`
@@ -153,15 +177,16 @@ export async function submitDeviceEvent(
   return { ok: true, eventId };
 }
 
-export async function pollOperatorEvents(
-  env,
-  { operatorId, limit = 20 } = {}
-) {
+async function pollEventsByChannel(env, { operatorId, limit = 20, channel = "microphone" } = {}) {
   if (!operatorId || !(await ensureEventSchema(env))) {
     return { ok: false, error: "Identidade do operador ausente ou bridge indisponível." };
   }
 
   const safeLimit = Math.max(1, Math.min(50, Number(limit) || 20));
+  const cameraChannel = channel === "camera";
+  const typeFilter = cameraChannel
+    ? `e.event_type IN ('camera.status', 'camera.webrtc.answer', 'camera.webrtc.ice')`
+    : `e.event_type IN ('speech.transcript', 'microphone.status')`;
 
   const result = await env.ULTRON_DB.prepare(
     `SELECT e.id,
@@ -174,6 +199,7 @@ export async function pollOperatorEvents(
        LEFT JOIN devices d ON d.id = e.device_id
       WHERE e.operator_id = ?
         AND e.consumed_at IS NULL
+        AND ${typeFilter}
       ORDER BY e.created_at ASC
       LIMIT ?`
   )
@@ -196,6 +222,7 @@ export async function pollOperatorEvents(
 
   return {
     ok: true,
+    channel: cameraChannel ? "camera" : "microphone",
     events: events.map((item) => ({
       id: item.id,
       deviceId: item.deviceId,
@@ -211,4 +238,18 @@ export async function pollOperatorEvents(
       createdAt: item.createdAt
     }))
   };
+}
+
+export async function pollOperatorEvents(
+  env,
+  { operatorId, limit = 20 } = {}
+) {
+  return pollEventsByChannel(env, { operatorId, limit, channel: "microphone" });
+}
+
+export async function pollOperatorCameraEvents(
+  env,
+  { operatorId, limit = 20 } = {}
+) {
+  return pollEventsByChannel(env, { operatorId, limit, channel: "camera" });
 }
