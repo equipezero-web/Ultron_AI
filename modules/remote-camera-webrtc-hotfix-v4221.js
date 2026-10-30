@@ -1,4 +1,4 @@
-const PATCH_KEY = '__ULTRON_REMOTE_CAMERA_WEBRTC_V4221__';
+const PATCH_KEY = '__ULTRON_REMOTE_CAMERA_WEBRTC_V4222__';
 
 if (!window[PATCH_KEY] && window.RTCPeerConnection) {
   window[PATCH_KEY] = true;
@@ -22,6 +22,34 @@ if (!window[PATCH_KEY] && window.RTCPeerConnection) {
 
   function candidateCount(sdp = '') {
     return (String(sdp).match(/^a=candidate:/gm) || []).length;
+  }
+
+  function normalizeSdp(sdp = '') {
+    let text = String(sdp || '')
+      .replace(/^\uFEFF/, '')
+      .replace(/\u0000/g, '');
+
+    // Defensive recovery in case escaped line breaks ever arrive literally.
+    if (!/[\r\n]/.test(text) && /\\(?:r\\n|n|r)/.test(text)) {
+      text = text
+        .replace(/\\r\\n/g, '\n')
+        .replace(/\\n/g, '\n')
+        .replace(/\\r/g, '\n');
+    }
+
+    text = text
+      .replace(/\r\n/g, '\n')
+      .replace(/\r/g, '\n');
+
+    const lines = text
+      .split('\n')
+      .map((line) => line.replace(/[ \t]+$/g, ''));
+
+    while (lines.length && lines[lines.length - 1] === '') lines.pop();
+
+    // libwebrtc requires the final SDP line to end with CRLF. Without this,
+    // Chrome reports the final a=ssrc line as "Invalid SDP line".
+    return `${lines.join('\r\n')}\r\n`;
   }
 
   function looksLikeRemoteCameraOffer(peer, description) {
@@ -75,18 +103,26 @@ if (!window[PATCH_KEY] && window.RTCPeerConnection) {
   };
 
   proto.setRemoteDescription = async function patchedSetRemoteDescription(description) {
+    const isAnswer = description?.type === 'answer';
+    const originalSdp = String(description?.sdp || '');
+    const normalizedSdp = isAnswer ? normalizeSdp(originalSdp) : originalSdp;
+    const finalDescription = isAnswer
+      ? { type: 'answer', sdp: normalizedSdp }
+      : description;
+
     try {
-      const result = await nativeSetRemoteDescription.call(this, description);
-      if (description?.type === 'answer') {
-        const length = String(description?.sdp || '').length;
-        const count = candidateCount(description?.sdp || '');
-        log(`Resposta WebRTC aplicada (${length} caracteres, ${count} candidato${count === 1 ? '' : 's'} no SDP).`);
+      const result = await nativeSetRemoteDescription.call(this, finalDescription);
+      if (isAnswer) {
+        const count = candidateCount(normalizedSdp);
+        const repaired = normalizedSdp !== originalSdp;
+        log(`Resposta WebRTC aplicada (${normalizedSdp.length} caracteres, ${count} candidato${count === 1 ? '' : 's'} no SDP${repaired ? ', SDP normalizado' : ''}).`);
       }
       return result;
     } catch (error) {
-      if (description?.type === 'answer') {
-        const length = String(description?.sdp || '').length;
-        log(`Falha ao aplicar a resposta WebRTC do celular (${length} caracteres): ${error?.message || error}`, true);
+      if (isAnswer) {
+        const line = Number(error?.sdpLineNumber || 0);
+        const detail = line > 0 ? ` linha SDP ${line}.` : '';
+        log(`Falha ao aplicar a resposta WebRTC do celular (${normalizedSdp.length} caracteres): ${error?.message || error}${detail}`, true);
       }
       throw error;
     }
@@ -102,6 +138,10 @@ if (!window[PATCH_KEY] && window.RTCPeerConnection) {
   };
 
   window.dispatchEvent(new CustomEvent('ultron:remote-camera-webrtc-hotfix-ready', {
-    detail: { version: '4.22.1', iceGatherTimeoutMs: ICE_GATHER_TIMEOUT_MS }
+    detail: {
+      version: '4.22.2',
+      iceGatherTimeoutMs: ICE_GATHER_TIMEOUT_MS,
+      sdpFinalCrlfGuard: true
+    }
   }));
 }

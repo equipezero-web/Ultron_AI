@@ -8,6 +8,7 @@ on:
       - 'modules/camera-runtime.js'
       - 'modules/camera-hardening-v422.js'
       - 'modules/mobile-camera-source.js'
+      - 'modules/remote-camera-webrtc-hotfix-v4221.js'
       - 'modules/vision-client.js'
       - 'modules/vision-command-router.js'
       - 'modules/vision-frame-health.js'
@@ -26,6 +27,7 @@ on:
       - 'modules/camera-runtime.js'
       - 'modules/camera-hardening-v422.js'
       - 'modules/mobile-camera-source.js'
+      - 'modules/remote-camera-webrtc-hotfix-v4221.js'
       - 'modules/vision-client.js'
       - 'modules/vision-command-router.js'
       - 'modules/vision-frame-health.js'
@@ -54,6 +56,7 @@ jobs:
           node --check modules/camera-runtime.js
           node --check modules/camera-hardening-v422.js
           node --check modules/mobile-camera-source.js
+          node --check modules/remote-camera-webrtc-hotfix-v4221.js
           node --check modules/vision-client.js
           node --check modules/vision-command-router.js
           node --check modules/vision-frame-health.js
@@ -140,6 +143,10 @@ jobs:
           grep -q "visionCommandRouter" modules/stark-bootstrap.js
           grep -q 'vision-command-router.js?v=4.17.0' index.html
           grep -q "mobile-camera-source.js?v=4.22.0" modules/stark-bootstrap.js
+          grep -q "remote-camera-webrtc-hotfix-v4221.js?v=4.22.2" modules/stark-bootstrap.js
+          grep -q "sdpFinalCrlfGuard" modules/remote-camera-webrtc-hotfix-v4221.js
+          grep -q "normalizeWebRtcSdp" backend/microphone-bridge.js
+          grep -q "const sdp = normalizeWebRtcSdp(source.sdp)" backend/microphone-bridge.js
           grep -q "ULTRON_MOBILE_CAMERA" modules/mobile-camera-source.js
           grep -q "RTCPeerConnection" modules/mobile-camera-source.js
           grep -q "camera.webrtc.answer" backend/microphone-bridge.js
