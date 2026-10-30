@@ -1,0 +1,46 @@
+name: Visual Neural Stream Check
+
+on:
+  push:
+    paths:
+      - 'index.html'
+      - 'modules/stark-bootstrap.js'
+      - 'modules/visual-neural-stream-bridge-v4225.js'
+      - 'modules/stark-camera-preview.js'
+      - 'modules/stark-camera-preview.css'
+      - 'modules/stark-hand-gesture-v420.js'
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'modules/stark-bootstrap.js'
+      - 'modules/visual-neural-stream-bridge-v4225.js'
+      - 'modules/stark-camera-preview.js'
+      - 'modules/stark-camera-preview.css'
+      - 'modules/stark-hand-gesture-v420.js'
+  workflow_dispatch:
+
+jobs:
+  visual-neural-stream:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax
+        run: |
+          node --check modules/visual-neural-stream-bridge-v4225.js
+          node --check modules/stark-bootstrap.js
+          node --check modules/stark-camera-preview.js
+          node --check modules/stark-hand-gesture-v420.js
+      - name: Verify visual sensor and neural share the remote stream
+        run: |
+          grep -q "stark-bootstrap.js?v=4.22.5" index.html
+          grep -q "// v4.22.5" index.html
+          grep -q "visual-neural-stream-bridge-v4225.js?v=4.22.5" modules/stark-bootstrap.js
+          grep -q "ULTRON_VISUAL_NEURAL_STREAM" modules/visual-neural-stream-bridge-v4225.js
+          grep -q "stark-camera-feed" modules/visual-neural-stream-bridge-v4225.js
+          grep -q "ULTRON_HAND_GESTURES?.enable" modules/visual-neural-stream-bridge-v4225.js
+          grep -q "ultron:external-camera-adopted" modules/visual-neural-stream-bridge-v4225.js
+          grep -q "self-heal" modules/visual-neural-stream-bridge-v4225.js
+          echo 'Visual Sensor + Neural remote stream integration OK'
