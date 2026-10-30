@@ -43,17 +43,25 @@ function install() {
     if (!commandId || routed?.needsConfirmation || routed?.schedule) {
       return routed;
     }
+
     const command = await verify(commandId);
-    if (!command) {
+    if (!command || !["completed", "failed"].includes(command.status)) {
       return {
         ...routed,
+        ok: false,
         verified: false,
-        commandStatus: routed?.result?.status || "pending"
+        verificationTimeout: true,
+        commandStatus: command?.status || routed?.result?.status || "pending",
+        commandResult: command?.result || null
       };
     }
+
+    const completed = command.status === "completed";
     return {
       ...routed,
-      verified: command.status === "completed",
+      ok: completed,
+      verified: completed,
+      verificationTimeout: false,
       commandStatus: command.status,
       commandResult: command.result || null,
       deviceName: command.deviceName || routed?.result?.device?.deviceName || null
