@@ -2,10 +2,14 @@
   // backend/wrangler.jsonc
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "ultron-backend",
-  "main": "worker-v4.js",
+  "main": "worker-v5.js",
   "compatibility_date": "2026-10-01",
   "workers_dev": true,
   "keep_vars": true,
+
+  "triggers": {
+    "crons": ["* * * * *"]
+  },
 
   "vars": {
     "AI_PROVIDER_ORDER": "groq,gemini,cloudflare,openrouter,cohere",
