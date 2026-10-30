@@ -1,6 +1,7 @@
 import baseWorker from "./worker.js";
 import { deriveOperatorId } from "./memory.js";
 import {
+  pollOperatorCameraEvents,
   pollOperatorEvents,
   submitDeviceEvent
 } from "./microphone-bridge.js";
@@ -61,10 +62,16 @@ export default {
           );
         }
 
-        const result = await pollOperatorEvents(env, {
-          operatorId,
-          limit: body?.limit
-        });
+        const channel = String(body?.channel || "microphone").trim().toLowerCase();
+        const result = channel === "camera"
+          ? await pollOperatorCameraEvents(env, {
+              operatorId,
+              limit: body?.limit
+            })
+          : await pollOperatorEvents(env, {
+              operatorId,
+              limit: body?.limit
+            });
 
         return jsonResult(result, corsHeaders, 400);
       } catch (error) {
