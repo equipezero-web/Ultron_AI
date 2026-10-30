@@ -7,6 +7,11 @@ on:
     paths:
       - "android-bridge/**"
       - ".github/workflows/android-bridge.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "android-bridge/**"
+      - ".github/workflows/android-bridge.yml"
 
 jobs:
   build-apk:

@@ -14,6 +14,7 @@ on:
       - 'modules/file-inspector-v420.js'
       - 'modules/neural-file-visualizer.js'
       - 'modules/mobile-camera-source.js'
+      - 'modules/camera-hardening-v422.js'
       - 'modules/stark-bootstrap.js'
       - 'local-core/server.py'
       - '.github/workflows/neural-command-check.yml'
@@ -28,6 +29,7 @@ on:
       - 'modules/file-inspector-v420.js'
       - 'modules/neural-file-visualizer.js'
       - 'modules/mobile-camera-source.js'
+      - 'modules/camera-hardening-v422.js'
       - 'modules/stark-bootstrap.js'
       - 'local-core/server.py'
       - '.github/workflows/neural-command-check.yml'
@@ -54,6 +56,7 @@ jobs:
           node --check modules/file-inspector-v420.js
           node --check modules/neural-file-visualizer.js
           node --check modules/mobile-camera-source.js
+          node --check modules/camera-hardening-v422.js
           node --check modules/stark-bootstrap.js
           node --check modules/neural-command-policy.mjs
           python -m py_compile local-core/server.py
@@ -110,19 +113,21 @@ jobs:
       - name: Smartphone camera markers
         run: |
           grep -q "droidcam|iriun|camo|epoccam" modules/mobile-camera-source.js
-          grep -q "captureStream" modules/mobile-camera-source.js
-          grep -q "Mixed Content" modules/mobile-camera-source.js
-          grep -q "SMARTPHONE NETWORK STREAM" modules/mobile-camera-source.js
-          grep -q "USAR CÂMERA DO CELULAR" modules/mobile-camera-source.js
+          grep -q "RTCPeerConnection" modules/mobile-camera-source.js
+          grep -q "camera.request" modules/mobile-camera-source.js
+          grep -q "camera.webrtc.offer" modules/mobile-camera-source.js
+          grep -q "channel: 'camera'" modules/mobile-camera-source.js
+          grep -q "enumerated-minimal" modules/camera-hardening-v422.js
+          grep -q "CÂMERA ULTRON BRIDGE" modules/mobile-camera-source.js
           echo 'Smartphone camera sources OK'
 
       - name: Integration markers
         run: |
-          grep -q "stark-bootstrap.js?v=4.20.0" index.html
-          grep -Eq 'ULTRON AI // .*NEURAL GESTURE.*ULTRON_DATA // v4\.[0-9]+\.[0-9]+' index.html
+          grep -Eq "stark-bootstrap.js\?v=4\.[0-9]+\.[0-9]+" index.html
+          grep -Eq 'ULTRON AI // .*NEURAL GESTURE.*// v4\.[0-9]+\.[0-9]+' index.html
           grep -q "stark-hand-gesture-v420.js?v=4.20.0" modules/stark-bootstrap.js
           grep -q "palm-matrix-v420.js?v=4.20.0" modules/stark-bootstrap.js
           grep -q "file-inspector-v420.js?v=4.20.0" modules/stark-bootstrap.js
-          grep -q "mobile-camera-source.js?v=4.20.0" modules/stark-bootstrap.js
+          grep -q "mobile-camera-source.js?v=4.22.0" modules/stark-bootstrap.js
           grep -q "handControlModel" modules/stark-bootstrap.js
-          echo 'Neural Gesture v4.20 integration markers OK'
+          echo 'Neural Gesture + Remote Camera integration markers OK'
