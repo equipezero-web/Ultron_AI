@@ -11,11 +11,16 @@ on:
       - 'modules/mobile-camera-source.js'
       - 'modules/remote-camera-webrtc-hotfix-v4221.js'
       - 'modules/remote-camera-frame-gate-v4230.js'
+      - 'modules/remote-camera-display-v4232.js'
+      - 'modules/remote-camera-mode-v4232.js'
       - 'modules/visual-neural-stream-bridge-v4225.js'
       - 'modules/vision-client.js'
       - 'modules/vision-remote-source-v4224.js'
       - 'modules/vision-command-router.js'
       - 'modules/vision-frame-health.js'
+      - 'modules/mobile-performance.js'
+      - 'modules/mobile-sensor-fusion-v4240.js'
+      - 'modules/motion.js'
       - 'modules/stark-bootstrap.js'
       - 'modules/telemetry-client.js'
       - 'backend/server.js'
@@ -34,11 +39,16 @@ on:
       - 'modules/mobile-camera-source.js'
       - 'modules/remote-camera-webrtc-hotfix-v4221.js'
       - 'modules/remote-camera-frame-gate-v4230.js'
+      - 'modules/remote-camera-display-v4232.js'
+      - 'modules/remote-camera-mode-v4232.js'
       - 'modules/visual-neural-stream-bridge-v4225.js'
       - 'modules/vision-client.js'
       - 'modules/vision-remote-source-v4224.js'
       - 'modules/vision-command-router.js'
       - 'modules/vision-frame-health.js'
+      - 'modules/mobile-performance.js'
+      - 'modules/mobile-sensor-fusion-v4240.js'
+      - 'modules/motion.js'
       - 'modules/stark-bootstrap.js'
       - 'modules/telemetry-client.js'
       - 'backend/server.js'
@@ -67,11 +77,16 @@ jobs:
           node --check modules/mobile-camera-source.js
           node --check modules/remote-camera-webrtc-hotfix-v4221.js
           node --check modules/remote-camera-frame-gate-v4230.js
+          node --check modules/remote-camera-display-v4232.js
+          node --check modules/remote-camera-mode-v4232.js
           node --check modules/visual-neural-stream-bridge-v4225.js
           node --check modules/vision-client.js
           node --check modules/vision-remote-source-v4224.js
           node --check modules/vision-command-router.js
           node --check modules/vision-frame-health.js
+          node --check modules/mobile-performance.js
+          node --check modules/mobile-sensor-fusion-v4240.js
+          node --check modules/motion.js
           node --check modules/stark-bootstrap.js
           node --check modules/telemetry-client.js
           node --check backend/server.js
@@ -163,8 +178,12 @@ jobs:
           grep -q "stopRequested = false" modules/camera-external-stream-v4223.js
           grep -q "ULTRON_CAMERA_PREVIEW?.sync" modules/camera-external-stream-v4223.js
           grep -Eq "mobile-camera-source.js\?v=4\.[0-9]+\.[0-9]+" modules/stark-bootstrap.js
-          grep -q "remote-camera-webrtc-hotfix-v4221.js?v=4.22.2" modules/stark-bootstrap.js
-          grep -q "remote-camera-frame-gate-v4230.js?v=4.23.0" modules/stark-bootstrap.js
+          grep -Eq "remote-camera-webrtc-hotfix-v4221.js\?v=4\.23\.[0-9]+" modules/stark-bootstrap.js
+          grep -Eq "remote-camera-frame-gate-v4230.js\?v=4\.23\.[0-9]+" modules/stark-bootstrap.js
+          grep -q "remote-camera-display-v4232.js?v=4.23.2" modules/stark-bootstrap.js
+          grep -q "remote-camera-mode-v4232.js?v=4.23.2" modules/stark-bootstrap.js
+          grep -q "ULTRON_REMOTE_CAMERA_DISPLAY" modules/remote-camera-display-v4232.js
+          grep -q "ULTRON_REMOTE_CAMERA_MODE" modules/remote-camera-mode-v4232.js
           grep -q "ULTRON_REMOTE_CAMERA_FRAME_GATE" modules/remote-camera-frame-gate-v4230.js
           grep -q "requestVideoFrameCallback" modules/remote-camera-frame-gate-v4230.js
           grep -q "videoWidth" modules/remote-camera-frame-gate-v4230.js
@@ -177,6 +196,11 @@ jobs:
           grep -q "camera.webrtc.answer" backend/microphone-bridge.js
           grep -q "pollOperatorCameraEvents" backend/worker-v2.js
           grep -q "enumerated-minimal" modules/camera-hardening-v422.js
+          grep -q "ULTRON_MOBILE_SENSORS" modules/mobile-sensor-fusion-v4240.js
+          grep -q "motionPixelDelta" modules/mobile-performance.js
+          grep -q "noiseFloor" modules/motion.js
+          grep -q "mobile-performance.css?v=4.24.0" modules/stark-bootstrap.js
+          grep -q "mobile-sensor-fusion-v4240.js?v=4.24.0" modules/stark-bootstrap.js
           grep -Eq 'ULTRON AI // .*// v4\.[0-9]+\.[0-9]+' index.html
           grep -q 'app.post("/api/vision/analyze"' backend/server.js
           grep -q 'express.json({ limit: "8mb" })' backend/server.js
