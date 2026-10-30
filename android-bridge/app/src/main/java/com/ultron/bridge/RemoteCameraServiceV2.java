@@ -44,14 +44,13 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Remote camera service v0.4.1 / protocol v4.23.0.
+ * Remote camera service v0.4.2 / protocol v4.24.1.
  *
- * The previous implementation considered ICE CONNECTED sufficient to declare
- * the remote camera online. That can happen even when Android opened no real
- * camera frames, which leaves the browser with a live WebRTC track at 0x0.
- * This implementation only reports ACTIVE after a real VideoFrame reached the
- * WebRTC VideoTrack and adds automatic capture-profile fallback if the camera
- * opens but produces no frames.
+ * v0.4.1 validated real Android frames before declaring the camera active.
+ * v0.4.2 additionally waits for Android ICE gathering before publishing the
+ * final SDP answer, while retaining trickle ICE as a redundant path. This
+ * prevents the browser from repeatedly receiving an answer with zero ICE
+ * candidates and then losing the camera after the first connectivity window.
  */
 public class RemoteCameraServiceV2 extends Service {
     public static final String ACTION_START = "com.ultron.bridge.camera.START";
@@ -75,6 +74,7 @@ public class RemoteCameraServiceV2 extends Service {
             {320, 240, 15}
     };
     private static final long FIRST_FRAME_TIMEOUT_MS = 4500L;
+    private static final long ICE_GATHER_TIMEOUT_MS = 4500L;
 
     private final ExecutorService worker = Executors.newSingleThreadExecutor();
     private final ExecutorService network = Executors.newSingleThreadExecutor();
@@ -93,11 +93,13 @@ public class RemoteCameraServiceV2 extends Service {
     private boolean remoteDescriptionSet = false;
     private volatile boolean firstFrameSeen = false;
     private volatile boolean peerConnected = false;
+    private volatile boolean localAnswerSent = false;
     private volatile int lastFrameWidth = 0;
     private volatile int lastFrameHeight = 0;
     private volatile int captureProfileIndex = 0;
     private volatile int captureGeneration = 0;
     private volatile int captureFallbackAttempts = 0;
+    private volatile long signalingGeneration = 0L;
     private volatile boolean released = false;
 
     @Override
@@ -373,6 +375,8 @@ public class RemoteCameraServiceV2 extends Service {
 
         try {
             closePeerSession();
+            signalingGeneration += 1L;
+            localAnswerSent = false;
             sessionId = nextSessionId == null ? "" : nextSessionId.trim();
             remoteDescriptionSet = false;
             pendingRemoteIce.clear();
@@ -421,7 +425,6 @@ public class RemoteCameraServiceV2 extends Service {
 
             @Override
             public void onIceConnectionChange(PeerConnection.IceConnectionState newState) {
-                String value = newState == null ? "unknown" : newState.name().toLowerCase();
                 if (newState == PeerConnection.IceConnectionState.CONNECTED ||
                         newState == PeerConnection.IceConnectionState.COMPLETED) {
                     peerConnected = true;
@@ -450,7 +453,14 @@ public class RemoteCameraServiceV2 extends Service {
             }
 
             @Override public void onIceConnectionReceivingChange(boolean receiving) {}
-            @Override public void onIceGatheringChange(PeerConnection.IceGatheringState newState) {}
+
+            @Override
+            public void onIceGatheringChange(PeerConnection.IceGatheringState newState) {
+                if (newState == PeerConnection.IceGatheringState.COMPLETE) {
+                    final long generation = signalingGeneration;
+                    worker.execute(() -> sendFinalLocalAnswer(generation, "ice-complete"));
+                }
+            }
 
             @Override
             public void onIceCandidate(IceCandidate candidate) {
@@ -481,7 +491,16 @@ public class RemoteCameraServiceV2 extends Service {
                 peer.setLocalDescription(new SimpleSdpObserver() {
                     @Override
                     public void onSetSuccess() {
-                        sendAnswer(description.description);
+                        final long generation = signalingGeneration;
+                        publishStatus("ice_gathering", "Resposta WebRTC criada. Reunindo candidatos ICE finais do Android.");
+                        watchdog.schedule(
+                                () -> worker.execute(() -> sendFinalLocalAnswer(generation, "timeout")),
+                                ICE_GATHER_TIMEOUT_MS,
+                                TimeUnit.MILLISECONDS
+                        );
+                        if (peer.iceGatheringState() == PeerConnection.IceGatheringState.COMPLETE) {
+                            worker.execute(() -> sendFinalLocalAnswer(generation, "already-complete"));
+                        }
                     }
 
                     @Override
@@ -496,6 +515,38 @@ public class RemoteCameraServiceV2 extends Service {
                 publishStatus("error", "Falha ao criar resposta WebRTC: " + error);
             }
         }, constraints);
+    }
+
+    private void sendFinalLocalAnswer(long generation, String reason) {
+        if (generation != signalingGeneration || localAnswerSent) return;
+        PeerConnection peer = peerConnection;
+        if (peer == null) return;
+        SessionDescription local = peer.getLocalDescription();
+        if (local == null || local.description == null || local.description.trim().isEmpty()) {
+            if ("timeout".equals(reason)) {
+                publishStatus("error", "O Android não conseguiu finalizar a resposta WebRTC local.");
+            }
+            return;
+        }
+
+        localAnswerSent = true;
+        int candidates = countSdpCandidates(local.description);
+        publishStatus(
+                "ice_answer_ready",
+                "Resposta WebRTC final do Android pronta com " + candidates + " candidato(s) ICE no SDP (" + reason + ")."
+        );
+        sendAnswer(local.description);
+    }
+
+    private int countSdpCandidates(String sdp) {
+        if (sdp == null || sdp.isEmpty()) return 0;
+        int count = 0;
+        int index = 0;
+        while ((index = sdp.indexOf("a=candidate:", index)) >= 0) {
+            count += 1;
+            index += 12;
+        }
+        return count;
     }
 
     private void addRemoteIce(String candidate, String mid, int lineIndex, String incomingSessionId) {
@@ -530,7 +581,9 @@ public class RemoteCameraServiceV2 extends Service {
                 payload.put("sdp", sdp == null ? "" : sdp);
                 payload.put("sessionId", sessionId);
                 sendEvent("camera.webrtc.answer", payload);
-            } catch (Exception ignored) {}
+            } catch (Exception error) {
+                publishStatus("signaling_error", "Falha ao enviar resposta WebRTC final: " + error.getMessage());
+            }
         });
     }
 
@@ -543,7 +596,9 @@ public class RemoteCameraServiceV2 extends Service {
                 payload.put("sdpMLineIndex", candidate.sdpMLineIndex);
                 payload.put("sessionId", sessionId);
                 sendEvent("camera.webrtc.ice", payload);
-            } catch (Exception ignored) {}
+            } catch (Exception error) {
+                publishStatus("ice_event_error", "Falha ao enviar candidato ICE do Android: " + error.getMessage());
+            }
         });
     }
 
@@ -585,6 +640,8 @@ public class RemoteCameraServiceV2 extends Service {
     }
 
     private void closePeerSession() {
+        signalingGeneration += 1L;
+        localAnswerSent = false;
         remoteDescriptionSet = false;
         pendingRemoteIce.clear();
         peerConnected = false;
