@@ -199,17 +199,28 @@ if (stage && orbStage) {
     state.lastHandRotation = null;
   }
 
+  async function activateOpticalHands() {
+    try {
+      await window.ULTRON_HAND_GESTURES?.enable?.();
+      window.ULTRON_HAND_GESTURES?.activate?.('optical-auto');
+    } catch {}
+  }
+
   window.addEventListener('ultron:camera-hand', handleHand);
   window.addEventListener('ultron:camera-stream', (event) => {
     if (event?.detail?.active) {
       state.source = 'OPTICAL_CAMERA';
       stage.classList.add('optical-linked');
+      activateOpticalHands();
     } else {
       stage.classList.remove('optical-linked');
     }
   });
   window.addEventListener('ultron:mobile-camera-source', (event) => {
-    if (event?.detail?.active) stage.classList.add('optical-linked');
+    if (event?.detail?.active) {
+      stage.classList.add('optical-linked');
+      activateOpticalHands();
+    }
   });
 
   orbStage.addEventListener('pointerdown', pointerDown);
@@ -250,6 +261,6 @@ if (stage && orbStage) {
   };
 
   window.dispatchEvent(new CustomEvent('ultron:neural-spatial-ready', {
-    detail: { version: '4.25.0', hand360: true, pointer360: true, wheelDepth: true }
+    detail: { version: '4.25.0', hand360: true, pointer360: true, wheelDepth: true, opticalAutoActivation: true }
   }));
 }
