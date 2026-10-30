@@ -23,6 +23,27 @@ function safeJson(value, fallback = {}, maxChars = MAX_EVENT_JSON_CHARS) {
   }
 }
 
+function normalizeWebRtcSdp(value) {
+  let sdp = String(value || "")
+    .replace(/^\uFEFF/, "")
+    .replace(/\u0000/g, "");
+
+  if (!sdp.trim()) return "";
+
+  sdp = sdp
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n");
+
+  const lines = sdp
+    .split("\n")
+    .map((line) => line.replace(/[ \t]+$/g, ""));
+
+  while (lines.length && lines[lines.length - 1] === "") lines.pop();
+
+  const normalized = `${lines.join("\r\n")}\r\n`;
+  return normalized.length <= MAX_WEBRTC_SDP_CHARS ? normalized : "";
+}
+
 async function sha256Hex(value) {
   const digest = await crypto.subtle.digest(
     "SHA-256",
@@ -111,8 +132,8 @@ function sanitizePayload(eventType, payload) {
   }
 
   if (eventType === "camera.webrtc.answer") {
-    const sdp = String(source.sdp || "").trim();
-    if (!sdp || sdp.length > MAX_WEBRTC_SDP_CHARS) return null;
+    const sdp = normalizeWebRtcSdp(source.sdp);
+    if (!sdp) return null;
     return {
       type: "answer",
       sdp,
