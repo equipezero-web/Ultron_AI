@@ -1,6 +1,8 @@
 import { ensureBridgeSchema } from "./device-bridge.js";
 
 let eventSchemaReady = false;
+const MAX_EVENT_JSON_CHARS = 131072;
+const MAX_WEBRTC_SDP_CHARS = 120000;
 
 const ALLOWED_EVENT_TYPES = new Set([
   "speech.transcript",
@@ -10,9 +12,12 @@ const ALLOWED_EVENT_TYPES = new Set([
   "camera.webrtc.ice"
 ]);
 
-function safeJson(value, fallback = {}) {
+function safeJson(value, fallback = {}, maxChars = MAX_EVENT_JSON_CHARS) {
   try {
-    return JSON.stringify(value ?? fallback).slice(0, 12000);
+    const json = JSON.stringify(value ?? fallback);
+    if (json.length <= maxChars) return json;
+    const fallbackJson = JSON.stringify(fallback);
+    return fallbackJson.length <= maxChars ? fallbackJson : "{}";
   } catch {
     return JSON.stringify(fallback);
   }
@@ -106,8 +111,8 @@ function sanitizePayload(eventType, payload) {
   }
 
   if (eventType === "camera.webrtc.answer") {
-    const sdp = String(source.sdp || "").trim().slice(0, 10000);
-    if (!sdp) return null;
+    const sdp = String(source.sdp || "").trim();
+    if (!sdp || sdp.length > MAX_WEBRTC_SDP_CHARS) return null;
     return {
       type: "answer",
       sdp,
@@ -150,6 +155,10 @@ export async function submitDeviceEvent(
   }
 
   const eventId = crypto.randomUUID();
+  const payloadJson = safeJson(sanitized);
+  if (payloadJson === "{}" && Object.keys(sanitized).length) {
+    return { ok: false, error: "Payload de evento excede o limite seguro." };
+  }
 
   await env.ULTRON_DB.prepare(
     `INSERT INTO device_events
@@ -161,7 +170,7 @@ export async function submitDeviceEvent(
       device.id,
       device.operatorId,
       normalizedType,
-      safeJson(sanitized)
+      payloadJson
     )
     .run();
 

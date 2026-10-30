@@ -1,5 +1,6 @@
 const PAIRING_TTL_MINUTES = 10;
 const MAX_PENDING_COMMANDS = 12;
+const MAX_BRIDGE_JSON_CHARS = 131072;
 
 let bridgeSchemaReady = false;
 let bridgeSchemaError = null;
@@ -101,9 +102,12 @@ function safeName(value, fallback = "Dispositivo Ultron") {
   return name || fallback;
 }
 
-function safeJson(value, fallback = {}) {
+function safeJson(value, fallback = {}, maxChars = MAX_BRIDGE_JSON_CHARS) {
   try {
-    return JSON.stringify(value ?? fallback).slice(0, 12000);
+    const json = JSON.stringify(value ?? fallback);
+    if (json.length <= maxChars) return json;
+    const fallbackJson = JSON.stringify(fallback);
+    return fallbackJson.length <= maxChars ? fallbackJson : "{}";
   } catch {
     return JSON.stringify(fallback);
   }
@@ -328,13 +332,18 @@ export async function enqueueCommand(
     return { ok: false, error: "Este dispositivo não pode receber comandos de TV." };
   }
 
+  const payloadJson = safeJson(payload);
+  if (payloadJson === "{}" && payload && typeof payload === "object" && Object.keys(payload).length) {
+    return { ok: false, error: "Payload do comando excede o limite seguro." };
+  }
+
   const commandId = crypto.randomUUID();
   await env.ULTRON_DB.prepare(
     `INSERT INTO device_commands
       (id, device_id, operator_id, command, payload_json, status, created_at)
      VALUES (?, ?, ?, ?, ?, 'pending', CURRENT_TIMESTAMP)`
   )
-    .bind(commandId, deviceId, operatorId, normalizedCommand, safeJson(payload))
+    .bind(commandId, deviceId, operatorId, normalizedCommand, payloadJson)
     .run();
 
   return { ok: true, commandId, status: "pending" };
