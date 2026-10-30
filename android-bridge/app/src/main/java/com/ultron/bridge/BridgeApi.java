@@ -13,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 
 public final class BridgeApi {
     public static final String BASE_URL = "https://ultron-backend.lucaalves17-20.workers.dev";
+    private static final int SIGNALING_EVENT_ATTEMPTS = 3;
 
     private BridgeApi() {}
 
@@ -134,6 +135,26 @@ public final class BridgeApi {
         body.put("deviceSecret", deviceSecret);
         body.put("eventType", eventType);
         body.put("payload", payload == null ? new JSONObject() : payload);
-        return post("/api/bridge/event", body);
+
+        Exception lastError = null;
+        for (int attempt = 1; attempt <= SIGNALING_EVENT_ATTEMPTS; attempt += 1) {
+            try {
+                return post("/api/bridge/event", body);
+            } catch (Exception error) {
+                lastError = error;
+                if (attempt < SIGNALING_EVENT_ATTEMPTS) {
+                    try {
+                        Thread.sleep(180L * attempt);
+                    } catch (InterruptedException interrupted) {
+                        Thread.currentThread().interrupt();
+                        throw interrupted;
+                    }
+                }
+            }
+        }
+
+        throw lastError != null
+                ? lastError
+                : new IllegalStateException("Falha ao enviar evento do Ultron Bridge.");
     }
 }
