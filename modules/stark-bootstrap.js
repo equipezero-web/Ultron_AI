@@ -1,4 +1,4 @@
-const BOOT_KEY = '__ULTRON_STARK_BOOTSTRAP_V4222__';
+const BOOT_KEY = '__ULTRON_STARK_BOOTSTRAP_V4223__';
 
 if (!window[BOOT_KEY]) {
   window[BOOT_KEY] = true;
@@ -45,15 +45,16 @@ if (!window[BOOT_KEY]) {
   await import('./vision-client.js?v=4.16.0');
   await import('./vision-command-router.js?v=4.17.0');
   await import('./camera-runtime.js?v=4.16.0');
+  await import('./camera-external-stream-v4223.js?v=4.22.3');
   await import('./local-files-client.js?v=4.14.0');
   await import('./local-files-v2.js?v=4.14.0');
   await import('./local-files-ai-bridge.js?v=4.14.0');
   await import('./stark-file-mesh.js?v=4.20.0');
   await import('./file-inspector-v420.js?v=4.20.0');
   await import('./remote-camera-webrtc-hotfix-v4221.js?v=4.22.2');
-  await import('./mobile-camera-source.js?v=4.22.0');
+  await import('./mobile-camera-source.js?v=4.22.3');
   await import('./stark-hand-gesture-v420.js?v=4.20.0');
-  await import('./stark-camera-preview.js?v=4.19.0');
+  await import('./stark-camera-preview.js?v=4.22.3');
   await import('./palm-matrix-v420.js?v=4.20.0');
   await import('./neural-file-visualizer.js?v=4.20.0');
   await import('./stark-zoom-diagnostics.js?v=4.12.1');
@@ -80,7 +81,7 @@ if (!window[BOOT_KEY]) {
 
   window.dispatchEvent(new CustomEvent('ultron:stark-bootstrap-ready', {
     detail: {
-      version: '4.22.2',
+      version: '4.22.3',
       performanceMode: window.ULTRON_PERFORMANCE?.mode || 'full',
       starkCore: Boolean(window.ULTRON_STARK_CORE),
       innerMesh: Boolean(window.ULTRON_STARK_MESH),
@@ -98,6 +99,7 @@ if (!window[BOOT_KEY]) {
       palmMatrix: Boolean(window.ULTRON_PALM_MATRIX),
       cameraPreview: Boolean(window.ULTRON_CAMERA_PREVIEW),
       cameraRuntime: Boolean(window.ULTRON_CAMERA_RUNTIME),
+      externalCameraStreamAdapter: Boolean(window.ULTRON_EXTERNAL_CAMERA_STREAM),
       mobileCamera: Boolean(window.ULTRON_MOBILE_CAMERA),
       mobileCameraBridge: Boolean(window.ULTRON_MOBILE_CAMERA?.useBridgeCamera),
       remoteCameraWebRtcHotfix: Boolean(window.__ULTRON_REMOTE_CAMERA_WEBRTC_V4222__),
