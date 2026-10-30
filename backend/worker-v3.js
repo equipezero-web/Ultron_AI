@@ -16,6 +16,7 @@ import {
 } from "./smart-router.js";
 import { buildOperationalPlan } from "./planner.js";
 import { analyzeVisualFrame } from "./vision-analysis.js";
+import { getWebRtcIceServers, webRtcIceHealth } from "./webrtc-ice.js";
 
 function corsHeaders() {
   return {
@@ -62,6 +63,14 @@ export default {
 
     if (request.method === "OPTIONS") {
       return new Response(null, { status: 204, headers: corsHeaders() });
+    }
+
+    if (url.pathname === "/api/webrtc/ice" && request.method === "POST") {
+      const body = await readJsonBody(request);
+      const operatorId = await deriveOperatorId(body?.memoryKey);
+      if (!operatorId) return json({ ok: false, error: "Identidade ausente." }, 401);
+      const result = await getWebRtcIceServers(env, { ttlSeconds: 3600 });
+      return json(result, 200);
     }
 
     if (url.pathname === "/api/telemetry/ingest" && request.method === "POST") {
@@ -175,6 +184,7 @@ export default {
           operationalPlanner: true,
           permissionPolicy: "auto/confirm/blocked",
           visualAnalysis: Boolean(env.GEMINI_API_KEY),
+          webRtcIce: webRtcIceHealth(env),
           voiceRouter: getVoiceRouterStatus(env),
           voiceOrder: [
             "ElevenLabs",

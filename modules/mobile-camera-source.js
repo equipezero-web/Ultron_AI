@@ -7,14 +7,11 @@ const output = document.getElementById('output-box');
 const API_BASE = String(API_CONFIG?.backendUrl || '').replace(/\/$/, '');
 
 if (opticalPanel && video) {
-  const VIRTUAL_RE = /droidcam|iriun|camo|epoccam|ndi|phone link|virtual/i;
-  const NETWORK_KEY = 'ultron_mobile_camera_url_v1';
   const BRIDGE_AUTH_KEY = 'ultron_remote_camera_authorized_v1';
-  const BRIDGE_ONLINE_MAX_AGE_MS = 15000;
+  const BRIDGE_ONLINE_MAX_AGE_MS = 20000;
+  const AUTO_CONNECT_SESSION_KEY = 'ultron_mobile_camera_auto_v4250';
 
   let mode = 'automatic';
-  let networkUrl = localStorage.getItem(NETWORK_KEY) || '';
-  let syntheticStream = null;
   let bridgeDeviceId = null;
   let bridgePollTimer = null;
   let bridgePolling = false;
@@ -23,6 +20,7 @@ if (opticalPanel && video) {
   let bridgeSessionId = '';
   let remoteDescriptionReady = false;
   let pendingRemoteIce = [];
+  let iceMode = 'STUN';
 
   function log(message, alert = false) {
     if (!output) return;
@@ -34,28 +32,25 @@ if (opticalPanel && video) {
     output.scrollTop = output.scrollHeight;
   }
 
+  function setText(id, value) {
+    const element = document.getElementById(id);
+    if (element) element.textContent = String(value);
+  }
+
   const ui = document.createElement('div');
   ui.className = 'mobile-camera-source-v420';
   ui.innerHTML = `
-    <button type="button" class="hud-button primary" data-mobile-camera-bridge>CÂMERA ULTRON BRIDGE</button>
-    <button type="button" class="hud-button" data-mobile-camera-auto>CÂMERA VIRTUAL (DROIDCAM/IRIUN)</button>
-    <div class="mobile-camera-row">
-      <input type="url" data-mobile-camera-url placeholder="URL HTTPS/WebRTC/browser-playable do stream do celular" inputmode="url">
-      <button type="button" class="hud-button" data-mobile-camera-connect>CONECTAR IP</button>
-    </div>
-    <small data-mobile-camera-status>Recomendado: Ultron Bridge. A câmera é autorizada uma única vez no Android e depois reutilizada automaticamente.</small>
+    <button type="button" class="hud-button primary" data-mobile-camera-bridge>CONECTAR CÂMERA DO CELULAR</button>
+    <small data-mobile-camera-status>Ultron Bridge é a fonte principal. Após o primeiro pareamento, a reconexão é automática.</small>
   `;
 
   const controls = opticalPanel.querySelector('.controls');
   controls?.before(ui);
   const bridgeButton = ui.querySelector('[data-mobile-camera-bridge]');
-  const autoButton = ui.querySelector('[data-mobile-camera-auto]');
-  const urlInput = ui.querySelector('[data-mobile-camera-url]');
-  const connectButton = ui.querySelector('[data-mobile-camera-connect]');
   const status = ui.querySelector('[data-mobile-camera-status]');
-  urlInput.value = networkUrl;
 
   function setStatus(text, alert = false) {
+    if (!status) return;
     status.textContent = text;
     status.style.color = alert ? '#ff9a70' : '';
   }
@@ -73,9 +68,7 @@ if (opticalPanel && video) {
       body: JSON.stringify(payload)
     });
     const data = await response.json().catch(() => ({}));
-    if (!response.ok || data?.ok === false) {
-      throw new Error(data?.error || `HTTP ${response.status}`);
-    }
+    if (!response.ok || data?.ok === false) throw new Error(data?.error || `HTTP ${response.status}`);
     return data;
   }
 
@@ -84,18 +77,28 @@ if (opticalPanel && video) {
     return lastSeen ? Date.now() - lastSeen : Number.POSITIVE_INFINITY;
   }
 
-  async function selectBridgeDevice() {
+  async function listMobileDevices() {
     const key = memoryKey();
     if (!key) throw new Error('Identidade do Ultron ainda não carregada.');
     const result = await post('/api/devices/list', { memoryKey: key });
-    const mobiles = (result.devices || [])
+    return (result.devices || [])
       .filter((device) => device?.deviceType === 'mobile' && device?.status !== 'disabled')
       .sort((a, b) => (Date.parse(b?.lastSeenAt || '') || 0) - (Date.parse(a?.lastSeenAt || '') || 0));
+  }
+
+  async function selectBridgeDevice() {
+    const mobiles = await listMobileDevices();
+    if (!mobiles.length) throw new Error('Nenhum celular pareado. Use CONECTAR CELULAR para gerar o código uma única vez.');
     const online = mobiles.find((device) => deviceAgeMs(device) <= BRIDGE_ONLINE_MAX_AGE_MS) || null;
     if (!online) {
-      throw new Error('Celular pareado não está online. Abra o Ultron Bridge no celular e toque em INICIAR BRIDGE.');
+      const last = mobiles[0];
+      setText('bridge-device-name', last?.deviceName || 'CELULAR PAREADO');
+      throw new Error('Celular pareado, mas offline. Abra o Ultron Bridge no celular e toque em INICIAR BRIDGE.');
     }
     bridgeDeviceId = online.id;
+    setText('bridge-device-name', online.deviceName || 'ULTRON MOBILE BRIDGE');
+    setText('bridge-link-state', 'ONLINE');
+    setText('bridge-session-state', 'READY');
     return online;
   }
 
@@ -111,40 +114,26 @@ if (opticalPanel && video) {
     });
   }
 
-  function isMixedContent(url) {
+  async function refreshIceServers() {
+    const key = memoryKey();
+    if (!key) return { iceServers: [], turnConfigured: false };
     try {
-      const parsed = new URL(url, location.href);
-      return location.protocol === 'https:' && parsed.protocol === 'http:';
-    } catch {
-      return false;
+      const result = await post('/api/webrtc/ice', { memoryKey: key });
+      const servers = Array.isArray(result?.iceServers) ? result.iceServers : [];
+      if (servers.length && window.ULTRON_REMOTE_CAMERA_ICE?.setTurnServers) {
+        window.ULTRON_REMOTE_CAMERA_ICE.setTurnServers(servers);
+      }
+      iceMode = result?.turnConfigured ? 'TURN' : 'STUN';
+      setText('turn-state', result?.turnConfigured ? 'TURN READY' : 'STUN DIRECT');
+      setText('infra-ice-path', result?.turnConfigured ? 'STUN → TURN AUTO' : 'STUN');
+      return result;
+    } catch (error) {
+      iceMode = 'STUN';
+      setText('turn-state', 'STUN FALLBACK');
+      setText('infra-ice-path', 'STUN');
+      log(`TURN não carregado; mantendo STUN: ${error?.message || error}`, true);
+      return { iceServers: [], turnConfigured: false };
     }
-  }
-
-  function waitForPlayable(timeoutMs = 7000) {
-    if (video.readyState >= 2 && video.videoWidth) return Promise.resolve(true);
-    return new Promise((resolve) => {
-      const started = Date.now();
-      const done = () => {
-        cleanup();
-        resolve(video.readyState >= 2 && video.videoWidth > 0);
-      };
-      const tick = () => {
-        if (video.readyState >= 2 && video.videoWidth) return done();
-        if (Date.now() - started > timeoutMs) return done();
-        timer = setTimeout(tick, 160);
-      };
-      const cleanup = () => clearTimeout(timer);
-      let timer = setTimeout(tick, 0);
-    });
-  }
-
-  function syncCompactNetworkPreview(url) {
-    const preview = document.querySelector('.stark-camera-feed');
-    if (!preview) return;
-    try { preview.srcObject = null; } catch {}
-    preview.crossOrigin = 'anonymous';
-    preview.src = url;
-    preview.play().catch(() => {});
   }
 
   function closeBridgePeer({ notify = false } = {}) {
@@ -163,7 +152,7 @@ if (opticalPanel && video) {
     }
   }
 
-  function waitForIceGatheringComplete(peer, timeoutMs = 3200) {
+  function waitForIceGatheringComplete(peer, timeoutMs = 4200) {
     if (!peer || peer.iceGatheringState === 'complete') return Promise.resolve();
     return new Promise((resolve) => {
       const started = Date.now();
@@ -178,19 +167,20 @@ if (opticalPanel && video) {
 
   async function activateRemoteStream(stream) {
     const controller = window.ULTRON_CAMERA_CONTROLLER;
-    if (!stream?.getVideoTracks?.().length) throw new Error('Stream WebRTC do celular chegou sem faixa de vídeo.');
-    if (!controller) throw new Error('Controlador de câmera ainda não carregado.');
+    if (!stream?.getVideoTracks?.().length) throw new Error('Stream WebRTC chegou sem vídeo.');
+    if (!controller) throw new Error('Controlador óptico ainda não carregado.');
 
     mode = 'bridge';
-    syntheticStream?.getTracks?.().forEach((track) => track.stop());
-    syntheticStream = null;
     video.removeAttribute('src');
     await controller.activateStream(stream, { restored: true });
     localStorage.setItem(BRIDGE_AUTH_KEY, 'yes');
-    setStatus('CÂMERA DO CELULAR ONLINE // ULTRON BRIDGE WEBRTC');
-    log('Câmera do celular conectada diretamente ao Neural Command por WebRTC. A webcam do computador não é necessária.');
+    setStatus(`CÂMERA ONLINE // ${iceMode}`);
+    setText('bridge-camera-state', 'ONLINE');
+    setText('bridge-session-state', 'STREAMING');
+    setText('permission-state', 'MOBILE OPTICAL LINK');
+    log(`Câmera do celular conectada ao Optical Sensor por WebRTC (${iceMode}).`);
     window.dispatchEvent(new CustomEvent('ultron:mobile-camera-source', {
-      detail: { mode, active: true, source: 'ULTRON_BRIDGE_WEBRTC', deviceId: bridgeDeviceId }
+      detail: { mode, active: true, source: 'ULTRON_BRIDGE_WEBRTC', deviceId: bridgeDeviceId, iceMode }
     }));
     window.ULTRON_HAND_GESTURES?.enable?.();
   }
@@ -201,13 +191,15 @@ if (opticalPanel && video) {
     if (!bridgeDeviceId) await selectBridgeDevice();
 
     peerStarting = true;
+    await refreshIceServers();
     bridgeSessionId = crypto.randomUUID?.() || `cam-${Date.now()}-${Math.random().toString(16).slice(2)}`;
     remoteDescriptionReady = false;
     pendingRemoteIce = [];
 
     const peer = new RTCPeerConnection({
-      iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
-      bundlePolicy: 'max-bundle'
+      iceServers: [{ urls: 'stun:stun.cloudflare.com:3478' }],
+      bundlePolicy: 'max-bundle',
+      iceCandidatePoolSize: 4
     });
     peerConnection = peer;
 
@@ -221,14 +213,18 @@ if (opticalPanel && video) {
 
     peer.onconnectionstatechange = () => {
       const state = String(peer.connectionState || 'unknown');
+      setText('infra-webrtc', state.toUpperCase());
       if (state === 'failed') {
-        setStatus('WEBRTC FALHOU // TENTE NOVAMENTE', true);
-        log('A sessão WebRTC da câmera falhou. A permissão do Android continua salva.', true);
+        setStatus(iceMode === 'TURN' ? 'WEBRTC FALHOU // RECONECTANDO' : 'P2P FALHOU // TENTANDO RECUPERAR', true);
+        setText('bridge-camera-state', 'RECONNECTING');
+        log('A conexão WebRTC da câmera falhou. O Ultron manterá a autorização e tentará renegociar.', true);
         closeBridgePeer();
       } else if (state === 'disconnected') {
-        setStatus('CÂMERA DO CELULAR // RECONECTANDO', true);
+        setStatus('CÂMERA // RECONECTANDO', true);
+        setText('bridge-camera-state', 'RECONNECTING');
       } else if (state === 'connected') {
-        setStatus('CÂMERA DO CELULAR ONLINE // WEBRTC');
+        setStatus(`CÂMERA ONLINE // ${iceMode}`);
+        setText('bridge-camera-state', 'ONLINE');
       }
     };
 
@@ -245,8 +241,9 @@ if (opticalPanel && video) {
       sdp: local.sdp,
       sessionId: bridgeSessionId
     });
-    setStatus('ULTRON BRIDGE // NEGOCIANDO VÍDEO WEBRTC');
-    log('Oferta WebRTC enviada ao celular. Aguardando a câmera remota.');
+    setStatus(`NEGOCIANDO VÍDEO // ${iceMode}`);
+    setText('bridge-session-state', 'NEGOTIATING');
+    log(`Oferta WebRTC enviada ao celular (${iceMode}).`);
     peerStarting = false;
   }
 
@@ -263,7 +260,7 @@ if (opticalPanel && video) {
 
       if (state === 'ready') {
         localStorage.setItem(BRIDGE_AUTH_KEY, 'yes');
-        setStatus('PERMISSÃO SALVA // CONECTANDO CÂMERA DO CELULAR');
+        setStatus('PERMISSÃO SALVA // CONECTANDO');
         beginBridgePeer().catch((error) => {
           peerStarting = false;
           closeBridgePeer();
@@ -271,9 +268,9 @@ if (opticalPanel && video) {
           log(error?.message || String(error), true);
         });
       } else if (state === 'blocked') {
-        setStatus('AUTORIZE UMA ÚNICA VEZ NO ULTRON BRIDGE', true);
+        setStatus('AUTORIZE A CÂMERA UMA ÚNICA VEZ NO CELULAR', true);
       } else if (state === 'active') {
-        setStatus('CÂMERA DO CELULAR ONLINE // WEBRTC');
+        setStatus(`CÂMERA ONLINE // ${iceMode}`);
       } else if (state === 'error') {
         setStatus(detail || 'ERRO NA CÂMERA DO CELULAR', true);
       }
@@ -297,11 +294,8 @@ if (opticalPanel && video) {
         sdpMid: payload.sdpMid ?? null,
         sdpMLineIndex: Number(payload.sdpMLineIndex || 0)
       };
-      if (remoteDescriptionReady) {
-        await peerConnection.addIceCandidate(candidate).catch(() => {});
-      } else {
-        pendingRemoteIce.push(candidate);
-      }
+      if (remoteDescriptionReady) await peerConnection.addIceCandidate(candidate).catch(() => {});
+      else pendingRemoteIce.push(candidate);
     }
   }
 
@@ -321,7 +315,7 @@ if (opticalPanel && video) {
     } catch (error) {
       console.warn('ULTRON remote camera poll:', error);
     } finally {
-      if (bridgePolling) bridgePollTimer = setTimeout(pollBridgeCameraEvents, 450);
+      if (bridgePolling) bridgePollTimer = setTimeout(pollBridgeCameraEvents, 420);
     }
   }
 
@@ -340,127 +334,42 @@ if (opticalPanel && video) {
     startBridgePolling();
 
     const remembered = localStorage.getItem(BRIDGE_AUTH_KEY) === 'yes';
-    setStatus(
-      remembered
-        ? 'PERMISSÃO JÁ REGISTRADA // ATIVANDO CÂMERA DO CELULAR'
-        : 'PRIMEIRO USO // AUTORIZE A CÂMERA UMA ÚNICA VEZ NO CELULAR'
-    );
+    setStatus(remembered ? 'RECONECTANDO CÂMERA DO CELULAR' : 'PRIMEIRO USO // AUTORIZE NO CELULAR');
+    setText('bridge-session-state', 'CONNECTING');
+    setText('bridge-camera-state', 'CONNECTING');
 
     await sendBridgeAction('camera.request', {
-      title: 'Ultron quer usar a câmera deste celular',
-      text: remembered
-        ? 'Permissão já registrada. Ative a câmera remota.'
-        : 'Autorize a câmera uma única vez para o Neural Command.'
+      title: 'Ultron Optical Sensor',
+      text: remembered ? 'Reconectando câmera remota.' : 'Autorize a câmera uma única vez para o Optical Sensor.'
     });
 
-    log(`Solicitação enviada ao ${device.deviceName || 'Ultron Bridge'}. ${remembered ? 'A autorização anterior será reutilizada.' : 'Na primeira vez, confirme a permissão no Android.'}`);
+    log(`Conectando ${device.deviceName || 'Ultron Bridge'} ao Optical Sensor.`);
     return true;
   }
 
-  async function useVirtualCamera() {
-    closeBridgePeer({ notify: true });
-    const controller = window.ULTRON_CAMERA_CONTROLLER;
-    if (!controller) throw new Error('Controlador de câmera ainda não carregado.');
-    const devices = await controller.refreshDevices?.({ announce: true }) || [];
-    const virtual = devices.find((device) => VIRTUAL_RE.test(device.label || ''));
-    if (!virtual) {
-      setStatus('Nenhuma câmera virtual detectada. Você pode usar CÂMERA ULTRON BRIDGE sem DroidCam/Iriun.', true);
-      log('DroidCam/Iriun não apareceu como videoinput. Use CÂMERA ULTRON BRIDGE para conectar o celular diretamente.', true);
-      return false;
-    }
-    video.removeAttribute('src');
-    video.load?.();
-    mode = 'virtual';
-    await controller.selectDevice?.(virtual.deviceId);
-    setStatus(`CÂMERA DO CELULAR ONLINE // ${virtual.label}`);
-    log(`Sensor principal alterado para ${virtual.label} via câmera virtual.`);
-    window.dispatchEvent(new CustomEvent('ultron:mobile-camera-source', {
-      detail: { mode, label: virtual.label, deviceId: virtual.deviceId, active: true }
-    }));
-    return true;
-  }
-
-  async function useNetworkUrl(value = urlInput.value) {
-    closeBridgePeer({ notify: true });
-    const url = String(value || '').trim();
-    if (!url) throw new Error('Informe a URL do stream do celular.');
-    let parsed;
-    try { parsed = new URL(url); } catch { throw new Error('URL do stream inválida.'); }
-    if (!['http:', 'https:'].includes(parsed.protocol)) {
-      throw new Error('Use uma URL HTTP/HTTPS reproduzível pelo navegador. RTSP puro não funciona diretamente no elemento de vídeo.');
-    }
-    if (isMixedContent(url)) {
-      throw new Error('A página do Ultron está em HTTPS e o stream está em HTTP. Use CÂMERA ULTRON BRIDGE, câmera virtual ou forneça stream HTTPS/WebRTC.');
-    }
-
-    const controller = window.ULTRON_CAMERA_CONTROLLER;
-    controller?.stop?.({ silent: true });
-    syntheticStream?.getTracks?.().forEach((track) => track.stop());
-    syntheticStream = null;
-
-    mode = 'network';
-    networkUrl = url;
-    localStorage.setItem(NETWORK_KEY, url);
-    video.pause?.();
-    video.srcObject = null;
-    video.crossOrigin = 'anonymous';
-    video.src = url;
-    video.muted = true;
-    video.playsInline = true;
-    await video.play();
-    const ready = await waitForPlayable();
-    if (!ready) throw new Error('O navegador não recebeu frames do stream. Confirme formato, CORS, URL e compatibilidade HTML5.');
-
+  async function smartConnect({ silent = false } = {}) {
     try {
-      syntheticStream = video.captureStream?.() || video.mozCaptureStream?.() || null;
-    } catch {
-      syntheticStream = null;
-    }
-    if (syntheticStream?.getVideoTracks?.().length) {
-      controller.stream = syntheticStream;
-    }
-
-    syncCompactNetworkPreview(url);
-    setStatus(`STREAM DO CELULAR ONLINE // ${video.videoWidth}×${video.videoHeight}`);
-    log(`Stream de rede conectado como sensor principal (${video.videoWidth}×${video.videoHeight}).`);
-    window.dispatchEvent(new CustomEvent('ultron:camera-stream', {
-      detail: {
-        active: true,
-        restored: false,
-        stream: syntheticStream,
-        source: 'NETWORK',
-        label: 'SMARTPHONE NETWORK STREAM',
-        width: video.videoWidth,
-        height: video.videoHeight,
-        networkUrl: url
+      return await useBridgeCamera();
+    } catch (error) {
+      const message = String(error?.message || error);
+      if (/Nenhum celular pareado/i.test(message) && window.ULTRON_DEVICES?.startPairing) {
+        const result = await window.ULTRON_DEVICES.startPairing('mobile', 'Ultron Mobile Bridge');
+        setStatus(`PAREAMENTO: DIGITE ${result.code} NO APP ULTRON BRIDGE`);
+        setText('bridge-link-state', 'PAIRING');
+        setText('bridge-session-state', `CODE ${result.code}`);
+        if (!silent) log(`Primeiro uso: digite ${result.code} no Ultron Bridge. Depois toque em INICIAR BRIDGE; a câmera conectará automaticamente.`);
+        return false;
       }
-    }));
-    window.dispatchEvent(new CustomEvent('ultron:mobile-camera-source', {
-      detail: { mode, url, active: true, syntheticStream: Boolean(syntheticStream) }
-    }));
-    window.ULTRON_HAND_GESTURES?.enable?.();
-    return true;
+      setStatus(message, true);
+      setText('bridge-link-state', 'OFFLINE');
+      if (!silent) log(message, true);
+      if (silent) return false;
+      throw error;
+    }
   }
 
-  bridgeButton.addEventListener('click', () => {
-    useBridgeCamera().catch((error) => {
-      setStatus(error?.message || String(error), true);
-      log(error?.message || String(error), true);
-    });
-  });
-
-  autoButton.addEventListener('click', () => {
-    useVirtualCamera().catch((error) => {
-      setStatus(error?.message || String(error), true);
-      log(error?.message || String(error), true);
-    });
-  });
-
-  connectButton.addEventListener('click', () => {
-    useNetworkUrl().catch((error) => {
-      setStatus(error?.message || String(error), true);
-      log(error?.message || String(error), true);
-    });
+  bridgeButton?.addEventListener('click', () => {
+    smartConnect().catch(() => {});
   });
 
   window.addEventListener('beforeunload', () => {
@@ -470,22 +379,35 @@ if (opticalPanel && video) {
   });
 
   window.ULTRON_MOBILE_CAMERA = {
+    smartConnect,
     useBridgeCamera,
-    useVirtualCamera,
-    useNetworkUrl,
+    async useVirtualCamera() {
+      throw new Error('Câmera virtual foi removida do fluxo principal. Use Ultron Bridge.');
+    },
+    async useNetworkUrl() {
+      throw new Error('Conexão manual por URL foi removida do fluxo principal. Use Ultron Bridge.');
+    },
     stopBridgeCamera() {
       closeBridgePeer({ notify: true });
       if (mode === 'bridge') window.ULTRON_CAMERA_CONTROLLER?.stop?.({ silent: true });
       mode = 'automatic';
+      setText('bridge-camera-state', 'STANDBY');
+      setText('bridge-session-state', 'READY');
     },
+    refreshIceServers,
     get state() {
       return {
         mode,
-        networkUrl,
         bridgeDeviceId,
         bridgeAuthorized: localStorage.getItem(BRIDGE_AUTH_KEY) === 'yes',
-        active: video.readyState >= 2 && video.videoWidth > 0
+        active: video.readyState >= 2 && video.videoWidth > 0,
+        iceMode
       };
     }
   };
+
+  if (localStorage.getItem(BRIDGE_AUTH_KEY) === 'yes' && !sessionStorage.getItem(AUTO_CONNECT_SESSION_KEY)) {
+    sessionStorage.setItem(AUTO_CONNECT_SESSION_KEY, '1');
+    setTimeout(() => smartConnect({ silent: true }).catch(() => {}), 1400);
+  }
 }

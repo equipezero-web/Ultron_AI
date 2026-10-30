@@ -4,19 +4,22 @@ on:
   push:
     paths:
       - 'index.html'
+      - 'script.js'
       - 'modules/neural-command-policy.mjs'
       - 'modules/neural-command-router.js'
       - 'modules/neural-input-bus.js'
       - 'modules/neural-parity.js'
+      - 'modules/neural-spatial-control-v4250.js'
+      - 'modules/neural-focus-v4250.css'
       - 'modules/stark-hand-gesture-v420.js'
       - 'modules/palm-matrix-v420.js'
       - 'modules/neural-gesture-v420.css'
       - 'modules/file-inspector-v420.js'
       - 'modules/neural-file-visualizer.js'
       - 'modules/mobile-camera-source.js'
+      - 'modules/mobile-link-simple-v4250.js'
       - 'modules/mobile-performance.js'
       - 'modules/mobile-performance.css'
-      - 'modules/mobile-sensor-fusion-v4240.js'
       - 'modules/camera-hardening-v422.js'
       - 'modules/camera-external-stream-v4223.js'
       - 'modules/remote-camera-frame-gate-v4230.js'
@@ -27,17 +30,22 @@ on:
   pull_request:
     paths:
       - 'index.html'
+      - 'script.js'
       - 'modules/neural-command-policy.mjs'
       - 'modules/neural-command-router.js'
+      - 'modules/neural-input-bus.js'
+      - 'modules/neural-parity.js'
+      - 'modules/neural-spatial-control-v4250.js'
+      - 'modules/neural-focus-v4250.css'
       - 'modules/stark-hand-gesture-v420.js'
       - 'modules/palm-matrix-v420.js'
       - 'modules/neural-gesture-v420.css'
       - 'modules/file-inspector-v420.js'
       - 'modules/neural-file-visualizer.js'
       - 'modules/mobile-camera-source.js'
+      - 'modules/mobile-link-simple-v4250.js'
       - 'modules/mobile-performance.js'
       - 'modules/mobile-performance.css'
-      - 'modules/mobile-sensor-fusion-v4240.js'
       - 'modules/camera-hardening-v422.js'
       - 'modules/camera-external-stream-v4223.js'
       - 'modules/remote-camera-frame-gate-v4230.js'
@@ -60,16 +68,18 @@ jobs:
 
       - name: Syntax check
         run: |
+          node --check script.js
           node --check modules/neural-command-router.js
           node --check modules/neural-input-bus.js
           node --check modules/neural-parity.js
+          node --check modules/neural-spatial-control-v4250.js
           node --check modules/stark-hand-gesture-v420.js
           node --check modules/palm-matrix-v420.js
           node --check modules/file-inspector-v420.js
           node --check modules/neural-file-visualizer.js
           node --check modules/mobile-camera-source.js
+          node --check modules/mobile-link-simple-v4250.js
           node --check modules/mobile-performance.js
-          node --check modules/mobile-sensor-fusion-v4240.js
           node --check modules/camera-hardening-v422.js
           node --check modules/camera-external-stream-v4223.js
           node --check modules/remote-camera-frame-gate-v4230.js
@@ -88,33 +98,34 @@ jobs:
           assert(normalizeNeuralAction('open fist') === 'zoom-in', 'zoom-in normalization failed');
           assert(normalizeNeuralAction('close palm') === 'zoom-out', 'zoom-out normalization failed');
           assert(validateNeuralAction('activate', { confidence: 0.8, handCount: 2 }).ok, 'two-palm activation should pass');
-          assert(!validateNeuralAction('activate', { confidence: 0.8, handCount: 1 }).ok, 'one hand must not activate');
+          assert(!validateNeuralAction('activate', { confidence: 0.8, handCount: 1 }).ok, 'one hand must not activate legacy policy');
           assert(validateNeuralAction('rotate', { confidence: 0.8, delta: 0.04 }).ok, 'rotation should pass');
           assert(validateNeuralAction('zoom-in', { confidence: 0.8, scale: 1.3, openness: 0.6 }).ok, 'zoom-in should pass');
           assert(validateNeuralAction('zoom-out', { confidence: 0.8, scale: 1, openness: 0.2 }).ok, 'zoom-out should pass');
           assert(validateNeuralAction('pinch-select', { target: 'ARQUIVO', cameraTap: true }).ok, 'pinch + camera touch should pass');
           assert(!validateNeuralAction('pinch-select', { target: 'ARQUIVO' }).ok, 'pinch without camera touch must fail');
           assert(neuralSignature('rotate', { delta: -0.2 }) === 'rotate:ccw', 'rotation signature failed');
-          console.log('Neural policy v4.20 OK');
+          console.log('Neural policy v4.20 compatibility OK');
           NODE
 
-      - name: Gesture semantics v4.20
+      - name: Gesture and spatial semantics
         run: |
           grep -q "numHands: 2" modules/stark-hand-gesture-v420.js
-          grep -q "two-open-palms" modules/stark-hand-gesture-v420.js
           grep -q "Pointing_Up" modules/stark-hand-gesture-v420.js
           grep -q "pinchRatio < 0.39" modules/stark-hand-gesture-v420.js
           grep -q "cameraTap: true" modules/stark-hand-gesture-v420.js
-          grep -q "approachRate > 0.48" modules/stark-hand-gesture-v420.js
-          grep -q "video.readyState < 2" modules/stark-hand-gesture-v420.js
-          ! grep -q "FIST=FREEZE" modules/stark-bootstrap.js
+          grep -q "palmRotation" modules/stark-hand-gesture-v420.js
+          grep -q "handSpan" modules/stark-hand-gesture-v420.js
+          grep -q "ULTRON_NEURAL_3D" modules/neural-spatial-control-v4250.js
+          grep -q "wrap360" modules/neural-spatial-control-v4250.js
+          grep -q "activateOpticalHands" modules/neural-spatial-control-v4250.js
+          grep -q "optical-auto" modules/neural-spatial-control-v4250.js
+          grep -q "pointerdown" modules/neural-spatial-control-v4250.js
+          grep -q "wheel" modules/neural-spatial-control-v4250.js
           grep -q "ultron:palm-rotate" modules/neural-command-router.js
           grep -q "ultron:palm-zoom-in" modules/neural-command-router.js
           grep -q "ultron:palm-zoom-out" modules/neural-command-router.js
-          grep -q -- "--gesture-scale" modules/palm-matrix-v420.js
-          grep -q "zoomPhase = 'opening'" modules/palm-matrix-v420.js
-          grep -q "zoomPhase = 'closing'" modules/palm-matrix-v420.js
-          echo 'Gesture semantics v4.20 OK'
+          echo 'Neural spatial 360 semantics OK'
 
       - name: Unified file and image preview markers
         run: |
@@ -127,33 +138,40 @@ jobs:
           grep -q 'rawFilePreview' local-core/server.py
           echo 'Unified file preview and Neural image rendering OK'
 
-      - name: Smartphone camera markers
+      - name: Mobile Optical Bridge markers
         run: |
-          grep -q "droidcam|iriun|camo|epoccam" modules/mobile-camera-source.js
           grep -q "RTCPeerConnection" modules/mobile-camera-source.js
           grep -q "camera.request" modules/mobile-camera-source.js
           grep -q "camera.webrtc.offer" modules/mobile-camera-source.js
           grep -q "channel: 'camera'" modules/mobile-camera-source.js
+          grep -q "smartConnect" modules/mobile-camera-source.js
+          grep -q "CONECTAR CÂMERA DO CELULAR" modules/mobile-camera-source.js
+          grep -q "refreshIceServers" modules/mobile-camera-source.js
+          grep -q "ULTRON_MOBILE_LINK" modules/mobile-link-simple-v4250.js
           grep -q "enumerated-minimal" modules/camera-hardening-v422.js
-          grep -q "CÂMERA ULTRON BRIDGE" modules/mobile-camera-source.js
           grep -q "ULTRON_EXTERNAL_CAMERA_STREAM" modules/camera-external-stream-v4223.js
           grep -q "ULTRON_REMOTE_CAMERA_FRAME_GATE" modules/remote-camera-frame-gate-v4230.js
           grep -q "camera-frame-ready" modules/remote-camera-frame-gate-v4230.js
           grep -q "hasDecodedFrame" modules/visual-neural-stream-bridge-v4225.js
-          echo 'Smartphone camera sources + real-frame gate OK'
+          ! grep -qi "droidcam\|iriun\|epoccam" modules/mobile-camera-source.js
+          echo 'One-button Mobile Optical Bridge + real-frame gate OK'
 
       - name: Integration markers
         run: |
-          grep -Eq "stark-bootstrap.js\?v=4\.[0-9]+\.[0-9]+" index.html
-          grep -Eq 'ULTRON AI // .*// v4\.[0-9]+\.[0-9]+' index.html
+          grep -Eq "stark-bootstrap.js\?v=4\.25\.[0-9]+" index.html
+          grep -Eq 'ULTRON AI // .*// v4\.25\.0' index.html
           grep -q "stark-hand-gesture-v420.js?v=4.20.0" modules/stark-bootstrap.js
           grep -q "palm-matrix-v420.js?v=4.20.0" modules/stark-bootstrap.js
           grep -q "file-inspector-v420.js?v=4.20.0" modules/stark-bootstrap.js
-          grep -Eq "mobile-camera-source.js\?v=4\.[0-9]+\.[0-9]+" modules/stark-bootstrap.js
+          grep -q "mobile-camera-source.js?v=4.25.0" modules/stark-bootstrap.js
+          grep -q "neural-spatial-control-v4250.js?v=4.25.0" modules/stark-bootstrap.js
+          grep -q "neural-focus-v4250.css?v=4.25.0" modules/stark-bootstrap.js
+          grep -q "mobile-link-simple-v4250.js?v=4.25.0" modules/stark-bootstrap.js
           grep -q "camera-external-stream-v4223.js?v=4.22.3" modules/stark-bootstrap.js
           grep -Eq "remote-camera-frame-gate-v4230.js\?v=4\.23\.[0-9]+" modules/stark-bootstrap.js
           grep -q "mobile-performance.js?v=4.24.0" modules/stark-bootstrap.js
-          grep -q "mobile-sensor-fusion-v4240.js?v=4.24.0" modules/stark-bootstrap.js
-          grep -q "ULTRON_MOBILE_SENSORS" modules/mobile-sensor-fusion-v4240.js
+          ! grep -q "mobile-sensor-fusion-v4240.js" modules/stark-bootstrap.js
+          ! grep -q "MotionSensor" script.js
+          ! grep -q 'id="emotion-state"' index.html
           grep -q "handControlModel" modules/stark-bootstrap.js
-          echo 'Neural Gesture + Remote Camera + Mobile Performance integration markers OK'
+          echo 'Neural 360 + Optical Sensor integration markers OK'

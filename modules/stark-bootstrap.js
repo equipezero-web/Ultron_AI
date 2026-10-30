@@ -1,4 +1,4 @@
-const BOOT_KEY = '__ULTRON_STARK_BOOTSTRAP_V4242__';
+const BOOT_KEY = '__ULTRON_STARK_BOOTSTRAP_V4250__';
 
 if (!window[BOOT_KEY]) {
   window[BOOT_KEY] = true;
@@ -13,6 +13,7 @@ if (!window[BOOT_KEY]) {
   const FILE_MESH_STYLE_ID = 'ultron-stark-file-mesh-style';
   const MOBILE_PERF_STYLE_ID = 'ultron-mobile-performance-style';
   const GESTURE_V420_STYLE_ID = 'ultron-neural-gesture-v420-style';
+  const NEURAL_FOCUS_STYLE_ID = 'ultron-neural-focus-v4250-style';
 
   function loadStyle(id, href) {
     if (document.getElementById(id)) return;
@@ -25,7 +26,6 @@ if (!window[BOOT_KEY]) {
 
   loadStyle(MOBILE_PERF_STYLE_ID, 'modules/mobile-performance.css?v=4.24.0');
   await import('./mobile-performance.js?v=4.24.0');
-  await import('./mobile-sensor-fusion-v4240.js?v=4.24.0');
 
   loadStyle(STYLE_ID, 'modules/stark-core.css?v=4.12.1');
   loadStyle(FUNCTIONAL_STYLE_ID, 'modules/stark-functional.css?v=4.12.1');
@@ -55,7 +55,7 @@ if (!window[BOOT_KEY]) {
   await import('./stark-file-mesh.js?v=4.20.0');
   await import('./file-inspector-v420.js?v=4.20.0');
   await import('./remote-camera-webrtc-hotfix-v4221.js?v=4.24.2');
-  await import('./mobile-camera-source.js?v=4.23.2');
+  await import('./mobile-camera-source.js?v=4.25.0');
   await import('./stark-hand-gesture-v420.js?v=4.20.0');
   await import('./stark-camera-preview.js?v=4.23.2');
   await import('./visual-neural-stream-bridge-v4225.js?v=4.23.0');
@@ -67,6 +67,10 @@ if (!window[BOOT_KEY]) {
   await import('./stark-production-bridge.js?v=4.12.1');
   await import('./backend-version-check.js?v=4.15.0');
   await import('./neural-parity.js?v=4.18.0');
+
+  loadStyle(NEURAL_FOCUS_STYLE_ID, 'modules/neural-focus-v4250.css?v=4.25.0');
+  await import('./neural-spatial-control-v4250.js?v=4.25.0');
+  await import('./mobile-link-simple-v4250.js?v=4.25.0');
 
   window.addEventListener('ultron:processing-start', () => {
     window.ULTRON_STARK_CORE?.processing?.(true);
@@ -87,7 +91,7 @@ if (!window[BOOT_KEY]) {
 
   window.dispatchEvent(new CustomEvent('ultron:stark-bootstrap-ready', {
     detail: {
-      version: '4.24.2',
+      version: '4.25.0',
       performanceMode: window.ULTRON_PERFORMANCE?.mode || 'full',
       starkCore: Boolean(window.ULTRON_STARK_CORE),
       innerMesh: Boolean(window.ULTRON_STARK_MESH),
@@ -96,13 +100,14 @@ if (!window[BOOT_KEY]) {
       neuralCommandRouter: Boolean(window.ULTRON_NEURAL_COMMAND),
       neuralVisualPanel: Boolean(window.ULTRON_VISUAL_PANEL),
       neuralFileVisuals: Boolean(window.ULTRON_NEURAL_FILE_VISUALS),
+      neuralSpatial360: Boolean(window.ULTRON_NEURAL_3D),
       vision: Boolean(window.ULTRON_VISION),
       visionDiagnostics: Boolean(window.ULTRON_VISION?.diagnose),
       visionImageFallback: Boolean(window.ULTRON_VISION?.analyzeFile),
       visionRemoteSource: Boolean(window.ULTRON_VISION_REMOTE_SOURCE),
       visionCommandRouter: Boolean(window.ULTRON_VISION_ROUTER),
       handGestures: Boolean(window.ULTRON_HAND_GESTURES),
-      handControlModel: '2 OPEN PALMS=ACTIVATE / INDEX=MOVE / PINCH+CAMERA TOUCH=SELECT / PALM ROTATE=360 / FIST→OPEN=ZOOM IN / OPEN→FIST=ZOOM OUT+CENTER',
+      handControlModel: 'HAND MOVE=ROTATE 360 / HAND DEPTH=ZOOM / PALM ROTATION=ROLL / INDEX=POINTER / PINCH=SELECT',
       palmMatrix: Boolean(window.ULTRON_PALM_MATRIX),
       cameraPreview: Boolean(window.ULTRON_CAMERA_PREVIEW),
       visualNeuralStreamBridge: Boolean(window.ULTRON_VISUAL_NEURAL_STREAM),
@@ -112,8 +117,8 @@ if (!window[BOOT_KEY]) {
       cameraRuntime: Boolean(window.ULTRON_CAMERA_RUNTIME),
       externalCameraStreamAdapter: Boolean(window.ULTRON_EXTERNAL_CAMERA_STREAM),
       mobileCamera: Boolean(window.ULTRON_MOBILE_CAMERA),
-      mobileCameraBridge: Boolean(window.ULTRON_MOBILE_CAMERA?.useBridgeCamera),
-      mobileSensors: Boolean(window.ULTRON_MOBILE_SENSORS),
+      mobileCameraBridge: Boolean(window.ULTRON_MOBILE_CAMERA?.smartConnect),
+      mobileLinkSimple: Boolean(window.ULTRON_MOBILE_LINK),
       remoteCameraWebRtcHotfix: Boolean(window.__ULTRON_REMOTE_CAMERA_WEBRTC_V4242__),
       cameraDiagnostics: Boolean(window.ULTRON_CAMERA_RUNTIME?.diagnostics),
       zoomDiagnostics: Boolean(window.ULTRON_ZOOM_DIAGNOSTICS),
