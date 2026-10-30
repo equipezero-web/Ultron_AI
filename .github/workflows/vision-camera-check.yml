@@ -167,7 +167,7 @@ jobs:
           console.log('Natural vision routing checks passed.');
           EOF
 
-      - name: Verify v4.25 optical and holographic architecture
+      - name: Verify v4.25+ optical and holographic architecture
         run: |
           grep -q "MAX_STREAM_RECOVERY" modules/camera-runtime.js
           grep -q "analyzeImageFile" modules/vision-client.js
@@ -197,7 +197,7 @@ jobs:
           grep -q "AZIMUTH 360°" index.html
           grep -q "OPTICAL SENSOR" index.html
           grep -q "COMPUTADOR ↔ CELULAR" index.html
-          grep -Eq 'ULTRON AI // .*// v4\.25\.0' index.html
+          grep -Eq 'ULTRON AI // .*// v4\.[0-9]+\.[0-9]+' index.html
           ! grep -q "MotionSensor" script.js
           ! grep -q "emotionDefinitions" script.js
           ! grep -q 'id="emotion-state"' index.html
