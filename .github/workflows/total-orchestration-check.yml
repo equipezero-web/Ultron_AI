@@ -99,10 +99,10 @@ jobs:
           ! grep -q 'reaction-activity' modules/telemetry-client-v4270.js
           ! grep -q '^    motion:' modules/telemetry-client-v4270.js
 
-      - name: Verify v4.27 runtime load order and release marker
+      - name: Verify orchestration runtime load order and current release marker
         run: |
-          grep -q 'TOTAL ORCHESTRATION + PROACTIVE CORE' index.html
-          grep -q 'TOTAL INTEGRATION // v4.27.0' index.html
+          grep -Eq '(TOTAL ORCHESTRATION \+ PROACTIVE CORE|NEURAL COMMAND \+ TOTAL ORCHESTRATION)' index.html
+          grep -Eq '(TOTAL INTEGRATION // v4\.27\.0|HOLOGRAPHIC FILESPACE // v4\.28\.0)' index.html
           grep -q 'ultron-core-bridge-v4270.js?v=4.27.0' index.html
           grep -q 'ultron-orchestrator-v4270.js?v=4.27.0' index.html
           grep -q 'device-control-v4260.js?v=4.26.0' index.html
@@ -130,7 +130,7 @@ jobs:
             if (index <= previous) throw new Error(`load order invalid at ${marker}`);
             previous = index;
           }
-          console.log('v4.27 load order OK');
+          console.log('Total orchestration load order OK');
           NODE
 
       - name: Verify safety boundaries
@@ -139,4 +139,4 @@ jobs:
           grep -q 'destructiveActionsBlockedWithoutPolicy: true' backend/worker-v6.js
           grep -q 'observe-auto/active-confirm/destructive-block' backend/orchestration-engine.js
           ! grep -qi 'desktop\.shell\|shell\.exec\|eval(' modules/ultron-orchestrator-v4270.js
-          echo 'Total orchestration v4.27 safety and integration checks passed.'
+          echo 'Total orchestration safety and integration checks passed.'
