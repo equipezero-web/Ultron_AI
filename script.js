@@ -1,56 +1,44 @@
 import { CameraController } from "./modules/camera.js";
-import { MotionSensor } from "./modules/motion.js";
 import { loadPreferences } from "./modules/storage.js";
 import { addLog, clock } from "./modules/system.js";
 import API_CONFIG from "./config.js";
 
 const $ = (id) => document.getElementById(id);
-
-const video = $("webcam");
-const canvas = $("motion-canvas");
-const output = $("output-box");
-
-const btnCamera = $("btn-camera");
-const btnStop = $("btn-stop-camera");
-
-const screenModal = $("screen-modal");
-const closeScreen = $("btn-close-screen");
-
-const sensitivity = $("sensitivity");
-const cooldown = $("cooldown");
-
-const prefs = loadPreferences();
-
-let motionEvents = 0;
-let startTime = Date.now();
-let fpsFrames = 0;
-let lastFps = Date.now();
-
-let currentMotion = 0;
-let lastMotionAt = Date.now();
-let voiceBusy = false;
-
-const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
-
-const apiUrl = (path) => `${API_BASE}${path}`;
-
-const emotionDefinitions = {
-  feliz: { label: "FELIZ", symbol: "😊" },
-  triste: { label: "TRISTE", symbol: "😢" },
-  normal: { label: "NORMAL", symbol: "😐" },
-  inquieto: { label: "INQUIETO", symbol: "⚡" },
-  pensativo: { label: "PENSATIVO", symbol: "🧠" },
-  estressado: { label: "ESTRESSADO", symbol: "🔥" }
+const setText = (id, value) => {
+  const element = $(id);
+  if (element) element.textContent = String(value);
+};
+const setClass = (id, value = "") => {
+  const element = $(id);
+  if (element) element.className = value;
 };
 
+const video = $("webcam");
+const output = $("output-box");
+const btnCamera = $("btn-camera");
+const btnStop = $("btn-stop-camera");
+const screenModal = $("screen-modal");
+const closeScreen = $("btn-close-screen");
+const prefs = loadPreferences();
+const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
+const apiUrl = (path) => `${API_BASE}${path}`;
+
+let startTime = Date.now();
+let voiceBusy = false;
+let opticalFrames = 0;
+let opticalFps = 0;
+let opticalWindowStarted = performance.now();
+let frameLoopActive = false;
+let cameraSource = "MOBILE_BRIDGE";
+
 function showScreen() {
-  screenModal.classList.add("open");
-  screenModal.setAttribute("aria-hidden", "false");
+  screenModal?.classList.add("open");
+  screenModal?.setAttribute("aria-hidden", "false");
 }
 
 function hideScreen() {
-  screenModal.classList.remove("open");
-  screenModal.setAttribute("aria-hidden", "true");
+  screenModal?.classList.remove("open");
+  screenModal?.setAttribute("aria-hidden", "true");
 }
 
 function getErrorMessage(data, status) {
@@ -86,40 +74,24 @@ function prepareNeuralResponse(data) {
 
 function playVoice(base64, mime = "audio/mpeg") {
   try {
-    if (!base64) {
-      throw new Error("O backend não retornou dados de áudio.");
-    }
-
-    const bytes = Uint8Array.from(
-      atob(base64),
-      (character) => character.charCodeAt(0)
-    );
-
+    if (!base64) throw new Error("O backend não retornou dados de áudio.");
+    const bytes = Uint8Array.from(atob(base64), (character) => character.charCodeAt(0));
     const blob = new Blob([bytes], { type: mime });
     const url = URL.createObjectURL(blob);
     const audio = $("voice-audio");
 
     if (!audio) {
       URL.revokeObjectURL(url);
-      throw new Error("Elemento de áudio #voice-audio não encontrado.");
+      throw new Error("Elemento de áudio não encontrado.");
     }
 
-    if (audio.dataset.audioUrl) {
-      URL.revokeObjectURL(audio.dataset.audioUrl);
-    }
-
+    if (audio.dataset.audioUrl) URL.revokeObjectURL(audio.dataset.audioUrl);
     audio.dataset.audioUrl = url;
     audio.src = url;
     audio.load();
-
     audio.play().catch(() => {
-      addLog(
-        output,
-        "Áudio gerado, mas o navegador bloqueou a reprodução automática. Interaja com a página e tente novamente.",
-        "alert"
-      );
+      addLog(output, "Áudio gerado, mas o navegador bloqueou a reprodução automática.", "alert");
     });
-
     audio.onended = () => {
       if (audio.dataset.audioUrl === url) {
         URL.revokeObjectURL(url);
@@ -127,165 +99,122 @@ function playVoice(base64, mime = "audio/mpeg") {
       }
     };
   } catch (error) {
-    addLog(
-      output,
-      `ELEVENLABS ERROR: Não foi possível reproduzir o áudio. ${error.message}`,
-      "alert"
-    );
+    addLog(output, `VOICE ERROR: ${error.message}`, "alert");
   }
+}
+
+function updateOpticalFrameReadout() {
+  if (!video) return;
+  if (video.videoWidth > 0 && video.videoHeight > 0) {
+    setText("camera-resolution", `${video.videoWidth}×${video.videoHeight}`);
+    setText("infra-frame", `${video.videoWidth}×${video.videoHeight}`);
+  }
+  setText("fps", `${opticalFps || "--"} FPS`);
+}
+
+function frameTick() {
+  if (!frameLoopActive || !video) return;
+  opticalFrames += 1;
+  const now = performance.now();
+  const elapsed = now - opticalWindowStarted;
+  if (elapsed >= 1000) {
+    opticalFps = Math.round((opticalFrames * 1000) / elapsed);
+    opticalFrames = 0;
+    opticalWindowStarted = now;
+    updateOpticalFrameReadout();
+  }
+  if (typeof video.requestVideoFrameCallback === "function") {
+    video.requestVideoFrameCallback(frameTick);
+  } else {
+    requestAnimationFrame(frameTick);
+  }
+}
+
+function startFrameTelemetry() {
+  if (frameLoopActive) return;
+  frameLoopActive = true;
+  opticalFrames = 0;
+  opticalWindowStarted = performance.now();
+  frameTick();
+}
+
+function stopFrameTelemetry() {
+  frameLoopActive = false;
+  opticalFrames = 0;
+  opticalFps = 0;
+  setText("fps", "-- FPS");
+  setText("camera-resolution", "NO SIGNAL");
+  setText("infra-frame", "WAITING");
 }
 
 const camera = new CameraController(video, (state) => {
   if (state === "active") {
-    $("camera-state").textContent = "ONLINE";
-    $("camera-state").style.color = "var(--green)";
-    $("permission-state").textContent = "GRANTED";
-    $("telemetry-camera").textContent = "ON";
-    $("vision-module").textContent = "ACTIVE";
-    $("vision-module").className = "green";
-    $("system-mode").textContent = "MONITORING";
-    btnCamera.textContent = "TELA ATIVA";
-    btnStop.disabled = false;
-    $("camera-resolution").textContent = `${video.videoWidth}×${video.videoHeight}`;
-    sensor.start();
-    addLog(output, "Sensor óptico calibrado. Monitoramento iniciado.");
+    setText("camera-state", "ONLINE");
+    if ($("camera-state")) $("camera-state").style.color = "var(--green)";
+    setText("permission-state", "MOBILE OPTICAL LINK");
+    setText("vision-module", "ACTIVE");
+    setClass("vision-module", "green");
+    setText("system-mode", "OPTICAL LINK");
+    setText("bridge-camera-state", "ONLINE");
+    if (btnCamera) btnCamera.textContent = "SENSOR ATIVO";
+    if (btnStop) btnStop.disabled = false;
+    startFrameTelemetry();
+    updateOpticalFrameReadout();
+    addLog(output, `Optical Sensor online via ${cameraSource}. Feed dedicado a visão, mãos e controle 3D.`);
   } else {
-    $("camera-state").textContent = "STANDBY";
-    $("camera-state").style.color = "";
-    $("telemetry-camera").textContent = "OFF";
-    $("vision-module").textContent = "STANDBY";
-    $("vision-module").className = "";
-    $("system-mode").textContent = "STANDBY";
-    btnCamera.textContent = "MOSTRAR TELA";
-    btnStop.disabled = true;
-    sensor.stop();
-    $("motion-tag").textContent = "STANDBY";
-    currentMotion = 0;
-    updateEmotion(0);
+    setText("camera-state", "STANDBY");
+    if ($("camera-state")) $("camera-state").style.color = "";
+    setText("vision-module", "STANDBY");
+    setClass("vision-module", "");
+    setText("system-mode", "STANDBY");
+    setText("bridge-camera-state", "STANDBY");
+    if (btnCamera) btnCamera.textContent = "ATIVAR SENSOR DO CELULAR";
+    if (btnStop) btnStop.disabled = true;
+    stopFrameTelemetry();
   }
 });
 
-const sensor = new MotionSensor(
-  video,
-  canvas,
-  (level) => {
-    motionEvents += 1;
-    $("motion-events").textContent = motionEvents;
-    lastMotionAt = Date.now();
-    $("motion-tag").textContent = `MOVIMENTO ${Math.round(level)}%`;
-    $("motion-tag").style.color = "var(--red)";
-    $("motion-tag").style.borderColor = "#ef444466";
-    addLog(output, `Evento de movimento detectado (${Math.round(level)}%).`, "alert");
+// O computador não abre a webcam local automaticamente. A fonte principal é o celular.
+camera.restoreIfGranted = async () => false;
 
-    setTimeout(() => {
-      $("motion-tag").textContent = "MONITORANDO";
-      $("motion-tag").style.color = "";
-      $("motion-tag").style.borderColor = "";
-    }, 900);
-  },
-  (level) => {
-    currentMotion = level;
-    $("motion-value").textContent = `${Math.round(level)}%`;
-    $("reaction-motion").textContent = `${Math.round(level)}%`;
-    fpsFrames += 1;
-
-    if (Date.now() - lastFps > 1000) {
-      $("fps").textContent = `${fpsFrames} FPS`;
-      fpsFrames = 0;
-      lastFps = Date.now();
-    }
-
-    updateEmotion(level);
-  }
-);
-
-sensor.threshold = Number(sensitivity.value);
-sensor.cooldown = Number(cooldown.value) * 1000;
-
-function updateEmotion(level) {
-  const idleSeconds = (Date.now() - lastMotionAt) / 1000;
-
-  let key = "normal";
-  let confidence = 58;
-  let activity = "BAIXA";
-
-  if (level >= 75) {
-    key = "estressado";
-    confidence = Math.min(96, 70 + Math.round(level * 0.25));
-    activity = "MUITO ALTA";
-  } else if (level >= 45) {
-    key = "inquieto";
-    confidence = Math.min(92, 62 + Math.round(level * 0.25));
-    activity = "ALTA";
-  } else if (level >= 20) {
-    key = "feliz";
-    confidence = 55 + Math.round(level * 0.35);
-    activity = "MODERADA";
-  } else if (idleSeconds > 25) {
-    key = "pensativo";
-    confidence = 55;
-    activity = "MUITO BAIXA";
-  } else if (idleSeconds > 12) {
-    key = "triste";
-    confidence = 52;
-    activity = "BAIXA";
-  }
-
-  const emotion = emotionDefinitions[key];
-  $("emotion-symbol").textContent = emotion.symbol;
-  $("emotion-state").textContent = emotion.label;
-  $("emotion-confidence").textContent = `Confiança estimada: ${confidence}%`;
-  $("reaction-activity").textContent = activity;
-
-  Object.keys(emotionDefinitions).forEach((emotionKey) => {
-    $("emotion-" + emotionKey).textContent = emotionKey === key ? `${confidence}%` : "—";
-  });
-}
-
-async function activateCamera() {
+async function activateCamera({ openPreview = true } = {}) {
   try {
-    showScreen();
+    if (openPreview) showScreen();
+    setText("permission-state", "CONNECTING MOBILE");
+    setText("bridge-camera-state", "CONNECTING");
 
-    if (!window.isSecureContext) {
-      addLog(output, "AVISO: câmera exige HTTPS ou localhost.", "alert");
+    const mobile = window.ULTRON_MOBILE_CAMERA;
+    if (!mobile?.smartConnect && !mobile?.useBridgeCamera) {
+      throw new Error("Módulo de câmera do celular ainda não carregou.");
     }
 
-    await camera.start();
+    cameraSource = "ULTRON BRIDGE";
+    if (mobile.smartConnect) await mobile.smartConnect();
+    else await mobile.useBridgeCamera();
   } catch (error) {
-    hideScreen();
-    $("permission-state").textContent = "BLOCKED";
-    addLog(output, `Falha de câmera: ${error.message}`, "alert");
+    if (openPreview) hideScreen();
+    setText("permission-state", "MOBILE OFFLINE");
+    setText("bridge-camera-state", "OFFLINE");
+    addLog(output, `OPTICAL SENSOR: ${error.message}`, "alert");
   }
 }
 
-btnCamera.addEventListener("click", activateCamera);
+btnCamera?.addEventListener("click", () => activateCamera({ openPreview: true }));
 
-btnStop.addEventListener("click", () => {
-  camera.stop();
+btnStop?.addEventListener("click", () => {
+  window.ULTRON_MOBILE_CAMERA?.stopBridgeCamera?.();
+  camera.stop({ silent: true });
   hideScreen();
-  addLog(output, "Câmera desligada pelo operador.");
+  addLog(output, "Optical Sensor desligado pelo operador.");
 });
 
-closeScreen.addEventListener("click", hideScreen);
-
-screenModal.addEventListener("click", (event) => {
+closeScreen?.addEventListener("click", hideScreen);
+screenModal?.addEventListener("click", (event) => {
   if (event.target === screenModal) hideScreen();
 });
 
-sensitivity.addEventListener("input", () => {
-  sensor.threshold = Number(sensitivity.value);
-  $("sensitivity-out").textContent = sensitivity.value;
-  $("threshold-value").textContent = sensitivity.value;
-});
-
-cooldown.addEventListener("input", () => {
-  sensor.cooldown = Number(cooldown.value) * 1000;
-  $("cooldown-out").textContent = `${cooldown.value}s`;
-});
-
-$("btn-send").addEventListener("click", execute);
-
-$("command-input").addEventListener("keydown", (event) => {
+$("btn-send")?.addEventListener("click", execute);
+$("command-input")?.addEventListener("keydown", (event) => {
   if (event.key === "Enter" && !event.shiftKey) {
     event.preventDefault();
     execute();
@@ -296,43 +225,28 @@ document.querySelectorAll("[data-command]").forEach((button) => {
   button.addEventListener("click", () => handleQuick(button.dataset.command));
 });
 
-document.querySelectorAll("[data-emotion]").forEach((button) => {
-  button.addEventListener("click", () => {
-    const key = button.dataset.emotion;
-    const emotion = emotionDefinitions[key];
-    $("emotion-symbol").textContent = emotion.symbol;
-    $("emotion-state").textContent = emotion.label;
-    $("emotion-confidence").textContent = "Modo manual do operador";
-    addLog(output, `Estado emocional manual selecionado: ${emotion.label}.`);
-  });
-});
-
 async function execute() {
   const input = $("command-input");
-  const command = input.value.trim();
+  const command = input?.value.trim() || "";
   if (!command) return;
 
   addLog(output, `OPERATOR: ${command}`);
   input.value = "";
+  const normalized = command.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
-  const lowerCommand = command.toLowerCase();
-
-  if (
-    lowerCommand.includes("mostrar tela") ||
-    lowerCommand.includes("câmera") ||
-    lowerCommand.includes("camera")
-  ) {
-    await activateCamera();
+  if (/\b(camera|sensor|optical|celular)\b/.test(normalized) && /\b(ativar|ligar|abrir|mostrar|conectar|camera|sensor)\b/.test(normalized)) {
+    await activateCamera({ openPreview: true });
     return;
   }
 
-  if (lowerCommand.includes("status")) {
+  if (/\b(centralizar|resetar|reset)\b/.test(normalized) && /\b(3d|esfera|neural|holograma|holografica)\b/.test(normalized)) {
+    window.ULTRON_NEURAL_3D?.reset?.();
+    addLog(output, "Esfera holográfica centralizada em 0°.");
+    return;
+  }
+
+  if (normalized.includes("status")) {
     handleQuick("status");
-    return;
-  }
-
-  if (lowerCommand.includes("varredura") || lowerCommand.includes("scan")) {
-    handleQuick("scan");
     return;
   }
 
@@ -341,58 +255,50 @@ async function execute() {
 
 async function askUltron(command) {
   const thinking = document.createElement("p");
-  thinking.textContent = "> ULTRON CORE: roteando comando e analisando contexto...";
+  thinking.textContent = "> ULTRON CORE: roteando comando e contexto óptico...";
   thinking.dataset.thinking = "true";
-  output.appendChild(thinking);
-  output.scrollTop = output.scrollHeight;
+  output?.appendChild(thinking);
+  if (output) output.scrollTop = output.scrollHeight;
 
   try {
-    if (!API_BASE) {
-      throw new Error("Backend não configurado. Defina backendUrl no arquivo config.js.");
-    }
+    if (!API_BASE) throw new Error("Backend não configurado.");
+    const neural3d = window.ULTRON_NEURAL_3D?.state || {};
+    const gesture = window.ULTRON_HAND_GESTURES?.state || {};
+    const remoteCamera = window.ULTRON_MOBILE_CAMERA?.state || {};
 
     const response = await fetch(apiUrl("/api/ai"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         message: command,
+        memoryKey: window.ULTRON_MEMORY?.getMemoryKey?.() || null,
         telemetry: {
-          motion: Math.round(currentMotion),
-          emotion: $("emotion-state").textContent,
-          activity: $("reaction-activity").textContent
+          optical: {
+            active: Boolean(remoteCamera.active || camera.stream),
+            source: remoteCamera.mode || cameraSource,
+            resolution: video?.videoWidth && video?.videoHeight ? `${video.videoWidth}x${video.videoHeight}` : null,
+            fps: opticalFps,
+            gesture: gesture.gesture || null,
+            handCount: neural3d.handCount || 0
+          },
+          neural3d: {
+            azimuth: Math.round(Number(neural3d.ry || 0)),
+            elevation: Math.round(Number(neural3d.rx || 0)),
+            roll: Math.round(Number(neural3d.rz || 0)),
+            zoom: Number(neural3d.scale || 1)
+          }
         }
       })
     });
 
     const data = await readApiResponse(response);
-
-    if (!response.ok) {
-      throw new Error(getErrorMessage(data, response.status));
-    }
-
-    if (!data?.text) {
-      throw new Error("O backend respondeu, mas não retornou texto do gateway de IA.");
-    }
+    if (!response.ok) throw new Error(getErrorMessage(data, response.status));
+    if (!data?.text) throw new Error("O gateway respondeu sem texto.");
 
     const provider = data.providerLabel || data.provider || "AI";
     addLog(output, `ULTRON [${provider}]: ${data.text}`);
-
-    if (data?.liveData?.news) {
-      const count = Number(data.liveData.resultCount || 0);
-      addLog(
-        output,
-        count > 0
-          ? `LIVE NEWS: ${count} fontes recentes carregadas no painel neural.`
-          : "LIVE NEWS: nenhuma fonte recente confiável foi retornada nesta busca.",
-        count === 0 ? "alert" : "normal"
-      );
-    }
-
     prepareNeuralResponse(data);
-
-    if (data.audioBase64) {
-      playVoice(data.audioBase64, data.audioMimeType || "audio/mpeg");
-    }
+    if (data.audioBase64) playVoice(data.audioBase64, data.audioMimeType || "audio/mpeg");
   } catch (error) {
     addLog(output, `ULTRON AI ERROR: ${error.message}`, "alert");
   } finally {
@@ -403,38 +309,23 @@ async function askUltron(command) {
 async function testVoice() {
   if (voiceBusy) return;
   voiceBusy = true;
-  addLog(output, "Solicitando teste de voz ElevenLabs...");
+  addLog(output, "Solicitando teste de voz...");
 
   try {
-    if (!API_BASE) {
-      throw new Error("Backend não configurado. Defina backendUrl no arquivo config.js.");
-    }
-
+    if (!API_BASE) throw new Error("Backend não configurado.");
     const response = await fetch(apiUrl("/api/voice"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        text: "ULTRON online. Sistema de voz operacional."
-      })
+      body: JSON.stringify({ text: "ULTRON online. Núcleo neural e sensor óptico operacionais." })
     });
-
     const data = await readApiResponse(response);
-
-    if (!response.ok) {
-      throw new Error(getErrorMessage(data, response.status));
-    }
-
-    if (!data?.audioBase64) {
-      throw new Error("A ElevenLabs respondeu, mas não retornou áudio.");
-    }
-
-    window.ULTRON_VISUAL_PANEL?.setCaption?.(
-      "ULTRON online. Sistema de voz operacional."
-    );
+    if (!response.ok) throw new Error(getErrorMessage(data, response.status));
+    if (!data?.audioBase64) throw new Error("O provedor não retornou áudio.");
+    window.ULTRON_VISUAL_PANEL?.setCaption?.("ULTRON online. Núcleo neural e sensor óptico operacionais.");
     playVoice(data.audioBase64, data.audioMimeType || "audio/mpeg");
-    addLog(output, "ElevenLabs: voz recebida e enviada para reprodução.");
+    addLog(output, "Voz recebida e enviada para reprodução.");
   } catch (error) {
-    addLog(output, `ELEVENLABS ERROR: ${error.message}`, "alert");
+    addLog(output, `VOICE ERROR: ${error.message}`, "alert");
   } finally {
     voiceBusy = false;
   }
@@ -443,115 +334,108 @@ async function testVoice() {
 async function loadHealth() {
   try {
     if (!API_BASE) throw new Error("Backend não configurado.");
-
     const response = await fetch(apiUrl("/api/health"), { cache: "no-store" });
     const data = await readApiResponse(response);
-
-    if (!response.ok) {
-      throw new Error(getErrorMessage(data, response.status));
-    }
+    if (!response.ok) throw new Error(getErrorMessage(data, response.status));
 
     const providerEntries = Object.values(data?.providers || {});
     const configuredProviders = providerEntries.filter((provider) => provider?.configured).length;
     const gatewayOnline = Boolean(data?.aiGateway && configuredProviders > 0);
 
-    $("gemini-module").textContent = gatewayOnline
-      ? `${configuredProviders} AI ONLINE`
-      : "API OFF";
-    $("gemini-module").className = gatewayOnline ? "green" : "";
-
-    $("voice-module").textContent = data.elevenlabs ? "ONLINE" : "API OFF";
-    $("voice-module").className = data.elevenlabs ? "green" : "";
-
-    $("bridge-module").textContent = data.deviceBridge ? "READY" : "API WAIT";
-    $("vitals-status").textContent = data.deviceBridge ? "CONECTADO" : "AGUARDANDO";
+    setText("gemini-module", gatewayOnline ? `${configuredProviders} AI ONLINE` : "API OFF");
+    setClass("gemini-module", gatewayOnline ? "green" : "");
+    setText("voice-module", data.elevenlabs || data.voiceRouter ? "ONLINE" : "API OFF");
+    setClass("voice-module", data.elevenlabs || data.voiceRouter ? "green" : "");
+    setText("bridge-module", data.deviceBridge || data.bridge?.ready ? "READY" : "API WAIT");
+    setText("infra-backend", "ONLINE");
   } catch (error) {
-    $("gemini-module").textContent = "BACKEND OFF";
-    $("gemini-module").className = "";
-    $("voice-module").textContent = "BACKEND OFF";
-    $("voice-module").className = "";
+    setText("gemini-module", "BACKEND OFF");
+    setText("voice-module", "BACKEND OFF");
+    setText("infra-backend", "OFFLINE");
     addLog(output, `BACKEND ERROR: ${error.message}`, "alert");
   }
 }
 
 function handleQuick(command) {
   if (command === "clear") {
-    output.innerHTML = "";
+    if (output) output.innerHTML = "";
     return;
   }
-
   if (command === "voice") {
     testVoice();
     return;
   }
-
   if (command === "camera") {
-    addLog(
-      output,
-      `Camera API: ${navigator.mediaDevices ? "DISPONÍVEL" : "INDISPONÍVEL"}`
-    );
+    activateCamera({ openPreview: true });
     return;
   }
-
+  if (command === "center") {
+    window.ULTRON_NEURAL_3D?.reset?.();
+    addLog(output, "Esfera holográfica centralizada.");
+    return;
+  }
   if (command === "status") {
+    const cameraState = window.ULTRON_MOBILE_CAMERA?.state || {};
+    const gestureState = window.ULTRON_HAND_GESTURES?.state || {};
+    const orb = window.ULTRON_NEURAL_3D?.state || {};
     addLog(
       output,
-      `Sistema ONLINE | câmera ${camera.stream ? "ATIVA" : "inativa"} | eventos ${motionEvents} | AI Gateway ${$("gemini-module").textContent} | ElevenLabs ${$("voice-module").textContent}`
+      `Sistema ONLINE | Optical ${cameraState.active ? "ONLINE" : "standby"} | ${video?.videoWidth || 0}×${video?.videoHeight || 0} @ ${opticalFps || 0} FPS | mãos ${orb.handCount || 0} | gesto ${gestureState.gesture || "NONE"} | AI ${$("gemini-module")?.textContent || "--"}`
     );
-    return;
-  }
-
-  if (command === "scan") {
-    addLog(output, "Iniciando varredura local...");
-    setTimeout(() => {
-      addLog(output, "Varredura concluída. Núcleo local operacional.");
-    }, 800);
   }
 }
 
-function updateBars() {
-  const holder = $("activity-bars");
-  holder.innerHTML = "";
+window.addEventListener("ultron:camera-hand", (event) => {
+  const detail = event?.detail || {};
+  setText("optical-gesture", String(detail.gesture || "TRACKING").replaceAll("_", " ").toUpperCase());
+  setText("optical-hands", Number(detail.handCount || 0));
+});
 
-  for (let index = 0; index < 70; index += 1) {
-    const bar = document.createElement("i");
-    bar.className = "bar";
-    bar.style.height = `${3 + Math.random() * 42}px`;
-    bar.style.animationDelay = `${Math.random() * 1.2}s`;
-    holder.appendChild(bar);
+window.addEventListener("ultron:camera-stream", (event) => {
+  const detail = event?.detail || {};
+  if (detail.active) {
+    cameraSource = detail.source || "REMOTE";
+    setText("infra-frame", detail.width && detail.height ? `${detail.width}×${detail.height}` : "ACTIVE");
   }
-}
+});
+
+window.addEventListener("ultron:remote-camera-ice-recovery", (event) => {
+  const detail = event?.detail || {};
+  setText("infra-ice-path", detail.state === "recovered" ? "RECOVERED" : "RECONNECTING");
+});
+
+window.addEventListener("ultron:mobile-camera-source", (event) => {
+  const detail = event?.detail || {};
+  if (detail.active) {
+    setText("bridge-camera-state", "ONLINE");
+    setText("permission-state", "MOBILE OPTICAL LINK");
+  }
+});
+
+window.addEventListener("ultron:remote-camera-webrtc-hotfix-ready", (event) => {
+  const detail = event?.detail || {};
+  setText("infra-webrtc", `v${detail.version || "READY"}`);
+  setText("turn-state", detail.turnConfigured ? "TURN READY" : "AUTO/STUN");
+});
 
 setInterval(() => {
-  $("clock").textContent = clock();
-
+  setText("clock", clock());
   const totalSeconds = Math.floor((Date.now() - startTime) / 1000);
   const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, "0");
   const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, "0");
   const seconds = String(totalSeconds % 60).padStart(2, "0");
-
-  $("uptime").textContent = `${hours}:${minutes}:${seconds}`;
-  updateEmotion(currentMotion);
+  setText("uptime", `${hours}:${minutes}:${seconds}`);
 }, 1000);
 
-updateBars();
-$("storage-state").textContent = "READY";
-$("connection-state").textContent = navigator.onLine ? "ONLINE" : "OFFLINE";
-
-window.addEventListener("online", () => {
-  $("connection-state").textContent = "ONLINE";
-});
-
-window.addEventListener("offline", () => {
-  $("connection-state").textContent = "OFFLINE";
-});
+setText("storage-state", "READY");
+setText("connection-state", navigator.onLine ? "ONLINE" : "OFFLINE");
+window.addEventListener("online", () => setText("connection-state", "ONLINE"));
+window.addEventListener("offline", () => setText("connection-state", "OFFLINE"));
 
 if (prefs.cameraAccepted) {
-  addLog(
-    output,
-    "Preferência local: câmera já autorizada anteriormente. A visualização permanece oculta até o operador solicitar."
-  );
+  addLog(output, "Preferência anterior de câmera detectada. A webcam local permanecerá desligada; o Ultron prioriza o celular.");
 }
 
+video?.addEventListener("playing", startFrameTelemetry);
+video?.addEventListener("emptied", stopFrameTelemetry);
 loadHealth();
-updateEmotion(0);
