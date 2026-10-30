@@ -1,0 +1,295 @@
+/* ULTRON v4.25.0 // Neural + Optical focus layout */
+body.ultron-neural-focus{
+  --orb-rx:0deg;
+  --orb-ry:0deg;
+  --orb-rz:0deg;
+  --orb-scale:1;
+  --orb-depth:0px;
+  --orb-glow:.62;
+}
+
+body.ultron-neural-focus .app-shell{
+  width:min(100%,2200px);
+  min-height:100vh;
+  padding:10px 12px 8px;
+}
+
+body.ultron-neural-focus .topbar{
+  min-height:64px;
+  margin-bottom:9px;
+  padding:9px 14px;
+}
+
+body.ultron-neural-focus .hud-layout{
+  grid-template-columns:minmax(205px,.58fr) minmax(620px,2.7fr) minmax(230px,.68fr);
+  gap:9px;
+}
+
+body.ultron-neural-focus .hud-column,
+body.ultron-neural-focus .center-column{
+  gap:9px;
+}
+
+body.ultron-neural-focus .hud-panel{
+  padding:10px;
+}
+
+body.ultron-neural-focus .neural-stage{
+  min-height:calc(100vh - 270px);
+  height:min(76vh,820px);
+  padding:11px 16px 12px;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 48%,rgba(0,190,255,.15),transparent 24%),
+    radial-gradient(circle at 50% 44%,rgba(10,63,92,.42),rgba(2,11,20,.96) 58%,rgba(1,6,11,.99));
+}
+
+body.ultron-neural-focus .orb-stage{
+  min-height:560px;
+  perspective:1300px;
+  transform-style:preserve-3d;
+  overflow:visible;
+  touch-action:none;
+}
+
+body.ultron-neural-focus .orb-stage::before{
+  width:82%;
+  height:82%;
+  opacity:.95;
+  filter:blur(28px);
+}
+
+body.ultron-neural-focus .core-orb{
+  width:clamp(300px,31vw,520px);
+  height:clamp(300px,31vw,520px);
+  animation:none !important;
+  transform-style:preserve-3d;
+  will-change:transform,filter;
+  transform:
+    translateZ(var(--orb-depth))
+    rotateX(var(--orb-rx))
+    rotateY(var(--orb-ry))
+    rotateZ(var(--orb-rz))
+    scale(var(--orb-scale));
+  transition:transform 54ms linear,filter 90ms linear;
+  filter:brightness(calc(.96 + var(--orb-glow) * .15));
+  box-shadow:
+    0 0 26px rgba(255,255,255,.72),
+    0 0 80px rgba(103,232,249,.72),
+    0 0 180px rgba(14,165,233,.38),
+    inset 0 0 72px rgba(103,232,249,.42);
+}
+
+body.ultron-neural-focus .core-orb::before{
+  opacity:.96;
+  background-size:40px 40px,54px 54px,48px 48px,60px 60px,68px 68px;
+}
+
+body.ultron-neural-focus .orb-grid{
+  background-size:30px 30px;
+  opacity:.86;
+  transform:rotateX(calc(var(--orb-rx) * -.18)) rotateY(calc(var(--orb-ry) * -.18)) rotate(12deg);
+}
+
+body.ultron-neural-focus .orb-heart{
+  width:28px;
+  height:28px;
+  box-shadow:0 0 12px #fff,0 0 38px #72ecff,0 0 88px #0ea5e9;
+}
+
+body.ultron-neural-focus .halo-1,
+body.ultron-neural-focus .halo-2,
+body.ultron-neural-focus .halo-3{
+  animation:none !important;
+  transform-style:preserve-3d;
+  will-change:transform;
+}
+
+body.ultron-neural-focus .halo-1{
+  width:clamp(390px,40vw,670px);
+  height:clamp(390px,40vw,670px);
+  transform:translate(-50%,-50%) rotateX(calc(var(--orb-rx) * .28)) rotateY(calc(var(--orb-ry) * .28)) rotateZ(var(--orb-rz));
+}
+
+body.ultron-neural-focus .halo-2{
+  width:clamp(450px,46vw,760px);
+  height:clamp(450px,46vw,760px);
+  transform:translate(-50%,-50%) rotateX(calc(var(--orb-rx) * -.18)) rotateY(calc(var(--orb-ry) * -.22)) rotateZ(calc(var(--orb-rz) * -.65));
+  opacity:.65;
+}
+
+body.ultron-neural-focus .halo-3{
+  display:block !important;
+  width:clamp(510px,52vw,850px);
+  height:clamp(510px,52vw,850px);
+  transform:translate(-50%,-50%) rotateX(calc(var(--orb-rx) * .12)) rotateY(calc(var(--orb-ry) * .16)) rotateZ(calc(var(--orb-rz) * .42));
+  opacity:.36;
+}
+
+body.ultron-neural-focus .orbit{
+  animation:none !important;
+  transform-style:preserve-3d;
+  will-change:transform;
+}
+
+body.ultron-neural-focus .orbit-a{
+  width:clamp(410px,43vw,720px);
+  height:clamp(120px,12vw,190px);
+  transform:translate(-50%,-50%) rotateX(calc(66deg + var(--orb-rx) * .35)) rotateY(calc(var(--orb-ry) * .32)) rotateZ(calc(var(--orb-rz) - 8deg));
+}
+body.ultron-neural-focus .orbit-b{
+  width:clamp(390px,40vw,680px);
+  height:clamp(145px,15vw,220px);
+  transform:translate(-50%,-50%) rotateX(calc(72deg + var(--orb-rx) * -.22)) rotateY(calc(var(--orb-ry) * .2)) rotateZ(calc(var(--orb-rz) + 58deg));
+  opacity:.58;
+}
+body.ultron-neural-focus .orbit-c{
+  display:block !important;
+  width:clamp(420px,44vw,740px);
+  height:clamp(120px,13vw,205px);
+  transform:translate(-50%,-50%) rotateX(calc(68deg + var(--orb-rx) * .18)) rotateY(calc(var(--orb-ry) * -.18)) rotateZ(calc(var(--orb-rz) + 118deg));
+  opacity:.43;
+}
+
+body.ultron-neural-focus .orb-axis{
+  opacity:.6;
+}
+
+body.ultron-neural-focus .core-pedestal{
+  width:clamp(290px,28vw,470px);
+  bottom:8px;
+  opacity:.7;
+}
+
+body.ultron-neural-focus .core-readouts{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:7px;
+}
+body.ultron-neural-focus .core-readouts div{
+  padding:8px 9px;
+}
+body.ultron-neural-focus .core-readouts strong{
+  font-size:9px;
+  color:#a9f6ff;
+}
+
+body.ultron-neural-focus .terminal{
+  height:150px;
+}
+
+body.ultron-neural-focus .optical-preview{
+  height:178px;
+}
+body.ultron-neural-focus .sensor-readout{
+  grid-template-columns:1fr 1fr;
+}
+body.ultron-neural-focus .controls{
+  grid-template-columns:1fr;
+}
+body.ultron-neural-focus .mobile-camera-source-v420{
+  display:grid;
+  gap:7px;
+  margin-bottom:8px;
+}
+body.ultron-neural-focus .mobile-camera-source-v420 .mobile-camera-advanced{
+  display:none !important;
+}
+body.ultron-neural-focus [data-mobile-camera-bridge]{
+  min-height:40px;
+  font-size:9px;
+  letter-spacing:.9px;
+}
+body.ultron-neural-focus [data-mobile-camera-status]{
+  display:block;
+  color:#6db9d6;
+  font:600 7px/1.45 monospace;
+}
+
+body.ultron-neural-focus .link-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:5px;
+}
+body.ultron-neural-focus .link-grid>div{
+  padding:7px;
+  border:1px solid rgba(103,232,249,.1);
+  background:rgba(1,8,14,.72);
+}
+body.ultron-neural-focus .link-grid span{
+  display:block;
+  font:600 6px monospace;
+  color:#4d7288;
+}
+body.ultron-neural-focus .link-grid strong{
+  display:block;
+  margin-top:3px;
+  font:700 8px monospace;
+  color:#9befff;
+  overflow-wrap:anywhere;
+}
+
+body.ultron-neural-focus .spatial-help{
+  margin:8px 0 0;
+  padding:7px 8px;
+  border-left:2px solid rgba(103,232,249,.45);
+  background:rgba(3,18,29,.5);
+  color:#6f9db5;
+  font:600 7px/1.45 monospace;
+}
+
+body.ultron-neural-focus .stark-hand-status{
+  max-width:80%;
+}
+
+@media(max-width:1250px){
+  body.ultron-neural-focus .hud-layout{
+    grid-template-columns:minmax(190px,.56fr) minmax(560px,2.35fr);
+  }
+  body.ultron-neural-focus .right-column{
+    grid-column:1/-1;
+    grid-template-columns:1fr 1fr;
+  }
+  body.ultron-neural-focus .neural-stage{
+    min-height:650px;
+    height:auto;
+  }
+}
+
+@media(max-width:900px){
+  body.ultron-neural-focus .hud-layout{grid-template-columns:1fr}
+  body.ultron-neural-focus .center-column{grid-row:1}
+  body.ultron-neural-focus .left-column,
+  body.ultron-neural-focus .right-column{
+    grid-column:auto;
+    grid-template-columns:1fr 1fr;
+  }
+  body.ultron-neural-focus .neural-stage{
+    min-height:610px;
+    height:auto;
+  }
+  body.ultron-neural-focus .orb-stage{min-height:500px}
+  body.ultron-neural-focus .core-orb{width:min(58vw,430px);height:min(58vw,430px)}
+}
+
+@media(max-width:650px){
+  body.ultron-neural-focus .app-shell{padding:6px}
+  body.ultron-neural-focus .left-column,
+  body.ultron-neural-focus .right-column{grid-template-columns:1fr}
+  body.ultron-neural-focus .neural-stage{min-height:520px;padding:9px}
+  body.ultron-neural-focus .orb-stage{min-height:400px;overflow:hidden}
+  body.ultron-neural-focus .core-orb{width:min(68vw,330px);height:min(68vw,330px)}
+  body.ultron-neural-focus .halo-1{width:min(82vw,390px);height:min(82vw,390px)}
+  body.ultron-neural-focus .halo-2{width:min(94vw,450px);height:min(94vw,450px)}
+  body.ultron-neural-focus .halo-3{width:min(108vw,510px);height:min(108vw,510px)}
+  body.ultron-neural-focus .orbit-a,
+  body.ultron-neural-focus .orbit-b,
+  body.ultron-neural-focus .orbit-c{width:min(90vw,430px)}
+  body.ultron-neural-focus .core-readouts{grid-template-columns:1fr 1fr}
+  body.ultron-neural-focus .terminal{height:190px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  body.ultron-neural-focus .core-orb,
+  body.ultron-neural-focus .orbit,
+  body.ultron-neural-focus .orb-halo{transition:none!important}
+}
