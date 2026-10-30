@@ -1,0 +1,76 @@
+name: Neural Command v4.28 Check
+
+on:
+  push:
+    paths:
+      - 'index.html'
+      - 'assets/neural-command-concept.webp'
+      - 'modules/neural-command-v4280.js'
+      - 'modules/neural-command-v4280.css'
+      - 'modules/neural-filespace-click-bridge-v4280.js'
+      - '.github/workflows/neural-command-v4280-check.yml'
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'assets/neural-command-concept.webp'
+      - 'modules/neural-command-v4280.js'
+      - 'modules/neural-command-v4280.css'
+      - 'modules/neural-filespace-click-bridge-v4280.js'
+      - '.github/workflows/neural-command-v4280-check.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  neural-command-filespace:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: JavaScript syntax
+        run: |
+          node --check modules/neural-command-v4280.js
+          node --check modules/neural-filespace-click-bridge-v4280.js
+
+      - name: Neural Command v4.28 integration markers
+        run: |
+          test -s assets/neural-command-concept.webp
+          grep -q 'neural-command-v4280.css?v=4.28.0' index.html
+          grep -q 'neural-command-v4280.js?v=4.28.0' index.html
+          grep -q 'neural-filespace-click-bridge-v4280.js?v=4.28.0' index.html
+          grep -q 'HOLOGRAPHIC NEURAL CORE // INTERNAL FILESPACE' index.html
+          grep -q 'v4.28.0' index.html
+          grep -q 'assets/neural-command-concept.webp' modules/neural-command-v4280.css
+
+      - name: Validate 360, hidden files and fragmentation
+        run: |
+          grep -q 'ULTRON_NEURAL_3D' modules/neural-command-v4280.js
+          grep -q 'scale >= 1.34' modules/neural-command-v4280.js
+          grep -q 'double-click' modules/neural-command-v4280.js
+          grep -q 'neural-core-fracturing' modules/neural-command-v4280.js
+          grep -q 'neural-files-open' modules/neural-command-v4280.js
+          grep -q 'stark-file-node' modules/neural-command-v4280.css
+          grep -q 'visibility:hidden!important' modules/neural-command-v4280.css
+          grep -q 'nc-fragment' modules/neural-command-v4280.css
+
+      - name: Validate integrated file workspace and safe movement
+        run: |
+          grep -q 'ULTRON_NEURAL_FILESPACE' modules/neural-command-v4280.js
+          grep -q 'openFileNode' modules/neural-command-v4280.js
+          grep -q 'stageTransfer' modules/neural-command-v4280.js
+          grep -q 'APLICAR TRANSFERÊNCIAS' modules/neural-command-v4280.js
+          grep -q 'api.export' modules/neural-command-v4280.js
+          grep -q 'originais permanecerão intactos' modules/neural-command-v4280.js
+          grep -q 'stark-file-node' modules/neural-filespace-click-bridge-v4280.js
+          grep -q 'NEURAL WORKSPACE' modules/neural-command-v4280.js
+
+      - name: Preserve existing safety direction
+        run: |
+          ! grep -q 'MotionSensor' modules/neural-command-v4280.js
+          ! grep -qi 'emotionDefinitions\|emotion-state' modules/neural-command-v4280.js
+          grep -q 'sourceOverwrite.*False' local-core/server.py
+          echo 'Neural Command v4.28 holographic filespace checks OK'
