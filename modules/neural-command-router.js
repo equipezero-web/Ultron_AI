@@ -3,7 +3,7 @@ import {
   neuralSignature,
   normalizeNeuralAction,
   validateNeuralAction
-} from './neural-command-policy.mjs?v=4.19.0';
+} from './neural-command-policy.mjs?v=4.20.0';
 
 const HAS_WINDOW = typeof window !== 'undefined';
 const HAS_DOCUMENT = typeof document !== 'undefined';
@@ -57,13 +57,13 @@ function publish(action, detail = {}, { source = 'neural-router', handled = fals
     target: detail.target || detail.label || null,
     direction: detail.direction || null,
     delta: Number(detail.delta || detail.rotationStep || 0),
-    zoomLevel: Number(detail.zoomLevel || 0),
+    scale: Number(detail.scale || 1),
+    openness: Number(detail.openness ?? 0),
+    cameraTap: detail.cameraTap === true,
     at: Date.now()
   };
-
   state.accepted += 1;
   state.lastCommand = command;
-
   if (HAS_WINDOW && typeof CustomEvent !== 'undefined') {
     window.dispatchEvent(new CustomEvent('ultron:neural-command', { detail: command }));
   }
@@ -82,7 +82,7 @@ function reject(action, detail, reason) {
   return { ok: false, ...record };
 }
 
-function observe(action, detail = {}, source = 'palm-matrix') {
+function observe(action, detail = {}, source = 'gesture-v420') {
   const verdict = validateNeuralAction(action, detail);
   if (!verdict.ok) return reject(action, detail, verdict.reason);
   if (withinCooldown(verdict.action, detail)) {
@@ -92,75 +92,52 @@ function observe(action, detail = {}, source = 'palm-matrix') {
   return publish(verdict.action, detail, { source, handled: true, mode: 'observed' });
 }
 
-function fileExplosion() {
-  const stage = HAS_DOCUMENT ? document.querySelector('.neural-stage') : null;
-  stage?.classList.remove('stark-file-explosion');
-  if (stage) {
-    void stage.offsetWidth;
-    stage.classList.add('stark-file-explosion');
-    setTimeout(() => stage.classList.remove('stark-file-explosion'), 760);
-  }
-
-  const fileMesh = HAS_WINDOW ? window.ULTRON_FILE_MESH : null;
-  if (fileMesh?.active) {
-    fileMesh.refresh?.({ requestLocal: false });
-    return true;
-  }
-
-  if (fileMesh?.enter) {
-    Promise.resolve(fileMesh.enter()).catch(() => {});
-    return true;
-  }
-
-  const core = HAS_WINDOW ? window.ULTRON_STARK_CORE : null;
-  return Boolean(core?.open?.('ARQUIVOS'));
-}
-
 function executeAction(action, detail = {}) {
   const core = HAS_WINDOW ? window.ULTRON_STARK_CORE : null;
   const mesh = HAS_WINDOW ? window.ULTRON_STARK_MESH : null;
-  const fileLab = HAS_WINDOW ? window.ULTRON_FILE_LAB : null;
-  const fileMesh = HAS_WINDOW ? window.ULTRON_FILE_MESH : null;
   const hand = HAS_WINDOW ? window.ULTRON_HAND_GESTURES : null;
+  const inspector = HAS_WINDOW ? window.ULTRON_FILE_INSPECTOR : null;
+  const vortex = HAS_DOCUMENT ? document.querySelector('.stark-vortex') : null;
 
-  if (action === 'push') {
-    return fileExplosion();
+  if (action === 'activate') return Boolean(hand?.activate?.('neural-command'));
+
+  if (action === 'rotate') {
+    const delta = Number(detail.delta || detail.rotationStep || 0);
+    const current = parseFloat(vortex?.dataset?.neuralYaw || '0') || 0;
+    const next = current + delta * 180 / Math.PI;
+    if (vortex) {
+      vortex.dataset.neuralYaw = String(next);
+      vortex.style.setProperty('--tilt-y', `${next}deg`);
+    }
+    return Boolean(vortex);
+  }
+
+  if (action === 'zoom-in' || action === 'zoom-out') {
+    const scale = Math.max(0.86, Math.min(1.68, Number(detail.scale || (action === 'zoom-in' ? 1.35 : 1))));
+    if (vortex) vortex.style.setProperty('--gesture-scale', String(scale));
+    mesh?.setZoomLevel?.(scale >= 1.42 ? 2 : scale >= 1.12 ? 1 : 0);
+    return Boolean(vortex || mesh);
   }
 
   if (action === 'sweep') {
-    const direction = detail.direction === 'right' ? 'right' : 'left';
-    if (fileLab?.active) return Boolean(fileLab.sweep?.(direction) ?? true);
-    core?.sweep?.(direction);
+    core?.sweep?.(detail.direction === 'right' ? 'right' : 'left');
     return Boolean(core);
   }
 
-  if (action === 'freeze') {
-    hand?.freeze?.('neural-command');
-    mesh?.endDrag?.({ persist: true });
-    return Boolean(hand || mesh);
-  }
-
-  if (action === 'dial') {
-    const delta = Number(detail.delta || detail.rotationStep || 0);
-    if (fileLab?.active) return Boolean(fileLab.dial?.(delta) ?? true);
-    const level = Number(mesh?.zoomLevel || 0);
-    const next = Math.max(0, Math.min(2, level + (delta > 0 ? 1 : -1)));
-    if (next !== level) mesh?.setZoomLevel?.(next);
-    return Boolean(mesh);
-  }
-
   if (action === 'holder') {
-    fileLab?.showTable?.();
-    return Boolean(fileLab);
+    window.ULTRON_FILE_LAB?.showTable?.();
+    return Boolean(window.ULTRON_FILE_LAB);
   }
 
   if (action === 'pinch-select') {
     const target = String(detail.target || detail.label || '').trim();
     if (!target) return false;
-
-    if (fileMesh?.active && fileMesh.openFileNode?.(target)) return true;
+    if (inspector?.open) {
+      Promise.resolve(inspector.open(detail)).catch(() => {});
+      return true;
+    }
+    if (window.ULTRON_FILE_MESH?.active && window.ULTRON_FILE_MESH.openFileNode?.(detail.fileId || target)) return true;
     core?.focus?.(target);
-    if (mesh?.openFocused?.()) return true;
     return Boolean(core?.open?.(target));
   }
 
@@ -174,7 +151,6 @@ function execute(action, detail = {}, source = 'neural-api') {
     state.duplicatesBlocked += 1;
     return reject(verdict.action, detail, 'cooldown');
   }
-
   const handled = executeAction(verdict.action, detail);
   const result = publish(verdict.action, detail, { source, handled, mode: 'executed' });
   if (!handled) outputLine(`${verdict.action.toUpperCase()} recebido, mas nenhum alvo operacional estava disponível.`, true);
@@ -183,18 +159,21 @@ function execute(action, detail = {}, source = 'neural-api') {
 
 if (HAS_WINDOW) {
   const bindings = [
-    ['ultron:palm-push', 'push', 'palm-matrix'],
-    ['ultron:palm-sweep', 'sweep', 'palm-matrix'],
-    ['ultron:palm-freeze', 'freeze', 'palm-matrix'],
-    ['ultron:palm-dial', 'dial', 'palm-matrix'],
-    ['ultron:palm-holder', 'holder', 'palm-matrix'],
-    ['ultron:camera-hand-select', 'pinch-select', 'camera-hand']
+    ['ultron:neural-gesture-activated', 'activate', 'camera-hands'],
+    ['ultron:palm-rotate', 'rotate', 'palm-matrix-v420'],
+    ['ultron:palm-zoom-in', 'zoom-in', 'palm-matrix-v420'],
+    ['ultron:palm-zoom-out', 'zoom-out', 'palm-matrix-v420'],
+    ['ultron:camera-hand-select', 'pinch-select', 'camera-hand-v420']
   ];
 
   bindings.forEach(([eventName, action, source]) => {
     window.addEventListener(eventName, (event) => {
-      const result = observe(action, event?.detail || {}, source);
-      if (result.ok && action !== 'dial') {
+      const detail = event?.detail || {};
+      const normalizedDetail = action === 'activate'
+        ? { handCount: detail.handCount || 2, confidence: detail.confidence ?? 1, ...detail }
+        : detail;
+      const result = observe(action, normalizedDetail, source);
+      if (result.ok && !['rotate', 'zoom-in', 'zoom-out'].includes(action)) {
         const target = result.command.target ? ` // ${result.command.target}` : '';
         outputLine(`${action.toUpperCase()} CONFIRMADO${target}`);
       }
@@ -211,7 +190,7 @@ if (HAS_WINDOW) {
   };
 
   window.dispatchEvent(new CustomEvent('ultron:neural-command-ready', {
-    detail: { actions: Object.keys(NEURAL_ACTION_POLICY), version: '4.19.0' }
+    detail: { actions: Object.keys(NEURAL_ACTION_POLICY), version: '4.20.0' }
   }));
 }
 
