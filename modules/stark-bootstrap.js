@@ -1,4 +1,4 @@
-const BOOT_KEY = '__ULTRON_STARK_BOOTSTRAP_V420__';
+const BOOT_KEY = '__ULTRON_STARK_BOOTSTRAP_V422__';
 
 if (!window[BOOT_KEY]) {
   window[BOOT_KEY] = true;
@@ -50,7 +50,7 @@ if (!window[BOOT_KEY]) {
   await import('./local-files-ai-bridge.js?v=4.14.0');
   await import('./stark-file-mesh.js?v=4.20.0');
   await import('./file-inspector-v420.js?v=4.20.0');
-  await import('./mobile-camera-source.js?v=4.20.0');
+  await import('./mobile-camera-source.js?v=4.22.0');
   await import('./stark-hand-gesture-v420.js?v=4.20.0');
   await import('./stark-camera-preview.js?v=4.19.0');
   await import('./palm-matrix-v420.js?v=4.20.0');
@@ -79,7 +79,7 @@ if (!window[BOOT_KEY]) {
 
   window.dispatchEvent(new CustomEvent('ultron:stark-bootstrap-ready', {
     detail: {
-      version: '4.20.0',
+      version: '4.22.0',
       performanceMode: window.ULTRON_PERFORMANCE?.mode || 'full',
       starkCore: Boolean(window.ULTRON_STARK_CORE),
       innerMesh: Boolean(window.ULTRON_STARK_MESH),
@@ -98,6 +98,7 @@ if (!window[BOOT_KEY]) {
       cameraPreview: Boolean(window.ULTRON_CAMERA_PREVIEW),
       cameraRuntime: Boolean(window.ULTRON_CAMERA_RUNTIME),
       mobileCamera: Boolean(window.ULTRON_MOBILE_CAMERA),
+      mobileCameraBridge: Boolean(window.ULTRON_MOBILE_CAMERA?.useBridgeCamera),
       cameraDiagnostics: Boolean(window.ULTRON_CAMERA_RUNTIME?.diagnostics),
       zoomDiagnostics: Boolean(window.ULTRON_ZOOM_DIAGNOSTICS),
       productionBridge: Boolean(window.ULTRON_STARK_PRODUCTION),
