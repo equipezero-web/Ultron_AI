@@ -21,6 +21,20 @@ if (!window[PATCH_KEY]) {
     return stream?.getVideoTracks?.().find((track) => track.readyState === 'live') || null;
   }
 
+  function isRemoteBridgeStream(stream, options = {}) {
+    const track = liveVideoTrack(stream);
+    if (!track) return false;
+    const settings = track.getSettings?.() || {};
+    const mode = String(window.ULTRON_MOBILE_CAMERA?.state?.mode || '');
+    return Boolean(
+      options.remote ||
+      options.external ||
+      mode.startsWith('bridge') ||
+      !settings.deviceId ||
+      /ULTRON_REMOTE_CAMERA|ultron-camera/i.test(String(track.label || ''))
+    );
+  }
+
   async function attach(stream, { source = 'ULTRON_BRIDGE_WEBRTC' } = {}) {
     const track = liveVideoTrack(stream);
     if (!sourceVideo || !track) throw new Error('Stream remoto sem faixa de vídeo ativa.');
@@ -41,6 +55,13 @@ if (!window[PATCH_KEY]) {
       preview.muted = true;
       preview.playsInline = true;
       await preview.play().catch(() => {});
+    }
+
+    const controller = window.ULTRON_CAMERA_CONTROLLER;
+    if (controller) {
+      controller.stopRequested = false;
+      controller.stream = stream;
+      controller.lastError = null;
     }
 
     window.ULTRON_CAMERA_PREVIEW?.sync?.();
@@ -64,21 +85,56 @@ if (!window[PATCH_KEY]) {
     return stream;
   }
 
+  function patchController() {
+    const controller = window.ULTRON_CAMERA_CONTROLLER;
+    if (!controller || controller.__ultronRemoteDisplayPatched) return Boolean(controller?.__ultronRemoteDisplayPatched);
+
+    const nativeActivateStream = controller.activateStream.bind(controller);
+    controller.activateStream = async function patchedActivateStream(stream, options = {}) {
+      if (!isRemoteBridgeStream(stream, options)) {
+        return nativeActivateStream(stream, options);
+      }
+
+      this.stopRequested = false;
+      this.stream = stream;
+      try { this.bindTrackLifecycle?.(stream); } catch {}
+      const attached = await attach(stream, { source: 'ULTRON_BRIDGE_WEBRTC' });
+      try { this.onState?.('active', stream, { ...options, remote: true }); } catch {}
+      return attached;
+    };
+
+    controller.__ultronRemoteDisplayPatched = true;
+    return true;
+  }
+
   function detach({ stopTracks = false } = {}) {
     const stream = remoteStream;
     remoteStream = null;
     if (sourceVideo?.srcObject === stream) sourceVideo.srcObject = null;
     const preview = document.querySelector('.stark-camera-feed');
     if (preview?.srcObject === stream) preview.srcObject = null;
+
+    const controller = window.ULTRON_CAMERA_CONTROLLER;
+    if (controller?.stream === stream) controller.stream = null;
     if (stopTracks) stream?.getTracks?.().forEach((track) => track.stop());
+
     window.dispatchEvent(new CustomEvent('ultron:remote-camera-display', {
       detail: { active: false, stream: null }
     }));
   }
 
+  if (!patchController()) {
+    const timer = setInterval(() => {
+      if (patchController()) clearInterval(timer);
+    }, 100);
+    setTimeout(() => clearInterval(timer), 20000);
+  }
+
   window.ULTRON_REMOTE_CAMERA_DISPLAY = {
     attach,
     detach,
+    patchController,
+    isRemoteBridgeStream,
     get stream() { return remoteStream; },
     get active() {
       return Boolean(liveVideoTrack(remoteStream) && sourceVideo?.srcObject === remoteStream);
