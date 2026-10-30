@@ -26,6 +26,7 @@ public final class SecureStore {
     private static final String LG_TV_KEY_VALUE = "lg_tv_client_key_cipher";
     private static final String LG_TV_KEY_IV = "lg_tv_client_key_iv";
     private static final String REMOTE_MIC_TRUSTED = "remote_mic_trusted";
+    private static final String REMOTE_CAMERA_TRUSTED = "remote_camera_trusted";
 
     private SecureStore() {}
 
@@ -107,6 +108,14 @@ public final class SecureStore {
         return prefs(context).getBoolean(REMOTE_MIC_TRUSTED, false);
     }
 
+    public static void setRemoteCameraTrusted(Context context, boolean trusted) {
+        prefs(context).edit().putBoolean(REMOTE_CAMERA_TRUSTED, trusted).apply();
+    }
+
+    public static boolean isRemoteCameraTrusted(Context context) {
+        return prefs(context).getBoolean(REMOTE_CAMERA_TRUSTED, false);
+    }
+
     public static void saveLgTvHost(Context context, String host) {
         prefs(context).edit().putString(LG_TV_HOST, host == null ? "" : host.trim()).apply();
     }
@@ -145,6 +154,7 @@ public final class SecureStore {
         prefs(context).edit()
                 .remove(DEVICE_ID)
                 .remove(REMOTE_MIC_TRUSTED)
+                .remove(REMOTE_CAMERA_TRUSTED)
                 .apply();
     }
 }
