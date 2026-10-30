@@ -3,35 +3,33 @@ name: Neural Command Check
 on:
   push:
     paths:
+      - 'index.html'
       - 'modules/neural-command-policy.mjs'
       - 'modules/neural-command-router.js'
       - 'modules/neural-input-bus.js'
       - 'modules/neural-parity.js'
-      - 'modules/palm-matrix.js'
-      - 'modules/stark-hand-gesture.js'
-      - 'modules/stark-hand.css'
-      - 'modules/stark-camera-preview.js'
-      - 'modules/stark-camera-preview.css'
-      - 'modules/stark-file-mesh.css'
-      - 'modules/mobile-performance.js'
+      - 'modules/stark-hand-gesture-v420.js'
+      - 'modules/palm-matrix-v420.js'
+      - 'modules/neural-gesture-v420.css'
+      - 'modules/file-inspector-v420.js'
+      - 'modules/neural-file-visualizer.js'
+      - 'modules/mobile-camera-source.js'
       - 'modules/stark-bootstrap.js'
-      - 'modules/telemetry-client.js'
+      - 'local-core/server.py'
       - '.github/workflows/neural-command-check.yml'
   pull_request:
     paths:
+      - 'index.html'
       - 'modules/neural-command-policy.mjs'
       - 'modules/neural-command-router.js'
-      - 'modules/neural-input-bus.js'
-      - 'modules/neural-parity.js'
-      - 'modules/palm-matrix.js'
-      - 'modules/stark-hand-gesture.js'
-      - 'modules/stark-hand.css'
-      - 'modules/stark-camera-preview.js'
-      - 'modules/stark-camera-preview.css'
-      - 'modules/stark-file-mesh.css'
-      - 'modules/mobile-performance.js'
+      - 'modules/stark-hand-gesture-v420.js'
+      - 'modules/palm-matrix-v420.js'
+      - 'modules/neural-gesture-v420.css'
+      - 'modules/file-inspector-v420.js'
+      - 'modules/neural-file-visualizer.js'
+      - 'modules/mobile-camera-source.js'
       - 'modules/stark-bootstrap.js'
-      - 'modules/telemetry-client.js'
+      - 'local-core/server.py'
       - '.github/workflows/neural-command-check.yml'
 
 jobs:
@@ -39,85 +37,92 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
 
       - name: Syntax check
         run: |
           node --check modules/neural-command-router.js
           node --check modules/neural-input-bus.js
           node --check modules/neural-parity.js
-          node --check modules/palm-matrix.js
-          node --check modules/stark-hand-gesture.js
-          node --check modules/stark-camera-preview.js
-          node --check modules/mobile-performance.js
+          node --check modules/stark-hand-gesture-v420.js
+          node --check modules/palm-matrix-v420.js
+          node --check modules/file-inspector-v420.js
+          node --check modules/neural-file-visualizer.js
+          node --check modules/mobile-camera-source.js
           node --check modules/stark-bootstrap.js
-          node --check modules/telemetry-client.js
           node --check modules/neural-command-policy.mjs
+          python -m py_compile local-core/server.py
 
-      - name: Neural policy behavior
+      - name: Neural policy v4.20 behavior
         run: |
           node --input-type=module <<'NODE'
-          import {
-            normalizeNeuralAction,
-            neuralSignature,
-            validateNeuralAction
-          } from './modules/neural-command-policy.mjs';
-
-          const assert = (condition, message) => {
-            if (!condition) throw new Error(message);
-          };
-
-          assert(normalizeNeuralAction('pinch-click') === 'pinch-select', 'pinch normalization failed');
-          assert(normalizeNeuralAction('Closed Fist') === 'freeze', 'closed fist must freeze');
-          assert(normalizeNeuralAction('fist-anchor') === 'freeze', 'legacy fist anchor must map to freeze');
-          assert(validateNeuralAction('push', { confidence: 0.8 }).ok, 'push should pass');
-          assert(!validateNeuralAction('push', { confidence: 0.2 }).ok, 'low confidence push should fail');
-          assert(validateNeuralAction('freeze', { confidence: 0.8 }).ok, 'freeze should pass');
-          assert(validateNeuralAction('sweep', { confidence: 0.8, direction: 'right' }).ok, 'right sweep should pass');
-          assert(!validateNeuralAction('sweep', { confidence: 0.8, direction: 'up' }).ok, 'invalid sweep should fail');
-          assert(validateNeuralAction('dial', { confidence: 0.8, delta: 0.04 }).ok, 'dial should pass');
-          assert(!validateNeuralAction('dial', { confidence: 0.8, delta: 0.001 }).ok, 'weak dial should fail');
-          assert(validateNeuralAction('pinch-select', { target: 'ARQUIVO' }).ok, 'pinch target should pass');
-          assert(!validateNeuralAction('pinch-select', {}).ok, 'pinch without target should fail');
-          assert(neuralSignature('sweep', { direction: 'left', target: 'NEWS' }) === 'sweep:left:NEWS', 'signature failed');
-          console.log('Neural command policy OK');
+          import { normalizeNeuralAction, neuralSignature, validateNeuralAction } from './modules/neural-command-policy.mjs';
+          const assert = (condition, message) => { if (!condition) throw new Error(message); };
+          assert(normalizeNeuralAction('two open palms') === 'activate', 'activation normalization failed');
+          assert(normalizeNeuralAction('dial') === 'rotate', 'rotation normalization failed');
+          assert(normalizeNeuralAction('open fist') === 'zoom-in', 'zoom-in normalization failed');
+          assert(normalizeNeuralAction('close palm') === 'zoom-out', 'zoom-out normalization failed');
+          assert(validateNeuralAction('activate', { confidence: 0.8, handCount: 2 }).ok, 'two-palm activation should pass');
+          assert(!validateNeuralAction('activate', { confidence: 0.8, handCount: 1 }).ok, 'one hand must not activate');
+          assert(validateNeuralAction('rotate', { confidence: 0.8, delta: 0.04 }).ok, 'rotation should pass');
+          assert(validateNeuralAction('zoom-in', { confidence: 0.8, scale: 1.3, openness: 0.6 }).ok, 'zoom-in should pass');
+          assert(validateNeuralAction('zoom-out', { confidence: 0.8, scale: 1, openness: 0.2 }).ok, 'zoom-out should pass');
+          assert(validateNeuralAction('pinch-select', { target: 'ARQUIVO', cameraTap: true }).ok, 'pinch + camera touch should pass');
+          assert(!validateNeuralAction('pinch-select', { target: 'ARQUIVO' }).ok, 'pinch without camera touch must fail');
+          assert(neuralSignature('rotate', { delta: -0.2 }) === 'rotate:ccw', 'rotation signature failed');
+          console.log('Neural policy v4.20 OK');
           NODE
 
-      - name: Palm semantics
+      - name: Gesture semantics v4.20
         run: |
-          grep -q "Open_Palm" modules/stark-hand-gesture.js
-          grep -q "Pointing_Up" modules/stark-hand-gesture.js
-          grep -q "MOVE ARMED // USE O INDICADOR" modules/stark-hand-gesture.js
-          grep -q "PALMA FECHADA: posição congelada" modules/stark-hand-gesture.js
-          grep -q "pinchRatio < 0.39" modules/stark-hand-gesture.js
-          grep -q "ULTRON_FILE_MESH" modules/stark-hand-gesture.js
-          grep -q "emit('push'" modules/palm-matrix.js
-          grep -q "emit('freeze'" modules/palm-matrix.js
-          grep -q "PALM EXPLOSION" modules/palm-matrix.js
-          grep -q "fileMesh.enter" modules/palm-matrix.js
-          grep -q "stark-file-explosion" modules/stark-file-mesh.css
-          echo 'Palm semantics OK'
+          grep -q "numHands: 2" modules/stark-hand-gesture-v420.js
+          grep -q "two-open-palms" modules/stark-hand-gesture-v420.js
+          grep -q "Pointing_Up" modules/stark-hand-gesture-v420.js
+          grep -q "pinchRatio < 0.39" modules/stark-hand-gesture-v420.js
+          grep -q "cameraTap: true" modules/stark-hand-gesture-v420.js
+          grep -q "approachRate > 0.48" modules/stark-hand-gesture-v420.js
+          grep -q "video.readyState < 2" modules/stark-hand-gesture-v420.js
+          ! grep -q "FIST=FREEZE" modules/stark-bootstrap.js
+          grep -q "ultron:palm-rotate" modules/neural-command-router.js
+          grep -q "ultron:palm-zoom-in" modules/neural-command-router.js
+          grep -q "ultron:palm-zoom-out" modules/neural-command-router.js
+          grep -q -- "--gesture-scale" modules/palm-matrix-v420.js
+          grep -q "zoomPhase = 'opening'" modules/palm-matrix-v420.js
+          grep -q "zoomPhase = 'closing'" modules/palm-matrix-v420.js
+          echo 'Gesture semantics v4.20 OK'
 
-      - name: Mobile camera markers
+      - name: Unified file and image preview markers
         run: |
-          grep -q "58dvh" modules/stark-camera-preview.css
-          grep -q "object-fit: contain" modules/stark-camera-preview.css
-          grep -q "cameraWidth: 640, cameraHeight: 480, cameraFps: 20" modules/mobile-performance.js
-          grep -q "handInferenceMs: 125" modules/mobile-performance.js
-          grep -q "videoContentBox" modules/stark-camera-preview.js
-          echo 'Mobile camera sizing and tracking quality OK'
+          grep -q "UNIFIED FILE VIEW" modules/file-inspector-v420.js
+          grep -q "ULTRON_FILE_INSPECTOR" modules/file-inspector-v420.js
+          grep -q "/raw" modules/file-inspector-v420.js
+          grep -q "ULTRON_VISUAL_PANEL" modules/neural-file-visualizer.js
+          grep -q "neural-live.js?v=4.20.0" modules/stark-bootstrap.js
+          grep -q '@app.get("/file/{file_id}/raw")' local-core/server.py
+          grep -q 'rawFilePreview' local-core/server.py
+          echo 'Unified file preview and Neural image rendering OK'
+
+      - name: Smartphone camera markers
+        run: |
+          grep -q "droidcam|iriun|camo|epoccam" modules/mobile-camera-source.js
+          grep -q "captureStream" modules/mobile-camera-source.js
+          grep -q "Mixed Content" modules/mobile-camera-source.js
+          grep -q "SMARTPHONE NETWORK STREAM" modules/mobile-camera-source.js
+          grep -q "USAR CÂMERA DO CELULAR" modules/mobile-camera-source.js
+          echo 'Smartphone camera sources OK'
 
       - name: Integration markers
         run: |
-          grep -q "neural-command-router.js?v=4.19.0" modules/stark-bootstrap.js
-          grep -q "stark-hand-gesture.js?v=4.19.0" modules/stark-bootstrap.js
-          grep -q "palm-matrix.js?v=4.19.0" modules/stark-bootstrap.js
+          grep -q "stark-bootstrap.js?v=4.20.0" index.html
+          grep -q "NEURAL GESTURE + MOBILE CAMERA + ULTRON_DATA // v4.20.0" index.html
+          grep -q "stark-hand-gesture-v420.js?v=4.20.0" modules/stark-bootstrap.js
+          grep -q "palm-matrix-v420.js?v=4.20.0" modules/stark-bootstrap.js
+          grep -q "file-inspector-v420.js?v=4.20.0" modules/stark-bootstrap.js
+          grep -q "mobile-camera-source.js?v=4.20.0" modules/stark-bootstrap.js
           grep -q "handControlModel" modules/stark-bootstrap.js
-          grep -q "ultron:neural-command" modules/neural-input-bus.js
-          grep -q "ULTRON_NEURAL_COMMAND" modules/neural-parity.js
-          grep -q "ultron:palm-freeze" modules/neural-command-router.js
-          grep -q "ultron:camera-hand-select" modules/neural-command-router.js
-          echo 'Neural Command + gestures + Palm Matrix integration markers OK'
+          echo 'Neural Gesture v4.20 integration markers OK'
