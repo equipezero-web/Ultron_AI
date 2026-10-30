@@ -16,6 +16,8 @@ on:
       - 'modules/mobile-camera-source.js'
       - 'modules/camera-hardening-v422.js'
       - 'modules/camera-external-stream-v4223.js'
+      - 'modules/remote-camera-frame-gate-v4230.js'
+      - 'modules/visual-neural-stream-bridge-v4225.js'
       - 'modules/stark-bootstrap.js'
       - 'local-core/server.py'
       - '.github/workflows/neural-command-check.yml'
@@ -32,6 +34,8 @@ on:
       - 'modules/mobile-camera-source.js'
       - 'modules/camera-hardening-v422.js'
       - 'modules/camera-external-stream-v4223.js'
+      - 'modules/remote-camera-frame-gate-v4230.js'
+      - 'modules/visual-neural-stream-bridge-v4225.js'
       - 'modules/stark-bootstrap.js'
       - 'local-core/server.py'
       - '.github/workflows/neural-command-check.yml'
@@ -60,6 +64,8 @@ jobs:
           node --check modules/mobile-camera-source.js
           node --check modules/camera-hardening-v422.js
           node --check modules/camera-external-stream-v4223.js
+          node --check modules/remote-camera-frame-gate-v4230.js
+          node --check modules/visual-neural-stream-bridge-v4225.js
           node --check modules/stark-bootstrap.js
           node --check modules/neural-command-policy.mjs
           python -m py_compile local-core/server.py
@@ -123,7 +129,10 @@ jobs:
           grep -q "enumerated-minimal" modules/camera-hardening-v422.js
           grep -q "CÂMERA ULTRON BRIDGE" modules/mobile-camera-source.js
           grep -q "ULTRON_EXTERNAL_CAMERA_STREAM" modules/camera-external-stream-v4223.js
-          echo 'Smartphone camera sources OK'
+          grep -q "ULTRON_REMOTE_CAMERA_FRAME_GATE" modules/remote-camera-frame-gate-v4230.js
+          grep -q "camera-frame-ready" modules/remote-camera-frame-gate-v4230.js
+          grep -q "hasDecodedFrame" modules/visual-neural-stream-bridge-v4225.js
+          echo 'Smartphone camera sources + real-frame gate OK'
 
       - name: Integration markers
         run: |
@@ -132,7 +141,8 @@ jobs:
           grep -q "stark-hand-gesture-v420.js?v=4.20.0" modules/stark-bootstrap.js
           grep -q "palm-matrix-v420.js?v=4.20.0" modules/stark-bootstrap.js
           grep -q "file-inspector-v420.js?v=4.20.0" modules/stark-bootstrap.js
-          grep -Eq "mobile-camera-source.js\?v=4\.22\.[0-9]+" modules/stark-bootstrap.js
+          grep -Eq "mobile-camera-source.js\?v=4\.[0-9]+\.[0-9]+" modules/stark-bootstrap.js
           grep -q "camera-external-stream-v4223.js?v=4.22.3" modules/stark-bootstrap.js
+          grep -q "remote-camera-frame-gate-v4230.js?v=4.23.0" modules/stark-bootstrap.js
           grep -q "handControlModel" modules/stark-bootstrap.js
-          echo 'Neural Gesture + Remote Camera integration markers OK'
+          echo 'Neural Gesture + Remote Camera real-frame integration markers OK'

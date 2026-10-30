@@ -10,6 +10,8 @@ on:
       - 'modules/camera-external-stream-v4223.js'
       - 'modules/mobile-camera-source.js'
       - 'modules/remote-camera-webrtc-hotfix-v4221.js'
+      - 'modules/remote-camera-frame-gate-v4230.js'
+      - 'modules/visual-neural-stream-bridge-v4225.js'
       - 'modules/vision-client.js'
       - 'modules/vision-remote-source-v4224.js'
       - 'modules/vision-command-router.js'
@@ -31,6 +33,8 @@ on:
       - 'modules/camera-external-stream-v4223.js'
       - 'modules/mobile-camera-source.js'
       - 'modules/remote-camera-webrtc-hotfix-v4221.js'
+      - 'modules/remote-camera-frame-gate-v4230.js'
+      - 'modules/visual-neural-stream-bridge-v4225.js'
       - 'modules/vision-client.js'
       - 'modules/vision-remote-source-v4224.js'
       - 'modules/vision-command-router.js'
@@ -62,6 +66,8 @@ jobs:
           node --check modules/camera-external-stream-v4223.js
           node --check modules/mobile-camera-source.js
           node --check modules/remote-camera-webrtc-hotfix-v4221.js
+          node --check modules/remote-camera-frame-gate-v4230.js
+          node --check modules/visual-neural-stream-bridge-v4225.js
           node --check modules/vision-client.js
           node --check modules/vision-remote-source-v4224.js
           node --check modules/vision-command-router.js
@@ -156,8 +162,13 @@ jobs:
           grep -q "ULTRON_EXTERNAL_CAMERA_STREAM" modules/camera-external-stream-v4223.js
           grep -q "stopRequested = false" modules/camera-external-stream-v4223.js
           grep -q "ULTRON_CAMERA_PREVIEW?.sync" modules/camera-external-stream-v4223.js
-          grep -q "mobile-camera-source.js?v=4.22.3" modules/stark-bootstrap.js
+          grep -Eq "mobile-camera-source.js\?v=4\.[0-9]+\.[0-9]+" modules/stark-bootstrap.js
           grep -q "remote-camera-webrtc-hotfix-v4221.js?v=4.22.2" modules/stark-bootstrap.js
+          grep -q "remote-camera-frame-gate-v4230.js?v=4.23.0" modules/stark-bootstrap.js
+          grep -q "ULTRON_REMOTE_CAMERA_FRAME_GATE" modules/remote-camera-frame-gate-v4230.js
+          grep -q "requestVideoFrameCallback" modules/remote-camera-frame-gate-v4230.js
+          grep -q "videoWidth" modules/remote-camera-frame-gate-v4230.js
+          grep -q "videoHeight" modules/remote-camera-frame-gate-v4230.js
           grep -q "sdpFinalCrlfGuard" modules/remote-camera-webrtc-hotfix-v4221.js
           grep -q "normalizeWebRtcSdp" backend/microphone-bridge.js
           grep -q "const sdp = normalizeWebRtcSdp(source.sdp)" backend/microphone-bridge.js

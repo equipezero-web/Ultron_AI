@@ -1,4 +1,4 @@
-const BOOT_KEY = '__ULTRON_STARK_BOOTSTRAP_V4225__';
+const BOOT_KEY = '__ULTRON_STARK_BOOTSTRAP_V4230__';
 
 if (!window[BOOT_KEY]) {
   window[BOOT_KEY] = true;
@@ -29,7 +29,7 @@ if (!window[BOOT_KEY]) {
   loadStyle(STYLE_ID, 'modules/stark-core.css?v=4.12.1');
   loadStyle(FUNCTIONAL_STYLE_ID, 'modules/stark-functional.css?v=4.12.1');
   loadStyle(HAND_STYLE_ID, 'modules/stark-hand.css?v=4.19.0');
-  loadStyle(CAMERA_PREVIEW_STYLE_ID, 'modules/stark-camera-preview.css?v=4.22.5');
+  loadStyle(CAMERA_PREVIEW_STYLE_ID, 'modules/stark-camera-preview.css?v=4.23.0');
   loadStyle(ZOOM_DIAGNOSTICS_STYLE_ID, 'modules/stark-zoom-diagnostics.css?v=4.12.1');
   loadStyle(PALM_MATRIX_STYLE_ID, 'modules/palm-matrix.css?v=4.12.1');
   loadStyle(LOCAL_FILES_STYLE_ID, 'modules/local-files.css?v=4.12.1');
@@ -53,10 +53,11 @@ if (!window[BOOT_KEY]) {
   await import('./stark-file-mesh.js?v=4.20.0');
   await import('./file-inspector-v420.js?v=4.20.0');
   await import('./remote-camera-webrtc-hotfix-v4221.js?v=4.22.2');
-  await import('./mobile-camera-source.js?v=4.22.3');
+  await import('./mobile-camera-source.js?v=4.23.0');
   await import('./stark-hand-gesture-v420.js?v=4.20.0');
-  await import('./stark-camera-preview.js?v=4.22.5');
-  await import('./visual-neural-stream-bridge-v4225.js?v=4.22.5');
+  await import('./stark-camera-preview.js?v=4.23.0');
+  await import('./visual-neural-stream-bridge-v4225.js?v=4.23.0');
+  await import('./remote-camera-frame-gate-v4230.js?v=4.23.0');
   await import('./palm-matrix-v420.js?v=4.20.0');
   await import('./neural-file-visualizer.js?v=4.20.0');
   await import('./stark-zoom-diagnostics.js?v=4.12.1');
@@ -83,7 +84,7 @@ if (!window[BOOT_KEY]) {
 
   window.dispatchEvent(new CustomEvent('ultron:stark-bootstrap-ready', {
     detail: {
-      version: '4.22.5',
+      version: '4.23.0',
       performanceMode: window.ULTRON_PERFORMANCE?.mode || 'full',
       starkCore: Boolean(window.ULTRON_STARK_CORE),
       innerMesh: Boolean(window.ULTRON_STARK_MESH),
@@ -102,6 +103,7 @@ if (!window[BOOT_KEY]) {
       palmMatrix: Boolean(window.ULTRON_PALM_MATRIX),
       cameraPreview: Boolean(window.ULTRON_CAMERA_PREVIEW),
       visualNeuralStreamBridge: Boolean(window.ULTRON_VISUAL_NEURAL_STREAM),
+      remoteCameraFrameGate: Boolean(window.ULTRON_REMOTE_CAMERA_FRAME_GATE),
       cameraRuntime: Boolean(window.ULTRON_CAMERA_RUNTIME),
       externalCameraStreamAdapter: Boolean(window.ULTRON_EXTERNAL_CAMERA_STREAM),
       mobileCamera: Boolean(window.ULTRON_MOBILE_CAMERA),
