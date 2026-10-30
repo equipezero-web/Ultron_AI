@@ -1,10 +1,11 @@
 export const NEURAL_ACTION_POLICY = Object.freeze({
-  push: { minConfidence: 0.60, cooldownMs: 1100 },
+  activate: { minConfidence: 0.48, cooldownMs: 900 },
+  rotate: { minConfidence: 0.45, cooldownMs: 45 },
+  'zoom-in': { minConfidence: 0.45, cooldownMs: 70 },
+  'zoom-out': { minConfidence: 0.45, cooldownMs: 70 },
   sweep: { minConfidence: 0.58, cooldownMs: 650 },
-  freeze: { minConfidence: 0.60, cooldownMs: 520 },
-  dial: { minConfidence: 0.55, cooldownMs: 90 },
   holder: { minConfidence: 0.58, cooldownMs: 1600 },
-  'pinch-select': { minConfidence: 0, cooldownMs: 420 }
+  'pinch-select': { minConfidence: 0, cooldownMs: 500 }
 });
 
 export function normalizeNeuralAction(action) {
@@ -14,9 +15,11 @@ export function normalizeNeuralAction(action) {
     .replaceAll('_', '-')
     .replace(/\s+/g, '-');
 
-  if (['fist', 'anchor', 'fistanchor', 'fist-anchor', 'closed-fist', 'closed-palm', 'stop'].includes(clean)) return 'freeze';
-  if (clean === 'pinch' || clean === 'select' || clean === 'pinch-click') return 'pinch-select';
-  if (clean === 'rotate' || clean === 'rotation') return 'dial';
+  if (['start', 'activate-system', 'open-palms', 'two-open-palms'].includes(clean)) return 'activate';
+  if (['rotate', 'rotation', 'dial', 'palm-rotate'].includes(clean)) return 'rotate';
+  if (['zoom-in', 'zoomin', 'expand', 'open-fist'].includes(clean)) return 'zoom-in';
+  if (['zoom-out', 'zoomout', 'shrink', 'close-palm', 'return-center'].includes(clean)) return 'zoom-out';
+  if (['pinch', 'select', 'pinch-click', 'camera-touch-select'].includes(clean)) return 'pinch-select';
   return clean;
 }
 
@@ -24,10 +27,12 @@ export function neuralSignature(action, detail = {}) {
   const normalized = normalizeNeuralAction(action);
   const direction = String(detail.direction || '').toLowerCase();
   const target = String(detail.target || detail.label || '').trim().toUpperCase();
-  const bucket = normalized === 'dial'
+  const bucket = normalized === 'rotate'
     ? (Number(detail.delta || detail.rotationStep || 0) >= 0 ? 'cw' : 'ccw')
-    : '';
-  return [normalized, direction, target, bucket].filter(Boolean).join(':');
+    : normalized.startsWith('zoom-')
+      ? Math.round(Number(detail.scale || 1) * 10) / 10
+      : '';
+  return [normalized, direction, target, bucket].filter((value) => value !== '').join(':');
 }
 
 export function validateNeuralAction(action, detail = {}) {
@@ -40,6 +45,10 @@ export function validateNeuralAction(action, detail = {}) {
     return { ok: false, action: normalized, reason: 'low-confidence', confidence, policy };
   }
 
+  if (normalized === 'activate' && Number(detail.handCount ?? 2) < 2) {
+    return { ok: false, action: normalized, reason: 'two-hands-required', confidence, policy };
+  }
+
   if (normalized === 'sweep') {
     const direction = String(detail.direction || '').toLowerCase();
     if (!['left', 'right'].includes(direction)) {
@@ -47,16 +56,27 @@ export function validateNeuralAction(action, detail = {}) {
     }
   }
 
-  if (normalized === 'dial') {
+  if (normalized === 'rotate') {
     const delta = Number(detail.delta || detail.rotationStep || 0);
-    if (!Number.isFinite(delta) || Math.abs(delta) < 0.01) {
-      return { ok: false, action: normalized, reason: 'weak-dial', confidence, policy };
+    if (!Number.isFinite(delta) || Math.abs(delta) < 0.0025) {
+      return { ok: false, action: normalized, reason: 'weak-rotation', confidence, policy };
+    }
+  }
+
+  if (normalized === 'zoom-in' || normalized === 'zoom-out') {
+    const scale = Number(detail.scale ?? 1);
+    const openness = Number(detail.openness ?? 0.5);
+    if (!Number.isFinite(scale) || !Number.isFinite(openness)) {
+      return { ok: false, action: normalized, reason: 'invalid-zoom-metrics', confidence, policy };
     }
   }
 
   if (normalized === 'pinch-select') {
     const target = String(detail.target || detail.label || '').trim();
     if (!target) return { ok: false, action: normalized, reason: 'missing-target', confidence, policy };
+    if (detail.cameraTap !== true) {
+      return { ok: false, action: normalized, reason: 'camera-touch-required', confidence, policy };
+    }
   }
 
   return { ok: true, action: normalized, confidence, policy };
