@@ -93,11 +93,26 @@ public class BridgeService extends Service {
                     result.put("bridge", "online");
                     result.put("remoteMicTrusted", SecureStore.isRemoteMicTrusted(this));
                     result.put("recordAudioGranted", hasRecordAudioPermission());
+                    result.put("remoteCameraTrusted", SecureStore.isRemoteCameraTrusted(this));
+                    result.put("cameraGranted", RemoteCameraBridge.hasCameraPermission(this));
                     success = true;
                     break;
 
                 case "notification.push":
                     String action = payload.optString("action", "generic");
+
+                    RemoteCameraBridge.Result cameraResult = RemoteCameraBridge.handleNotificationAction(
+                            this,
+                            action,
+                            payload,
+                            deviceId,
+                            secret
+                    );
+                    if (cameraResult.handled) {
+                        success = cameraResult.success;
+                        result = cameraResult.payload;
+                        break;
+                    }
 
                     if ("microphone.request".equals(action)) {
                         boolean trusted = SecureStore.isRemoteMicTrusted(this);
