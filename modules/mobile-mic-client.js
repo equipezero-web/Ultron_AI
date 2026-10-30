@@ -23,6 +23,7 @@ let lastTranscriptAt = 0;
 let remoteSpeechSyncState = "resume";
 let remoteSpeechSyncBusy = false;
 let queuedSpeechSyncState = null;
+let localMicSuspendedByRemote = false;
 
 function log(message, alert = false) {
   if (!output) return;
@@ -136,10 +137,17 @@ async function sendDeviceNotification(action, payload = {}) {
   });
 }
 
-function disableNotebookMicrophone() {
+function suspendNotebookMicrophone() {
+  if (localMicSuspendedByRemote) return;
+
+  if (window.ULTRON_VOICE_INPUT?.suspend?.("mobile-mic")) {
+    localMicSuspendedByRemote = true;
+    log("Microfone local suspenso temporariamente enquanto o celular assume a escuta.");
+    return;
+  }
+
   const state = $("mic-module");
   const localButton = $("btn-listen-voice");
-
   if (!state || !localButton) return;
 
   const passiveStates = new Set([
@@ -151,8 +159,21 @@ function disableNotebookMicrophone() {
 
   if (!passiveStates.has(String(state.textContent || "").trim())) {
     localButton.click();
+    localMicSuspendedByRemote = true;
     log("Microfone do notebook pausado para evitar comandos duplicados.");
   }
+}
+
+function resumeNotebookMicrophone() {
+  if (!localMicSuspendedByRemote) return;
+
+  if (window.ULTRON_VOICE_INPUT?.resume?.("mobile-mic")) {
+    localMicSuspendedByRemote = false;
+    log("Microfone local restaurado automaticamente.");
+    return;
+  }
+
+  localMicSuspendedByRemote = false;
 }
 
 function executeRemoteTranscript(text) {
@@ -162,19 +183,22 @@ function executeRemoteTranscript(text) {
   const normalized = clean.toLowerCase();
   const now = Date.now();
 
-  if (normalized === lastTranscript && now - lastTranscriptAt < 4000) {
+  if (normalized === lastTranscript && now - lastTranscriptAt < 2500) {
     return;
   }
 
   lastTranscript = normalized;
   lastTranscriptAt = now;
+  log(`OUVIU: ${clean}`);
+
+  if (window.ULTRON_VOICE_INPUT?.dispatch) {
+    window.ULTRON_VOICE_INPUT.dispatch(clean, { source: "mobile" });
+    return;
+  }
 
   const input = $("command-input");
   const send = $("btn-send");
-
   if (!input || !send) return;
-
-  log(`OUVIU: ${clean}`);
   input.value = clean;
   send.click();
 }
@@ -192,9 +216,10 @@ function armRequestConfirmationTimeout() {
     requestConfirmTimer = null;
     if (remoteMicActive) return;
 
+    resumeNotebookMicrophone();
     if (requestButton) requestButton.textContent = "USAR MIC DO CELULAR";
     log(
-      "O celular não confirmou a solicitação. Abra o Ultron Bridge e confirme que o serviço está ativo.",
+      "O celular não confirmou a solicitação. O microfone local foi restaurado; abra o Ultron Bridge e confirme que o serviço está ativo.",
       true
     );
   }, REQUEST_CONFIRM_TIMEOUT_MS);
@@ -229,6 +254,7 @@ async function pollEventsOnce() {
           remoteMicActive = true;
           remoteSpeechSyncState = "resume";
           rememberRemoteMicAuthorization();
+          suspendNotebookMicrophone();
           if (requestButton) requestButton.textContent = "MIC CELULAR ATIVO";
           log(detail || "Microfone do celular autorizado e conectado.");
 
@@ -243,15 +269,17 @@ async function pollEventsOnce() {
           remoteMicActive = false;
           remoteSpeechSyncState = "resume";
           queuedSpeechSyncState = null;
+          resumeNotebookMicrophone();
           if (requestButton) requestButton.textContent = "MIC CELULAR DISPONÍVEL";
-          log(detail || "Sessão de escuta remota parada; a permissão continua salva no Android.");
+          log(detail || "Sessão de escuta remota parada; o microfone local voltou a ficar disponível.");
         } else if (state === "blocked") {
           clearRequestConfirmTimer();
           remoteMicActive = false;
           remoteSpeechSyncState = "resume";
           queuedSpeechSyncState = null;
+          resumeNotebookMicrophone();
           if (requestButton) requestButton.textContent = "USAR MIC DO CELULAR";
-          log(detail || "Permissão do microfone foi bloqueada no celular.", true);
+          log(detail || "Permissão do microfone foi bloqueada no celular; o microfone local foi restaurado.", true);
         }
       }
     }
@@ -275,7 +303,7 @@ async function requestMobileMicrophone() {
     if (requestButton) requestButton.textContent = "VERIFICANDO CELULAR...";
 
     const device = await selectMobileDevice({ requireOnline: true });
-    disableNotebookMicrophone();
+    suspendNotebookMicrophone();
     startPolling();
 
     const alreadyAuthorized = remoteMicPreviouslyAuthorized();
@@ -306,6 +334,7 @@ async function requestMobileMicrophone() {
     armRequestConfirmationTimeout();
   } catch (error) {
     clearRequestConfirmTimer();
+    resumeNotebookMicrophone();
     if (requestButton) requestButton.textContent = "USAR MIC DO CELULAR";
     log(error.message, true);
   }
@@ -392,5 +421,8 @@ window.ULTRON_MOBILE_MIC = {
   },
   get authorized() {
     return remoteMicPreviouslyAuthorized();
+  },
+  get localMicSuspended() {
+    return localMicSuspendedByRemote;
   }
 };
