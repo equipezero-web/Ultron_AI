@@ -1,6 +1,5 @@
 const stage = document.querySelector('.neural-stage');
 const orbStage = document.querySelector('.orb-stage');
-const root = document.documentElement;
 const body = document.body;
 
 if (stage && orbStage) {
@@ -63,13 +62,34 @@ if (stage && orbStage) {
     if (readouts.handCount) readouts.handCount.textContent = `${state.handCount}`;
   }
 
+  function setAngle(name, value) {
+    body.style.setProperty(name, `${Number(value || 0).toFixed(2)}deg`);
+  }
+
   function applyCss() {
-    body.style.setProperty('--orb-rx', `${state.rx.toFixed(2)}deg`);
-    body.style.setProperty('--orb-ry', `${state.ry.toFixed(2)}deg`);
-    body.style.setProperty('--orb-rz', `${state.rz.toFixed(2)}deg`);
+    setAngle('--orb-rx', state.rx);
+    setAngle('--orb-ry', state.ry);
+    setAngle('--orb-rz', state.rz);
+    setAngle('--orb-rx-grid', state.rx * -0.18);
+    setAngle('--orb-ry-grid', state.ry * -0.18);
+    setAngle('--orb-rx-h1', state.rx * 0.28);
+    setAngle('--orb-ry-h1', state.ry * 0.28);
+    setAngle('--orb-rx-h2', state.rx * -0.18);
+    setAngle('--orb-ry-h2', state.ry * -0.22);
+    setAngle('--orb-rz-h2', state.rz * -0.65);
+    setAngle('--orb-rx-h3', state.rx * 0.12);
+    setAngle('--orb-ry-h3', state.ry * 0.16);
+    setAngle('--orb-rz-h3', state.rz * 0.42);
+    setAngle('--orb-rx-o1', state.rx * 0.35);
+    setAngle('--orb-ry-o1', state.ry * 0.32);
+    setAngle('--orb-rx-o2', state.rx * -0.22);
+    setAngle('--orb-ry-o2', state.ry * 0.20);
+    setAngle('--orb-rx-o3', state.rx * 0.18);
+    setAngle('--orb-ry-o3', state.ry * -0.18);
     body.style.setProperty('--orb-scale', state.scale.toFixed(4));
     body.style.setProperty('--orb-depth', `${state.depth.toFixed(1)}px`);
-    body.style.setProperty('--orb-glow', clamp(.48 + Math.abs(state.scale - 1) * 1.6 + state.handCount * .06, .48, .95).toFixed(2));
+    const brightness = clamp(1.02 + Math.abs(state.scale - 1) * .28 + state.handCount * .025, 1.02, 1.2);
+    body.style.setProperty('--orb-brightness', brightness.toFixed(3));
     updateReadouts();
   }
 
@@ -127,9 +147,7 @@ if (stage && orbStage) {
       state.targetDepth = clamp((state.targetScale - 1) * 110, -28, 48);
     }
 
-    if (detail.pinch) {
-      state.targetScale = clamp(state.targetScale + .018, .82, 1.42);
-    }
+    if (detail.pinch) state.targetScale = clamp(state.targetScale + .018, .82, 1.42);
   }
 
   function resetHandAnchor() {
