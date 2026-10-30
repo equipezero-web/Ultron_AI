@@ -1,0 +1,142 @@
+name: Total Orchestration Check
+
+on:
+  push:
+    paths:
+      - 'index.html'
+      - 'modules/ultron-core-bridge-v4270.js'
+      - 'modules/ultron-orchestrator-v4270.js'
+      - 'modules/orchestrator-device-verify-v4270.js'
+      - 'modules/voice-orchestration-bridge-v4270.js'
+      - 'modules/orchestrator-ui-bridge-v4270.js'
+      - 'modules/telemetry-client-v4270.js'
+      - 'backend/orchestration-engine.js'
+      - 'backend/worker-v6.js'
+      - 'backend/wrangler.jsonc'
+      - '.github/workflows/total-orchestration-check.yml'
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'modules/ultron-core-bridge-v4270.js'
+      - 'modules/ultron-orchestrator-v4270.js'
+      - 'modules/orchestrator-device-verify-v4270.js'
+      - 'modules/voice-orchestration-bridge-v4270.js'
+      - 'modules/orchestrator-ui-bridge-v4270.js'
+      - 'modules/telemetry-client-v4270.js'
+      - 'backend/orchestration-engine.js'
+      - 'backend/worker-v6.js'
+      - 'backend/wrangler.jsonc'
+      - '.github/workflows/total-orchestration-check.yml'
+  workflow_dispatch:
+
+jobs:
+  total-orchestration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Syntax check v4.27 runtime
+        run: |
+          node --check modules/ultron-core-bridge-v4270.js
+          node --check modules/ultron-orchestrator-v4270.js
+          node --check modules/orchestrator-device-verify-v4270.js
+          node --check modules/voice-orchestration-bridge-v4270.js
+          node --check modules/orchestrator-ui-bridge-v4270.js
+          node --check modules/telemetry-client-v4270.js
+          node --check backend/orchestration-engine.js
+          node --check backend/worker-v6.js
+
+      - name: Verify persistent orchestration backend
+        run: |
+          grep -q 'CREATE TABLE IF NOT EXISTS orchestration_runs' backend/orchestration-engine.js
+          grep -q 'CREATE TABLE IF NOT EXISTS orchestration_steps' backend/orchestration-engine.js
+          grep -q 'buildOperationalPlan' backend/orchestration-engine.js
+          grep -q 'startOrchestration' backend/orchestration-engine.js
+          grep -q 'recordOrchestrationStep' backend/orchestration-engine.js
+          grep -q 'finishOrchestration' backend/orchestration-engine.js
+          grep -q 'resultVerification: true' backend/orchestration-engine.js
+          grep -q 'multiStep: true' backend/orchestration-engine.js
+          grep -q '"/api/orchestrator/start"' backend/worker-v6.js
+          grep -q '"/api/orchestrator/step"' backend/worker-v6.js
+          grep -q '"/api/orchestrator/finish"' backend/worker-v6.js
+          grep -q '"/api/orchestrator/history"' backend/worker-v6.js
+          grep -q '"/api/orchestrator/state"' backend/worker-v6.js
+          grep -q 'totalIntegration: true' backend/worker-v6.js
+          grep -q 'safeSelfHeal: true' backend/worker-v6.js
+          grep -q 'return baseWorker.scheduled' backend/worker-v6.js
+          grep -q '"main": "worker-v6.js"' backend/wrangler.jsonc
+          grep -q '"\* \* \* \* \*"' backend/wrangler.jsonc
+
+      - name: Verify unified frontend routing
+        run: |
+          grep -q 'ULTRON_ORCHESTRATOR' modules/ultron-orchestrator-v4270.js
+          grep -q 'splitCompound' modules/ultron-orchestrator-v4270.js
+          grep -q 'multi-step' modules/ultron-orchestrator-v4270.js
+          grep -q 'ULTRON_DEVICES' modules/ultron-orchestrator-v4270.js
+          grep -q 'ULTRON_VISION_ROUTER' modules/ultron-orchestrator-v4270.js
+          grep -q 'ULTRON_NEURAL_3D' modules/ultron-orchestrator-v4270.js
+          grep -q 'ULTRON_CORE' modules/ultron-orchestrator-v4270.js
+          grep -q 'ultron:proactive-alert' modules/ultron-orchestrator-v4270.js
+          grep -q 'SELF-HEAL' modules/ultron-orchestrator-v4270.js
+          grep -q 'ATIVIDADE' modules/ultron-orchestrator-v4270.js
+          grep -q '/api/control/status' modules/orchestrator-device-verify-v4270.js
+          grep -q 'verificationTimeout: true' modules/orchestrator-device-verify-v4270.js
+          grep -q 'command.status === "completed"' modules/orchestrator-device-verify-v4270.js
+          grep -q 'ULTRON_VOICE_ORCHESTRATION_BRIDGE' modules/voice-orchestration-bridge-v4270.js
+          grep -q 'ULTRON_ORCHESTRATOR_UI' modules/orchestrator-ui-bridge-v4270.js
+          grep -q 'window.ULTRON_CORE' modules/ultron-core-bridge-v4270.js
+
+      - name: Verify proactive telemetry without emotion or motion classifier
+        run: |
+          grep -q 'orchestration:' modules/telemetry-client-v4270.js
+          grep -q 'proactiveRecoveries' modules/telemetry-client-v4270.js
+          grep -q 'holographic3d' modules/telemetry-client-v4270.js
+          grep -q 'optical:' modules/telemetry-client-v4270.js
+          ! grep -q 'emotionEstimate' modules/telemetry-client-v4270.js
+          ! grep -q 'reaction-activity' modules/telemetry-client-v4270.js
+          ! grep -q '^    motion:' modules/telemetry-client-v4270.js
+
+      - name: Verify v4.27 runtime load order and release marker
+        run: |
+          grep -q 'TOTAL ORCHESTRATION + PROACTIVE CORE' index.html
+          grep -q 'TOTAL INTEGRATION // v4.27.0' index.html
+          grep -q 'ultron-core-bridge-v4270.js?v=4.27.0' index.html
+          grep -q 'ultron-orchestrator-v4270.js?v=4.27.0' index.html
+          grep -q 'device-control-v4260.js?v=4.26.0' index.html
+          grep -q 'orchestrator-device-verify-v4270.js?v=4.27.0' index.html
+          grep -q 'telemetry-client-v4270.js?v=4.27.0' index.html
+          grep -q 'voice-orchestration-bridge-v4270.js?v=4.27.0' index.html
+          grep -q 'orchestrator-ui-bridge-v4270.js?v=4.27.0' index.html
+          ! grep -q 'modules/telemetry-client.js?v=4.19.0' index.html
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const html = fs.readFileSync('index.html', 'utf8');
+          const order = [
+            'ultron-core-bridge-v4270.js',
+            'ultron-orchestrator-v4270.js',
+            'device-control-v4260.js',
+            'orchestrator-device-verify-v4270.js',
+            'voice-listener.js',
+            'voice-orchestration-bridge-v4270.js',
+            'orchestrator-ui-bridge-v4270.js'
+          ];
+          let previous = -1;
+          for (const marker of order) {
+            const index = html.indexOf(marker);
+            if (index < 0) throw new Error(`missing ${marker}`);
+            if (index <= previous) throw new Error(`load order invalid at ${marker}`);
+            previous = index;
+          }
+          console.log('v4.27 load order OK');
+          NODE
+
+      - name: Verify safety boundaries
+        run: |
+          grep -q 'activeDeviceActionsRequireIntent: true' backend/worker-v6.js
+          grep -q 'destructiveActionsBlockedWithoutPolicy: true' backend/worker-v6.js
+          grep -q 'observe-auto/active-confirm/destructive-block' backend/orchestration-engine.js
+          ! grep -qi 'desktop\.shell\|shell\.exec\|eval(' modules/ultron-orchestrator-v4270.js
+          echo 'Total orchestration v4.27 safety and integration checks passed.'

@@ -6,6 +6,7 @@ on:
       - 'backend/device-control-v2.js'
       - 'backend/automation-engine.js'
       - 'backend/worker-v5.js'
+      - 'backend/worker-v6.js'
       - 'backend/wrangler.jsonc'
       - 'modules/device-control-v4260.js'
       - 'local-core/desktop_bridge.py'
@@ -18,6 +19,7 @@ on:
       - 'backend/device-control-v2.js'
       - 'backend/automation-engine.js'
       - 'backend/worker-v5.js'
+      - 'backend/worker-v6.js'
       - 'backend/wrangler.jsonc'
       - 'modules/device-control-v4260.js'
       - 'local-core/desktop_bridge.py'
@@ -44,6 +46,7 @@ jobs:
           node --check backend/device-control-v2.js
           node --check backend/automation-engine.js
           node --check backend/worker-v5.js
+          node --check backend/worker-v6.js
           node --check modules/device-control-v4260.js
           python -m py_compile local-core/desktop_bridge.py local-core/device_server.py
 
@@ -70,8 +73,10 @@ jobs:
           grep -q 'automation_runs' backend/automation-engine.js
           grep -q 'processDueAutomations' backend/worker-v5.js
           grep -q 'async scheduled' backend/worker-v5.js
+          grep -q 'import baseWorker from "./worker-v5.js"' backend/worker-v6.js
+          grep -q 'return baseWorker.scheduled' backend/worker-v6.js
           grep -q '"crons": \["\* \* \* \* \*"\]' backend/wrangler.jsonc
-          grep -q '"main": "worker-v5.js"' backend/wrangler.jsonc
+          grep -q '"main": "worker-v6.js"' backend/wrangler.jsonc
           grep -q '/api/automations/create' backend/worker-v5.js
           grep -q '/api/control/status' backend/worker-v5.js
           grep -q 'monitorCommand' modules/device-control-v4260.js

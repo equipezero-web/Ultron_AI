@@ -5,7 +5,7 @@ on:
     paths:
       - 'modules/la-team-*.js'
       - 'modules/la-team.css'
-      - 'modules/telemetry-client.js'
+      - 'modules/telemetry-client*.js'
       - 'backend/worker.js'
       - 'backend/worker-v4.js'
       - 'index.html'
@@ -14,10 +14,11 @@ on:
     paths:
       - 'modules/la-team-*.js'
       - 'modules/la-team.css'
-      - 'modules/telemetry-client.js'
+      - 'modules/telemetry-client*.js'
       - 'backend/worker.js'
       - 'backend/worker-v4.js'
       - 'index.html'
+      - '.github/workflows/la-team-connector-check.yml'
 
 jobs:
   syntax:
@@ -33,7 +34,7 @@ jobs:
           node --check modules/la-team-ai-bridge.js
           node --check modules/la-team-neural.js
           node --check modules/la-team-bootstrap.js
-          node --check modules/telemetry-client.js
+          node --check modules/telemetry-client-v4270.js
       - name: Check AI backend integration
         run: |
           node --check backend/worker.js
@@ -43,4 +44,4 @@ jobs:
           grep -q 'ULTRON_LA_TEAM' modules/la-team-client.js
           grep -q 'laTeamContext' backend/worker.js
           grep -q 'authenticated-internal-context' backend/worker-v4.js
-          grep -Eq 'telemetry-client\.js\?v=4\.[0-9]+\.[0-9]+' index.html
+          grep -Eq 'telemetry-client(-v4270)?\.js\?v=4\.[0-9]+\.[0-9]+' index.html
