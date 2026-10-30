@@ -1,16 +1,21 @@
 import { loadPreferences, savePreferences } from "./storage.js";
 import { addLog } from "./system.js";
 import API_CONFIG from "../config.js";
+import {
+  VOICE_RUNTIME_POLICY,
+  normalizeVoiceText,
+  restartDelayFor,
+  nextFailureState,
+  isLikelySpeechEcho,
+  isDuplicateVoiceText
+} from "./voice-runtime-policy.js";
 
 const SpeechRecognition =
   window.SpeechRecognition || window.webkitSpeechRecognition;
 
 const WAKE_ALIASES = ["ultron", "outron", "utron", "ultra on", "ultraon"];
-const CONVERSATION_WINDOW_MS = 60000;
-const FINAL_DEDUPE_MS = 30000;
 const IS_ANDROID = /Android/i.test(navigator.userAgent || "");
-const RESTART_DELAY_MS = IS_ANDROID ? 850 : 450;
-const MAX_RESTART_DELAY_MS = 5000;
+const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
 
 const $ = (id) => document.getElementById(id);
 const output = $("output-box");
@@ -21,25 +26,34 @@ const audio = $("voice-audio");
 const commandInput = $("command-input");
 const sendButton = $("btn-send");
 
-const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
-
 let recognition = null;
 let recognitionRunning = false;
 let recognitionStarting = false;
 let recognitionStopping = false;
 let listeningEnabled = false;
+let localSuspended = false;
+let suspensionReason = "";
 let ultronSpeaking = false;
 let conversationActive = false;
 let conversationUntil = 0;
 let restartTimer = null;
 let conversationTimer = null;
 let audioPauseTimer = null;
-let restartFailures = 0;
+let stableTimer = null;
 let restartGeneration = 0;
+let failureTimes = [];
+let restartFailures = 0;
+let restartBlockedUntil = 0;
+let recognitionStartedAt = 0;
+let lastRecognitionError = "";
 let lastFinalTranscript = "";
 let lastFinalAt = 0;
 let lastCommandTranscript = "";
 let lastCommandAt = 0;
+let lastUltronSpeechText = "";
+let lastUltronSpeechEndedAt = 0;
+let echoGuardUntil = 0;
+let speechSources = new Set();
 
 function setMicState(state, detail = "") {
   if (!micModule) return;
@@ -52,17 +66,37 @@ function setMicState(state, detail = "") {
     active: ["LISTENING", "CONVERSA ATIVA"],
     hearing: ["HEARING", "OUVINDO..."],
     speaking: ["PAUSED", "ULTRON FALANDO"],
+    suspended: ["SUSPENDED", "MIC LOCAL PAUSADO"],
+    recovering: ["RECOVERING", "RECUPERANDO MIC"],
     blocked: ["BLOCKED", "MIC BLOQUEADO"],
     error: ["ERROR", "REATIVAR ESCUTA"]
   };
 
   const [moduleText, buttonText] = states[state] || states.off;
   micModule.textContent = detail || moduleText;
-  micModule.className = ["passive", "active", "hearing", "speaking", "ready"].includes(state)
+  micModule.className = [
+    "passive",
+    "active",
+    "hearing",
+    "speaking",
+    "ready",
+    "suspended",
+    "recovering"
+  ].includes(state)
     ? "green"
     : "";
 
   if (button) button.textContent = buttonText;
+}
+
+function canRunRecognition() {
+  return Boolean(
+    recognition &&
+    listeningEnabled &&
+    !localSuspended &&
+    !ultronSpeaking &&
+    Date.now() >= echoGuardUntil
+  );
 }
 
 function clearRestartTimer() {
@@ -87,18 +121,46 @@ function clearAudioPauseTimer() {
   }
 }
 
-function normalizeText(text) {
-  return String(text || "")
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .replace(/\s+/g, " ")
-    .trim();
+function clearStableTimer() {
+  if (stableTimer) {
+    clearTimeout(stableTimer);
+    stableTimer = null;
+  }
+}
+
+function resetFailureState() {
+  failureTimes = [];
+  restartFailures = 0;
+  restartBlockedUntil = 0;
+  lastRecognitionError = "";
+}
+
+function markRecognitionHealthy() {
+  resetFailureState();
+  clearStableTimer();
+}
+
+function registerRecognitionFailure(error) {
+  const now = Date.now();
+  const state = nextFailureState(failureTimes, now);
+  failureTimes = state.times;
+  restartFailures = state.count;
+  lastRecognitionError = String(error || "unknown");
+  if (state.blockedUntil) restartBlockedUntil = state.blockedUntil;
+
+  if (state.burst) {
+    setMicState("recovering", "MIC EM BACKOFF");
+    addLog(
+      output,
+      `VOZ: várias falhas seguidas detectadas. Recuperação automática pausada por ${Math.round(VOICE_RUNTIME_POLICY.burstCooldownMs / 1000)}s para evitar reconexões em loop.`,
+      "alert"
+    );
+  }
 }
 
 function findWakeAlias(normalized) {
   for (const alias of WAKE_ALIASES) {
-    const normalizedAlias = normalizeText(alias);
+    const normalizedAlias = normalizeVoiceText(alias);
     const index = normalized.indexOf(normalizedAlias);
     if (index !== -1) return { alias: normalizedAlias, index };
   }
@@ -106,7 +168,7 @@ function findWakeAlias(normalized) {
 }
 
 function extractWakeCommand(transcript) {
-  const normalized = normalizeText(transcript);
+  const normalized = normalizeVoiceText(transcript);
   const match = findWakeAlias(normalized);
   if (!match) return null;
 
@@ -121,7 +183,7 @@ function setPassiveMode({ announce = false } = {}) {
   conversationUntil = 0;
   clearConversationTimer();
 
-  if (listeningEnabled && !ultronSpeaking) {
+  if (listeningEnabled && !ultronSpeaking && !localSuspended) {
     setMicState("passive");
   }
 
@@ -132,7 +194,7 @@ function setPassiveMode({ announce = false } = {}) {
 
 function activateConversation({ announceWake = false, resetTimer = true } = {}) {
   conversationActive = true;
-  conversationUntil = Date.now() + CONVERSATION_WINDOW_MS;
+  conversationUntil = Date.now() + VOICE_RUNTIME_POLICY.conversationWindowMs;
 
   if (resetTimer) {
     clearConversationTimer();
@@ -140,10 +202,10 @@ function activateConversation({ announceWake = false, resetTimer = true } = {}) 
       if (conversationActive && Date.now() >= conversationUntil && !ultronSpeaking) {
         setPassiveMode({ announce: true });
       }
-    }, CONVERSATION_WINDOW_MS + 200);
+    }, VOICE_RUNTIME_POLICY.conversationWindowMs + 250);
   }
 
-  if (listeningEnabled && !ultronSpeaking) {
+  if (listeningEnabled && !ultronSpeaking && !localSuspended) {
     setMicState("active");
   }
 
@@ -153,7 +215,7 @@ function activateConversation({ announceWake = false, resetTimer = true } = {}) 
 }
 
 function isSleepCommand(text) {
-  const normalized = normalizeText(text);
+  const normalized = normalizeVoiceText(text);
   return [
     "dormir",
     "durma",
@@ -164,44 +226,92 @@ function isSleepCommand(text) {
   ].some((command) => normalized === command || normalized.endsWith(` ${command}`));
 }
 
-function executeVoiceCommand(command) {
-  const cleanCommand = String(command || "").trim();
+async function routeVoiceCommand(cleanCommand, source = "local") {
+  const visionRouter = window.ULTRON_VISION_ROUTER;
+  if (visionRouter?.isVisualAnalysisCommand?.(cleanCommand)) {
+    addLog(output, `${source === "mobile" ? "VOZ CELULAR" : "VOZ"}: comando visual roteado diretamente.`);
+    await visionRouter.run(cleanCommand);
+    return { handled: true, route: "vision" };
+  }
 
-  if (!cleanCommand || !commandInput || !sendButton) return;
+  const devices = window.ULTRON_DEVICES;
+  const deviceIntent = devices?.parseTvIntent?.(cleanCommand) || null;
+  if (deviceIntent) {
+    addLog(output, `${source === "mobile" ? "VOZ CELULAR" : "VOZ"}: comando de dispositivo roteado diretamente.`);
+    await devices.routeNaturalLanguage(cleanCommand, deviceIntent);
+    return { handled: true, route: "device" };
+  }
+
+  if (!commandInput || !sendButton) return { handled: false, route: "none" };
+  commandInput.value = cleanCommand;
+  sendButton.click();
+  return { handled: true, route: "terminal" };
+}
+
+async function executeVoiceCommand(command, { source = "local", bypassDedupe = false } = {}) {
+  const cleanCommand = String(command || "").trim();
+  if (!cleanCommand) return { handled: false };
 
   if (isSleepCommand(cleanCommand)) {
     setPassiveMode({ announce: true });
-    return;
+    return { handled: true, route: "sleep" };
   }
 
-  const normalized = normalizeText(cleanCommand);
+  const normalized = normalizeVoiceText(cleanCommand);
   const now = Date.now();
 
-  if (normalized === lastCommandTranscript && now - lastCommandAt < FINAL_DEDUPE_MS) {
-    return;
+  if (
+    !bypassDedupe &&
+    isDuplicateVoiceText(
+      normalized,
+      lastCommandTranscript,
+      now - lastCommandAt,
+      VOICE_RUNTIME_POLICY.commandDedupeMs
+    )
+  ) {
+    return { handled: false, duplicate: true };
   }
 
   lastCommandTranscript = normalized;
   lastCommandAt = now;
-
   activateConversation({ resetTimer: true });
 
-  commandInput.value = cleanCommand;
-  addLog(output, `VOZ: ${cleanCommand}`);
-  sendButton.click();
+  addLog(output, `${source === "mobile" ? "VOZ CELULAR" : "VOZ"}: ${cleanCommand}`);
+  return routeVoiceCommand(cleanCommand, source);
+}
+
+function shouldIgnoreAsEcho(transcript) {
+  const now = Date.now();
+  if (now < echoGuardUntil) return true;
+  if (!lastUltronSpeechText || !lastUltronSpeechEndedAt) return false;
+  if (now - lastUltronSpeechEndedAt > VOICE_RUNTIME_POLICY.spokenEchoWindowMs) return false;
+  return isLikelySpeechEcho(transcript, lastUltronSpeechText);
 }
 
 function handleFinalTranscript(transcript) {
   const cleanTranscript = String(transcript || "").trim();
-  if (!cleanTranscript || ultronSpeaking || !listeningEnabled) return;
+  if (!cleanTranscript || ultronSpeaking || !listeningEnabled || localSuspended) return;
 
-  const normalized = normalizeText(cleanTranscript);
+  if (shouldIgnoreAsEcho(cleanTranscript)) {
+    addLog(output, "VOZ: eco da própria resposta do Ultron ignorado.");
+    return;
+  }
+
+  const normalized = normalizeVoiceText(cleanTranscript);
   const now = Date.now();
 
-  if (normalized === lastFinalTranscript && now - lastFinalAt < FINAL_DEDUPE_MS) return;
+  if (
+    isDuplicateVoiceText(
+      normalized,
+      lastFinalTranscript,
+      now - lastFinalAt,
+      VOICE_RUNTIME_POLICY.finalDedupeMs
+    )
+  ) return;
+
   lastFinalTranscript = normalized;
   lastFinalAt = now;
-
+  markRecognitionHealthy();
   addLog(output, `MICROFONE OUVIU: ${cleanTranscript}`);
 
   const wakeCommand = extractWakeCommand(cleanTranscript);
@@ -227,13 +337,18 @@ function handleFinalTranscript(transcript) {
 }
 
 function nextRestartDelay() {
-  const multiplier = Math.min(5, Math.max(1, restartFailures + 1));
-  return Math.min(MAX_RESTART_DELAY_MS, RESTART_DELAY_MS * multiplier);
+  return restartDelayFor({
+    failures: restartFailures,
+    isAndroid: IS_ANDROID,
+    blockedUntil: restartBlockedUntil,
+    now: Date.now()
+  });
 }
 
-function scheduleRecognitionRestart(delay = nextRestartDelay()) {
+function scheduleRecognitionRestart(delay = null) {
   if (
     !listeningEnabled ||
+    localSuspended ||
     ultronSpeaking ||
     recognitionRunning ||
     recognitionStarting ||
@@ -242,36 +357,43 @@ function scheduleRecognitionRestart(delay = nextRestartDelay()) {
 
   clearRestartTimer();
   const generation = restartGeneration;
+  const guardDelay = Math.max(0, echoGuardUntil - Date.now());
+  const plannedDelay = Math.max(
+    guardDelay,
+    delay == null ? nextRestartDelay() : Number(delay) || 0
+  );
 
   restartTimer = setTimeout(() => {
     restartTimer = null;
     if (generation !== restartGeneration) return;
-    startRecognition();
-  }, delay);
+    startRecognition({ quiet: true });
+  }, plannedDelay);
 }
 
-function startRecognition() {
+function startRecognition({ quiet = false } = {}) {
   if (
     !recognition ||
     recognitionRunning ||
     recognitionStarting ||
     recognitionStopping ||
-    !listeningEnabled ||
-    ultronSpeaking
+    !canRunRecognition()
   ) return;
 
   clearRestartTimer();
   recognitionStarting = true;
-  setMicState(
-    conversationActive ? "active" : "passive",
-    "CONECTANDO MIC..."
-  );
+
+  if (!quiet || restartFailures > 0) {
+    setMicState(
+      restartFailures > 0 ? "recovering" : (conversationActive ? "active" : "passive"),
+      restartFailures > 0 ? "RECUPERANDO MIC..." : "CONECTANDO MIC..."
+    );
+  }
 
   try {
     recognition.start();
   } catch (error) {
     recognitionStarting = false;
-    restartFailures += 1;
+    registerRecognitionFailure(error?.name || "start-error");
 
     if (error?.name !== "InvalidStateError") {
       console.error("ULTRON voice recognition start:", error);
@@ -283,6 +405,7 @@ function startRecognition() {
 
 function stopRecognition({ abort = true } = {}) {
   clearRestartTimer();
+  clearStableTimer();
 
   if (!recognition || (!recognitionRunning && !recognitionStarting)) {
     recognitionStarting = false;
@@ -315,21 +438,27 @@ function createRecognition() {
     recognitionStarting = false;
     recognitionStopping = false;
     recognitionRunning = true;
-    restartFailures = 0;
+    recognitionStartedAt = Date.now();
+    clearStableTimer();
+    stableTimer = setTimeout(() => {
+      if (recognitionRunning && Date.now() - recognitionStartedAt >= VOICE_RUNTIME_POLICY.stableSessionMs) {
+        markRecognitionHealthy();
+      }
+    }, VOICE_RUNTIME_POLICY.stableSessionMs + 100);
 
-    if (!ultronSpeaking && listeningEnabled) {
+    if (!ultronSpeaking && listeningEnabled && !localSuspended) {
       setMicState(conversationActive ? "active" : "passive");
     }
   };
 
   instance.onspeechstart = () => {
-    if (listeningEnabled && !ultronSpeaking) {
+    if (listeningEnabled && !ultronSpeaking && !localSuspended) {
       setMicState("hearing", "VOZ DETECTADA");
     }
   };
 
   instance.onspeechend = () => {
-    if (listeningEnabled && !ultronSpeaking) {
+    if (listeningEnabled && !ultronSpeaking && !localSuspended) {
       setMicState(
         conversationActive ? "active" : "passive",
         "PROCESSANDO VOZ..."
@@ -348,13 +477,14 @@ function createRecognition() {
       else interim += transcript;
     }
 
-    if (interim.trim() && listeningEnabled && !ultronSpeaking) {
+    if (interim.trim() && listeningEnabled && !ultronSpeaking && !localSuspended) {
       setMicState("hearing", "OUVINDO...");
     }
   };
 
   instance.onerror = (event) => {
     const error = event?.error || "unknown";
+    lastRecognitionError = error;
 
     if (error === "not-allowed" || error === "service-not-allowed") {
       listeningEnabled = false;
@@ -372,29 +502,29 @@ function createRecognition() {
     }
 
     if (error === "audio-capture") {
-      restartFailures += 1;
+      registerRecognitionFailure(error);
       setMicState("error", "FALHA DE CAPTURA");
       addLog(
         output,
-        "MICROFONE: o navegador não conseguiu capturar áudio. Feche outros apps que possam estar usando o microfone e teste novamente.",
+        "MICROFONE: o navegador não conseguiu capturar áudio. Feche outros apps que possam estar usando o microfone; o Ultron tentará recuperar automaticamente.",
         "alert"
       );
       return;
     }
 
     if (error === "network") {
-      restartFailures += 1;
-      setMicState("error", "ERRO DE RECONHECIMENTO");
+      registerRecognitionFailure(error);
+      setMicState("recovering", "REDE DE VOZ INSTÁVEL");
       addLog(
         output,
-        "VOZ: o serviço de reconhecimento do navegador falhou na rede. No Android, abra o Ultron diretamente no Google Chrome e tente novamente.",
+        "VOZ: o serviço de reconhecimento falhou na rede. A recuperação agora usa backoff para evitar conectar/desconectar em loop.",
         "alert"
       );
       return;
     }
 
     if (!["no-speech", "aborted"].includes(error)) {
-      restartFailures += 1;
+      registerRecognitionFailure(error);
       addLog(output, `VOZ: erro do reconhecedor (${error}).`, "alert");
     }
   };
@@ -403,9 +533,11 @@ function createRecognition() {
     recognitionRunning = false;
     recognitionStarting = false;
     recognitionStopping = false;
+    clearStableTimer();
 
-    if (listeningEnabled && !ultronSpeaking) {
-      setMicState(conversationActive ? "active" : "passive");
+    if (listeningEnabled && !ultronSpeaking && !localSuspended) {
+      if (restartFailures > 0) setMicState("recovering", "RECUPERANDO MIC...");
+      else setMicState(conversationActive ? "active" : "passive");
       scheduleRecognitionRestart();
     }
   };
@@ -430,7 +562,11 @@ async function ensureMicrophonePermission() {
   }
 
   const stream = await navigator.mediaDevices.getUserMedia({
-    audio: true,
+    audio: {
+      echoCancellation: true,
+      noiseSuppression: true,
+      autoGainControl: true
+    },
     video: false
   });
 
@@ -453,7 +589,14 @@ async function testPhysicalMicrophone() {
 
   try {
     addLog(output, "TESTE MIC: fale normalmente por 3 segundos...");
-    stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+    stream = await navigator.mediaDevices.getUserMedia({
+      audio: {
+        echoCancellation: true,
+        noiseSuppression: true,
+        autoGainControl: true
+      },
+      video: false
+    });
     context = new (window.AudioContext || window.webkitAudioContext)();
 
     const source = context.createMediaStreamSource(stream);
@@ -500,7 +643,7 @@ async function testPhysicalMicrophone() {
   }
 }
 
-async function enableListening({ userInitiated = false } = {}) {
+async function enableListening({ userInitiated = false, persist = true } = {}) {
   if (!SpeechRecognition) {
     setMicState("unsupported");
     addLog(
@@ -508,7 +651,7 @@ async function enableListening({ userInitiated = false } = {}) {
       "Reconhecimento de voz não é suportado neste navegador. No Android, use o Google Chrome.",
       "alert"
     );
-    return;
+    return false;
   }
 
   try {
@@ -518,13 +661,13 @@ async function enableListening({ userInitiated = false } = {}) {
     if (permissionState === "denied") {
       setMicState("blocked");
       addLog(output, "MICROFONE: permissão negada nas configurações do navegador.", "alert");
-      return;
+      return false;
     }
 
     if (permissionState !== "granted") {
       if (!userInitiated) {
         setMicState("ready");
-        return;
+        return false;
       }
       await ensureMicrophonePermission();
     } else if (!prefs.microphoneAccepted) {
@@ -534,24 +677,29 @@ async function enableListening({ userInitiated = false } = {}) {
     }
 
     listeningEnabled = true;
+    localSuspended = false;
+    suspensionReason = "";
     ultronSpeaking = false;
     recognition ||= createRecognition();
-
-    // Com a permissão já concedida, o microfone deve voltar pronto para receber
-    // a próxima frase; caso contrário o navegador apenas mostrava "MICROFONE OUVIU"
-    // e descartava a fala até que o usuário repetisse a wake word.
+    resetFailureState();
     activateConversation({ resetTimer: true });
+
+    if (persist) {
+      prefs.voiceWakeEnabled = true;
+      savePreferences(prefs);
+    }
 
     if (userInitiated) {
       addLog(
         output,
-        "ESCUTA ATIVA: fale agora. Depois da primeira resposta, você pode continuar a conversa sem repetir 'Ultron'."
+        "ESCUTA ATIVA: fale agora. O Ultron pausa o microfone durante a própria fala e retoma automaticamente depois."
       );
     } else {
       addLog(output, "ESCUTA RESTAURADA: microfone pronto para receber sua próxima frase.");
     }
 
     startRecognition();
+    return true;
   } catch (error) {
     listeningEnabled = false;
     recognitionStarting = false;
@@ -560,7 +708,7 @@ async function enableListening({ userInitiated = false } = {}) {
     if (error?.name === "NotAllowedError" || error?.name === "PermissionDeniedError") {
       setMicState("blocked");
       addLog(output, "MICROFONE: permissão não concedida.", "alert");
-      return;
+      return false;
     }
 
     setMicState("error");
@@ -569,62 +717,120 @@ async function enableListening({ userInitiated = false } = {}) {
       `MICROFONE: não foi possível iniciar a escuta. ${error?.message || error}`,
       "alert"
     );
+    return false;
   }
 }
 
-function disableListening() {
+function disableListening({ persist = true, announce = true } = {}) {
   listeningEnabled = false;
+  localSuspended = false;
+  suspensionReason = "";
   ultronSpeaking = false;
+  speechSources.clear();
   setPassiveMode();
   stopRecognition({ abort: true });
   setMicState("off");
 
-  const prefs = loadPreferences();
-  prefs.voiceWakeEnabled = false;
-  savePreferences(prefs);
+  if (persist) {
+    const prefs = loadPreferences();
+    prefs.voiceWakeEnabled = false;
+    savePreferences(prefs);
+  }
 
-  addLog(output, "Escuta por voz desativada pelo operador.");
+  if (announce) addLog(output, "Escuta por voz desativada pelo operador.");
 }
 
-function resumeAfterSpeech() {
+function suspendLocalListening(reason = "external") {
+  if (!listeningEnabled) return false;
+  localSuspended = true;
+  suspensionReason = reason;
+  stopRecognition({ abort: true });
+  setMicState("suspended", reason === "mobile-mic" ? "MIC CELULAR ASSUMIU" : "MIC LOCAL PAUSADO");
+  return true;
+}
+
+function resumeLocalListening(reason = "external") {
+  if (!listeningEnabled) return false;
+  if (suspensionReason && reason && suspensionReason !== reason && reason !== "force") return false;
+
+  localSuspended = false;
+  suspensionReason = "";
+  if (ultronSpeaking) {
+    setMicState("speaking");
+    return true;
+  }
+
+  activateConversation({ resetTimer: true });
+  scheduleRecognitionRestart(Math.max(0, echoGuardUntil - Date.now()));
+  return true;
+}
+
+function isAnySpeechOutputActive() {
+  const audioActive = Boolean(audio && !audio.paused && !audio.ended);
+  const browserActive = Boolean(window.ULTRON_VOICE_OUTPUT?.speaking);
+  return audioActive || browserActive || speechSources.size > 0;
+}
+
+function beginUltronSpeech(source = "voice", text = "") {
   clearAudioPauseTimer();
-  if (!ultronSpeaking) return;
+  speechSources.add(source);
+  if (text) lastUltronSpeechText = String(text);
+  ultronSpeaking = true;
+  echoGuardUntil = Number.POSITIVE_INFINITY;
+  stopRecognition({ abort: true });
 
-  ultronSpeaking = false;
-
-  if (listeningEnabled) {
-    activateConversation({ resetTimer: true });
-    scheduleRecognitionRestart(RESTART_DELAY_MS);
+  if (listeningEnabled && !localSuspended) {
+    setMicState("speaking");
   }
 }
 
-function bindAudioPauseResume() {
-  if (!audio) return;
+function finishUltronSpeech(source = "voice", text = "") {
+  clearAudioPauseTimer();
+  speechSources.delete(source);
+  if (text) lastUltronSpeechText = String(text);
 
-  audio.addEventListener("playing", () => {
-    clearAudioPauseTimer();
+  setTimeout(() => {
+    if (speechSources.size || isAnySpeechOutputActive()) return;
 
-    if (!ultronSpeaking) {
-      ultronSpeaking = true;
-      stopRecognition({ abort: true });
+    ultronSpeaking = false;
+    lastUltronSpeechEndedAt = Date.now();
+    const guard = IS_ANDROID
+      ? VOICE_RUNTIME_POLICY.androidEchoGuardMs
+      : VOICE_RUNTIME_POLICY.desktopEchoGuardMs;
+    echoGuardUntil = Date.now() + guard;
+
+    if (listeningEnabled && !localSuspended) {
+      activateConversation({ resetTimer: true });
+      scheduleRecognitionRestart(guard);
     }
+  }, 90);
+}
 
-    if (listeningEnabled) {
-      setMicState("speaking");
-    }
+function bindSpeechPauseResume() {
+  if (audio) {
+    audio.addEventListener("playing", () => beginUltronSpeech("audio-element"));
+    audio.addEventListener("ended", () => finishUltronSpeech("audio-element"));
+    audio.addEventListener("error", () => finishUltronSpeech("audio-element"));
+
+    audio.addEventListener("pause", () => {
+      clearAudioPauseTimer();
+      if (!speechSources.has("audio-element")) return;
+
+      audioPauseTimer = setTimeout(() => {
+        audioPauseTimer = null;
+        if (audio.paused) finishUltronSpeech("audio-element");
+      }, 450);
+    });
+  }
+
+  window.addEventListener("ultron:speech-start", (event) => {
+    const provider = String(event.detail?.provider || "browser-tts");
+    beginUltronSpeech(`event:${provider}`, event.detail?.text || "");
   });
 
-  audio.addEventListener("ended", resumeAfterSpeech);
-  audio.addEventListener("error", resumeAfterSpeech);
-
-  audio.addEventListener("pause", () => {
-    clearAudioPauseTimer();
-    if (!ultronSpeaking) return;
-
-    audioPauseTimer = setTimeout(() => {
-      audioPauseTimer = null;
-      if (ultronSpeaking && audio.paused) resumeAfterSpeech();
-    }, 550);
+  window.addEventListener("ultron:speech-end", (event) => {
+    const provider = String(event.detail?.provider || "browser-tts");
+    finishUltronSpeech(`event:${provider}`, event.detail?.text || "");
   });
 }
 
@@ -649,9 +855,46 @@ async function refreshGatewayHealth() {
   } catch {}
 }
 
+function exposeVoiceInputApi() {
+  window.ULTRON_VOICE_INPUT = {
+    dispatch(text, options = {}) {
+      return executeVoiceCommand(text, options);
+    },
+    suspend(reason = "external") {
+      return suspendLocalListening(reason);
+    },
+    resume(reason = "external") {
+      return resumeLocalListening(reason);
+    },
+    enable(options = {}) {
+      return enableListening(options);
+    },
+    disable(options = {}) {
+      return disableListening(options);
+    },
+    get state() {
+      return {
+        enabled: listeningEnabled,
+        suspended: localSuspended,
+        suspensionReason: suspensionReason || null,
+        recognitionRunning,
+        recognitionStarting,
+        recognitionStopping,
+        speaking: ultronSpeaking,
+        conversationActive,
+        restartFailures,
+        restartBlockedUntil: restartBlockedUntil || null,
+        lastRecognitionError: lastRecognitionError || null,
+        echoGuardUntil: Number.isFinite(echoGuardUntil) ? echoGuardUntil : null
+      };
+    }
+  };
+}
+
 function initializeVoiceListener() {
   recognition = createRecognition();
-  bindAudioPauseResume();
+  exposeVoiceInputApi();
+  bindSpeechPauseResume();
   refreshGatewayHealth();
 
   if (!SpeechRecognition) {
@@ -665,10 +908,7 @@ function initializeVoiceListener() {
     if (listeningEnabled) {
       disableListening();
     } else {
-      const prefs = loadPreferences();
-      prefs.voiceWakeEnabled = true;
-      savePreferences(prefs);
-      await enableListening({ userInitiated: true });
+      await enableListening({ userInitiated: true, persist: true });
     }
   });
 
@@ -677,10 +917,17 @@ function initializeVoiceListener() {
   const prefs = loadPreferences();
 
   if (prefs.microphoneAccepted && prefs.voiceWakeEnabled !== false) {
-    enableListening({ userInitiated: false });
+    enableListening({ userInitiated: false, persist: false });
   } else {
     setMicState("ready");
   }
+
+  window.addEventListener("online", () => {
+    if (listeningEnabled && !localSuspended && !ultronSpeaking) {
+      resetFailureState();
+      scheduleRecognitionRestart(250);
+    }
+  });
 
   setInterval(refreshGatewayHealth, 30000);
 }

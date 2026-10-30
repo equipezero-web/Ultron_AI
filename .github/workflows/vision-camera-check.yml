@@ -10,6 +10,7 @@ on:
       - 'modules/vision-command-router.js'
       - 'modules/vision-frame-health.js'
       - 'modules/stark-bootstrap.js'
+      - 'modules/mobile-camera-source.js'
       - 'modules/telemetry-client.js'
       - 'backend/server.js'
       - 'backend/vision-analysis.js'
@@ -34,6 +35,7 @@ jobs:
           node --check modules/vision-command-router.js
           node --check modules/vision-frame-health.js
           node --check modules/stark-bootstrap.js
+          node --check modules/mobile-camera-source.js
           node --check modules/telemetry-client.js
           node --check backend/server.js
           node --check backend/vision-analysis.js
@@ -113,7 +115,9 @@ jobs:
           grep -q "STATIC_VERIFY" modules/vision-client.js
           grep -q "visionCommandRouter" modules/stark-bootstrap.js
           grep -q 'vision-command-router.js?v=4.17.0' index.html
-          grep -Eq 'ULTRON AI // .*MOBILE CAMERA.*// v4\.[0-9]+\.[0-9]+' index.html
+          grep -q "mobile-camera-source.js?v=4.20.0" modules/stark-bootstrap.js
+          grep -q "ULTRON_MOBILE_CAMERA" modules/mobile-camera-source.js
+          grep -Eq 'ULTRON AI // .*// v4\.[0-9]+\.[0-9]+' index.html
           grep -q 'app.post("/api/vision/analyze"' backend/server.js
           grep -q 'express.json({ limit: "8mb" })' backend/server.js
           grep -q "visualAnalysis" backend/server.js
