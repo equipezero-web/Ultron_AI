@@ -38,7 +38,7 @@ const PROFILES = {
     sensorSmoothing: 0.26,
     cameraWidth: 1920,
     cameraHeight: 1080,
-    cameraFps: 30,
+    cameraFps: 24,
     maxFileNodes: 18,
     neuralVisualFps: 60
   },
@@ -84,9 +84,9 @@ const PROFILES = {
     telemetryIntervalMs: 45000,
     sensorIntervalMs: 66,
     sensorSmoothing: 0.18,
-    cameraWidth: 960,
-    cameraHeight: 540,
-    cameraFps: 20,
+    cameraWidth: 1280,
+    cameraHeight: 720,
+    cameraFps: 18,
     maxFileNodes: 8,
     neuralVisualFps: 30
   }
