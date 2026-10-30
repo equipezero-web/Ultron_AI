@@ -7,6 +7,8 @@ on:
       - 'modules/stark-bootstrap.js'
       - 'modules/visual-neural-stream-bridge-v4225.js'
       - 'modules/remote-camera-frame-gate-v4230.js'
+      - 'modules/remote-camera-display-v4232.js'
+      - 'modules/remote-camera-mode-v4232.js'
       - 'modules/stark-camera-preview.js'
       - 'modules/stark-camera-preview.css'
       - 'modules/stark-hand-gesture-v420.js'
@@ -16,6 +18,8 @@ on:
       - 'modules/stark-bootstrap.js'
       - 'modules/visual-neural-stream-bridge-v4225.js'
       - 'modules/remote-camera-frame-gate-v4230.js'
+      - 'modules/remote-camera-display-v4232.js'
+      - 'modules/remote-camera-mode-v4232.js'
       - 'modules/stark-camera-preview.js'
       - 'modules/stark-camera-preview.css'
       - 'modules/stark-hand-gesture-v420.js'
@@ -33,15 +37,19 @@ jobs:
         run: |
           node --check modules/visual-neural-stream-bridge-v4225.js
           node --check modules/remote-camera-frame-gate-v4230.js
+          node --check modules/remote-camera-display-v4232.js
+          node --check modules/remote-camera-mode-v4232.js
           node --check modules/stark-bootstrap.js
           node --check modules/stark-camera-preview.js
           node --check modules/stark-hand-gesture-v420.js
       - name: Verify real-frame gated Visual Sensor and Neural integration
         run: |
-          grep -q "stark-bootstrap.js?v=4.23.0" index.html
-          grep -q "// v4.23.0" index.html
+          grep -Eq "stark-bootstrap.js\?v=4\.23\.[0-9]+" index.html
+          grep -Eq "// v4\.23\.[0-9]+" index.html
           grep -q "visual-neural-stream-bridge-v4225.js?v=4.23.0" modules/stark-bootstrap.js
-          grep -q "remote-camera-frame-gate-v4230.js?v=4.23.0" modules/stark-bootstrap.js
+          grep -Eq "remote-camera-frame-gate-v4230.js\?v=4\.23\.[0-9]+" modules/stark-bootstrap.js
+          grep -q "remote-camera-display-v4232.js?v=4.23.2" modules/stark-bootstrap.js
+          grep -q "remote-camera-mode-v4232.js?v=4.23.2" modules/stark-bootstrap.js
           grep -q "ULTRON_VISUAL_NEURAL_STREAM" modules/visual-neural-stream-bridge-v4225.js
           grep -q "hasDecodedFrame" modules/visual-neural-stream-bridge-v4225.js
           grep -q "ULTRON_REMOTE_CAMERA_FRAME_GATE" modules/remote-camera-frame-gate-v4230.js
@@ -50,4 +58,6 @@ jobs:
           grep -q "videoHeight" modules/remote-camera-frame-gate-v4230.js
           grep -q "camera-frame-ready" modules/remote-camera-frame-gate-v4230.js
           grep -q "ULTRON_HAND_GESTURES?.disable" modules/remote-camera-frame-gate-v4230.js
-          echo 'Visual Sensor + Neural real-frame integration OK'
+          grep -q "ULTRON_REMOTE_CAMERA_DISPLAY" modules/remote-camera-display-v4232.js
+          grep -q "ULTRON_REMOTE_CAMERA_MODE" modules/remote-camera-mode-v4232.js
+          echo 'Visual Sensor + Neural remote-frame integration OK'
