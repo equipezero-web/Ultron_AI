@@ -113,7 +113,7 @@ jobs:
           grep -q "STATIC_VERIFY" modules/vision-client.js
           grep -q "visionCommandRouter" modules/stark-bootstrap.js
           grep -q 'vision-command-router.js?v=4.17.0' index.html
-          grep -Eq 'ULTRON AI // .*VISION CAMERA.*// v4\.[0-9]+\.[0-9]+' index.html
+          grep -Eq 'ULTRON AI // .*MOBILE CAMERA.*// v4\.[0-9]+\.[0-9]+' index.html
           grep -q 'app.post("/api/vision/analyze"' backend/server.js
           grep -q 'express.json({ limit: "8mb" })' backend/server.js
           grep -q "visualAnalysis" backend/server.js
