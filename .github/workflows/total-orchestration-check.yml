@@ -7,7 +7,9 @@ on:
       - 'modules/ultron-core-bridge-v4270.js'
       - 'modules/ultron-orchestrator-v4270.js'
       - 'modules/orchestrator-device-verify-v4270.js'
-      - 'modules/voice-orchestration-bridge-v4270.js'
+      - 'modules/voice-listener-v4290.js'
+      - 'modules/voice-match-v4290.js'
+      - 'modules/voice-orchestration-bridge-v4290.js'
       - 'modules/orchestrator-ui-bridge-v4270.js'
       - 'modules/telemetry-client-v4270.js'
       - 'backend/orchestration-engine.js'
@@ -20,7 +22,9 @@ on:
       - 'modules/ultron-core-bridge-v4270.js'
       - 'modules/ultron-orchestrator-v4270.js'
       - 'modules/orchestrator-device-verify-v4270.js'
-      - 'modules/voice-orchestration-bridge-v4270.js'
+      - 'modules/voice-listener-v4290.js'
+      - 'modules/voice-match-v4290.js'
+      - 'modules/voice-orchestration-bridge-v4290.js'
       - 'modules/orchestrator-ui-bridge-v4270.js'
       - 'modules/telemetry-client-v4270.js'
       - 'backend/orchestration-engine.js'
@@ -38,12 +42,14 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Syntax check v4.27 runtime
+      - name: Syntax check orchestration runtime
         run: |
           node --check modules/ultron-core-bridge-v4270.js
           node --check modules/ultron-orchestrator-v4270.js
           node --check modules/orchestrator-device-verify-v4270.js
-          node --check modules/voice-orchestration-bridge-v4270.js
+          node --check modules/voice-listener-v4290.js
+          node --check modules/voice-match-v4290.js
+          node --check modules/voice-orchestration-bridge-v4290.js
           node --check modules/orchestrator-ui-bridge-v4270.js
           node --check modules/telemetry-client-v4270.js
           node --check backend/orchestration-engine.js
@@ -85,7 +91,8 @@ jobs:
           grep -q '/api/control/status' modules/orchestrator-device-verify-v4270.js
           grep -q 'verificationTimeout: true' modules/orchestrator-device-verify-v4270.js
           grep -q 'command.status === "completed"' modules/orchestrator-device-verify-v4270.js
-          grep -q 'ULTRON_VOICE_ORCHESTRATION_BRIDGE' modules/voice-orchestration-bridge-v4270.js
+          grep -q 'ULTRON_VOICE_ORCHESTRATION_BRIDGE' modules/voice-orchestration-bridge-v4290.js
+          grep -q 'wakeAwareDispatch: true' modules/voice-orchestration-bridge-v4290.js
           grep -q 'ULTRON_ORCHESTRATOR_UI' modules/orchestrator-ui-bridge-v4270.js
           grep -q 'window.ULTRON_CORE' modules/ultron-core-bridge-v4270.js
 
@@ -101,14 +108,16 @@ jobs:
 
       - name: Verify orchestration runtime load order and current release marker
         run: |
-          grep -Eq '(TOTAL ORCHESTRATION \+ PROACTIVE CORE|NEURAL COMMAND \+ TOTAL ORCHESTRATION)' index.html
-          grep -Eq '(TOTAL INTEGRATION // v4\.27\.0|HOLOGRAPHIC FILESPACE // v4\.28\.0)' index.html
+          grep -Eq '(TOTAL ORCHESTRATION \+ PROACTIVE CORE|NEURAL COMMAND \+ TOTAL ORCHESTRATION|VOICE MATCH \+ NEURAL COMMAND \+ TOTAL ORCHESTRATION)' index.html
+          grep -Eq '(TOTAL INTEGRATION // v4\.27\.0|HOLOGRAPHIC FILESPACE // v4\.28\.0|VOICE MATCH WAKE CORE // v4\.29\.0)' index.html
           grep -q 'ultron-core-bridge-v4270.js?v=4.27.0' index.html
           grep -q 'ultron-orchestrator-v4270.js?v=4.27.0' index.html
           grep -q 'device-control-v4260.js?v=4.26.0' index.html
           grep -q 'orchestrator-device-verify-v4270.js?v=4.27.0' index.html
           grep -q 'telemetry-client-v4270.js?v=4.27.0' index.html
-          grep -q 'voice-orchestration-bridge-v4270.js?v=4.27.0' index.html
+          grep -q 'voice-match-v4290.js?v=4.29.0' index.html
+          grep -q 'voice-listener-v4290.js?v=4.29.0' index.html
+          grep -q 'voice-orchestration-bridge-v4290.js?v=4.29.0' index.html
           grep -q 'orchestrator-ui-bridge-v4270.js?v=4.27.0' index.html
           ! grep -q 'modules/telemetry-client.js?v=4.19.0' index.html
           node --input-type=module <<'NODE'
@@ -119,8 +128,9 @@ jobs:
             'ultron-orchestrator-v4270.js',
             'device-control-v4260.js',
             'orchestrator-device-verify-v4270.js',
-            'voice-listener.js',
-            'voice-orchestration-bridge-v4270.js',
+            'voice-match-v4290.js',
+            'voice-listener-v4290.js',
+            'voice-orchestration-bridge-v4290.js',
             'orchestrator-ui-bridge-v4270.js'
           ];
           let previous = -1;
