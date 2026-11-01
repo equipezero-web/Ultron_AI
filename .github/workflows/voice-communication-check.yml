@@ -2,7 +2,7 @@ name: Voice Communication Check
 
 on:
   push:
-    branches: [main, "fix/voice-listening-100"]
+    branches: [main, "fix/voice-listening-100", "feature/voice-match-v4290"]
   pull_request:
     branches: [main]
 
@@ -18,7 +18,9 @@ jobs:
 
       - name: JavaScript syntax
         run: |
-          node --check modules/voice-listener.js
+          node --check modules/voice-listener-v4290.js
+          node --check modules/voice-match-v4290.js
+          node --check modules/voice-orchestration-bridge-v4290.js
           node --check modules/mobile-mic-client.js
           node --check modules/voice-fallback.js
           node --check modules/voice-runtime-policy.js
@@ -42,14 +44,28 @@ jobs:
 
       - name: Validate local microphone state machine
         run: |
-          grep -q 'ultron:speech-start' modules/voice-listener.js
-          grep -q 'ultron:speech-end' modules/voice-listener.js
-          grep -q 'echoGuardUntil' modules/voice-listener.js
-          grep -q 'registerRecognitionFailure' modules/voice-listener.js
-          grep -q 'MIC EM BACKOFF' modules/voice-listener.js
-          grep -q 'ULTRON_VOICE_INPUT' modules/voice-listener.js
-          grep -q 'ULTRON_VISION_ROUTER' modules/voice-listener.js
-          grep -q 'ULTRON_DEVICES' modules/voice-listener.js
+          grep -q 'ultron:speech-start' modules/voice-listener-v4290.js
+          grep -q 'ultron:speech-end' modules/voice-listener-v4290.js
+          grep -q 'echoGuardUntil' modules/voice-listener-v4290.js
+          grep -q 'registerRecognitionFailure' modules/voice-listener-v4290.js
+          grep -q 'MIC EM BACKOFF' modules/voice-listener-v4290.js
+          grep -q 'ULTRON_VOICE_INPUT' modules/voice-listener-v4290.js
+          grep -q 'ULTRON_VISION_ROUTER' modules/voice-listener-v4290.js
+          grep -q 'ULTRON_DEVICES' modules/voice-listener-v4290.js
+          grep -q 'VOICE STANDBY' modules/voice-listener-v4290.js
+          grep -q 'authorizeWake' modules/voice-listener-v4290.js
+          grep -q 'ultron:wake-state' modules/voice-listener-v4290.js
+
+      - name: Validate Voice Match local privacy and enrollment
+        run: |
+          grep -q 'ultron_voice_match_profile_v1' modules/voice-match-v4290.js
+          grep -q 'localStorage.setItem(PROFILE_KEY' modules/voice-match-v4290.js
+          grep -q 'SAMPLE_COUNT = 3' modules/voice-match-v4290.js
+          grep -q 'verifyLocalWake' modules/voice-match-v4290.js
+          grep -q 'cosineSimilarity' modules/voice-match-v4290.js
+          grep -q 'paired-mobile-trust' modules/voice-match-v4290.js
+          ! grep -q '/api/' modules/voice-match-v4290.js
+          ! grep -q 'fetch(' modules/voice-match-v4290.js
 
       - name: Validate mobile/local microphone handoff
         run: |
@@ -57,9 +73,19 @@ jobs:
           grep -q 'ULTRON_VOICE_INPUT?.resume' modules/mobile-mic-client.js
           grep -q 'ULTRON_VOICE_INPUT?.dispatch' modules/mobile-mic-client.js
           grep -q 'resumeNotebookMicrophone' modules/mobile-mic-client.js
+          grep -q "trustedDevice: Boolean(options.trustedDevice || options.source === 'mobile')" modules/voice-listener-v4290.js
+
+      - name: Validate wake-aware orchestration
+        run: |
+          grep -q "version: '4.29.0'" modules/voice-listener-v4290.js
+          grep -q 'wakeAwareDispatch: true' modules/voice-orchestration-bridge-v4290.js
+          ! grep -q 'voice.dispatch =' modules/voice-orchestration-bridge-v4290.js
+          grep -q 'orchestrator.execute' modules/voice-listener-v4290.js
 
       - name: Validate voice runtime markers inside current release
         run: |
-          grep -Eq 'voice-listener\.js\?v=4\.21\.0' index.html
+          grep -Eq 'voice-match-v4290\.js\?v=4\.29\.0' index.html
+          grep -Eq 'voice-listener-v4290\.js\?v=4\.29\.0' index.html
+          grep -Eq 'voice-orchestration-bridge-v4290\.js\?v=4\.29\.0' index.html
           grep -Eq 'mobile-mic-client\.js\?v=4\.21\.0' index.html
-          grep -Eq 'ULTRON AI // .*// v4\.[0-9]+\.[0-9]+' index.html
+          grep -q 'VOICE MATCH WAKE CORE // v4.29.0' index.html

@@ -39,12 +39,12 @@ jobs:
       - name: Neural Command v4.28 integration markers
         run: |
           test -s assets/neural-command-concept.webp
-          grep -q 'neural-command-v4280.css?v=4.28.0' index.html
-          grep -q 'neural-command-v4280.js?v=4.28.0' index.html
-          grep -q 'neural-filespace-click-bridge-v4280.js?v=4.28.0' index.html
-          grep -q 'HOLOGRAPHIC NEURAL CORE // INTERNAL FILESPACE' index.html
-          grep -q 'v4.28.0' index.html
-          grep -q 'assets/neural-command-concept.webp' modules/neural-command-v4280.css
+          grep -Fq 'neural-command-v4280.css?v=4.28.0' index.html
+          grep -Fq 'neural-command-v4280.js?v=4.28.0' index.html
+          grep -Fq 'neural-filespace-click-bridge-v4280.js?v=4.28.0' index.html
+          grep -Fq 'HOLOGRAPHIC NEURAL CORE // INTERNAL FILESPACE' index.html
+          grep -Eq '(HOLOGRAPHIC FILESPACE // v4\.28\.0|VOICE MATCH WAKE CORE // v4\.29\.0)' index.html
+          grep -Fq 'neural-command-concept.webp' modules/neural-command-v4280.css
 
       - name: Validate 360, hidden files and fragmentation
         run: |

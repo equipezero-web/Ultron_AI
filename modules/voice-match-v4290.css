@@ -1,0 +1,25 @@
+/* ULTRON v4.29.0 // Voice Match */
+.voice-match-strip{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  align-items:center;
+  gap:8px;
+  margin-top:8px;
+  padding:7px 8px;
+  border:1px solid rgba(0,240,255,.12);
+  background:linear-gradient(180deg,rgba(4,20,38,.64),rgba(1,8,17,.72));
+}
+.voice-match-copy span,.voice-match-copy strong{display:block}
+.voice-match-copy span{font:600 6px ui-monospace,monospace;letter-spacing:.8px;color:rgba(122,184,205,.62)}
+.voice-match-copy strong{margin-top:3px;font:800 8px ui-monospace,monospace;letter-spacing:.7px;color:#8edfec}
+.voice-match-copy strong.green{color:#8dfff2;text-shadow:0 0 12px rgba(88,255,230,.42)}
+.voice-match-actions{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}
+.voice-match-actions .hud-button{padding:7px 8px;font-size:7px}
+body.ultron-voice-awake .brand-core,
+body.ultron-voice-awake .core-orb{filter:brightness(1.22) saturate(1.15)}
+body.ultron-voice-awake .brand-ring{box-shadow:0 0 18px rgba(69,225,255,.36)}
+@media(max-width:720px){
+  .voice-match-strip{grid-template-columns:1fr}
+  .voice-match-actions{justify-content:stretch}
+  .voice-match-actions .hud-button{flex:1 1 120px}
+}
