@@ -107,9 +107,10 @@ function guardRuntimeObject(object, methodName, label) {
 }
 
 function installRuntimeGuards() {
-  guardRuntimeObject(window.ULTRON_CORE, 'ask', 'core');
-  guardRuntimeObject(window.ULTRON_DEVICES, 'routeNaturalLanguage', 'devices');
-  guardRuntimeObject(window.ULTRON_VISION_ROUTER, 'run', 'vision');
+  const core = guardRuntimeObject(window.ULTRON_CORE, 'ask', 'core');
+  const devices = guardRuntimeObject(window.ULTRON_DEVICES, 'routeNaturalLanguage', 'devices');
+  const vision = guardRuntimeObject(window.ULTRON_VISION_ROUTER, 'run', 'vision');
+  return { core, devices, vision };
 }
 
 function installOrchestratorGate() {
@@ -154,11 +155,11 @@ window.addEventListener('ultron:wake-state', (event) => {
 });
 
 const installTimer = setInterval(() => {
-  installOrchestratorGate();
-  installRuntimeGuards();
-  if (window.ULTRON_ORCHESTRATOR && window.ULTRON_CORE && window.ULTRON_DEVICES) clearInterval(installTimer);
+  const orchestratorReady = installOrchestratorGate();
+  const guards = installRuntimeGuards();
+  if (orchestratorReady && guards.core && guards.devices && guards.vision) clearInterval(installTimer);
 }, 120);
-setTimeout(() => clearInterval(installTimer), 15000);
+setTimeout(() => clearInterval(installTimer), 20000);
 installOrchestratorGate();
 installRuntimeGuards();
 
