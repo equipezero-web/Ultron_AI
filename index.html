@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="style.css?v=4.12.1">
 <link rel="stylesheet" href="modules/neural-command-v4280.css?v=4.28.0">
 <link rel="stylesheet" href="modules/voice-match-v4290.css?v=4.29.0">
+<link rel="stylesheet" href="modules/neural-interaction-v4300.css?v=4.30.0">
 </head>
 <body>
 <div class="hud-bg" aria-hidden="true">
@@ -99,8 +100,8 @@
     <section class="center-column">
       <section class="neural-stage hud-frame">
         <div class="stage-header">
-          <div><span>NEURAL COMMAND SYSTEM</span><strong>HOLOGRAPHIC NEURAL CORE // INTERNAL FILESPACE</strong></div>
-          <div class="stage-status"><i></i> 360° + FILESPACE READY</div>
+          <div><span>NEURAL COMMAND SYSTEM</span><strong>HOLOGRAPHIC NEURAL CORE // PREDICTIVE INTERACTION</strong></div>
+          <div class="stage-status"><i></i> P0→P5 + 360° + FILESPACE</div>
         </div>
 
         <div class="orb-stage" aria-label="Neural Command: esfera holográfica 3D controlável em 360 graus com arquivos internos ocultos">
@@ -117,12 +118,12 @@
           <div><span>DEPTH / ZOOM</span><strong id="orb-depth">100%</strong></div>
           <div><span>HANDS</span><strong id="orb-hands">0</strong></div>
         </div>
-        <p class="spatial-help">Gire livremente em 360°. Os arquivos ficam ocultos dentro da esfera. Aproxime/zoom profundamente ou dê duplo clique para entrar no núcleo; a esfera se fragmenta e libera os arquivos flutuantes.</p>
+        <p class="spatial-help">Gire livremente em 360°. O Neural Core antecipa a trajetória das mãos para suavizar rotação e zoom. STOP / PARAR / CONGELAR / CANCELAR têm prioridade P0 imediata.</p>
       </section>
 
       <section class="hud-panel terminal-panel">
         <div class="panel-heading terminal-heading"><div><span class="panel-index">CORE</span><h2>COMMAND TERMINAL</h2></div><b class="pulse">READY</b></div>
-        <div id="output-box" class="terminal" aria-live="polite"><p class="boot">&gt; ULTRON TOTAL ORCHESTRATION CORE INITIALIZED</p><p>&gt; Voice Match v4.29: wake phrase + perfil vocal local + Neural Command integrados.</p></div>
+        <div id="output-box" class="terminal" aria-live="polite"><p class="boot">&gt; ULTRON NEURAL INTERACTION CORE INITIALIZED</p><p>&gt; v4.30: P0→P5 + predictive intent + adaptive framing + haptic bridge + Voice Match.</p></div>
         <div class="command-row">
           <div class="command-input-wrap"><span>ULTRON &gt;</span><textarea id="command-input" rows="2" placeholder="Digite ou fale uma instrução..."></textarea></div>
           <button id="btn-send" class="hud-button execute">EXECUTAR <span>↗</span></button>
@@ -154,7 +155,7 @@
           <button id="btn-camera" class="hud-button primary">ATIVAR SENSOR DO CELULAR</button>
           <button id="btn-stop-camera" class="hud-button danger" disabled>DESLIGAR SENSOR</button>
         </div>
-        <p class="spatial-help">Sem detecção de emoção e sem classificação de movimento. O vídeo é usado para visão, mãos, profundidade e controle 3D.</p>
+        <p class="spatial-help">Sem detecção de emoção e sem classificação de movimento. O vídeo é usado para visão, mãos, profundidade, intenção espacial e controle 3D.</p>
       </section>
 
       <section class="hud-panel infra-panel">
@@ -172,8 +173,8 @@
   </main>
 
   <footer class="hud-footer">
-    <span><i></i> VOICE MATCH + NEURAL COMMAND + TOTAL ORCHESTRATION</span>
-    <span>ULTRON AI // VOICE MATCH WAKE CORE // v4.29.0</span>
+    <span><i></i> VOICE MATCH + P0→P5 + PREDICTIVE NEURAL + TOTAL ORCHESTRATION</span>
+    <span>ULTRON AI // NEURAL INTERACTION CORE // v4.30.0</span>
     <a href="https://equipezero-web.github.io/Ultron_AI/" target="_blank" rel="noopener">GITHUB PAGES</a>
   </footer>
 </div>
@@ -193,6 +194,7 @@
 <script type="module" src="modules/provider-ui.js?v=4.13.0"></script>
 <script type="module" src="modules/ultron-core-bridge-v4270.js?v=4.27.0"></script>
 <script type="module" src="modules/ultron-orchestrator-v4270.js?v=4.27.0"></script>
+<script type="module" src="modules/neural-priority-core-v4300.js?v=4.30.0"></script>
 <script type="module" src="modules/device-control-v4260.js?v=4.26.0"></script>
 <script type="module" src="modules/orchestrator-device-verify-v4270.js?v=4.27.0"></script>
 <script type="module" src="modules/voice-match-v4290.js?v=4.29.0"></script>
@@ -200,6 +202,9 @@
 <script type="module" src="modules/stark-bootstrap.js?v=4.28.0"></script>
 <script type="module" src="modules/neural-command-v4280.js?v=4.28.0"></script>
 <script type="module" src="modules/neural-filespace-click-bridge-v4280.js?v=4.28.0"></script>
+<script type="module" src="modules/neural-predictive-intent-v4300.js?v=4.30.0"></script>
+<script type="module" src="modules/neural-framing-v4300.js?v=4.30.0"></script>
+<script type="module" src="modules/neural-haptics-v4300.js?v=4.30.0"></script>
 <script type="module" src="modules/telemetry-client-v4270.js?v=4.27.0"></script>
 <script type="module" src="script.js?v=4.25.0"></script>
 <script type="module" src="modules/vision-command-router.js?v=4.17.0"></script>
