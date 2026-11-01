@@ -1,0 +1,102 @@
+/* ULTRON v4.30.0 // Neural Interaction Core */
+body{
+  --priority-accent:#6ff6ff;
+  --focus-opacity:.48;
+}
+
+body[data-ultron-priority="P1"]{--priority-accent:#ffb84d}
+body[data-ultron-priority="P0"]{--priority-accent:#ff3b4d}
+
+body .hud-panel,
+body .neural-stage,
+body .topbar{
+  transition:opacity .26s ease, filter .26s ease, transform .26s ease, box-shadow .26s ease, border-color .26s ease;
+}
+
+body[data-neural-focus="neural"] .left-column,
+body[data-neural-focus="neural"] .right-column,
+body[data-neural-focus="precision"] .left-column,
+body[data-neural-focus="precision"] .right-column,
+body[data-neural-focus="filespace"] .left-column,
+body[data-neural-focus="filespace"] .right-column{
+  opacity:var(--focus-opacity);
+  filter:saturate(.68) brightness(.82);
+}
+body[data-neural-focus="neural"] .neural-stage,
+body[data-neural-focus="precision"] .neural-stage,
+body[data-neural-focus="filespace"] .neural-stage{
+  box-shadow:0 0 54px rgba(64,214,255,.18), inset 0 0 42px rgba(34,90,255,.08);
+}
+
+body[data-neural-focus="voice"] .center-column > :not(.terminal-panel),
+body[data-neural-focus="voice"] .right-column{
+  opacity:.64;
+}
+body[data-neural-focus="voice"] .microphone-panel{
+  transform:translateZ(0) scale(1.012);
+  box-shadow:0 0 38px rgba(111,246,255,.16);
+}
+
+body[data-neural-focus="optical"] .left-column,
+body[data-neural-focus="optical"] .terminal-panel{
+  opacity:.62;
+}
+body[data-neural-focus="optical"] .optical-panel{
+  transform:scale(1.012);
+  box-shadow:0 0 38px rgba(54,181,255,.17);
+}
+
+body[data-neural-focus="terminal"] .neural-stage,
+body[data-neural-focus="terminal"] .left-column,
+body[data-neural-focus="terminal"] .right-column{
+  opacity:.68;
+}
+body[data-neural-focus="terminal"] .terminal-panel{transform:scale(1.008)}
+
+body[data-neural-focus="critical"],
+body.ultron-frozen{
+  --focus-opacity:.28;
+}
+body[data-neural-focus="critical"] .hud-panel,
+body.ultron-frozen .hud-panel{
+  border-color:rgba(255,59,77,.28)!important;
+}
+body.ultron-frozen .orb-stage{
+  filter:saturate(.32) brightness(.62) contrast(1.18);
+  animation:none!important;
+}
+body.ultron-frozen .core-orb,
+body.ultron-frozen .orbit,
+body.ultron-frozen .orb-halo,
+body.ultron-frozen .orb-pulse{
+  animation-play-state:paused!important;
+}
+body.ultron-frozen .neural-stage::before{
+  content:"P0 // FROZEN";
+  position:absolute;
+  z-index:50;
+  inset:48% auto auto 50%;
+  transform:translate(-50%,-50%);
+  padding:10px 18px;
+  border:1px solid rgba(255,59,77,.72);
+  background:rgba(18,0,4,.82);
+  color:#ff8a96;
+  letter-spacing:.18em;
+  font:700 12px/1.2 monospace;
+  box-shadow:0 0 32px rgba(255,30,60,.22);
+  pointer-events:none;
+}
+
+body[data-ultron-priority="P1"] .topbar,
+body[data-ultron-priority="P0"] .topbar{
+  box-shadow:inset 0 -1px 0 color-mix(in srgb,var(--priority-accent) 50%,transparent),0 0 28px color-mix(in srgb,var(--priority-accent) 18%,transparent);
+}
+
+@media (max-width: 900px){
+  body[data-neural-focus] .left-column,
+  body[data-neural-focus] .right-column,
+  body[data-neural-focus] .center-column > *{opacity:1}
+  body[data-neural-focus="neural"] .neural-stage,
+  body[data-neural-focus="precision"] .neural-stage,
+  body[data-neural-focus="filespace"] .neural-stage{transform:scale(1.006)}
+}
