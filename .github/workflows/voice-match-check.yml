@@ -63,7 +63,7 @@ jobs:
       - name: Verify paired mobile wake path
         run: |
           grep -q 'ULTRON_VOICE_INPUT?.dispatch' modules/mobile-mic-client.js
-          grep -q "source: 'mobile'" modules/voice-listener-v4290.js
+          grep -q "options.source === 'mobile'" modules/voice-listener-v4290.js
           grep -q 'paired-mobile-trust' modules/voice-match-v4290.js
           grep -q 'trustedDevice' modules/voice-listener-v4290.js
 
