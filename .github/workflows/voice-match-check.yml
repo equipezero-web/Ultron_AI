@@ -92,4 +92,4 @@ jobs:
           grep -q 'voice-match-v4290.js?v=4.29.0' index.html
           grep -q 'voice-listener-v4290.js?v=4.29.0' index.html
           grep -q 'voice-orchestration-bridge-v4290.js?v=4.29.0' index.html
-          grep -q 'VOICE MATCH WAKE CORE // v4.29.0' index.html
+          grep -Eq '(VOICE MATCH WAKE CORE // v4\.29\.0|NEURAL INTERACTION CORE // v4\.30\.0)' index.html

@@ -1,0 +1,96 @@
+name: Neural Interaction Core v4.30 Check
+
+on:
+  push:
+    paths:
+      - 'index.html'
+      - 'modules/neural-priority-core-v4300.js'
+      - 'modules/neural-predictive-intent-v4300.js'
+      - 'modules/neural-framing-v4300.js'
+      - 'modules/neural-haptics-v4300.js'
+      - 'modules/neural-interaction-v4300.css'
+      - '.github/workflows/neural-interaction-v4300-check.yml'
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'modules/neural-priority-core-v4300.js'
+      - 'modules/neural-predictive-intent-v4300.js'
+      - 'modules/neural-framing-v4300.js'
+      - 'modules/neural-haptics-v4300.js'
+      - 'modules/neural-interaction-v4300.css'
+      - '.github/workflows/neural-interaction-v4300-check.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  neural-interaction-core:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: JavaScript syntax
+        run: |
+          node --check modules/neural-priority-core-v4300.js
+          node --check modules/neural-predictive-intent-v4300.js
+          node --check modules/neural-framing-v4300.js
+          node --check modules/neural-haptics-v4300.js
+
+      - name: Verify P0 to P5 hierarchy
+        run: |
+          grep -q "hierarchy: \['P0','P1','P2','P3','P4','P5'\]" modules/neural-priority-core-v4300.js
+          grep -q 'EMERGENCY STOP' modules/neural-priority-core-v4300.js
+          grep -q 'ULTRON_ABORT_EPOCH' modules/neural-priority-core-v4300.js
+          grep -q 'ultron:emergency-stop' modules/neural-priority-core-v4300.js
+          grep -q 'ULTRON_FROZEN' modules/neural-priority-core-v4300.js
+          grep -q 'speechSynthesis' modules/neural-priority-core-v4300.js
+          grep -q 'routeNaturalLanguage' modules/neural-priority-core-v4300.js
+          grep -q 'ULTRON_VISION_ROUTER' modules/neural-priority-core-v4300.js
+
+      - name: Verify predictive spatial intention
+        run: |
+          grep -q 'leadMs: 96' modules/neural-predictive-intent-v4300.js
+          grep -q 'state.ax' modules/neural-predictive-intent-v4300.js
+          grep -q 'state.ay' modules/neural-predictive-intent-v4300.js
+          grep -q 'ROTATE_PREDICT' modules/neural-predictive-intent-v4300.js
+          grep -q 'EXPAND' modules/neural-predictive-intent-v4300.js
+          grep -q 'COLLAPSE_LOCK' modules/neural-predictive-intent-v4300.js
+          grep -q 'PRECISION_ZOOM' modules/neural-predictive-intent-v4300.js
+          grep -q 'ULTRON_NEURAL_3D' modules/neural-predictive-intent-v4300.js
+
+      - name: Verify adaptive framing and functional colors
+        run: |
+          grep -q 'data-neural-focus' modules/neural-interaction-v4300.css
+          grep -q 'ultron-frozen' modules/neural-interaction-v4300.css
+          grep -q '#ff3b4d' modules/neural-interaction-v4300.css
+          grep -q '#ffb84d' modules/neural-interaction-v4300.css
+          grep -q 'ultron:framing-change' modules/neural-framing-v4300.js
+          grep -q "setFocus('critical'" modules/neural-framing-v4300.js
+          grep -q "setFocus('filespace'" modules/neural-framing-v4300.js
+
+      - name: Verify haptic bridge
+        run: |
+          grep -q "'vibrate' in navigator" modules/neural-haptics-v4300.js
+          grep -q 'ultron:bridge-haptic' modules/neural-haptics-v4300.js
+          grep -q 'critical:' modules/neural-haptics-v4300.js
+          grep -q 'wake:' modules/neural-haptics-v4300.js
+          grep -q 'ultron:haptic-request' modules/neural-haptics-v4300.js
+
+      - name: Verify runtime load and release
+        run: |
+          grep -Fq 'neural-interaction-v4300.css?v=4.30.0' index.html
+          grep -Fq 'neural-priority-core-v4300.js?v=4.30.0' index.html
+          grep -Fq 'neural-predictive-intent-v4300.js?v=4.30.0' index.html
+          grep -Fq 'neural-framing-v4300.js?v=4.30.0' index.html
+          grep -Fq 'neural-haptics-v4300.js?v=4.30.0' index.html
+          grep -Fq 'NEURAL INTERACTION CORE // v4.30.0' index.html
+          grep -Fq 'P0→P5' index.html
+
+      - name: Preserve safety direction
+        run: |
+          ! grep -qi 'emotionDefinitions\|emotion-state' modules/neural-priority-core-v4300.js modules/neural-predictive-intent-v4300.js modules/neural-framing-v4300.js
+          ! grep -qi 'desktop\.shell\|shell\.exec\|eval(' modules/neural-priority-core-v4300.js
+          echo 'Neural Interaction Core v4.30 checks OK'

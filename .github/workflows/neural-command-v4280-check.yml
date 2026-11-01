@@ -42,8 +42,8 @@ jobs:
           grep -Fq 'neural-command-v4280.css?v=4.28.0' index.html
           grep -Fq 'neural-command-v4280.js?v=4.28.0' index.html
           grep -Fq 'neural-filespace-click-bridge-v4280.js?v=4.28.0' index.html
-          grep -Fq 'HOLOGRAPHIC NEURAL CORE // INTERNAL FILESPACE' index.html
-          grep -Eq '(HOLOGRAPHIC FILESPACE // v4\.28\.0|VOICE MATCH WAKE CORE // v4\.29\.0)' index.html
+          grep -Eq 'HOLOGRAPHIC NEURAL CORE // (INTERNAL FILESPACE|PREDICTIVE INTERACTION)' index.html
+          grep -Eq '(HOLOGRAPHIC FILESPACE // v4\.28\.0|VOICE MATCH WAKE CORE // v4\.29\.0|NEURAL INTERACTION CORE // v4\.30\.0)' index.html
           grep -Fq 'neural-command-concept.webp' modules/neural-command-v4280.css
 
       - name: Validate 360, hidden files and fragmentation
