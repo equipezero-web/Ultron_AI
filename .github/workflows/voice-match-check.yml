@@ -1,0 +1,95 @@
+name: Voice Match Wake Check
+
+on:
+  push:
+    paths:
+      - 'index.html'
+      - 'modules/voice-match-v4290.js'
+      - 'modules/voice-match-v4290.css'
+      - 'modules/voice-listener-v4290.js'
+      - 'modules/voice-orchestration-bridge-v4290.js'
+      - 'modules/mobile-mic-client.js'
+      - '.github/workflows/voice-match-check.yml'
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'modules/voice-match-v4290.js'
+      - 'modules/voice-match-v4290.css'
+      - 'modules/voice-listener-v4290.js'
+      - 'modules/voice-orchestration-bridge-v4290.js'
+      - 'modules/mobile-mic-client.js'
+      - '.github/workflows/voice-match-check.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  voice-match-wake:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Syntax
+        run: |
+          node --check modules/voice-match-v4290.js
+          node --check modules/voice-listener-v4290.js
+          node --check modules/voice-orchestration-bridge-v4290.js
+
+      - name: Verify wake state machine
+        run: |
+          grep -q 'VOICE STANDBY' modules/voice-listener-v4290.js
+          grep -q 'AWAKE' modules/voice-listener-v4290.js
+          grep -q 'extractWakeCommand' modules/voice-listener-v4290.js
+          grep -q 'authorizeWake' modules/voice-listener-v4290.js
+          grep -q 'setPassiveMode' modules/voice-listener-v4290.js
+          grep -q 'activateConversation' modules/voice-listener-v4290.js
+          grep -q 'ultron:wake-state' modules/voice-listener-v4290.js
+          grep -q 'wakeAuthorizationBusy' modules/voice-listener-v4290.js
+
+      - name: Verify speaker profile stays local
+        run: |
+          grep -q "PROFILE_KEY = 'ultron_voice_match_profile_v1'" modules/voice-match-v4290.js
+          grep -q 'localStorage.setItem(PROFILE_KEY' modules/voice-match-v4290.js
+          grep -q 'SAMPLE_COUNT = 3' modules/voice-match-v4290.js
+          grep -q 'featureFrame' modules/voice-match-v4290.js
+          grep -q 'cosineSimilarity' modules/voice-match-v4290.js
+          grep -q 'threshold' modules/voice-match-v4290.js
+          ! grep -q 'fetch(' modules/voice-match-v4290.js
+          ! grep -q '/api/' modules/voice-match-v4290.js
+
+      - name: Verify paired mobile wake path
+        run: |
+          grep -q 'ULTRON_VOICE_INPUT?.dispatch' modules/mobile-mic-client.js
+          grep -q "source: 'mobile'" modules/voice-listener-v4290.js
+          grep -q 'paired-mobile-trust' modules/voice-match-v4290.js
+          grep -q 'trustedDevice' modules/voice-listener-v4290.js
+
+      - name: Verify anti-echo and recovery preserved
+        run: |
+          grep -q 'echoGuardUntil' modules/voice-listener-v4290.js
+          grep -q 'isLikelySpeechEcho' modules/voice-listener-v4290.js
+          grep -q 'isDuplicateVoiceText' modules/voice-listener-v4290.js
+          grep -q 'restartDelayFor' modules/voice-listener-v4290.js
+          grep -q 'nextFailureState' modules/voice-listener-v4290.js
+          grep -q 'MIC EM BACKOFF' modules/voice-listener-v4290.js
+          grep -q 'ultron:speech-start' modules/voice-listener-v4290.js
+          grep -q 'ultron:speech-end' modules/voice-listener-v4290.js
+
+      - name: Verify orchestration cannot bypass wake gate
+        run: |
+          grep -q 'wakeAwareDispatch: true' modules/voice-orchestration-bridge-v4290.js
+          ! grep -q 'voice.dispatch =' modules/voice-orchestration-bridge-v4290.js
+          grep -q 'orchestrator.execute' modules/voice-listener-v4290.js
+
+      - name: Verify release UI
+        run: |
+          grep -q 'voice-match-state' index.html
+          grep -q 'btn-enroll-voice-match' index.html
+          grep -q 'voice-match-v4290.css?v=4.29.0' index.html
+          grep -q 'voice-match-v4290.js?v=4.29.0' index.html
+          grep -q 'voice-listener-v4290.js?v=4.29.0' index.html
+          grep -q 'voice-orchestration-bridge-v4290.js?v=4.29.0' index.html
+          grep -q 'VOICE MATCH WAKE CORE // v4.29.0' index.html
