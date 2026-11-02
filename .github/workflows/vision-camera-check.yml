@@ -26,8 +26,7 @@ on:
       - 'modules/mobile-performance.js'
       - 'modules/stark-bootstrap.js'
       - 'backend/vision-analysis.js'
-      - 'backend/worker-v2.js'
-      - 'backend/worker-v3.js'
+      - 'backend/worker.js'
       - 'backend/webrtc-ice.js'
       - 'backend/microphone-bridge.js'
       - '.github/workflows/vision-camera-check.yml'
@@ -56,8 +55,7 @@ on:
       - 'modules/mobile-performance.js'
       - 'modules/stark-bootstrap.js'
       - 'backend/vision-analysis.js'
-      - 'backend/worker-v2.js'
-      - 'backend/worker-v3.js'
+      - 'backend/worker.js'
       - 'backend/webrtc-ice.js'
       - 'backend/microphone-bridge.js'
       - '.github/workflows/vision-camera-check.yml'
@@ -95,8 +93,7 @@ jobs:
           node --check modules/mobile-performance.js
           node --check modules/stark-bootstrap.js
           node --check backend/vision-analysis.js
-          node --check backend/worker-v2.js
-          node --check backend/worker-v3.js
+          node --check backend/worker.js
           node --check backend/webrtc-ice.js
           node --check backend/microphone-bridge.js
 
@@ -189,7 +186,8 @@ jobs:
           grep -q "neural-spatial-control-v4250.js?v=4.25.0" modules/stark-bootstrap.js
           grep -q "neural-focus-v4250.css?v=4.25.0" modules/stark-bootstrap.js
           grep -q "mobile-link-simple-v4250.js?v=4.25.0" modules/stark-bootstrap.js
-          grep -q 'url.pathname === "/api/webrtc/ice"' backend/worker-v3.js
+          grep -q 'path === "/api/webrtc/ice"' backend/worker.js
+          grep -q 'path === "/api/vision/analyze"' backend/worker.js
           grep -q "generate-ice-servers" backend/webrtc-ice.js
           grep -q "CLOUDFLARE_TURN_KEY_ID" backend/webrtc-ice.js
           grep -q "CLOUDFLARE_TURN_API_TOKEN" backend/webrtc-ice.js
@@ -203,3 +201,4 @@ jobs:
           ! grep -q 'id="emotion-state"' index.html
           ! grep -q 'id="motion-events"' index.html
           ! grep -q 'id="motion-value"' index.html
+          ! grep -q 'import baseWorker' backend/worker.js

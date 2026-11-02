@@ -7,7 +7,6 @@ on:
       - 'modules/la-team.css'
       - 'modules/telemetry-client*.js'
       - 'backend/worker.js'
-      - 'backend/worker-v4.js'
       - 'index.html'
       - '.github/workflows/la-team-connector-check.yml'
   pull_request:
@@ -16,7 +15,6 @@ on:
       - 'modules/la-team.css'
       - 'modules/telemetry-client*.js'
       - 'backend/worker.js'
-      - 'backend/worker-v4.js'
       - 'index.html'
       - '.github/workflows/la-team-connector-check.yml'
 
@@ -38,10 +36,10 @@ jobs:
       - name: Check AI backend integration
         run: |
           node --check backend/worker.js
-          node --check backend/worker-v4.js
       - name: Verify connector markers
         run: |
           grep -q 'ULTRON_LA_TEAM' modules/la-team-client.js
           grep -q 'laTeamContext' backend/worker.js
-          grep -q 'authenticated-internal-context' backend/worker-v4.js
+          grep -q 'authenticated-internal-context' backend/worker.js
+          ! grep -q 'import baseWorker' backend/worker.js
           grep -Eq 'telemetry-client(-v4270)?\.js\?v=4\.[0-9]+\.[0-9]+' index.html

@@ -1,0 +1,79 @@
+name: Backend Single Worker Check
+
+on:
+  push:
+    paths:
+      - 'backend/worker*.js'
+      - 'backend/wrangler.jsonc'
+      - 'backend/device-bridge.js'
+      - 'backend/microphone-bridge.js'
+      - 'backend/device-control-v2.js'
+      - 'backend/automation-engine.js'
+      - 'backend/orchestration-engine.js'
+      - 'backend/web-research.js'
+      - 'backend/research-memory.js'
+      - 'backend/voice-router.js'
+      - 'backend/telemetry.js'
+      - 'backend/vision-analysis.js'
+      - '.github/workflows/backend-single-worker-check.yml'
+  pull_request:
+    paths:
+      - 'backend/worker*.js'
+      - 'backend/wrangler.jsonc'
+      - 'backend/device-bridge.js'
+      - 'backend/microphone-bridge.js'
+      - 'backend/device-control-v2.js'
+      - 'backend/automation-engine.js'
+      - 'backend/orchestration-engine.js'
+      - 'backend/web-research.js'
+      - 'backend/research-memory.js'
+      - 'backend/voice-router.js'
+      - 'backend/telemetry.js'
+      - 'backend/vision-analysis.js'
+      - '.github/workflows/backend-single-worker-check.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  single-worker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Canonical Worker syntax
+        run: node --check backend/worker.js
+
+      - name: Enforce a single production Worker
+        run: |
+          grep -q '"main": "worker.js"' backend/wrangler.jsonc
+          ! grep -Eq '"main": "worker-v[0-9]+\.js"' backend/wrangler.jsonc
+          ! grep -q 'import baseWorker' backend/worker.js
+          test ! -e backend/worker-v2.js
+          test ! -e backend/worker-v3.js
+          test ! -e backend/worker-v4.js
+          test ! -e backend/worker-v5.js
+          test ! -e backend/worker-v6.js
+          grep -q 'singleEntrypoint: true' backend/worker.js
+          grep -q 'legacyWorkerChain: false' backend/worker.js
+          grep -q 'WORKER_ENTRYPOINT = "worker.js"' backend/worker.js
+
+      - name: Verify consolidated route surface
+        run: |
+          grep -q 'path === "/api/ai"' backend/worker.js
+          grep -q 'path === "/api/voice"' backend/worker.js
+          grep -q 'path === "/api/voice/xtts"' backend/worker.js
+          grep -q 'path === "/api/vision/analyze"' backend/worker.js
+          grep -q 'path === "/api/webrtc/ice"' backend/worker.js
+          grep -q 'path === "/api/bridge/event"' backend/worker.js
+          grep -q 'path === "/api/devices/events/poll"' backend/worker.js
+          grep -q 'path === "/api/control/command"' backend/worker.js
+          grep -q 'path === "/api/automations/create"' backend/worker.js
+          grep -q 'path === "/api/orchestrator/start"' backend/worker.js
+          grep -q 'async scheduled' backend/worker.js
+          grep -q 'processDueAutomations' backend/worker.js
+          echo 'Canonical Cloudflare Worker architecture OK'

@@ -5,8 +5,7 @@ on:
     paths:
       - 'backend/device-control-v2.js'
       - 'backend/automation-engine.js'
-      - 'backend/worker-v5.js'
-      - 'backend/worker-v6.js'
+      - 'backend/worker.js'
       - 'backend/wrangler.jsonc'
       - 'modules/device-control-v4260.js'
       - 'local-core/desktop_bridge.py'
@@ -18,8 +17,7 @@ on:
     paths:
       - 'backend/device-control-v2.js'
       - 'backend/automation-engine.js'
-      - 'backend/worker-v5.js'
-      - 'backend/worker-v6.js'
+      - 'backend/worker.js'
       - 'backend/wrangler.jsonc'
       - 'modules/device-control-v4260.js'
       - 'local-core/desktop_bridge.py'
@@ -45,8 +43,7 @@ jobs:
         run: |
           node --check backend/device-control-v2.js
           node --check backend/automation-engine.js
-          node --check backend/worker-v5.js
-          node --check backend/worker-v6.js
+          node --check backend/worker.js
           node --check modules/device-control-v4260.js
           python -m py_compile local-core/desktop_bridge.py local-core/device_server.py
 
@@ -71,14 +68,16 @@ jobs:
         run: |
           grep -q 'device_automations' backend/automation-engine.js
           grep -q 'automation_runs' backend/automation-engine.js
-          grep -q 'processDueAutomations' backend/worker-v5.js
-          grep -q 'async scheduled' backend/worker-v5.js
-          grep -q 'import baseWorker from "./worker-v5.js"' backend/worker-v6.js
-          grep -q 'return baseWorker.scheduled' backend/worker-v6.js
+          grep -q 'processDueAutomations' backend/worker.js
+          grep -q 'async scheduled' backend/worker.js
           grep -q '"crons": \["\* \* \* \* \*"\]' backend/wrangler.jsonc
-          grep -q '"main": "worker-v6.js"' backend/wrangler.jsonc
-          grep -q '/api/automations/create' backend/worker-v5.js
-          grep -q '/api/control/status' backend/worker-v5.js
+          grep -q '"main": "worker.js"' backend/wrangler.jsonc
+          grep -q '/api/automations/create' backend/worker.js
+          grep -q '/api/control/status' backend/worker.js
+          grep -q 'singleEntrypoint: true' backend/worker.js
+          grep -q 'legacyWorkerChain: false' backend/worker.js
+          ! grep -q 'import baseWorker' backend/worker.js
+          ! grep -Eq '"main": "worker-v[0-9]+\.js"' backend/wrangler.jsonc
           grep -q 'monitorCommand' modules/device-control-v4260.js
           grep -q 'parseSchedule' modules/device-control-v4260.js
           grep -q 'pairDesktop' modules/device-control-v4260.js
