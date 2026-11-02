@@ -40,6 +40,9 @@ jobs:
           if (!policy.isLikelySpeechEcho('Sistema de voz operacional', 'Ultron online. Sistema de voz operacional.')) {
             throw new Error('speech echo detector failed');
           }
+          if (policy.normalizeVoiceText('Jarvis, status') !== 'ultron status') {
+            throw new Error('JARVIS wake compatibility failed');
+          }
           NODE
 
       - name: Validate local microphone state machine
@@ -84,8 +87,9 @@ jobs:
 
       - name: Validate voice runtime markers inside current release
         run: |
-          grep -Eq 'voice-match-v4290\.js\?v=4\.29\.0' index.html
-          grep -Eq 'voice-listener-v4290\.js\?v=4\.29\.0' index.html
-          grep -Eq 'voice-orchestration-bridge-v4290\.js\?v=4\.29\.0' index.html
+          grep -Eq 'voice-match-v4290\.js\?v=4\.(29|31)\.0' index.html
+          grep -Eq 'voice-listener-v4290\.js\?v=4\.(29|31)\.0' index.html
+          grep -Eq 'voice-orchestration-bridge-v4290\.js\?v=4\.(29|31)\.0' index.html
           grep -Eq 'mobile-mic-client\.js\?v=4\.21\.0' index.html
-          grep -Eq '(VOICE MATCH WAKE CORE // v4\.29\.0|NEURAL INTERACTION CORE // v4\.30\.0)' index.html
+          grep -Eq '(VOICE MATCH WAKE CORE // v4\.29\.0|NEURAL INTERACTION CORE // v4\.30\.0|J\.A\.R\.V\.I\.S // HOLOGRAPHIC NEURAL CORE // v4\.31\.0)' index.html
+          grep -q 'Diga “Jarvis”' index.html
