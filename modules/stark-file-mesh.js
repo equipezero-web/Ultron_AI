@@ -8,7 +8,7 @@ const CORE_FILES = [
   { name: 'index.html', path: 'index.html', kind: 'core', icon: 'HTML' },
   { name: 'script.js', path: 'script.js', kind: 'core', icon: 'JS' },
   { name: 'style.css', path: 'style.css', kind: 'core', icon: 'CSS' },
-  { name: 'worker-v4.js', path: 'backend/worker-v4.js', kind: 'core', icon: 'WK' },
+  { name: 'worker.js', path: 'backend/worker.js', kind: 'core', icon: 'WK' },
   { name: 'providers.js', path: 'backend/providers.js', kind: 'core', icon: 'AI' },
   { name: 'memory.js', path: 'backend/memory.js', kind: 'core', icon: 'MEM' },
   { name: 'stark-core.js', path: 'modules/stark-core.js', kind: 'core', icon: 'HUD' },
@@ -170,17 +170,17 @@ async function openCoreFile(item) {
   const shell = document.createElement('section');
   shell.className = 'stark-file-detail';
   shell.appendChild(metaGrid([
-    ['TIPO', 'ULTRON CORE'],
+    ['TIPO', 'J.A.R.V.I.S CORE'],
     ['CAMINHO', item.path],
     ['ORIGEM', 'GITHUB'],
-    ['MODO', 'READ / ASK ULTRON']
+    ['MODO', 'READ / ASK JARVIS']
   ]));
 
   const actions = document.createElement('div');
   actions.className = 'stark-holo-action-grid';
   actions.append(
     action('ABRIR NO GITHUB', () => window.open(`https://github.com/equipezero-web/Ultron_AI/blob/main/${item.path}`, '_blank', 'noopener')),
-    action('PEDIR ANÁLISE AO ULTRON', () => commandUltron(`Ultron, analise o arquivo ${item.path} do seu próprio sistema e me explique sua função, riscos e melhorias possíveis.`))
+    action('PEDIR ANÁLISE AO J.A.R.V.I.S', () => commandUltron(`Jarvis, analise o arquivo ${item.path} do seu próprio sistema e me explique sua função, riscos e melhorias possíveis.`))
   );
   shell.appendChild(actions);
 
@@ -223,7 +223,7 @@ async function openLocalFile(item) {
   actions.className = 'stark-holo-action-grid';
   actions.append(
     action('ABRIR NO SISTEMA', () => api.open(item.file_id).catch((error) => log(error?.message || error, true))),
-    action('PEDIR REVISÃO AO ULTRON', () => commandUltron(`Ultron, analise o arquivo ${data?.file?.path || item.name} da minha Ultron_Data, identifique problemas e proponha uma nova versão sem sobrescrever o original.`))
+    action('PEDIR REVISÃO AO J.A.R.V.I.S', () => commandUltron(`Jarvis, analise o arquivo ${data?.file?.path || item.name} da minha Ultron_Data, identifique problemas e proponha uma nova versão sem sobrescrever o original.`))
   );
   shell.appendChild(actions);
 

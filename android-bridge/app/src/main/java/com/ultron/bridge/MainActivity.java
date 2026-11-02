@@ -73,14 +73,14 @@ public class MainActivity extends Activity {
         root.setPadding(pad, pad, pad, pad);
 
         TextView title = new TextView(this);
-        title.setText("ULTRON // MOBILE BRIDGE");
+        title.setText("J.A.R.V.I.S // MOBILE BRIDGE");
         title.setTextSize(24);
         root.addView(title, fullWidth());
 
         TextView description = new TextView(this);
         description.setText(
-                "PASSO 1 — No painel web do Ultron, toque em PAREAR CELULAR. O código de 6 dígitos aparece no terminal do Ultron, NÃO na TV. Digite esse código abaixo.\n\n" +
-                "PASSO 2 — Toque em INICIAR BRIDGE para manter este celular conectado ao Ultron Cloud.\n\n" +
+                "PASSO 1 — No painel web do J.A.R.V.I.S, toque em PAREAR CELULAR. O código de 6 dígitos aparece no terminal do J.A.R.V.I.S, NÃO na TV. Digite esse código abaixo.\n\n" +
+                "PASSO 2 — Toque em INICIAR BRIDGE para manter este celular conectado ao J.A.R.V.I.S Cloud.\n\n" +
                 "MICROFONE — Ao tocar na solicitação do notebook, o app abrirá automaticamente a tela do microfone remoto. Se preferir, use USAR ESTE CELULAR COMO MICROFONE.\n\n" +
                 "TV — Depois de parear o celular, configure sua LG webOS mais abaixo. A TV mostrará apenas uma solicitação de autorização para aceitar com o controle remoto."
         );
@@ -89,12 +89,12 @@ public class MainActivity extends Activity {
         root.addView(description, fullWidth());
 
         pairingCode = new EditText(this);
-        pairingCode.setHint("Código de 6 dígitos exibido no PAINEL WEB do Ultron");
+        pairingCode.setHint("Código de 6 dígitos exibido no PAINEL WEB do J.A.R.V.I.S");
         pairingCode.setInputType(InputType.TYPE_CLASS_NUMBER);
         root.addView(pairingCode, fullWidth());
 
         Button pair = new Button(this);
-        pair.setText("PAREAR CELULAR COM ULTRON");
+        pair.setText("PAREAR CELULAR COM J.A.R.V.I.S");
         pair.setOnClickListener(v -> pairDevice());
         root.addView(pair, fullWidth());
 
@@ -109,7 +109,7 @@ public class MainActivity extends Activity {
         root.addView(remoteMic, fullWidth());
 
         Button notificationSettings = new Button(this);
-        notificationSettings.setText("CONFIGURAR NOTIFICAÇÕES DO ULTRON");
+        notificationSettings.setText("CONFIGURAR NOTIFICAÇÕES DO J.A.R.V.I.S");
         notificationSettings.setOnClickListener(v -> openNotificationSettings());
         root.addView(notificationSettings, fullWidth());
 
@@ -279,11 +279,11 @@ public class MainActivity extends Activity {
     private void pairDevice() {
         String code = pairingCode.getText().toString().replaceAll("\\D", "");
         if (code.length() != 6) {
-            statusView.setText("Código inválido. Os 6 números aparecem no painel WEB do Ultron após tocar em PAREAR CELULAR; eles não aparecem na TV.");
+            statusView.setText("Código inválido. Os 6 números aparecem no painel WEB do J.A.R.V.I.S após tocar em PAREAR CELULAR; eles não aparecem na TV.");
             return;
         }
 
-        statusView.setText("Pareando celular com o Ultron...");
+        statusView.setText("Pareando celular com o J.A.R.V.I.S...");
 
         new Thread(() -> {
             try {
@@ -316,7 +316,7 @@ public class MainActivity extends Activity {
     private void openRemoteMicrophone() {
         String deviceId = SecureStore.getDeviceId(this);
         if (deviceId == null || deviceId.isEmpty()) {
-            statusView.setText("Pareie este celular com o Ultron antes de usar o microfone remoto.");
+            statusView.setText("Pareie este celular com o J.A.R.V.I.S antes de usar o microfone remoto.");
             return;
         }
 
@@ -353,7 +353,7 @@ public class MainActivity extends Activity {
             TvController.Result result = TvController.pairLg(this, host);
             runOnUiThread(() -> {
                 if (result.success) {
-                    statusView.setText("LG webOS pareada com sucesso. O Ultron já pode enviar comandos de TV pelo Mobile Bridge.\n" + result.payload.toString());
+                    statusView.setText("LG webOS pareada com sucesso. O J.A.R.V.I.S já pode enviar comandos de TV pelo Mobile Bridge.\n" + result.payload.toString());
                 } else {
                     statusView.setText("Falha ao parear LG: " + result.payload.optString("error", "erro desconhecido"));
                 }
@@ -393,7 +393,7 @@ public class MainActivity extends Activity {
     private void startBridge() {
         String deviceId = SecureStore.getDeviceId(this);
         if (deviceId == null || deviceId.isEmpty()) {
-            statusView.setText("Este aparelho ainda não foi pareado com o Ultron Cloud.");
+            statusView.setText("Este aparelho ainda não foi pareado com o J.A.R.V.I.S Cloud.");
             return;
         }
 

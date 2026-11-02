@@ -14,6 +14,8 @@ export const VOICE_RUNTIME_POLICY = Object.freeze({
   spokenEchoWindowMs: 3500
 });
 
+const JARVIS_WAKE_FORMS = /\b(?:jarvis|jarves|jervis|jarviz|jarves|j a r v i s)\b/g;
+
 export function normalizeVoiceText(text) {
   return String(text || "")
     .normalize("NFD")
@@ -21,7 +23,11 @@ export function normalizeVoiceText(text) {
     .toLowerCase()
     .replace(/[^a-z0-9\s]/g, " ")
     .replace(/\s+/g, " ")
-    .trim();
+    .trim()
+    // Compatibilidade interna: o listener legado usa o token "ultron" como chave de wake.
+    // A marca oficial e a frase de ativação agora são JARVIS; convertemos apenas no
+    // normalizador interno para preservar todo o motor anti-eco/backoff já estabilizado.
+    .replace(JARVIS_WAKE_FORMS, "ultron");
 }
 
 export function restartDelayFor({

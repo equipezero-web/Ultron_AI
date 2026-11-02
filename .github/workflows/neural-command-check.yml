@@ -159,7 +159,7 @@ jobs:
       - name: Integration markers
         run: |
           grep -Eq "stark-bootstrap.js\?v=4\.[0-9]+\.[0-9]+" index.html
-          grep -Eq 'ULTRON AI // .*// v4\.[0-9]+\.[0-9]+' index.html
+          grep -Eq '(ULTRON AI|J\.A\.R\.V\.I\.S) // .*// v4\.[0-9]+\.[0-9]+' index.html
           grep -q "stark-hand-gesture-v420.js?v=4.20.0" modules/stark-bootstrap.js
           grep -q "palm-matrix-v420.js?v=4.20.0" modules/stark-bootstrap.js
           grep -q "file-inspector-v420.js?v=4.20.0" modules/stark-bootstrap.js
@@ -174,4 +174,4 @@ jobs:
           ! grep -q "MotionSensor" script.js
           ! grep -q 'id="emotion-state"' index.html
           grep -q "handControlModel" modules/stark-bootstrap.js
-          echo 'Neural 360 + Optical Sensor integration markers OK'
+          echo 'Neural 360 + Optical Sensor + JARVIS integration markers OK'

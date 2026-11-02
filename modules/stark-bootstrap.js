@@ -1,4 +1,4 @@
-const BOOT_KEY = '__ULTRON_STARK_BOOTSTRAP_V4301__';
+const BOOT_KEY = '__JARVIS_STARK_BOOTSTRAP_V4310__';
 
 if (!window[BOOT_KEY]) {
   window[BOOT_KEY] = true;
@@ -52,7 +52,7 @@ if (!window[BOOT_KEY]) {
   await import('./local-files-client.js?v=4.14.0');
   await import('./local-files-v2.js?v=4.14.0');
   await import('./local-files-ai-bridge.js?v=4.14.0');
-  await import('./stark-file-mesh.js?v=4.20.0');
+  await import('./stark-file-mesh.js?v=4.31.0');
   await import('./file-inspector-v420.js?v=4.20.0');
   await import('./remote-camera-webrtc-hotfix-v4221.js?v=4.24.2');
   await import('./mobile-camera-source.js?v=4.25.0');
@@ -65,7 +65,7 @@ if (!window[BOOT_KEY]) {
   await import('./neural-file-visualizer.js?v=4.20.0');
   await import('./stark-zoom-diagnostics.js?v=4.12.1');
   await import('./stark-production-bridge.js?v=4.12.1');
-  await import('./backend-version-check.js?v=4.30.1');
+  await import('./backend-version-check.js?v=4.31.0');
   await import('./neural-parity.js?v=4.18.0');
 
   loadStyle(NEURAL_FOCUS_STYLE_ID, 'modules/neural-focus-v4250.css?v=4.25.0');
@@ -89,47 +89,49 @@ if (!window[BOOT_KEY]) {
     }));
   });
 
-  window.dispatchEvent(new CustomEvent('ultron:stark-bootstrap-ready', {
-    detail: {
-      version: '4.30.1',
-      performanceMode: window.ULTRON_PERFORMANCE?.mode || 'full',
-      starkCore: Boolean(window.ULTRON_STARK_CORE),
-      innerMesh: Boolean(window.ULTRON_STARK_MESH),
-      advanced: Boolean(window.ULTRON_STARK_ADVANCED),
-      neuralInput: Boolean(window.ULTRON_NEURAL_INPUT),
-      neuralCommandRouter: Boolean(window.ULTRON_NEURAL_COMMAND),
-      neuralVisualPanel: Boolean(window.ULTRON_VISUAL_PANEL),
-      neuralFileVisuals: Boolean(window.ULTRON_NEURAL_FILE_VISUALS),
-      neuralSpatial360: Boolean(window.ULTRON_NEURAL_3D),
-      vision: Boolean(window.ULTRON_VISION),
-      visionDiagnostics: Boolean(window.ULTRON_VISION?.diagnose),
-      visionImageFallback: Boolean(window.ULTRON_VISION?.analyzeFile),
-      visionRemoteSource: Boolean(window.ULTRON_VISION_REMOTE_SOURCE),
-      visionCommandRouter: Boolean(window.ULTRON_VISION_ROUTER),
-      handGestures: Boolean(window.ULTRON_HAND_GESTURES),
-      handControlModel: 'HAND MOVE=ROTATE 360 / HAND DEPTH=ZOOM / PALM ROTATION=ROLL / INDEX=POINTER / PINCH=SELECT',
-      palmMatrix: Boolean(window.ULTRON_PALM_MATRIX),
-      cameraPreview: Boolean(window.ULTRON_CAMERA_PREVIEW),
-      visualNeuralStreamBridge: Boolean(window.ULTRON_VISUAL_NEURAL_STREAM),
-      remoteCameraFrameGate: Boolean(window.ULTRON_REMOTE_CAMERA_FRAME_GATE),
-      remoteCameraDisplay: Boolean(window.ULTRON_REMOTE_CAMERA_DISPLAY),
-      remoteCameraMode: Boolean(window.ULTRON_REMOTE_CAMERA_MODE),
-      cameraRuntime: Boolean(window.ULTRON_CAMERA_RUNTIME),
-      externalCameraStreamAdapter: Boolean(window.ULTRON_EXTERNAL_CAMERA_STREAM),
-      mobileCamera: Boolean(window.ULTRON_MOBILE_CAMERA),
-      mobileCameraBridge: Boolean(window.ULTRON_MOBILE_CAMERA?.smartConnect),
-      mobileLinkSimple: Boolean(window.ULTRON_MOBILE_LINK),
-      remoteCameraWebRtcHotfix: Boolean(window.__ULTRON_REMOTE_CAMERA_WEBRTC_V4242__),
-      cameraDiagnostics: Boolean(window.ULTRON_CAMERA_RUNTIME?.diagnostics),
-      zoomDiagnostics: Boolean(window.ULTRON_ZOOM_DIAGNOSTICS),
-      productionBridge: Boolean(window.ULTRON_STARK_PRODUCTION),
-      localFiles: Boolean(window.ULTRON_LOCAL_FILES),
-      localFilesV2: Boolean(window.ULTRON_LOCAL_FILES_V2),
-      localRagBridge: Boolean(window.ULTRON_LOCAL_RAG_BRIDGE),
-      fileMesh: Boolean(window.ULTRON_FILE_MESH),
-      fileInspector: Boolean(window.ULTRON_FILE_INSPECTOR),
-      neuralParity: Boolean(window.ULTRON_NEURAL_PARITY),
-      backendVersionCheck: Boolean(window.ULTRON_BACKEND_VERSION)
-    }
-  }));
+  const detail = {
+    version: '4.31.0',
+    brand: 'J.A.R.V.I.S',
+    performanceMode: window.ULTRON_PERFORMANCE?.mode || 'full',
+    starkCore: Boolean(window.ULTRON_STARK_CORE),
+    innerMesh: Boolean(window.ULTRON_STARK_MESH),
+    advanced: Boolean(window.ULTRON_STARK_ADVANCED),
+    neuralInput: Boolean(window.ULTRON_NEURAL_INPUT),
+    neuralCommandRouter: Boolean(window.ULTRON_NEURAL_COMMAND),
+    neuralVisualPanel: Boolean(window.ULTRON_VISUAL_PANEL),
+    neuralFileVisuals: Boolean(window.ULTRON_NEURAL_FILE_VISUALS),
+    neuralSpatial360: Boolean(window.ULTRON_NEURAL_3D),
+    vision: Boolean(window.ULTRON_VISION),
+    visionDiagnostics: Boolean(window.ULTRON_VISION?.diagnose),
+    visionImageFallback: Boolean(window.ULTRON_VISION?.analyzeFile),
+    visionRemoteSource: Boolean(window.ULTRON_VISION_REMOTE_SOURCE),
+    visionCommandRouter: Boolean(window.ULTRON_VISION_ROUTER),
+    handGestures: Boolean(window.ULTRON_HAND_GESTURES),
+    handControlModel: 'HAND MOVE=ROTATE 360 / HAND DEPTH=ZOOM / PALM ROTATION=ROLL / INDEX=POINTER / PINCH=SELECT',
+    palmMatrix: Boolean(window.ULTRON_PALM_MATRIX),
+    cameraPreview: Boolean(window.ULTRON_CAMERA_PREVIEW),
+    visualNeuralStreamBridge: Boolean(window.ULTRON_VISUAL_NEURAL_STREAM),
+    remoteCameraFrameGate: Boolean(window.ULTRON_REMOTE_CAMERA_FRAME_GATE),
+    remoteCameraDisplay: Boolean(window.ULTRON_REMOTE_CAMERA_DISPLAY),
+    remoteCameraMode: Boolean(window.ULTRON_REMOTE_CAMERA_MODE),
+    cameraRuntime: Boolean(window.ULTRON_CAMERA_RUNTIME),
+    externalCameraStreamAdapter: Boolean(window.ULTRON_EXTERNAL_CAMERA_STREAM),
+    mobileCamera: Boolean(window.ULTRON_MOBILE_CAMERA),
+    mobileCameraBridge: Boolean(window.ULTRON_MOBILE_CAMERA?.smartConnect),
+    mobileLinkSimple: Boolean(window.ULTRON_MOBILE_LINK),
+    remoteCameraWebRtcHotfix: Boolean(window.__ULTRON_REMOTE_CAMERA_WEBRTC_V4242__),
+    cameraDiagnostics: Boolean(window.ULTRON_CAMERA_RUNTIME?.diagnostics),
+    zoomDiagnostics: Boolean(window.ULTRON_ZOOM_DIAGNOSTICS),
+    productionBridge: Boolean(window.ULTRON_STARK_PRODUCTION),
+    localFiles: Boolean(window.ULTRON_LOCAL_FILES),
+    localFilesV2: Boolean(window.ULTRON_LOCAL_FILES_V2),
+    localRagBridge: Boolean(window.ULTRON_LOCAL_RAG_BRIDGE),
+    fileMesh: Boolean(window.ULTRON_FILE_MESH),
+    fileInspector: Boolean(window.ULTRON_FILE_INSPECTOR),
+    neuralParity: Boolean(window.ULTRON_NEURAL_PARITY),
+    backendVersionCheck: Boolean(window.ULTRON_BACKEND_VERSION)
+  };
+
+  window.dispatchEvent(new CustomEvent('ultron:stark-bootstrap-ready', { detail }));
+  window.dispatchEvent(new CustomEvent('jarvis:stark-bootstrap-ready', { detail }));
 }

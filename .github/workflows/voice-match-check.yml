@@ -9,6 +9,7 @@ on:
       - 'modules/voice-listener-v4290.js'
       - 'modules/voice-orchestration-bridge-v4290.js'
       - 'modules/mobile-mic-client.js'
+      - 'modules/voice-runtime-policy.js'
       - '.github/workflows/voice-match-check.yml'
   pull_request:
     paths:
@@ -18,6 +19,7 @@ on:
       - 'modules/voice-listener-v4290.js'
       - 'modules/voice-orchestration-bridge-v4290.js'
       - 'modules/mobile-mic-client.js'
+      - 'modules/voice-runtime-policy.js'
       - '.github/workflows/voice-match-check.yml'
 
 permissions:
@@ -37,6 +39,7 @@ jobs:
           node --check modules/voice-match-v4290.js
           node --check modules/voice-listener-v4290.js
           node --check modules/voice-orchestration-bridge-v4290.js
+          node --check modules/voice-runtime-policy.js
 
       - name: Verify wake state machine
         run: |
@@ -48,6 +51,7 @@ jobs:
           grep -q 'activateConversation' modules/voice-listener-v4290.js
           grep -q 'ultron:wake-state' modules/voice-listener-v4290.js
           grep -q 'wakeAuthorizationBusy' modules/voice-listener-v4290.js
+          grep -q 'JARVIS_WAKE_FORMS' modules/voice-runtime-policy.js
 
       - name: Verify speaker profile stays local
         run: |
@@ -88,8 +92,9 @@ jobs:
         run: |
           grep -q 'voice-match-state' index.html
           grep -q 'btn-enroll-voice-match' index.html
-          grep -q 'voice-match-v4290.css?v=4.29.0' index.html
-          grep -q 'voice-match-v4290.js?v=4.29.0' index.html
-          grep -q 'voice-listener-v4290.js?v=4.29.0' index.html
-          grep -q 'voice-orchestration-bridge-v4290.js?v=4.29.0' index.html
-          grep -Eq '(VOICE MATCH WAKE CORE // v4\.29\.0|NEURAL INTERACTION CORE // v4\.30\.0)' index.html
+          grep -Eq 'voice-match-v4290\.css\?v=4\.(29|31)\.0' index.html
+          grep -Eq 'voice-match-v4290\.js\?v=4\.(29|31)\.0' index.html
+          grep -Eq 'voice-listener-v4290\.js\?v=4\.(29|31)\.0' index.html
+          grep -Eq 'voice-orchestration-bridge-v4290\.js\?v=4\.(29|31)\.0' index.html
+          grep -Eq '(VOICE MATCH WAKE CORE // v4\.29\.0|NEURAL INTERACTION CORE // v4\.30\.0|J\.A\.R\.V\.I\.S // HOLOGRAPHIC NEURAL CORE // v4\.31\.0)' index.html
+          grep -q 'Diga “Jarvis”' index.html

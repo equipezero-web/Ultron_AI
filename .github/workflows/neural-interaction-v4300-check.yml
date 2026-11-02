@@ -81,16 +81,16 @@ jobs:
 
       - name: Verify runtime load and release
         run: |
-          grep -Fq 'neural-interaction-v4300.css?v=4.30.0' index.html
+          grep -Eq 'neural-interaction-v4300\.css\?v=4\.(30|31)\.0' index.html
           grep -Fq 'neural-priority-core-v4300.js?v=4.30.0' index.html
           grep -Fq 'neural-predictive-intent-v4300.js?v=4.30.0' index.html
           grep -Fq 'neural-framing-v4300.js?v=4.30.0' index.html
           grep -Fq 'neural-haptics-v4300.js?v=4.30.0' index.html
-          grep -Fq 'NEURAL INTERACTION CORE // v4.30.0' index.html
+          grep -Eq '(NEURAL INTERACTION CORE // v4\.30\.0|J\.A\.R\.V\.I\.S // HOLOGRAPHIC NEURAL CORE // v4\.31\.0)' index.html
           grep -Fq 'P0→P5' index.html
 
       - name: Preserve safety direction
         run: |
           ! grep -qi 'emotionDefinitions\|emotion-state' modules/neural-priority-core-v4300.js modules/neural-predictive-intent-v4300.js modules/neural-framing-v4300.js
           ! grep -qi 'desktop\.shell\|shell\.exec\|eval(' modules/neural-priority-core-v4300.js
-          echo 'Neural Interaction Core v4.30 checks OK'
+          echo 'Neural Interaction Core compatibility checks OK'
