@@ -37,23 +37,58 @@
     drop-shadow(0 0 42px rgba(45,94,255,.12));
 }
 
+/* O WebGL v4.31 é o único núcleo visual. O núcleo/orbitais CSS antigos não ficam por baixo. */
 .jarvis-three-ready .orb-stage > .core-orb,
 .jarvis-three-ready .orb-stage > .orbit,
 .jarvis-three-ready .orb-stage > .orb-halo,
 .jarvis-three-ready .orb-stage > .orb-axis,
-.jarvis-three-ready .orb-stage > .core-pedestal {
+.jarvis-three-ready .orb-stage > .core-pedestal,
+.jarvis-three-ready .stark-vortex,
+.jarvis-three-ready .stark-node-field {
+  display: none !important;
   opacity: 0 !important;
+  visibility: hidden !important;
   pointer-events: none !important;
 }
 
-.jarvis-three-ready .nc-fragment-layer,
-.jarvis-three-ready .stark-vortex,
-.jarvis-three-ready .stark-node-field,
+/* Mantém as funções Stark disponíveis, mas elimina o antigo neural orbital concorrente. */
 .jarvis-three-ready .stark-core-layer {
+  background: transparent !important;
+  pointer-events: none;
+}
+.jarvis-three-ready .stark-core-layer .stark-holo-panel,
+.jarvis-three-ready .stark-core-layer .stark-peripheral,
+.jarvis-three-ready .stark-core-layer .stark-gesture-hint,
+.jarvis-three-ready .stark-core-layer button,
+.jarvis-three-ready .stark-core-layer [role="button"] {
+  pointer-events: auto;
+}
+
+.jarvis-three-ready .nc-fragment-layer {
   z-index: 5;
 }
 
-.jarvis-three-ready.neural-files-open .jarvis-webgl-core {
+/* Ao entrar/ampliar o núcleo, o Filespace nasce no centro do Neural atual. */
+.jarvis-three-ready.neural-files-open .stark-file-mesh-banner,
+.jarvis-three-ready.neural-files-open .stark-file-node,
+.jarvis-three-ready .neural-files-open .stark-file-mesh-banner,
+.jarvis-three-ready .neural-files-open .stark-file-node {
+  transform-origin: 50% 50% !important;
+}
+
+.jarvis-three-ready.neural-files-open .stark-file-mesh,
+.jarvis-three-ready .neural-files-open .stark-file-mesh,
+.jarvis-three-ready.neural-files-open .stark-file-field,
+.jarvis-three-ready .neural-files-open .stark-file-field {
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  transform-origin: center center !important;
+}
+
+.jarvis-three-ready.neural-files-open .jarvis-webgl-core,
+.jarvis-three-ready .neural-files-open .jarvis-webgl-core {
   filter: saturate(1.18) brightness(1.08);
 }
 
