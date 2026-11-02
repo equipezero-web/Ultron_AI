@@ -39,11 +39,11 @@ jobs:
       - name: Neural Command v4.28 integration markers
         run: |
           test -s assets/neural-command-concept.webp
-          grep -Fq 'neural-command-v4280.css?v=4.28.0' index.html
-          grep -Fq 'neural-command-v4280.js?v=4.28.0' index.html
-          grep -Fq 'neural-filespace-click-bridge-v4280.js?v=4.28.0' index.html
-          grep -Eq 'HOLOGRAPHIC NEURAL CORE // (INTERNAL FILESPACE|PREDICTIVE INTERACTION)' index.html
-          grep -Eq '(HOLOGRAPHIC FILESPACE // v4\.28\.0|VOICE MATCH WAKE CORE // v4\.29\.0|NEURAL INTERACTION CORE // v4\.30\.0)' index.html
+          grep -Eq 'neural-command-v4280\.css\?v=4\.(28|31)\.0' index.html
+          grep -Eq 'neural-command-v4280\.js\?v=4\.(28|31)\.0' index.html
+          grep -Eq 'neural-filespace-click-bridge-v4280\.js\?v=4\.(28|31)\.0' index.html
+          grep -Eq 'HOLOGRAPHIC NEURAL CORE // (INTERNAL FILESPACE|PREDICTIVE INTERACTION|PREDICTIVE INTERACTION)' index.html
+          grep -Eq '(HOLOGRAPHIC FILESPACE // v4\.28\.0|VOICE MATCH WAKE CORE // v4\.29\.0|NEURAL INTERACTION CORE // v4\.30\.0|J\.A\.R\.V\.I\.S // HOLOGRAPHIC NEURAL CORE // v4\.31\.0)' index.html
           grep -Fq 'neural-command-concept.webp' modules/neural-command-v4280.css
 
       - name: Validate 360, hidden files and fragmentation
@@ -73,4 +73,4 @@ jobs:
           ! grep -q 'MotionSensor' modules/neural-command-v4280.js
           ! grep -qi 'emotionDefinitions\|emotion-state' modules/neural-command-v4280.js
           grep -q 'sourceOverwrite.*False' local-core/server.py
-          echo 'Neural Command v4.28 holographic filespace checks OK'
+          echo 'Neural Command v4.28/JARVIS v4.31 holographic filespace checks OK'
