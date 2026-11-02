@@ -4,13 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#020711">
-<meta name="application-name" content="ULTRON AI">
-<meta name="description" content="ULTRON AI // Neural Command Holographic Core">
-<title>ULTRON // Neural Command</title>
-<link rel="stylesheet" href="style.css?v=4.12.1">
-<link rel="stylesheet" href="modules/neural-command-v4280.css?v=4.28.0">
-<link rel="stylesheet" href="modules/voice-match-v4290.css?v=4.29.0">
-<link rel="stylesheet" href="modules/neural-interaction-v4300.css?v=4.30.0">
+<meta name="application-name" content="J.A.R.V.I.S">
+<meta name="description" content="J.A.R.V.I.S // Holographic Neural Command Core">
+<title>J.A.R.V.I.S // Neural Command</title>
+<link rel="stylesheet" href="style.css?v=4.31.0">
+<link rel="stylesheet" href="modules/neural-command-v4280.css?v=4.31.0">
+<link rel="stylesheet" href="modules/voice-match-v4290.css?v=4.31.0">
+<link rel="stylesheet" href="modules/neural-interaction-v4300.css?v=4.31.0">
+<link rel="stylesheet" href="modules/jarvis-holographic-core-v4310.css?v=4.31.0">
 </head>
 <body>
 <div class="hud-bg" aria-hidden="true">
@@ -30,7 +31,7 @@
       </div>
       <div class="brand-copy">
         <div class="eyebrow">NEURAL OPTICAL PLATFORM</div>
-        <h1>ULTRON <small>// AI CORE</small></h1>
+        <h1>J.A.R.V.I.S <small>// AI CORE</small></h1>
         <p>OPTICAL + HOLOGRAPHIC COMMAND INTERFACE</p>
       </div>
     </div>
@@ -58,7 +59,7 @@
         <div class="module-list compact">
           <div class="module"><span class="module-dot"></span><div><strong>OPTICAL VISION</strong><small>Frames / mãos / profundidade</small></div><em id="optical-ai-state">READY</em></div>
           <div class="module"><span class="module-dot"></span><div><strong>DEVICE BRIDGE</strong><small>Celular / TV / desktop / automações</small></div><em id="bridge-module">API WAIT</em></div>
-          <div class="module"><span class="module-dot"></span><div><strong>VOICE ROUTER</strong><small>Wake + Voice Match + speech</small></div><em id="voice-module">CHECKING</em></div>
+          <div class="module"><span class="module-dot"></span><div><strong>VOICE ROUTER</strong><small>Wake JARVIS + Voice Match + speech</small></div><em id="voice-module">CHECKING</em></div>
         </div>
       </section>
 
@@ -81,7 +82,7 @@
             <button id="btn-disable-voice-match" class="hud-button" type="button">ATIVAR/DESATIVAR MATCH</button>
           </div>
         </div>
-        <p class="spatial-help">Após o cadastro, o Ultron permanece em VOICE STANDBY. Diga “Ultron” para validar sua voz e acordar o sistema. O perfil vocal fica somente neste dispositivo.</p>
+        <p class="spatial-help">Após o cadastro, o J.A.R.V.I.S permanece em VOICE STANDBY. Diga “Jarvis” para validar sua voz e acordar o sistema. O perfil vocal fica somente neste dispositivo.</p>
       </section>
 
       <section class="hud-panel bridge-link-panel">
@@ -93,18 +94,18 @@
           <div><span>CAMERA LINK</span><strong id="bridge-camera-state">STANDBY</strong></div>
           <div><span>TURN</span><strong id="turn-state">AUTO</strong></div>
         </div>
-        <p class="spatial-help">Um botão. Se o celular já estiver pareado, o Ultron reconecta sozinho. Se for o primeiro uso, o código de pareamento aparece no terminal.</p>
+        <p class="spatial-help">Um botão. Se o celular já estiver pareado, o J.A.R.V.I.S reconecta sozinho. Se for o primeiro uso, o código de pareamento aparece no terminal.</p>
       </section>
     </aside>
 
     <section class="center-column">
       <section class="neural-stage hud-frame">
         <div class="stage-header">
-          <div><span>NEURAL COMMAND SYSTEM</span><strong>HOLOGRAPHIC NEURAL CORE // PREDICTIVE INTERACTION</strong></div>
-          <div class="stage-status"><i></i> P0→P5 + 360° + FILESPACE</div>
+          <div><span>J.A.R.V.I.S NEURAL COMMAND SYSTEM</span><strong>THREE.JS HOLOGRAPHIC CORE // PREDICTIVE INTERACTION</strong></div>
+          <div class="stage-status"><i></i> P0→P5 + WEBGL 360° + FILESPACE</div>
         </div>
 
-        <div class="orb-stage" aria-label="Neural Command: esfera holográfica 3D controlável em 360 graus com arquivos internos ocultos">
+        <div class="orb-stage" aria-label="J.A.R.V.I.S Neural Command: esfera holográfica WebGL 3D controlável em 360 graus com arquivos internos ocultos">
           <div class="orb-halo halo-1"></div><div class="orb-halo halo-2"></div><div class="orb-halo halo-3"></div>
           <div class="orb-axis axis-x"></div><div class="orb-axis axis-y"></div>
           <div class="core-orb"><div class="orb-grid"></div><div class="orb-pulse"></div><div class="orb-heart"></div></div>
@@ -118,14 +119,14 @@
           <div><span>DEPTH / ZOOM</span><strong id="orb-depth">100%</strong></div>
           <div><span>HANDS</span><strong id="orb-hands">0</strong></div>
         </div>
-        <p class="spatial-help">Gire livremente em 360°. O Neural Core antecipa a trajetória das mãos para suavizar rotação e zoom. STOP / PARAR / CONGELAR / CANCELAR têm prioridade P0 imediata.</p>
+        <p class="spatial-help">Gire em 360° por mouse, toque ou Optical Sensor. O núcleo usa amortecimento LERP e intenção preditiva. Ao ampliar profundamente, o núcleo se fragmenta e libera o Filespace interno.</p>
       </section>
 
       <section class="hud-panel terminal-panel">
         <div class="panel-heading terminal-heading"><div><span class="panel-index">CORE</span><h2>COMMAND TERMINAL</h2></div><b class="pulse">READY</b></div>
-        <div id="output-box" class="terminal" aria-live="polite"><p class="boot">&gt; ULTRON NEURAL INTERACTION CORE INITIALIZED</p><p>&gt; v4.30: P0→P5 + predictive intent + adaptive framing + haptic bridge + Voice Match.</p></div>
+        <div id="output-box" class="terminal" aria-live="polite"><p class="boot">&gt; J.A.R.V.I.S HOLOGRAPHIC NEURAL CORE INITIALIZED</p><p>&gt; v4.31: THREE.JS 360° + Voice Match + P0→P5 + predictive intent + Filespace.</p></div>
         <div class="command-row">
-          <div class="command-input-wrap"><span>ULTRON &gt;</span><textarea id="command-input" rows="2" placeholder="Digite ou fale uma instrução..."></textarea></div>
+          <div class="command-input-wrap"><span>JARVIS &gt;</span><textarea id="command-input" rows="2" placeholder="Digite ou fale uma instrução..."></textarea></div>
           <button id="btn-send" class="hud-button execute">EXECUTAR <span>↗</span></button>
         </div>
         <div class="quick-actions">
@@ -155,7 +156,7 @@
           <button id="btn-camera" class="hud-button primary">ATIVAR SENSOR DO CELULAR</button>
           <button id="btn-stop-camera" class="hud-button danger" disabled>DESLIGAR SENSOR</button>
         </div>
-        <p class="spatial-help">Sem detecção de emoção e sem classificação de movimento. O vídeo é usado para visão, mãos, profundidade, intenção espacial e controle 3D.</p>
+        <p class="spatial-help">Sem detecção de emoção. O vídeo alimenta visão, mãos, profundidade, intenção espacial e o núcleo WebGL 3D do J.A.R.V.I.S.</p>
       </section>
 
       <section class="hud-panel infra-panel">
@@ -173,23 +174,25 @@
   </main>
 
   <footer class="hud-footer">
-    <span><i></i> VOICE MATCH + P0→P5 + PREDICTIVE NEURAL + TOTAL ORCHESTRATION</span>
-    <span>ULTRON AI // NEURAL INTERACTION CORE // v4.30.0</span>
+    <span><i></i> VOICE MATCH + P0→P5 + PREDICTIVE NEURAL + THREE.JS 360°</span>
+    <span>J.A.R.V.I.S // HOLOGRAPHIC NEURAL CORE // v4.31.0</span>
     <a href="https://equipezero-web.github.io/Ultron_AI/" target="_blank" rel="noopener">GITHUB PAGES</a>
   </footer>
 </div>
 
 <div id="screen-modal" class="screen-modal" aria-hidden="true">
   <div class="screen-panel hud-frame">
-    <div class="screen-head"><strong>ULTRON // OPTICAL SENSOR</strong><button id="btn-close-screen" class="hud-button danger">FECHAR</button></div>
+    <div class="screen-head"><strong>J.A.R.V.I.S // OPTICAL SENSOR</strong><button id="btn-close-screen" class="hud-button danger">FECHAR</button></div>
     <div class="camera modal-camera">
       <video id="webcam" autoplay playsinline muted></video><canvas id="motion-canvas"></canvas><div class="camera-grid"></div><div class="scanner"></div><div class="corner c1"></div><div class="corner c2"></div><div class="corner c3"></div><div class="corner c4"></div>
     </div>
-    <p class="screen-note">Fonte principal: câmera do celular pelo Ultron Bridge. O feed alimenta visão, mãos e controle espacial da esfera 3D.</p>
+    <p class="screen-note">Fonte principal: câmera do celular pelo Bridge. O feed alimenta visão, mãos e controle espacial do núcleo WebGL 3D.</p>
   </div>
 </div>
 
 <audio id="voice-audio" preload="none"></audio>
+<script type="module" src="modules/jarvis-brand-v4310.js?v=4.31.0"></script>
+<script type="module" src="modules/jarvis-backend-guard-v4310.js?v=4.31.0"></script>
 <script type="module" src="modules/memory-client.js?v=4.12.1"></script>
 <script type="module" src="modules/provider-ui.js?v=4.13.0"></script>
 <script type="module" src="modules/ultron-core-bridge-v4270.js?v=4.27.0"></script>
@@ -197,19 +200,20 @@
 <script type="module" src="modules/neural-priority-core-v4300.js?v=4.30.0"></script>
 <script type="module" src="modules/device-control-v4260.js?v=4.26.0"></script>
 <script type="module" src="modules/orchestrator-device-verify-v4270.js?v=4.27.0"></script>
-<script type="module" src="modules/voice-match-v4290.js?v=4.29.0"></script>
+<script type="module" src="modules/voice-match-v4290.js?v=4.31.0"></script>
 <script type="module" src="modules/mobile-mic-client.js?v=4.21.0"></script>
-<script type="module" src="modules/stark-bootstrap.js?v=4.28.0"></script>
-<script type="module" src="modules/neural-command-v4280.js?v=4.28.0"></script>
-<script type="module" src="modules/neural-filespace-click-bridge-v4280.js?v=4.28.0"></script>
+<script type="module" src="modules/stark-bootstrap.js?v=4.31.0"></script>
+<script type="module" src="modules/neural-command-v4280.js?v=4.31.0"></script>
+<script type="module" src="modules/neural-filespace-click-bridge-v4280.js?v=4.31.0"></script>
+<script type="module" src="modules/jarvis-holographic-core-v4310.js?v=4.31.0"></script>
 <script type="module" src="modules/neural-predictive-intent-v4300.js?v=4.30.0"></script>
 <script type="module" src="modules/neural-framing-v4300.js?v=4.30.0"></script>
 <script type="module" src="modules/neural-haptics-v4300.js?v=4.30.0"></script>
 <script type="module" src="modules/telemetry-client-v4270.js?v=4.27.0"></script>
-<script type="module" src="script.js?v=4.25.0"></script>
+<script type="module" src="script.js?v=4.31.0"></script>
 <script type="module" src="modules/vision-command-router.js?v=4.17.0"></script>
-<script type="module" src="modules/voice-listener-v4290.js?v=4.29.0"></script>
-<script type="module" src="modules/voice-orchestration-bridge-v4290.js?v=4.29.0"></script>
+<script type="module" src="modules/voice-listener-v4290.js?v=4.31.0"></script>
+<script type="module" src="modules/voice-orchestration-bridge-v4290.js?v=4.31.0"></script>
 <script type="module" src="modules/orchestrator-ui-bridge-v4270.js?v=4.27.0"></script>
 </body>
 </html>
