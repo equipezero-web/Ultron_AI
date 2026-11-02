@@ -15,7 +15,7 @@
 
     <application
         android:allowBackup="false"
-        android:label="Ultron Bridge"
+        android:label="J.A.R.V.I.S Bridge"
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@android:style/Theme.Material.NoActionBar">
