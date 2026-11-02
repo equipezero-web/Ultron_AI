@@ -1,78 +1,82 @@
-# ULTRON AI — Multi-IA + ElevenLabs
+# J.A.R.V.I.S — Holographic Neural Command
 
-Estrutura principal: `index.html` + `script.js` + `config.js` + módulos locais + backend Node.js/Cloudflare Worker.
+Sistema multimodal com interface holográfica 3D, Voice Match, Optical Sensor, memória persistente, RAG local, automações, controle de dispositivos e gateway multi-IA.
 
-O ULTRON AI usa um gateway de IA com failover automático. A ordem padrão é:
-
-1. Gemini
-2. Groq
-3. OpenRouter
-4. Cloudflare Workers AI
-5. Cohere
-
-Se um provedor estiver indisponível, sem cota ou retornar erro, o backend tenta automaticamente o próximo. A ElevenLabs continua responsável pela voz e não participa do failover de texto.
+> O repositório mantém o nome técnico `Ultron_AI` e alguns identificadores internos `ULTRON_*` por compatibilidade com versões anteriores, mas a marca e a interface oficial do sistema são **J.A.R.V.I.S** a partir da v4.31.0.
 
 ## Endereço público
 
 https://equipezero-web.github.io/Ultron_AI/
 
-O frontend usa o backend configurado em `config.js`.
+## Núcleo holográfico v4.31
 
-## Backend local
+O Neural Command utiliza Three.js/WebGL como camada de renderização do núcleo central:
 
-Entre em `backend/`.
+- esfera holográfica tridimensional;
+- rotação 360° em Yaw/Pitch;
+- amortecimento suave por LERP;
+- controle por mouse, toque e Optical Sensor;
+- anéis concêntricos orbitais;
+- partículas neurais e poeira holográfica;
+- pulso visual durante fala;
+- fragmentação do núcleo ao entrar no Filespace;
+- arquivos internos ocultos até a entrada/zoom profundo.
 
-Copie `.env.example` para `.env` e preencha somente as chaves dos provedores que deseja ativar. Nunca publique o `.env` no Git.
+O estado espacial continua sendo fornecido pelo motor Neural 3D existente, preservando os gestos, profundidade, pinça e integração mobile.
 
-Variáveis principais:
+## Voice Match / Wake
 
-- `GEMINI_API_KEY`
-- `GROQ_API_KEY`
-- `OPENROUTER_API_KEY`
-- `CLOUDFLARE_ACCOUNT_ID` e `CLOUDFLARE_AI_API_TOKEN` para Workers AI via REST no backend Node
-- `COHERE_API_KEY`
-- `ELEVENLABS_API_KEY` e `ELEVENLABS_VOICE_ID`
+A frase oficial de ativação é **“Jarvis”**. O runtime mantém compatibilidade interna com a antiga chave de wake para não quebrar o motor de voz estabilizado, mas a experiência apresentada ao operador é J.A.R.V.I.S.
 
-A ordem pode ser alterada com:
+O Voice Match permanece local no dispositivo do navegador.
 
-`AI_PROVIDER_ORDER=gemini,groq,openrouter,cloudflare,cohere`
+## Backend canônico
 
-Modelos padrão atuais:
+O backend de produção possui um único entrypoint:
 
-- Gemini: `gemini-3.8-flash`
-- Groq: `openai/gpt-oss-20b`
-- OpenRouter: `openrouter/free`
-- Cloudflare: `@cf/meta/llama-3.1-8b-instruct-fp8-fast`
-- Cohere: `command-a-plus-05-2026`
+`backend/worker.js`
 
-Todos podem ser substituídos pelas respectivas variáveis `*_MODEL`.
+O `backend/wrangler.jsonc` aponta diretamente para `worker.js`.
 
-Execute `npm install` e depois `npm start`. Abra `http://127.0.0.1:3000`.
+O contrato esperado de `/api/health` inclui:
 
-## Cloudflare Worker
+- `workerEntrypoint: "worker.js"`
+- `singleEntrypoint: true`
+- `legacyWorkerChain: false`
 
-O arquivo `backend/wrangler.jsonc` inclui o binding `AI` para Workers AI. No Worker, configure as chaves de API como secrets/variáveis do ambiente, nunca dentro do código-fonte.
+Qualquer tentativa do frontend de abrir referências históricas `worker-v2.js` até `worker-v6.js` é redirecionada para `backend/worker.js`.
 
-Rotas do backend:
+## Gateway Multi-IA
 
-- `GET /api/health` — mostra os provedores configurados e seus modelos
-- `POST /api/ai` — consulta os provedores com failover automático
-- `POST /api/voice` — gera voz com ElevenLabs
+O backend possui failover entre provedores configurados. As chaves ficam exclusivamente em secrets/variáveis de ambiente; nunca em `index.html`, `config.js` ou no repositório.
 
-A resposta de `/api/ai` também informa `provider`, `providerLabel`, `model` e `attempts`, permitindo saber qual IA respondeu e quais fallbacks foram utilizados.
+Rotas principais:
 
-## Configuração do frontend
+- `GET /api/health`
+- `POST /api/ai`
+- `POST /api/voice`
+- rotas de memória, pesquisa, visão, Bridge, dispositivos, automações e orquestração.
 
-O arquivo `config.js` contém somente o endereço público do backend. Para desenvolvimento local, use `http://localhost:3000`. Em produção, use o endereço HTTPS do Worker. Nunca coloque chaves de API em `config.js` ou no `index.html`.
+## Filespace / Ultron_Data
 
-## Visualização
+A pasta `Ultron_Data` mantém o nome técnico para compatibilidade com o Local Core e índices existentes. Na interface, ela faz parte do Filespace do J.A.R.V.I.S.
 
-A câmera não aparece automaticamente. O botão MOSTRAR TELA abre a visualização; DESLIGAR encerra a câmera.
+O Filespace permite abrir arquivos, visualizar componentes, mover conteúdo entre arquivos e exportar novas versões sem sobrescrever os originais.
 
-## Estado emocional
+## Segurança operacional
 
-O painel apresenta uma estimativa heurística baseada nos sinais locais disponíveis, principalmente atividade/movimento e tempo de inatividade. Não é uma medição clínica.
+A hierarquia P0→P5 permanece ativa. `STOP`, `PARAR`, `CONGELAR` e `CANCELAR` têm prioridade P0 e interrompem novas etapas operacionais imediatamente.
 
-## Pressão e batimentos
+Ações destrutivas em dispositivos continuam exigindo a política de confirmação apropriada.
 
-O navegador/celular não cria uma medição real de pressão ou batimentos. O painel aceita integração futura com dispositivo/API compatível por `DEVICE_BRIDGE_URL`.
+## Desenvolvimento local
+
+O frontend usa o backend definido em `config.js`.
+
+Para o backend Node/local, entre em `backend/`, copie `.env.example` para `.env`, configure somente as chaves necessárias e execute:
+
+`npm install`
+
+`npm start`
+
+Nunca publique o arquivo `.env`.
