@@ -1,4 +1,4 @@
-const BOOT_KEY = '__ULTRON_STARK_BOOTSTRAP_V4250__';
+const BOOT_KEY = '__ULTRON_STARK_BOOTSTRAP_V4301__';
 
 if (!window[BOOT_KEY]) {
   window[BOOT_KEY] = true;
@@ -65,7 +65,7 @@ if (!window[BOOT_KEY]) {
   await import('./neural-file-visualizer.js?v=4.20.0');
   await import('./stark-zoom-diagnostics.js?v=4.12.1');
   await import('./stark-production-bridge.js?v=4.12.1');
-  await import('./backend-version-check.js?v=4.15.0');
+  await import('./backend-version-check.js?v=4.30.1');
   await import('./neural-parity.js?v=4.18.0');
 
   loadStyle(NEURAL_FOCUS_STYLE_ID, 'modules/neural-focus-v4250.css?v=4.25.0');
@@ -91,7 +91,7 @@ if (!window[BOOT_KEY]) {
 
   window.dispatchEvent(new CustomEvent('ultron:stark-bootstrap-ready', {
     detail: {
-      version: '4.25.0',
+      version: '4.30.1',
       performanceMode: window.ULTRON_PERFORMANCE?.mode || 'full',
       starkCore: Boolean(window.ULTRON_STARK_CORE),
       innerMesh: Boolean(window.ULTRON_STARK_MESH),
