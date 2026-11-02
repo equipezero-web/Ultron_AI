@@ -1,0 +1,103 @@
+.jarvis-three-ready .orb-stage {
+  position: relative;
+  overflow: hidden;
+  min-height: 430px;
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 50% 48%, rgba(0,243,255,.075), transparent 28%),
+    radial-gradient(circle at 50% 52%, rgba(40,75,255,.055), transparent 48%),
+    linear-gradient(180deg, rgba(1,8,18,.16), rgba(0,0,0,.04));
+}
+
+.jarvis-neural-bg,
+.jarvis-webgl-core {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.jarvis-neural-bg {
+  z-index: 0;
+  opacity: .76;
+  filter: drop-shadow(0 0 8px rgba(0,243,255,.08));
+}
+
+.jarvis-webgl-core {
+  z-index: 2;
+}
+
+.jarvis-webgl-core canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  filter:
+    drop-shadow(0 0 18px rgba(0,243,255,.16))
+    drop-shadow(0 0 42px rgba(45,94,255,.12));
+}
+
+.jarvis-three-ready .orb-stage > .core-orb,
+.jarvis-three-ready .orb-stage > .orbit,
+.jarvis-three-ready .orb-stage > .orb-halo,
+.jarvis-three-ready .orb-stage > .orb-axis,
+.jarvis-three-ready .orb-stage > .core-pedestal {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.jarvis-three-ready .nc-fragment-layer,
+.jarvis-three-ready .stark-vortex,
+.jarvis-three-ready .stark-node-field,
+.jarvis-three-ready .stark-core-layer {
+  z-index: 5;
+}
+
+.jarvis-three-ready.neural-files-open .jarvis-webgl-core {
+  filter: saturate(1.18) brightness(1.08);
+}
+
+.jarvis-three-ready.nc-speaking .jarvis-webgl-core {
+  filter: saturate(1.25) brightness(1.15);
+}
+
+.jarvis-system .brand-copy h1 {
+  letter-spacing: .17em;
+}
+
+.jarvis-system .brand-copy h1 small {
+  opacity: .72;
+}
+
+.jarvis-system .stage-status {
+  text-shadow: 0 0 12px rgba(0,243,255,.48);
+}
+
+.jarvis-system .terminal .boot {
+  color: #9afcff;
+  text-shadow: 0 0 12px rgba(0,243,255,.34);
+}
+
+@media (max-width: 900px) {
+  .jarvis-three-ready .orb-stage {
+    min-height: 350px;
+  }
+}
+
+@media (max-width: 620px) {
+  .jarvis-three-ready .orb-stage {
+    min-height: 310px;
+  }
+  .jarvis-neural-bg {
+    opacity: .58;
+  }
+  .jarvis-webgl-core canvas {
+    filter: drop-shadow(0 0 14px rgba(0,243,255,.15));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jarvis-neural-bg {
+    opacity: .42;
+  }
+}
