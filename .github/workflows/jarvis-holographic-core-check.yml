@@ -1,0 +1,85 @@
+name: JARVIS Holographic Core Check
+
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'modules/jarvis-*.js'
+      - 'modules/jarvis-*.css'
+      - 'modules/stark-bootstrap.js'
+      - 'modules/stark-file-mesh.js'
+      - 'modules/voice-runtime-policy.js'
+      - 'modules/backend-version-check.js'
+      - 'backend/worker.js'
+      - 'backend/wrangler.jsonc'
+      - '.github/workflows/jarvis-holographic-core-check.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'modules/jarvis-*.js'
+      - 'modules/jarvis-*.css'
+      - 'modules/stark-bootstrap.js'
+      - 'modules/stark-file-mesh.js'
+      - 'modules/voice-runtime-policy.js'
+      - 'modules/backend-version-check.js'
+      - 'backend/worker.js'
+      - 'backend/wrangler.jsonc'
+
+jobs:
+  jarvis-core:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Syntax
+        run: |
+          node --check modules/jarvis-brand-v4310.js
+          node --check modules/jarvis-backend-guard-v4310.js
+          node --check modules/jarvis-holographic-core-v4310.js
+          node --check modules/stark-bootstrap.js
+          node --check modules/stark-file-mesh.js
+          node --check modules/voice-runtime-policy.js
+          node --check modules/backend-version-check.js
+          node --check backend/worker.js
+
+      - name: Verify JARVIS branding and release
+        run: |
+          grep -q 'J.A.R.V.I.S // Neural Command' index.html
+          grep -q 'J.A.R.V.I.S // HOLOGRAPHIC NEURAL CORE // v4.31.0' index.html
+          grep -q 'jarvis-brand-v4310.js?v=4.31.0' index.html
+          grep -q 'stark-bootstrap.js?v=4.31.0' index.html
+          ! grep -q 'stark-bootstrap.js?v=4.28.0' index.html
+
+      - name: Verify canonical backend guard
+        run: |
+          grep -q 'MIN_BACKEND_VERSION = .4.30.1.' modules/jarvis-backend-guard-v4310.js
+          grep -q 'workerEntrypoint' modules/jarvis-backend-guard-v4310.js
+          grep -q 'singleEntrypoint' modules/jarvis-backend-guard-v4310.js
+          grep -q 'legacyWorkerChain' modules/jarvis-backend-guard-v4310.js
+          grep -q 'backend/worker.js' modules/stark-file-mesh.js
+          ! grep -Eq 'backend/worker-v(2|3|4|5|6)\.js' modules/stark-file-mesh.js
+          grep -q '"main": "worker.js"' backend/wrangler.jsonc
+          grep -q 'const WORKER_ENTRYPOINT = "worker.js"' backend/worker.js
+
+      - name: Verify JARVIS wake compatibility
+        run: |
+          grep -q 'JARVIS_WAKE_FORMS' modules/voice-runtime-policy.js
+          grep -q 'jarvis' modules/voice-runtime-policy.js
+          grep -q 'Diga “Jarvis”' index.html
+
+      - name: Verify Three.js 360 holographic model
+        run: |
+          grep -q 'three.js/r128/three.min.js' modules/jarvis-holographic-core-v4310.js
+          grep -q 'THREE.Group' modules/jarvis-holographic-core-v4310.js
+          grep -q 'THREE.TorusGeometry' modules/jarvis-holographic-core-v4310.js
+          grep -q 'THREE.SphereGeometry' modules/jarvis-holographic-core-v4310.js
+          grep -q 'THREE.MathUtils.lerp' modules/jarvis-holographic-core-v4310.js
+          grep -q 'ultron:neural-filespace-enter' modules/jarvis-holographic-core-v4310.js
+          grep -q 'shardGroup' modules/jarvis-holographic-core-v4310.js
+          grep -q 'jarvis-neural-bg' modules/jarvis-holographic-core-v4310.css
+          grep -q 'jarvis-webgl-core' modules/jarvis-holographic-core-v4310.css
+          echo 'J.A.R.V.I.S v4.31 holographic core OK'
