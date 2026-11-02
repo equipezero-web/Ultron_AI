@@ -14,7 +14,7 @@ on:
       - 'modules/orchestrator-ui-bridge-v4270.js'
       - 'modules/telemetry-client-v4270.js'
       - 'backend/orchestration-engine.js'
-      - 'backend/worker-v6.js'
+      - 'backend/worker.js'
       - 'backend/wrangler.jsonc'
       - '.github/workflows/total-orchestration-check.yml'
   pull_request:
@@ -30,7 +30,7 @@ on:
       - 'modules/orchestrator-ui-bridge-v4270.js'
       - 'modules/telemetry-client-v4270.js'
       - 'backend/orchestration-engine.js'
-      - 'backend/worker-v6.js'
+      - 'backend/worker.js'
       - 'backend/wrangler.jsonc'
       - '.github/workflows/total-orchestration-check.yml'
   workflow_dispatch:
@@ -56,7 +56,7 @@ jobs:
           node --check modules/orchestrator-ui-bridge-v4270.js
           node --check modules/telemetry-client-v4270.js
           node --check backend/orchestration-engine.js
-          node --check backend/worker-v6.js
+          node --check backend/worker.js
 
       - name: Verify persistent orchestration backend
         run: |
@@ -68,16 +68,19 @@ jobs:
           grep -q 'finishOrchestration' backend/orchestration-engine.js
           grep -q 'resultVerification: true' backend/orchestration-engine.js
           grep -q 'multiStep: true' backend/orchestration-engine.js
-          grep -q '"/api/orchestrator/start"' backend/worker-v6.js
-          grep -q '"/api/orchestrator/step"' backend/worker-v6.js
-          grep -q '"/api/orchestrator/finish"' backend/worker-v6.js
-          grep -q '"/api/orchestrator/history"' backend/worker-v6.js
-          grep -q '"/api/orchestrator/state"' backend/worker-v6.js
-          grep -q 'totalIntegration: true' backend/worker-v6.js
-          grep -q 'safeSelfHeal: true' backend/worker-v6.js
-          grep -q 'return baseWorker.scheduled' backend/worker-v6.js
-          grep -q '"main": "worker-v6.js"' backend/wrangler.jsonc
-          grep -q '"\* \* \* \* \*"' backend/wrangler.jsonc
+          grep -q '"/api/orchestrator/start"' backend/worker.js
+          grep -q '"/api/orchestrator/step"' backend/worker.js
+          grep -q '"/api/orchestrator/finish"' backend/worker.js
+          grep -q '"/api/orchestrator/history"' backend/worker.js
+          grep -q '"/api/orchestrator/state"' backend/worker.js
+          grep -q 'totalIntegration: true' backend/worker.js
+          grep -q 'safeSelfHeal: true' backend/worker.js
+          grep -q 'async scheduled' backend/worker.js
+          grep -q 'processDueAutomations' backend/worker.js
+          grep -q '"main": "worker.js"' backend/wrangler.jsonc
+          ! grep -q 'import baseWorker' backend/worker.js
+          ! grep -Eq '"main": "worker-v[0-9]+\.js"' backend/wrangler.jsonc
+          grep -q '"\* \* \* \* \*"\]' backend/wrangler.jsonc
 
       - name: Verify unified frontend routing and priority gate
         run: |
@@ -149,8 +152,8 @@ jobs:
 
       - name: Verify safety boundaries
         run: |
-          grep -q 'activeDeviceActionsRequireIntent: true' backend/worker-v6.js
-          grep -q 'destructiveActionsBlockedWithoutPolicy: true' backend/worker-v6.js
+          grep -q 'activeDeviceActionsRequireIntent: true' backend/worker.js
+          grep -q 'destructiveActionsBlockedWithoutPolicy: true' backend/worker.js
           grep -q 'observe-auto/active-confirm/destructive-block' backend/orchestration-engine.js
           ! grep -qi 'desktop\.shell\|shell\.exec\|eval(' modules/ultron-orchestrator-v4270.js modules/neural-priority-core-v4300.js
           echo 'Total orchestration safety and integration checks passed.'
