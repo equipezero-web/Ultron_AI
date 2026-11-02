@@ -8,7 +8,7 @@ on:
       - 'backend/research-memory.js'
       - 'backend/news-context.js'
       - 'backend/worker.js'
-      - 'backend/worker-v4.js'
+      - 'backend/wrangler.jsonc'
       - 'modules/provider-ui.js'
       - 'modules/backend-version-check.js'
       - 'modules/telemetry-client.js'
@@ -19,7 +19,7 @@ on:
       - 'backend/research-memory.js'
       - 'backend/news-context.js'
       - 'backend/worker.js'
-      - 'backend/worker-v4.js'
+      - 'backend/wrangler.jsonc'
       - 'modules/provider-ui.js'
       - 'modules/backend-version-check.js'
       - 'modules/telemetry-client.js'
@@ -41,7 +41,11 @@ jobs:
           node --check backend/research-memory.js
           node --check backend/news-context.js
           node --check backend/worker.js
-          node --check backend/worker-v4.js
+          grep -q 'shouldResearchBeforeAnswer' backend/worker.js
+          grep -q 'loadResearchCache' backend/worker.js
+          grep -q 'saveResearchMemory' backend/worker.js
+          grep -q '"main": "worker.js"' backend/wrangler.jsonc
+          ! grep -q 'import baseWorker' backend/worker.js
       - name: Check frontend integration syntax
         run: |
           node --check modules/provider-ui.js
