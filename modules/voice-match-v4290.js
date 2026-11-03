@@ -233,7 +233,7 @@ async function enroll() {
   try {
     const samples = [];
     for (let index = 0; index < SAMPLE_COUNT; index += 1) {
-      log(`AMOSTRA ${index + 1}/${SAMPLE_COUNT}: diga “Ultron” com sua voz normal.`);
+      log(`AMOSTRA ${index + 1}/${SAMPLE_COUNT}: diga “Jarvis” com sua voz normal.`);
       await new Promise((resolve) => setTimeout(resolve, 650));
       const vector = await captureSample();
       if (!vector) throw new Error('Pouca voz detectada. Fale mais próximo do microfone e tente novamente.');
@@ -359,13 +359,16 @@ disableButton?.addEventListener('click', () => {
   else disableRequired();
 });
 
+window.addEventListener('ultron:speech-start', () => { recentFrames = []; });
+window.addEventListener('ultron:speech-end', () => { recentFrames = []; });
+
 window.addEventListener('ultron:voice-listening-enabled', () => {
   if (isEnrolled() && settings().required !== false) openMonitor().catch(() => {});
 });
 window.addEventListener('beforeunload', () => closeMonitor());
 
 window.ULTRON_VOICE_MATCH = {
-  version: '4.29.0',
+  version: '4.32.1',
   enroll,
   authorizeWake,
   verifyLocalWake,
