@@ -73,6 +73,7 @@ function prepareNeuralResponse(data) {
 }
 
 function playVoice(base64, mime = "audio/mpeg") {
+  if (document.body.classList.contains("jarvis-voice-paused")) return;
   try {
     if (!base64) throw new Error("O backend não retornou dados de áudio.");
     const bytes = Uint8Array.from(atob(base64), (character) => character.charCodeAt(0));
@@ -307,6 +308,7 @@ async function askUltron(command) {
 }
 
 async function testVoice() {
+  if (document.body.classList.contains("jarvis-voice-paused")) return;
   if (voiceBusy) return;
   voiceBusy = true;
   addLog(output, "Solicitando teste de voz...");

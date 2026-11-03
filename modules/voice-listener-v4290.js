@@ -470,6 +470,7 @@ async function testPhysicalMicrophone() {
 }
 
 async function enableListening({ userInitiated = false, persist = true } = {}) {
+  if (document.body.classList.contains("jarvis-voice-paused")) return false;
   if (!SpeechRecognition) {
     setMicState('unsupported');
     return false;
@@ -665,6 +666,10 @@ function exposeVoiceInputApi() {
 }
 
 function initializeVoiceListener() {
+  if (document.body.classList.contains("jarvis-voice-paused")) {
+    setMicState("off");
+    return;
+  }
   recognition = createRecognition();
   exposeVoiceInputApi();
   bindSpeechPauseResume();

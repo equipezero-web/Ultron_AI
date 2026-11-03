@@ -201,7 +201,7 @@ async function createMonitor() {
   });
   recentFrames = [];
   monitorTimer = setInterval(() => {
-    if (!monitor || enrolling || ttsSpeaking || document.hidden) return;
+    if (!monitor || enrolling || ttsSpeaking || document.hidden || document.body.classList.contains("jarvis-voice-paused")) return;
     const frame = featureFrame(monitor.analyser, monitor.context.sampleRate);
     if (frame) recentFrames.push(frame);
     const cutoff = performance.now() - RECENT_WINDOW_MS;
