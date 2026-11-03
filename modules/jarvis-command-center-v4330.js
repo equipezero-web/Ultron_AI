@@ -7,19 +7,57 @@ if (stage) {
   ui.setAttribute('aria-label', 'Central holográfica interativa JARVIS');
   ui.innerHTML = `
     <div class="jarvis-cc-top"><span>J.A.R.V.I.S <em> / OPERATIONS</em></span><span class="jarvis-cc-live"><i class="jarvis-cc-dot"></i><span id="jarvis-cc-state">LISTENING</span></span><span class="jarvis-cc-clock" id="jarvis-cc-clock">--:--:--</span></div>
-    <aside class="jarvis-cc-sidebar" aria-label="Telemetria JARVIS">
+    <aside class="jarvis-cc-sidebar" aria-label="Telemetria JARVIS"><div id="jarvis-cc-gateway-slot"></div>
       <section class="jarvis-cc-widget"><header>EVENT LOG <span>LIVE</span></header><div class="jarvis-cc-log" id="jarvis-cc-log"><p>› CORE // INITIALIZED</p><p>› NETWORK // READY</p><p>› VOICE // STANDBY</p></div></section>
       <section class="jarvis-cc-widget"><header>TELEMETRY <span>LIVE</span></header><div class="jarvis-cc-wave" aria-hidden="true"></div><div class="jarvis-cc-metric">CORE STATUS <b id="jarvis-cc-metric">READY</b></div><div class="jarvis-cc-metric">BRIDGE <b>REMOTE</b></div></section>
       <section class="jarvis-cc-widget"><header>SUBSYSTEMS <span>LINK</span></header><div class="jarvis-cc-metric">VOICE <b>ENABLED</b></div><div class="jarvis-cc-metric">CAMERA <b>ON DEMAND</b></div><div class="jarvis-cc-metric">DEVICES <b>GATEWAY</b></div></section>
-    </aside>
-    <div class="jarvis-cc-center"><div class="jarvis-cc-heading">J.A.R.V.I.S. <span>// HOLOGRAPHIC COMMAND</span></div><div class="jarvis-cc-visual"><canvas id="jarvis-cc-canvas" aria-label="Visualização holográfica do globo terrestre" role="img"></canvas><div class="jarvis-cc-orb-label" id="jarvis-cc-visual-label">NEURAL RING</div></div><div class="jarvis-cc-orb-controls"><button type="button" data-visual="ring" aria-pressed="true" title="Exibir anel holográfico">◎</button><button type="button" data-visual="globe" aria-pressed="false" title="Mostrar globo terrestre">◉</button></div></div>
-    <div class="jarvis-cc-bottom"><div class="jarvis-cc-actions">
+    <div id="jarvis-cc-link-slot"></div></aside>
+    <div class="jarvis-cc-center"><div class="jarvis-cc-heading">J.A.R.V.I.S. <span>// HOLOGRAPHIC COMMAND</span></div><div class="jarvis-cc-visual"><canvas id="jarvis-cc-canvas" aria-label="Visualização holográfica do globo terrestre" role="img"></canvas><div class="jarvis-cc-orb-label" id="jarvis-cc-visual-label">NEURAL RING</div></div><div class="jarvis-cc-camera-slot" id="jarvis-cc-camera-slot"></div><div class="jarvis-cc-orb-controls"><button type="button" data-visual="ring" aria-pressed="true" title="Exibir anel holográfico">◎</button><button type="button" data-visual="globe" aria-pressed="false" title="Mostrar globo terrestre">◉</button></div></div>
+    <aside class="jarvis-cc-right"><div id="jarvis-cc-voice-slot"></div><div id="jarvis-cc-infra-slot"></div></aside><div class="jarvis-cc-bottom"><div class="jarvis-cc-responses"><div class="jarvis-cc-responses-title">J.A.R.V.I.S // RESPOSTAS E EVENTOS</div><div id="jarvis-cc-response-slot"></div></div><div id="jarvis-cc-input-slot"></div><div class="jarvis-cc-actions">
       <button type="button" data-cc="status">SISTEMA</button>
       <button type="button" data-cc="agenda">AGENDA</button>
       <button type="button" data-cc="camera">CÂMERA</button>
       <button type="button" data-cc="devices">DISPOSITIVOS</button>
     </div><div class="jarvis-cc-panel" id="jarvis-cc-panel" hidden aria-live="polite"></div></div>`;
   stage.appendChild(ui);
+  // Reuse the real controls and their original IDs so existing listeners,
+  // voice recognition, gateway status and camera integrations remain intact.
+  const relocate = (selector, slot) => {
+    const element = document.querySelector(selector);
+    const destination = ui.querySelector(slot);
+    if (element && destination) destination.appendChild(element);
+  };
+  relocate('.gateway-panel', '#jarvis-cc-gateway-slot');
+  relocate('.bridge-link-panel', '#jarvis-cc-link-slot');
+  relocate('.microphone-panel', '#jarvis-cc-voice-slot');
+  relocate('.infra-panel', '#jarvis-cc-infra-slot');
+  relocate('.optical-panel', '#jarvis-cc-camera-slot');
+  relocate('#output-box', '#jarvis-cc-response-slot');
+  relocate('.command-row', '#jarvis-cc-input-slot');
+  relocate('.quick-actions', '#jarvis-cc-input-slot');
+  // Keep the camera video element in its original modal; mirror it into the
+  // compact preview via captureStream only when supported, otherwise retain
+  // the existing sensor placeholder without starting a second camera.
+  const compactPreview = ui.querySelector('.optical-preview');
+  const originalVideo = document.getElementById('webcam');
+  if (compactPreview && originalVideo) {
+    const previewVideo = document.createElement('video');
+    previewVideo.className = 'jarvis-cc-camera-mirror';
+    previewVideo.autoplay = true; previewVideo.muted = true; previewVideo.playsInline = true;
+    compactPreview.prepend(previewVideo);
+    const syncPreview = () => {
+      if (!originalVideo.srcObject || typeof originalVideo.captureStream !== 'function') return;
+      try {
+        const stream = originalVideo.captureStream();
+        if (previewVideo.srcObject !== stream) {
+          previewVideo.srcObject = stream;
+          previewVideo.play().catch(() => {});
+        }
+      } catch {}
+    };
+    originalVideo.addEventListener('playing', syncPreview);
+    originalVideo.addEventListener('loadedmetadata', syncPreview);
+  }
   const canvas = ui.querySelector('#jarvis-cc-canvas');
   const ctx = canvas.getContext('2d', {alpha:true});
   const visualLabel = ui.querySelector('#jarvis-cc-visual-label');
@@ -171,5 +209,5 @@ if (stage) {
   window.addEventListener('ultron:processing-end',()=>{state.textContent='STANDBY';});
   window.addEventListener('ultron:speech-start',()=>{state.textContent='FALANDO';logEvent('VOICE // OUTPUT');});
   window.addEventListener('ultron:speech-end',()=>{state.textContent='STANDBY';});
-  window.JARVIS_COMMAND_CENTER = {version:'4.34.0',setVisualMode,open:(name)=>actions[name]?.(),get active(){return true;}};
+  window.JARVIS_COMMAND_CENTER = {version:'4.35.0',setVisualMode,open:(name)=>actions[name]?.(),get active(){return true;}};
 }
