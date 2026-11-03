@@ -406,17 +406,15 @@ export async function pollCommands(env, { deviceId, deviceSecret } = {}) {
     .bind(device.id, `-${COMMAND_TTL_MINUTES} minutes`, MAX_PENDING_COMMANDS)
     .all();
 
-  const commands = result?.results || [];
-  if (commands.length) {
-    await env.ULTRON_DB.batch(
-      commands.map((item) =>
-        env.ULTRON_DB.prepare(
-          `UPDATE device_commands
-              SET status = 'claimed', claimed_at = CURRENT_TIMESTAMP
-            WHERE id = ? AND status = 'pending'`
-        ).bind(item.id)
-      )
-    );
+  const candidates = result?.results || [];
+  const commands = [];
+  for (const item of candidates) {
+    const claim = await env.ULTRON_DB.prepare(
+      `UPDATE device_commands
+          SET status = 'claimed', claimed_at = CURRENT_TIMESTAMP
+        WHERE id = ? AND device_id = ? AND status = 'pending'`
+    ).bind(item.id, device.id).run();
+    if (claim?.meta?.changes) commands.push(item);
   }
 
   return {
