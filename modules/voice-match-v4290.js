@@ -191,9 +191,17 @@ async function createMonitor() {
   source.connect(analyser);
 
   monitor = { stream, context, analyser };
+  stream.getAudioTracks().forEach((track) => {
+    track.addEventListener('ended', () => {
+      if (monitor?.stream !== stream) return;
+      closeMonitor().catch(() => {});
+      setStatus('error', 'MICROFONE DESCONECTADO');
+      log('O microfone foi desconectado. Ative a escuta novamente para reconectar.', true);
+    }, { once: true });
+  });
   recentFrames = [];
   monitorTimer = setInterval(() => {
-    if (!monitor || enrolling || ttsSpeaking) return;
+    if (!monitor || enrolling || ttsSpeaking || document.hidden) return;
     const frame = featureFrame(monitor.analyser, monitor.context.sampleRate);
     if (frame) recentFrames.push(frame);
     const cutoff = performance.now() - RECENT_WINDOW_MS;
@@ -218,12 +226,16 @@ async function closeMonitor() {
   monitorTimer = null;
   recentFrames = [];
   if (!monitor) { monitorClosing = false; return; }
-  monitor.stream?.getTracks?.().forEach((track) => track.stop());
-  if (monitor.context && monitor.context.state !== 'closed') {
-    await monitor.context.close().catch(() => {});
-  }
+  const closingMonitor = monitor;
   monitor = null;
-  monitorClosing = false;
+  try {
+    closingMonitor.stream?.getTracks?.().forEach((track) => track.stop());
+    if (closingMonitor.context && closingMonitor.context.state !== 'closed') {
+      await closingMonitor.context.close().catch(() => {});
+    }
+  } finally {
+    monitorClosing = false;
+  }
 }
 
 async function captureSample(ms = CAPTURE_MS) {
@@ -397,6 +409,9 @@ window.ULTRON_VOICE_MATCH = {
       enrolled: isEnrolled(),
       required: isEnrolled() && settings().required !== false,
       monitorActive: Boolean(monitor),
+      monitorOpening: Boolean(monitorOpening),
+      monitorClosing,
+      ttsSpeaking,
       lastVerification
     };
   }
