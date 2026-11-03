@@ -4,7 +4,7 @@ const output = document.getElementById('output-box');
 
 if (stage && orbStage) {
   const CORE_FILES = new Set([
-    'index.html', 'script.js', 'style.css', 'backend/worker-v6.js', 'backend/providers.js',
+    'index.html', 'script.js', 'style.css', 'backend/worker.js', 'backend/providers.js',
     'backend/memory.js', 'modules/stark-core.js', 'local-core/server.py'
   ]);
 
@@ -88,7 +88,7 @@ if (stage && orbStage) {
     <div class="nc-workspace-grid">
       <div class="nc-file-content" data-nc-content></div>
       <aside class="nc-destination-dock">
-        <h3 class="nc-dock-title">DESTINOS ULTRON_DATA</h3>
+        <h3 class="nc-dock-title">DESTINOS JARVIS DATA</h3>
         <p class="nc-dock-note">Arraste um componente do arquivo aberto para outro arquivo. A transferência só é gravada após confirmação e gera novas versões; os originais ficam preservados.</p>
         <div class="nc-destination-list" data-nc-destinations></div>
         <div class="nc-transfer-list" data-nc-transfers></div>
@@ -308,7 +308,7 @@ if (stage && orbStage) {
       titleEl.textContent = String(data.file.name || data.file.path || 'ARQUIVO').toUpperCase();
       const shell = document.createElement('div');
       shell.appendChild(renderMeta([
-        ['TIPO', 'ULTRON_DATA'],
+        ['TIPO', 'JARVIS DATA'],
         ['CAMINHO', data.file.path || file.path || '—'],
         ['COMPONENTES', data.components?.length || 0],
         ['MODO', 'NEURAL WORKSPACE']
@@ -544,7 +544,9 @@ if (stage && orbStage) {
   }, true);
 
   orbStage.addEventListener('wheel', () => setTimeout(probeZoomEntry, 120), { passive: true });
-  setInterval(probeZoomEntry, 260);
+  // Zoom entry is driven by operator gestures instead of a permanent polling timer.
+  orbStage.addEventListener('pointerup', probeZoomEntry, { passive: true });
+  orbStage.addEventListener('touchend', probeZoomEntry, { passive: true });
 
   document.addEventListener('keydown', (event) => {
     if (event.key !== 'Escape') return;
