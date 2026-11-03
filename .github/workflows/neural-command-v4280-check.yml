@@ -43,7 +43,7 @@ jobs:
           grep -Eq 'neural-command-v4280\.js\?v=4\.(28|31)\.0' index.html
           grep -Eq 'neural-filespace-click-bridge-v4280\.js\?v=4\.(28|31)\.0' index.html
           grep -q 'J.A.R.V.I.S INTERACTIVE COMMAND CENTER' index.html
-          grep -q 'COMMAND CENTER // v4.33' index.html
+          grep -q 'COMMAND CENTER // v4.35' index.html
           grep -Fq 'neural-command-concept.webp' modules/neural-command-v4280.css
 
       - name: Validate 360, hidden files and fragmentation
