@@ -101,3 +101,33 @@ body.jarvis-command-center .stark-vortex,
 body.jarvis-command-center .stark-holo-panel,
 body.jarvis-command-center .stark-file-mesh,
 body.jarvis-command-center .stark-peripheral { display:none!important;pointer-events:none!important; }
+
+/* v4.35.3 — avoid overlaying the camera on the neural canvas and restore the command composer. */
+body.jarvis-command-center .jarvis-command-center-ui{grid-template-rows:40px minmax(0,auto) auto;align-items:stretch}
+body.jarvis-command-center .jarvis-cc-center{min-height:0;overflow:visible;padding:14px 10px;box-sizing:border-box;gap:8px}
+body.jarvis-command-center .jarvis-cc-visual{width:min(100%,430px);max-height:min(48vh,390px);flex:0 1 auto}
+body.jarvis-command-center .jarvis-cc-camera-slot{position:relative;right:auto;bottom:auto;width:min(100%,360px);max-height:none;z-index:1;flex:none;align-self:center}
+body.jarvis-command-center .jarvis-cc-camera-slot .optical-preview{height:110px}
+body.jarvis-command-center .jarvis-cc-bottom{position:relative;z-index:4;min-width:0;overflow:visible;box-sizing:border-box}
+body.jarvis-command-center #jarvis-cc-input-slot{display:flex!important;visibility:visible!important;opacity:1!important;width:100%;min-width:0;position:relative;z-index:5}
+body.jarvis-command-center #jarvis-cc-input-slot .command-row{display:flex!important;visibility:visible!important;align-items:stretch;width:100%;min-width:0;flex-wrap:wrap}
+body.jarvis-command-center #jarvis-cc-input-slot .command-input-wrap{display:flex!important;flex:1 1 240px;min-width:0;max-width:100%;box-sizing:border-box}
+body.jarvis-command-center #command-input{display:block!important;visibility:visible!important;opacity:1!important;position:relative!important;flex:1 1 auto;width:100%;min-width:0;min-height:54px;max-height:180px;resize:vertical;box-sizing:border-box;pointer-events:auto;z-index:1}
+body.jarvis-command-center #btn-send{display:inline-flex!important;visibility:visible!important;flex:0 0 auto;align-items:center;justify-content:center;min-height:48px;position:relative;z-index:2}
+body.jarvis-command-center .jarvis-cc-camera-slot .controls{display:flex!important;flex-wrap:wrap;gap:6px}
+body.jarvis-command-center .jarvis-cc-camera-slot .controls button{display:inline-flex!important;visibility:visible!important;opacity:1!important;align-items:center;justify-content:center;min-width:90px;min-height:34px;white-space:normal;pointer-events:auto}
+@media(max-width:900px){
+ body.jarvis-command-center .jarvis-cc-center{grid-row:2;padding:14px 8px}
+ body.jarvis-command-center .jarvis-cc-visual{max-height:310px}
+ body.jarvis-command-center .jarvis-cc-camera-slot{width:min(100%,340px)}
+}
+@media(max-width:560px){
+ body.jarvis-command-center .jarvis-cc-center{min-height:0;padding:24px 10px 12px}
+ body.jarvis-command-center .jarvis-cc-visual{max-height:260px}
+ body.jarvis-command-center .jarvis-cc-camera-slot{width:100%;max-width:340px}
+ body.jarvis-command-center .jarvis-cc-camera-slot .optical-preview{height:125px}
+ body.jarvis-command-center #jarvis-cc-input-slot .command-row{flex-direction:column}
+ body.jarvis-command-center #jarvis-cc-input-slot .command-input-wrap{flex-basis:auto;width:100%}
+ body.jarvis-command-center #btn-send{width:100%}
+ body.jarvis-command-center .jarvis-cc-bottom{padding:12px 10px}
+}
