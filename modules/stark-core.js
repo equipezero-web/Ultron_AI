@@ -1,7 +1,7 @@
 const stage = document.querySelector('.neural-stage');
 const output = document.getElementById('output-box');
 
-if (!stage) {
+if (!stage || document.body.classList.contains('jarvis-command-center')) {
   console.warn('ULTRON Stark-Core: .neural-stage ausente.');
 } else {
   const layer = document.createElement('div');

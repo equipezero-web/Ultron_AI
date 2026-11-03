@@ -91,3 +91,13 @@ body.jarvis-command-center #screen-modal{z-index:9999}
  body.jarvis-command-center .jarvis-cc-camera-slot .optical-preview{height:72px}
  body.jarvis-command-center .jarvis-cc-camera-slot .panel-heading{font-size:8px}
 }
+
+/* v4.35.2: suppress legacy neural/Filespace visual layers; preserve functional sensors and panels. */
+body.jarvis-command-center .nc-enter-controls,
+body.jarvis-command-center .nc-fragment-layer,
+body.jarvis-command-center .nc-workspace,
+body.jarvis-command-center .stark-core-layer,
+body.jarvis-command-center .stark-vortex,
+body.jarvis-command-center .stark-holo-panel,
+body.jarvis-command-center .stark-file-mesh,
+body.jarvis-command-center .stark-peripheral { display:none!important;pointer-events:none!important; }

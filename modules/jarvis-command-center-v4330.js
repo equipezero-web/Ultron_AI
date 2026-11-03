@@ -18,6 +18,7 @@ if (stage) {
       <button type="button" data-cc="agenda">AGENDA</button>
       <button type="button" data-cc="camera">CÂMERA</button>
       <button type="button" data-cc="devices">DISPOSITIVOS</button>
+      <button type="button" data-cc="files">ARQUIVOS</button>
     </div><div class="jarvis-cc-panel" id="jarvis-cc-panel" hidden aria-live="polite"></div></div>`;
   stage.appendChild(ui);
   // Reuse the real controls and their original IDs so existing listeners,
@@ -183,6 +184,23 @@ if (stage) {
     },
     camera() {
       show('SENSOR ÓPTICO', 'O sensor utiliza a integração de câmera já existente. A permissão será solicitada pelo navegador quando necessária.', {label:'Abrir painel de câmera',run:()=>scrollTo('.optical-panel')});
+    },
+    async files() {
+      const api = window.ULTRON_LOCAL_FILES;
+      if (!api?.files) {
+        show('ARQUIVOS', 'O serviço de arquivos locais ainda não está conectado. Inicie o Local Core para consultar seus arquivos.');
+        return;
+      }
+      try {
+        const entries = await api.files();
+        const files = Array.isArray(entries) ? entries : Array.isArray(entries?.files) ? entries.files : [];
+        const names = files.slice(0, 25).map(item => typeof item === 'string' ? item : item?.path || item?.name || 'Arquivo sem nome');
+        show('ARQUIVOS LOCAIS (' + files.length + ')',
+          names.length ? names.join(' · ') : 'Nenhum arquivo disponível no Local Core.',
+          {label:'Atualizar arquivos',run:()=>actions.files()});
+      } catch (error) {
+        show('ARQUIVOS', 'Falha ao consultar arquivos locais: ' + (error?.message || 'serviço indisponível'));
+      }
     },
     async devices() {
       show('CENTRAL DE DISPOSITIVOS', 'Consultando dispositivos pareados no gateway remoto...');

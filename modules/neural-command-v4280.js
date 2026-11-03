@@ -2,7 +2,9 @@ const stage = document.querySelector('.neural-stage');
 const orbStage = document.querySelector('.orb-stage');
 const output = document.getElementById('output-box');
 
-if (stage && orbStage) {
+// Legacy immersive Filespace is not mounted in the unified command center.
+// Local file APIs and inspection remain available through their independent modules.
+if (stage && orbStage && !document.body.classList.contains('jarvis-command-center')) {
   const CORE_FILES = new Set([
     'index.html', 'script.js', 'style.css', 'backend/worker.js', 'backend/providers.js',
     'backend/memory.js', 'modules/stark-core.js', 'local-core/server.py'

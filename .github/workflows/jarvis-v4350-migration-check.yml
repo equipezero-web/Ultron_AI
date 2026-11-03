@@ -44,4 +44,10 @@ jobs:
           assert.ok(css.includes('min-height:100dvh'), 'Missing fullscreen layout');
           assert.ok(js.includes('originalVideo.srcObject'), 'Camera preview must reuse existing stream');
           assert.ok(html.includes('J.A.R.V.I.S INTERACTIVE COMMAND CENTER // v4.35.0'), 'Release marker mismatch');
+          const legacyCore = fs.readFileSync('modules/stark-core.js', 'utf8');
+          const legacyFilespace = fs.readFileSync('modules/neural-command-v4280.js', 'utf8');
+          assert.ok(legacyCore.includes("document.body.classList.contains('jarvis-command-center')"), 'Legacy 3D core must be disabled');
+          assert.ok(legacyFilespace.includes("!document.body.classList.contains('jarvis-command-center')"), 'Legacy Filespace must be disabled');
+          assert.ok(js.includes('data-cc="files"') && js.includes('window.ULTRON_LOCAL_FILES'), 'New UI must expose local files');
+
           NODE
