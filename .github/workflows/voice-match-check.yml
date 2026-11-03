@@ -96,5 +96,5 @@ jobs:
           grep -Eq 'voice-match-v4290\.js\?v=4\.(29|31)\.0' index.html
           grep -Eq 'voice-listener-v4290\.js\?v=4\.(29|31)\.0' index.html
           grep -Eq 'voice-orchestration-bridge-v4290\.js\?v=4\.(29|31)\.0' index.html
-          grep -Eq '(VOICE MATCH WAKE CORE // v4\.29\.0|NEURAL INTERACTION CORE // v4\.30\.0|J\.A\.R\.V\.I\.S // HOLOGRAPHIC NEURAL CORE // v4\.31\.0)' index.html
+          grep -Fq 'J.A.R.V.I.S INTERACTIVE COMMAND CENTER // v4.35.0' index.html
           grep -q 'Diga “Jarvis”' index.html
