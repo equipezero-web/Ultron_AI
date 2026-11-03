@@ -1,0 +1,58 @@
+name: JARVIS v4.32 Quality Gate
+
+on:
+  push:
+    branches:
+      - main
+      - feature/jarvis-v4320-unified-upgrade
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  quality-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Validate canonical backend
+        run: |
+          node --check backend/worker.js
+          node --check backend/providers.js
+          node --check backend/smart-router.js
+          test -f backend/wrangler.jsonc
+          grep -q 'WORKER_ENTRYPOINT = "worker.js"' backend/worker.js
+
+      - name: Validate JARVIS v4.32 runtime
+        run: |
+          node --check modules/jarvis-performance-governor-v4320.js
+          node --check modules/jarvis-runtime-v4320.js
+          node --check modules/stark-bootstrap.js
+          grep -q 'jarvis-performance-governor-v4320' modules/stark-bootstrap.js
+          grep -q 'jarvis-runtime-v4320' modules/stark-bootstrap.js
+          grep -q "version: '4.32.0'" modules/jarvis-runtime-v4320.js
+
+      - name: Guard production secrets
+        run: |
+          ! grep -RInE '(CLOUDFLARE_API_TOKEN|GEMINI_API_KEY|GROQ_API_KEY|OPENROUTER_API_KEY|COHERE_API_KEY)[[:space:]]*[:=][[:space:]]*["'"'][^"'"']+["'"']' --exclude='*.yml' --exclude='*.yaml' .
+
+      - name: Legacy worker regression guard
+        run: |
+          ! grep -RInE 'backend/worker-v(2|3|4|5|6)\.js' index.html script.js config.js backend modules/jarvis-* modules/stark-bootstrap.js || (echo 'Legacy worker reference detected in active JARVIS surface' && exit 1)
+
+      - name: Quality summary
+        run: |
+          echo 'J.A.R.V.I.S v4.32 quality gate passed.'
+          echo 'Canonical backend: OK'
+          echo 'Performance Governor: OK'
+          echo 'Unified Runtime: OK'
+          echo 'Secret guard: OK'
+          echo 'Legacy worker guard: OK'
