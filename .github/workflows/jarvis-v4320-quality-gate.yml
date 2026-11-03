@@ -27,6 +27,9 @@ jobs:
         run: |
           node --check backend/worker.js
           node --check backend/providers.js
+          grep -q 'durationMs: Date.now() - startedAt' backend/providers.js
+          grep -q 'status: "failed"' backend/providers.js
+          grep -q 'status: "success"' backend/providers.js
           node --check backend/smart-router.js
           test -f backend/wrangler.jsonc
           grep -q 'WORKER_ENTRYPOINT = "worker.js"' backend/worker.js
