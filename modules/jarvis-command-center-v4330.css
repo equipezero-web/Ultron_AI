@@ -1,20 +1,30 @@
-/* JARVIS Command Center: replaces the immersive neural display, preserving the terminal and camera panel. */
-body.jarvis-command-center .orb-stage{min-height:420px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:radial-gradient(ellipse at 50% 46%,#103b4d 0%,#061923 45%,#020b12 100%);isolation:isolate}
+/* JARVIS v4.34 HUD: reference-inspired layout in titanium red, navy and black. */
+body.jarvis-command-center .orb-stage{position:relative;min-height:620px;display:block;overflow:hidden;background:#03050b;isolation:isolate}
 body.jarvis-command-center .orb-stage>*:not(.jarvis-command-center-ui){display:none!important}
 body.jarvis-command-center .core-readouts,body.jarvis-command-center .spatial-help{display:none!important}
-.jarvis-command-center-ui{position:relative;z-index:10;width:100%;height:100%;min-height:420px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:22px;box-sizing:border-box;color:#d9f9ff;font-family:inherit}
-.jarvis-cc-top{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:11px;letter-spacing:.15em;color:#89dff1}
-.jarvis-cc-live{display:flex;align-items:center;gap:8px}.jarvis-cc-dot{width:8px;height:8px;border-radius:50%;background:#53edcf;box-shadow:0 0 12px #53edcf}
-.jarvis-cc-orb{position:relative;display:grid;place-items:center;width:min(55vw,250px);height:min(55vw,250px);min-width:180px;min-height:180px;border:1px solid #3ca5b388;border-radius:50%;box-shadow:0 0 65px #0b90b33d,inset 0 0 50px #28a9c02e;background:radial-gradient(circle,#1dbbd11c 0%,transparent 65%)}
-.jarvis-cc-orb:before,.jarvis-cc-orb:after{content:"";position:absolute;inset:14px;border:1px dashed #4dd7e6aa;border-radius:50%;animation:jarvis-cc-spin 32s linear infinite}.jarvis-cc-orb:after{inset:34px;border-style:solid;border-color:#5dddea55;animation-direction:reverse;animation-duration:24s}
-.jarvis-cc-orb strong{font-size:clamp(18px,4vw,29px);letter-spacing:.28em;text-shadow:0 0 20px #61f1ff;z-index:1}
-.jarvis-cc-orb small{position:absolute;bottom:52px;font-size:10px;letter-spacing:.15em;color:#9cd5df;z-index:1}
-.jarvis-cc-actions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));width:100%;gap:8px}
-.jarvis-cc-actions button{background:#0b2634;border:1px solid #347b8d;color:#d4f8ff;padding:12px 5px;border-radius:9px;cursor:pointer;font-size:11px;min-height:46px}
-.jarvis-cc-actions button:hover,.jarvis-cc-actions button:focus-visible{border-color:#67f0ff;background:#124257}
-.jarvis-cc-panel{width:100%;background:#071d2eea;border:1px solid #348799;border-radius:10px;padding:12px;margin-top:10px;box-sizing:border-box;font-size:12px}
-.jarvis-cc-panel[hidden]{display:none!important}.jarvis-cc-panel h3{font-size:13px;margin:0 0 8px}.jarvis-cc-panel p{margin:4px 0;line-height:1.5}
-.jarvis-cc-panel button{padding:9px 12px;background:#124358;border:1px solid #4aabba;color:#d8faff;border-radius:7px;cursor:pointer}
-@keyframes jarvis-cc-spin{to{transform:rotate(360deg)}}
-@media(max-width:640px){.jarvis-command-center-ui{padding:12px;min-height:390px}.jarvis-cc-actions{grid-template-columns:repeat(2,minmax(0,1fr))}.jarvis-cc-orb{width:180px;height:180px}.jarvis-cc-orb small{bottom:32px}}
-@media(prefers-reduced-motion:reduce){.jarvis-cc-orb:before,.jarvis-cc-orb:after{animation:none}}
+.jarvis-command-center-ui{--cc-red:#e7424e;--cc-navy:#10203b;--cc-titanium:#b7c7d7;position:relative;z-index:10;width:100%;min-height:620px;display:grid;grid-template-columns:minmax(155px,22%) 1fr;grid-template-rows:38px minmax(440px,1fr) auto;box-sizing:border-box;color:#cbd5e4;font:11px/1.4 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.05em;background:linear-gradient(90deg,rgba(22,36,64,.1) 1px,transparent 1px),linear-gradient(rgba(27,44,73,.18) 1px,transparent 1px),radial-gradient(ellipse at 60% 50%,#0b1225 0%,#03050b 65%);background-size:27px 27px,27px 27px,auto}
+.jarvis-cc-top{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 16px;border-bottom:1px solid #6b2735;background:#060910e8;color:var(--cc-titanium);font-size:10px;letter-spacing:.16em}
+.jarvis-cc-top em{font-style:normal;color:#a45e72}.jarvis-cc-live{display:flex;align-items:center;gap:8px;color:#ef9ca3}.jarvis-cc-dot{width:6px;height:6px;background:var(--cc-red);border-radius:50%;box-shadow:0 0 12px var(--cc-red)}
+.jarvis-cc-clock{color:#8eabc9;font-variant-numeric:tabular-nums}
+.jarvis-cc-sidebar{grid-column:1;grid-row:2;z-index:2;display:flex;flex-direction:column;gap:9px;padding:12px 9px 12px 12px;min-width:0}
+.jarvis-cc-widget{background:#040811d9;border:1px solid #25324b;min-height:94px;padding:9px;box-shadow:inset 2px 0 #9d3546}
+.jarvis-cc-widget header{display:flex;justify-content:space-between;gap:4px;border-bottom:1px solid #283951;padding-bottom:7px;color:#d1dbe8;font-size:10px}.jarvis-cc-widget header span{color:#d94d60;font-size:9px}
+.jarvis-cc-log{overflow:hidden;max-height:128px}.jarvis-cc-log p{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:9px 0 0;color:#8eafc7;font-size:9px}
+.jarvis-cc-wave{height:36px;margin:10px 0;background:repeating-linear-gradient(90deg,transparent 0 7px,#e7424e88 8px 9px,transparent 10px 14px);mask-image:linear-gradient(0deg,transparent 5%,#000 45%,#000 55%,transparent 95%);opacity:.65}
+.jarvis-cc-metric{display:flex;justify-content:space-between;gap:8px;padding:5px 0;color:#8da0b9;font-size:9px}.jarvis-cc-metric b{font-weight:500;color:#d5a2aa}
+.jarvis-cc-center{grid-column:2;grid-row:2;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:0;overflow:hidden}
+.jarvis-cc-heading{position:absolute;top:12px;left:0;right:0;text-align:center;color:#e2b6bf;letter-spacing:.27em;font-size:12px}.jarvis-cc-heading span{color:#69809e;font-size:9px}
+.jarvis-cc-visual{position:relative;width:min(100%,520px);aspect-ratio:1;max-height:440px;display:grid;place-items:center}
+.jarvis-cc-visual canvas{width:100%;height:100%;display:block;pointer-events:none}
+.jarvis-cc-orb-label{position:absolute;bottom:6%;left:50%;transform:translateX(-50%);color:#7893b2;letter-spacing:.3em;font-size:9px;white-space:nowrap}
+.jarvis-cc-orb-controls{display:flex;gap:12px;justify-content:center;margin-top:-4px}
+.jarvis-cc-orb-controls button{height:32px;width:32px;border-radius:50%;border:1px solid #46536b;background:#080d17;color:#9daec2;cursor:pointer;font-size:18px}
+.jarvis-cc-orb-controls button[aria-pressed=true]{border-color:var(--cc-red);color:#ffe2e5;box-shadow:0 0 15px #e7424e55}
+.jarvis-cc-bottom{grid-column:1/-1;grid-row:3;padding:10px 14px 14px;border-top:1px solid #3b2639;background:#040711db}
+.jarvis-cc-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.jarvis-cc-actions button,.jarvis-cc-panel button{border:1px solid #4e3447;background:#10182b;color:#d8c2cc;padding:9px 14px;font:10px ui-monospace,monospace;letter-spacing:.1em;cursor:pointer;min-height:36px}
+.jarvis-cc-actions button:hover,.jarvis-cc-actions button:focus-visible,.jarvis-cc-panel button:hover{border-color:var(--cc-red);background:#291522}
+.jarvis-cc-panel{max-width:850px;margin:10px auto 0;background:#091021;border:1px solid #753949;padding:12px;box-sizing:border-box;font-size:11px}
+.jarvis-cc-panel[hidden]{display:none!important}.jarvis-cc-panel h3{margin:0 0 7px;font-size:12px;color:#e2a5af}.jarvis-cc-panel p{margin:5px 0 10px;line-height:1.6;overflow-wrap:anywhere}
+@media(max-width:680px){body.jarvis-command-center .orb-stage{min-height:550px}.jarvis-command-center-ui{min-height:550px;grid-template-columns:112px 1fr;grid-template-rows:35px minmax(410px,1fr) auto}.jarvis-cc-sidebar{padding:7px 3px 7px 6px;gap:5px}.jarvis-cc-widget{padding:5px;min-height:65px}.jarvis-cc-widget header{font-size:8px}.jarvis-cc-log p,.jarvis-cc-metric{font-size:7px}.jarvis-cc-visual{width:130%;max-width:none}.jarvis-cc-heading{font-size:9px;letter-spacing:.08em}.jarvis-cc-heading span{display:none}.jarvis-cc-orb-label{font-size:7px}.jarvis-cc-top{font-size:8px;padding:0 7px}.jarvis-cc-top em{display:none}.jarvis-cc-actions{gap:5px}.jarvis-cc-actions button{font-size:9px;padding:7px}}
+@media(prefers-reduced-motion:reduce){.jarvis-cc-dot{box-shadow:none}}
