@@ -298,6 +298,7 @@ export async function listDevices(env, operatorId) {
     deviceType: item.deviceType,
     deviceName: item.deviceName,
     status: item.status,
+    online: item.status === 'active' && Boolean(item.lastSeenAt) && Date.now() - Date.parse(item.lastSeenAt.replace(' ', 'T') + (item.lastSeenAt.includes('Z') ? '' : 'Z')) <= 45000,
     lastSeenAt: item.lastSeenAt,
     createdAt: item.createdAt,
     platform: item.platform,
