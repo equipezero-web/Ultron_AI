@@ -25,6 +25,7 @@ if (!window[BOOT_KEY]) {
   }
 
   await import('./jarvis-performance-governor-v4320.js?v=4.32.0');
+  await import('./jarvis-runtime-v4320.js?v=4.32.0');
   loadStyle(MOBILE_PERF_STYLE_ID, 'modules/mobile-performance.css?v=4.24.0');
   await import('./mobile-performance.js?v=4.24.0');
 
@@ -84,47 +85,22 @@ if (!window[BOOT_KEY]) {
   });
 
   const detail = {
-    version: '4.32.0',
-    brand: 'J.A.R.V.I.S',
+    version: '4.32.0', brand: 'J.A.R.V.I.S',
     performanceMode: window.JARVIS_PERFORMANCE?.state?.tier || window.ULTRON_PERFORMANCE?.mode || 'full',
-    performanceGovernor: Boolean(window.JARVIS_PERFORMANCE),
-    starkCore: Boolean(window.ULTRON_STARK_CORE),
-    innerMesh: Boolean(window.ULTRON_STARK_MESH),
-    advanced: Boolean(window.ULTRON_STARK_ADVANCED),
-    neuralInput: Boolean(window.ULTRON_NEURAL_INPUT),
-    neuralCommandRouter: Boolean(window.ULTRON_NEURAL_COMMAND),
-    neuralVisualPanel: Boolean(window.ULTRON_VISUAL_PANEL),
-    neuralFileVisuals: Boolean(window.ULTRON_NEURAL_FILE_VISUALS),
-    neuralSpatial360: Boolean(window.ULTRON_NEURAL_3D),
-    vision: Boolean(window.ULTRON_VISION),
-    visionDiagnostics: Boolean(window.ULTRON_VISION?.diagnose),
-    visionImageFallback: Boolean(window.ULTRON_VISION?.analyzeFile),
-    visionRemoteSource: Boolean(window.ULTRON_VISION_REMOTE_SOURCE),
-    visionCommandRouter: Boolean(window.ULTRON_VISION_ROUTER),
-    handGestures: Boolean(window.ULTRON_HAND_GESTURES),
+    performanceGovernor: Boolean(window.JARVIS_PERFORMANCE), runtime: Boolean(window.JARVIS_RUNTIME),
+    starkCore: Boolean(window.ULTRON_STARK_CORE), innerMesh: Boolean(window.ULTRON_STARK_MESH), advanced: Boolean(window.ULTRON_STARK_ADVANCED),
+    neuralInput: Boolean(window.ULTRON_NEURAL_INPUT), neuralCommandRouter: Boolean(window.ULTRON_NEURAL_COMMAND), neuralVisualPanel: Boolean(window.ULTRON_VISUAL_PANEL),
+    neuralFileVisuals: Boolean(window.ULTRON_NEURAL_FILE_VISUALS), neuralSpatial360: Boolean(window.ULTRON_NEURAL_3D), vision: Boolean(window.ULTRON_VISION),
+    visionDiagnostics: Boolean(window.ULTRON_VISION?.diagnose), visionImageFallback: Boolean(window.ULTRON_VISION?.analyzeFile), visionRemoteSource: Boolean(window.ULTRON_VISION_REMOTE_SOURCE),
+    visionCommandRouter: Boolean(window.ULTRON_VISION_ROUTER), handGestures: Boolean(window.ULTRON_HAND_GESTURES),
     handControlModel: 'HAND MOVE=ROTATE 360 / HAND DEPTH=ZOOM / PALM ROTATION=ROLL / INDEX=POINTER / PINCH=SELECT',
-    palmMatrix: Boolean(window.ULTRON_PALM_MATRIX),
-    cameraPreview: Boolean(window.ULTRON_CAMERA_PREVIEW),
-    visualNeuralStreamBridge: Boolean(window.ULTRON_VISUAL_NEURAL_STREAM),
-    remoteCameraFrameGate: Boolean(window.ULTRON_REMOTE_CAMERA_FRAME_GATE),
-    remoteCameraDisplay: Boolean(window.ULTRON_REMOTE_CAMERA_DISPLAY),
-    remoteCameraMode: Boolean(window.ULTRON_REMOTE_CAMERA_MODE),
-    cameraRuntime: Boolean(window.ULTRON_CAMERA_RUNTIME),
-    externalCameraStreamAdapter: Boolean(window.ULTRON_EXTERNAL_CAMERA_STREAM),
-    mobileCamera: Boolean(window.ULTRON_MOBILE_CAMERA),
-    mobileCameraBridge: Boolean(window.ULTRON_MOBILE_CAMERA?.smartConnect),
-    mobileLinkSimple: Boolean(window.ULTRON_MOBILE_LINK),
-    remoteCameraWebRtcHotfix: Boolean(window.__ULTRON_REMOTE_CAMERA_WEBRTC_V4242__),
-    cameraDiagnostics: Boolean(window.ULTRON_CAMERA_RUNTIME?.diagnostics),
-    zoomDiagnostics: Boolean(window.ULTRON_ZOOM_DIAGNOSTICS),
-    productionBridge: Boolean(window.ULTRON_STARK_PRODUCTION),
-    localFiles: Boolean(window.ULTRON_LOCAL_FILES),
-    localFilesV2: Boolean(window.ULTRON_LOCAL_FILES_V2),
-    localRagBridge: Boolean(window.ULTRON_LOCAL_RAG_BRIDGE),
-    fileMesh: Boolean(window.ULTRON_FILE_MESH),
-    fileInspector: Boolean(window.ULTRON_FILE_INSPECTOR),
-    neuralParity: Boolean(window.ULTRON_NEURAL_PARITY),
-    backendVersionCheck: Boolean(window.ULTRON_BACKEND_VERSION)
+    palmMatrix: Boolean(window.ULTRON_PALM_MATRIX), cameraPreview: Boolean(window.ULTRON_CAMERA_PREVIEW), visualNeuralStreamBridge: Boolean(window.ULTRON_VISUAL_NEURAL_STREAM),
+    remoteCameraFrameGate: Boolean(window.ULTRON_REMOTE_CAMERA_FRAME_GATE), remoteCameraDisplay: Boolean(window.ULTRON_REMOTE_CAMERA_DISPLAY), remoteCameraMode: Boolean(window.ULTRON_REMOTE_CAMERA_MODE),
+    cameraRuntime: Boolean(window.ULTRON_CAMERA_RUNTIME), externalCameraStreamAdapter: Boolean(window.ULTRON_EXTERNAL_CAMERA_STREAM), mobileCamera: Boolean(window.ULTRON_MOBILE_CAMERA),
+    mobileCameraBridge: Boolean(window.ULTRON_MOBILE_CAMERA?.smartConnect), mobileLinkSimple: Boolean(window.ULTRON_MOBILE_LINK), remoteCameraWebRtcHotfix: Boolean(window.__ULTRON_REMOTE_CAMERA_WEBRTC_V4242__),
+    cameraDiagnostics: Boolean(window.ULTRON_CAMERA_RUNTIME?.diagnostics), zoomDiagnostics: Boolean(window.ULTRON_ZOOM_DIAGNOSTICS), productionBridge: Boolean(window.ULTRON_STARK_PRODUCTION),
+    localFiles: Boolean(window.ULTRON_LOCAL_FILES), localFilesV2: Boolean(window.ULTRON_LOCAL_FILES_V2), localRagBridge: Boolean(window.ULTRON_LOCAL_RAG_BRIDGE),
+    fileMesh: Boolean(window.ULTRON_FILE_MESH), fileInspector: Boolean(window.ULTRON_FILE_INSPECTOR), neuralParity: Boolean(window.ULTRON_NEURAL_PARITY), backendVersionCheck: Boolean(window.ULTRON_BACKEND_VERSION)
   };
 
   window.dispatchEvent(new CustomEvent('ultron:stark-bootstrap-ready', { detail }));
