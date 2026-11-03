@@ -139,7 +139,8 @@ export async function enqueueControlCommand(env, {
     };
   }
 
-  // Do not queue commands for stale/offline devices. TV commands require an online mobile bridge.\n  const commandId = crypto.randomUUID();
+  // Do not queue commands for stale/offline devices. TV commands require an online mobile bridge.
+  const commandId = crypto.randomUUID();
   await env.ULTRON_DB.prepare(
     `INSERT INTO device_commands
       (id, device_id, operator_id, command, payload_json, status, created_at)
@@ -158,7 +159,8 @@ export async function enqueueControlCommand(env, {
       deviceName: device.deviceName,
       online: onlineAge(device) <= ONLINE_MAX_AGE_MS
     },
-    command: validation.command
+    command: validation.command,
+    expiresInSeconds: 300
   };
 }
 
