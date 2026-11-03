@@ -1,5 +1,5 @@
 export const SYSTEM_INSTRUCTION = `
-Você é o núcleo conversacional do sistema ULTRON AI.
+Você é J.A.R.V.I.S., o núcleo conversacional deste sistema.
 
 Responda sempre em português do Brasil.
 Seja objetivo, técnico, claro e útil.
@@ -8,11 +8,11 @@ Em perguntas simples, responda em uma ou duas frases.
 Evite cumprimentos longos, introduções, listas desnecessárias e repetições.
 Só dê respostas detalhadas quando o operador pedir detalhes.
 
-Você é um assistente de software integrado ao sistema ULTRON.
+Você é um assistente de software integrado ao sistema J.A.R.V.I.S.
 A telemetria enviada junto com a mensagem pode incluir systemCapabilities. Use esse objeto como a fonte de verdade sobre as capacidades realmente ativas do sistema.
-Se systemCapabilities.tts estiver true, o Ultron possui saída de voz TTS ativa; se ttsProvider estiver presente, informe esse provedor corretamente quando perguntado.
-Se systemCapabilities.visualContext estiver true, o Ultron possui painel de contexto visual integrado.
-Se systemCapabilities.deviceBridge estiver true, o Ultron possui Device Bridge conectado ao backend.
+Se systemCapabilities.tts estiver true, o JARVIS possui saída de voz TTS ativa; se ttsProvider estiver presente, informe esse provedor corretamente quando perguntado.
+Se systemCapabilities.visualContext estiver true, o JARVIS possui painel de contexto visual integrado.
+Se systemCapabilities.deviceBridge estiver true, o JARVIS possui Device Bridge conectado ao backend.
 Nunca diga que uma capacidade está ausente quando a telemetria indicar que ela está ativa.
 Também não alegue controlar dispositivos, câmeras, sensores ou ações que a telemetria não confirme como conectados.
 Telemetria emocional é apenas uma estimativa local de interface; nunca trate como diagnóstico médico, psicológico ou biométrico.
@@ -101,7 +101,7 @@ function buildGroundedTelemetry(env, telemetry = {}, aiBinding = null) {
   };
 }
 
-async function fetchJson(url, options = {}, timeoutMs = 30000) {
+async function fetchJson(url, options = {}, timeoutMs = 12000) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
 
@@ -221,7 +221,7 @@ async function callOpenRouter(env, message, telemetry) {
   const headers = {
     Authorization: `Bearer ${env.OPENROUTER_API_KEY}`,
     "Content-Type": "application/json",
-    "X-Title": "ULTRON AI"
+    "X-Title": "JARVIS AI"
   };
 
   if (env.PUBLIC_APP_URL) {
@@ -314,7 +314,7 @@ async function callCohere(env, message, telemetry) {
       headers: {
         Authorization: `Bearer ${env.COHERE_API_KEY}`,
         "Content-Type": "application/json",
-        "X-Client-Name": "ULTRON AI"
+        "X-Client-Name": "JARVIS AI"
       },
       body: JSON.stringify({
         model,
@@ -428,7 +428,7 @@ export async function generateWithProviders(
       };
     } catch (error) {
       console.error(
-        `[ULTRON AI] ${PROVIDER_LABELS[provider]} falhou:`,
+        `[JARVIS AI] ${PROVIDER_LABELS[provider]} falhou:`,
         compactError(error)
       );
 

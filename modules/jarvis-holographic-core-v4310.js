@@ -3,7 +3,9 @@ const orbStage = document.querySelector('.orb-stage');
 const output = document.getElementById('output-box');
 
 if (stage && orbStage) {
-  const VERSION = '4.31.0';
+  const VERSION = '4.32.1';
+  const governor = window.JARVIS_PERFORMANCE;
+  const effectiveDpr = () => Math.min(window.devicePixelRatio || 1, governor?.dprCap || 2);
   const THREE_URL = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
 
   function log(message, alert = false) {
@@ -44,11 +46,11 @@ if (stage && orbStage) {
     orbStage.prepend(canvas);
     const ctx = canvas.getContext('2d');
     const particles = [];
-    const count = window.matchMedia('(max-width: 720px)').matches ? 42 : 70;
+    const count = Math.max(12, Math.round((window.matchMedia('(max-width: 720px)').matches ? 42 : 70) * (governor?.particleScale || 1)));
 
     function resize() {
       const rect = orbStage.getBoundingClientRect();
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = effectiveDpr();
       canvas.width = Math.max(1, Math.floor(rect.width * dpr));
       canvas.height = Math.max(1, Math.floor(rect.height * dpr));
       canvas.style.width = `${rect.width}px`;
@@ -67,7 +69,11 @@ if (stage && orbStage) {
       }
     }
 
-    function draw() {
+    let lastBackgroundFrame = 0;
+    function draw(now = performance.now()) {
+      requestAnimationFrame(draw);
+      if (governor && !governor.shouldRender(lastBackgroundFrame, now)) return;
+      lastBackgroundFrame = now;
       const rect = orbStage.getBoundingClientRect();
       ctx.clearRect(0, 0, rect.width, rect.height);
       ctx.fillStyle = 'rgba(0,243,255,.34)';
@@ -93,7 +99,6 @@ if (stage && orbStage) {
           ctx.globalAlpha = 1;
         }
       }
-      requestAnimationFrame(draw);
     }
 
     resize();
@@ -116,7 +121,7 @@ if (stage && orbStage) {
     camera.position.z = 6.3;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setPixelRatio(effectiveDpr());
     renderer.setClearColor(0x000000, 0);
     host.appendChild(renderer.domElement);
 
@@ -265,6 +270,7 @@ if (stage && orbStage) {
     }
     resize();
     window.addEventListener('resize', resize);
+    governor?.subscribe?.(() => { renderer.setPixelRatio(effectiveDpr()); resize(); });
 
     window.addEventListener('ultron:neural-filespace-enter', () => { visual.targetFilespace = 1; });
     window.addEventListener('ultron:neural-filespace-exit', () => { visual.targetFilespace = 0; });
@@ -274,6 +280,7 @@ if (stage && orbStage) {
 
     function animate(now = performance.now()) {
       requestAnimationFrame(animate);
+      if (governor && !governor.shouldRender(visual.lastAt, now)) return;
       const dt = Math.min(40, Math.max(8, now - visual.lastAt));
       visual.lastAt = now;
       const spatial = window.ULTRON_NEURAL_3D?.state || window.JARVIS_NEURAL_3D?.state || {};
