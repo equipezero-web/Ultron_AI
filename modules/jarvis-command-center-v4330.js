@@ -18,7 +18,7 @@ if (stage) {
       <button type="button" data-cc="agenda">AGENDA</button>
       <button type="button" data-cc="camera">CÂMERA</button>
       <button type="button" data-cc="devices">DISPOSITIVOS</button>
-    </div><div class="jarvis-cc-panel" id="jarvis-cc-panel" hidden aria-live="polite"></div></div>`
+    </div><div class="jarvis-cc-panel" id="jarvis-cc-panel" hidden aria-live="polite"></div></div>`;
   stage.appendChild(ui);
   const canvas = ui.querySelector('#jarvis-cc-canvas');
   const ctx = canvas.getContext('2d', {alpha:true});
