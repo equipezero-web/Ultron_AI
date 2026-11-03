@@ -35,28 +35,13 @@ if (stage) {
   relocate('#output-box', '#jarvis-cc-response-slot');
   relocate('.command-row', '#jarvis-cc-input-slot');
   relocate('.quick-actions', '#jarvis-cc-input-slot');
-  // Keep the camera video element in its original modal; mirror it into the
-  // compact preview via captureStream only when supported, otherwise retain
-  // the existing sensor placeholder without starting a second camera.
+  // Move the existing live video instead of creating another camera stream.
+  // Its ID and media tracks remain unchanged for all existing camera handlers.
   const compactPreview = ui.querySelector('.optical-preview');
   const originalVideo = document.getElementById('webcam');
   if (compactPreview && originalVideo) {
-    const previewVideo = document.createElement('video');
-    previewVideo.className = 'jarvis-cc-camera-mirror';
-    previewVideo.autoplay = true; previewVideo.muted = true; previewVideo.playsInline = true;
-    compactPreview.prepend(previewVideo);
-    const syncPreview = () => {
-      if (!originalVideo.srcObject || typeof originalVideo.captureStream !== 'function') return;
-      try {
-        const stream = originalVideo.captureStream();
-        if (previewVideo.srcObject !== stream) {
-          previewVideo.srcObject = stream;
-          previewVideo.play().catch(() => {});
-        }
-      } catch {}
-    };
-    originalVideo.addEventListener('playing', syncPreview);
-    originalVideo.addEventListener('loadedmetadata', syncPreview);
+    originalVideo.classList.add('jarvis-cc-camera-mirror');
+    compactPreview.prepend(originalVideo);
   }
   const canvas = ui.querySelector('#jarvis-cc-canvas');
   const ctx = canvas.getContext('2d', {alpha:true});
