@@ -65,7 +65,7 @@ if (stage) {
         }
         const summary = devices.slice(0, 12).map((device) => {
           const name = device.deviceName || device.name || 'Dispositivo';
-          const status = device.status || 'estado desconhecido';
+          const status = device.status !== 'active' ? 'desativado' : device.online === true ? 'online' : device.online === false ? 'offline' : 'estado desconhecido';
           return name + ' (' + (device.deviceType || 'tipo desconhecido') + ') — ' + status;
         }).join(' · ');
         show('DISPOSITIVOS PAREADOS (' + devices.length + ')', summary, {label:'Atualizar lista',run:()=>actions.devices()});
