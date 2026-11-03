@@ -385,6 +385,7 @@ export async function generateWithProviders(
       continue;
     }
 
+    const startedAt = Date.now();
     try {
       let result;
 
@@ -416,7 +417,8 @@ export async function generateWithProviders(
       attempts.push({
         provider,
         status: "success",
-        model: result.model
+        model: result.model,
+        durationMs: Date.now() - startedAt
       });
 
       return {
@@ -435,6 +437,7 @@ export async function generateWithProviders(
       attempts.push({
         provider,
         status: "failed",
+        durationMs: Date.now() - startedAt,
         error: compactError(error)
       });
     }
