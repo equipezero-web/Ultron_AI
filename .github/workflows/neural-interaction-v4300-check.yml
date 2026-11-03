@@ -86,7 +86,7 @@ jobs:
           grep -Fq 'neural-predictive-intent-v4300.js?v=4.30.0' index.html
           grep -Fq 'neural-framing-v4300.js?v=4.30.0' index.html
           grep -Fq 'neural-haptics-v4300.js?v=4.30.0' index.html
-          grep -Eq '(NEURAL INTERACTION CORE // v4\.30\.0|J\.A\.R\.V\.I\.S // HOLOGRAPHIC NEURAL CORE // v4\.31\.0)' index.html
+          grep -Fq 'J.A.R.V.I.S INTERACTIVE COMMAND CENTER // v4.35.0' index.html
           grep -Fq 'P0→P5' index.html
 
       - name: Preserve safety direction
