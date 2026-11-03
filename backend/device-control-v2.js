@@ -58,7 +58,7 @@ function safeJson(value, fallback = {}) {
 }
 
 function onlineAge(device) {
-  const at = Date.parse(device?.lastSeenAt || "") || 0;
+  const at = Date.parse(/Z$|[+-]\d\d:?\d\d$/.test(String(device?.lastSeenAt || "")) ? device.lastSeenAt : String(device?.lastSeenAt || "").replace(" ", "T") + "Z") || 0;
   return at ? Date.now() - at : Number.POSITIVE_INFINITY;
 }
 
@@ -100,13 +100,13 @@ export async function resolveTargetDevice(env, operatorId, { deviceId = "", devi
   const requestedType = String(deviceType || expectedType(command)).trim().toLowerCase();
 
   if (deviceId) {
-    const exact = devices.find((device) => device.id === deviceId && device.status !== "disabled");
+    const exact = devices.find((device) => device.id === deviceId && device.status === "active" && onlineAge(device) <= ONLINE_MAX_AGE_MS);
     if (!exact) return null;
     return exact;
   }
 
   return [...devices]
-    .filter((device) => device.status !== "disabled")
+    .filter((device) => device.status === "active" && onlineAge(device) <= ONLINE_MAX_AGE_MS)
     .filter((device) => !requestedType || device.deviceType === requestedType)
     .sort((a, b) => scoreDevice(b, requestedType) - scoreDevice(a, requestedType) || onlineAge(a) - onlineAge(b))[0] || null;
 }
@@ -139,7 +139,7 @@ export async function enqueueControlCommand(env, {
     };
   }
 
-  const commandId = crypto.randomUUID();
+  // Do not queue commands for stale/offline devices. TV commands require an online mobile bridge.\n  const commandId = crypto.randomUUID();
   await env.ULTRON_DB.prepare(
     `INSERT INTO device_commands
       (id, device_id, operator_id, command, payload_json, status, created_at)
