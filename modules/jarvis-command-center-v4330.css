@@ -101,3 +101,6 @@ body.jarvis-command-center .stark-vortex,
 body.jarvis-command-center .stark-holo-panel,
 body.jarvis-command-center .stark-file-mesh,
 body.jarvis-command-center .stark-peripheral { display:none!important;pointer-events:none!important; }
+
+/* Temporary voice pause: retain text commands, camera, and device controls. */
+body.jarvis-voice-paused .microphone-panel,body.jarvis-voice-paused #jarvis-cc-voice-slot,body.jarvis-voice-paused #btn-voice,body.jarvis-voice-paused #btn-listen-voice,body.jarvis-voice-paused #btn-mobile-mic{display:none!important}
