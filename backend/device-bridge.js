@@ -1,5 +1,7 @@
 const PAIRING_TTL_MINUTES = 10;
 const MAX_PENDING_COMMANDS = 12;
+const COMMAND_TTL_MINUTES = 5;
+const CLAIM_LEASE_SECONDS = 60;
 const MAX_BRIDGE_JSON_CHARS = 131072;
 
 let bridgeSchemaReady = false;
@@ -378,14 +380,30 @@ export async function pollCommands(env, { deviceId, deviceSecret } = {}) {
     `UPDATE devices SET last_seen_at = CURRENT_TIMESTAMP WHERE id = ?`
   ).bind(device.id).run();
 
+  // Never deliver stale commands after a device reconnects hours later.
+  await env.ULTRON_DB.prepare(
+    `UPDATE device_commands SET status = 'expired', completed_at = CURRENT_TIMESTAMP
+       WHERE device_id = ? AND status IN ('pending', 'claimed')
+         AND created_at <= datetime('now', ?)`
+  ).bind(device.id, `-${COMMAND_TTL_MINUTES} minutes`).run();
+
+  // Retry unacknowledged claims after a short lease. The device must handle
+  // duplicate command IDs idempotently if a previous execution lost its ACK.
+  await env.ULTRON_DB.prepare(
+    `UPDATE device_commands SET status = 'pending', claimed_at = NULL
+       WHERE device_id = ? AND status = 'claimed'
+         AND claimed_at <= datetime('now', ?)`
+  ).bind(device.id, `-${CLAIM_LEASE_SECONDS} seconds`).run();
+
   const result = await env.ULTRON_DB.prepare(
     `SELECT id, command, payload_json AS payloadJson, created_at AS createdAt
        FROM device_commands
       WHERE device_id = ? AND status = 'pending'
+        AND created_at > datetime('now', ?)
       ORDER BY created_at ASC
       LIMIT ?`
   )
-    .bind(device.id, MAX_PENDING_COMMANDS)
+    .bind(device.id, `-${COMMAND_TTL_MINUTES} minutes`, MAX_PENDING_COMMANDS)
     .all();
 
   const commands = result?.results || [];
@@ -430,9 +448,10 @@ export async function completeCommand(
   const update = await env.ULTRON_DB.prepare(
     `UPDATE device_commands
         SET status = ?, result_json = ?, completed_at = CURRENT_TIMESTAMP
-      WHERE id = ? AND device_id = ? AND status IN ('pending', 'claimed')`
+      WHERE id = ? AND device_id = ? AND status = 'claimed'
+        AND created_at > datetime('now', ?)`
   )
-    .bind(finalStatus, safeJson(result), commandId, device.id)
+    .bind(finalStatus, safeJson(result), commandId, device.id, `-${COMMAND_TTL_MINUTES} minutes`)
     .run();
 
   return {
