@@ -1,0 +1,20 @@
+/* JARVIS Command Center: replaces the immersive neural display, preserving the terminal and camera panel. */
+body.jarvis-command-center .orb-stage{min-height:420px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:radial-gradient(ellipse at 50% 46%,#103b4d 0%,#061923 45%,#020b12 100%);isolation:isolate}
+body.jarvis-command-center .orb-stage>*:not(.jarvis-command-center-ui){display:none!important}
+body.jarvis-command-center .core-readouts,body.jarvis-command-center .spatial-help{display:none!important}
+.jarvis-command-center-ui{position:relative;z-index:10;width:100%;height:100%;min-height:420px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:22px;box-sizing:border-box;color:#d9f9ff;font-family:inherit}
+.jarvis-cc-top{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:11px;letter-spacing:.15em;color:#89dff1}
+.jarvis-cc-live{display:flex;align-items:center;gap:8px}.jarvis-cc-dot{width:8px;height:8px;border-radius:50%;background:#53edcf;box-shadow:0 0 12px #53edcf}
+.jarvis-cc-orb{position:relative;display:grid;place-items:center;width:min(55vw,250px);height:min(55vw,250px);min-width:180px;min-height:180px;border:1px solid #3ca5b388;border-radius:50%;box-shadow:0 0 65px #0b90b33d,inset 0 0 50px #28a9c02e;background:radial-gradient(circle,#1dbbd11c 0%,transparent 65%)}
+.jarvis-cc-orb:before,.jarvis-cc-orb:after{content:"";position:absolute;inset:14px;border:1px dashed #4dd7e6aa;border-radius:50%;animation:jarvis-cc-spin 32s linear infinite}.jarvis-cc-orb:after{inset:34px;border-style:solid;border-color:#5dddea55;animation-direction:reverse;animation-duration:24s}
+.jarvis-cc-orb strong{font-size:clamp(18px,4vw,29px);letter-spacing:.28em;text-shadow:0 0 20px #61f1ff;z-index:1}
+.jarvis-cc-orb small{position:absolute;bottom:52px;font-size:10px;letter-spacing:.15em;color:#9cd5df;z-index:1}
+.jarvis-cc-actions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));width:100%;gap:8px}
+.jarvis-cc-actions button{background:#0b2634;border:1px solid #347b8d;color:#d4f8ff;padding:12px 5px;border-radius:9px;cursor:pointer;font-size:11px;min-height:46px}
+.jarvis-cc-actions button:hover,.jarvis-cc-actions button:focus-visible{border-color:#67f0ff;background:#124257}
+.jarvis-cc-panel{width:100%;background:#071d2eea;border:1px solid #348799;border-radius:10px;padding:12px;margin-top:10px;box-sizing:border-box;font-size:12px}
+.jarvis-cc-panel[hidden]{display:none!important}.jarvis-cc-panel h3{font-size:13px;margin:0 0 8px}.jarvis-cc-panel p{margin:4px 0;line-height:1.5}
+.jarvis-cc-panel button{padding:9px 12px;background:#124358;border:1px solid #4aabba;color:#d8faff;border-radius:7px;cursor:pointer}
+@keyframes jarvis-cc-spin{to{transform:rotate(360deg)}}
+@media(max-width:640px){.jarvis-command-center-ui{padding:12px;min-height:390px}.jarvis-cc-actions{grid-template-columns:repeat(2,minmax(0,1fr))}.jarvis-cc-orb{width:180px;height:180px}.jarvis-cc-orb small{bottom:32px}}
+@media(prefers-reduced-motion:reduce){.jarvis-cc-orb:before,.jarvis-cc-orb:after{animation:none}}
