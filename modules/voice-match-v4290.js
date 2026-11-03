@@ -13,6 +13,9 @@ const disableButton = document.getElementById('btn-disable-voice-match');
 
 let monitor = null;
 let monitorTimer = null;
+let monitorOpening = null;
+let monitorClosing = false;
+let ttsSpeaking = false;
 let recentFrames = [];
 let enrolling = false;
 let lastVerification = null;
@@ -162,7 +165,7 @@ function aggregateFrames(frames) {
   return normalizeVector(averageVectors(valid.map((frame) => frame.vector)));
 }
 
-async function openMonitor() {
+async function createMonitor() {
   if (monitor) return monitor;
   if (!navigator.mediaDevices?.getUserMedia) throw new Error('Microfone indisponível neste navegador.');
 
@@ -190,7 +193,7 @@ async function openMonitor() {
   monitor = { stream, context, analyser };
   recentFrames = [];
   monitorTimer = setInterval(() => {
-    if (!monitor || enrolling) return;
+    if (!monitor || enrolling || ttsSpeaking) return;
     const frame = featureFrame(monitor.analyser, monitor.context.sampleRate);
     if (frame) recentFrames.push(frame);
     const cutoff = performance.now() - RECENT_WINDOW_MS;
@@ -199,16 +202,28 @@ async function openMonitor() {
   return monitor;
 }
 
+function openMonitor() {
+  if (monitor) return Promise.resolve(monitor);
+  if (monitorClosing) return Promise.reject(new Error('Monitor de voz em encerramento.'));
+  if (!monitorOpening) {
+    monitorOpening = createMonitor().finally(() => { monitorOpening = null; });
+  }
+  return monitorOpening;
+}
+
 async function closeMonitor() {
+  monitorClosing = true;
+  if (monitorOpening) await monitorOpening.catch(() => {});
   if (monitorTimer) clearInterval(monitorTimer);
   monitorTimer = null;
   recentFrames = [];
-  if (!monitor) return;
+  if (!monitor) { monitorClosing = false; return; }
   monitor.stream?.getTracks?.().forEach((track) => track.stop());
   if (monitor.context && monitor.context.state !== 'closed') {
     await monitor.context.close().catch(() => {});
   }
   monitor = null;
+  monitorClosing = false;
 }
 
 async function captureSample(ms = CAPTURE_MS) {
@@ -359,8 +374,8 @@ disableButton?.addEventListener('click', () => {
   else disableRequired();
 });
 
-window.addEventListener('ultron:speech-start', () => { recentFrames = []; });
-window.addEventListener('ultron:speech-end', () => { recentFrames = []; });
+window.addEventListener('ultron:speech-start', () => { ttsSpeaking = true; recentFrames = []; });
+window.addEventListener('ultron:speech-end', () => { ttsSpeaking = false; recentFrames = []; });
 
 window.addEventListener('ultron:voice-listening-enabled', () => {
   if (isEnrolled() && settings().required !== false) openMonitor().catch(() => {});
@@ -368,7 +383,7 @@ window.addEventListener('ultron:voice-listening-enabled', () => {
 window.addEventListener('beforeunload', () => closeMonitor());
 
 window.ULTRON_VOICE_MATCH = {
-  version: '4.32.1',
+  version: '4.32.2',
   enroll,
   authorizeWake,
   verifyLocalWake,
