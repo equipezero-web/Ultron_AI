@@ -1,5 +1,6 @@
 const PAIRING_TTL_MINUTES = 10;
 const MAX_PENDING_COMMANDS = 12;
+const COMMAND_TTL_SECONDS = 120;
 const MAX_BRIDGE_JSON_CHARS = 131072;
 
 let bridgeSchemaReady = false;
@@ -377,6 +378,17 @@ export async function pollCommands(env, { deviceId, deviceSecret } = {}) {
   await env.ULTRON_DB.prepare(
     `UPDATE devices SET last_seen_at = CURRENT_TIMESTAMP WHERE id = ?`
   ).bind(device.id).run();
+
+  // Do not execute stale actions after a device reconnects on another network.
+  await env.ULTRON_DB.prepare(
+    `UPDATE device_commands
+        SET status = 'failed',
+            result_json = '{"error":"Comando expirado antes da execução."}',
+            completed_at = CURRENT_TIMESTAMP
+      WHERE device_id = ?
+        AND status = 'pending'
+        AND created_at < datetime('now', ?)`
+  ).bind(device.id, `-${COMMAND_TTL_SECONDS} seconds`).run();
 
   const result = await env.ULTRON_DB.prepare(
     `SELECT id, command, payload_json AS payloadJson, created_at AS createdAt
