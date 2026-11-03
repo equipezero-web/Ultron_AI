@@ -1,4 +1,4 @@
-const BOOT_KEY = '__JARVIS_STARK_BOOTSTRAP_V4310__';
+const BOOT_KEY = '__JARVIS_STARK_BOOTSTRAP_V4320__';
 
 if (!window[BOOT_KEY]) {
   window[BOOT_KEY] = true;
@@ -24,6 +24,7 @@ if (!window[BOOT_KEY]) {
     document.head.appendChild(link);
   }
 
+  await import('./jarvis-performance-governor-v4320.js?v=4.32.0');
   loadStyle(MOBILE_PERF_STYLE_ID, 'modules/mobile-performance.css?v=4.24.0');
   await import('./mobile-performance.js?v=4.24.0');
 
@@ -72,27 +73,21 @@ if (!window[BOOT_KEY]) {
   await import('./neural-spatial-control-v4250.js?v=4.25.0');
   await import('./mobile-link-simple-v4250.js?v=4.25.0');
 
-  window.addEventListener('ultron:processing-start', () => {
-    window.ULTRON_STARK_CORE?.processing?.(true);
-  });
-
-  window.addEventListener('ultron:processing-end', () => {
-    window.ULTRON_STARK_CORE?.processing?.(false);
-  });
+  window.addEventListener('ultron:processing-start', () => window.ULTRON_STARK_CORE?.processing?.(true));
+  window.addEventListener('ultron:processing-end', () => window.ULTRON_STARK_CORE?.processing?.(false));
 
   window.addEventListener('ultron:subvocal-command', (event) => {
     window.ULTRON_STARK_CORE?.focus?.('COMANDOS');
     window.ULTRON_STARK_CORE?.processing?.(true);
     setTimeout(() => window.ULTRON_STARK_CORE?.processing?.(false), 650);
-    window.dispatchEvent(new CustomEvent('ultron:stark-silent-command', {
-      detail: event.detail || {}
-    }));
+    window.dispatchEvent(new CustomEvent('ultron:stark-silent-command', { detail: event.detail || {} }));
   });
 
   const detail = {
-    version: '4.31.0',
+    version: '4.32.0',
     brand: 'J.A.R.V.I.S',
-    performanceMode: window.ULTRON_PERFORMANCE?.mode || 'full',
+    performanceMode: window.JARVIS_PERFORMANCE?.state?.tier || window.ULTRON_PERFORMANCE?.mode || 'full',
+    performanceGovernor: Boolean(window.JARVIS_PERFORMANCE),
     starkCore: Boolean(window.ULTRON_STARK_CORE),
     innerMesh: Boolean(window.ULTRON_STARK_MESH),
     advanced: Boolean(window.ULTRON_STARK_ADVANCED),
