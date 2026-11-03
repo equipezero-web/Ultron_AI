@@ -191,7 +191,7 @@ jobs:
           grep -q "generate-ice-servers" backend/webrtc-ice.js
           grep -q "CLOUDFLARE_TURN_KEY_ID" backend/webrtc-ice.js
           grep -q "CLOUDFLARE_TURN_API_TOKEN" backend/webrtc-ice.js
-          grep -q "HOLOGRAPHIC NEURAL CORE" index.html
+          grep -q "J.A.R.V.I.S INTERACTIVE COMMAND CENTER" index.html
           grep -q "AZIMUTH 360°" index.html
           grep -q "OPTICAL SENSOR" index.html
           grep -q "COMPUTADOR ↔ CELULAR" index.html
