@@ -50,13 +50,17 @@ if (stage) {
   const log = ui.querySelector('#jarvis-cc-log');
   let visualMode = 'ring';
   let visualFrame = 0;
+  let lastVisualAt = 0;
+  const visualInterval = matchMedia('(max-width: 680px)').matches ? 42 : 33;
   let visualRunning = false;
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  function drawVisual() {
+  function drawVisual(now = performance.now()) {
     if (!ctx) return;
+    if (visualRunning && now - lastVisualAt < visualInterval) { visualFrame = requestAnimationFrame(drawVisual); return; }
+    lastVisualAt = now;
     const width = canvas.clientWidth || 400;
     const height = canvas.clientHeight || 400;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     if (canvas.width !== Math.round(width*dpr) || canvas.height !== Math.round(height*dpr)) {
       canvas.width = Math.round(width*dpr); canvas.height = Math.round(height*dpr);
     }
