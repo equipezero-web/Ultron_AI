@@ -1,0 +1,47 @@
+name: JARVIS v4.35 Migration Check
+on:
+  push:
+    paths:
+      - 'index.html'
+      - 'modules/jarvis-command-center-v4330.*'
+      - 'modules/device-control-v4260.js'
+      - 'backend/device-control-v2.js'
+      - '.github/workflows/jarvis-v4350-migration-check.yml'
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'modules/jarvis-command-center-v4330.*'
+      - 'modules/device-control-v4260.js'
+      - 'backend/device-control-v2.js'
+      - '.github/workflows/jarvis-v4350-migration-check.yml'
+jobs:
+  migration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: JavaScript syntax
+        run: |
+          node --check modules/jarvis-command-center-v4330.js
+          node --check modules/device-control-v4260.js
+          node --check backend/device-control-v2.js
+      - name: Validate unified UI integration
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import assert from 'node:assert/strict';
+          const html = fs.readFileSync('index.html', 'utf8');
+          const js = fs.readFileSync('modules/jarvis-command-center-v4330.js', 'utf8');
+          const css = fs.readFileSync('modules/jarvis-command-center-v4330.css', 'utf8');
+          for (const id of ['output-box','command-input','btn-send','btn-camera','btn-listen-voice','btn-pair-mobile','webcam']) {
+            assert.ok(html.includes('id="' + id + '"'), 'Missing runtime control ' + id);
+          }
+          for (const slot of ['gateway','link','voice','infra','camera','response','input']) {
+            assert.ok(js.includes('jarvis-cc-' + slot + '-slot'), 'Missing neural integration slot ' + slot);
+          }
+          assert.ok(css.includes('min-height:100dvh'), 'Missing fullscreen layout');
+          assert.ok(js.includes('originalVideo.srcObject'), 'Camera preview must reuse existing stream');
+          assert.ok(html.includes('J.A.R.V.I.S INTERACTIVE COMMAND CENTER // v4.35.0'), 'Release marker mismatch');
+          NODE
