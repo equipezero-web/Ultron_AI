@@ -50,8 +50,28 @@ if (stage) {
     camera() {
       show('SENSOR ÓPTICO', 'O sensor utiliza a integração de câmera já existente. A permissão será solicitada pelo navegador quando necessária.', {label:'Abrir painel de câmera',run:()=>scrollTo('.optical-panel')});
     },
-    devices() {
-      show('CENTRAL DE DISPOSITIVOS', 'Use a integração de dispositivos existente. O estado real depende da conexão com o Bridge.', {label:'Configurar TV',run:()=>document.getElementById('btn-pair-tv')?.click()});
+    async devices() {
+      show('CENTRAL DE DISPOSITIVOS', 'Consultando dispositivos pareados no gateway remoto...');
+      try {
+        const api = window.ULTRON_DEVICES;
+        if (!api?.listDevices) {
+          show('CENTRAL DE DISPOSITIVOS', 'Módulo de dispositivos ainda não disponível. Aguarde a inicialização do sistema.');
+          return;
+        }
+        const devices = await api.listDevices();
+        if (!Array.isArray(devices) || !devices.length) {
+          show('CENTRAL DE DISPOSITIVOS', 'Nenhum dispositivo pareado foi encontrado para este operador.', {label:'Configurar TV',run:()=>document.getElementById('btn-pair-tv')?.click()});
+          return;
+        }
+        const summary = devices.slice(0, 12).map((device) => {
+          const name = device.deviceName || device.name || 'Dispositivo';
+          const status = device.status || 'estado desconhecido';
+          return name + ' (' + (device.deviceType || 'tipo desconhecido') + ') — ' + status;
+        }).join(' · ');
+        show('DISPOSITIVOS PAREADOS (' + devices.length + ')', summary, {label:'Atualizar lista',run:()=>actions.devices()});
+      } catch (error) {
+        show('CENTRAL DE DISPOSITIVOS', 'Não foi possível consultar o gateway: ' + (error?.message || 'falha de comunicação') + '.');
+      }
     }
   };
   ui.querySelectorAll('[data-cc]').forEach((button) => button.addEventListener('click', () => actions[button.dataset.cc]?.()));
