@@ -47,6 +47,7 @@ const SENSITIVE_COMMANDS = new Set([
 ]);
 
 const ONLINE_MAX_AGE_MS = 45_000;
+const COMMAND_TTL_SECONDS = 120;
 
 function safeJson(value, fallback = {}) {
   try {
@@ -100,13 +101,14 @@ export async function resolveTargetDevice(env, operatorId, { deviceId = "", devi
   const requestedType = String(deviceType || expectedType(command)).trim().toLowerCase();
 
   if (deviceId) {
-    const exact = devices.find((device) => device.id === deviceId && device.status !== "disabled");
+    const exact = devices.find((device) => device.id === deviceId && device.status === "active");
     if (!exact) return null;
     return exact;
   }
 
   return [...devices]
-    .filter((device) => device.status !== "disabled")
+    .filter((device) => device.status === "active")
+    .filter((device) => onlineAge(device) <= ONLINE_MAX_AGE_MS)
     .filter((device) => !requestedType || device.deviceType === requestedType)
     .sort((a, b) => scoreDevice(b, requestedType) - scoreDevice(a, requestedType) || onlineAge(a) - onlineAge(b))[0] || null;
 }
@@ -158,7 +160,8 @@ export async function enqueueControlCommand(env, {
       deviceName: device.deviceName,
       online: onlineAge(device) <= ONLINE_MAX_AGE_MS
     },
-    command: validation.command
+    command: validation.command,
+    expiresInSeconds: COMMAND_TTL_SECONDS
   };
 }
 
