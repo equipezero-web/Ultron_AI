@@ -6,7 +6,7 @@ if (stage) {
   ui.className = 'jarvis-command-center-ui';
   ui.setAttribute('aria-label', 'Central holográfica interativa JARVIS');
   ui.innerHTML = `
-    <div class="jarvis-cc-top"><span>J.A.R.V.I.S <em> / OPERATIONS</em></span><span class="jarvis-cc-live"><i class="jarvis-cc-dot"></i><span id="jarvis-cc-state">LISTENING</span></span><span class="jarvis-cc-clock" id="jarvis-cc-clock">--:--:--</span></div>
+    <div class="jarvis-cc-top"><span>J.A.R.V.I.S <em> / OPERATIONS</em></span><span class="jarvis-cc-live"><i class="jarvis-cc-dot"></i><span id="jarvis-cc-state">STANDBY</span></span><span class="jarvis-cc-clock" id="jarvis-cc-clock">--:--:--</span></div>
     <aside class="jarvis-cc-sidebar" aria-label="Telemetria JARVIS"><div id="jarvis-cc-gateway-slot"></div>
       <section class="jarvis-cc-widget"><header>EVENT LOG <span>LIVE</span></header><div class="jarvis-cc-log" id="jarvis-cc-log"><p>› CORE // INITIALIZED</p><p>› NETWORK // READY</p><p>› VOICE // STANDBY</p></div></section>
       <section class="jarvis-cc-widget"><header>TELEMETRY <span>LIVE</span></header><div class="jarvis-cc-wave" aria-hidden="true"></div><div class="jarvis-cc-metric">CORE STATUS <b id="jarvis-cc-metric">READY</b></div><div class="jarvis-cc-metric">BRIDGE <b>REMOTE</b></div></section>
@@ -35,13 +35,28 @@ if (stage) {
   relocate('#output-box', '#jarvis-cc-response-slot');
   relocate('.command-row', '#jarvis-cc-input-slot');
   relocate('.quick-actions', '#jarvis-cc-input-slot');
-  // Move the existing live video instead of creating another camera stream.
-  // Its ID and media tracks remain unchanged for all existing camera handlers.
+  // Mirror the same MediaStream without relocating the source video or
+  // opening a second camera; preserve modal and canvas-overlay behavior.
   const compactPreview = ui.querySelector('.optical-preview');
   const originalVideo = document.getElementById('webcam');
   if (compactPreview && originalVideo) {
-    originalVideo.classList.add('jarvis-cc-camera-mirror');
-    compactPreview.prepend(originalVideo);
+    const mirror = document.createElement('video');
+    mirror.className = 'jarvis-cc-camera-mirror';
+    mirror.autoplay = true;
+    mirror.muted = true;
+    mirror.playsInline = true;
+    compactPreview.prepend(mirror);
+    const sync = () => {
+      const stream = originalVideo.srcObject;
+      if (mirror.srcObject !== stream) {
+        mirror.srcObject = stream;
+        if (stream) mirror.play().catch(() => {});
+      }
+    };
+    originalVideo.addEventListener('loadedmetadata', sync);
+    originalVideo.addEventListener('playing', sync);
+    originalVideo.addEventListener('emptied', sync);
+    sync();
   }
   const canvas = ui.querySelector('#jarvis-cc-canvas');
   const ctx = canvas.getContext('2d', {alpha:true});
