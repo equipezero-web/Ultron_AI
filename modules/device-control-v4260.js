@@ -234,7 +234,7 @@ async function monitorCommand(commandId) {
         last = command.status;
         outputLine(`${command.command} // ${String(command.status).toUpperCase()} // ${command.deviceName || command.deviceType}.`, command.status === "failed");
       }
-      if (["completed", "failed"].includes(command.status)) return command;
+      if (["completed", "failed", "expired", "cancelled"].includes(command.status)) return command;
     } catch {}
   }
   outputLine(`Comando ${commandId.slice(0, 8)} continua aguardando o dispositivo.`, true);
@@ -328,7 +328,7 @@ async function refreshBridgeState() {
   const indicator = document.getElementById("bridge-module");
   if (!indicator || !API_BASE) return;
   try {
-    const response = await fetch(`${API_BASE}/api/health`, { cache: "no-store" });
+    const response = await fetch(`${API_BASE}/api/health`, { cache: "no-store", signal: AbortSignal.timeout(6500) });
     const data = await response.json();
     if (data?.deviceControl?.ready && data?.automations?.ready) {
       indicator.textContent = "100% READY";
@@ -367,4 +367,4 @@ window.ULTRON_DEVICES = {
 bindNaturalLanguageInterception();
 injectControls();
 refreshBridgeState();
-setInterval(refreshBridgeState, 30000);
+setInterval(() => { if (!document.hidden && navigator.onLine) refreshBridgeState(); }, 45000);\nwindow.addEventListener("online", refreshBridgeState);
