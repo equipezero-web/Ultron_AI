@@ -254,6 +254,8 @@ export function getVoiceRouterStatus(env) {
 }
 
 export async function generateCloudVoice(env, text, options = {}) {
+  // Proteção no servidor: nunca chamar provedores pagos enquanto a voz estiver pausada.
+  return { audioBase64: null, audioMimeType: null, provider: null, providerLabel: null, voice: null, attempts: [], nextFallback: null, disabled: true };
   const clean = String(text || "").replace(/\s+/g, " ").trim();
   if (!clean) throw new Error("Texto vazio para síntese de voz.");
 

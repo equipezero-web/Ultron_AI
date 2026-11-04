@@ -56,6 +56,7 @@ function updateIndicator(label) {
 }
 
 function playBase64Audio(base64, mime = "audio/wav", providerLabel = "XTTS v2") {
+  if (document.body.classList.contains("jarvis-voice-paused")) return false;
   if (!base64) return false;
 
   try {
@@ -92,6 +93,7 @@ function playBase64Audio(base64, mime = "audio/wav", providerLabel = "XTTS v2") 
 }
 
 export async function speakWithXtts(text, { announce = true } = {}) {
+  if (document.body.classList.contains("jarvis-voice-paused")) return false;
   const clean = String(text || "").replace(/\s+/g, " ").trim();
   if (!clean || !API_BASE || xttsBusy) return false;
 
@@ -121,6 +123,7 @@ export async function speakWithXtts(text, { announce = true } = {}) {
 }
 
 export function speakWithBrowser(text, { reason = "fallback", announce = true } = {}) {
+  if (document.body.classList.contains("jarvis-voice-paused")) return false;
   const clean = String(text || "").replace(/\s+/g, " ").trim();
   if (!clean) return false;
 

@@ -542,7 +542,7 @@ async function executeAiCore(env, body) {
       })
     : Promise.resolve({ saved: false, explicitMemorySaved: false });
 
-  const autoSpeakEnabled = env.ELEVENLABS_AUTOSPEAK !== "false";
+  const autoSpeakEnabled = false; // Voz pausada: nenhuma chamada automática ao ElevenLabs.
   const voiceStartedAt = Date.now();
   const voicePromise = autoSpeakEnabled && env.ELEVENLABS_API_KEY && env.ELEVENLABS_VOICE_ID
     ? generateElevenLabsAudio(env, aiResult.text)
@@ -947,6 +947,7 @@ export default {
     }
 
     if (path === "/api/voice" && request.method === "POST") {
+      return json({ error: "Voz temporariamente desativada para evitar consumo de créditos." }, 503);
       const body = await bodyOf(request);
       const text = String(body?.text || "").replace(/\s+/g, " ").trim();
       if (!text) return json({ error: "Texto vazio." }, 400);
@@ -973,6 +974,7 @@ export default {
     }
 
     if (path === "/api/voice/xtts" && request.method === "POST") {
+      return json({ error: "Voz temporariamente desativada." }, 503);
       const body = await bodyOf(request);
       const text = String(body?.text || "").replace(/\s+/g, " ").trim();
       if (!text) return json({ error: "Texto vazio." }, 400);
