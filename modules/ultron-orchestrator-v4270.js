@@ -179,7 +179,7 @@ async function showHistory() {
 }
 
 // Geographic actions must be executed, not passed to conversational AI.
-const geoAliases = /^(?:globo|globo terrestre|planeta|planeta terra|terra|mundo|mapa|google earth)$/;
+const geoAliases = /^(?:globo|gllobo|globo terrestre|planeta|planeta terra|terra|mundo|mapa|google earth)$/;
 function parseEarthIntent(command) {
   const normalized = normalize(command).replace(/^(?:jarvis|ultron)[, ]+/, '').replace(/^(mostre|mostra|mostrar)-me\s+/, 'me $1 ');
   const pattern = /^(?:(?:me )?(?:mostre|mostra|mostrar|abra|abrir|visualize|visualizar|localize|localizar|exiba|exibir|ver)|quero ver|me leve para|ir para)\s+(.+)$/;
@@ -215,7 +215,6 @@ async function routeSingle(command, run, index = 0) {
     log('EARTH // Solicitação de abertura do globo enviada.');
     return {route:'earth-visual',ok:true,result:{text:'Abrindo globo interativo.',place}};
   }
-  if (earthIntent) lastEarthRequest = earthIntent.place;
 
   const devices = await waitForRuntime(() => window.ULTRON_DEVICES, 2500);
   const vision = await waitForRuntime(() => window.ULTRON_VISION_ROUTER, 2500);
