@@ -194,17 +194,21 @@ function parseEarthIntent(command) {
   if (/^(?:camera|sensor|arquivo|foto|imagem|documento|video|sistema|status|painel|agenda|historico|meus dados)/.test(target)) return null;
   return { place: target };
 }
-let lastEarthRequest = null;
+function lastAssistantEarthOffer() {
+  const lines = Array.from(output?.querySelectorAll('p') || []).reverse();
+  const last = lines.find(line => /\\[CORE\\].*(?:J\\.A\\.R\\.V\\.I\\.S|ULTRON)/i.test(line.textContent || ''))?.textContent || '';
+  if (!last || !/(?:globo|gllobo|mapa|china|brasil|planeta|terra)/i.test(last)) return null;
+  if (!/(?:quer|posso|deseja|gostaria|mostrar|mostre|abrir|visualizar)/i.test(last)) return null;
+  const named = last.match(/\\b(?:china|brasil|recife|jap[aã]o|fran[cç]a|portugal)\\b/i);
+  return {place: named ? normalize(named[0]) : ''};
+}
 
 async function routeSingle(command, run, index = 0) {
   const prefix = `step-${index + 1}`;
   const earthIntent = parseEarthIntent(command);
-  const isAffirmation = /^(?:sim|quero|pode|claro|isso|isso mesmo|ok|certo|confirmo|com certeza)[.!?\s]*$/.test(normalize(command));
-  const isDecline = /^(?:nao|negativo|agora nao)[.!?\s]*$/.test(normalize(command));
-  if (isDecline) lastEarthRequest = null;
-  const place = earthIntent?.place ?? (isAffirmation ? lastEarthRequest : null);
+  const isAffirmation = /^(?:sim|quero|pode|claro|isso|isso mesmo|ok|certo|confirmo|com certeza)[.!?\\s]*$/.test(normalize(command));
+  const place = earthIntent?.place ?? (isAffirmation ? lastAssistantEarthOffer()?.place : null);
   if (place !== null && place !== undefined) {
-    lastEarthRequest = null;
     const earth = window.ULTRON_EARTH;
     if (earth?.locate) {
       const result = await earth.locate(place);
