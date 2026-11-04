@@ -182,8 +182,9 @@ if (legacy) {
     safeBinaryWriters: true
   };
 
+  let localCoreAvailable = false;
   async function pollSync() {
-    if (document.hidden) return;
+    if (document.hidden || !localCoreAvailable) return;
     try {
       const data = await stats();
       const fingerprint = `${data.files || 0}:${data.vector_chunks || 0}:${data.last_index_at || ''}`;
@@ -191,7 +192,7 @@ if (legacy) {
         await refreshFiles('watcher');
       }
       lastFingerprint = fingerprint;
-    } catch {}
+    } catch { localCoreAvailable = false; }
   }
 
   function schedule() {
@@ -201,6 +202,7 @@ if (legacy) {
   }
 
   window.addEventListener('ultron:performance-mode', schedule);
+  window.addEventListener('ultron:local-core-connected', () => { localCoreAvailable = true; pollSync(); });
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden) pollSync();
   });
@@ -209,6 +211,7 @@ if (legacy) {
     try {
       const health = await legacy.health({ allowPrompt: false });
       if (health?.ok) {
+        localCoreAvailable = true;
         const data = await stats();
         lastFingerprint = `${data.files || 0}:${data.vector_chunks || 0}:${data.last_index_at || ''}`;
         log(`LOCAL CORE v${health.version || '2'} // HYBRID RAG // ${data.files || 0} arquivo(s) // ${data.vector_chunks || 0} vetores.`);
