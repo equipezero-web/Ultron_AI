@@ -478,17 +478,17 @@ async function executeAiCore(env, body) {
 
   // Short answers such as "sim" or "não" are replies to the last assistant turn,
   // not independent greetings. Force explicit conversational continuity.
-  const shortReply = /^(?:sim|s|isso|isso mesmo|claro|pode|pode sim|confirmo|confirmado|ok|okay|certo|beleza|nao|não|n|negativo|agora nao|agora não)(?:[.!?\\s]*)$/i.test(message);
+  const shortReply = /^(?:sim|s|isso|isso mesmo|claro|pode|pode sim|confirmo|confirmado|ok|okay|certo|beleza|nao|não|n|negativo|agora nao|agora não)(?:[.!?\s]*)$/i.test(message);
   const lastAssistant = String(memoryState.lastAssistantMessage || '').trim();
   const continuityInstruction = shortReply
     ? lastAssistant
-      ? ['REGRA PRIORITÁRIA DE CONTINUIDADE:', 'A mensagem atual é uma resposta curta do operador à última fala do assistente.', 'Última fala do assistente: ' + lastAssistant.slice(0, 1800), 'Continue a conversa e responda à confirmação ou recusa no contexto. Não cumprimente novamente nem reinicie a conversa.'].join('\\n')
+      ? ['REGRA PRIORITÁRIA DE CONTINUIDADE:', 'A mensagem atual é uma resposta curta do operador à última fala do assistente.', 'Última fala do assistente: ' + lastAssistant.slice(0, 1800), 'Continue a conversa e responda à confirmação ou recusa no contexto. Não cumprimente novamente nem reinicie a conversa.'].join('\n')
       : 'REGRA PRIORITÁRIA: O operador respondeu com uma confirmação ou recusa curta, mas não existe pergunta anterior disponível. Peça brevemente a que ele se refere. Não cumprimente nem invente contexto.'
     : '';
 
   let aiMessage = buildMemoryAwareMessage(
     message,
-    [memoryState.context, continuityInstruction].filter(Boolean).join("\\n\\n"),
+    [memoryState.context, continuityInstruction].filter(Boolean).join("\n\n"),
     newsState.contextText,
     externalResearchContext,
     localFilesContext,
@@ -519,7 +519,7 @@ async function executeAiCore(env, body) {
     if (fallbackResearch?.results?.length && fallbackResearch?.contextText) {
       aiMessage = buildMemoryAwareMessage(
         message,
-        [memoryState.context, continuityInstruction].filter(Boolean).join("\\n\\n"),
+        [memoryState.context, continuityInstruction].filter(Boolean).join("\n\n"),
         newsState.contextText,
         fallbackResearch.contextText,
         localFilesContext,
