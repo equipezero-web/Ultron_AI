@@ -19,6 +19,7 @@
     "OPENROUTER_MODEL": "openrouter/free",
     "CLOUDFLARE_AI_MODEL": "@cf/meta/llama-3.1-8b-instruct-fp8-fast",
     "COHERE_MODEL": "command-a-plus-05-2026",
+    "ELEVENLABS_AUTOSPEAK": "false",
     "GOOGLE_TTS_NEURAL2_VOICE": "pt-BR-Neural2-B",
     "GOOGLE_TTS_WAVENET_VOICE": "pt-BR-Wavenet-B",
     "GOOGLE_TTS_SPEAKING_RATE": "0.96"
