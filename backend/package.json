@@ -12,5 +12,8 @@
     "cors": "latest",
     "dotenv": "latest",
     "express": "latest"
+  },
+  "devDependencies": {
+    "wrangler": "^4.157.0"
   }
 }

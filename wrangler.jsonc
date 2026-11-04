@@ -1,0 +1,37 @@
+{
+  "$schema": "https://unpkg.com/wrangler@4/config-schema.json",
+  "name": "ultron-backend",
+  "main": "backend/worker.js",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": true,
+  "previews": {},
+  "keep_vars": true,
+
+  "triggers": {
+    "crons": ["* * * * *"]
+  },
+
+  "vars": {
+    "AI_PROVIDER_ORDER": "groq,gemini,cloudflare,openrouter,cohere",
+    "GEMINI_MODEL": "gemini-3.8-flash",
+    "GROQ_MODEL": "openai/gpt-oss-20b",
+    "OPENROUTER_MODEL": "openrouter/free",
+    "CLOUDFLARE_AI_MODEL": "@cf/meta/llama-3.1-8b-instruct-fp8-fast",
+    "COHERE_MODEL": "command-a-plus-05-2026",
+    "GOOGLE_TTS_NEURAL2_VOICE": "pt-BR-Neural2-B",
+    "GOOGLE_TTS_WAVENET_VOICE": "pt-BR-Wavenet-B",
+    "GOOGLE_TTS_SPEAKING_RATE": "0.96"
+  },
+
+  "ai": {
+    "binding": "AI"
+  },
+
+  "d1_databases": [
+    {
+      "binding": "ULTRON_DB",
+      "database_name": "ultron-memory",
+      "database_id": "86e865b3-a91e-4ad2-8f24-8ae04e85818f"
+    }
+  ]
+}
