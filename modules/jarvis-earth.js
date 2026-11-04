@@ -1,3 +1,19 @@
+// Restore scrolling if a legacy subsystem leaves an inline overflow lock after a command.
+// Do not interfere with the fullscreen camera modal.
+const unlockPageScroll = () => {
+  const modal = document.getElementById('screen-modal');
+  if (modal?.getAttribute('aria-hidden') === 'false') return;
+  for (const element of [document.documentElement, document.body]) {
+    if (element.style.overflow === 'hidden') element.style.removeProperty('overflow');
+    if (element.style.overflowY === 'hidden') element.style.removeProperty('overflow-y');
+  }
+};
+const scrollObserver = new MutationObserver(unlockPageScroll);
+scrollObserver.observe(document.documentElement,{attributes:true,attributeFilter:['style','class']});
+scrollObserver.observe(document.body,{attributes:true,attributeFilter:['style','class']});
+window.addEventListener('ultron:earth-location',unlockPageScroll);
+unlockPageScroll();
+
 // Interactive open-data globe. Not Google Earth; no Google API key required.
 // Globe.gl / Three.js are loaded only when the geographic view is requested.
 const host = document.querySelector('.jarvis-cc-visual');
