@@ -74,16 +74,19 @@ if (host && modeButton) {
     shell.hidden=false;
     host.classList.add('jarvis-earth-active');
     modeButton.click();
-    init();
+    return init();
   }
   document.querySelector('[data-visual="ring"]')?.addEventListener('click',()=>{
     shell.hidden=true;host.classList.remove('jarvis-earth-active');details.hidden=true;frame.removeAttribute('src');
   });
   modeButton.addEventListener('click',()=>{shell.hidden=false;host.classList.add('jarvis-earth-active');init();});
   async function locate(query) {
-    showEarth();
+    await showEarth();
     const place = String(query || '').trim();
     if (!place) return;
+    const known = {china:[35.8617,104.1954],brasil:[-14.235,-51.9253],recife:[-8.0476,-34.877],japao:[36.2048,138.2529],estados_unidos:[39.8283,-98.5795],franca:[46.6034,1.8883],portugal:[39.3999,-8.2245]};
+    const key=normalize(place).replace(/\\s+/g,'_');
+    if (known[key]) { openLocation(...known[key],place); return; }
     try {
       // Geocoding is a public service; only query on explicit user command.
       const url='https://nominatim.openstreetmap.org/search?format=json&limit=1&q='+encodeURIComponent(place);
@@ -91,8 +94,8 @@ if (host && modeButton) {
       if(!response.ok) throw new Error('Busca geográfica indisponível');
       const results=await response.json();
       if(results[0]) openLocation(Number(results[0].lat),Number(results[0].lon),results[0].display_name);
-      else title.textContent='Local não encontrado: '+place;
-    } catch(error) { console.warn('[JARVIS EARTH] geocoding:',error); }
+      else { title.textContent='Local não encontrado: '+place; details.hidden=false; }
+    } catch(error) { console.warn('[JARVIS EARTH] geocoding:',error); title.textContent='Busca indisponível: '+place; details.hidden=false; }
   }
   window.addEventListener('ultron:earth-location',e=>locate(e.detail?.place));
   window.ULTRON_EARTH={open:showEarth,locate};
