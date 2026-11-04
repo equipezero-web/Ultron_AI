@@ -221,3 +221,19 @@ body.jarvis-command-center .jarvis-cc-bottom {
     width: 100%;
   }
 }
+
+/* v4.36: stable page scroll and Earth visual layer. */
+html:has(body.jarvis-command-center), body.jarvis-command-center { overflow-y:auto!important; overflow-x:hidden!important; scroll-behavior:auto!important; }
+body.jarvis-command-center .app-shell { overflow:visible!important; }
+body.jarvis-command-center .jarvis-cc-visual.jarvis-earth-active > canvas { opacity:.12; }
+body.jarvis-command-center .jarvis-earth-shell { position:absolute;inset:0;z-index:8;display:flex;align-items:center;justify-content:center;pointer-events:none; }
+body.jarvis-command-center .jarvis-earth-shell[hidden] {display:none!important}
+body.jarvis-command-center .jarvis-earth-globe {width:100%;height:100%;pointer-events:auto;cursor:grab;touch-action:none}
+body.jarvis-command-center .jarvis-earth-globe:active {cursor:grabbing}
+body.jarvis-command-center .jarvis-earth-hint {position:absolute;bottom:22px;left:5%;right:5%;text-align:center;color:#a8cde8;font-size:10px;pointer-events:none;text-shadow:0 1px 5px #000}
+body.jarvis-command-center .jarvis-earth-details {position:absolute;top:8px;right:8px;width:min(65%,270px);padding:10px;background:rgba(3,9,22,.96);border:1px solid #4a839e;z-index:10;pointer-events:auto;box-shadow:0 0 25px #030914}
+body.jarvis-command-center .jarvis-earth-details[hidden] {display:none!important}
+body.jarvis-command-center .jarvis-earth-title {display:block;font-size:10px;color:#c6e9ff;margin-right:22px;max-height:35px;overflow:hidden}
+body.jarvis-command-center .jarvis-earth-details iframe {width:100%;height:160px;border:0;margin:8px 0;background:#06101c}
+body.jarvis-command-center .jarvis-earth-details a {font-size:10px;color:#8cd8fa}
+body.jarvis-command-center .jarvis-earth-close {position:absolute;right:5px;top:5px;background:transparent;border:0;color:#fff;font-size:22px;cursor:pointer}
