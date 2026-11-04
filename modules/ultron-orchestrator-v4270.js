@@ -207,9 +207,10 @@ async function routeSingle(command, run, index = 0) {
     lastEarthRequest = null;
     const earth = window.ULTRON_EARTH;
     if (earth?.locate) {
-      await earth.locate(place);
-      log('EARTH // Globo aberto' + (place ? ' em ' + place : '') + '.');
-      return {route:'earth-visual',ok:true,result:{text:'Globo interativo aberto' + (place ? ': '+place : '') + '.',place}};
+      const result = await earth.locate(place);
+      const ok = result?.ok !== false;
+      log(ok ? 'EARTH // Visualização aberta' + (place ? ' em ' + place : '') + ' (' + (result?.mode || 'globe') + ').' : 'EARTH // Falha ao abrir visualização: ' + (result?.error || 'indisponível'), !ok);
+      return {route:'earth-visual',ok,result:{text:ok ? 'Visualização geográfica aberta' + (place ? ': '+place : '') + '.' : 'Não foi possível abrir a visualização.',place,...result}};
     }
     window.dispatchEvent(new CustomEvent('ultron:earth-location',{detail:{place}}));
     log('EARTH // Solicitação de abertura do globo enviada.');
