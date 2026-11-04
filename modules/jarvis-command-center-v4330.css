@@ -171,3 +171,53 @@ body.jarvis-command-center #output-box{max-height:180px!important;overflow-y:aut
  body.jarvis-command-center .jarvis-cc-sidebar{order:3!important;width:100%!important}
  body.jarvis-command-center .jarvis-cc-right{order:4!important;width:100%!important}
 }
+
+/* v4.35.6: isolate the full-page dashboard from legacy clipped HUD frames.
+   Keep controls in document flow and permit scrolling at all viewport sizes. */
+html:has(body.jarvis-command-center),
+body.jarvis-command-center,
+body.jarvis-command-center .app-shell,
+body.jarvis-command-center .hud-layout,
+body.jarvis-command-center .center-column,
+body.jarvis-command-center .neural-stage,
+body.jarvis-command-center .orb-stage {
+  overflow-y: visible !important;
+  height: auto !important;
+  max-height: none !important;
+}
+body.jarvis-command-center .neural-stage.hud-frame {
+  overflow: visible !important;
+  isolation: auto;
+}
+body.jarvis-command-center .neural-stage.hud-frame::before,
+body.jarvis-command-center .neural-stage.hud-frame::after,
+body.jarvis-command-center .orb-stage::before {
+  display: none !important;
+}
+body.jarvis-command-center .jarvis-command-center-ui {
+  grid-template-rows: minmax(40px, auto) minmax(0, auto) minmax(0, auto) !important;
+  min-height: 100dvh;
+  height: auto !important;
+  align-content: start;
+}
+body.jarvis-command-center .jarvis-cc-center {
+  overflow: visible !important;
+  min-height: 0 !important;
+}
+body.jarvis-command-center .jarvis-cc-bottom {
+  position: relative !important;
+  grid-column: 1 / -1 !important;
+  grid-row: 3 !important;
+  z-index: 12;
+  min-height: 230px;
+}
+@media (max-width: 900px) {
+  body.jarvis-command-center .jarvis-command-center-ui {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  body.jarvis-command-center .jarvis-cc-bottom {
+    order: 2;
+    width: 100%;
+  }
+}
