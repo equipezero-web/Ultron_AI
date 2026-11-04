@@ -43,7 +43,7 @@ if (host && modeButton) {
   const title = shell.querySelector('.jarvis-earth-title');
   const frame = shell.querySelector('iframe');
   const link = shell.querySelector('a');
-  let globe = null, loading = null;
+  let globe = null, loading = null, loadError = null;
   const normalize = s => String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
   const script = src => new Promise((resolve,reject) => {
     const tag=document.createElement('script');tag.src=src;tag.onload=resolve;tag.onerror=reject;document.head.append(tag);
@@ -60,10 +60,10 @@ if (host && modeButton) {
   }
   shell.querySelector('.jarvis-earth-close').addEventListener('click',()=>{details.hidden=true;frame.removeAttribute('src');});
   async function init() {
-    if (globe) return;
+    if (globe) return true;
     if (loading) return loading;
     loading = (async () => {
-      await script('https://cdn.jsdelivr.net/npm/globe.gl@2.45.0/dist/globe.gl.min.js');
+      if (!window.Globe) await script('https://cdn.jsdelivr.net/npm/globe.gl@2.45.0/dist/globe.gl.min.js');
       if (typeof window.Globe !== 'function') throw new Error('Biblioteca de globo indisponível');
       globe = window.Globe()(globeHost)
         .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg')
@@ -78,10 +78,14 @@ if (host && modeButton) {
       const resize=()=>globe?.width(globeHost.clientWidth).height(globeHost.clientHeight);
       new ResizeObserver(resize).observe(globeHost);
       resize();
+      loadError = null;
+      return true;
     })();
-    try { await loading; } catch(e) {
-      globeHost.textContent = 'Globo 3D indisponível. Verifique a conexão com a biblioteca externa.';
+    try { return await loading; } catch(e) {
+      loadError = e;
+      globeHost.textContent = 'Globo 3D indisponível. Mapa detalhado disponível abaixo.';
       console.warn('[JARVIS EARTH]',e);
+      return false;
     } finally {loading=null;}
   }
   function showEarth() {
@@ -95,21 +99,24 @@ if (host && modeButton) {
   });
   modeButton.addEventListener('click',()=>{shell.hidden=false;host.classList.add('jarvis-earth-active');init();});
   async function locate(query) {
-    await showEarth();
+    const ready = await showEarth();
     const place = String(query || '').trim();
-    if (!place) return;
+    if (!place) {
+      if (!ready) openLocation(0,0,'Mapa mundial (visualização alternativa)');
+      return {ok: Boolean(ready), mode: ready ? 'globe' : 'map-fallback', error: loadError?.message || null};
+    }
     const known = {china:[35.8617,104.1954],brasil:[-14.235,-51.9253],recife:[-8.0476,-34.877],japao:[36.2048,138.2529],estados_unidos:[39.8283,-98.5795],franca:[46.6034,1.8883],portugal:[39.3999,-8.2245]};
     const key=normalize(place).replace(/\s+/g,'_');
-    if (known[key]) { openLocation(...known[key],place); return; }
+    if (known[key]) { openLocation(...known[key],place); return {ok:true, mode:ready?'globe':'map-fallback', place}; }
     try {
       // Geocoding is a public service; only query on explicit user command.
       const url='https://nominatim.openstreetmap.org/search?format=json&limit=1&q='+encodeURIComponent(place);
       const response=await fetch(url,{headers:{'Accept':'application/json'}});
       if(!response.ok) throw new Error('Busca geográfica indisponível');
       const results=await response.json();
-      if(results[0]) openLocation(Number(results[0].lat),Number(results[0].lon),results[0].display_name);
-      else { title.textContent='Local não encontrado: '+place; details.hidden=false; }
-    } catch(error) { console.warn('[JARVIS EARTH] geocoding:',error); title.textContent='Busca indisponível: '+place; details.hidden=false; }
+      if(results[0]) { openLocation(Number(results[0].lat),Number(results[0].lon),results[0].display_name); return {ok:true,mode:ready?'globe':'map-fallback',place}; }
+      else { title.textContent='Local não encontrado: '+place; details.hidden=false; return {ok:false,error:'local não encontrado'}; }
+    } catch(error) { console.warn('[JARVIS EARTH] geocoding:',error); title.textContent='Busca indisponível: '+place; details.hidden=false; return {ok:false,error:error.message}; }
   }
   window.addEventListener('ultron:earth-location',e=>locate(e.detail?.place));
   window.ULTRON_EARTH={open:showEarth,locate};

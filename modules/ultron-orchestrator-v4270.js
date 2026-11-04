@@ -178,8 +178,49 @@ async function showHistory() {
   return { ok: true, runs };
 }
 
+// Geographic actions must be executed, not passed to conversational AI.
+const geoAliases = /^(?:globo|gllobo|globo terrestre|planeta|planeta terra|terra|mundo|mapa|google earth)$/;
+function parseEarthIntent(command) {
+  const normalized = normalize(command).replace(/^(?:jarvis|ultron)[, ]+/, '').replace(/^(mostre|mostra|mostrar)-me\s+/, 'me $1 ');
+  const pattern = /^(?:(?:me )?(?:mostre|mostra|mostrar|abra|abrir|visualize|visualizar|localize|localizar|exiba|exibir|ver)|quero ver|me leve para|ir para)\s+(.+)$/;
+  const match = normalized.match(pattern);
+  if (!match) return null;
+  let target = match[1].replace(/^(?:o|a|um|uma)\s+/, '').trim();
+  if (geoAliases.test(target)) return { place: '' };
+  target = target.replace(/^(?:mapa|globo|google earth|planeta terra|planeta)\s+(?:de|da|do)\s+/, '');
+  target = target.replace(/^(?:a|o|na|no|para|de)\s+/, '').trim();
+  if (!target || geoAliases.test(target)) return { place: '' };
+  if (/^(?:meu|minha|meus|minhas|produto|produtos|pedido|pedidos|loja|vendas|relatorio|relatorios|mensagens|arquivos|arquivo|foto|imagem|documento|video|camera|sensor|sistema|status|painel|agenda|historico)/.test(target)) return null;
+  if (/^(?:camera|sensor|arquivo|foto|imagem|documento|video|sistema|status|painel|agenda|historico|meus dados)/.test(target)) return null;
+  return { place: target };
+}
+function lastAssistantEarthOffer() {
+  const lines = Array.from(output?.querySelectorAll('p') || []).reverse();
+  const last = lines.find(line => /\[CORE\].*(?:J\.A\.R\.V\.I\.S|ULTRON)/i.test(line.textContent || ''))?.textContent || '';
+  if (!last || !/(?:globo|gllobo|mapa|china|brasil|planeta|terra)/i.test(last)) return null;
+  if (!/(?:quer|posso|deseja|gostaria|mostrar|mostre|abrir|visualizar)/i.test(last)) return null;
+  const named = last.match(/\b(?:china|brasil|recife|jap[aã]o|fran[cç]a|portugal)\b/i);
+  return {place: named ? normalize(named[0]) : ''};
+}
+
 async function routeSingle(command, run, index = 0) {
   const prefix = `step-${index + 1}`;
+  const earthIntent = parseEarthIntent(command);
+  const isAffirmation = /^(?:sim|quero|pode|claro|isso|isso mesmo|ok|certo|confirmo|com certeza)[.!?\s]*$/.test(normalize(command));
+  const place = earthIntent?.place ?? (isAffirmation ? lastAssistantEarthOffer()?.place : null);
+  if (place !== null && place !== undefined) {
+    const earth = window.ULTRON_EARTH;
+    if (earth?.locate) {
+      const result = await earth.locate(place);
+      const ok = result?.ok !== false;
+      log(ok ? 'EARTH // Visualização aberta' + (place ? ' em ' + place : '') + ' (' + (result?.mode || 'globe') + ').' : 'EARTH // Falha ao abrir visualização: ' + (result?.error || 'indisponível'), !ok);
+      return {route:'earth-visual',ok,result:{text:ok ? 'Visualização geográfica aberta' + (place ? ': '+place : '') + '.' : 'Não foi possível abrir a visualização.',place,...result}};
+    }
+    window.dispatchEvent(new CustomEvent('ultron:earth-location',{detail:{place}}));
+    log('EARTH // Solicitação de abertura do globo enviada.');
+    return {route:'earth-visual',ok:true,result:{text:'Abrindo globo interativo.',place}};
+  }
+
   const devices = await waitForRuntime(() => window.ULTRON_DEVICES, 2500);
   const vision = await waitForRuntime(() => window.ULTRON_VISION_ROUTER, 2500);
   const core = await waitForRuntime(() => window.ULTRON_CORE, 3500);
