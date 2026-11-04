@@ -181,15 +181,16 @@ async function showHistory() {
 // Geographic actions must be executed, not passed to conversational AI.
 const geoAliases = /^(?:globo|globo terrestre|planeta|planeta terra|terra|mundo|mapa|google earth)$/;
 function parseEarthIntent(command) {
-  const normalized = normalize(command).replace(/^(?:jarvis|ultron)[, ]+/, '');
-  const pattern = /^(?:(?:me )?(?:mostre|mostra|mostrar|abra|abrir|visualize|visualizar|localize|localizar|exiba|exibir|ver)|quero ver|me leve para|ir para)\\s+(.+)$/;
+  const normalized = normalize(command).replace(/^(?:jarvis|ultron)[, ]+/, '').replace(/^(mostre|mostra|mostrar)-me\s+/, 'me $1 ');
+  const pattern = /^(?:(?:me )?(?:mostre|mostra|mostrar|abra|abrir|visualize|visualizar|localize|localizar|exiba|exibir|ver)|quero ver|me leve para|ir para)\s+(.+)$/;
   const match = normalized.match(pattern);
   if (!match) return null;
-  let target = match[1].replace(/^(?:o|a|um|uma)\\s+/, '').trim();
+  let target = match[1].replace(/^(?:o|a|um|uma)\s+/, '').trim();
   if (geoAliases.test(target)) return { place: '' };
-  target = target.replace(/^(?:mapa|globo|google earth|planeta terra|planeta)\\s+(?:de|da|do)\\s+/, '');
-  target = target.replace(/^(?:a|o|na|no|para|de)\\s+/, '').trim();
+  target = target.replace(/^(?:mapa|globo|google earth|planeta terra|planeta)\s+(?:de|da|do)\s+/, '');
+  target = target.replace(/^(?:a|o|na|no|para|de)\s+/, '').trim();
   if (!target || geoAliases.test(target)) return { place: '' };
+  if (/^(?:meu|minha|meus|minhas|produto|produtos|pedido|pedidos|loja|vendas|relatorio|relatorios|mensagens|arquivos|arquivo|foto|imagem|documento|video|camera|sensor|sistema|status|painel|agenda|historico)/.test(target)) return null;
   if (/^(?:camera|sensor|arquivo|foto|imagem|documento|video|sistema|status|painel|agenda|historico|meus dados)/.test(target)) return null;
   return { place: target };
 }
@@ -198,8 +199,8 @@ let lastEarthRequest = null;
 async function routeSingle(command, run, index = 0) {
   const prefix = `step-${index + 1}`;
   const earthIntent = parseEarthIntent(command);
-  const isAffirmation = /^(?:sim|quero|pode|claro|isso|isso mesmo|ok|certo|confirmo|com certeza)[.!?\\s]*$/.test(normalize(command));
-  const isDecline = /^(?:nao|negativo|agora nao)[.!?\\s]*$/.test(normalize(command));
+  const isAffirmation = /^(?:sim|quero|pode|claro|isso|isso mesmo|ok|certo|confirmo|com certeza)[.!?\s]*$/.test(normalize(command));
+  const isDecline = /^(?:nao|negativo|agora nao)[.!?\s]*$/.test(normalize(command));
   if (isDecline) lastEarthRequest = null;
   const place = earthIntent?.place ?? (isAffirmation ? lastEarthRequest : null);
   if (place !== null && place !== undefined) {
