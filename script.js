@@ -234,8 +234,8 @@ async function execute() {
   addLog(output, `OPERATOR: ${command}`);
   // Geographic intent is independent from the optical camera and AI vision.
   const geoCommand = command.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
-  const geographic = /^(?:(?:jarvis|ultron)[, ]+)?(?:(?:me )?(?:mostre|mostra|mostrar|abra|abrir|visualize|visualizar|localize|localizar|ver)|(?:quero ver)|(?:ir para)|(?:me leve para))\\s+(.+)$/i.exec(geoCommand);
-  const geography = geographic?.[1]?.replace(/^(?:(?:o|a|um|uma)\\s+)?(?:(?:mapa|globo|planeta|google earth|terra)\\s+(?:de|da|do)\\s+)?/, "").replace(/^(?:a|o|na|no|para|de)\\s+/, "").trim();
+  const geographic = /^(?:(?:jarvis|ultron)[, ]+)?(?:(?:me )?(?:mostre|mostra|mostrar|abra|abrir|visualize|visualizar|localize|localizar|ver)|(?:quero ver)|(?:ir para)|(?:me leve para))\s+(.+)$/i.exec(geoCommand);
+  const geography = geographic?.[1]?.replace(/^(?:(?:o|a|um|uma)\s+)?(?:(?:mapa|globo|planeta|google earth|terra)\s+(?:de|da|do)\s+)?/, "").replace(/^(?:a|o|na|no|para|de)\s+/, "").trim();
   const isGeo = Boolean(geography) && !/^(?:camera|sensor|optical|celular|arquivo|foto|imagem|documento|video|sistema|status|painel|agenda)/.test(geography);
   if (isGeo) {
     input.value = "";
