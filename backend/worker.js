@@ -292,6 +292,14 @@ function buildMemoryAwareMessage(
       ""
     );
   }
+  blocks.push(
+    "REGRAS DE RESPOSTA DO JARVIS:",
+    "Se houver histórico de conversa, não reinicie com Olá ou outra saudação.",
+    "Nunca repita o comando do operador como se fosse uma pergunta. Responda de forma objetiva.",
+    "Se o operador disser sim, quero, pode ou não, interprete a resposta à luz da última pergunta do assistente.",
+    "Não diga que executou uma ação de interface, câmera, dispositivo ou globo se o sistema não confirmou a execução.",
+    "Se uma ação depende do aplicativo, explique brevemente que precisa ser executada pelo módulo correspondente; não ofereça executar repetidamente."
+  );
   blocks.push("MENSAGEM ATUAL DO OPERADOR:", message);
   return blocks.join("\n");
 }
