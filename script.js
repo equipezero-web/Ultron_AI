@@ -232,6 +232,13 @@ async function execute() {
   if (!command) return;
 
   addLog(output, `OPERATOR: ${command}`);
+  // Geographic requests open the actual interactive map, not only an AI caption.
+  const geoCommand = command.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  const geoMatch = geoCommand.match(/(?:mostre|mostrar|abrir|abra|ver|visualizar|me leve|ir para|localize|localizar)\\s+(?:(?:a|o|um|uma|no|na|para|o mapa de|o globo de)\\s+)?(.+)/);
+  if (geoMatch && /^(?:me )?(?:mostre|mostrar|abrir|abra|ver|visualizar|me leve|ir para|localize|localizar)\b/.test(geoCommand) && !/\b(?:arquivo|foto|imagem|documento|video|camera|sistema|status)\b/.test(geoCommand)) {
+    const place = geoMatch[1].replace(/^(?:mapa|globo|terra|planeta|google earth)\\s*(?:de|da|do)?\\s*/,"").trim();
+    window.dispatchEvent(new CustomEvent("ultron:earth-location", {detail:{place: /^(?:mundo|terra|planeta|earth|globo)$/.test(place) ? "" : place}}));
+  }
   input.value = "";
   const normalized = command.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
