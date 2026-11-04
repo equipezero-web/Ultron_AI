@@ -239,7 +239,7 @@ export async function loadMemoryContext(
           `SELECT role, content, provider, created_at
            FROM messages
            WHERE operator_id = ? AND conversation_id = ?
-           ORDER BY created_at DESC
+           ORDER BY created_at DESC, rowid DESC
            LIMIT ?`
         )
         .bind(operatorId, conversationId, Math.max(1, Math.min(40, recentLimit)))
@@ -294,7 +294,8 @@ export async function loadMemoryContext(
       active: true,
       context,
       recalledMessages: messages.length,
-      recalledMemories: memories.length
+      recalledMemories: memories.length,
+      lastAssistantMessage: [...messages].reverse().find((item) => item.role === 'assistant')?.content || null
     };
   } catch (error) {
     console.error("[ULTRON MEMORY] Falha ao recuperar contexto:", error);
