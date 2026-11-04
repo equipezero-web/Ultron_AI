@@ -239,3 +239,11 @@ body.jarvis-command-center .jarvis-earth-details a {font-size:10px;color:#8cd8fa
 body.jarvis-command-center .jarvis-earth-close {position:absolute;right:5px;top:5px;background:transparent;border:0;color:#fff;font-size:22px;cursor:pointer}
 
 body.jarvis-command-center .jarvis-earth-globe canvas {pointer-events:auto!important;touch-action:none!important}
+
+/* Earth explorer interactive controls */
+body.jarvis-command-center .jarvis-earth-toolbar{position:absolute;top:8px;left:8px;z-index:12;display:flex;flex-wrap:wrap;gap:4px;max-width:calc(100% - 16px);pointer-events:auto}
+body.jarvis-command-center .jarvis-earth-toolbar button{background:rgba(3,12,27,.94);border:1px solid #477d9b;border-radius:5px;color:#d5f1ff;padding:5px 8px;min-height:29px;font-size:10px;cursor:pointer;touch-action:manipulation}
+body.jarvis-command-center .jarvis-earth-toolbar button:hover,body.jarvis-command-center .jarvis-earth-toolbar button[aria-pressed=true]{background:#18516c;color:white}
+body.jarvis-command-center .jarvis-earth-details{top:46px;max-height:calc(100% - 55px);overflow-y:auto}
+body.jarvis-command-center .jarvis-earth-hint{bottom:4px;background:rgba(2,9,19,.75);border-radius:4px;padding:3px}
+@media(max-width:680px){body.jarvis-command-center .jarvis-earth-toolbar button{padding:4px 5px;font-size:9px;min-height:27px}body.jarvis-command-center .jarvis-earth-details{top:74px;width:min(80%,260px)}}
