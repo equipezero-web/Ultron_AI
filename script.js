@@ -232,12 +232,17 @@ async function execute() {
   if (!command) return;
 
   addLog(output, `OPERATOR: ${command}`);
-  // Geographic requests open the actual interactive map, not only an AI caption.
-  const geoCommand = command.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-  const geoMatch = geoCommand.match(/(?:mostre|mostrar|abrir|abra|ver|visualizar|me leve|ir para|localize|localizar)\\s+(?:(?:a|o|um|uma|no|na|para|o mapa de|o globo de)\\s+)?(.+)/);
-  if (geoMatch && /^(?:me )?(?:mostre|mostrar|abrir|abra|ver|visualizar|me leve|ir para|localize|localizar)\b/.test(geoCommand) && !/\b(?:arquivo|foto|imagem|documento|video|camera|sistema|status)\b/.test(geoCommand)) {
-    const place = geoMatch[1].replace(/^(?:mapa|globo|terra|planeta|google earth)\\s*(?:de|da|do)?\\s*/,"").trim();
-    window.dispatchEvent(new CustomEvent("ultron:earth-location", {detail:{place: /^(?:mundo|terra|planeta|earth|globo)$/.test(place) ? "" : place}}));
+  // Geographic intent is independent from the optical camera and AI vision.
+  const geoCommand = command.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+  const geographic = /^(?:(?:jarvis|ultron)[, ]+)?(?:(?:me )?(?:mostre|mostra|mostrar|abra|abrir|visualize|visualizar|localize|localizar|ver)|(?:quero ver)|(?:ir para)|(?:me leve para))\s+(.+)$/i.exec(geoCommand);
+  const geography = geographic?.[1]?.replace(/^(?:(?:o|a|um|uma)\s+)?(?:(?:mapa|globo|planeta|google earth|terra)\s+(?:de|da|do)\s+)?/, "").replace(/^(?:a|o|na|no|para|de)\s+/, "").trim();
+  const isGeo = Boolean(geography) && !/^(?:camera|sensor|optical|celular|arquivo|foto|imagem|documento|video|sistema|status|painel|agenda)/.test(geography);
+  if (isGeo) {
+    input.value = "";
+    const place = /^(?:mundo|terra|planeta|earth|globo|mapa)$/.test(geography) ? "" : geography;
+    addLog(output, "EARTH // Abrindo globo terrestre" + (place ? ": " + place : "") + ".");
+    window.dispatchEvent(new CustomEvent("ultron:earth-location", { detail: { place } }));
+    return; // Do not send geographic commands to camera or AI vision.
   }
   input.value = "";
   const normalized = command.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
