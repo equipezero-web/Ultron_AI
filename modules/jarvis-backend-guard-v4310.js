@@ -78,8 +78,7 @@ async function check() {
   }
   try {
     const response = await previousFetch(`${API_BASE}/api/health?_jarvis=${Date.now()}`, {
-      cache: 'no-store',
-      headers: { 'Cache-Control': 'no-cache' }
+      cache: 'no-store'
     });
     const health = await response.json().catch(() => ({}));
     if (!response.ok) throw new Error(health?.error || `HTTP ${response.status}`);
