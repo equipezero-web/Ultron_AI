@@ -37,13 +37,17 @@ if (host && modeButton) {
   shell.className = 'jarvis-earth-shell';
   shell.hidden = true;
   shell.innerHTML = '<div class="jarvis-earth-globe" aria-label="Globo terrestre interativo"></div><div class="jarvis-earth-details" hidden><button type="button" class="jarvis-earth-close" aria-label="Fechar mapa">×</button><strong class="jarvis-earth-title">LOCALIZAÇÃO</strong><iframe title="Mapa detalhado" loading="lazy" referrerpolicy="no-referrer"></iframe><a target="_blank" rel="noopener noreferrer">Abrir mapa detalhado ↗</a></div><div class="jarvis-earth-hint">Arraste para girar · Role sobre o globo para aproximar · Clique para explorar</div>';
+  const toolbar = document.createElement('div');
+  toolbar.className = 'jarvis-earth-toolbar';
+  toolbar.innerHTML = '<button type="button" data-earth-action="home" title="Voltar à visão global">🌐 Global</button><button type="button" data-earth-action="zoom-in" title="Aproximar">＋</button><button type="button" data-earth-action="zoom-out" title="Afastar">－</button><button type="button" data-earth-action="rotate" title="Alternar rotação automática" aria-pressed="false">⟳ Girar</button><button type="button" data-earth-action="map" title="Abrir mapa detalhado">▤ Mapa</button>';
+  shell.append(toolbar);
   host.append(shell);
   const globeHost = shell.querySelector('.jarvis-earth-globe');
   const details = shell.querySelector('.jarvis-earth-details');
   const title = shell.querySelector('.jarvis-earth-title');
   const frame = shell.querySelector('iframe');
   const link = shell.querySelector('a');
-  let globe = null, loading = null, loadError = null;
+  let globe = null, loading = null, loadError = null, selected = null;
   const normalize = s => String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
   const script = src => new Promise((resolve,reject) => {
     const tag=document.createElement('script');tag.src=src;tag.onload=resolve;tag.onerror=reject;document.head.append(tag);
@@ -56,6 +60,7 @@ if (host && modeButton) {
     frame.src = 'https://www.openstreetmap.org/export/embed.html?bbox=' + encodeURIComponent(bbox) + '&layer=mapnik&marker=' + encodeURIComponent(lat + ',' + lng);
     link.href = 'https://www.openstreetmap.org/?mlat=' + encodeURIComponent(lat) + '&mlon=' + encodeURIComponent(lng) + '#map=11/' + lat + '/' + lng;
     details.hidden = false;
+    selected = {lat,lng,name};
     globe?.pointOfView({lat,lng,altitude:1.65},1100);
   }
   shell.querySelector('.jarvis-earth-close').addEventListener('click',()=>{details.hidden=true;frame.removeAttribute('src');});
@@ -72,9 +77,14 @@ if (host && modeButton) {
         .showAtmosphere(true).atmosphereColor('#3b9bda').atmosphereAltitude(0.16)
         .onGlobeClick(({lat,lng}) => openLocation(lat,lng));
       globe.controls().enablePan = false;
-      globe.controls().autoRotate = true;
+      globe.controls().autoRotate = false;
+      globe.controls().enableZoom = true;
+      globe.controls().minDistance = 110;
+      globe.controls().maxDistance = 1000;
+      globe.controls().enableDamping = true;
+      globe.controls().dampingFactor = 0.08;
       globe.controls().autoRotateSpeed = 0.35;
-      globeHost.addEventListener('pointerdown',()=>{globe.controls().autoRotate=false;});
+      globeHost.addEventListener('pointerdown',()=>{globe.controls().autoRotate=false; toolbar.querySelector('[data-earth-action="rotate"]').setAttribute('aria-pressed','false');});
       const resize=()=>globe?.width(globeHost.clientWidth).height(globeHost.clientHeight);
       new ResizeObserver(resize).observe(globeHost);
       resize();
@@ -88,6 +98,33 @@ if (host && modeButton) {
       return false;
     } finally {loading=null;}
   }
+  function navigate(action) {
+    if (action === 'map') {
+      if (selected) openLocation(selected.lat,selected.lng,selected.name);
+      else openLocation(0,0,'Mapa mundial');
+      return;
+    }
+    if (!globe) return;
+    if (action === 'home') {
+      globe.pointOfView({lat:0,lng:0,altitude:2.5},900);
+      details.hidden=true;
+      frame.removeAttribute('src');
+      selected=null;
+    }
+    if (action === 'zoom-in' || action === 'zoom-out') {
+      const pov=globe.pointOfView();
+      globe.pointOfView({...pov,altitude:Math.max(0.08,Math.min(5, pov.altitude * (action === 'zoom-in' ? 0.65 : 1.5)))},450);
+    }
+    if (action === 'rotate') {
+      const controls=globe.controls();
+      controls.autoRotate=!controls.autoRotate;
+      toolbar.querySelector('[data-earth-action="rotate"]').setAttribute('aria-pressed',String(controls.autoRotate));
+    }
+  }
+  toolbar.addEventListener('click',event=>{
+    const button=event.target.closest('[data-earth-action]');
+    if (button) navigate(button.dataset.earthAction);
+  });
   function showEarth() {
     shell.hidden=false;
     host.classList.add('jarvis-earth-active');
@@ -119,5 +156,5 @@ if (host && modeButton) {
     } catch(error) { console.warn('[JARVIS EARTH] geocoding:',error); title.textContent='Busca indisponível: '+place; details.hidden=false; return {ok:false,error:error.message}; }
   }
   window.addEventListener('ultron:earth-location',e=>locate(e.detail?.place));
-  window.ULTRON_EARTH={open:showEarth,locate};
+  window.ULTRON_EARTH={open:showEarth,locate,navigate};
 }
