@@ -1,3 +1,17 @@
+// Wheel recovery: legacy global listeners may consume wheel events even while arrow scrolling works.
+// Handle only the dashboard background; leave maps, inputs and scrollable panels alone.
+document.addEventListener('wheel', (event) => {
+  if (event.defaultPrevented || event.ctrlKey || event.target.closest('iframe,textarea,input,select,.jarvis-earth-globe,#output-box,.screen-modal')) return;
+  const doc = document.scrollingElement || document.documentElement;
+  if (doc.scrollHeight <= doc.clientHeight + 2) return;
+  const before = doc.scrollTop;
+  requestAnimationFrame(() => {
+    if (Math.abs(doc.scrollTop - before) < 1 && Math.abs(event.deltaY) > 0) {
+      doc.scrollBy({top:event.deltaY,behavior:'instant'});
+    }
+  });
+}, {passive:true,capture:true});
+
 // Restore scrolling if a legacy subsystem leaves an inline overflow lock after a command.
 // Do not interfere with the fullscreen camera modal.
 const unlockPageScroll = () => {
@@ -85,7 +99,7 @@ if (host && modeButton) {
     const place = String(query || '').trim();
     if (!place) return;
     const known = {china:[35.8617,104.1954],brasil:[-14.235,-51.9253],recife:[-8.0476,-34.877],japao:[36.2048,138.2529],estados_unidos:[39.8283,-98.5795],franca:[46.6034,1.8883],portugal:[39.3999,-8.2245]};
-    const key=normalize(place).replace(/\\s+/g,'_');
+    const key=normalize(place).replace(/\s+/g,'_');
     if (known[key]) { openLocation(...known[key],place); return; }
     try {
       // Geocoding is a public service; only query on explicit user command.
