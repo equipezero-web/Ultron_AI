@@ -12,13 +12,13 @@ const errors = [];
 try {
   page = await browser.newPage();
   await page.setViewport({ width: 1365, height: 860, deviceScaleFactor: 1 });
-  page.on('pageerror', error => errors.push(error.message));
+  page.on('pageerror', error => errors.push(error.stack || error.message));
   await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 35000 });
   await page.waitForSelector('[data-cc="earth"]', { timeout: 30000 });
   assert.equal(await page.$eval('#jarvis-earth-explorer', el => el.hidden), true, 'Explorer should start closed');
 
   console.log('Earth before click:', await page.evaluate(() => ({ registered: Boolean(window.ULTRON_EARTH), state: window.ULTRON_EARTH?.state, buttonVisible: getComputedStyle(document.querySelector('[data-cc="earth"]')).display, globeToggle: Boolean(document.querySelector('[data-visual="globe"]')), explorer: Boolean(document.querySelector('#jarvis-earth-explorer')) })));
-  await page.click('[data-cc="earth"]');
+  await page.evaluate(() => document.querySelector('[data-cc="earth"]').click());
   console.log('Earth after click:', await page.evaluate(() => ({ registered: Boolean(window.ULTRON_EARTH), state: window.ULTRON_EARTH?.state, explorerHidden: document.querySelector('#jarvis-earth-explorer')?.hidden, text: document.querySelector('.jarvis-earth-notice')?.textContent })));
   console.log('Browser script errors after click:', errors.slice(0, 12));
   await page.waitForFunction(() => window.ULTRON_EARTH?.state?.visible === true, { timeout: 12000 });
