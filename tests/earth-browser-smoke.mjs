@@ -75,7 +75,14 @@ try {
   await page.evaluate(() => window.ULTRON_EARTH.navigate('home'));
   await page.waitForFunction(() => window.ULTRON_EARTH?.state?.view?.altitude > 1, { timeout: 7000 });
   const canvas = await page.$('.jarvis-earth-renderer canvas');
+  await canvas.evaluate(element => element.scrollIntoView({block:'center',behavior:'instant'}));
+  await page.waitForFunction(() => {
+    const rect = document.querySelector('.jarvis-earth-renderer canvas')?.getBoundingClientRect();
+    return rect && rect.bottom > 40 && rect.top < innerHeight - 40;
+  }, {timeout:4000});
   const bounds = await canvas.boundingBox();
+  assert.ok(bounds.y >= -10 && bounds.y + bounds.height <= 900,
+    'The pointer test must target the visible globe, not off-screen coordinates');
   const cx = bounds.x + bounds.width / 2, cy = bounds.y + bounds.height / 2;
   await page.mouse.move(cx,cy);
   await page.waitForFunction(() => window.ULTRON_EARTH?.state?.view?.altitude > 1.8, { timeout: 7000 });
