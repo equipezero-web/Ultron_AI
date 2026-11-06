@@ -182,6 +182,8 @@ async function showHistory() {
 const geoAliases = /^(?:globo|gllobo|globo terrestre|planeta|planeta terra|terra|mundo|mapa|google earth)$/;
 function parseEarthIntent(command) {
   const normalized = normalize(command).replace(/^(?:jarvis|ultron)[, ]+/, '').replace(/^(mostre|mostra|mostrar)-me\s+/, 'me $1 ');
+  // Direct Earth actions must never reach conversational AI or image-search routing.
+  if (/^(?:(?:(?:me )?(?:ative|ativar|abra|abrir|inicie|iniciar|habilite|habilitar|mostre|mostrar|exiba|exibir)\s+)?(?:o |a )?)?(?:mapa(?: (?:por|de) satelite)?|globo(?: 3d| terrestre)?|google earth|earth explorer|explorador geografico|visao (?:por |de )?satelite)(?: (?:3d|interativo))?[.!?]*$/.test(normalized)) return { place: '' };
   const pattern = /^(?:(?:me )?(?:mostre|mostra|mostrar|abra|abrir|visualize|visualizar|localize|localizar|exiba|exibir|ver)|quero ver|me leve para|ir para)\s+(.+)$/;
   const match = normalized.match(pattern);
   if (!match) return null;
@@ -190,7 +192,7 @@ function parseEarthIntent(command) {
   target = target.replace(/^(?:mapa|globo|google earth|planeta terra|planeta)\s+(?:de|da|do)\s+/, '');
   target = target.replace(/^(?:a|o|na|no|para|de)\s+/, '').trim();
   if (!target || geoAliases.test(target)) return { place: '' };
-  if (/^(?:meu|minha|meus|minhas|produto|produtos|pedido|pedidos|loja|vendas|relatorio|relatorios|mensagens|arquivos|arquivo|foto|imagem|documento|video|camera|sensor|sistema|status|painel|agenda|historico)/.test(target)) return null;
+  if (/^(?:meu|minha|meus|minhas|produto|produtos|pedido|pedidos|loja|vendas|relatorio|relatorios|mensagens|arquivos|arquivo|foto|fotos|fotografia|fotografias|imagem|imagens|documento|video|camera|sensor|sistema|status|painel|agenda|historico|clima|tempo|previsao|noticia|noticias|resultado|resultados)(?:\b|\s)/.test(target)) return null;
   if (/^(?:camera|sensor|arquivo|foto|imagem|documento|video|sistema|status|painel|agenda|historico|meus dados)/.test(target)) return null;
   return { place: target };
 }
@@ -212,6 +214,10 @@ async function routeSingle(command, run, index = 0) {
     const earth = window.ULTRON_EARTH;
     if (earth?.locate) {
       const result = await earth.locate(place);
+      if (result?.requiresToken) {
+        log('EARTH // Painel do mapa por satélite aberto; configure o token público Mapbox.');
+        return {route:'earth-setup',ok:true,waitingConfirmation:true,result:{text:'Configure o token público Mapbox no painel aberto para ativar o mapa por satélite.',...result}};
+      }
       const ok = result?.ok !== false;
       log(ok ? 'EARTH // Visualização aberta' + (place ? ' em ' + place : '') + ' (' + (result?.mode || 'globe') + ').' : 'EARTH // Falha ao abrir visualização: ' + (result?.error || 'indisponível'), !ok);
       return {route:'earth-visual',ok,result:{text:ok ? 'Visualização geográfica aberta' + (place ? ': '+place : '') + '.' : 'Não foi possível abrir a visualização.',place,...result}};
