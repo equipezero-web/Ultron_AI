@@ -120,8 +120,12 @@ if (earthVisual) {
     }
     return {ok:true,mode:referenceMode?'mapbox-globe':'globe-3d'};
   }
-  reference.querySelector('[data-earth-reference="close-panel"]').addEventListener('click',resetReferenceMap);
-  reference.querySelector('[data-earth-reference="minimize"]').addEventListener('click',resetReferenceMap);
+  for(const selector of ['[data-earth-reference="close-panel"]','[data-earth-reference="minimize"]']){
+    const button=reference.querySelector(selector);
+    // A sliding side-panel can move between pointerdown and pointerup.
+    button.addEventListener('pointerdown',event=>{if(event.button===0)resetReferenceMap();});
+    button.addEventListener('click',resetReferenceMap);
+  }
   const backToRing=reference.querySelector('[data-earth-reference="ring"]');
   backToRing.addEventListener('pointerdown',event=>{
     if(event.button!==0)return;
