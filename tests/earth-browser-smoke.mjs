@@ -17,7 +17,10 @@ try {
   await page.waitForSelector('[data-cc="earth"]', { timeout: 30000 });
   assert.equal(await page.$eval('#jarvis-earth-explorer', el => el.hidden), true, 'Explorer should start closed');
 
+  console.log('Earth before click:', await page.evaluate(() => ({ registered: Boolean(window.ULTRON_EARTH), state: window.ULTRON_EARTH?.state, buttonVisible: getComputedStyle(document.querySelector('[data-cc="earth"]')).display, globeToggle: Boolean(document.querySelector('[data-visual="globe"]')), explorer: Boolean(document.querySelector('#jarvis-earth-explorer')) })));
   await page.click('[data-cc="earth"]');
+  console.log('Earth after click:', await page.evaluate(() => ({ registered: Boolean(window.ULTRON_EARTH), state: window.ULTRON_EARTH?.state, explorerHidden: document.querySelector('#jarvis-earth-explorer')?.hidden, text: document.querySelector('.jarvis-earth-notice')?.textContent })));
+  console.log('Browser script errors after click:', errors.slice(0, 12));
   await page.waitForFunction(() => window.ULTRON_EARTH?.state?.visible === true, { timeout: 12000 });
   await page.waitForFunction(() => window.ULTRON_EARTH?.state?.ready === true, { timeout: 40000 });
   const mode = await page.evaluate(() => window.ULTRON_EARTH.state.mode);
@@ -38,7 +41,8 @@ try {
 } catch (error) {
   if (page) {
     await page.screenshot({path:'earth-browser-failure.png', fullPage:false}).catch(() => {});
-    console.error('Browser page errors captured:', await page.evaluate(() => document.querySelector('.jarvis-earth-notice')?.textContent).catch(() => null));
+    console.error('Browser page errors captured:', errors.slice(0, 12));
+    console.error('Earth current state:', await page.evaluate(() => ({ registered: Boolean(window.ULTRON_EARTH), state: window.ULTRON_EARTH?.state, explorer: Boolean(document.querySelector('#jarvis-earth-explorer')), notice: document.querySelector('.jarvis-earth-notice')?.textContent })).catch(() => null));
   }
   throw error;
 } finally {
