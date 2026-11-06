@@ -11,6 +11,7 @@ on:
       - 'modules/remote-camera-mode-v4232.js'
       - 'tests/earth-browser-smoke.mjs'
       - 'tests/neural-command-center-smoke.mjs'
+      - 'tests/neural-mobile-smoke.mjs'
       - '.github/workflows/earth-browser-smoke.yml'
   push:
     branches: [main]
@@ -23,6 +24,7 @@ on:
       - 'modules/remote-camera-mode-v4232.js'
       - 'tests/earth-browser-smoke.mjs'
       - 'tests/neural-command-center-smoke.mjs'
+      - 'tests/neural-mobile-smoke.mjs'
       - '.github/workflows/earth-browser-smoke.yml'
   workflow_dispatch:
 
@@ -45,6 +47,7 @@ jobs:
           sleep 2
           node tests/earth-browser-smoke.mjs
           node tests/neural-command-center-smoke.mjs
+          node tests/neural-mobile-smoke.mjs
       - name: Capture failure screenshot
         if: failure()
         uses: actions/upload-artifact@v4
@@ -53,4 +56,5 @@ jobs:
           path: |
             earth-browser-failure.png
             neural-command-failure.png
+            mobile-globe-console-failure.png
           if-no-files-found: ignore

@@ -176,13 +176,31 @@ try {
   const compact=await page.evaluate(()=>({
     overflow:document.documentElement.scrollWidth-innerWidth,
     center:document.querySelector('.jarvis-cc-center').getBoundingClientRect().height,
-    modules:[...document.querySelectorAll('.jarvis-cc-dock-grid .jarvis-cc-dock-module')].map(e=>e.getBoundingClientRect().width),
-    terminal:document.querySelector('.jarvis-cc-console-terminal').getBoundingClientRect().width
+    modules:[...document.querySelectorAll('.jarvis-cc-dock-grid .jarvis-cc-dock-module')].map(e=>({
+      width:e.getBoundingClientRect().width,
+      height:e.getBoundingClientRect().height
+    })),
+    terminal:document.querySelector('.jarvis-cc-console-terminal').getBoundingClientRect().width,
+    dockColumns:getComputedStyle(document.querySelector('.jarvis-cc-dock-grid')).gridTemplateColumns.split(' ').length,
+    typing:document.querySelector('#jarvis-cc-input-slot .command-row').getBoundingClientRect().height,
+    editor:document.querySelector('#command-input').getBoundingClientRect().height,
+    font:parseFloat(getComputedStyle(document.querySelector('#command-input')).fontSize),
+    send:document.querySelector('#btn-send').getBoundingClientRect().height,
+    sendWidth:document.querySelector('#btn-send').getBoundingClientRect().width,
+    responses:document.querySelector('#output-box').getBoundingClientRect().height,
+    preview:document.querySelector('#jarvis-cc-camera-slot .optical-preview').getBoundingClientRect().height
   }));
   assert.ok(compact.center>=380,'Mobile neural center must remain visible');
-  assert.ok(compact.modules.length===4 && compact.modules.every(n=>n>=200),
-    'Mobile modules must be accessible in the same command screen');
+  assert.equal(compact.modules.length,4,'All four real modules must remain available');
+  assert.equal(compact.dockColumns,2,'Mobile system modules must form a compact 2×2 grid');
+  assert.ok(compact.modules.every(n=>n.width>=125 && n.width<=210),
+    'Mobile cards must be compact without squeezing their text completely');
   assert.ok(compact.terminal>=320,'Mobile command composer must not be squeezed');
+  assert.ok(compact.typing<=66 && compact.editor<=50 && compact.send<=55 && compact.sendWidth<=95,
+    'Mobile typing row and send button must be compact');
+  assert.ok(compact.font>=16,'Mobile command editor must avoid automatic browser input zoom');
+  assert.ok(compact.responses<=120,'Mobile response panel must scroll instead of occupying the whole screen');
+  assert.ok(compact.preview<=70,'Optical camera preview should stay compact on mobile');
   assert.ok(compact.overflow<=3,'No horizontal scroll on mobile');
   console.log('NEURAL COMMAND 3D PASS: operator ring 3D rotation/zoom, Mapbox reference overlay/sidebar/reset, globe toggle, inline optical sensor, 4 dock modules and mobile');
 } catch(error){

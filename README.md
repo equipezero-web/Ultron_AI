@@ -106,3 +106,11 @@ O seletor do Globo agora abre **uma camada de visualização sobre a área centr
 O token público Mapbox deve estar previamente gravado neste navegador na chave `jarvis_mapbox_pk_v1` (ou ativado pelo link que acrescenta `#mapbox_pk=...` ao URL). Nunca é colocado no GitHub. Se não houver token ou o Mapbox estiver indisponível, a mesma camada apresenta o globo Globe.gl alternativo e indica a falta de configuração, mantendo os controles de rotação e zoom.
 
 O **Neural Ring original** preserva a paleta holográfica rosa-avermelhada, azul, branco e roxo, mas suas quatro malhas 3D WebGL agora respondem diretamente ao mouse ou toque: **clique/segure e arraste para inclinar e girar**, soltando para encerrar o gesto, com zoom pela roda do mouse. Os anéis internos continuam com suas animações independentes, sem girar sozinhos ao apenas aproximar o cursor. O botão de centralizar restaura ângulos e zoom. É o mesmo Command Center, sem nova aba, com módulos de apoio e terminal existentes abaixo.
+
+## v4.48 — Correções mobile (360–430 px)
+
+Na interface de celular, o **globo Mapbox** suporta pinça de dois dedos para aproximar e afastar (com rotação acidental desabilitada), arraste com um dedo, toque duplo e dois pequenos controles **+ / −** sobre a própria visualização. Esses botões também funcionam no globo Globe.gl alternativo quando não há token Mapbox. No globo alternativo foi implementado rastreamento de dois toques por `pointerId`, calculando o zoom pela distância entre os dedos. O gesto só é capturado sobre o globo, permitindo rolar o restante da página normalmente.
+
+O **painel de digitação** recebe um campo de texto mais baixo com fonte 16px, botão Executar ao lado e atalhos compactos. O terminal de respostas mantém rolagem interna, e os módulos Optical Sensor, AI Gateway, Computador/Celular e Infra passam a formar quatro cartões menores em **duas colunas** inclusive nos celulares estreitos. O Neural Ring 3D mantém seu tamanho e suas animações originais; a reorganização aplica-se ao terminal e aos módulos abaixo dele. Os controles permanecem acessíveis com áreas de toque adequadas.
+
+Testes específicos de navegador móvel verificam zoom com dois dedos, botões de zoom no Globe.gl e no Mapbox, handlers de toque, tipografia do editor, alinhamento em 360px, 390px e 430px e ausência de rolagem horizontal.

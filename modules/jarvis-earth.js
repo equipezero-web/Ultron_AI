@@ -85,6 +85,10 @@ if (earthVisual) {
       '<div class="jarvis-earth-reference-card jarvis-earth-reference-note">Ao aproximar o zoom no globo, os dados do Mapbox carregam as divisões territoriais, limites de estados, nomes de cidades e a malha viária disponível para ruas.</div>',
       '<button type="button" data-earth-reference="minimize" class="jarvis-earth-reference-minimize">MINIMIZAR E RETORNAR AO GLOBO COMPLETO</button>',
     '</aside>',
+    '<div class="jarvis-earth-reference-zoom" role="group" aria-label="Aproximar e afastar globo">',
+      '<button type="button" data-earth-reference="zoom-in" aria-label="Aproximar globo ou mapa" title="Aproximar">+</button>',
+      '<button type="button" data-earth-reference="zoom-out" aria-label="Afastar globo ou mapa" title="Afastar">−</button>',
+    '</div>',
     '<nav class="jarvis-earth-reference-choices" aria-label="Alternar visualizações do comando neural">',
       '<button type="button" data-earth-reference="ring" aria-label="Voltar ao Neural Ring 3D" title="Voltar ao Neural Ring 3D">◎</button>',
       '<button type="button" data-earth-reference="globe" aria-pressed="true" aria-label="Globo 3D ativo" title="Globo 3D">◉</button>',
@@ -133,6 +137,11 @@ if (earthVisual) {
   });
   backToRing.addEventListener('click',()=>{if(visible)close();});
   reference.querySelector('[data-earth-reference="globe"]').addEventListener('click',()=>void open());
+  for (const action of ['zoom-in','zoom-out']) {
+    reference.querySelector('[data-earth-reference="'+action+'"]').addEventListener('click',()=>{
+      void navigate(action);
+    });
+  }
 
   async function ensureReferenceMap() {
     if (referenceMap) return true;
@@ -149,11 +158,16 @@ if (earthVisual) {
         zoom:2.2,
         projection:'globe',
         dragPan:true,dragRotate:false,
-        scrollZoom:true,doubleClickZoom:true,touchZoomRotate:true,
+        scrollZoom:true,doubleClickZoom:true,touchZoomRotate:true,touchPitch:false,
         boxZoom:false,keyboard:false,cooperativeGestures:false,
         attributionControl:true,antialias:true,maxZoom:20
       });
       referenceMap=map;
+      // Pinch zoom and double-tap zoom remain enabled; two-finger twisting won't spin.
+      map.touchZoomRotate?.enable?.();
+      map.touchZoomRotate?.disableRotation?.();
+      map.touchPitch?.disable?.();
+      map.dragPan?.enable?.();
       map.on('style.load',()=>{
         try {
           map.setFog?.({
@@ -372,10 +386,14 @@ if (earthVisual) {
             bearing: 0, pitch: 0,
             dragPan: true, dragRotate: false,
             scrollZoom: true, boxZoom: false, doubleClickZoom: true,
-            touchZoomRotate: true, keyboard: false,
+            touchZoomRotate: true, touchPitch: false, keyboard: false,
             cooperativeGestures: false, attributionControl: true, antialias: true
           });
           streetMap = map;
+          map.touchZoomRotate?.enable?.();
+          map.touchZoomRotate?.disableRotation?.();
+          map.touchPitch?.disable?.();
+          map.dragPan?.enable?.();
           map.on('click', event => {
             if (!streetMode) return;
             clearSelection();
@@ -499,13 +517,31 @@ if (earthVisual) {
         controls.enablePan = false;
         controls.enableZoom = false; // Wheel is routed explicitly to zoom, never rotation.
         controls.enableRotate = false; // Mouse hover cannot rotate the globe.
+        // Track multitouch as a real pinch, independent of desktop wheel events.
+        const touchPointers = new Map();
+        let touchPinch = null;
+        const touchDistance = () => {
+          const fingers=[...touchPointers.values()];
+          return fingers.length<2?0:Math.hypot(
+            fingers[0].x-fingers[1].x, fingers[0].y-fingers[1].y);
+        };
         // Globe.gl's OrbitControls stays disabled for rotation. Drive the camera
         // ourselves only while the primary button is held, so a hover or mouseup
         // can never leave OrbitControls stuck in the rotate state.
         const startDrag = event => {
-          if (!visible || streetMode || event.target.closest?.('.jarvis-earth-selection-close')) return;
+          if (!visible || streetMode || referenceMode || event.target.closest?.('.jarvis-earth-selection-close')) return;
           if (event.pointerType === 'mouse' && event.button !== 0) return;
-          if (event.button !== undefined && event.button !== 0) return;
+          if (event.pointerType !== 'touch' && event.button !== undefined && event.button !== 0) return;
+          if (event.pointerType === 'touch') {
+            touchPointers.set(event.pointerId,{x:event.clientX,y:event.clientY});
+            if (touchPointers.size >= 2) {
+              const current=globe.pointOfView()||home;
+              touchPinch={distance:Math.max(1,touchDistance()),altitude:current.altitude};
+              dragState=null;
+              event.preventDefault();
+              return;
+            }
+          }
           plannedAltitude = null;
           controls.autoRotate = false;
           controls.enableRotate = false;
@@ -516,13 +552,35 @@ if (earthVisual) {
             moved:false
           };
         };
-        const stopDrag = () => {
+        const stopDrag = event => {
+          if (event?.pointerType === 'touch') {
+            touchPointers.delete(event.pointerId);
+            if (touchPinch && touchPointers.size < 2) touchPinch=null;
+          } else if (!event?.pointerType) {
+            touchPointers.clear(); touchPinch=null;
+          }
           if (dragState?.moved) lastDragEndedAt = Date.now();
           dragState = null;
           controls.enableRotate = false;
         };
         const moveDrag = event => {
-          if (!dragState || !visible || streetMode) return;
+          if (!visible || streetMode || referenceMode) return;
+          if (event.pointerType === 'touch' && touchPointers.has(event.pointerId)) {
+            touchPointers.set(event.pointerId,{x:event.clientX,y:event.clientY});
+            if(touchPinch && touchPointers.size>=2){
+              const scale=touchPinch.distance/Math.max(1,touchDistance());
+              const altitude=clamp(touchPinch.altitude*scale,0.06,5);
+              const point=globe.pointOfView()||home;
+              plannedAltitude=altitude;
+              setExpanded(altitude);
+              globe.pointOfView({...point,altitude},0);
+              if (altitude<=DETAIL_ENTRY_ALTITUDE && hasMapboxToken())
+                prepareStreetDetails({...point,altitude},mapZoomFromAltitude(altitude),false);
+              event.preventDefault();
+              return;
+            }
+          }
+          if (!dragState) return;
           if (event.pointerType === 'mouse' && !(event.buttons & 1)) return stopDrag();
           if (dragState.pointerId != null && event.pointerId != null && event.pointerId !== dragState.pointerId) return;
           const dx = event.clientX - dragState.x;
@@ -538,7 +596,10 @@ if (earthVisual) {
         window.addEventListener('pointermove', moveDrag, true);
         window.addEventListener('pointerup', stopDrag, true);
         window.addEventListener('pointercancel', stopDrag, true);
-        window.addEventListener('blur', stopDrag);
+        window.addEventListener('blur', () => {
+          touchPointers.clear(); touchPinch=null;
+          stopDrag();
+        });
         // Continue a held drag even if the cursor crosses the canvas edge.
         // Release is handled by window.pointerup, pointercancel or blur.
         canvasHost.addEventListener('wheel', event => {

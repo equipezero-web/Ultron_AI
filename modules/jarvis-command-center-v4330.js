@@ -185,7 +185,7 @@ if (stage) {
       try {
         let earth = window.ULTRON_EARTH;
         if (!earth?.open) {
-          await import('./jarvis-earth.js?v=4.47.0');
+          await import('./jarvis-earth.js?v=4.48.0');
           earth = window.ULTRON_EARTH;
         }
         if (!earth?.open) throw new Error('Motor terrestre não inicializado');
