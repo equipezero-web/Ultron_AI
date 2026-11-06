@@ -122,7 +122,12 @@ if (earthVisual) {
   }
   reference.querySelector('[data-earth-reference="close-panel"]').addEventListener('click',resetReferenceMap);
   reference.querySelector('[data-earth-reference="minimize"]').addEventListener('click',resetReferenceMap);
-  reference.querySelector('[data-earth-reference="ring"]').addEventListener('click',()=>close());
+  const backToRing=reference.querySelector('[data-earth-reference="ring"]');
+  backToRing.addEventListener('pointerdown',event=>{
+    if(event.button!==0)return;
+    close(); // Handle press before any responsive resize can move the button.
+  });
+  backToRing.addEventListener('click',()=>{if(visible)close();});
   reference.querySelector('[data-earth-reference="globe"]').addEventListener('click',()=>void open());
 
   async function ensureReferenceMap() {
@@ -239,7 +244,7 @@ if (earthVisual) {
     output.scrollTop = output.scrollHeight;
   };
   function setExpanded(altitude) {
-    earthCommandPanel?.classList.toggle('jarvis-earth-expanded', visible && !referenceMode && altitude < 0.95);
+    earthCommandPanel?.classList.toggle('jarvis-earth-expanded', visible && reference.hidden && !referenceMode && altitude < 0.95);
   }
   function syncSize() {
     if (visible && referenceMode) referenceMap?.resize?.();
