@@ -112,6 +112,7 @@ if (stage) {
   const clock = ui.querySelector('#jarvis-cc-clock');
   const log = ui.querySelector('#jarvis-cc-log');
   let visualMode = 'ring', ringEngine = null, ringPromise = null;
+  visual.dataset.mode = 'ring';
   function report3D(error) {
     const message = error?.message || String(error);
     logEvent('NEURAL 3D // ' + message);
@@ -120,7 +121,7 @@ if (stage) {
   async function bootNeuralRing() {
     if (ringEngine) return ringEngine;
     if (ringPromise) return ringPromise;
-    ringPromise = import('./jarvis-neural-ring-3d.js?v=4.46.0')
+    ringPromise = import('./jarvis-neural-ring-3d.js?v=4.47.0')
       .then(module => module.createNeuralRing3D(canvas,{onError:report3D}))
       .then(engine => {
         ringEngine = engine;
@@ -128,7 +129,8 @@ if (stage) {
         engine.setVisible(visualMode === 'ring');
         window.ULTRON_NEURAL_RING_3D = {
           engine:'webgl', get active(){return engine.active;}, get rings(){return engine.rings;},
-          setVisible:engine.setVisible, resize:engine.resize, reset:engine.reset
+          setVisible:engine.setVisible, resize:engine.resize, reset:engine.reset,
+          get state(){return engine.state;}
         };
         window.dispatchEvent(new CustomEvent('ultron:neural-ring-3d-ready'));
         return engine;
@@ -183,7 +185,7 @@ if (stage) {
       try {
         let earth = window.ULTRON_EARTH;
         if (!earth?.open) {
-          await import('./jarvis-earth.js?v=4.45.1');
+          await import('./jarvis-earth.js?v=4.47.0');
           earth = window.ULTRON_EARTH;
         }
         if (!earth?.open) throw new Error('Motor terrestre não inicializado');
@@ -261,5 +263,5 @@ if (stage) {
   window.addEventListener('ultron:processing-end',()=>{state.textContent='STANDBY';});
   window.addEventListener('ultron:speech-start',()=>{state.textContent='FALANDO';logEvent('VOICE // OUTPUT');});
   window.addEventListener('ultron:speech-end',()=>{state.textContent='STANDBY';});
-  window.JARVIS_COMMAND_CENTER = {version:'4.46.0',setVisualMode,open:(name)=>actions[name]?.(),get active(){return true;}};
+  window.JARVIS_COMMAND_CENTER = {version:'4.47.0',setVisualMode,open:(name)=>actions[name]?.(),get active(){return true;}};
 }

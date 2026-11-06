@@ -570,3 +570,191 @@ body.jarvis-command-center .jarvis-command-center-ui.jarvis-earth-expanded .jarv
 @media(max-width:420px){
   body.jarvis-command-center .jarvis-cc-dock-grid{grid-template-columns:1fr!important}
 }
+
+/* v4.47 — Globe is a reference-style Mapbox layer OVER the Neural Command stage.
+   The underlying dashboard, terminal and real integrations are not replaced. */
+body.jarvis-command-center .jarvis-cc-center{position:relative!important;isolation:isolate}
+body.jarvis-command-center .jarvis-earth-reference-layout{
+  position:absolute!important;inset:0!important;width:100%;height:100%;
+  z-index:66!important;overflow:hidden!important;
+  background:#020617!important;color:#67e8f9;
+  box-sizing:border-box;isolation:isolate;pointer-events:auto;
+  font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;
+}
+body.jarvis-command-center .jarvis-earth-reference-layout[hidden]{
+  display:none!important;pointer-events:none!important;
+}
+body.jarvis-command-center .jarvis-earth-reference-map{
+  position:absolute;inset:0;width:100%;height:100%;overflow:hidden;
+  background:radial-gradient(ellipse at 50% 43%,#081329 0%,#020617 73%);
+  z-index:0;
+}
+body.jarvis-command-center .jarvis-earth-reference-map .mapboxgl-map,
+body.jarvis-command-center .jarvis-earth-reference-map .mapboxgl-canvas-container,
+body.jarvis-command-center .jarvis-earth-reference-map .mapboxgl-canvas{
+  height:100%!important;width:100%!important;
+}
+body.jarvis-command-center .jarvis-earth-reference-map .mapboxgl-canvas{
+  cursor:grab;touch-action:none;
+}
+body.jarvis-command-center .jarvis-earth-reference-map .mapboxgl-canvas:active{cursor:grabbing}
+body.jarvis-command-center .jarvis-earth-reference-hud{
+  position:absolute;top:24px;left:24px;z-index:20;
+  width:min(310px,calc(100% - 48px));max-width:100%;padding:20px;
+  box-sizing:border-box;background:rgba(2,6,23,.85);
+  border:1px solid rgba(56,189,248,.4);
+  box-shadow:0 0 20px rgba(56,189,248,.2);
+  backdrop-filter:blur(12px);border-radius:16px;
+  color:#38bdf8;text-shadow:none;
+}
+body.jarvis-command-center .jarvis-earth-reference-title{
+  display:flex;gap:12px;align-items:center;margin-bottom:13px;
+}
+body.jarvis-command-center .jarvis-earth-reference-title > span{
+  color:#22d3ee;font-size:29px;line-height:1;
+  filter:drop-shadow(0 0 12px rgba(34,211,238,.43));
+  animation:jarvis-earth-hud-pulse 2.2s ease-in-out infinite alternate;
+}
+@keyframes jarvis-earth-hud-pulse{
+  from{opacity:.66;transform:scale(.97)}
+  to{opacity:1;transform:scale(1.05)}
+}
+body.jarvis-command-center .jarvis-earth-reference-title strong{
+  display:block;font-size:17px;letter-spacing:.12em;line-height:1.4;
+  font-weight:800;color:#22d3ee;
+}
+body.jarvis-command-center .jarvis-earth-reference-title small{
+  display:block;font-size:10px;letter-spacing:.13em;color:#0891b2;
+  font-weight:500;
+}
+body.jarvis-command-center .jarvis-earth-reference-metrics{
+  border-top:1px solid rgba(8,145,178,.36);
+  padding-top:10px;display:flex;flex-direction:column;gap:8px;
+  font-size:11px;
+}
+body.jarvis-command-center .jarvis-earth-reference-metrics div{
+  display:flex;justify-content:space-between;gap:14px;
+}
+body.jarvis-command-center .jarvis-earth-reference-metrics span{color:#94a3b8}
+body.jarvis-command-center .jarvis-earth-reference-metrics b{
+  color:#22d3ee;white-space:normal;text-align:right;font-size:10px;
+}
+body.jarvis-command-center .jarvis-earth-reference-metrics #jarvis-earth-reference-status{
+  color:#34d399;
+}
+body.jarvis-command-center .jarvis-earth-reference-side{
+  position:absolute;right:0;top:0;bottom:0;z-index:50;
+  width:min(385px,100%);display:flex;flex-direction:column;
+  padding:24px;box-sizing:border-box;gap:16px;overflow-y:auto;
+  border-left:1px solid rgba(56,189,248,.40);
+  background:rgba(2,6,23,.92);backdrop-filter:blur(12px);
+  box-shadow:-9px 0 22px rgba(56,189,248,.12);
+  transform:translateX(103%);visibility:hidden;
+  transition:transform 450ms ease,visibility 450ms;
+  color:#67e8f9;pointer-events:none;
+}
+body.jarvis-command-center .jarvis-earth-reference-side.is-open{
+  transform:translateX(0);visibility:visible;pointer-events:auto;
+}
+body.jarvis-command-center .jarvis-earth-reference-side-top{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:9px;border-bottom:1px solid rgba(6,182,212,.32);
+  padding-bottom:15px;
+}
+body.jarvis-command-center .jarvis-earth-reference-side-top small{
+  display:block;color:#0891b2;font-size:10px;letter-spacing:.22em;
+}
+body.jarvis-command-center .jarvis-earth-reference-side-top h2{
+  font-size:23px;font-weight:800;margin:5px 0 0;color:#67e8f9;
+}
+body.jarvis-command-center .jarvis-earth-reference-side-top button{
+  flex:none;border:0;background:transparent;color:#0891b2;
+  font-size:28px;line-height:1;cursor:pointer;padding:6px 9px;
+}
+body.jarvis-command-center .jarvis-earth-reference-side-top button:hover{color:#67e8f9}
+body.jarvis-command-center .jarvis-earth-reference-card{
+  border:1px solid rgba(56,189,248,.25);
+  background:rgba(15,23,42,.72);
+  border-radius:12px;padding:16px;display:flex;flex-direction:column;
+  gap:12px;color:#cbd5e1;font-size:12px;line-height:1.6;
+}
+body.jarvis-command-center .jarvis-earth-reference-card b{color:#e2e8f0}
+body.jarvis-command-center .jarvis-earth-reference-note{font-size:12px}
+body.jarvis-command-center .jarvis-earth-reference-minimize{
+  margin-top:auto;width:100%;padding:12px 10px;cursor:pointer;
+  border:1px solid rgba(56,189,248,.28);
+  border-radius:12px;background:rgba(15,23,42,.7);
+  color:#67e8f9;font-size:11px;letter-spacing:.06em;
+  font-weight:700;min-height:44px;
+}
+body.jarvis-command-center .jarvis-earth-reference-minimize:hover{
+  background:rgba(8,47,73,.7);
+}
+body.jarvis-command-center .jarvis-earth-reference-choices{
+  position:absolute;bottom:12px;left:50%;transform:translateX(-50%);
+  z-index:30;display:flex;align-items:center;justify-content:center;
+  gap:20px;pointer-events:auto;
+}
+body.jarvis-command-center .jarvis-earth-reference-choices button{
+  display:grid;place-items:center;flex:none;
+  width:54px;height:54px;border-radius:50%;
+  border:1px solid #334155;color:#93a7c8;cursor:pointer;
+  background:#030914d9;font-size:24px;
+  transition:border-color .2s,box-shadow .2s,color .2s;
+}
+body.jarvis-command-center .jarvis-earth-reference-choices button:hover{
+  border-color:#22d3ee;color:#67e8f9;
+}
+body.jarvis-command-center .jarvis-earth-reference-choices button[aria-pressed="true"]{
+  border-color:#e54d6a;box-shadow:0 0 16px #e54d6a42;color:#fff;
+}
+body.jarvis-command-center .jarvis-earth-reference-map .jarvis-earth-globe{
+  position:absolute!important;inset:0!important;display:block;
+  width:100%!important;height:100%!important;z-index:5;
+  background:transparent!important;
+}
+body.jarvis-command-center .jarvis-earth-reference-map .jarvis-earth-renderer{
+  position:absolute;inset:0;width:100%;height:100%;pointer-events:auto;
+}
+body.jarvis-command-center .jarvis-earth-reference-map .jarvis-earth-renderer canvas{
+  pointer-events:auto!important;cursor:grab!important;
+  touch-action:none!important;
+}
+body.jarvis-command-center .jarvis-earth-reference-map .jarvis-earth-renderer canvas:active{
+  cursor:grabbing!important;
+}
+body.jarvis-command-center .jarvis-earth-reference-layout.has-mapbox .jarvis-earth-globe{
+  display:none!important;
+}
+/* True 3D Neural Ring responds to mouse drag while keeping the original colors. */
+body.jarvis-command-center .jarvis-cc-visual[data-mode="ring"] > #jarvis-cc-canvas{
+  pointer-events:auto!important;touch-action:none!important;
+  cursor:grab!important;user-select:none;
+}
+body.jarvis-command-center .jarvis-cc-visual[data-mode="ring"] > #jarvis-cc-canvas:active{
+  cursor:grabbing!important;
+}
+body.jarvis-command-center .jarvis-cc-visual[data-mode="globe"] > #jarvis-cc-canvas{
+  pointer-events:none!important;
+}
+@media(max-width:750px){
+  body.jarvis-command-center .jarvis-earth-reference-hud{
+    top:12px;left:12px;width:min(248px,calc(100% - 24px));padding:10px 12px;
+  }
+  body.jarvis-command-center .jarvis-earth-reference-title{margin-bottom:8px;gap:7px}
+  body.jarvis-command-center .jarvis-earth-reference-title strong{font-size:12px}
+  body.jarvis-command-center .jarvis-earth-reference-title small{font-size:8px}
+  body.jarvis-command-center .jarvis-earth-reference-title > span{font-size:22px}
+  body.jarvis-command-center .jarvis-earth-reference-metrics{font-size:9px;gap:4px;padding-top:7px}
+  body.jarvis-command-center .jarvis-earth-reference-metrics b{font-size:8px}
+  body.jarvis-command-center .jarvis-earth-reference-side{
+    width:min(340px,100%);padding:18px 14px;
+  }
+  body.jarvis-command-center .jarvis-earth-reference-side-top h2{font-size:19px}
+  body.jarvis-command-center .jarvis-earth-reference-choices{bottom:8px}
+  body.jarvis-command-center .jarvis-earth-reference-choices button{width:46px;height:46px}
+}
+@media(prefers-reduced-motion:reduce){
+  body.jarvis-command-center .jarvis-earth-reference-title > span{animation:none}
+  body.jarvis-command-center .jarvis-earth-reference-side{transition:none}
+}

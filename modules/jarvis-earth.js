@@ -54,6 +54,151 @@ if (earthVisual) {
   host.prepend(mapLayer);
   earthVisual.append(host);
 
+  // The reference Mapbox UI overlays the whole neural stage, not another page.
+  // It copies the supplied full-screen-style HUD, region sidebar and reset behavior.
+  const earthStage = earthVisual.closest('.jarvis-cc-center') || earthVisual;
+  const reference = document.createElement('section');
+  reference.id = 'jarvis-earth-reference-layout';
+  reference.className = 'jarvis-earth-reference-layout';
+  reference.hidden = true;
+  reference.setAttribute('aria-label', 'Neural Command — Globo 3D fotorrealista');
+  reference.innerHTML = [
+    '<div class="jarvis-earth-reference-map" aria-label="Terra e mapa Mapbox em projeção globo"></div>',
+    '<header class="jarvis-earth-reference-hud">',
+      '<div class="jarvis-earth-reference-title"><span aria-hidden="true">◈</span><div><strong>NEURAL COMMAND</strong><small>GLOBO FOTORREALISTA 3D</small></div></div>',
+      '<div class="jarvis-earth-reference-metrics">',
+        '<div><span>PROJEÇÃO:</span><b>GLOBE 3D REAL</b></div>',
+        '<div><span>ILUMINAÇÃO:</span><b>SOLAR DIRETA</b></div>',
+        '<div><span>STATUS:</span><b id="jarvis-earth-reference-status">INICIALIZANDO</b></div>',
+      '</div>',
+    '</header>',
+    '<aside class="jarvis-earth-reference-side" aria-hidden="true">',
+      '<div class="jarvis-earth-reference-side-top">',
+        '<div><small>COORDENADA</small><h2>PONTO SELECIONADO</h2></div>',
+        '<button type="button" data-earth-reference="close-panel" aria-label="Fechar detalhes e retornar à Terra">×</button>',
+      '</div>',
+      '<div class="jarvis-earth-reference-card">',
+        '<div><b>LATITUDE:</b> <span data-earth-reference-value="lat">--</span></div>',
+        '<div><b>LONGITUDE:</b> <span data-earth-reference-value="lng">--</span></div>',
+        '<div><b>ZOOM:</b> <span data-earth-reference-value="zoom">--</span></div>',
+      '</div>',
+      '<div class="jarvis-earth-reference-card jarvis-earth-reference-note">Ao aproximar o zoom no globo, os dados do Mapbox carregam as divisões territoriais, limites de estados, nomes de cidades e a malha viária disponível para ruas.</div>',
+      '<button type="button" data-earth-reference="minimize" class="jarvis-earth-reference-minimize">MINIMIZAR E RETORNAR AO GLOBO COMPLETO</button>',
+    '</aside>',
+    '<nav class="jarvis-earth-reference-choices" aria-label="Alternar visualizações do comando neural">',
+      '<button type="button" data-earth-reference="ring" aria-label="Voltar ao Neural Ring 3D" title="Voltar ao Neural Ring 3D">◎</button>',
+      '<button type="button" data-earth-reference="globe" aria-pressed="true" aria-label="Globo 3D ativo" title="Globo 3D">◉</button>',
+    '</nav>'
+  ].join('');
+  earthStage.append(reference);
+  const referenceMapHost = reference.querySelector('.jarvis-earth-reference-map');
+  const referenceSide = reference.querySelector('.jarvis-earth-reference-side');
+  const referenceStatus = reference.querySelector('#jarvis-earth-reference-status');
+  let referenceMap = null, referenceLoading = null, referenceMode = false;
+  let referenceSelection = false;
+  function hideReferenceDetails() {
+    referenceSelection = false;
+    referenceSide.classList.remove('is-open');
+    referenceSide.setAttribute('aria-hidden','true');
+  }
+  function showReferenceDetails(lat,lng,zoom) {
+    referenceSelection = true;
+    referenceSide.querySelector('[data-earth-reference-value="lat"]').textContent = Number(lat).toFixed(4);
+    referenceSide.querySelector('[data-earth-reference-value="lng"]').textContent = Number(lng).toFixed(4);
+    referenceSide.querySelector('[data-earth-reference-value="zoom"]').textContent = Number(zoom).toFixed(1);
+    referenceSide.classList.add('is-open');
+    referenceSide.setAttribute('aria-hidden','false');
+  }
+  function resetReferenceMap() {
+    hideReferenceDetails();
+    if (referenceMode && referenceMap) referenceMap.flyTo({
+      center:[-34.8770,-8.0476], zoom:2.2, pitch:0, bearing:0, duration:2000, essential:true
+    });
+    else if (globe) {
+      plannedAltitude=home.altitude;
+      globe.pointOfView(home,1800);
+    }
+    return {ok:true,mode:referenceMode?'mapbox-globe':'globe-3d'};
+  }
+  reference.querySelector('[data-earth-reference="close-panel"]').addEventListener('click',resetReferenceMap);
+  reference.querySelector('[data-earth-reference="minimize"]').addEventListener('click',resetReferenceMap);
+  reference.querySelector('[data-earth-reference="ring"]').addEventListener('click',()=>close());
+  reference.querySelector('[data-earth-reference="globe"]').addEventListener('click',()=>void open());
+
+  async function ensureReferenceMap() {
+    if (referenceMap) return true;
+    if (!hasMapboxToken()) return false;
+    if (referenceLoading) return referenceLoading;
+    referenceLoading=(async()=>{
+      const gl=await ensureMapboxLibrary();
+      if (typeof gl.supported==='function' && !gl.supported()) throw new Error('Mapbox WebGL indisponível');
+      gl.accessToken=publicMapboxToken();
+      const map=new gl.Map({
+        container:referenceMapHost,
+        style:'mapbox://styles/mapbox/satellite-streets-v12',
+        center:[-34.8770,-8.0476],
+        zoom:2.2,
+        projection:'globe',
+        dragPan:true,dragRotate:false,
+        scrollZoom:true,doubleClickZoom:true,touchZoomRotate:true,
+        boxZoom:false,keyboard:false,cooperativeGestures:false,
+        attributionControl:true,antialias:true,maxZoom:20
+      });
+      referenceMap=map;
+      map.on('style.load',()=>{
+        try {
+          map.setFog?.({
+            color:'rgba(255, 255, 255, 0.5)',
+            'high-color':'rgba(36, 92, 223, 0.7)',
+            'space-color':'rgb(11, 15, 25)',
+            'horizon-blend':0.1,'star-intensity':0.8
+          });
+          map.setLight?.({anchor:'viewport',color:'white',intensity:0.4});
+        } catch(error) {console.warn('[EARTH] Iluminação indisponível:',error);}
+      });
+      map.on('click',(event)=>{
+        if (!referenceMode || !visible) return;
+        const lat=Number(event.lngLat?.lat),lng=Number(event.lngLat?.lng);
+        if (!Number.isFinite(lat)||!Number.isFinite(lng)) return;
+        selectedPlace={lat,lng,name:''};
+        showReferenceDetails(lat,lng,map.getZoom());
+        map.flyTo({
+          center:[lng,lat],
+          zoom:Math.min(20,Math.max(map.getZoom()+2,6)),
+          duration:2000,essential:true
+        });
+      });
+      map.on('moveend',()=>{
+        if(referenceSelection && referenceMode){
+          const center=map.getCenter();
+          showReferenceDetails(center.lat,center.lng,map.getZoom());
+        }
+      });
+      await new Promise((resolve,reject)=>{
+        let finished=false;
+        const finish=(error)=>{
+          if(finished)return;finished=true;clearTimeout(timeout);
+          if(error)reject(error);else resolve();
+        };
+        const timeout=setTimeout(()=>finish(new Error('Tempo limite ao carregar globo Mapbox')),16000);
+        map.once('load',()=>finish());
+        map.once('error',event=>{
+          if(!map.loaded?.())finish(event.error||new Error('Erro ao carregar estilo Mapbox'));
+        });
+      });
+      return true;
+    })().catch(error=>{
+      const message=error?.message||String(error);
+      lastError=message;
+      referenceStatus.textContent='MAPBOX INDISPONÍVEL';
+      terminal('Mapbox indisponível, utilizando globo 3D alternativo: '+message);
+      try{referenceMap?.remove?.();}catch{}
+      referenceMap=null;
+      return false;
+    }).finally(()=>{referenceLoading=null;});
+    return referenceLoading;
+  }
+
   const home = { lat: -8.0476, lng: -34.877, altitude: 2.5 };
   const known = {
     china: [104.1954, 35.8617, 4], brasil: [-51.9253, -14.235, 4],
@@ -94,9 +239,10 @@ if (earthVisual) {
     output.scrollTop = output.scrollHeight;
   };
   function setExpanded(altitude) {
-    earthCommandPanel?.classList.toggle('jarvis-earth-expanded', visible && altitude < 0.95);
+    earthCommandPanel?.classList.toggle('jarvis-earth-expanded', visible && !referenceMode && altitude < 0.95);
   }
   function syncSize() {
+    if (visible && referenceMode) referenceMap?.resize?.();
     if (visible && streetMode) streetMap?.resize?.();
     if (!globe || !visible) return;
     const width = Math.round(host.clientWidth || earthVisual.clientWidth);
@@ -106,6 +252,7 @@ if (earthVisual) {
   function clearSelection() {
     dismiss.hidden = true;
     selectedPlace = null;
+    hideReferenceDetails();
     globe?.pointsData([]);
     selectedMapMarker?.remove?.();
     selectedMapMarker = null;
@@ -283,6 +430,14 @@ if (earthVisual) {
   }
 
   function focus(lat, lng, zoom = 5, clicked = false, name = '') {
+    if (referenceMode && referenceMap) {
+      if (!Number.isFinite(lat) || !Number.isFinite(lng)) return {ok:false,error:'Coordenadas inválidas'};
+      if(clicked)showReferenceDetails(lat,lng,referenceMap.getZoom());
+      else hideReferenceDetails();
+      selectedPlace=clicked?{lat,lng,name}:null;
+      referenceMap.flyTo({center:[lng,lat],zoom:clamp(zoom,2.2,20),duration:2400,essential:true});
+      return {ok:true,mode:'mapbox-globe',place:name||null,lat,lng,zoom};
+    }
     if (!globe || !Number.isFinite(lat) || !Number.isFinite(lng)) {
       return { ok: false, error: 'Globo ou coordenadas indisponíveis' };
     }
@@ -411,38 +566,66 @@ if (earthVisual) {
     finally { globeLoading = null; }
   }
   async function open() {
+    if (visible && referenceMode && referenceMap) return {ok:true,mode:'mapbox-globe'};
     visible = true;
-    host.hidden = false;
+    reference.hidden = false;
     earthVisual.classList.add('jarvis-earth-active');
+    earthCommandPanel?.classList.add('jarvis-earth-reference-active');
     window.JARVIS_COMMAND_CENTER?.setVisualMode?.('globe');
+    const canMap=hasMapboxToken();
+    if(canMap){
+      referenceStatus.textContent='CONECTANDO';
+      const supported=await ensureReferenceMap();
+      if(!visible)return {ok:false,cancelled:true};
+      if(supported){
+        referenceMode=true;
+        reference.classList.add('has-mapbox');
+        host.hidden=true;
+        referenceStatus.textContent='CONECTADO';
+        earthCommandPanel?.classList.remove('jarvis-earth-expanded');
+        requestAnimationFrame(()=>referenceMap?.resize?.());
+        return {ok:true,mode:'mapbox-globe'};
+      }
+    }
+    referenceMode=false;
+    reference.classList.remove('has-mapbox');
+    referenceMapHost.append(host);
+    host.hidden=false;
+    referenceStatus.textContent=canMap?'GLOBO ALTERNATIVO':'MAPBOX NÃO CONFIGURADO';
     globe?.resumeAnimation?.();
     requestAnimationFrame(syncSize);
     try {
-      const result = await init();
+      const result=await init();
       syncSize();
       return result;
-    } catch (error) {
-      lastError = error?.message || String(error);
-      terminal('Globo indisponível: ' + lastError);
+    } catch(error) {
+      lastError=error?.message||String(error);
+      terminal('Globo indisponível: '+lastError);
       close();
-      return { ok: false, error: lastError };
+      return {ok:false,error:lastError};
     }
   }
   function close() {
-    visible = false;
-    dragState = null;
-    streetMode = false;
+    visible=false;
+    referenceMode=false;
+    dragState=null;
+    streetMode=false;
     host.classList.remove('jarvis-earth-map-active');
-    plannedAltitude = null;
+    plannedAltitude=null;
     ++requestSequence;
-    host.hidden = true;
+    host.hidden=true;
     clearSelection();
-    setExpanded(2.5);
+    reference.hidden=true;
+    reference.classList.remove('has-mapbox');
+    earthCommandPanel?.classList.remove('jarvis-earth-reference-active');
+    earthCommandPanel?.classList.remove('jarvis-earth-expanded');
+    if(host.parentElement!==earthVisual)earthVisual.append(host);
     earthVisual.classList.remove('jarvis-earth-active');
     globe?.pauseAnimation?.();
     streetMap?.stop?.();
+    referenceMap?.stop?.();
     window.JARVIS_COMMAND_CENTER?.setVisualMode?.('ring');
-    return { ok: true, mode: 'ring' };
+    return {ok:true,mode:'ring'};
   }
   async function searchGeocoding(place) {
     const token = (() => { try { return localStorage.getItem('jarvis_mapbox_pk_v1') || ''; } catch { return ''; } })();
@@ -503,6 +686,7 @@ if (earthVisual) {
     if (action === 'globe' || action === 'open') return open();
     if (action === 'home' || action === 'reset') {
       if (!visible) return { ok: false };
+      if(referenceMode) return resetReferenceMap();
       clearSelection();
       if (streetMode) {
         showGlobeFromMap();
@@ -515,6 +699,11 @@ if (earthVisual) {
       return { ok: true };
     }
     if (action === 'zoom-in' || action === 'zoom-out') {
+      if(referenceMode && referenceMap){
+        const zoom=clamp(referenceMap.getZoom()+(action==='zoom-in'?1:-1),0,20);
+        referenceMap.zoomTo(zoom,{duration:500});
+        return {ok:true,mode:'mapbox-globe'};
+      }
       if (streetMode && streetMap) {
         const zoom = clamp(streetMap.getZoom() + (action === 'zoom-in' ? 1 : -1),0,20);
         streetMap.zoomTo?.(zoom,{duration:450});
@@ -542,19 +731,28 @@ if (earthVisual) {
   ringButton?.addEventListener('pointerdown', restoreRing);
   ringButton?.addEventListener('click', restoreRing);
   window.addEventListener('ultron:earth-location', event => { void locate(event.detail?.place || ''); });
-  if (typeof ResizeObserver !== 'undefined') new ResizeObserver(syncSize).observe(earthVisual);
+  if (typeof ResizeObserver !== 'undefined') {
+    const observer=new ResizeObserver(syncSize);
+    observer.observe(earthVisual);
+    if(earthStage!==earthVisual)observer.observe(earthStage);
+  }
   window.ULTRON_EARTH = {
     open, close, locate, navigate, focus, clearSelection, enterStreetDetails,
+    resetReferenceMap, get referenceMap(){return referenceMap;},
     get state() {
       const tokenConfigured = hasMapboxToken();
       return {
-        available: true, ready: Boolean(globe), visible, mode: streetMode ? 'mapbox-satellite' : globe ? 'globe-3d' : 'not-opened',
+        available: true, ready: Boolean(referenceMap || globe), visible,
+        mode: referenceMode ? 'mapbox-globe' : streetMode ? 'mapbox-satellite' : globe ? 'globe-3d' : 'not-opened',
         tokenConfigured, needsToken: false, lastError, selectedPlace,
         expanded: earthCommandPanel?.classList.contains('jarvis-earth-expanded') || false,
-        view: streetMode && streetMap
+        view: referenceMode && referenceMap
+          ? {lat:referenceMap.getCenter().lat,lng:referenceMap.getCenter().lng,zoom:referenceMap.getZoom(),altitude:altitudeFromMapZoom(referenceMap.getZoom())}
+          : streetMode && streetMap
           ? {lat:streetMap.getCenter().lat,lng:streetMap.getCenter().lng,altitude:altitudeFromMapZoom(streetMap.getZoom()),zoom:streetMap.getZoom()}
           : globe?.pointOfView?.() || null,
-        dragRequiresHold: true, dragging: Boolean(dragState), streetZoomAvailable: tokenConfigured, streetMode
+        dragRequiresHold: true, dragging: Boolean(dragState), streetZoomAvailable: tokenConfigured, streetMode,
+        referenceMode, referenceOverlay: !reference.hidden, referenceSelection
       };
     }
   };

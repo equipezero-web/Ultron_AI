@@ -46,7 +46,10 @@ await new Promise(resolve => setTimeout(resolve, 30));
 assert.equal(earth.state.visible, true);
 assert.equal(earth.state.ready, true);
 assert.equal(earth.state.mode, 'globe-3d');
-assert.equal(document.querySelector('#jarvis-earth-globe').parentElement, document.querySelector('.jarvis-cc-visual'));
+assert.equal(document.querySelector('#jarvis-earth-globe').closest('#jarvis-earth-reference-layout')!==null,true,'Fallback globe must display over the original neural stage');
+assert.equal(document.querySelector('#jarvis-earth-reference-layout').hidden,false,'Reference overlay must open in the existing stage');
+assert.equal(document.querySelectorAll('.jarvis-earth-reference-hud').length,1,'Reference HUD must exist');
+assert.equal(document.querySelector('.jarvis-earth-reference-side').classList.contains('is-open'),false,'Sidebar must start closed');
 assert.equal(document.querySelectorAll('#jarvis-earth-globe form, #jarvis-earth-globe section, #jarvis-earth-globe aside').length, 0);
 assert.equal(document.querySelector('.jarvis-earth-selection-close').hidden, true, 'No X before selecting location');
 assert.equal(instantiations, 1);
@@ -111,7 +114,13 @@ class FakeMap {
     canvas.className = 'mapboxgl-canvas';
     options.container.append(canvas);
   }
-  on(name,handler) { (this.events.get(name) || this.events.set(name,[]).get(name)).push(handler); return this; }
+  on(name,handler) {
+    (this.events.get(name) || this.events.set(name,[]).get(name)).push(handler);
+    if(name==='style.load') window.setTimeout(handler,0);
+    return this;
+  }
+  setFog(value) { this.fog=value; }
+  setLight(value) { this.light=value; }
   once(name,handler) {
     if (name==='load') window.setTimeout(handler,0);
     else this.on(name,handler);
@@ -152,6 +161,41 @@ assert.equal(document.querySelector('.jarvis-earth-map-layer').parentElement, do
 assert.equal(document.querySelector('#jarvis-earth-globe form, #jarvis-earth-globe input, #jarvis-earth-globe aside'), null);
 createdMap.zoomTo(4);
 assert.equal(earth.state.mode, 'globe-3d', 'Zooming far out returns to the same 3D globe');
+// Enable the exact Mapbox reference UI: the full globe appears in a layer
+// over the neural stage, not on another page, with only a contextual sidebar.
+earth.close();
+window.localStorage.setItem('jarvis_mapbox_pk_v1',fakeToken);
+const reference=await earth.open();
+assert.equal(reference.ok,true);
+assert.equal(reference.mode,'mapbox-globe');
+assert.equal(earth.state.referenceMode,true);
+assert.equal(earth.state.referenceOverlay,true);
+assert.equal(document.querySelector('#jarvis-earth-reference-layout').hidden,false);
+assert.equal(createdMap.options.zoom,2.2);
+assert.deepEqual(createdMap.options.center,[-34.877,-8.0476]);
+assert.equal(createdMap.options.style,'mapbox://styles/mapbox/satellite-streets-v12');
+assert.equal(createdMap.options.dragRotate,false);
+assert.equal(createdMap.options.scrollZoom,true);
+await new Promise(resolve=>setTimeout(resolve,10));
+assert.equal(createdMap.fog['star-intensity'],.8);
+assert.equal(createdMap.light.intensity,.4);
+assert.equal(earth.state.referenceSelection,false);
+createdMap.emit('click',{lngLat:{lat:35.8617,lng:104.1954}});
+assert.equal(earth.state.referenceSelection,true);
+assert.equal(document.querySelector('.jarvis-earth-reference-side').classList.contains('is-open'),true);
+assert.equal(document.querySelector('[data-earth-reference-value="lat"]').textContent,'35.8617');
+assert.ok(createdMap.getZoom()>=6,'Click zooms toward selected point');
+document.querySelector('[data-earth-reference="minimize"]').click();
+assert.equal(createdMap.getZoom(),2.2);
+assert.equal(earth.state.referenceSelection,false);
+const locateInReference=await earth.locate('China');
+assert.equal(locateInReference.mode,'mapbox-globe');
+assert.ok(Math.abs(createdMap.getCenter().lng-104.1954)<0.001);
+document.querySelector('[data-earth-reference="close-panel"]').click();
+assert.equal(createdMap.getZoom(),2.2);
+document.querySelector('[data-earth-reference="ring"]').click();
+assert.equal(earth.state.visible,false);
+assert.equal(document.querySelector('#jarvis-earth-reference-layout').hidden,true);
 window.localStorage.removeItem('jarvis_mapbox_pk_v1');
 
 const router = fs.readFileSync('modules/ultron-orchestrator-v4270.js','utf8');
@@ -167,5 +211,5 @@ assert.deepEqual(parseEarthIntent('Jarvis mostre a China no globo'), {place:'chi
 assert.equal(parseEarthIntent('Mostre a câmera'), null);
 assert.equal(parseEarthIntent('Jarvis volte ao neural ring').action, 'ring');
 
-console.log('EARTH DOM PASS: hold-to-rotate, mouse release, globe view, zoom, Mapbox satellite-streets, country/city and back to ring');
+console.log('EARTH DOM PASS: original globe controls + overlay reference Mapbox, geographic HUD/sidebar, zoom, reset and ring return');
 window.close();

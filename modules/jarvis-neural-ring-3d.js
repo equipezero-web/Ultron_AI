@@ -6,7 +6,7 @@ export function createNeuralRing3D(canvas,{onError}={}) {
   if(!gl) throw new Error('WebGL indisponível para o Neural Ring 3D');
   const vsText=[
     'attribute vec3 aPos; attribute vec3 aNormal;',
-    'uniform float uTime; uniform float uRing; uniform float uScale; uniform float uAspect;',
+    'uniform float uTime; uniform float uRing; uniform float uScale; uniform float uAspect; uniform float uYaw; uniform float uPitch; uniform float uZoom;',
     'varying float vLight; varying float vDepth;',
     'void main(){',
     ' float ty=uTime*(.20+uRing*.06)+uRing*1.43;',
@@ -16,8 +16,13 @@ export function createNeuralRing3D(canvas,{onError}={}) {
     ' p=vec3(p.x,p.y*cx-p.z*sx,p.y*sx+p.z*cx);',
     ' vec3 n=vec3(aNormal.x*cy+aNormal.z*sy,aNormal.y,-aNormal.x*sy+aNormal.z*cy);',
     ' n=normalize(vec3(n.x,n.y*cx-n.z*sx,n.y*sx+n.z*cx));',
+    ' float uy=cos(uYaw),vy=sin(uYaw),up=cos(uPitch),vp=sin(uPitch);',
+    ' p=vec3(p.x*uy+p.z*vy,p.y,-p.x*vy+p.z*uy);',
+    ' n=vec3(n.x*uy+n.z*vy,n.y,-n.x*vy+n.z*uy);',
+    ' p=vec3(p.x,p.y*up-p.z*vp,p.y*vp+p.z*up);',
+    ' n=normalize(vec3(n.x,n.y*up-n.z*vp,n.y*vp+n.z*up));',
     ' float perspective=2.65/(3.25-p.z);',
-    ' gl_Position=vec4((p.x*perspective*uScale)/max(.68,uAspect),p.y*perspective*uScale,.38-p.z*.15,1.);',
+    ' gl_Position=vec4((p.x*perspective*uScale*uZoom)/max(.68,uAspect),p.y*perspective*uScale*uZoom,.38-p.z*.15,1.);',
     ' vLight=.25+.75*abs(dot(n,normalize(vec3(.38,.62,.68))));',
     ' vDepth=clamp(.45+p.z*.42,0.,1.);',
     '}'
@@ -48,7 +53,8 @@ export function createNeuralRing3D(canvas,{onError}={}) {
   const locations={
     time:gl.getUniformLocation(program,'uTime'),ring:gl.getUniformLocation(program,'uRing'),
     scale:gl.getUniformLocation(program,'uScale'),aspect:gl.getUniformLocation(program,'uAspect'),
-    color:gl.getUniformLocation(program,'uColor'),alpha:gl.getUniformLocation(program,'uAlpha')
+    color:gl.getUniformLocation(program,'uColor'),alpha:gl.getUniformLocation(program,'uAlpha'),
+    yaw:gl.getUniformLocation(program,'uYaw'),pitch:gl.getUniformLocation(program,'uPitch'),zoom:gl.getUniformLocation(program,'uZoom')
   };
   const verts=[],norms=[],indices=[],sections=176,tubes=14;
   for(let i=0;i<=sections;i++){
@@ -71,6 +77,8 @@ export function createNeuralRing3D(canvas,{onError}={}) {
   const colors=[[.91,.25,.34],[.29,.65,1.],[.84,.91,1.],[.45,.35,.68]],
     scales=[1.04,.88,1.13,.49],alphas=[.80,.63,.57,.43];
   let visible=false,paused=false,disposed=false,frame=0,lastFrame=0;
+  let yaw=0,pitch=0,zoom=1,dragging=null;
+  const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
   let started=performance.now();const reduce=window.matchMedia('(prefers-reduced-motion: reduce)');
   function resize(){
     if(disposed)return;
@@ -88,6 +96,7 @@ export function createNeuralRing3D(canvas,{onError}={}) {
       gl.useProgram(program);
       gl.uniform1f(locations.time,reduce.matches?0:(now-started)/1000);
       gl.uniform1f(locations.aspect,Math.max(.5,canvas.width/canvas.height));
+      gl.uniform1f(locations.yaw,yaw);gl.uniform1f(locations.pitch,pitch);gl.uniform1f(locations.zoom,zoom);
       gl.bindBuffer(gl.ARRAY_BUFFER,posBuffer);gl.enableVertexAttribArray(posLoc);
       gl.vertexAttribPointer(posLoc,3,gl.FLOAT,false,0,0);
       gl.bindBuffer(gl.ARRAY_BUFFER,normalBuffer);gl.enableVertexAttribArray(normalLoc);
@@ -106,15 +115,57 @@ export function createNeuralRing3D(canvas,{onError}={}) {
   const onContextLost=(e)=>{e.preventDefault();paused=true;cancelAnimationFrame(frame);onError?.(new Error('WebGL context lost'));};
   document.addEventListener('visibilitychange',onVisibility);
   canvas.addEventListener('webglcontextlost',onContextLost);
+  // Move the true WebGL geometry by dragging: hover alone never rotates.
+  const beginDrag=event=>{
+    if (!visible || disposed || event.button!==0) return;
+    dragging={pointerId:event.pointerId,x:event.clientX,y:event.clientY,yaw,pitch};
+    if(canvas.setPointerCapture && event.pointerId!=null) {
+      try {canvas.setPointerCapture(event.pointerId);} catch {}
+    }
+    event.preventDefault();
+  };
+  const moveDrag=event=>{
+    if(!dragging || !visible) return;
+    if(event.pointerId!=null && event.pointerId!==dragging.pointerId) return;
+    if(event.pointerType==='mouse' && !(event.buttons&1)) {endDrag();return;}
+    yaw=dragging.yaw+(event.clientX-dragging.x)*.009;
+    pitch=clamp(dragging.pitch+(event.clientY-dragging.y)*.009,-1.45,1.45);
+  };
+  const endDrag=event=>{
+    if(!dragging) return;
+    const id=dragging.pointerId;dragging=null;
+    if(canvas.releasePointerCapture && id!=null && canvas.hasPointerCapture?.(id)) {
+      try{canvas.releasePointerCapture(id);}catch{}
+    }
+  };
+  const adjustZoom=event=>{
+    if(!visible || disposed || event.ctrlKey) return;
+    event.preventDefault();
+    event.stopPropagation();
+    zoom=clamp(zoom*Math.exp(-event.deltaY*.001),.62,1.9);
+  };
+  canvas.addEventListener('pointerdown',beginDrag);
+  window.addEventListener('pointermove',moveDrag,true);
+  window.addEventListener('pointerup',endDrag,true);
+  window.addEventListener('pointercancel',endDrag,true);
+  window.addEventListener('blur',endDrag);
+  canvas.addEventListener('wheel',adjustZoom,{passive:false});
   const observer=typeof ResizeObserver==='function'?new ResizeObserver(resize):null;
   observer?.observe(canvas.parentElement||canvas);
   return {
     engine:'webgl',get active(){return visible&&!paused;},get rings(){return colors.length;},
-    setVisible(value){visible=Boolean(value);canvas.hidden=!visible;cancelAnimationFrame(frame);if(visible)start();},
+    get state(){return {yaw,pitch,zoom,dragging:Boolean(dragging),active:visible&&!paused};},
+    setVisible(value){visible=Boolean(value);canvas.hidden=!visible;cancelAnimationFrame(frame);if(!visible)endDrag();if(visible)start();},
     resize,
-    reset(){started=performance.now();return {ok:true,engine:'webgl'};},
+    reset(){started=performance.now();yaw=0;pitch=0;zoom=1;endDrag();return {ok:true,engine:'webgl'};},
     destroy(){
       disposed=true;visible=false;cancelAnimationFrame(frame);observer?.disconnect();
+      endDrag();canvas.removeEventListener('pointerdown',beginDrag);
+      window.removeEventListener('pointermove',moveDrag,true);
+      window.removeEventListener('pointerup',endDrag,true);
+      window.removeEventListener('pointercancel',endDrag,true);
+      window.removeEventListener('blur',endDrag);
+      canvas.removeEventListener('wheel',adjustZoom);
       document.removeEventListener('visibilitychange',onVisibility);
       canvas.removeEventListener('webglcontextlost',onContextLost);
       gl.deleteBuffer(posBuffer);gl.deleteBuffer(normalBuffer);gl.deleteBuffer(indexBuffer);gl.deleteProgram(program);
