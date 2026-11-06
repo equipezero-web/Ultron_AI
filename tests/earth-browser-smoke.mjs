@@ -34,6 +34,7 @@ try {
   const selected = await page.evaluate(() => window.ULTRON_EARTH.locate('China'));
   assert.equal(selected.ok, true, 'China command should select location');
   assert.equal(await page.$eval('.jarvis-earth-side', el => el.classList.contains('is-open')), true);
+  console.log('Earth home click hit-test:', await page.$eval('[data-earth="home"]', el => { const r=el.getBoundingClientRect(); const target=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2); return {button:el.outerHTML,rect:{x:r.x,y:r.y,width:r.width,height:r.height},hit:target?.outerHTML?.slice(0,260),contains:el===target||el.contains(target)}; }));
   await page.click('[data-earth="home"]');
   assert.equal(await page.$eval('.jarvis-earth-side', el => el.classList.contains('is-open')), false);
   await page.click('[data-earth="close"]');
