@@ -72,7 +72,7 @@ if (earthToggle) {
   let map = null, pendingInit = null, selectedMarker = null;
   let basicGlobe = null, basicHost = null, basicFrame = null, basicLoading = null, currentMode = 'not-opened', lastError = null;
   let requestId = 0, requestController = null, spinId = 0, spinning = false, lastSpinAt = 0;
-  let pendingQuery = '', inMemoryToken = '';
+  let pendingQuery = '', inMemoryToken = '', basicPreference = false;
 
   function publicToken() {
     try { return localStorage.getItem('jarvis_mapbox_pk_v1') || inMemoryToken; }
@@ -200,9 +200,9 @@ if (earthToggle) {
     if (map) return { ok: true, mode: 'mapbox-satellite' };
     const token = publicToken();
     if (!token || !/^pk\.[A-Za-z0-9._-]{20,}$/.test(token)) {
-      tokenForm.hidden = false;
+      tokenForm.hidden = basicPreference;
       const basic = await loadBasicGlobe();
-      tokenForm.querySelector('input')?.focus();
+      if (!basicPreference) tokenForm.querySelector('input')?.focus();
       setStatus(basic.mode === 'globe-basic' ? 'Globo básico aberto. Configure o token para visualizar satélite e ruas.' : 'Mapa alternativo aberto. Configure o token Mapbox para a experiência de satélite.', false);
       return { ...basic, requiresToken: true };
     }
@@ -382,8 +382,8 @@ if (earthToggle) {
   }
   function navigate(action) {
     if (action === 'close') return close();
-    if (action === 'basic') { tokenForm.hidden = true; setStatus('Globo básico aberto. Use ⚙ Token para ativar imagens de satélite.'); return; }
-    if (action === 'token') { tokenForm.hidden = false; tokenForm.querySelector('input').focus(); return; }
+    if (action === 'basic') { basicPreference = true; tokenForm.hidden = true; setStatus('Globo básico aberto. Use ⚙ Token para ativar imagens de satélite.'); return; }
+    if (action === 'token') { basicPreference = false; tokenForm.hidden = false; tokenForm.querySelector('input').focus(); return; }
     if (action === 'home' || action === 'reset') return reset();
     if (!map && !basicGlobe) return;
     if (!map && basicGlobe) {
@@ -423,6 +423,7 @@ if (earthToggle) {
     const token = tokenForm.querySelector('input').value.trim();
     if (!/^pk\.[A-Za-z0-9._-]{20,}$/.test(token)) return setStatus('Informe um token público válido, começando com pk.', true);
     saveToken(token);
+    basicPreference = false;
     if (map) { map.remove(); map = null; }
     const search = pendingQuery;
     pendingQuery = '';
@@ -436,6 +437,6 @@ if (earthToggle) {
   window.addEventListener('ultron:earth-location', event => { locate(event.detail?.place); });
   window.ULTRON_EARTH = {
     open, locate, navigate,
-    get state() { return { available: true, ready: Boolean(map || basicGlobe || basicFrame), visible: !shell.hidden, mode: currentMode, tokenConfigured: Boolean(publicToken()), needsToken: !publicToken(), lastError }; }
+    get state() { return { available: true, ready: Boolean((map?.loaded?.() || false) || basicGlobe || basicFrame), visible: !shell.hidden, mode: currentMode, tokenConfigured: Boolean(publicToken()), needsToken: !publicToken(), lastError }; }
   };
 }
