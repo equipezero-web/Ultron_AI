@@ -64,6 +64,7 @@ if (earthVisual) {
   let visible = false;
   let lastError = null;
   let selectedPlace = null;
+  let plannedAltitude = null;
   let requestSequence = 0;
   const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
   const normalizePlace = value => String(value || '').normalize('NFD')
@@ -124,6 +125,7 @@ if (earthVisual) {
       globe.pointsData([{ lat: coordinate.lat, lng }]);
       dismiss.hidden = false;
     }
+    plannedAltitude = altitude;
     setExpanded(altitude);
     requestAnimationFrame(syncSize);
     globe.pointOfView(coordinate, 2400);
@@ -157,8 +159,11 @@ if (earthVisual) {
         controls.enablePan = false;
         controls.enableZoom = true;
         controls.addEventListener?.('change', () => {
-          if (visible) setExpanded(Number(globe.pointOfView()?.altitude ?? 2.5));
+          if (!visible) return;
+          const current = Number(globe.pointOfView()?.altitude ?? 2.5);
+          setExpanded(plannedAltitude === null ? current : Math.min(current, plannedAltitude));
         });
+        controls.addEventListener?.('start', () => { plannedAltitude = null; });
         syncSize();
         globe.pointOfView(home, 0);
         lastError = null;
@@ -192,6 +197,7 @@ if (earthVisual) {
   }
   function close() {
     visible = false;
+    plannedAltitude = null;
     ++requestSequence;
     host.hidden = true;
     clearSelection();
@@ -261,6 +267,7 @@ if (earthVisual) {
     if (action === 'home' || action === 'reset') {
       if (!visible) return { ok: false };
       clearSelection();
+      plannedAltitude = home.altitude;
       setExpanded(home.altitude);
       globe?.pointOfView(home, 1800);
       return { ok: true };
@@ -269,6 +276,7 @@ if (earthVisual) {
       const point = globe?.pointOfView();
       if (!point) return { ok: false };
       const altitude = clamp(point.altitude * (action === 'zoom-in' ? .7 : 1.5), .12, 5);
+      plannedAltitude = altitude;
       setExpanded(altitude);
       globe.pointOfView({ ...point, altitude }, 500);
       return { ok: true };
