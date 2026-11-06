@@ -339,3 +339,234 @@ body.jarvis-command-center .jarvis-earth-renderer canvas{
   cursor:grab!important;touch-action:none!important;
 }
 body.jarvis-command-center .jarvis-earth-renderer canvas:active{cursor:grabbing!important}
+
+/* v4.46 // SINGLE NEURAL SPACE. WebGL Neural Ring and Globe own the entire
+   center; all existing real system components live beside the text console. */
+body.jarvis-command-center .jarvis-command-center-ui{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  grid-template-rows:40px minmax(580px, min(79dvh,920px)) auto!important;
+  align-content:start!important;min-height:100dvh!important;
+  width:100%!important;overflow:visible!important;
+}
+body.jarvis-command-center .jarvis-cc-top{
+  grid-column:1!important;grid-row:1!important;position:relative;z-index:42;min-height:40px;
+}
+body.jarvis-command-center .jarvis-cc-sidebar,
+body.jarvis-command-center .jarvis-cc-right{display:none!important}
+body.jarvis-command-center .jarvis-cc-center{
+  grid-column:1!important;grid-row:2!important;
+  width:100%!important;min-height:580px!important;
+  height:auto!important;padding:46px 18px 18px!important;
+  box-sizing:border-box;display:flex!important;gap:12px!important;
+  overflow:visible!important;align-items:center;justify-content:center!important;
+  background:radial-gradient(ellipse at center,#0c1732 0%,#050917 52%,#03050b 83%);
+}
+body.jarvis-command-center .jarvis-cc-heading{
+  top:16px!important;font-size:11px;letter-spacing:.2em;z-index:5;pointer-events:none;
+}
+body.jarvis-command-center .jarvis-cc-visual{
+  width:min(82vw,830px)!important;height:min(71dvh,790px)!important;
+  max-height:none!important;aspect-ratio:1!important;
+  flex:0 0 auto!important;min-width:0;min-height:0;
+  background:transparent!important;box-shadow:none!important;
+  position:relative;isolation:isolate;
+}
+body.jarvis-command-center .jarvis-cc-visual > #jarvis-cc-canvas{
+  position:absolute;inset:0;width:100%!important;height:100%!important;
+  max-width:none!important;max-height:none!important;
+  opacity:1;visibility:visible;pointer-events:none!important;
+  background:transparent!important;z-index:1;
+}
+body.jarvis-command-center .jarvis-cc-visual > #jarvis-cc-canvas[hidden]{display:none!important}
+body.jarvis-command-center .jarvis-cc-orb-label{bottom:2%!important;z-index:14;pointer-events:none}
+body.jarvis-command-center .jarvis-cc-orb-controls{
+  position:relative!important;top:auto!important;right:auto!important;
+  flex:none;align-self:center;z-index:32;
+  margin-top:-8px!important;display:flex!important;gap:16px;
+}
+body.jarvis-command-center .jarvis-cc-orb-controls button{
+  width:44px;height:44px;min-width:44px;min-height:44px;
+  border-radius:50%;cursor:pointer;touch-action:manipulation;
+}
+body.jarvis-command-center .jarvis-cc-bottom{
+  grid-column:1!important;grid-row:3!important;
+  order:initial!important;display:block!important;min-height:0!important;
+  height:auto!important;padding:12px clamp(10px,2vw,26px) 22px!important;
+  overflow:visible!important;z-index:20;background:#040813f4;border-top:1px solid #283b58;
+}
+body.jarvis-command-center .jarvis-cc-console-layout{
+  display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);
+  gap:14px;align-items:stretch;max-width:1700px;margin:0 auto;min-width:0;
+}
+body.jarvis-command-center .jarvis-cc-console-terminal{
+  min-width:0;display:flex;flex-direction:column;gap:9px;
+  padding:12px;background:linear-gradient(145deg,#09152b,#050c18);
+  border:1px solid #304963;box-shadow:inset 3px 0 #a94156;
+}
+body.jarvis-command-center #jarvis-cc-input-slot{
+  display:flex!important;width:100%;max-width:none!important;
+  flex-shrink:0;order:0;z-index:4;margin:0!important;
+}
+body.jarvis-command-center #jarvis-cc-input-slot .command-row{
+  display:flex!important;flex-wrap:nowrap!important;gap:8px;
+  align-items:stretch;width:100%;
+}
+body.jarvis-command-center #jarvis-cc-input-slot .command-input-wrap{
+  min-width:0;flex:1 1 auto;max-width:none;min-height:76px;
+}
+body.jarvis-command-center #command-input{
+  resize:vertical!important;min-height:70px!important;
+  max-height:200px!important;flex:1 1 auto!important;
+}
+body.jarvis-command-center #btn-send{
+  flex:0 0 auto;min-height:54px!important;align-self:stretch;
+}
+body.jarvis-command-center #jarvis-cc-input-slot .quick-actions{
+  display:flex!important;flex-wrap:wrap!important;gap:6px;margin:0;
+}
+body.jarvis-command-center #jarvis-cc-input-slot .quick-actions button{
+  border:1px solid #304966;background:#111d32;color:#d5dfed;
+  min-height:30px;cursor:pointer;
+}
+body.jarvis-command-center .jarvis-cc-responses{
+  width:100%!important;max-width:none!important;order:1!important;
+  min-height:140px!important;margin:0!important;
+  background:#030b1b;border:1px solid #2d4560;
+}
+body.jarvis-command-center .jarvis-cc-responses-title{color:#d1b4be}
+body.jarvis-command-center #output-box{
+  height:clamp(125px,18vh,230px)!important;max-height:230px!important;
+  min-height:115px!important;overflow-y:auto!important;
+  font-size:11px;line-height:1.55;
+}
+body.jarvis-command-center .jarvis-cc-console-events{
+  flex:none;max-height:52px;overflow:hidden;font-size:10px;
+  display:flex;flex-wrap:wrap;gap:5px;
+}
+body.jarvis-command-center .jarvis-cc-console-events p{
+  display:block;margin:0;padding:3px 7px;
+  border:1px solid #253c59;color:#8ea9be;font-size:9px;
+}
+body.jarvis-command-center .jarvis-cc-system-dock{
+  display:flex;flex-direction:column;gap:8px;min-width:0;
+  padding:12px;background:linear-gradient(145deg,#091226,#050b16);
+  border:1px solid #304963;
+}
+body.jarvis-command-center .jarvis-cc-dock-heading{
+  color:#b9d0e5;font:10px/1.4 ui-monospace,monospace;
+  letter-spacing:.14em;padding:0 0 8px;border-bottom:1px solid #263c59;
+}
+body.jarvis-command-center .jarvis-cc-dock-grid{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:9px;align-items:stretch;min-width:0;
+}
+body.jarvis-command-center .jarvis-cc-dock-module{
+  position:relative!important;inset:auto!important;width:100%!important;
+  height:auto!important;max-height:none!important;min-width:0!important;
+  display:flex!important;flex-direction:column;align-self:stretch!important;
+  padding:0!important;margin:0!important;z-index:1!important;
+}
+body.jarvis-command-center .jarvis-cc-dock-module > .hud-panel{
+  display:flex!important;flex-direction:column;
+  width:100%;height:100%;min-width:0!important;
+  padding:8px!important;margin:0!important;
+  border:1px solid #2e4560!important;background:#060e1eea!important;
+  box-shadow:inset 2px 0 #874057!important;
+  box-sizing:border-box;overflow:hidden;
+}
+body.jarvis-command-center .jarvis-cc-dock-module .panel-heading{
+  padding:2px 2px 6px!important;margin-bottom:7px;
+  min-width:0;display:flex;gap:6px;flex-wrap:wrap;
+}
+body.jarvis-command-center .jarvis-cc-dock-module .panel-heading h2{
+  font-size:10px!important;line-height:1.3;letter-spacing:.02em;
+}
+body.jarvis-command-center .jarvis-cc-dock-module .panel-heading b{
+  font-size:9px!important;word-break:break-word;
+}
+body.jarvis-command-center .jarvis-cc-dock-module .module-list .module,
+body.jarvis-command-center .jarvis-cc-dock-module .link-grid{
+  font-size:9px!important;
+}
+body.jarvis-command-center .jarvis-cc-dock-module .module-list .module{
+  padding:4px 0!important;gap:5px;min-height:0;
+}
+body.jarvis-command-center .jarvis-cc-dock-module .module-list .module small{font-size:8px}
+body.jarvis-command-center .jarvis-cc-dock-module .spatial-help{display:none!important}
+body.jarvis-command-center .jarvis-cc-dock-module .sensor-readout{display:none!important}
+body.jarvis-command-center .jarvis-cc-dock-module .optical-preview{
+  height:88px!important;min-height:78px!important;flex:1 1 auto;
+  overflow:hidden;position:relative;
+}
+body.jarvis-command-center .jarvis-cc-dock-module .controls{
+  display:flex!important;flex-wrap:wrap;gap:5px;margin-top:7px!important;
+}
+body.jarvis-command-center .jarvis-cc-dock-module .controls button,
+body.jarvis-command-center .jarvis-cc-dock-module .hud-button{
+  display:inline-flex!important;align-items:center;justify-content:center;
+  min-width:0!important;min-height:32px!important;flex:1 1 90px;
+  font-size:9px!important;padding:5px!important;
+  white-space:normal!important;cursor:pointer;
+}
+body.jarvis-command-center .jarvis-cc-dock-module .link-grid{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;
+}
+body.jarvis-command-center .jarvis-cc-dock-module .link-grid > div{
+  min-width:0;overflow-wrap:anywhere;
+}
+body.jarvis-command-center .jarvis-cc-dock-module .link-grid strong{font-size:9px}
+body.jarvis-command-center .jarvis-cc-panel{display:none!important}
+body.jarvis-command-center .jarvis-cc-inline-result{
+  margin:6px 0;padding:6px 8px;border-left:2px solid #8e4d69;
+  color:#c3d8e7;background:#081427;
+}
+body.jarvis-command-center .jarvis-cc-visual.jarvis-ring-fallback:not(.jarvis-earth-active)::before{
+  content:"";display:block!important;position:absolute;inset:17%;border-radius:50%;
+  border:12px ridge #b9566b;transform:rotateX(58deg) rotateZ(-16deg);
+  box-shadow:0 0 35px #e7424e55,inset 0 0 34px #4573b855;
+  pointer-events:none;
+}
+body.jarvis-command-center .jarvis-command-center-ui.jarvis-earth-expanded .jarvis-cc-center{
+  grid-column:1!important;grid-row:2!important;
+  min-height:min(91dvh,1000px)!important;z-index:26;
+}
+body.jarvis-command-center .jarvis-command-center-ui.jarvis-earth-expanded .jarvis-cc-visual{
+  width:min(97vw,1280px)!important;height:min(82dvh,920px)!important;
+  max-height:none!important;aspect-ratio:auto!important;
+}
+body.jarvis-command-center .jarvis-command-center-ui.jarvis-earth-expanded .jarvis-cc-orb-controls{
+  position:relative!important;top:auto!important;right:auto!important;
+  margin-top:-5px!important;z-index:40;
+}
+@media(max-width:1040px){
+  body.jarvis-command-center .jarvis-cc-console-layout{
+    grid-template-columns:minmax(0,1fr)!important;
+  }
+  body.jarvis-command-center .jarvis-command-center-ui{
+    grid-template-rows:40px minmax(520px,72dvh) auto!important;
+  }
+}
+@media(max-width:620px){
+  body.jarvis-command-center .jarvis-command-center-ui{
+    grid-template-rows:40px minmax(390px,58dvh) auto!important;
+  }
+  body.jarvis-command-center .jarvis-cc-center{
+    min-height:390px!important;padding:45px 6px 10px!important;
+  }
+  body.jarvis-command-center .jarvis-cc-visual{
+    width:min(96vw,540px)!important;height:min(48dvh,490px)!important;
+  }
+  body.jarvis-command-center .jarvis-cc-console-layout{gap:9px}
+  body.jarvis-command-center .jarvis-cc-system-dock,
+  body.jarvis-command-center .jarvis-cc-console-terminal{padding:8px}
+  body.jarvis-command-center .jarvis-cc-dock-grid{gap:6px}
+  body.jarvis-command-center #jarvis-cc-input-slot .command-row{
+    flex-wrap:wrap!important;flex-direction:column!important;
+  }
+  body.jarvis-command-center #btn-send{width:100%}
+  body.jarvis-command-center .jarvis-cc-dock-module .panel-heading h2{font-size:9px!important}
+}
+@media(max-width:420px){
+  body.jarvis-command-center .jarvis-cc-dock-grid{grid-template-columns:1fr!important}
+}

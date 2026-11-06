@@ -8,6 +8,7 @@ on:
       - 'modules/jarvis-earth.js'
       - 'modules/jarvis-command-center-v4330.css'
       - 'modules/jarvis-command-center-v4330.js'
+      - 'modules/jarvis-neural-ring-3d.js'
       - 'modules/ultron-orchestrator-v4270.js'
       - 'script.js'
       - 'tests/earth-dom-smoke.mjs'
@@ -35,6 +36,7 @@ jobs:
         run: |
           node --check modules/jarvis-earth.js
           node --check modules/jarvis-command-center-v4330.js
+          node --check modules/jarvis-neural-ring-3d.js
           node --check modules/ultron-orchestrator-v4270.js
           node --check script.js
       - name: Verify one Neural Ring sphere and command routing
@@ -46,6 +48,13 @@ jobs:
           const css = fs.readFileSync('modules/jarvis-command-center-v4330.css', 'utf8');
           const html = fs.readFileSync('index.html', 'utf8');
           const router = fs.readFileSync('modules/ultron-orchestrator-v4270.js', 'utf8');
+          const center = fs.readFileSync('modules/jarvis-command-center-v4330.js','utf8');
+          const neural = fs.readFileSync('modules/jarvis-neural-ring-3d.js','utf8');
+          const script = fs.readFileSync('script.js','utf8');
+          assert.ok(center.includes('jarvis-cc-console-layout') && center.includes('jarvis-cc-system-dock'), 'Integrated terminal and modules required');
+          assert.ok(center.includes('jarvis-neural-ring-3d.js?v=4.46.0'), 'True 3D neural engine required');
+          assert.ok(neural.includes('gl.enable(gl.DEPTH_TEST)') && neural.includes('gl.drawElements(gl.TRIANGLES'), 'Real WebGL 3D mesh required');
+          assert.ok(script.includes('activateCamera({ openPreview: false })'), 'Optical sensor must remain inline');
           for (const required of [
             'window.ULTRON_EARTH', 'jarvis-cc-visual', 'jarvis-earth-globe',
             '.showAtmosphere(false)', '.backgroundColor(', 'onGlobeClick',
@@ -62,7 +71,7 @@ jobs:
           }
           assert.ok(css.includes('.jarvis-earth-globe') && css.includes('.jarvis-earth-expanded'), 'Neural Ring styling missing');
           assert.ok(html.includes('jarvis-earth.js?v=4.45.1'), 'Earth release version missing');
-          assert.ok(html.includes('jarvis-command-center-v4330.css?v=4.45.1'), 'Earth CSS version missing');
+          assert.ok(html.includes('jarvis-command-center-v4330.css?v=4.46.0'), 'Earth CSS version missing');
           assert.equal((html.match(/src="modules\/jarvis-earth.js/g) || []).length, 1, 'Earth module must load only once');
           assert.ok(!/pk\.eyJ[A-Za-z0-9._-]+/.test(earth), 'No literal Mapbox token in Git');
           const a = router.indexOf('const geoAliases ='), b = router.indexOf('function isEarthStatusIntent(', a);

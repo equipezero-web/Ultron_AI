@@ -7,7 +7,9 @@ on:
       - 'modules/jarvis-earth.js'
       - 'modules/jarvis-command-center-v4330.js'
       - 'modules/jarvis-command-center-v4330.css'
+      - 'modules/jarvis-neural-ring-3d.js'
       - 'tests/earth-browser-smoke.mjs'
+      - 'tests/neural-command-center-smoke.mjs'
       - '.github/workflows/earth-browser-smoke.yml'
   push:
     branches: [main]
@@ -38,10 +40,13 @@ jobs:
           python3 -m http.server 8766 --bind 127.0.0.1 >/tmp/jarvis-earth-http.log 2>&1 &
           sleep 2
           node tests/earth-browser-smoke.mjs
+          node tests/neural-command-center-smoke.mjs
       - name: Capture failure screenshot
         if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: earth-browser-failure
-          path: earth-browser-failure.png
+          path: |
+            earth-browser-failure.png
+            neural-command-failure.png
           if-no-files-found: ignore

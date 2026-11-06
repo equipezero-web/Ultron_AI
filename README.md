@@ -90,3 +90,11 @@ O J.A.R.V.I.S. mantém uma única visualização central. A esfera Globe.gl/WebG
 **Token Mapbox sem nova interface:** o token público `pk.` previamente informado não pode ser incluído no GitHub porque o secret scanning bloqueia sua publicação. Em cada navegador, é possível instalá-lo uma vez abrindo `https://equipezero-web.github.io/Ultron_AI/#mapbox_pk=SEU_TOKEN_PUBLICO`. O código salva o token no `localStorage` (`jarvis_mapbox_pk_v1`) e remove o fragmento da barra de endereços imediatamente; o token permanece no navegador. Sem token, o globo 3D continua funcional, mas não pode entregar ruas com os tiles Mapbox. Recomenda-se restringir o token às URLs do site em Mapbox e acompanhar as cotas e os custos.
 
 Apenas um botão **×** para desfazer a seleção de um local aparece após clicar no planeta ou no mapa. No modo Mapbox são mantidos o logotipo e os créditos exigidos pelo fornecedor, sem botões adicionais. Há testes de integração e de navegador para zoom, mouse pressionado, troca de renderizador e volta ao Neural Ring.
+
+## Neural Command Center integrado (v4.46)
+
+A região central do J.A.R.V.I.S. é dedicada exclusivamente à visualização **Neural Ring 3D e Globo 3D/Mapbox**, com troca no mesmo espaço e sem popup. O anel usa geometria toroidal tridimensional desenhada por WebGL real (quatro malhas com profundidade), suspende o render quando o globo está ativo e é restaurado ao sair do globo.
+
+O terminal de respostas/comandos fica lado a lado com quatro módulos operacionais **Optical Sensor, AI Gateway, Computador ↔ Celular e Infra**, reaproveitando os elementos originais com IDs, estados e ações reais, sem duplicar nem simular conexões. A câmera via celular usa a prévia dentro do módulo e não abre mais a janela de câmera quando acionada pelos comandos e botões principais. Respostas de status, agenda, dispositivos e arquivos aparecem somente no terminal existente, sem gerar seções adicionais. A interface é responsiva e, em celulares, organiza o terminal e os módulos abaixo da área 3D sem encobrir o globo.
+
+Os testes verificam WebGL do anel, ativação/retorno ao globo, renderização dos quatro módulos, modo integrado da câmera e largura de tela desktop/mobile. Caso WebGL não esteja disponível, o sistema indica o erro no terminal e apresenta um anel de contingência, sem alegar renderização 3D.

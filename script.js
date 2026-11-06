@@ -178,7 +178,7 @@ const camera = new CameraController(video, (state) => {
 // O computador não abre a webcam local automaticamente. A fonte principal é o celular.
 camera.restoreIfGranted = async () => false;
 
-async function activateCamera({ openPreview = true } = {}) {
+async function activateCamera({ openPreview = false } = {}) {
   try {
     if (openPreview) showScreen();
     setText("permission-state", "CONNECTING MOBILE");
@@ -200,7 +200,7 @@ async function activateCamera({ openPreview = true } = {}) {
   }
 }
 
-btnCamera?.addEventListener("click", () => activateCamera({ openPreview: true }));
+btnCamera?.addEventListener("click", () => activateCamera({ openPreview: false }));
 
 btnStop?.addEventListener("click", () => {
   window.ULTRON_MOBILE_CAMERA?.stopBridgeCamera?.();
@@ -260,12 +260,12 @@ async function execute() {
   const normalized = command.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
   if (/\b(camera|sensor|optical|celular)\b/.test(normalized) && /\b(ativar|ligar|abrir|mostrar|conectar|camera|sensor)\b/.test(normalized)) {
-    await activateCamera({ openPreview: true });
+    await activateCamera({ openPreview: false });
     return;
   }
 
   if (/\b(centralizar|resetar|reset)\b/.test(normalized) && /\b(3d|esfera|neural|holograma|holografica)\b/.test(normalized)) {
-    window.ULTRON_NEURAL_3D?.reset?.();
+    window.ULTRON_NEURAL_RING_3D?.reset?.() || window.ULTRON_NEURAL_3D?.reset?.();
     addLog(output, "Esfera holográfica centralizada em 0°.");
     return;
   }
@@ -392,11 +392,11 @@ function handleQuick(command) {
     return;
   }
   if (command === "camera") {
-    activateCamera({ openPreview: true });
+    activateCamera({ openPreview: false });
     return;
   }
   if (command === "center") {
-    window.ULTRON_NEURAL_3D?.reset?.();
+    window.ULTRON_NEURAL_RING_3D?.reset?.() || window.ULTRON_NEURAL_3D?.reset?.();
     addLog(output, "Esfera holográfica centralizada.");
     return;
   }

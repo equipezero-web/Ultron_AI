@@ -45,6 +45,44 @@ if (stage) {
   // Keep the Earth entry point alongside the visible quick actions instead.
   const globeQuickButton = ui.querySelector('[data-cc="earth"]');
   ui.querySelector('#jarvis-cc-input-slot .quick-actions')?.append(globeQuickButton);
+  // A single 3D neural stage. All real sensor/gateway/bridge/infra panels
+  // remain functional with their original IDs, moved beside the command composer.
+  const bottom = ui.querySelector('.jarvis-cc-bottom');
+  const consoleLayout = document.createElement('div');
+  consoleLayout.className = 'jarvis-cc-console-layout';
+  const consoleTerminal = document.createElement('section');
+  consoleTerminal.className = 'jarvis-cc-console-terminal';
+  consoleTerminal.setAttribute('aria-label', 'Terminal de comandos e respostas do Jarvis');
+  const systemDock = document.createElement('aside');
+  systemDock.className = 'jarvis-cc-system-dock';
+  systemDock.setAttribute('aria-label', 'Optical Sensor, AI Gateway, computador e celular, infraestrutura');
+  const dockHeading = document.createElement('div');
+  dockHeading.className = 'jarvis-cc-dock-heading';
+  dockHeading.textContent = 'J.A.R.V.I.S // SISTEMAS EM TEMPO REAL';
+  systemDock.append(dockHeading);
+  const dockGrid = document.createElement('div');
+  dockGrid.className = 'jarvis-cc-dock-grid';
+  for (const slot of ['#jarvis-cc-camera-slot','#jarvis-cc-gateway-slot','#jarvis-cc-link-slot','#jarvis-cc-infra-slot']) {
+    const node = ui.querySelector(slot);
+    if (node) {
+      node.classList.add('jarvis-cc-dock-module');
+      dockGrid.append(node);
+    }
+  }
+  systemDock.append(dockGrid);
+  const inputSlot = ui.querySelector('#jarvis-cc-input-slot');
+  const responses = ui.querySelector('.jarvis-cc-responses');
+  const voiceSlot = ui.querySelector('#jarvis-cc-voice-slot');
+  if (inputSlot) consoleTerminal.append(inputSlot);
+  if (responses) consoleTerminal.append(responses);
+  if (voiceSlot) consoleTerminal.append(voiceSlot);
+  const recentEvents = ui.querySelector('#jarvis-cc-log');
+  if (recentEvents) {
+    recentEvents.classList.add('jarvis-cc-console-events');
+    consoleTerminal.append(recentEvents);
+  }
+  consoleLayout.append(consoleTerminal,systemDock);
+  bottom.prepend(consoleLayout);
   // Mirror the same MediaStream without relocating the source video or
   // opening a second camera; preserve modal and canvas-overlay behavior.
   const compactPreview = ui.querySelector('.optical-preview');
@@ -69,87 +107,72 @@ if (stage) {
     sync();
   }
   const canvas = ui.querySelector('#jarvis-cc-canvas');
-  const ctx = canvas.getContext('2d', {alpha:true});
+  const visual = ui.querySelector('.jarvis-cc-visual');
   const visualLabel = ui.querySelector('#jarvis-cc-visual-label');
   const clock = ui.querySelector('#jarvis-cc-clock');
   const log = ui.querySelector('#jarvis-cc-log');
-  let visualMode = 'ring';
-  let visualFrame = 0;
-  let lastVisualAt = 0;
-  const visualInterval = matchMedia('(max-width: 680px)').matches ? 42 : 33;
-  let visualRunning = false;
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  function drawVisual(now = performance.now()) {
-    if (!ctx) return;
-    if (visualRunning && now - lastVisualAt < visualInterval) { visualFrame = requestAnimationFrame(drawVisual); return; }
-    lastVisualAt = now;
-    const width = canvas.clientWidth || 400;
-    const height = canvas.clientHeight || 400;
-    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-    if (canvas.width !== Math.round(width*dpr) || canvas.height !== Math.round(height*dpr)) {
-      canvas.width = Math.round(width*dpr); canvas.height = Math.round(height*dpr);
-    }
-    ctx.setTransform(dpr,0,0,dpr,0,0);
-    ctx.clearRect(0,0,width,height);
-    if (visualMode !== 'ring') { if(visualRunning)visualFrame=requestAnimationFrame(drawVisual); return; }
-    const cx=width/2, cy=height/2, radius=Math.min(width,height)*0.37;
-    const t=reduceMotion.matches ? 0 : performance.now()/1000;
-    const red='rgba(231,66,78,', blue='rgba(57,101,166,', silver='rgba(183,199,215,';
-    ctx.lineWidth=0.8;
-    if (visualMode === 'ring') {
-      for (let strand=0;strand<24;strand++) {
-        ctx.beginPath();
-        for(let i=0;i<=240;i++) {
-          const angle=i/240*Math.PI*2;
-          const wave=Math.sin(angle*9+strand*.61+t*.8)*6 + Math.cos(angle*15-strand*.42-t*.5)*3;
-          const r=radius*.79 + wave + strand*.28;
-          const x=cx+Math.cos(angle)*r, y=cy+Math.sin(angle)*r;
-          if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
-        }
-        ctx.strokeStyle=(strand%4===0?silver:strand%3===0?blue:red)+(strand%4===0?'.54)':'.34)');
-        ctx.shadowColor=strand%3===0?'#4872b8':'#e7424e';ctx.shadowBlur=strand%5===0?12:2;ctx.stroke();
-      }
-    }
-
-    ctx.shadowBlur=0;
-    if(visualRunning)visualFrame=requestAnimationFrame(drawVisual);
+  let visualMode = 'ring', ringEngine = null, ringPromise = null;
+  function report3D(error) {
+    const message = error?.message || String(error);
+    logEvent('NEURAL 3D // ' + message);
+    visual.classList.add('jarvis-ring-fallback');
   }
-  function setVisualMode(mode){
-    visualMode=mode==='globe'?'globe':'ring';
-    visualLabel.textContent=visualMode==='globe'?'GLOBO TERRESTRE':'NEURAL RING';
-    ui.querySelectorAll('[data-visual]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.visual===visualMode)));
-    drawVisual();
+  async function bootNeuralRing() {
+    if (ringEngine) return ringEngine;
+    if (ringPromise) return ringPromise;
+    ringPromise = import('./jarvis-neural-ring-3d.js?v=4.46.0')
+      .then(module => module.createNeuralRing3D(canvas,{onError:report3D}))
+      .then(engine => {
+        ringEngine = engine;
+        visual.classList.remove('jarvis-ring-fallback');
+        engine.setVisible(visualMode === 'ring');
+        window.ULTRON_NEURAL_RING_3D = {
+          engine:'webgl', get active(){return engine.active;}, get rings(){return engine.rings;},
+          setVisible:engine.setVisible, resize:engine.resize, reset:engine.reset
+        };
+        window.dispatchEvent(new CustomEvent('ultron:neural-ring-3d-ready'));
+        return engine;
+      })
+      .catch(error => {
+        report3D(error);
+        canvas.hidden = true;
+        ringPromise = null;
+        return null;
+      });
+    return ringPromise;
   }
-  ui.querySelectorAll('[data-visual]').forEach(b=>b.addEventListener('click',()=>setVisualMode(b.dataset.visual)));
-  const updateClock=()=>{clock.textContent=new Date().toLocaleTimeString('pt-BR',{hour12:false});};
-  updateClock();const clockTimer=setInterval(updateClock,1000);
-  const startVisual=()=>{if(visualRunning||document.hidden)return;visualRunning=true;drawVisual();};
-  const stopVisual=()=>{visualRunning=false;cancelAnimationFrame(visualFrame);};
-  document.addEventListener('visibilitychange',()=>document.hidden?stopVisual():startVisual());
-  reduceMotion.addEventListener?.('change',()=>{stopVisual();startVisual();});
-  startVisual();
+  function setVisualMode(mode) {
+    visualMode = mode === 'globe' ? 'globe' : 'ring';
+    visual.dataset.mode = visualMode;
+    visualLabel.textContent = visualMode === 'globe' ? 'GLOBO TERRESTRE' : 'NEURAL RING // 3D';
+    ui.querySelectorAll('[data-visual]').forEach(button => {
+      button.setAttribute('aria-pressed',String(button.dataset.visual === visualMode));
+    });
+    ringEngine?.setVisible(visualMode === 'ring');
+    canvas.hidden = visualMode !== 'ring' || (!ringEngine && visual.classList.contains('jarvis-ring-fallback'));
+    if (visualMode === 'ring') void bootNeuralRing();
+  }
+  ui.querySelectorAll('[data-visual]').forEach(button => button.addEventListener('click',() => setVisualMode(button.dataset.visual)));
+  const updateClock = () => {clock.textContent=new Date().toLocaleTimeString('pt-BR',{hour12:false});};
+  updateClock();
+  setInterval(updateClock,1000);
+  void bootNeuralRing();
   function logEvent(message){
     const p=document.createElement('p');p.textContent='› '+message;
     log.prepend(p);while(log.children.length>5)log.lastElementChild.remove();
   }
-  const panel = ui.querySelector('#jarvis-cc-panel');
   const state = ui.querySelector('#jarvis-cc-state');
-  const escape = (value) => String(value).replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  function show(title, content, action) {
-    panel.hidden = false;
-    panel.replaceChildren();
-    const heading = document.createElement('h3');
-    heading.textContent = title;
-    const paragraph = document.createElement('p');
-    paragraph.textContent = content;
-    panel.append(heading, paragraph);
-    if (action) {
-      const button = document.createElement('button');
-      button.type = 'button';
-      button.textContent = action.label;
-      button.addEventListener('click', action.run);
-      panel.append(button);
-    }
+  function show(title, content) {
+    // No popup and no new section: results go into the existing command terminal.
+    const output = document.getElementById('output-box');
+    if (!output) return;
+    const line = document.createElement('p');
+    line.className = 'jarvis-cc-inline-result';
+    line.textContent = '> [' + title + '] ' + String(content);
+    output.append(line);
+    while (output.children.length > 90) output.firstElementChild.remove();
+    output.scrollTop = output.scrollHeight;
+    logEvent(title + ' // ATUALIZADO');
   }
   const scrollTo = (selector) => document.querySelector(selector)?.scrollIntoView({behavior:'smooth',block:'center'});
   let openingEarth = false;
@@ -180,7 +203,7 @@ if (stage) {
       show('AGENDA / VISÃO LOCAL', now.toLocaleString('pt-BR',{dateStyle:'full',timeStyle:'short'}) + '. Calendário externo ainda não conectado. Nenhum compromisso é presumido.');
     },
     camera() {
-      show('SENSOR ÓPTICO', 'O sensor utiliza a integração de câmera já existente. A permissão será solicitada pelo navegador quando necessária.', {label:'Abrir painel de câmera',run:()=>scrollTo('.optical-panel')});
+      show('SENSOR ÓPTICO', 'Câmera disponível no módulo integrado ao lado dos comandos. Clique em ATIVAR SENSOR DO CELULAR para conectar sem abrir outra tela.');
     },
     async files() {
       const api = window.ULTRON_LOCAL_FILES;
@@ -238,5 +261,5 @@ if (stage) {
   window.addEventListener('ultron:processing-end',()=>{state.textContent='STANDBY';});
   window.addEventListener('ultron:speech-start',()=>{state.textContent='FALANDO';logEvent('VOICE // OUTPUT');});
   window.addEventListener('ultron:speech-end',()=>{state.textContent='STANDBY';});
-  window.JARVIS_COMMAND_CENTER = {version:'4.35.0',setVisualMode,open:(name)=>actions[name]?.(),get active(){return true;}};
+  window.JARVIS_COMMAND_CENTER = {version:'4.46.0',setVisualMode,open:(name)=>actions[name]?.(),get active(){return true;}};
 }
