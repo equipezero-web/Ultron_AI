@@ -52,12 +52,17 @@ assert.equal(document.querySelector('.jarvis-earth-selection-close').hidden, tru
 assert.equal(instantiations, 1);
 assert.equal(globeControls.enableRotate, false, 'Mouse hovering must never rotate the globe');
 const globeCanvas = document.querySelector('.jarvis-earth-renderer canvas');
-globeCanvas.dispatchEvent(new window.MouseEvent('pointerdown', {bubbles:true,button:0,buttons:1}));
-assert.equal(globeControls.enableRotate, true, 'Holding mouse down must enable rotation');
+const preDrag = {...globe.pointOfView()};
+globeCanvas.dispatchEvent(new window.MouseEvent('pointerdown', {bubbles:true,button:0,buttons:1,clientX:10,clientY:10}));
+assert.equal(earth.state.dragging, true, 'Holding mouse down must arm manual rotation');
+window.dispatchEvent(new window.MouseEvent('pointermove', {bubbles:true,buttons:1,clientX:80,clientY:35}));
+assert.notEqual(globe.pointOfView().lng, preDrag.lng, 'Dragging with button held must rotate');
 window.dispatchEvent(new window.MouseEvent('pointerup', {bubbles:true,button:0,buttons:0}));
-assert.equal(globeControls.enableRotate, false, 'Mouse release must stop rotation');
-globeCanvas.dispatchEvent(new window.MouseEvent('pointermove', {bubbles:true,buttons:0}));
-assert.equal(globeControls.enableRotate, false, 'Mouse movement alone must not rotate');
+assert.equal(earth.state.dragging, false, 'Mouse release must stop rotation');
+const positionAfterDrag = {...globe.pointOfView()};
+globeCanvas.dispatchEvent(new window.MouseEvent('pointermove', {bubbles:true,buttons:0,clientX:140,clientY:70}));
+assert.equal(globe.pointOfView().lng, positionAfterDrag.lng, 'Mouse hovering must not rotate');
+assert.equal(globeControls.enableRotate, false, 'OrbitControls must never rotate without the manual button gate');
 
 const china = await earth.locate('China');
 assert.equal(china.ok, true);
