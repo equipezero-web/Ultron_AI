@@ -140,8 +140,8 @@ if (earthToggle) {
     if (ringToggle && ringToggle.getAttribute('aria-pressed') !== 'true') ringToggle.click();
   }
   async function init() {
-    if (map) return { ok: true };
     if (pendingInit) return pendingInit;
+    if (map) return { ok: true };
     const token = publicToken();
     if (!token || !/^pk\.[A-Za-z0-9._-]{20,}$/.test(token)) {
       tokenForm.hidden = false;
@@ -207,7 +207,7 @@ if (earthToggle) {
     const url = new URL('https://commons.wikimedia.org/w/api.php');
     const parameters = {
       action: 'query', generator: 'geosearch', ggscoord: lat.toFixed(5) + '|' + lng.toFixed(5),
-      ggsradius: '20000', ggslimit: '12', ggsnamespace: '6',
+      ggsradius: '10000', ggslimit: '12', ggsnamespace: '6',
       prop: 'imageinfo', iiprop: 'url|extmetadata', iiurlwidth: '480', format: 'json', origin: '*'
     };
     for (const [key, value] of Object.entries(parameters)) url.searchParams.set(key, value);
