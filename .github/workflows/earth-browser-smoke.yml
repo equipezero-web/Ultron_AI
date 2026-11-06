@@ -1,0 +1,47 @@
+name: Earth Browser Smoke
+
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'modules/jarvis-earth.js'
+      - 'modules/jarvis-command-center-v4330.js'
+      - 'modules/jarvis-command-center-v4330.css'
+      - 'tests/earth-browser-smoke.mjs'
+      - '.github/workflows/earth-browser-smoke.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'modules/jarvis-earth.js'
+      - 'modules/jarvis-command-center-v4330.js'
+      - 'modules/jarvis-command-center-v4330.css'
+      - 'tests/earth-browser-smoke.mjs'
+      - '.github/workflows/earth-browser-smoke.yml'
+  workflow_dispatch:
+
+jobs:
+  earth-browser-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Set up headless browser test
+        run: |
+          npm install --no-save --no-package-lock --ignore-scripts puppeteer-core@24.33.0
+          echo "CHROME_BIN=$(command -v google-chrome || command -v chromium || command -v chromium-browser)" >> "$GITHUB_ENV"
+      - name: Launch local site and exercise Earth Explorer
+        run: |
+          python3 -m http.server 8766 --bind 127.0.0.1 >/tmp/jarvis-earth-http.log 2>&1 &
+          sleep 2
+          node tests/earth-browser-smoke.mjs
+      - name: Capture failure screenshot
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: earth-browser-failure
+          path: earth-browser-failure.png
+          if-no-files-found: ignore
