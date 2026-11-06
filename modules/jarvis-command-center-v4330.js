@@ -178,11 +178,25 @@ if (stage) {
     }
   }
   const scrollTo = (selector) => document.querySelector(selector)?.scrollIntoView({behavior:'smooth',block:'center'});
+  let openingEarth = false;
   const actions = {
-    earth() {
-      const earth = window.ULTRON_EARTH;
-      if (earth?.open) earth.open();
-      else show('GLOBO 3D', 'O explorador ainda não foi carregado neste navegador. Atualize a página e tente novamente.');
+    async earth() {
+      if (openingEarth) return;
+      openingEarth = true;
+      try {
+        let earth = window.ULTRON_EARTH;
+        if (!earth?.open) {
+          show('GLOBO 3D', 'Inicializando o explorador 3D...');
+          // Reuse the same module URL already declared in index.html; importing it
+          // here also handles a quick click before the deferred module has finished.
+          await import('./jarvis-earth.js?v=4.41.0');
+          earth = window.ULTRON_EARTH;
+        }
+        if (!earth?.open) throw new Error('Módulo geográfico não inicializado');
+        await earth.open();
+      } catch (error) {
+        show('GLOBO 3D', 'Falha ao abrir explorador: ' + (error?.message || 'erro desconhecido') + '. Tente novamente.');
+      } finally { openingEarth = false; }
     },
     status() {
       const voice = window.ULTRON_VOICE_MATCH?.state;
