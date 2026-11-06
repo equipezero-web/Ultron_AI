@@ -1,0 +1,53 @@
+name: Earth Explorer Check
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'modules/jarvis-earth.js'
+      - 'modules/jarvis-command-center-v4330.css'
+      - '.github/workflows/earth-explorer-check.yml'
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'modules/jarvis-earth.js'
+      - 'modules/jarvis-command-center-v4330.css'
+      - '.github/workflows/earth-explorer-check.yml'
+
+jobs:
+  earth-explorer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: JavaScript syntax
+        run: node --check modules/jarvis-earth.js
+      - name: Verify Earth interactive integration
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import assert from 'node:assert/strict';
+          const js = fs.readFileSync('modules/jarvis-earth.js','utf8');
+          const css = fs.readFileSync('modules/jarvis-command-center-v4330.css','utf8');
+          const html = fs.readFileSync('index.html','utf8');
+          const required = [
+            'satellite-streets-v12', "projection: 'globe'", 'map.flyTo',
+            'data-earth="home"', 'data-earth="zoom-in"', 'data-earth="rotate"',
+            'data-earth="close"', 'map.on(\'click\'',
+            'api.mapbox.com/search/geocode/v6/forward',
+            'api.mapbox.com/search/geocode/v6/reverse',
+            'commons.wikimedia.org/w/api.php', "origin: '*'",
+            'jarvis-earth-gallery', 'window.ULTRON_EARTH',
+            'localStorage', "map?.resize()", 'ringToggle',
+          ];
+          for (const text of required) assert.ok(js.includes(text), 'Missing Earth feature: ' + text);
+          assert.ok(css.includes('.jarvis-earth-explorer') && css.includes('.jarvis-earth-side.is-open'), 'Earth styling missing');
+          assert.ok(html.includes('jarvis-earth.js?v=4.40.0'), 'Earth version missing');
+          assert.ok(html.includes('jarvis-command-center-v4330.css?v=4.40.0'), 'Earth CSS version missing');
+          assert.equal((html.match(/src="modules\/jarvis-earth.js/g)||[]).length, 1, 'Earth module must load once');
+          assert.ok(!/pk\.eyJ[A-Za-z0-9._-]+/.test(js), 'Do not commit a literal Mapbox token');
+          console.log('Earth Explorer integration and token safety checks passed');
+          NODE
