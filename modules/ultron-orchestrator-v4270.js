@@ -183,7 +183,7 @@ const geoAliases = /^(?:globo|gllobo|globo terrestre|planeta|planeta terra|terra
 function parseEarthIntent(command) {
   const normalized = normalize(command).replace(/^(?:jarvis|ultron)[, ]+/, '').replace(/^(mostre|mostra|mostrar)-me\s+/, 'me $1 ');
   // Direct Earth actions must never reach conversational AI or image-search routing.
-  if (/^(?:(?:(?:me )?(?:ative|ativar|abra|abrir|inicie|iniciar|habilite|habilitar|mostre|mostrar|exiba|exibir)\s+)?(?:o |a )?)?(?:mapa(?: (?:por|de) satelite)?|globo(?: 3d| terrestre)?|google earth|earth explorer|explorador geografico|visao (?:por |de )?satelite)(?: (?:3d|interativo))?[.!?]*$/.test(normalized)) return { place: '' };
+  if (/^(?:(?:(?:(?:me )?(?:ative|ativar|abra|abrir|inicie|iniciar|habilite|habilitar|ligue|ligar|mostre|mostrar|exiba|exibir)|quero ver|quero abrir|quero ativar)\s+)?(?:o |a )?)?(?:mapa(?: (?:por|de) satelite)?|globo(?: 3d| terrestre)?|google earth|earth explorer|explorador geografico|visao (?:por |de )?satelite)(?: (?:3d|interativo))?[.!?]*$/.test(normalized)) return { place: '' };
   const pattern = /^(?:(?:me )?(?:mostre|mostra|mostrar|abra|abrir|visualize|visualizar|localize|localizar|exiba|exibir|ver)|quero ver|me leve para|ir para)\s+(.+)$/;
   const match = normalized.match(pattern);
   if (!match) return null;
