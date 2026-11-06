@@ -305,3 +305,37 @@ body.jarvis-command-center .jarvis-command-center-ui.jarvis-earth-expanded .jarv
 @media(max-width:560px){
  body.jarvis-command-center .jarvis-command-center-ui.jarvis-earth-expanded .jarvis-cc-orb-controls{top:38px;right:7px}
 }
+
+/* v4.45: the globe and detailed Mapbox satellite/street tiles share ONE Neural Ring.
+   No popup, dialog, form, extra command bar or global atmospheric background. */
+body.jarvis-command-center .jarvis-cc-visual .jarvis-earth-globe .jarvis-earth-renderer{
+  z-index:1;transition:opacity 220ms ease;opacity:1;pointer-events:auto;
+}
+body.jarvis-command-center .jarvis-cc-visual .jarvis-earth-map-layer{
+  position:absolute;inset:0;z-index:2;width:100%;height:100%;
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity 220ms ease;overflow:hidden;background:transparent;
+  border:0;box-shadow:none;
+}
+body.jarvis-command-center .jarvis-cc-visual .jarvis-earth-globe.jarvis-earth-map-active .jarvis-earth-map-layer{
+  opacity:1;visibility:visible;pointer-events:auto;
+}
+body.jarvis-command-center .jarvis-cc-visual .jarvis-earth-globe.jarvis-earth-map-active .jarvis-earth-renderer{
+  opacity:0;pointer-events:none;
+}
+body.jarvis-command-center .jarvis-earth-map-layer .mapboxgl-canvas{
+  position:absolute;inset:0;pointer-events:auto!important;touch-action:none!important;
+  cursor:grab;
+}
+body.jarvis-command-center .jarvis-earth-map-layer .mapboxgl-canvas:active{cursor:grabbing}
+body.jarvis-command-center .jarvis-earth-map-layer .mapboxgl-control-container,
+body.jarvis-command-center .jarvis-earth-map-layer .mapboxgl-ctrl-logo{
+  position:absolute;z-index:8;font-size:9px;
+}
+/* Mapbox-required attribution and logo are retained; no navigation buttons are added. */
+body.jarvis-command-center .jarvis-earth-map-layer .mapboxgl-ctrl-bottom-right{right:4px;bottom:3px}
+body.jarvis-command-center .jarvis-earth-map-layer .mapboxgl-ctrl-attrib{font-size:8px}
+body.jarvis-command-center .jarvis-earth-renderer canvas{
+  cursor:grab!important;touch-action:none!important;
+}
+body.jarvis-command-center .jarvis-earth-renderer canvas:active{cursor:grabbing!important}

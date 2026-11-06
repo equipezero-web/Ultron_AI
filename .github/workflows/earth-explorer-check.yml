@@ -51,13 +51,18 @@ jobs:
             '.showAtmosphere(false)', '.backgroundColor(', 'onGlobeClick',
             'pointOfView', 'jarvis-earth-expanded', 'jarvis-earth-selection-close',
             'api.mapbox.com/search/geocode/v6/forward',
+            'mapbox://styles/mapbox/satellite-streets-v12',
+            'controls.enableRotate = false',
+            'canvasHost.addEventListener(\'wheel\'', 'event.preventDefault()',
+            'installPublicMapboxToken', 'DETAIL_ENTRY_ALTITUDE', 'DETAIL_EXIT_ZOOM',
+            'dragPan: true', 'scrollZoom: true', 'dragRotate: false',
           ]) assert.ok(earth.includes(required), 'Missing integrated Earth feature: ' + required);
           for (const forbidden of ['jarvis-earth-explorer', 'jarvis-earth-toolbar', 'jarvis-earth-search', 'jarvis-earth-token', 'jarvis-earth-side']) {
             assert.ok(!earth.includes(forbidden), 'Earth must not create extra UI: ' + forbidden);
           }
           assert.ok(css.includes('.jarvis-earth-globe') && css.includes('.jarvis-earth-expanded'), 'Neural Ring styling missing');
-          assert.ok(html.includes('jarvis-earth.js?v=4.44.1'), 'Earth release version missing');
-          assert.ok(html.includes('jarvis-command-center-v4330.css?v=4.44.1'), 'Earth CSS version missing');
+          assert.ok(html.includes('jarvis-earth.js?v=4.45.0'), 'Earth release version missing');
+          assert.ok(html.includes('jarvis-command-center-v4330.css?v=4.45.0'), 'Earth CSS version missing');
           assert.equal((html.match(/src="modules\/jarvis-earth.js/g) || []).length, 1, 'Earth module must load only once');
           assert.ok(!/pk\.eyJ[A-Za-z0-9._-]+/.test(earth), 'No literal Mapbox token in Git');
           const a = router.indexOf('const geoAliases ='), b = router.indexOf('function isEarthStatusIntent(', a);

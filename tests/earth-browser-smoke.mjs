@@ -71,7 +71,91 @@ try {
   await page.click('[data-cc="earth"]');
   assert.equal(await page.evaluate(() => window.ULTRON_EARTH.state.visible), true, 'The Globe 3D quick button must activate the globe on physical press');
 
-  console.log('BROWSER EARTH PASS: actual buttons, transparent globe, China in center, expanded zoom, click-only X, return to ring');
+  // Hover must never rotate; only a held left mouse button can rotate Globe.gl.
+  await page.evaluate(() => window.ULTRON_EARTH.navigate('home'));
+  await page.waitForFunction(() => window.ULTRON_EARTH?.state?.view?.altitude > 1, { timeout: 7000 });
+  const canvas = await page.$('.jarvis-earth-renderer canvas');
+  const bounds = await canvas.boundingBox();
+  const cx = bounds.x + bounds.width / 2, cy = bounds.y + bounds.height / 2;
+  await page.mouse.move(cx,cy);
+  await page.waitForFunction(() => window.ULTRON_EARTH?.state?.view?.altitude > 1.8, { timeout: 7000 });
+  await new Promise(resolve => setTimeout(resolve, 1900)); // Let the previous Jarvis camera tween settle.
+  const beforeHover = await page.evaluate(() => window.ULTRON_EARTH.state.view);
+  await page.mouse.move(cx + 30,cy + 10,{steps:4});
+  const afterHover = await page.evaluate(() => window.ULTRON_EARTH.state.view);
+  assert.ok(Math.abs(afterHover.lat-beforeHover.lat)<0.01 && Math.abs(afterHover.lng-beforeHover.lng)<0.01,
+    'Moving the mouse without holding must not rotate the globe');
+  await page.mouse.down();
+  await page.mouse.move(cx + 90,cy + 35,{steps:8});
+  await page.mouse.up();
+  await page.waitForFunction(() => window.ULTRON_EARTH.state.dragRequiresHold === true, {timeout:2000});
+  const afterDrag = await page.evaluate(() => window.ULTRON_EARTH.state.view);
+  assert.ok(Math.abs(afterDrag.lat-afterHover.lat)>0.05 || Math.abs(afterDrag.lng-afterHover.lng)>0.05,
+    'Holding and dragging must rotate the Earth');
+  const afterRelease = await page.evaluate(() => window.ULTRON_EARTH.state.view);
+  await page.mouse.move(cx + 95,cy + 40,{steps:3});
+  const afterFreeMove = await page.evaluate(() => window.ULTRON_EARTH.state.view);
+  assert.ok(Math.abs(afterFreeMove.lat-afterRelease.lat)<0.05 && Math.abs(afterFreeMove.lng-afterRelease.lng)<0.05,
+    'After releasing mouse, free movement must not rotate');
+  await page.mouse.wheel({deltaY:-280});
+  await page.waitForFunction(() => window.ULTRON_EARTH?.state?.view?.altitude < 2.5, {timeout:2000});
+
+  // Simulate the official Mapbox GL JS engine locally: verify real integrated
+  // map options and zoom-mode transitions without exposing a production token to CI.
+  const mapboxProof = await page.evaluate(async () => {
+    localStorage.setItem('jarvis_mapbox_pk_v1','pk.'+'a'.repeat(50));
+    let optionsSeen;
+    class StubMap {
+      constructor(options) {
+        optionsSeen=options;
+        this.zoom=options.zoom;
+        this.center={lng:options.center[0],lat:options.center[1]};
+        this.handlers={};
+        const canvas=document.createElement('canvas');
+        canvas.className='mapboxgl-canvas';
+        options.container.append(canvas);
+        window.__earthStubMap=this;
+      }
+      on(name,fn) { (this.handlers[name]??=[]).push(fn); return this; }
+      once(name,fn) { if(name==='load') setTimeout(fn,0); else this.on(name,fn); return this; }
+      fire(name) { for(const fn of this.handlers[name]||[]) fn({}); }
+      loaded() {return true;}
+      resize() {}
+      remove() {}
+      stop() {}
+      getZoom() {return this.zoom;}
+      getCenter() {return this.center;}
+      flyTo(opts) {this.jumpTo(opts);}
+      jumpTo(opts) {
+        if(opts.center)this.center={lng:opts.center[0],lat:opts.center[1]};
+        if(opts.zoom!==undefined)this.zoom=opts.zoom;
+        this.fire('moveend');this.fire('zoomend');
+      }
+      zoomTo(zoom) {this.zoom=zoom;this.fire('zoomend');}
+    }
+    window.mapboxgl={Map:StubMap, supported:()=>true,accessToken:''};
+    const success=await window.ULTRON_EARTH.enterStreetDetails(-8.0476,-34.877,14);
+    const state=window.ULTRON_EARTH.state;
+    const embedded=document.querySelector('.jarvis-earth-map-layer')?.parentElement?.id;
+    const extraUi=document.querySelectorAll('#jarvis-earth-globe input,#jarvis-earth-globe form,#jarvis-earth-globe aside').length;
+    return {success,style:optionsSeen?.style,projection:optionsSeen?.projection,
+      dragPan:optionsSeen?.dragPan,dragRotate:optionsSeen?.dragRotate,
+      scrollZoom:optionsSeen?.scrollZoom,mode:state.mode,embedded,extraUi};
+  });
+  assert.equal(mapboxProof.success,true);
+  assert.equal(mapboxProof.style,'mapbox://styles/mapbox/satellite-streets-v12');
+  assert.equal(mapboxProof.projection,'globe');
+  assert.equal(mapboxProof.dragPan,true);
+  assert.equal(mapboxProof.dragRotate,false);
+  assert.equal(mapboxProof.scrollZoom,true);
+  assert.equal(mapboxProof.mode,'mapbox-satellite');
+  assert.equal(mapboxProof.embedded,'jarvis-earth-globe');
+  assert.equal(mapboxProof.extraUi,0);
+  await page.evaluate(() => window.__earthStubMap.zoomTo(3.5));
+  assert.equal(await page.evaluate(() => window.ULTRON_EARTH.state.mode),'globe-3d');
+  await page.evaluate(() => localStorage.removeItem('jarvis_mapbox_pk_v1'));
+
+  console.log('BROWSER EARTH PASS: globe click-and-hold, wheel zoom, Mapbox satellite-streets mode, return to ring');
   if (errors.length) console.log('Other page script errors:', errors.slice(0, 4));
 } catch (error) {
   console.error('Earth browser smoke failed:', error);
