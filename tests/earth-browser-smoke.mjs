@@ -17,8 +17,11 @@ try {
   await page.waitForSelector('[data-visual="globe"]', { timeout: 30000 });
   assert.equal(await page.evaluate(() => window.ULTRON_EARTH?.state?.visible), false);
 
+  console.log('Globe button pre-click hit:', await page.evaluate(() => { const b=document.querySelector('[data-visual="globe"]'); const r=b.getBoundingClientRect(); const hit=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2); return {x:r.x,y:r.y,w:r.width,h:r.height,hit:hit?.outerHTML?.slice(0,300),isButton:b===hit||b.contains(hit),display:getComputedStyle(b).display,pointerEvents:getComputedStyle(b).pointerEvents}; }));
   await page.click('[data-visual="globe"]');
-  await page.waitForFunction(() => window.ULTRON_EARTH?.state?.ready === true, { timeout: 40000 });
+  console.log('Globe after physical click:', await page.evaluate(() => ({state:window.ULTRON_EARTH?.state,mode:document.querySelector('[data-visual="globe"]')?.getAttribute('aria-pressed')})));
+  await page.waitForFunction(() => window.ULTRON_EARTH?.state?.visible === true, { timeout: 4000 });
+  await page.waitForFunction(() => window.ULTRON_EARTH?.state?.ready === true, { timeout: 15000 });
   const result = await page.evaluate(() => ({
     state: window.ULTRON_EARTH.state,
     parent: document.getElementById('jarvis-earth-globe')?.parentElement?.className,
