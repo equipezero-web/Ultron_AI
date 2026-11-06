@@ -8,6 +8,7 @@ on:
       - 'modules/jarvis-command-center-v4330.js'
       - 'modules/jarvis-command-center-v4330.css'
       - 'modules/jarvis-neural-ring-3d.js'
+      - 'modules/remote-camera-mode-v4232.js'
       - 'tests/earth-browser-smoke.mjs'
       - 'tests/neural-command-center-smoke.mjs'
       - '.github/workflows/earth-browser-smoke.yml'
@@ -18,7 +19,10 @@ on:
       - 'modules/jarvis-earth.js'
       - 'modules/jarvis-command-center-v4330.js'
       - 'modules/jarvis-command-center-v4330.css'
+      - 'modules/jarvis-neural-ring-3d.js'
+      - 'modules/remote-camera-mode-v4232.js'
       - 'tests/earth-browser-smoke.mjs'
+      - 'tests/neural-command-center-smoke.mjs'
       - '.github/workflows/earth-browser-smoke.yml'
   workflow_dispatch:
 
