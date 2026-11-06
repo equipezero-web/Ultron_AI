@@ -222,103 +222,75 @@ body.jarvis-command-center .jarvis-cc-bottom {
   }
 }
 
-/* v4.36: stable page scroll and Earth visual layer. */
-html:has(body.jarvis-command-center), body.jarvis-command-center { overflow-y:auto!important; overflow-x:hidden!important; scroll-behavior:auto!important; }
-body.jarvis-command-center .app-shell { overflow:visible!important; }
-body.jarvis-command-center .jarvis-cc-visual.jarvis-earth-active > canvas { opacity:.12; }
-body.jarvis-command-center .jarvis-earth-shell { position:absolute;inset:0;z-index:8;display:flex;align-items:center;justify-content:center;pointer-events:none; }
-body.jarvis-command-center .jarvis-earth-shell[hidden] {display:none!important}
-body.jarvis-command-center .jarvis-earth-globe {width:100%;height:100%;pointer-events:auto;cursor:grab;touch-action:none}
-body.jarvis-command-center .jarvis-earth-globe:active {cursor:grabbing}
-body.jarvis-command-center .jarvis-earth-hint {position:absolute;bottom:22px;left:5%;right:5%;text-align:center;color:#a8cde8;font-size:10px;pointer-events:none;text-shadow:0 1px 5px #000}
-body.jarvis-command-center .jarvis-earth-details {position:absolute;top:8px;right:8px;width:min(65%,270px);padding:10px;background:rgba(3,9,22,.96);border:1px solid #4a839e;z-index:10;pointer-events:auto;box-shadow:0 0 25px #030914}
-body.jarvis-command-center .jarvis-earth-details[hidden] {display:none!important}
-body.jarvis-command-center .jarvis-earth-title {display:block;font-size:10px;color:#c6e9ff;margin-right:22px;max-height:35px;overflow:hidden}
-body.jarvis-command-center .jarvis-earth-details iframe {width:100%;height:160px;border:0;margin:8px 0;background:#06101c}
-body.jarvis-command-center .jarvis-earth-details a {font-size:10px;color:#8cd8fa}
-body.jarvis-command-center .jarvis-earth-close {position:absolute;right:5px;top:5px;background:transparent;border:0;color:#fff;font-size:22px;cursor:pointer}
-
-body.jarvis-command-center .jarvis-earth-globe canvas {pointer-events:auto!important;touch-action:none!important}
-
-/* Earth explorer interactive controls */
-body.jarvis-command-center .jarvis-earth-toolbar{position:absolute;top:8px;left:8px;z-index:12;display:flex;flex-wrap:wrap;gap:4px;max-width:calc(100% - 16px);pointer-events:auto}
-body.jarvis-command-center .jarvis-earth-toolbar button{background:rgba(3,12,27,.94);border:1px solid #477d9b;border-radius:5px;color:#d5f1ff;padding:5px 8px;min-height:29px;font-size:10px;cursor:pointer;touch-action:manipulation}
-body.jarvis-command-center .jarvis-earth-toolbar button:hover,body.jarvis-command-center .jarvis-earth-toolbar button[aria-pressed=true]{background:#18516c;color:white}
-body.jarvis-command-center .jarvis-earth-details{top:46px;max-height:calc(100% - 55px);overflow-y:auto}
-body.jarvis-command-center .jarvis-earth-hint{bottom:4px;background:rgba(2,9,19,.75);border-radius:4px;padding:3px}
-@media(max-width:680px){body.jarvis-command-center .jarvis-earth-toolbar button{padding:4px 5px;font-size:9px;min-height:27px}body.jarvis-command-center .jarvis-earth-details{top:74px;width:min(80%,260px)}}
-
-/* v4.40 Mapbox Earth explorer. Full-screen overlay is intentionally isolated from dashboard scrolling. */
-body.jarvis-command-center .jarvis-earth-explorer{position:fixed;inset:0;z-index:9990;display:block;overflow:hidden;background:#030713;color:#d7f3ff;font-family:inherit}
-body.jarvis-command-center .jarvis-earth-explorer[hidden],body.jarvis-command-center .jarvis-earth-token[hidden]{display:none!important}
-body.jarvis-command-center .jarvis-earth-map{position:absolute;inset:0;width:100%;height:100%;background:radial-gradient(circle at 50% 45%,#10314b,#020617 68%)}
-body.jarvis-command-center .jarvis-earth-hud{position:absolute;inset:16px 16px auto;z-index:20;display:flex;flex-wrap:wrap;align-items:center;gap:10px;pointer-events:none}
-body.jarvis-command-center .jarvis-earth-brand{background:rgba(2,9,23,.91);border:1px solid #1d657f;border-radius:12px;padding:11px 14px;display:flex;flex-direction:column;min-width:168px;gap:5px;box-shadow:0 0 24px #010712bb}
-body.jarvis-command-center .jarvis-earth-brand strong{color:#7de7ff;letter-spacing:.08em;font-size:13px}
-body.jarvis-command-center .jarvis-earth-brand small{color:#a0b9cf;font-size:9px;letter-spacing:.08em}
-body.jarvis-command-center .jarvis-earth-hud>*{pointer-events:auto}
-body.jarvis-command-center .jarvis-earth-search{display:flex;min-width:220px;flex:1 1 270px;max-width:420px;background:rgba(2,9,23,.93);border:1px solid #235b74;border-radius:10px;padding:4px}
-body.jarvis-command-center .jarvis-earth-search input{min-width:0;flex:1;background:transparent;border:0;outline:0;padding:8px;color:#f3fcff;font:inherit;font-size:12px}
-body.jarvis-command-center .jarvis-earth-search input::placeholder{color:#9daabb}
-body.jarvis-command-center .jarvis-earth-search button,body.jarvis-command-center .jarvis-earth-token button{background:#146b8a;color:white;border:1px solid #4dabc8;border-radius:7px;padding:7px 11px;font-size:11px;cursor:pointer}
-body.jarvis-command-center .jarvis-earth-toolbar{position:relative;top:auto;left:auto;display:flex;flex-wrap:wrap;gap:5px;pointer-events:auto}
-body.jarvis-command-center .jarvis-earth-toolbar button{background:rgba(3,15,32,.92);border:1px solid #2a7895;border-radius:8px;color:#d8faff;min-height:34px;padding:7px 10px;cursor:pointer;font-size:11px}
-body.jarvis-command-center .jarvis-earth-toolbar button:hover,body.jarvis-command-center .jarvis-earth-toolbar button[aria-pressed=true]{background:#17536d;border-color:#69dafa}
-body.jarvis-command-center .jarvis-earth-notice{position:absolute;z-index:3;left:20px;bottom:38px;max-width:min(640px,75vw);padding:9px 13px;background:rgba(2,9,23,.82);border:1px solid #1b495f;border-radius:9px;color:#b2d9ea;font-size:11px;pointer-events:none}
-body.jarvis-command-center .jarvis-earth-notice[data-failed=true]{color:#ffd6b8;border-color:#b56b32}
-body.jarvis-command-center .jarvis-earth-token{position:absolute;z-index:12;top:50%;left:50%;transform:translate(-50%,-50%);width:min(460px,calc(100vw - 36px));background:rgba(3,12,31,.98);border:1px solid #429cbb;border-radius:14px;box-shadow:0 0 60px #000b;padding:20px;display:flex;flex-direction:column;gap:14px}
-body.jarvis-command-center .jarvis-earth-token h2{font-size:17px;color:#9beaff;margin:0}
-body.jarvis-command-center .jarvis-earth-token p{font-size:12px;color:#c3d2dc;line-height:1.6;margin:0}
-body.jarvis-command-center .jarvis-earth-token input{width:100%;background:#0a1b32;border:1px solid #396b84;border-radius:8px;padding:12px;color:#fff;box-sizing:border-box}
-body.jarvis-command-center .jarvis-earth-side{position:absolute;z-index:8;right:0;top:0;bottom:0;width:min(410px,93vw);box-sizing:border-box;padding:110px 18px 20px;display:flex;flex-direction:column;gap:13px;overflow-y:auto;background:rgba(4,13,33,.96);border-left:1px solid #2a8299;box-shadow:-20px 0 55px #0008;transform:translateX(103%);opacity:0;pointer-events:none;transition:transform .52s ease,opacity .45s ease}
-body.jarvis-command-center .jarvis-earth-side.is-open{transform:translateX(0);opacity:1;pointer-events:auto}
-body.jarvis-command-center .jarvis-earth-side-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;border-bottom:1px solid #2c5b75;padding-bottom:12px}
-body.jarvis-command-center .jarvis-earth-side-head small{font-size:10px;color:#66cde8;letter-spacing:.12em}
-body.jarvis-command-center .jarvis-earth-side h2{color:#b2efff;font-size:21px;line-height:1.25;margin:5px 0 0;overflow-wrap:anywhere}
-body.jarvis-command-center .jarvis-earth-side h3{font-size:11px;letter-spacing:.12em;color:#79d9ff;margin:4px 0 0}
-body.jarvis-command-center .jarvis-earth-side-head button{background:transparent;border:0;color:#c5f1ff;font-size:21px;cursor:pointer}
-body.jarvis-command-center .jarvis-earth-coordinates{display:flex;flex-wrap:wrap;gap:6px;font-size:10px}
-body.jarvis-command-center .jarvis-earth-coordinates span{background:#0c233d;border:1px solid #20516d;border-radius:6px;padding:7px}
-body.jarvis-command-center .jarvis-earth-photo-state{font-size:11px;color:#9bbad1;margin:0}
-body.jarvis-command-center .jarvis-earth-gallery{display:grid;grid-template-columns:1fr 1fr;gap:9px;align-content:start}
-body.jarvis-command-center .jarvis-earth-photo{display:flex;flex-direction:column;background:#0a2136;border:1px solid #174761;border-radius:9px;text-decoration:none;color:#c9e8f4;overflow:hidden;min-width:0}
-body.jarvis-command-center .jarvis-earth-photo img{width:100%;height:112px;object-fit:cover;display:block;transition:transform .25s ease}
-body.jarvis-command-center .jarvis-earth-photo:hover img{transform:scale(1.04)}
-body.jarvis-command-center .jarvis-earth-photo span{padding:7px;display:flex;flex-direction:column;gap:4px;overflow-wrap:anywhere}
-body.jarvis-command-center .jarvis-earth-photo strong{font-size:10px;line-height:1.3;font-weight:600}
-body.jarvis-command-center .jarvis-earth-photo small{font-size:9px;line-height:1.3;color:#9cbacb}
-body.jarvis-command-center .jarvis-earth-credit{font-size:10px;color:#93aabd;line-height:1.5}
-body.jarvis-command-center .jarvis-earth-reset{margin-top:auto;background:#10536c;color:#ddf7ff;border:1px solid #4bafcb;border-radius:9px;padding:11px;font-size:11px;cursor:pointer}
-@media(max-width:680px){
- body.jarvis-command-center .jarvis-earth-hud{inset:8px 8px auto;gap:5px}
- body.jarvis-command-center .jarvis-earth-brand{padding:7px 9px;min-width:110px}
- body.jarvis-command-center .jarvis-earth-brand strong{font-size:10px}
- body.jarvis-command-center .jarvis-earth-brand small{font-size:8px}
- body.jarvis-command-center .jarvis-earth-search{order:3;flex-basis:100%;max-width:100%;min-width:0}
- body.jarvis-command-center .jarvis-earth-toolbar{margin-left:auto}
- body.jarvis-command-center .jarvis-earth-toolbar button{font-size:10px;padding:4px 6px;min-height:29px}
- body.jarvis-command-center .jarvis-earth-side{width:min(100%,390px);padding-top:150px}
- body.jarvis-command-center .jarvis-earth-notice{bottom:27px;left:8px;max-width:calc(100% - 16px);font-size:10px}
+/* v4.44: one transparent 3D Earth replaces the Neural Ring sphere.
+   No satellite modal, separate search, space background, outer halo or Earth toolbar. */
+html:has(body.jarvis-command-center),
+body.jarvis-command-center { overflow-y:auto!important;overflow-x:hidden!important;scroll-behavior:auto!important; }
+body.jarvis-command-center .app-shell {overflow:visible!important;}
+body.jarvis-command-center .jarvis-cc-visual{
+  isolation:isolate;position:relative;overflow:visible!important;
 }
-@media(prefers-reduced-motion:reduce){body.jarvis-command-center .jarvis-earth-side,body.jarvis-command-center .jarvis-earth-photo img{transition:none}}
-
-/* Earth fallback renderer: works without a configured Mapbox token. */
-body.jarvis-command-center .jarvis-earth-basic{position:absolute;inset:0;z-index:1;width:100%;height:100%;overflow:hidden;background:#020b17}
-body.jarvis-command-center .jarvis-earth-basic[hidden]{display:none!important}
-body.jarvis-command-center .jarvis-earth-basic canvas{touch-action:none!important;pointer-events:auto!important}
-body.jarvis-command-center .jarvis-earth-basic iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-body.jarvis-command-center .jarvis-earth-token button[data-earth=basic]{background:transparent;color:#adddf6;border-color:#477b97}
-
-/* Earth visualization embedded in the Neural Ring rather than a page overlay. */
-body.jarvis-command-center .jarvis-cc-visual .jarvis-earth-explorer{position:absolute!important;inset:0!important;width:100%;height:100%;z-index:9;border-radius:18px;overflow:hidden}
-body.jarvis-command-center .jarvis-cc-visual.jarvis-earth-active > canvas{opacity:.12}
-body.jarvis-command-center .jarvis-cc-visual .jarvis-earth-hud{inset:6px 7px auto;display:flex;flex-direction:column;gap:5px}
-body.jarvis-command-center .jarvis-cc-visual .jarvis-earth-brand{display:none}
-body.jarvis-command-center .jarvis-cc-visual .jarvis-earth-search{min-width:0;width:100%;max-width:none;flex:0 0 auto;box-sizing:border-box;padding:2px}
-body.jarvis-command-center .jarvis-cc-visual .jarvis-earth-toolbar{order:2;display:flex;justify-content:center;flex-wrap:wrap;gap:3px;margin:0}
-body.jarvis-command-center .jarvis-cc-visual .jarvis-earth-toolbar button{padding:3px 6px;min-height:25px;font-size:9px}
-body.jarvis-command-center .jarvis-cc-visual .jarvis-earth-notice{bottom:16px;left:8px;max-width:calc(100% - 16px);padding:5px;font-size:9px}
-body.jarvis-command-center .jarvis-cc-visual .jarvis-earth-token{max-width:calc(100% - 16px);max-height:85%;overflow:auto;box-sizing:border-box;padding:10px}
-body.jarvis-command-center .jarvis-cc-visual .jarvis-earth-side{width:min(95%,310px);padding:116px 10px 10px}
-body.jarvis-command-center .jarvis-cc-visual .jarvis-earth-map canvas,body.jarvis-command-center .jarvis-cc-visual .jarvis-earth-basic canvas{pointer-events:auto!important;touch-action:none!important}
-body.jarvis-command-center .jarvis-cc-visual.jarvis-earth-active::after{content:"";position:absolute;inset:3%;z-index:11;pointer-events:none;border:1px solid #5299ba55;border-radius:50%}
+body.jarvis-command-center .jarvis-cc-visual .jarvis-earth-globe{
+  position:absolute!important;inset:0!important;width:100%;height:100%;z-index:8;
+  overflow:visible!important;background:none!important;box-shadow:none!important;
+  border:none!important;pointer-events:auto;touch-action:none;
+}
+body.jarvis-command-center .jarvis-cc-visual .jarvis-earth-globe[hidden],
+body.jarvis-command-center .jarvis-earth-selection-close[hidden]{display:none!important;}
+body.jarvis-command-center .jarvis-cc-visual .jarvis-earth-renderer{
+  position:absolute;inset:0;width:100%;height:100%;
+  background:transparent!important;box-shadow:none!important;border:0!important;
+}
+body.jarvis-command-center .jarvis-cc-visual .jarvis-earth-renderer canvas{
+  width:100%;height:100%;pointer-events:auto!important;
+  touch-action:none!important;background:transparent!important;
+}
+body.jarvis-command-center .jarvis-cc-visual.jarvis-earth-active{
+  background:none!important;border:0!important;box-shadow:none!important;
+}
+body.jarvis-command-center .jarvis-cc-visual.jarvis-earth-active > canvas{
+  opacity:0!important;visibility:hidden!important;pointer-events:none!important;
+}
+body.jarvis-command-center .jarvis-cc-visual.jarvis-earth-active::before,
+body.jarvis-command-center .jarvis-cc-visual.jarvis-earth-active::after{
+  content:none!important;display:none!important;
+}
+body.jarvis-command-center .jarvis-cc-visual.jarvis-earth-active .jarvis-cc-orb-label{
+  display:none!important;
+}
+body.jarvis-command-center .jarvis-cc-visual .jarvis-earth-selection-close{
+  position:absolute;right:9%;top:8%;z-index:15;width:32px;height:32px;
+  display:grid;place-items:center;border:1px solid #849cb1;border-radius:50%;
+  background:#050a13df;color:white;cursor:pointer;pointer-events:auto;
+  font:24px/1 sans-serif;box-shadow:0 0 9px #0008;
+}
+body.jarvis-command-center .jarvis-cc-orb-controls{
+  position:relative;z-index:16;pointer-events:auto;
+}
+body.jarvis-command-center .jarvis-cc-orb-controls button{pointer-events:auto;}
+/* Zoom changes the size of the SAME neural visual. It never creates a new page or dialog. */
+body.jarvis-command-center .jarvis-command-center-ui.jarvis-earth-expanded .jarvis-cc-center{
+  grid-column:1/-1!important;grid-row:2!important;z-index:20;
+  position:relative;min-height:min(78vh,780px)!important;background:transparent;
+}
+body.jarvis-command-center .jarvis-command-center-ui.jarvis-earth-expanded .jarvis-cc-visual{
+  width:min(94vw,1130px)!important;height:min(75vh,730px)!important;
+  max-height:none!important;aspect-ratio:auto!important;flex:none!important;
+  z-index:21;transition:width .3s ease,height .3s ease;
+}
+body.jarvis-command-center .jarvis-command-center-ui.jarvis-earth-expanded .jarvis-cc-bottom{
+  z-index:25;
+}
+@media(max-width:900px){
+  body.jarvis-command-center .jarvis-command-center-ui.jarvis-earth-expanded .jarvis-cc-visual{
+    width:min(96vw,860px)!important;height:min(70vh,650px)!important;
+  }
+}
+@media(max-width:560px){
+  body.jarvis-command-center .jarvis-command-center-ui.jarvis-earth-expanded .jarvis-cc-center{
+    min-height:min(77vh,700px)!important;
+  }
+  body.jarvis-command-center .jarvis-command-center-ui.jarvis-earth-expanded .jarvis-cc-visual{
+    width:100%!important;height:min(66vh,610px)!important;
+  }
+}

@@ -182,6 +182,15 @@ async function showHistory() {
 const geoAliases = /^(?:globo|gllobo|globo terrestre|planeta|planeta terra|terra|mundo|mapa|google earth)$/;
 function parseEarthIntent(command) {
   const normalized = normalize(command).replace(/^(?:jarvis|ultron)[, ]+/, '').replace(/^(mostre|mostra|mostrar)-me\s+/, 'me $1 ');
+  if (/^(?:volte?|retorne?|retornar|sair|feche|fechar)\s+(?:ao?|para o)\s+(?:anel|neural ring|ring)(?: neural)?[.!?]*$/.test(normalized))
+    return { action: 'ring', place: '' };
+  // Natural voice/text orders target the existing Neural Ring instead of opening a second view.
+  const scopedPrefix = normalized.match(/^(?:agora )?(?:no|pelo|dentro do) (?:globo|mapa|planeta)(?: 3d| terrestre)?[,:\s]+(?:(?:me )?(?:ache|achar|encontre|encontrar|busque|buscar|procure|procurar|localize|localizar|mostre|mostrar))\s+(.+)$/);
+  const scopedSuffix = normalized.match(/^(?:(?:me )?(?:ache|achar|encontre|encontrar|busque|buscar|procure|procurar|localize|localizar|mostre|mostrar))\s+(.+?)\s+(?:no|pelo) (?:globo|mapa|planeta)(?: 3d| terrestre)?[.!?]*$/);
+  if (scopedPrefix || scopedSuffix) {
+    const place = (scopedPrefix || scopedSuffix)[1].replace(/^(?:o|a|um|uma)\s+/, '').replace(/\s+por favor[.!?]*$/, '').replace(/[.!?]+$/, '').trim();
+    return { place };
+  }
   // Direct Earth actions must never reach conversational AI or image-search routing.
   if (/^(?:(?:(?:(?:me )?(?:ative|ativar|abra|abrir|inicie|iniciar|habilite|habilitar|ligue|ligar|mostre|mostrar|exiba|exibir)|quero ver|quero abrir|quero ativar)\s+)?(?:o |a )?)?(?:mapa(?: (?:por|de) satelite)?|globo(?: 3d| terrestre)?|google earth|earth explorer|explorador geografico|visao (?:por |de )?satelite)(?: (?:3d|interativo))?[.!?]*$/.test(normalized)) return { place: '' };
   const pattern = /^(?:(?:me )?(?:mostre|mostra|mostrar|abra|abrir|visualize|visualizar|localize|localizar|exiba|exibir|ver)|quero ver|me leve para|ir para)\s+(.+)$/;
@@ -190,6 +199,7 @@ function parseEarthIntent(command) {
   let target = match[1].replace(/^(?:o|a|um|uma)\s+/, '').trim();
   if (geoAliases.test(target)) return { place: '' };
   target = target.replace(/^(?:mapa|globo|google earth|planeta terra|planeta)\s+(?:de|da|do)\s+/, '');
+  target = target.replace(/\s+(?:no|pelo) (?:globo|mapa|planeta)(?: 3d| terrestre)?[.!?]*$/, '');
   target = target.replace(/^(?:a|o|na|no|para|de)\s+/, '').trim();
   if (!target || geoAliases.test(target)) return { place: '' };
   if (/^(?:meu|minha|meus|minhas|produto|produtos|pedido|pedidos|loja|vendas|relatorio|relatorios|mensagens|arquivos|arquivo|foto|fotos|fotografia|fotografias|imagem|imagens|documento|video|camera|sensor|sistema|status|painel|agenda|historico|clima|tempo|previsao|noticia|noticias|resultado|resultados)(?:\b|\s)/.test(target)) return null;
@@ -219,9 +229,9 @@ async function routeSingle(command, run, index = 0) {
     const earthState = window.ULTRON_EARTH?.state || null;
     const available = Boolean(earthState?.available);
     const current = available
-      ? (earthState.visible ? (earthState.ready ? 'visualização aberta (' + earthState.mode + ')' : 'janela aberta; inicializando ou aguardando configuração') : 'módulo instalado, mas janela fechada')
+      ? (earthState.visible ? (earthState.ready ? 'esfera terrestre ativa (' + earthState.mode + ')' : 'esfera terrestre inicializando') : 'módulo instalado; esfera neural ativa')
       : 'módulo indisponível nesta página';
-    const text = 'GLOBO // ' + current + '.' + (earthState?.needsToken ? ' Token Mapbox ainda não configurado neste navegador.' : '') + (earthState?.lastError ? ' Último erro: ' + earthState.lastError : '');
+    const text = 'GLOBO // ' + current + '.' + (earthState?.lastError ? ' Último erro: ' + earthState.lastError : '');
     log(text, !available);
     return {route:'earth-status',ok:available,result:{text,...earthState}};
   }
@@ -230,18 +240,19 @@ async function routeSingle(command, run, index = 0) {
   const place = earthIntent?.place ?? (isAffirmation ? lastAssistantEarthOffer()?.place : null);
   if (place !== null && place !== undefined) {
     const earth = window.ULTRON_EARTH;
+    if (earthIntent?.action === 'ring' && earth?.close) {
+      earth.close();
+      log('EARTH // Esfera neural restaurada.');
+      return { route:'earth-ring', ok:true, result:{text:'Esfera neural restaurada.'} };
+    }
     if (earth?.locate) {
       const result = await earth.locate(place);
-      if (result?.requiresToken) {
-        log('EARTH // Painel do mapa por satélite aberto; configure o token público Mapbox.');
-        return {route:'earth-setup',ok:true,waitingConfirmation:true,result:{text:'Configure o token público Mapbox no painel aberto para ativar o mapa por satélite.',...result}};
-      }
       const ok = result?.ok !== false;
-      log(ok ? 'EARTH // Visualização aberta' + (place ? ' em ' + place : '') + ' (' + (result?.mode || 'globe') + ').' : 'EARTH // Falha ao abrir visualização: ' + (result?.error || 'indisponível'), !ok);
-      return {route:'earth-visual',ok,result:{text:ok ? 'Visualização geográfica aberta' + (place ? ': '+place : '') + '.' : 'Não foi possível abrir a visualização.',place,...result}};
+      log(ok ? 'EARTH // Globo do Neural Ring centralizado' + (place ? ' em ' + place : '') + '.' : 'EARTH // Falha ao localizar: ' + (result?.error || 'indisponível'), !ok);
+      return {route:'earth-visual',ok,result:{text:ok ? 'Globo centralizado' + (place ? ' em ' + place : '') + '.' : 'Não foi possível localizar no globo.',place,...result}};
     }
-    log('EARTH // O módulo ainda não foi registrado; comando não executado.',true);
-    return {route:'earth-visual',ok:false,result:{text:'Módulo de globo indisponível nesta página.',place}};
+    log('EARTH // Motor terrestre não registrado.',true);
+    return {route:'earth-visual',ok:false,result:{text:'Globo não está disponível neste painel.',place}};
   }
 
   const devices = await waitForRuntime(() => window.ULTRON_DEVICES, 2500);

@@ -14,39 +14,54 @@ try {
   await page.setViewport({ width: 1365, height: 860, deviceScaleFactor: 1 });
   page.on('pageerror', error => errors.push(error.stack || error.message));
   await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 35000 });
-  await page.waitForSelector('[data-cc="earth"]', { timeout: 30000 });
-  assert.equal(await page.$eval('#jarvis-earth-explorer', el => el.hidden), true, 'Explorer should start closed');
+  await page.waitForSelector('[data-visual="globe"]', { timeout: 30000 });
+  assert.equal(await page.evaluate(() => window.ULTRON_EARTH?.state?.visible), false);
 
-  console.log('Earth before click:', await page.evaluate(() => ({ registered: Boolean(window.ULTRON_EARTH), state: window.ULTRON_EARTH?.state, buttonVisible: getComputedStyle(document.querySelector('[data-cc="earth"]')).display, globeToggle: Boolean(document.querySelector('[data-visual="globe"]')), explorer: Boolean(document.querySelector('#jarvis-earth-explorer')) })));
-  await page.evaluate(() => document.querySelector('[data-cc="earth"]').click());
-  console.log('Earth after click:', await page.evaluate(() => ({ registered: Boolean(window.ULTRON_EARTH), state: window.ULTRON_EARTH?.state, explorerHidden: document.querySelector('#jarvis-earth-explorer')?.hidden, text: document.querySelector('.jarvis-earth-notice')?.textContent })));
-  console.log('Browser script errors after click:', errors.slice(0, 12));
-  await page.waitForFunction(() => window.ULTRON_EARTH?.state?.visible === true, { timeout: 12000 });
+  await page.click('[data-visual="globe"]');
   await page.waitForFunction(() => window.ULTRON_EARTH?.state?.ready === true, { timeout: 40000 });
-  const mode = await page.evaluate(() => window.ULTRON_EARTH.state.mode);
-  assert.equal(await page.$eval('#jarvis-earth-explorer', el => el.parentElement?.classList.contains('jarvis-cc-visual')), true, 'Globe must remain inside the Neural Ring');
-  assert.equal(await page.$eval('#jarvis-earth-explorer', el => getComputedStyle(el).position), 'absolute', 'Globe must not cover the full screen');
-  assert.ok(['globe-basic', 'map-2d'].includes(mode), 'Expected globe fallback without Mapbox token; got: ' + mode);
-  const hasRenderer = await page.evaluate(() => Boolean(document.querySelector('.jarvis-earth-basic canvas, .jarvis-earth-basic iframe')));
-  assert.equal(hasRenderer, true, 'A globe canvas or alternative map iframe must be present');
+  const result = await page.evaluate(() => ({
+    state: window.ULTRON_EARTH.state,
+    parent: document.getElementById('jarvis-earth-globe')?.parentElement?.className,
+    canvas: Boolean(document.querySelector('.jarvis-earth-renderer canvas')),
+    secondaryInputs: document.querySelectorAll('#jarvis-earth-globe input, #jarvis-earth-globe form, #jarvis-earth-globe aside, #jarvis-earth-globe section').length,
+    xHidden: document.querySelector('.jarvis-earth-selection-close')?.hidden
+  }));
+  assert.equal(result.state.mode, 'globe-3d', 'A real 3D globe must replace the neural graphic');
+  assert.ok(result.parent.includes('jarvis-cc-visual'), 'Earth belongs to the original Neural Ring');
+  assert.equal(result.canvas, true, 'WebGL globe canvas should exist');
+  assert.equal(result.secondaryInputs, 0, 'No popup, search, side panel or separate section');
+  assert.equal(result.xHidden, true, 'The only X must remain hidden until a location click');
 
-  await page.evaluate(() => document.querySelector('[data-earth="basic"]')?.click());
-  const selected = await page.evaluate(() => window.ULTRON_EARTH.locate('China'));
-  assert.equal(selected.ok, true, 'China command should select location');
-  assert.equal(await page.$eval('.jarvis-earth-side', el => el.classList.contains('is-open')), true);
-  console.log('Earth home click hit-test:', await page.$eval('[data-earth="home"]', el => { const r=el.getBoundingClientRect(); const target=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2); return {button:el.outerHTML,rect:{x:r.x,y:r.y,width:r.width,height:r.height},hit:target?.outerHTML?.slice(0,260),contains:el===target||el.contains(target)}; }));
-  await page.evaluate(() => document.querySelector('[data-earth="home"]').click());
-  assert.equal(await page.$eval('.jarvis-earth-side', el => el.classList.contains('is-open')), false);
-  await page.evaluate(() => document.querySelector('[data-earth="close"]').click());
-  assert.equal(await page.evaluate(() => window.ULTRON_EARTH.state.visible), false);
-  console.log('BROWSER SMOKE PASS: open, renderer, globe mode =', mode, 'location, global reset, close');
-  if (errors.length) console.log('Non-fatal browser errors:', errors.slice(0, 6));
+  const china = await page.evaluate(() => window.ULTRON_EARTH.locate('China'));
+  assert.equal(china.ok, true, 'Jarvis should locate China');
+  await page.waitForFunction(() => {
+    const view = window.ULTRON_EARTH?.state?.view;
+    return view && Math.abs(view.lat - 35.8617) < 1 && Math.abs(view.lng - 104.1954) < 1;
+  }, { timeout: 9000 });
+
+  const recife = await page.evaluate(() => window.ULTRON_EARTH.locate('Recife'));
+  assert.equal(recife.ok, true);
+  assert.equal(await page.evaluate(() => window.ULTRON_EARTH.state.expanded), true, 'Close zoom should expand within Command Center');
+
+  await page.evaluate(() => window.ULTRON_EARTH.focus(37.5, 118.4, 10, true));
+  assert.equal(await page.$eval('.jarvis-earth-selection-close', el => el.hidden), false);
+  await page.evaluate(() => document.querySelector('.jarvis-earth-selection-close').click());
+  assert.equal(await page.$eval('.jarvis-earth-selection-close', el => el.hidden), true);
+
+  await page.click('[data-visual="ring"]');
+  assert.equal(await page.evaluate(() => window.ULTRON_EARTH.state.visible), false, 'Ring button must restore neural orb');
+  assert.equal(await page.evaluate(() => window.ULTRON_EARTH.state.expanded), false);
+  await page.click('[data-visual="globe"]');
+  assert.equal(await page.evaluate(() => window.ULTRON_EARTH.state.visible), true, 'Globe toggle should reopen same 3D sphere');
+
+  console.log('BROWSER EARTH PASS: actual buttons, transparent globe, China in center, expanded zoom, click-only X, return to ring');
+  if (errors.length) console.log('Other page script errors:', errors.slice(0, 4));
 } catch (error) {
-  console.error('Earth browser smoke failure:', error);
+  console.error('Earth browser smoke failed:', error);
   if (page) {
     await page.screenshot({path:'earth-browser-failure.png', fullPage:false}).catch(() => {});
-    console.error('Browser page errors captured:', errors.slice(0, 12));
-    console.error('Earth current state:', await page.evaluate(() => ({ registered: Boolean(window.ULTRON_EARTH), state: window.ULTRON_EARTH?.state, explorer: Boolean(document.querySelector('#jarvis-earth-explorer')), notice: document.querySelector('.jarvis-earth-notice')?.textContent })).catch(() => null));
+    console.error('Earth state:', await page.evaluate(() => window.ULTRON_EARTH?.state).catch(() => null));
+    console.error('Browser errors:', errors.slice(0, 10));
   }
   throw error;
 } finally {

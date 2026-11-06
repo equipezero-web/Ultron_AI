@@ -233,6 +233,18 @@ async function execute() {
 
   addLog(output, `OPERATOR: ${command}`);
   // Geographic intent is independent from the optical camera and AI vision.
+  // Direct Neural Ring globe command when the orchestrator is temporarily unavailable.
+  // Example: "Jarvis, no globo ache a China".
+  const scoped = command.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+    .trim().replace(/^(?:jarvis|ultron)[, ]+/, '')
+    .match(/^(?:no|pelo) globo(?: 3d| terrestre)?[,:\s]+(?:me )?(?:ache|achar|encontre|encontrar|busque|buscar|procure|procurar|localize|localizar)\s+(.+)$/);
+  if (scoped) {
+    const place = scoped[1].replace(/^(?:a|o|uma|um)\s+/, '').replace(/[.!?]+$/, '').trim();
+    input.value = '';
+    window.dispatchEvent(new CustomEvent('ultron:earth-location', { detail: { place } }));
+    addLog(output, 'EARTH // Centralizando globo em ' + place + '.');
+    return;
+  }
   const geoCommand = command.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
   const geographic = /^(?:(?:jarvis|ultron)[, ]+)?(?:(?:me )?(?:mostre|mostra|mostrar|abra|abrir|visualize|visualizar|localize|localizar|ver)|(?:quero ver)|(?:ir para)|(?:me leve para))\s+(.+)$/i.exec(geoCommand);
   const geography = geographic?.[1]?.replace(/^(?:(?:o|a|um|uma)\s+)?(?:(?:mapa|globo|planeta|google earth|terra)\s+(?:de|da|do)\s+)?/, "").replace(/^(?:a|o|na|no|para|de)\s+/, "").trim();

@@ -9,6 +9,7 @@ on:
       - 'modules/jarvis-command-center-v4330.css'
       - 'modules/jarvis-command-center-v4330.js'
       - 'modules/ultron-orchestrator-v4270.js'
+      - 'script.js'
       - 'tests/earth-dom-smoke.mjs'
       - '.github/workflows/earth-explorer-check.yml'
   pull_request:
@@ -18,6 +19,7 @@ on:
       - 'modules/jarvis-command-center-v4330.css'
       - 'modules/jarvis-command-center-v4330.js'
       - 'modules/ultron-orchestrator-v4270.js'
+      - 'script.js'
       - 'tests/earth-dom-smoke.mjs'
       - '.github/workflows/earth-explorer-check.yml'
 
@@ -30,71 +32,44 @@ jobs:
         with:
           node-version: '22'
       - name: JavaScript syntax
-        run: node --check modules/jarvis-earth.js
-      - name: Verify Earth interactive integration
+        run: |
+          node --check modules/jarvis-earth.js
+          node --check modules/jarvis-command-center-v4330.js
+          node --check modules/ultron-orchestrator-v4270.js
+          node --check script.js
+      - name: Verify one Neural Ring sphere and command routing
         run: |
           node --input-type=module <<'NODE'
           import fs from 'node:fs';
           import assert from 'node:assert/strict';
-          const js = fs.readFileSync('modules/jarvis-earth.js','utf8');
-          const css = fs.readFileSync('modules/jarvis-command-center-v4330.css','utf8');
-          const html = fs.readFileSync('index.html','utf8');
-          const required = [
-            'satellite-streets-v12', "projection: 'globe'", 'map.flyTo',
-            'data-earth="home"', 'data-earth="zoom-in"', 'data-earth="rotate"',
-            'data-earth="close"', 'map.on(\'click\'',
-            'api.mapbox.com/search/geocode/v6/forward',
-            'api.mapbox.com/search/geocode/v6/reverse',
-            'commons.wikimedia.org/w/api.php', "origin: '*'",
-            'jarvis-earth-gallery', 'window.ULTRON_EARTH',
-            'localStorage', "map?.resize()", 'ringToggle',
-          ];
-          for (const text of required) assert.ok(js.includes(text), 'Missing Earth feature: ' + text);
-          assert.ok(css.includes('.jarvis-earth-explorer') && css.includes('.jarvis-earth-side.is-open'), 'Earth styling missing');
-          assert.ok(html.includes('jarvis-earth.js?v=4.43.0'), 'Earth version missing');
-          assert.ok(html.includes('jarvis-command-center-v4330.css?v=4.43.0'), 'Earth CSS version missing');
-          assert.equal((html.match(/src="modules\/jarvis-earth.js/g)||[]).length, 1, 'Earth module must load once');
-          assert.ok(!/pk\.eyJ[A-Za-z0-9._-]+/.test(js), 'Do not commit a literal Mapbox token');
-          console.log('Earth Explorer integration and token safety checks passed');
-          NODE
-
-      - name: Regression test for satellite activation command routing
-        run: |
-          node --input-type=module <<'NODE'
-          import fs from 'node:fs';
-          import assert from 'node:assert/strict';
-          const source = fs.readFileSync('modules/ultron-orchestrator-v4270.js', 'utf8');
           const earth = fs.readFileSync('modules/jarvis-earth.js', 'utf8');
-          const a = source.indexOf('const geoAliases =');
-          const b = source.indexOf('function lastAssistantEarthOffer()', a);
-          assert.ok(a >= 0 && b > a, 'Earth command parser unavailable');
-          const normalize = text => String(text || '').normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
-          const parseEarthIntent = new Function('normalize', source.slice(a, b) + '\nreturn parseEarthIntent;')(normalize);
-          const cases = [
-            ['Ativar mapa por satélite', ''],
-            ['ativar o mapa por satélite', ''],
-            ['Jarvis, abra o mapa por satélite', ''],
-            ['quero ver mapa por satélite', ''],
-            ['Ative o globo', ''],
-            ['Mostre-me o globo', ''],
-            ['Me mostre a China', 'china'],
-            ['Mostre o mapa do Brasil', 'brasil'],
-            ['Mostre o clima', null],
-            ['Mostre a câmera', null],
-            ['Mostre fotos da China', null],
-            ['Mostre meu pedido', null]
-          ];
-          for (const [input, expected] of cases) {
-            const actual = parseEarthIntent(input)?.place ?? null;
-            assert.equal(actual, expected, 'Wrong Earth route for: ' + input);
+          const css = fs.readFileSync('modules/jarvis-command-center-v4330.css', 'utf8');
+          const html = fs.readFileSync('index.html', 'utf8');
+          const router = fs.readFileSync('modules/ultron-orchestrator-v4270.js', 'utf8');
+          for (const required of [
+            'window.ULTRON_EARTH', 'jarvis-cc-visual', 'jarvis-earth-globe',
+            '.showAtmosphere(false)', '.backgroundColor(', 'onGlobeClick',
+            'pointOfView', 'jarvis-earth-expanded', 'jarvis-earth-selection-close',
+            'api.mapbox.com/search/geocode/v6/forward',
+          ]) assert.ok(earth.includes(required), 'Missing integrated Earth feature: ' + required);
+          for (const forbidden of ['jarvis-earth-explorer', 'jarvis-earth-toolbar', 'jarvis-earth-search', 'jarvis-earth-token', 'jarvis-earth-side']) {
+            assert.ok(!earth.includes(forbidden), 'Earth must not create extra UI: ' + forbidden);
           }
-          assert.ok(source.includes('result?.requiresToken'), 'Mapbox setup should be a waiting state');
-          assert.ok(earth.includes('requiresToken: true'), 'Mapbox UI must flag token configuration');
-          console.log('Earth command routing cases passed:', cases.length);
+          assert.ok(css.includes('.jarvis-earth-globe') && css.includes('.jarvis-earth-expanded'), 'Neural Ring styling missing');
+          assert.ok(html.includes('jarvis-earth.js?v=4.44.0'), 'Earth release version missing');
+          assert.ok(html.includes('jarvis-command-center-v4330.css?v=4.44.0'), 'Earth CSS version missing');
+          assert.equal((html.match(/src="modules\/jarvis-earth.js/g) || []).length, 1, 'Earth module must load only once');
+          assert.ok(!/pk\.eyJ[A-Za-z0-9._-]+/.test(earth), 'No literal Mapbox token in Git');
+          const a = router.indexOf('const geoAliases ='), b = router.indexOf('function isEarthStatusIntent(', a);
+          assert.ok(a >= 0 && b > a, 'Earth natural language parser missing');
+          const normalize = text => String(text || '').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
+          const parse = new Function('normalize', router.slice(a,b)+'\nreturn parseEarthIntent;')(normalize);
+          assert.equal(parse('Jarvis no globo ache a China')?.place, 'china');
+          assert.equal(parse('Jarvis encontre a China no globo')?.place, 'china');
+          assert.equal(parse('Mostre a câmera'), null);
+          console.log('EARTH module and voice text routing integrity passed');
           NODE
-
-      - name: Earth frontend DOM smoke (no Mapbox token required)
+      - name: Earth DOM behavior smoke
         run: |
           npm install --no-save --no-package-lock --ignore-scripts jsdom@26.1.0
           node tests/earth-dom-smoke.mjs

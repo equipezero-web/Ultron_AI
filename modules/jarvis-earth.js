@@ -28,427 +28,267 @@ scrollObserver.observe(document.body,{attributes:true,attributeFilter:['style','
 window.addEventListener('ultron:earth-location',unlockPageScroll);
 unlockPageScroll();
 
-// J.A.R.V.I.S Earth Explorer. Mapbox public token is configured locally by the operator.
-// The sample token is intentionally NOT committed: GitHub secret-scanning blocks it.
-const earthToggle = document.querySelector('[data-visual="globe"]');
-const ringToggle = document.querySelector('[data-visual="ring"]');
-const EARTH_HOME = { center: [-34.877, -8.0476], zoom: 2.2, pitch: 0, bearing: 0 };
-const EARTH_CITIES = [
-  ['Recife', -34.877, -8.0476], ['São Paulo', -46.6333, -23.5505],
-  ['Nova York', -74.006, 40.7128], ['Paris', 2.3522, 48.8566],
-  ['Tóquio', 139.6917, 35.6895]
-];
-if (earthToggle) {
-  const shell = document.createElement('section');
-  shell.id = 'jarvis-earth-explorer';
-  shell.className = 'jarvis-earth-explorer';
-  shell.hidden = true;
-  shell.setAttribute('role', 'region');
-  shell.setAttribute('aria-label', 'Explorador geográfico do JARVIS');
-  shell.innerHTML = [
-    '<div class="jarvis-earth-map" aria-label="Globo satélite 3D"></div>',
-    '<header class="jarvis-earth-hud">',
-    '<div class="jarvis-earth-brand"><strong>J.A.R.V.I.S // EARTH</strong><small>GLOBO 3D • SATÉLITE • EXPLORAÇÃO</small></div>',
-    '<form class="jarvis-earth-search" role="search"><input type="search" aria-label="Pesquisar local" placeholder="Cidade, país ou endereço" maxlength="150" required><button type="submit">Localizar</button></form>',
-    '<div class="jarvis-earth-toolbar"><button type="button" data-earth="home">◎ Global</button><button type="button" data-earth="zoom-in">＋</button><button type="button" data-earth="zoom-out">－</button><button type="button" data-earth="rotate" aria-pressed="false">⟳ Girar</button><button type="button" data-earth="token">⚙ Token</button><button type="button" data-earth="close">✕ Sair</button></div>',
-    '</header>',
-    '<div class="jarvis-earth-notice" role="status" aria-live="polite"></div>',
-    '<form class="jarvis-earth-token" hidden><h2>Ativar mapa por satélite</h2><p>Informe seu token público Mapbox (iniciado em pk.). Ele ficará somente no armazenamento deste navegador, não no GitHub.</p><input type="password" aria-label="Token público Mapbox" placeholder="pk...." autocomplete="off" required><button type="submit">Ativar satélite</button><button type="button" data-earth="basic">Usar o globo básico sem token</button></form>',
-    '<aside class="jarvis-earth-side" aria-hidden="true"><div class="jarvis-earth-side-head"><div><small>LOCAL SELECIONADO</small><h2 class="jarvis-earth-place">Localização</h2></div><button type="button" data-earth="reset" aria-label="Fechar detalhes e retornar ao globo">✕</button></div>',
-    '<div class="jarvis-earth-coordinates"><span class="jarvis-earth-lat">LAT —</span><span class="jarvis-earth-lng">LON —</span><span class="jarvis-earth-zoom">ZOOM —</span></div><h3>FOTOS PRÓXIMAS</h3><p class="jarvis-earth-photo-state" role="status"></p><div class="jarvis-earth-gallery"></div>',
-    '<p class="jarvis-earth-credit">Fotos georreferenciadas: Wikimedia Commons (autor e licença disponíveis ao abrir cada imagem). Mapa: © Mapbox.</p>',
-    '<button type="button" class="jarvis-earth-reset" data-earth="reset">MINIMIZAR E RETORNAR À VISÃO GLOBAL</button></aside>'
-  ].join('');
-  const visualHost = document.querySelector('.jarvis-cc-visual');
-  (visualHost || document.body).append(shell);
-  const mapHost = shell.querySelector('.jarvis-earth-map');
-  const panel = shell.querySelector('.jarvis-earth-side');
-  const notice = shell.querySelector('.jarvis-earth-notice');
-  const tokenForm = shell.querySelector('.jarvis-earth-token');
-  const searchForm = shell.querySelector('.jarvis-earth-search');
-  const gallery = shell.querySelector('.jarvis-earth-gallery');
-  const photoState = shell.querySelector('.jarvis-earth-photo-state');
-  const rotateButton = shell.querySelector('[data-earth="rotate"]');
-  const $ = selector => shell.querySelector(selector);
-  let map = null, pendingInit = null, selectedMarker = null;
-  let basicGlobe = null, basicHost = null, basicFrame = null, basicLoading = null, currentMode = 'not-opened', lastError = null;
-  let requestId = 0, requestController = null, spinId = 0, spinning = false, lastSpinAt = 0;
-  let pendingQuery = '', inMemoryToken = '', basicPreference = false;
+// Real Earth sphere replaces the Command Center's Neural Ring in the SAME visual slot.
+// No explorer, satellite popup, background disc, secondary search or extra layout.
+const earthVisual = document.querySelector('.jarvis-cc-visual');
+const earthCommandPanel = document.querySelector('.jarvis-command-center-ui');
+const earthButton = document.querySelector('[data-visual="globe"]');
+const ringButton = document.querySelector('[data-visual="ring"]');
 
-  function publicToken() {
-    try { return localStorage.getItem('jarvis_mapbox_pk_v1') || inMemoryToken; }
-    catch { return inMemoryToken; }
+if (earthVisual) {
+  const host = document.createElement('div');
+  host.id = 'jarvis-earth-globe';
+  host.className = 'jarvis-earth-globe';
+  host.setAttribute('aria-label', 'Globo terrestre tridimensional integrado ao Neural Ring');
+  host.hidden = true;
+  const dismiss = document.createElement('button');
+  dismiss.type = 'button';
+  dismiss.className = 'jarvis-earth-selection-close';
+  dismiss.setAttribute('aria-label', 'Desmarcar ponto selecionado no globo');
+  dismiss.textContent = '×';
+  dismiss.hidden = true;
+  host.append(dismiss);
+  earthVisual.append(host);
+
+  const home = { lat: -8.0476, lng: -34.877, altitude: 2.5 };
+  const known = {
+    china: [104.1954, 35.8617, 4], brasil: [-51.9253, -14.235, 4],
+    recife: [-34.877, -8.0476, 11], japao: [138.2529, 36.2048, 5],
+    portugal: [-8.2245, 39.3999, 6], 'estados unidos': [-98.5795, 39.8283, 4],
+    franca: [2.2137, 46.2276, 6], londres: [-0.1276, 51.5072, 11],
+    'sao paulo': [-46.6333, -23.5505, 11]
+  };
+  let globe = null;
+  let globeLoading = null;
+  let libraryLoading = null;
+  let visible = false;
+  let lastError = null;
+  let selectedPlace = null;
+  let requestSequence = 0;
+  const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
+  const normalizePlace = value => String(value || '').normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
+  const altitudeForZoom = zoom => zoom >= 10 ? 0.36 : zoom >= 8 ? 0.65 : zoom >= 6 ? 1.0 : zoom >= 4 ? 1.7 : 2.35;
+  const terminal = message => {
+    const output = document.getElementById('output-box');
+    if (!output) return;
+    const line = document.createElement('p');
+    line.textContent = '> EARTH // ' + message;
+    output.append(line);
+    output.scrollTop = output.scrollHeight;
+  };
+  function setExpanded(altitude) {
+    earthCommandPanel?.classList.toggle('jarvis-earth-expanded', visible && altitude < 0.95);
   }
-  function saveToken(token) {
-    inMemoryToken = token;
-    try { localStorage.setItem('jarvis_mapbox_pk_v1', token); } catch {}
+  function syncSize() {
+    if (!globe || !visible) return;
+    const width = Math.round(host.clientWidth || earthVisual.clientWidth);
+    const height = Math.round(host.clientHeight || earthVisual.clientHeight);
+    if (width > 0 && height > 0) globe.width(width).height(height);
   }
-  function setStatus(message, failed = false) {
-    notice.textContent = message;
-    notice.dataset.failed = failed ? 'true' : 'false';
+  function clearSelection() {
+    dismiss.hidden = true;
+    selectedPlace = null;
+    globe?.pointsData([]);
   }
-  function loadLibrary() {
-    if (window.mapboxgl?.Map) return Promise.resolve(window.mapboxgl);
-    if (!document.querySelector('link[data-jarvis-mapbox]')) {
-      const css = document.createElement('link');
-      css.rel = 'stylesheet';
-      css.href = 'https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.css';
-      css.dataset.jarvisMapbox = 'true';
-      document.head.append(css);
-    }
-    return new Promise((resolve, reject) => {
+  dismiss.addEventListener('click', event => {
+    event.stopPropagation();
+    clearSelection();
+  });
+
+  function ensureLibrary() {
+    if (typeof window.Globe === 'function') return Promise.resolve();
+    if (libraryLoading) return libraryLoading;
+    libraryLoading = new Promise((resolve, reject) => {
       const script = document.createElement('script');
-      script.src = 'https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.js';
-      script.onload = () => window.mapboxgl?.Map ? resolve(window.mapboxgl) : reject(new Error('Mapbox inválido'));
-      script.onerror = () => reject(new Error('Falha ao carregar Mapbox GL JS'));
+      script.src = 'https://cdn.jsdelivr.net/npm/globe.gl@2.45.0/dist/globe.gl.min.js';
+      script.onload = () => typeof window.Globe === 'function'
+        ? resolve()
+        : reject(new Error('Globe.gl não carregou corretamente'));
+      script.onerror = () => reject(new Error('Falha ao carregar a biblioteca do globo'));
       document.head.append(script);
-    });
+    }).catch(error => { libraryLoading = null; throw error; });
+    return libraryLoading;
   }
-
-  async function loadBasicGlobe() {
-    if (basicGlobe || basicFrame) {
-      if (basicHost) basicHost.hidden = false;
-      basicGlobe?.resumeAnimation?.();
-      currentMode = basicGlobe ? 'globe-basic' : 'map-2d';
-      return { ok: true, mode: currentMode };
+  function focus(lat, lng, zoom = 5, clicked = false, name = '') {
+    if (!globe || !Number.isFinite(lat) || !Number.isFinite(lng)) {
+      return { ok: false, error: 'Globo ou coordenadas indisponíveis' };
     }
-    if (basicLoading) return basicLoading;
-    basicLoading = (async () => {
-      basicHost = document.createElement('div');
-      basicHost.className = 'jarvis-earth-basic';
-      mapHost.append(basicHost);
+    const altitude = altitudeForZoom(zoom);
+    const controls = globe.controls();
+    controls.autoRotate = false;
+    clearSelection();
+    const coordinate = { lat: clamp(lat, -85, 85), lng, altitude };
+    if (clicked) {
+      selectedPlace = { lat: coordinate.lat, lng, name };
+      globe.pointsData([{ lat: coordinate.lat, lng }]);
+      dismiss.hidden = false;
+    }
+    setExpanded(altitude);
+    requestAnimationFrame(syncSize);
+    globe.pointOfView(coordinate, 2400);
+    return { ok: true, mode: 'globe-3d', place: name || null, lat: coordinate.lat, lng, zoom };
+  }
+  async function init() {
+    if (globe) return { ok: true, mode: 'globe-3d' };
+    if (globeLoading) return globeLoading;
+    globeLoading = (async () => {
+      await ensureLibrary();
+      if (!visible) return { ok: false, error: 'Globo fechado' };
+      const canvasHost = document.createElement('div');
+      canvasHost.className = 'jarvis-earth-renderer';
+      host.prepend(canvasHost);
       try {
-        if (!window.Globe) {
-          await new Promise((resolve, reject) => {
-            const script = document.createElement('script');
-            script.src = 'https://cdn.jsdelivr.net/npm/globe.gl@2.45.0/dist/globe.gl.min.js';
-            script.onload = resolve;
-            script.onerror = () => reject(new Error('Falha ao carregar Globe.gl'));
-            document.head.append(script);
-          });
-        }
-        if (typeof window.Globe !== 'function') throw new Error('Globe.gl não disponível');
-        basicGlobe = window.Globe()(basicHost)
+        globe = window.Globe()(canvasHost)
           .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg')
           .bumpImageUrl('https://unpkg.com/three-globe/example/img/earth-topology.png')
           .backgroundColor('rgba(0,0,0,0)')
-          .showAtmosphere(true).atmosphereColor('#3b9bda').atmosphereAltitude(0.16)
-          .onGlobeClick(({lat,lng}) => select(lat,lng,'',10));
-        basicGlobe.controls().autoRotate = false;
-        basicGlobe.controls().enablePan = false;
-        basicGlobe.controls().enableZoom = true;
-        basicGlobe.pointOfView({lat:-8.0476,lng:-34.877,altitude:2.5},700);
-        const resize = () => basicGlobe?.width(basicHost.clientWidth).height(basicHost.clientHeight);
-        if (typeof ResizeObserver !== 'undefined') new ResizeObserver(resize).observe(basicHost);
-        resize();
-        currentMode = 'globe-basic';
+          .showAtmosphere(false)
+          .pointsData([])
+          .pointColor(() => '#ffce68')
+          .pointRadius(0.28)
+          .pointAltitude(0.015)
+          .onGlobeClick(({ lat, lng }) => {
+            const result = focus(lat, lng, 10, true);
+            if (result.ok) terminal('Ponto selecionado: ' + lat.toFixed(4) + ', ' + lng.toFixed(4) + '.');
+          });
+        const controls = globe.controls();
+        controls.autoRotate = false;
+        controls.enablePan = false;
+        controls.enableZoom = true;
+        controls.addEventListener?.('change', () => {
+          if (visible) setExpanded(Number(globe.pointOfView()?.altitude ?? 2.5));
+        });
+        syncSize();
+        globe.pointOfView(home, 0);
+        lastError = null;
+        return { ok: true, mode: 'globe-3d' };
       } catch (error) {
-        console.warn('[EARTH] Globo básico não disponível:', error);
-        basicHost.replaceChildren();
-        basicFrame = document.createElement('iframe');
-        basicFrame.title = 'Mapa 2D alternativo do OpenStreetMap';
-        basicFrame.referrerPolicy = 'no-referrer';
-        basicFrame.src = 'https://www.openstreetmap.org/export/embed.html?bbox=-170%2C-70%2C170%2C70&layer=mapnik';
-        basicHost.append(basicFrame);
-        currentMode = 'map-2d';
+        globe = null;
+        canvasHost.remove();
+        throw error;
       }
-      return { ok: true, mode: currentMode };
     })();
-    try { return await basicLoading; } finally { basicLoading = null; }
+    try { return await globeLoading; }
+    finally { globeLoading = null; }
   }
-
-  function stopSpin() {
-    spinning = false;
-    rotateButton.setAttribute('aria-pressed', 'false');
-    if (spinId) cancelAnimationFrame(spinId);
-    spinId = 0;
-    lastSpinAt = 0;
-  }
-  function spin(time) {
-    if (!spinning || !map || shell.hidden) return stopSpin();
-    const dt = Math.min(80, time - (lastSpinAt || time));
-    lastSpinAt = time;
-    if (map.getZoom() < 5 && !map.isMoving()) {
-      const c = map.getCenter();
-      map.setCenter([c.lng + dt * 0.0028, c.lat]);
+  async function open() {
+    visible = true;
+    host.hidden = false;
+    earthVisual.classList.add('jarvis-earth-active');
+    window.JARVIS_COMMAND_CENTER?.setVisualMode?.('globe');
+    globe?.resumeAnimation?.();
+    requestAnimationFrame(syncSize);
+    try {
+      const result = await init();
+      syncSize();
+      return result;
+    } catch (error) {
+      lastError = error?.message || String(error);
+      terminal('Globo indisponível: ' + lastError);
+      close();
+      return { ok: false, error: lastError };
     }
-    spinId = requestAnimationFrame(spin);
-  }
-  function reset() {
-    ++requestId;
-    requestController?.abort();
-    panel.classList.remove('is-open');
-    panel.setAttribute('aria-hidden', 'true');
-    selectedMarker?.remove();
-    selectedMarker = null;
-    stopSpin();
-    map?.flyTo({ ...EARTH_HOME, duration: 1700, essential: true });
-    basicGlobe?.pointOfView({lat: -8.0476, lng: -34.877, altitude: 2.5}, 1700);
-    if (basicFrame) basicFrame.src = 'https://www.openstreetmap.org/export/embed.html?bbox=-170%2C-70%2C170%2C70&layer=mapnik';
-    setStatus('Visão global restaurada. Arraste, use o zoom ou busque um lugar.');
   }
   function close() {
-    ++requestId;
-    requestController?.abort();
-    stopSpin();
-    shell.hidden = true;
-    visualHost?.classList.remove('jarvis-earth-active');
-    panel.classList.remove('is-open');
-    panel.setAttribute('aria-hidden', 'true');
-    if (ringToggle && ringToggle.getAttribute('aria-pressed') !== 'true') ringToggle.click();
+    visible = false;
+    ++requestSequence;
+    host.hidden = true;
+    clearSelection();
+    setExpanded(2.5);
+    earthVisual.classList.remove('jarvis-earth-active');
+    globe?.pauseAnimation?.();
+    window.JARVIS_COMMAND_CENTER?.setVisualMode?.('ring');
+    return { ok: true, mode: 'ring' };
   }
-  async function init() {
-    if (pendingInit) return pendingInit;
-    if (map) return { ok: true, mode: 'mapbox-satellite' };
-    const token = publicToken();
-    if (!token || !/^pk\.[A-Za-z0-9._-]{20,}$/.test(token)) {
-      tokenForm.hidden = basicPreference;
-      const basic = await loadBasicGlobe();
-      if (!basicPreference) tokenForm.querySelector('input')?.focus();
-      setStatus(basic.mode === 'globe-basic' ? 'Globo básico aberto. Configure o token para visualizar satélite e ruas.' : 'Mapa alternativo aberto. Configure o token Mapbox para a experiência de satélite.', false);
-      return { ...basic, requiresToken: true };
+  async function searchGeocoding(place) {
+    const token = (() => { try { return localStorage.getItem('jarvis_mapbox_pk_v1') || ''; } catch { return ''; } })();
+    if (/^pk\.[A-Za-z0-9._-]{20,}$/.test(token)) {
+      try {
+        const url = new URL('https://api.mapbox.com/search/geocode/v6/forward');
+        for (const [key, value] of Object.entries({ q: place, language: 'pt', limit: 1, access_token: token }))
+          url.searchParams.set(key, String(value));
+        const response = await fetch(url.href);
+        if (response.ok) {
+          const result = (await response.json()).features?.[0];
+          const lng = Number(result?.properties?.coordinates?.longitude ?? result?.geometry?.coordinates?.[0]);
+          const lat = Number(result?.properties?.coordinates?.latitude ?? result?.geometry?.coordinates?.[1]);
+          if (Number.isFinite(lat) && Number.isFinite(lng)) {
+            const type = result.properties?.feature_type;
+            return [lng, lat, type === 'country' ? 4 : type === 'region' ? 7 : 11];
+          }
+        }
+      } catch (error) { console.warn('[EARTH] Busca Mapbox indisponível:', error); }
     }
-    tokenForm.hidden = true;
-    if (basicHost) basicHost.hidden = true;
-    basicGlobe?.pauseAnimation?.();
-    pendingInit = (async () => {
-      setStatus('Carregando o globo satélite…');
-      const gl = await loadLibrary();
-      if (!gl.supported()) throw new Error('WebGL não é suportado neste navegador');
-      gl.accessToken = token;
-      map = new gl.Map({
-        container: mapHost, style: 'mapbox://styles/mapbox/satellite-streets-v12',
-        ...EARTH_HOME, projection: 'globe', antialias: true, maxZoom: 19
-      });
-      map.on('style.load', () => {
-        try {
-          map.setFog({ color: 'rgba(255,255,255,0.5)', 'high-color': 'rgba(36,92,223,0.7)', 'space-color': 'rgb(11,15,25)', 'horizon-blend': 0.1, 'star-intensity': 0.8 });
-          if (!map.getSource('jarvis-dem')) map.addSource('jarvis-dem', { type: 'raster-dem', url: 'mapbox://mapbox.mapbox-terrain-dem-v1', tileSize: 512, maxzoom: 14 });
-          map.setTerrain({ source: 'jarvis-dem', exaggeration: 1.1 });
-        } catch (error) { console.warn('[EARTH] Terreno:', error); }
-      });
-      map.on('click', e => select(e.lngLat.lat, e.lngLat.lng, '', Math.min(16, Math.max(map.getZoom() + 1.5, 8))));
-      map.on('dragstart', stopSpin);
-      map.on('zoomstart', stopSpin);
-      await new Promise((resolve, reject) => {
-        const timer = setTimeout(() => reject(new Error('Tempo limite ao carregar o mapa')), 20000);
-        map.once('load', () => { clearTimeout(timer); resolve(); });
-        map.once('error', e => { clearTimeout(timer); reject(e.error || new Error('Erro no mapa')); });
-      });
-      for (const [name, longitude, latitude] of EARTH_CITIES) {
-        const marker = new gl.Marker({ color: '#38bdf8', scale: 0.65 }).setLngLat([longitude, latitude]).addTo(map);
-        marker.getElement().title = 'Explorar ' + name;
-        marker.getElement().addEventListener('click', e => {
-          e.stopPropagation();
-          select(latitude, longitude, name, 11);
-        });
+    // Public OpenStreetMap geocoder: a fallback for new browsers without a saved token.
+    const url = new URL('https://nominatim.openstreetmap.org/search');
+    for (const [key, value] of Object.entries({ q: place, format: 'jsonv2', limit: '1', 'accept-language': 'pt' }))
+      url.searchParams.set(key, value);
+    const response = await fetch(url.href);
+    if (!response.ok) throw new Error('Busca geográfica indisponível: HTTP ' + response.status);
+    const results = await response.json();
+    if (!results?.length) throw new Error('Local não encontrado');
+    const item = results[0];
+    const lng = Number(item.lon), lat = Number(item.lat);
+    if (!Number.isFinite(lat) || !Number.isFinite(lng)) throw new Error('Coordenadas inválidas');
+    return [lng, lat, item.type === 'country' ? 4 : 10];
+  }
+  async function locate(query = '') {
+    const sequence = ++requestSequence;
+    const opened = await open();
+    if (!opened.ok) return opened;
+    const place = String(query || '').trim().replace(/[.!?]+$/, '');
+    if (!place) return opened;
+    let result = known[normalizePlace(place)];
+    if (!result) {
+      try { result = await searchGeocoding(place); }
+      catch (error) {
+        if (sequence !== requestSequence) return { ok: false, cancelled: true };
+        lastError = error?.message || 'Pesquisa geográfica falhou';
+        terminal(lastError);
+        return { ok: false, error: lastError };
       }
-      currentMode = 'mapbox-satellite';
-      lastError = null;
-      setStatus('Mapa pronto: arraste, aproxime, clique em uma cidade ou pesquise um local.');
-      return { ok: true, mode: 'mapbox-satellite' };
-    })();
-    try { return await pendingInit; }
-    catch (error) {
-      console.warn('[EARTH] Inicialização:', error);
-      lastError = error?.message || 'Falha desconhecida';
-      map?.remove();
-      map = null;
-      const basic = await loadBasicGlobe();
-      setStatus('Satélite Mapbox indisponível (' + lastError + '). Exibindo ' + (basic.mode === 'globe-basic' ? 'globo básico' : 'mapa alternativo') + '.', true);
-      return { ...basic, satelliteError: lastError };
-    } finally { pendingInit = null; }
-  }
-  function open() {
-    shell.hidden = false;
-    visualHost?.classList.add('jarvis-earth-active');
-    window.JARVIS_COMMAND_CENTER?.setVisualMode?.('globe');
-    requestAnimationFrame(() => {
-      map?.resize();
-      if (basicGlobe && basicHost) basicGlobe.width(basicHost.clientWidth).height(basicHost.clientHeight);
-    });
-    return init();
-  }
-  function textFromHtml(input) {
-    return new DOMParser().parseFromString(String(input || ''), 'text/html').body.textContent?.trim() || '';
-  }
-  async function fetchPhotos(lat, lng, current, signal) {
-    gallery.replaceChildren();
-    photoState.textContent = 'Buscando fotos georreferenciadas próximas…';
-    const url = new URL('https://commons.wikimedia.org/w/api.php');
-    const parameters = {
-      action: 'query', generator: 'geosearch', ggscoord: lat.toFixed(5) + '|' + lng.toFixed(5),
-      ggsradius: '10000', ggslimit: '12', ggsnamespace: '6',
-      prop: 'imageinfo', iiprop: 'url|extmetadata', iiurlwidth: '480', format: 'json', origin: '*'
-    };
-    for (const [key, value] of Object.entries(parameters)) url.searchParams.set(key, value);
-    try {
-      const response = await fetch(url.href, { signal });
-      if (!response.ok) throw new Error('HTTP ' + response.status);
-      const json = await response.json();
-      if (current !== requestId) return;
-      const photos = Object.values(json.query?.pages || {})
-        .filter(page => /\.(jpe?g|png|webp)$/i.test(page.title || '') && page.imageinfo?.[0]?.thumburl)
-        .slice(0, 8);
-      photoState.textContent = photos.length ? 'Fotos encontradas perto deste ponto:' : 'Não há fotos georreferenciadas disponíveis nas proximidades.';
-      for (const page of photos) {
-        const info = page.imageinfo[0];
-        const link = document.createElement('a');
-        link.className = 'jarvis-earth-photo';
-        link.href = info.descriptionurl || 'https://commons.wikimedia.org/wiki/' + encodeURIComponent(page.title.replace(/ /g, '_'));
-        link.target = '_blank'; link.rel = 'noopener noreferrer';
-        const img = document.createElement('img');
-        img.src = info.thumburl; img.loading = 'lazy';
-        img.alt = (page.title || 'Foto da região').replace(/^File:/i, '').replace(/_/g, ' ');
-        const caption = document.createElement('span');
-        const name = document.createElement('strong');
-        name.textContent = img.alt.slice(0, 80);
-        const credits = document.createElement('small');
-        credits.textContent = [textFromHtml(info.extmetadata?.Artist?.value).slice(0, 65), textFromHtml(info.extmetadata?.LicenseShortName?.value).slice(0, 35)].filter(Boolean).join(' · ') || 'Wikimedia Commons · abrir créditos';
-        caption.append(name, credits); link.append(img, caption); gallery.append(link);
-      }
-    } catch (error) {
-      if (signal.aborted || current !== requestId) return;
-      console.warn('[EARTH] Fotos:', error);
-      photoState.textContent = 'Não foi possível carregar fotos dessa região.';
     }
-  }
-  async function reverseName(lat, lng, current, signal) {
-    try {
-      const url = new URL('https://api.mapbox.com/search/geocode/v6/reverse');
-      for (const [k,v] of Object.entries({ longitude: lng, latitude: lat, language: 'pt', access_token: publicToken() })) url.searchParams.set(k, String(v));
-      const response = await fetch(url.href, { signal });
-      if (!response.ok) throw new Error('HTTP ' + response.status);
-      const json = await response.json();
-      if (current !== requestId) return;
-      const place = json.features?.[0]?.properties;
-      $('.jarvis-earth-place').textContent = place?.name_preferred || place?.name || 'Coordenadas selecionadas';
-    } catch (error) { if (!signal.aborted) console.warn('[EARTH] Geocoding:', error); }
-  }
-  function select(lat, lng, name = '', zoom = 10) {
-    if ((!map && !basicGlobe && !basicFrame) || !Number.isFinite(lat) || !Number.isFinite(lng)) return { ok: false, error: 'Visualização ou coordenadas indisponíveis' };
-    stopSpin();
-    ++requestId; requestController?.abort();
-    requestController = new AbortController();
-    const current = requestId;
-    panel.classList.add('is-open'); panel.setAttribute('aria-hidden', 'false');
-    $('.jarvis-earth-place').textContent = name || 'Identificando local…';
-    $('.jarvis-earth-lat').textContent = 'LAT ' + lat.toFixed(5);
-    $('.jarvis-earth-lng').textContent = 'LON ' + lng.toFixed(5);
-    $('.jarvis-earth-zoom').textContent = 'ZOOM ' + Number(zoom).toFixed(1);
-    selectedMarker?.remove();
-    if (map) {
-      selectedMarker = new window.mapboxgl.Marker({ color: '#facc15' }).setLngLat([lng, lat]).addTo(map);
-      map.flyTo({ center: [lng, lat], zoom: Math.min(19, Math.max(2, zoom)), pitch: zoom >= 9 ? 50 : 0, duration: 1800, essential: true });
-    } else if (basicGlobe) {
-      basicGlobe.pointOfView({lat,lng,altitude:zoom>=9 ? 0.75 : 1.55},1600);
-    } else if (basicFrame) {
-      const d = Math.max(0.02, zoom>=9 ? 0.5 : 4);
-      basicFrame.src = 'https://www.openstreetmap.org/export/embed.html?bbox=' + encodeURIComponent([lng-d,lat-d,lng+d,lat+d].join(',')) + '&layer=mapnik&marker=' + encodeURIComponent(lat + ',' + lng);
-    }
-    setStatus('Explorando ' + (name || 'as coordenadas selecionadas') + '.');
-    if (!name) reverseName(lat, lng, current, requestController.signal);
-    fetchPhotos(lat, lng, current, requestController.signal);
-    return { ok: true, mode: currentMode, place: name || null, lat, lng };
-  }
-  async function locate(query) {
-    pendingQuery = String(query || '').trim();
-    const ready = await open();
-    if (!ready.ok) return ready;
-    const place = pendingQuery;
-    pendingQuery = '';
-    if (!place) return ready;
-    const quick = {
-      brasil: [-51.9253, -14.235, 4], china: [104.1954, 35.8617, 4],
-      recife: [-34.877, -8.0476, 11], japao: [138.2529, 36.2048, 5],
-      portugal: [-8.2245, 39.3999, 6], 'estados unidos': [-98.5795, 39.8283, 4]
-    };
-    const key = place.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-    if (quick[key]) { const [lng, lat, zoom] = quick[key]; return select(lat, lng, place, zoom); }
-    try {
-      setStatus('Localizando ' + place + '…');
-      const url = new URL('https://api.mapbox.com/search/geocode/v6/forward');
-      for (const [k,v] of Object.entries({ q: place, language: 'pt', limit: 1, access_token: publicToken() })) url.searchParams.set(k, String(v));
-      const response = await fetch(url.href);
-      if (!response.ok) throw new Error('Busca HTTP ' + response.status);
-      const json = await response.json();
-      const feature = json.features?.[0];
-      const coords = feature?.properties?.coordinates;
-      const lng = Number(coords?.longitude ?? feature?.geometry?.coordinates?.[0]);
-      const lat = Number(coords?.latitude ?? feature?.geometry?.coordinates?.[1]);
-      if (!feature || !Number.isFinite(lat) || !Number.isFinite(lng)) throw new Error('Local não encontrado');
-      const type = feature.properties?.feature_type;
-      return select(lat, lng, feature.properties?.name || place, type === 'country' ? 4 : type === 'region' ? 7 : 11);
-    } catch (error) {
-      setStatus('Não foi possível localizar ' + place + ': ' + error.message, true);
-      return { ok: false, error: error.message };
-    }
+    if (sequence !== requestSequence) return { ok: false, cancelled: true };
+    const [lng, lat, zoom] = result;
+    const centered = focus(lat, lng, zoom, false, place);
+    if (centered.ok) terminal('Centralizando o globo em ' + place + '.');
+    return centered;
   }
   function navigate(action) {
-    if (action === 'close') return close();
-    if (action === 'basic') { basicPreference = true; tokenForm.hidden = true; setStatus('Globo básico aberto. Use ⚙ Token para ativar imagens de satélite.'); return; }
-    if (action === 'token') { basicPreference = false; tokenForm.hidden = false; tokenForm.querySelector('input').focus(); return; }
-    if (action === 'home' || action === 'reset') return reset();
-    if (!map && !basicGlobe) return;
-    if (!map && basicGlobe) {
-      if (action === 'rotate') {
-        const controls = basicGlobe.controls();
-        controls.autoRotate = !controls.autoRotate;
-        rotateButton.setAttribute('aria-pressed', String(controls.autoRotate));
-      }
-      if (action === 'zoom-in' || action === 'zoom-out') {
-        const current = basicGlobe.pointOfView();
-        basicGlobe.pointOfView({ ...current, altitude: Math.max(0.15, Math.min(5, current.altitude * (action === 'zoom-in' ? 0.65 : 1.5))) }, 500);
-      }
-      return;
+    if (action === 'ring' || action === 'close') return close();
+    if (action === 'globe' || action === 'open') return open();
+    if (action === 'home' || action === 'reset') {
+      if (!visible) return { ok: false };
+      clearSelection();
+      setExpanded(home.altitude);
+      globe?.pointOfView(home, 1800);
+      return { ok: true };
     }
     if (action === 'zoom-in' || action === 'zoom-out') {
-      stopSpin();
-      return map.easeTo({ zoom: Math.min(19, Math.max(0, map.getZoom() + (action === 'zoom-in' ? 1 : -1))), duration: 450 });
+      const point = globe?.pointOfView();
+      if (!point) return { ok: false };
+      const altitude = clamp(point.altitude * (action === 'zoom-in' ? .7 : 1.5), .12, 5);
+      setExpanded(altitude);
+      globe.pointOfView({ ...point, altitude }, 500);
+      return { ok: true };
     }
-    if (action === 'rotate') {
-      if (spinning) return stopSpin();
-      const start = () => { spinning = true; rotateButton.setAttribute('aria-pressed', 'true'); spinId = requestAnimationFrame(spin); };
-      if (map.getZoom() >= 5) { reset(); map.once('moveend', start); }
-      else start();
-    }
+    return { ok: false, error: 'Comando desconhecido' };
   }
-  // Bind Earth controls at the button itself so other HUD listeners cannot swallow clicks.
-  shell.querySelectorAll('[data-earth]').forEach(button => {
-    button.addEventListener('click', event => {
-      event.stopPropagation();
-      navigate(button.dataset.earth);
-    });
-  });
-  searchForm.addEventListener('submit', event => {
-    event.preventDefault();
-    const q = searchForm.querySelector('input').value.trim();
-    if (q) locate(q);
-  });
-  tokenForm.addEventListener('submit', event => {
-    event.preventDefault();
-    const token = tokenForm.querySelector('input').value.trim();
-    if (!/^pk\.[A-Za-z0-9._-]{20,}$/.test(token)) return setStatus('Informe um token público válido, começando com pk.', true);
-    saveToken(token);
-    basicPreference = false;
-    if (map) { map.remove(); map = null; }
-    const search = pendingQuery;
-    pendingQuery = '';
-    if (search) locate(search); else open();
-  });
-  document.addEventListener('keydown', event => { if (event.key === 'Escape' && !shell.hidden) close(); });
-  earthToggle.addEventListener('click', () => { open(); });
-  ringToggle?.addEventListener('click', () => close());
-  if (visualHost && typeof ResizeObserver !== 'undefined') {
-    new ResizeObserver(() => {
-      if (shell.hidden) return;
-      map?.resize();
-      if (basicGlobe && basicHost) basicGlobe.width(basicHost.clientWidth).height(basicHost.clientHeight);
-    }).observe(visualHost);
-  }
-  window.addEventListener('ultron:earth-location', event => { locate(event.detail?.place); });
+  earthButton?.addEventListener('click', () => { if (!visible) void open(); });
+  ringButton?.addEventListener('click', () => { if (visible) close(); });
+  window.addEventListener('ultron:earth-location', event => { void locate(event.detail?.place || ''); });
+  if (typeof ResizeObserver !== 'undefined') new ResizeObserver(syncSize).observe(earthVisual);
   window.ULTRON_EARTH = {
-    open, locate, navigate,
-    get state() { return { available: true, ready: Boolean((map?.loaded?.() || false) || basicGlobe || basicFrame), visible: !shell.hidden, mode: currentMode, tokenConfigured: Boolean(publicToken()), needsToken: !publicToken(), lastError }; }
+    open, close, locate, navigate, focus, clearSelection,
+    get state() {
+      const tokenConfigured = (() => { try { return Boolean(localStorage.getItem('jarvis_mapbox_pk_v1')); } catch { return false; } })();
+      return {
+        available: true, ready: Boolean(globe), visible, mode: globe ? 'globe-3d' : 'not-opened',
+        tokenConfigured, needsToken: false, lastError, selectedPlace,
+        expanded: earthCommandPanel?.classList.contains('jarvis-earth-expanded') || false,
+        view: globe?.pointOfView?.() || null
+      };
+    }
   };
 }

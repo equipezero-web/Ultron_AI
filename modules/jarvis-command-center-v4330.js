@@ -87,6 +87,7 @@ if (stage) {
     }
     ctx.setTransform(dpr,0,0,dpr,0,0);
     ctx.clearRect(0,0,width,height);
+    if (visualMode !== 'ring') { if(visualRunning)visualFrame=requestAnimationFrame(drawVisual); return; }
     const cx=width/2, cy=height/2, radius=Math.min(width,height)*0.37;
     const t=reduceMotion.matches ? 0 : performance.now()/1000;
     const red='rgba(231,66,78,', blue='rgba(57,101,166,', silver='rgba(183,199,215,';
@@ -104,45 +105,14 @@ if (stage) {
         ctx.strokeStyle=(strand%4===0?silver:strand%3===0?blue:red)+(strand%4===0?'.54)':'.34)');
         ctx.shadowColor=strand%3===0?'#4872b8':'#e7424e';ctx.shadowBlur=strand%5===0?12:2;ctx.stroke();
       }
-    } else {
-      const glow=ctx.createRadialGradient(cx-radius*.3,cy-radius*.4,radius*.1,cx,cy,radius*1.15);
-      glow.addColorStop(0,'rgba(43,70,115,.32)');glow.addColorStop(.75,'rgba(9,21,43,.38)');glow.addColorStop(1,'rgba(231,66,78,.04)');
-      ctx.fillStyle=glow;ctx.beginPath();ctx.arc(cx,cy,radius,0,Math.PI*2);ctx.fill();
-      ctx.save();ctx.beginPath();ctx.arc(cx,cy,radius,0,Math.PI*2);ctx.clip();
-      for(let lat=-75;lat<=75;lat+=15){
-        ctx.beginPath();const phi=lat*Math.PI/180;
-        for(let i=0;i<=160;i++){
-          const theta=i/160*Math.PI*2;
-          const x=cx+radius*Math.cos(phi)*Math.cos(theta+t*.12);
-          const y=cy+radius*Math.sin(phi)*.96+radius*Math.cos(phi)*Math.sin(theta+t*.12)*.17;
-          if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
-        }ctx.strokeStyle=blue+'.18)';ctx.stroke();
-      }
-      for(let lon=0;lon<360;lon+=15){
-        ctx.beginPath();const a=lon*Math.PI/180+t*.12;
-        for(let i=0;i<=100;i++){
-          const phi=(i/100-.5)*Math.PI;
-          const x=cx+radius*Math.cos(phi)*Math.cos(a);
-          const y=cy+radius*Math.sin(phi);
-          if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
-        }ctx.strokeStyle=silver+'.22)';ctx.stroke();
-      }
-      // Stylized continental coastlines, deliberately schematic rather than geographic data.
-      const coastlines=[
-        [[-.78,-.57],[-.48,-.72],[-.23,-.56],[-.28,-.32],[-.12,-.14],[-.27,.08],[-.37,.32],[-.48,.17],[-.55,-.16],[-.73,-.24]],
-        [[-.08,-.2],[.16,-.47],[.43,-.37],[.61,-.1],[.41,.13],[.22,.12],[.16,.52],[-.04,.69],[-.2,.29]],
-        [[.56,.3],[.78,.37],[.83,.59],[.62,.68],[.48,.5]]
-      ];
-      for(const coast of coastlines){ctx.beginPath();coast.forEach(([x,y],i)=>{const xx=cx+x*radius,yy=cy+y*radius;if(i===0)ctx.moveTo(xx,yy);else ctx.lineTo(xx,yy)});ctx.closePath();ctx.strokeStyle=red+'.66)';ctx.lineWidth=1.4;ctx.stroke();}
-      ctx.restore();ctx.beginPath();ctx.arc(cx,cy,radius,0,Math.PI*2);ctx.strokeStyle=red+'.75)';ctx.shadowColor='#e7424e';ctx.shadowBlur=18;ctx.stroke();
-      ctx.beginPath();ctx.ellipse(cx,cy,radius*1.27,radius*.27,-.24,0,Math.PI*2);ctx.strokeStyle=silver+'.35)';ctx.stroke();
     }
+
     ctx.shadowBlur=0;
     if(visualRunning)visualFrame=requestAnimationFrame(drawVisual);
   }
   function setVisualMode(mode){
     visualMode=mode==='globe'?'globe':'ring';
-    visualLabel.textContent=visualMode==='globe'?'HOLOGRAPHIC GLOBE':'NEURAL RING';
+    visualLabel.textContent=visualMode==='globe'?'GLOBO TERRESTRE':'NEURAL RING';
     ui.querySelectorAll('[data-visual]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.visual===visualMode)));
     drawVisual();
   }
@@ -186,16 +156,15 @@ if (stage) {
       try {
         let earth = window.ULTRON_EARTH;
         if (!earth?.open) {
-          show('GLOBO 3D', 'Carregando globo dentro do Neural Ring...');
-          // Reuse the same module URL already declared in index.html; importing it
-          // here also handles a quick click before the deferred module has finished.
-          await import('./jarvis-earth.js?v=4.43.0-2');
+          await import('./jarvis-earth.js?v=4.44.0');
           earth = window.ULTRON_EARTH;
         }
-        if (!earth?.open) throw new Error('Módulo geográfico não inicializado');
-        await earth.open();
+        if (!earth?.open) throw new Error('Motor terrestre não inicializado');
+        const result = await earth.open();
+        if (result?.ok === false) throw new Error(result.error || 'Globo indisponível');
+        logEvent('EARTH // GLOBO ATIVO NO NEURAL RING');
       } catch (error) {
-        show('GLOBO 3D', 'Falha ao abrir explorador: ' + (error?.message || 'erro desconhecido') + '. Tente novamente.');
+        logEvent('EARTH // ' + (error?.message || 'globo indisponível'));
       } finally { openingEarth = false; }
     },
     status() {

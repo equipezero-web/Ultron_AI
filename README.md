@@ -81,22 +81,14 @@ Para o backend Node/local, entre em `backend/`, copie `.env.example` para `.env`
 
 Nunca publique o arquivo `.env`.
 
-## Explorador geográfico Mapbox (v4.40)
+## Globo terrestre dentro do Neural Ring (v4.44)
 
-A aba de globo do J.A.R.V.I.S apresenta o explorador dentro da visualização central do Neural Ring, sem abrir outra tela, baseado no exemplo Mapbox fornecido pelo operador: projeção de globo, estilo `satellite-streets-v12`, relevo raster-DEM, busca de localidades, marcadores, clique para coordenadas e retorno suave à visão global.
+O J.A.R.V.I.S. utiliza uma única visualização central no Command Center. O globo terrestre 3D real (Globe.gl/WebGL) **substitui a esfera neural no mesmo lugar**, sem abrir uma página, popup, painel lateral, pesquisa própria, controles de rotação, redoma, fundo espacial ou campos de token. A biblioteca só é carregada quando o globo é solicitado.
 
-A escolha de uma localização abre um **painel lateral** com fotos próximas obtidas dinamicamente da Wikimedia Commons, quando existem imagens georreferenciadas na região. Cada fotografia aponta para a página da fonte com autoria e licença. Imagens são independentes do satélite; podem não estar disponíveis para todos os locais.
+O globo é acionado pelos comandos nativos de texto ou voz do Jarvis, como **“Jarvis, no globo ache a China”**, **“Jarvis encontre Recife no globo”** e **“Jarvis mostre o globo”**, ou pelos botões existentes de alternância Anel/Globo. O sistema gira a esfera em direção às coordenadas encontradas, aproxima suavemente e interrompe a rotação quando a localidade fica no centro. **“Jarvis volte ao neural ring”** devolve a esfera original.
 
-**Ativação do Mapbox:** no painel do J.A.R.V.I.S., clique em **GLOBO 3D** ou envie o comando `Ativar mapa por satélite`. O globo básico abre mesmo sem token; se quiser o satélite de alta resolução, informe seu token **público** (`pk.`) no campo **Ativar mapa por satélite**. Ele é guardado apenas no `localStorage` do navegador em `jarvis_mapbox_pk_v1`. Para trocá-lo, clique em **⚙ Token** dentro do explorador. O GitHub bloqueou a inclusão do token fornecido no código do repositório; por isso, não o grave diretamente em arquivos versionados. Recomenda-se restringir esse token a `https://equipezero-web.github.io` no painel Mapbox e verificar suas cotas e custos de uso.
+Um comando de zoom mais profundo expande a própria visualização central, podendo ocupar a área do Command Center sem mudar de página. Ao afastar novamente, retorna ao espaço original. Arrastar e usar a roda do mouse sobre a esfera continuam habilitados. Apenas clicar em um ponto terrestre ativa um marcador e um pequeno **×** que serve exclusivamente para desmarcá-lo; não abre fichas, fotos ou detalhes fora da esfera.
 
-A biblioteca Mapbox GL JS é carregada sob demanda. Requer conexão com a Internet e suporte WebGL. O botão **✕ Sair** retorna ao anel holográfico central; **◎ Global** e **Minimizar** recuam a câmera para o globo, mantendo a exploração aberta. O comportamento do mouse/rolagem no painel principal permanece separado do mapa.
+A textura terrestre básica vem do exemplo público de Three Globe. A busca geográfica consulta as coordenadas pré-configuradas de localidades frequentes, pode usar o token público Mapbox salvo anteriormente em `localStorage` (chave `jarvis_mapbox_pk_v1`) e usa OpenStreetMap Nominatim como alternativa. **O token não é gravado no GitHub** porque sua proteção contra segredos bloqueou esse conteúdo. A imagem do globo é uma textura global e não equivale a imagens de ruas em alta resolução; o token Mapbox ajuda a localizar localidades, mas não converte a textura em um mapa de ruas. Para obter autorização geográfica, mantenha o domínio público autorizado no Mapbox e observe as cotas.
 
-
-### Diagnóstico de abertura do globo
-
-- O botão **GLOBO 3D** abre o explorador sem passar pelo modelo de IA.
-- Sem token Mapbox no navegador, a interface apresenta um **globo básico interativo** (Globe.gl) e permite ativar satélite em seguida. Se a biblioteca 3D alternativa falhar, mostra um mapa 2D do OpenStreetMap.
-- Se o Mapbox estiver configurado e não carregar, o explorador informa o erro e retorna ao modo básico; **⚙ Token** permite corrigir a configuração.
-- Os comandos **“o globo está integrado?”** e **“o globo não ativa?”** exibem o estado real do módulo, incluindo visibilidade, motor ativo e configuração do Mapbox.
-- A seção Earth possui teste DOM com globo simulado, além dos testes de sintaxe e roteamento. O teste não substitui a verificação de WebGL e das APIs externas em um navegador real.
-
+O módulo possui testes DOM e de navegador headless específicos para botão Anel/Globo, pesquisa por comando, centralização da China, zoom expandido e botão × após seleção.

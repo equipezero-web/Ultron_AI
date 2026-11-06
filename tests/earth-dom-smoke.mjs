@@ -2,74 +2,97 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { JSDOM } from 'jsdom';
 
-const dom = new JSDOM('<!doctype html><html><body><main class="orb-stage"><div class="jarvis-cc-visual"></div><button type="button" data-visual="ring" aria-pressed="true">Anel</button><button type="button" data-visual="globe" aria-pressed="false">Globo</button></main></body></html>', {
-  url: 'https://example.test/',
-  runScripts: 'outside-only',
-  pretendToBeVisual: true
+const html = '<!doctype html><html><body><div class="jarvis-command-center-ui"><div class="jarvis-cc-visual"><canvas id="jarvis-cc-canvas"></canvas></div><button data-visual="ring" aria-pressed="true">Anel</button><button data-visual="globe" aria-pressed="false">Globo</button><div id="output-box"></div></div></body></html>';
+const dom = new JSDOM(html, {
+  url: 'https://example.test/', runScripts: 'outside-only', pretendToBeVisual: true
 });
 const { window } = dom;
 const { document } = window;
-const control = { autoRotate: false, enablePan: true, enableZoom: false };
-let point = {lat:0,lng:0,altitude:2.5};
-let clickHandler = null;
-let globeInstalls = 0;
+const globeControls = { autoRotate: false, enablePan: false, enableZoom: true, addEventListener() {} };
+let view = { lat: -8.0476, lng: -34.877, altitude: 2.5 };
+let pins = [];
+let clickHandler;
+let instantiations = 0;
 const globe = {
-  globeImageUrl() { return this; },
-  bumpImageUrl() { return this; },
-  backgroundColor() { return this; },
-  showAtmosphere() { return this; },
-  atmosphereColor() { return this; },
-  atmosphereAltitude() { return this; },
+  globeImageUrl() { return this; }, bumpImageUrl() { return this; },
+  backgroundColor() { return this; }, showAtmosphere(value) { assert.equal(value, false); return this; },
+  pointsData(value) { if (value) { pins = value; return this; } return pins; },
+  pointColor() { return this; }, pointRadius() { return this; }, pointAltitude() { return this; },
   onGlobeClick(handler) { clickHandler = handler; return this; },
-  controls() { return control; },
-  pointOfView(value) { if (value) { point = { ...value }; return this; } return point; },
-  width() { return this; },
-  height() { return this; },
-  pauseAnimation() { return this; },
-  resumeAnimation() { return this; }
+  controls() { return globeControls; },
+  pointOfView(value) { if (value) { view = { ...value }; return this; } return view; },
+  width() { return this; }, height() { return this; },
+  pauseAnimation() { return this; }, resumeAnimation() { return this; }
 };
 window.Globe = () => host => {
   assert.ok(host instanceof window.HTMLElement);
-  globeInstalls += 1;
+  ++instantiations;
   return globe;
 };
-const router = fs.readFileSync('modules/ultron-orchestrator-v4270.js','utf8');
-const start = router.indexOf('function isEarthStatusIntent(');
-const end = router.indexOf('function lastAssistantEarthOffer()', start);
-assert.ok(start >= 0 && end > start, 'Live Earth status intent missing');
-const normalize = text => String(text || '').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/\s+/g,' ').trim();
-const isEarthStatusIntent = new Function('normalize', router.slice(start,end)+'\nreturn isEarthStatusIntent;')(normalize);
-assert.equal(isEarthStatusIntent('Você está com integração do globo?'), true);
-assert.equal(isEarthStatusIntent('Por que o globo não ativa?'), true);
-assert.equal(isEarthStatusIntent('Ativar mapa por satélite'), false);
-assert.equal(isEarthStatusIntent('Como está a câmera?'), false);
-const source = fs.readFileSync('modules/jarvis-earth.js','utf8');
+const changedModes = [];
+window.JARVIS_COMMAND_CENTER = { setVisualMode(mode) { changedModes.push(mode); } };
+
+const source = fs.readFileSync('modules/jarvis-earth.js', 'utf8');
+assert.ok(!source.includes('jarvis-earth-explorer'), 'Legacy explorer must be removed');
+assert.ok(!source.includes('jarvis-earth-token'), 'Token dialog must be removed');
+assert.ok(!source.includes('jarvis-earth-search'), 'Secondary search field must be removed');
 window.eval(source);
-assert.equal(typeof window.ULTRON_EARTH?.open, 'function', 'Earth API should register on dashboard load');
+const earth = window.ULTRON_EARTH;
+assert.equal(typeof earth?.open, 'function');
 
 document.querySelector('[data-visual="globe"]').click();
-await new Promise(resolve => setTimeout(resolve, 75));
-assert.equal(window.ULTRON_EARTH.state.visible, true, 'Globe button must show explorer');
-assert.equal(document.querySelector('#jarvis-earth-explorer').parentElement, document.querySelector('.jarvis-cc-visual'), 'Globe must render within the Neural Ring');
-assert.equal(window.ULTRON_EARTH.state.ready, true, 'Basic globe must initialize without a Mapbox token');
-assert.equal(window.ULTRON_EARTH.state.mode, 'globe-basic');
-assert.equal(window.ULTRON_EARTH.state.needsToken, true);
-assert.equal(globeInstalls, 1, 'Only one fallback globe should be created');
-const tokenForm = document.querySelector('.jarvis-earth-token');
-assert.equal(tokenForm.hidden, false, 'Optional satellite token form should be visible');
-document.querySelector('[data-earth="basic"]').click();
-assert.equal(tokenForm.hidden, true, 'Basic-mode button should dismiss optional setup');
+await new Promise(resolve => setTimeout(resolve, 30));
+assert.equal(earth.state.visible, true);
+assert.equal(earth.state.ready, true);
+assert.equal(earth.state.mode, 'globe-3d');
+assert.equal(document.querySelector('#jarvis-earth-globe').parentElement, document.querySelector('.jarvis-cc-visual'));
+assert.equal(document.querySelectorAll('#jarvis-earth-globe form, #jarvis-earth-globe section, #jarvis-earth-globe aside').length, 0);
+assert.equal(document.querySelector('.jarvis-earth-selection-close').hidden, true, 'No X before selecting location');
+assert.equal(instantiations, 1);
 
-const result = await window.ULTRON_EARTH.locate('China');
-assert.equal(result.ok, true, 'Geographic commands should execute with basic globe');
-assert.equal(result.mode, 'globe-basic');
-assert.equal(document.querySelector('.jarvis-earth-side').classList.contains('is-open'), true);
-assert.equal(document.querySelector('.jarvis-earth-place').textContent.toLowerCase(), 'china');
+const china = await earth.locate('China');
+assert.equal(china.ok, true);
+assert.ok(Math.abs(globe.pointOfView().lat - 35.8617) < 0.0001);
+assert.ok(Math.abs(globe.pointOfView().lng - 104.1954) < 0.0001);
+assert.equal(globeControls.autoRotate, false, 'Rotation must stop centered on China');
+assert.equal(document.querySelector('.jarvis-earth-selection-close').hidden, true, 'Voice command must not create popup');
+const recife = await earth.locate('Recife');
+assert.equal(recife.ok, true);
+assert.equal(earth.state.expanded, true, 'Close zoom should expand neural visual area');
+assert.equal(earth.state.view.altitude, 0.36);
+assert.equal(earth.navigate('home').ok, true);
+assert.equal(earth.state.expanded, false, 'Returning global must restore neural visual size');
 
-document.querySelector('[data-earth="home"]').click();
-assert.equal(document.querySelector('.jarvis-earth-side').classList.contains('is-open'), false);
-document.querySelector('[data-earth="close"]').click();
-assert.equal(window.ULTRON_EARTH.state.visible, false);
-assert.equal(window.ULTRON_EARTH.state.ready, true, 'Module should remain ready for reopening');
-console.log('Earth DOM smoke test passed: open, fallback, select, reset, close');
+assert.equal(typeof clickHandler, 'function');
+clickHandler({ lat: 37.5, lng: 118.4 });
+assert.equal(earth.state.selectedPlace.lat, 37.5);
+assert.equal(pins.length, 1);
+const dismiss = document.querySelector('.jarvis-earth-selection-close');
+assert.equal(dismiss.hidden, false, 'Only a location click exposes X');
+dismiss.click();
+assert.equal(dismiss.hidden, true);
+assert.equal(pins.length, 0);
+document.querySelector('[data-visual="ring"]').click();
+assert.equal(earth.state.visible, false);
+assert.equal(earth.state.expanded, false);
+assert.ok(changedModes.includes('ring'));
+document.querySelector('[data-visual="globe"]').click();
+await new Promise(resolve => setTimeout(resolve, 20));
+assert.equal(earth.state.visible, true);
+assert.equal(instantiations, 1, 'Reopening must reuse the same Globe instance');
+
+const router = fs.readFileSync('modules/ultron-orchestrator-v4270.js','utf8');
+const start = router.indexOf('const geoAliases =');
+const end = router.indexOf('function isEarthStatusIntent(', start);
+assert.ok(start >= 0 && end > start);
+const normalize = value => String(value || '').normalize('NFD')
+  .replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
+const parseEarthIntent = new Function('normalize', router.slice(start,end) + '\nreturn parseEarthIntent;')(normalize);
+assert.deepEqual(parseEarthIntent('Jarvis no globo ache a China'), {place:'china'});
+assert.deepEqual(parseEarthIntent('Jarvis, no globo encontre Recife'), {place:'recife'});
+assert.deepEqual(parseEarthIntent('Jarvis mostre a China no globo'), {place:'china'});
+assert.equal(parseEarthIntent('Mostre a câmera'), null);
+assert.equal(parseEarthIntent('Jarvis volte ao neural ring').action, 'ring');
+
+console.log('EARTH DOM PASS: same neural sphere, commands, country centering, zoom expansion, location X, return to ring');
 window.close();
