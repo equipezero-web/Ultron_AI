@@ -117,7 +117,7 @@ jobs:
           grep -Eq '(TOTAL ORCHESTRATION|P0→P5|NEURAL INTERACTION|J\.A\.R\.V\.I\.S NEURAL COMMAND)' index.html
           grep -Fq 'J.A.R.V.I.S INTERACTIVE COMMAND CENTER // v4.35.0' index.html
           grep -q 'ultron-core-bridge-v4270.js?v=4.27.0' index.html
-          grep -q 'ultron-orchestrator-v4270.js?v=4.37.0' index.html
+          grep -q 'ultron-orchestrator-v4270.js?v=4.41.0' index.html
           grep -q 'neural-priority-core-v4300.js?v=4.30.0' index.html
           grep -q 'device-control-v4260.js?v=4.26.0' index.html
           grep -q 'orchestrator-device-verify-v4270.js?v=4.27.0' index.html

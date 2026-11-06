@@ -53,7 +53,7 @@ if (earthToggle) {
     '<div class="jarvis-earth-toolbar"><button type="button" data-earth="home">◎ Global</button><button type="button" data-earth="zoom-in">＋</button><button type="button" data-earth="zoom-out">－</button><button type="button" data-earth="rotate" aria-pressed="false">⟳ Girar</button><button type="button" data-earth="token">⚙ Token</button><button type="button" data-earth="close">✕ Sair</button></div>',
     '</header>',
     '<div class="jarvis-earth-notice" role="status" aria-live="polite"></div>',
-    '<form class="jarvis-earth-token" hidden><h2>Ativar mapa por satélite</h2><p>Informe seu token público Mapbox (iniciado em pk.). Ele ficará somente no armazenamento deste navegador, não no GitHub.</p><input type="password" aria-label="Token público Mapbox" placeholder="pk...." autocomplete="off" required><button type="submit">Ativar globo</button></form>',
+    '<form class="jarvis-earth-token" hidden><h2>Ativar mapa por satélite</h2><p>Informe seu token público Mapbox (iniciado em pk.). Ele ficará somente no armazenamento deste navegador, não no GitHub.</p><input type="password" aria-label="Token público Mapbox" placeholder="pk...." autocomplete="off" required><button type="submit">Ativar satélite</button><button type="button" data-earth="basic">Usar o globo básico sem token</button></form>',
     '<aside class="jarvis-earth-side" aria-hidden="true"><div class="jarvis-earth-side-head"><div><small>LOCAL SELECIONADO</small><h2 class="jarvis-earth-place">Localização</h2></div><button type="button" data-earth="reset" aria-label="Fechar detalhes e retornar ao globo">✕</button></div>',
     '<div class="jarvis-earth-coordinates"><span class="jarvis-earth-lat">LAT —</span><span class="jarvis-earth-lng">LON —</span><span class="jarvis-earth-zoom">ZOOM —</span></div><h3>FOTOS PRÓXIMAS</h3><p class="jarvis-earth-photo-state" role="status"></p><div class="jarvis-earth-gallery"></div>',
     '<p class="jarvis-earth-credit">Fotos georreferenciadas: Wikimedia Commons (autor e licença disponíveis ao abrir cada imagem). Mapa: © Mapbox.</p>',
@@ -70,8 +70,9 @@ if (earthToggle) {
   const rotateButton = shell.querySelector('[data-earth="rotate"]');
   const $ = selector => shell.querySelector(selector);
   let map = null, pendingInit = null, selectedMarker = null;
+  let basicGlobe = null, basicHost = null, basicFrame = null, basicLoading = null, currentMode = 'not-opened', lastError = null;
   let requestId = 0, requestController = null, spinId = 0, spinning = false, lastSpinAt = 0;
-  let pendingQuery = '', inMemoryToken = '';
+  let pendingQuery = '', inMemoryToken = '', basicPreference = false;
 
   function publicToken() {
     try { return localStorage.getItem('jarvis_mapbox_pk_v1') || inMemoryToken; }
@@ -102,6 +103,59 @@ if (earthToggle) {
       document.head.append(script);
     });
   }
+
+  async function loadBasicGlobe() {
+    if (basicGlobe || basicFrame) {
+      if (basicHost) basicHost.hidden = false;
+      basicGlobe?.resumeAnimation?.();
+      currentMode = basicGlobe ? 'globe-basic' : 'map-2d';
+      return { ok: true, mode: currentMode };
+    }
+    if (basicLoading) return basicLoading;
+    basicLoading = (async () => {
+      basicHost = document.createElement('div');
+      basicHost.className = 'jarvis-earth-basic';
+      mapHost.append(basicHost);
+      try {
+        if (!window.Globe) {
+          await new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/globe.gl@2.45.0/dist/globe.gl.min.js';
+            script.onload = resolve;
+            script.onerror = () => reject(new Error('Falha ao carregar Globe.gl'));
+            document.head.append(script);
+          });
+        }
+        if (typeof window.Globe !== 'function') throw new Error('Globe.gl não disponível');
+        basicGlobe = window.Globe()(basicHost)
+          .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg')
+          .bumpImageUrl('https://unpkg.com/three-globe/example/img/earth-topology.png')
+          .backgroundColor('rgba(0,0,0,0)')
+          .showAtmosphere(true).atmosphereColor('#3b9bda').atmosphereAltitude(0.16)
+          .onGlobeClick(({lat,lng}) => select(lat,lng,'',10));
+        basicGlobe.controls().autoRotate = false;
+        basicGlobe.controls().enablePan = false;
+        basicGlobe.controls().enableZoom = true;
+        basicGlobe.pointOfView({lat:-8.0476,lng:-34.877,altitude:2.5},700);
+        const resize = () => basicGlobe?.width(basicHost.clientWidth).height(basicHost.clientHeight);
+        if (typeof ResizeObserver !== 'undefined') new ResizeObserver(resize).observe(basicHost);
+        resize();
+        currentMode = 'globe-basic';
+      } catch (error) {
+        console.warn('[EARTH] Globo básico não disponível:', error);
+        basicHost.replaceChildren();
+        basicFrame = document.createElement('iframe');
+        basicFrame.title = 'Mapa 2D alternativo do OpenStreetMap';
+        basicFrame.referrerPolicy = 'no-referrer';
+        basicFrame.src = 'https://www.openstreetmap.org/export/embed.html?bbox=-170%2C-70%2C170%2C70&layer=mapnik';
+        basicHost.append(basicFrame);
+        currentMode = 'map-2d';
+      }
+      return { ok: true, mode: currentMode };
+    })();
+    try { return await basicLoading; } finally { basicLoading = null; }
+  }
+
   function stopSpin() {
     spinning = false;
     rotateButton.setAttribute('aria-pressed', 'false');
@@ -128,6 +182,8 @@ if (earthToggle) {
     selectedMarker = null;
     stopSpin();
     map?.flyTo({ ...EARTH_HOME, duration: 1700, essential: true });
+    basicGlobe?.pointOfView({lat: -8.0476, lng: -34.877, altitude: 2.5}, 1700);
+    if (basicFrame) basicFrame.src = 'https://www.openstreetmap.org/export/embed.html?bbox=-170%2C-70%2C170%2C70&layer=mapnik';
     setStatus('Visão global restaurada. Arraste, use o zoom ou busque um lugar.');
   }
   function close() {
@@ -141,15 +197,18 @@ if (earthToggle) {
   }
   async function init() {
     if (pendingInit) return pendingInit;
-    if (map) return { ok: true };
+    if (map) return { ok: true, mode: 'mapbox-satellite' };
     const token = publicToken();
     if (!token || !/^pk\.[A-Za-z0-9._-]{20,}$/.test(token)) {
-      tokenForm.hidden = false;
-      tokenForm.querySelector('input')?.focus();
-      setStatus('Configure seu token público Mapbox para carregar o globo.', true);
-      return { ok: false, requiresToken: true, mode: 'mapbox-setup', error: 'Token público Mapbox não configurado' };
+      tokenForm.hidden = basicPreference;
+      const basic = await loadBasicGlobe();
+      if (!basicPreference) tokenForm.querySelector('input')?.focus();
+      setStatus(basic.mode === 'globe-basic' ? 'Globo básico aberto. Configure o token para visualizar satélite e ruas.' : 'Mapa alternativo aberto. Configure o token Mapbox para a experiência de satélite.', false);
+      return { ...basic, requiresToken: true };
     }
     tokenForm.hidden = true;
+    if (basicHost) basicHost.hidden = true;
+    basicGlobe?.pauseAnimation?.();
     pendingInit = (async () => {
       setStatus('Carregando o globo satélite…');
       const gl = await loadLibrary();
@@ -182,21 +241,28 @@ if (earthToggle) {
           select(latitude, longitude, name, 11);
         });
       }
+      currentMode = 'mapbox-satellite';
+      lastError = null;
       setStatus('Mapa pronto: arraste, aproxime, clique em uma cidade ou pesquise um local.');
-      return { ok: true };
+      return { ok: true, mode: 'mapbox-satellite' };
     })();
     try { return await pendingInit; }
     catch (error) {
       console.warn('[EARTH] Inicialização:', error);
-      setStatus('Falha no globo: ' + error.message, true);
+      lastError = error?.message || 'Falha desconhecida';
       map?.remove();
       map = null;
-      return { ok: false, error: error.message };
+      const basic = await loadBasicGlobe();
+      setStatus('Satélite Mapbox indisponível (' + lastError + '). Exibindo ' + (basic.mode === 'globe-basic' ? 'globo básico' : 'mapa alternativo') + '.', true);
+      return { ...basic, satelliteError: lastError };
     } finally { pendingInit = null; }
   }
   function open() {
     shell.hidden = false;
-    requestAnimationFrame(() => map?.resize());
+    requestAnimationFrame(() => {
+      map?.resize();
+      if (basicGlobe && basicHost) basicGlobe.width(basicHost.clientWidth).height(basicHost.clientHeight);
+    });
     return init();
   }
   function textFromHtml(input) {
@@ -256,7 +322,7 @@ if (earthToggle) {
     } catch (error) { if (!signal.aborted) console.warn('[EARTH] Geocoding:', error); }
   }
   function select(lat, lng, name = '', zoom = 10) {
-    if (!map || !Number.isFinite(lat) || !Number.isFinite(lng)) return { ok: false, error: 'Coordenadas inválidas' };
+    if ((!map && !basicGlobe && !basicFrame) || !Number.isFinite(lat) || !Number.isFinite(lng)) return { ok: false, error: 'Visualização ou coordenadas indisponíveis' };
     stopSpin();
     ++requestId; requestController?.abort();
     requestController = new AbortController();
@@ -267,12 +333,19 @@ if (earthToggle) {
     $('.jarvis-earth-lng').textContent = 'LON ' + lng.toFixed(5);
     $('.jarvis-earth-zoom').textContent = 'ZOOM ' + Number(zoom).toFixed(1);
     selectedMarker?.remove();
-    selectedMarker = new window.mapboxgl.Marker({ color: '#facc15' }).setLngLat([lng, lat]).addTo(map);
-    map.flyTo({ center: [lng, lat], zoom: Math.min(19, Math.max(2, zoom)), pitch: zoom >= 9 ? 50 : 0, duration: 1800, essential: true });
+    if (map) {
+      selectedMarker = new window.mapboxgl.Marker({ color: '#facc15' }).setLngLat([lng, lat]).addTo(map);
+      map.flyTo({ center: [lng, lat], zoom: Math.min(19, Math.max(2, zoom)), pitch: zoom >= 9 ? 50 : 0, duration: 1800, essential: true });
+    } else if (basicGlobe) {
+      basicGlobe.pointOfView({lat,lng,altitude:zoom>=9 ? 0.75 : 1.55},1600);
+    } else if (basicFrame) {
+      const d = Math.max(0.02, zoom>=9 ? 0.5 : 4);
+      basicFrame.src = 'https://www.openstreetmap.org/export/embed.html?bbox=' + encodeURIComponent([lng-d,lat-d,lng+d,lat+d].join(',')) + '&layer=mapnik&marker=' + encodeURIComponent(lat + ',' + lng);
+    }
     setStatus('Explorando ' + (name || 'as coordenadas selecionadas') + '.');
     if (!name) reverseName(lat, lng, current, requestController.signal);
     fetchPhotos(lat, lng, current, requestController.signal);
-    return { ok: true, mode: 'mapbox-satellite', place: name || null, lat, lng };
+    return { ok: true, mode: currentMode, place: name || null, lat, lng };
   }
   async function locate(query) {
     pendingQuery = String(query || '').trim();
@@ -280,7 +353,7 @@ if (earthToggle) {
     if (!ready.ok) return ready;
     const place = pendingQuery;
     pendingQuery = '';
-    if (!place) return { ok: true, mode: 'mapbox-globe' };
+    if (!place) return ready;
     const quick = {
       brasil: [-51.9253, -14.235, 4], china: [104.1954, 35.8617, 4],
       recife: [-34.877, -8.0476, 11], japao: [138.2529, 36.2048, 5],
@@ -309,9 +382,22 @@ if (earthToggle) {
   }
   function navigate(action) {
     if (action === 'close') return close();
-    if (action === 'token') { tokenForm.hidden = false; tokenForm.querySelector('input').focus(); return; }
+    if (action === 'basic') { basicPreference = true; tokenForm.hidden = true; setStatus('Globo básico aberto. Use ⚙ Token para ativar imagens de satélite.'); return; }
+    if (action === 'token') { basicPreference = false; tokenForm.hidden = false; tokenForm.querySelector('input').focus(); return; }
     if (action === 'home' || action === 'reset') return reset();
-    if (!map) return;
+    if (!map && !basicGlobe) return;
+    if (!map && basicGlobe) {
+      if (action === 'rotate') {
+        const controls = basicGlobe.controls();
+        controls.autoRotate = !controls.autoRotate;
+        rotateButton.setAttribute('aria-pressed', String(controls.autoRotate));
+      }
+      if (action === 'zoom-in' || action === 'zoom-out') {
+        const current = basicGlobe.pointOfView();
+        basicGlobe.pointOfView({ ...current, altitude: Math.max(0.15, Math.min(5, current.altitude * (action === 'zoom-in' ? 0.65 : 1.5))) }, 500);
+      }
+      return;
+    }
     if (action === 'zoom-in' || action === 'zoom-out') {
       stopSpin();
       return map.easeTo({ zoom: Math.min(19, Math.max(0, map.getZoom() + (action === 'zoom-in' ? 1 : -1))), duration: 450 });
@@ -337,6 +423,7 @@ if (earthToggle) {
     const token = tokenForm.querySelector('input').value.trim();
     if (!/^pk\.[A-Za-z0-9._-]{20,}$/.test(token)) return setStatus('Informe um token público válido, começando com pk.', true);
     saveToken(token);
+    basicPreference = false;
     if (map) { map.remove(); map = null; }
     const search = pendingQuery;
     pendingQuery = '';
@@ -350,6 +437,6 @@ if (earthToggle) {
   window.addEventListener('ultron:earth-location', event => { locate(event.detail?.place); });
   window.ULTRON_EARTH = {
     open, locate, navigate,
-    get state() { return { ready: Boolean(map?.loaded()), visible: !shell.hidden }; }
+    get state() { return { available: true, ready: Boolean((map?.loaded?.() || false) || basicGlobe || basicFrame), visible: !shell.hidden, mode: currentMode, tokenConfigured: Boolean(publicToken()), needsToken: !publicToken(), lastError }; }
   };
 }

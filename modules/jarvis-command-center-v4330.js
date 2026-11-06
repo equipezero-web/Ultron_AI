@@ -14,6 +14,7 @@ if (stage) {
     <div id="jarvis-cc-link-slot"></div></aside>
     <div class="jarvis-cc-center"><div class="jarvis-cc-heading">J.A.R.V.I.S. <span>// HOLOGRAPHIC COMMAND</span></div><div class="jarvis-cc-visual"><canvas id="jarvis-cc-canvas" aria-label="Visualização holográfica do globo terrestre" role="img"></canvas><div class="jarvis-cc-orb-label" id="jarvis-cc-visual-label">NEURAL RING</div></div><div class="jarvis-cc-camera-slot" id="jarvis-cc-camera-slot"></div><div class="jarvis-cc-orb-controls"><button type="button" data-visual="ring" aria-pressed="true" title="Exibir anel holográfico">◎</button><button type="button" data-visual="globe" aria-pressed="false" title="Mostrar globo terrestre">◉</button></div></div>
     <aside class="jarvis-cc-right"><div id="jarvis-cc-voice-slot"></div><div id="jarvis-cc-infra-slot"></div></aside><div class="jarvis-cc-bottom"><div class="jarvis-cc-responses"><div class="jarvis-cc-responses-title">J.A.R.V.I.S // RESPOSTAS E EVENTOS</div><div id="jarvis-cc-response-slot"></div></div><div id="jarvis-cc-input-slot"></div><div class="jarvis-cc-actions">
+      <button type="button" data-cc="earth">GLOBO 3D</button>
       <button type="button" data-cc="status">SISTEMA</button>
       <button type="button" data-cc="agenda">AGENDA</button>
       <button type="button" data-cc="camera">CÂMERA</button>
@@ -174,6 +175,11 @@ if (stage) {
   }
   const scrollTo = (selector) => document.querySelector(selector)?.scrollIntoView({behavior:'smooth',block:'center'});
   const actions = {
+    earth() {
+      const earth = window.ULTRON_EARTH;
+      if (earth?.open) earth.open();
+      else show('GLOBO 3D', 'O explorador ainda não foi carregado neste navegador. Atualize a página e tente novamente.');
+    },
     status() {
       const voice = window.ULTRON_VOICE_MATCH?.state;
       show('STATUS DO SISTEMA', 'Voice Match: ' + (voice?.monitorActive ? 'monitor ativo' : 'monitor inativo') + ' · Câmera: ' + (document.querySelector('#camera-state')?.textContent || 'não informada') + '. Consulte o terminal para diagnósticos detalhados.');

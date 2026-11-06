@@ -196,6 +196,14 @@ function parseEarthIntent(command) {
   if (/^(?:camera|sensor|arquivo|foto|imagem|documento|video|sistema|status|painel|agenda|historico|meus dados)/.test(target)) return null;
   return { place: target };
 }
+// Report real Earth module state instead of asking the cloud AI to infer visual status.
+function isEarthStatusIntent(command) {
+  const normalized = normalize(command).replace(/^(?:jarvis|ultron)[, ]+/, '');
+  if (!/\b(globo|mapa|earth|explorador geografico)\b/.test(normalized)) return false;
+  if (/\b(ative|ativar|abrir|abra|mostre|mostrar|localize|localizar|visualize|visualizar|inicie|iniciar)\b/.test(normalized)) return false;
+  return /\b(integracao|integrado|integrada|conectado|conectada|ativo|ativado|disponivel|pronto|funciona|funcionando|estado|status|carrega|abrindo)\b/.test(normalized) ||
+    /\b(nao abre|nao ativa|nao funciona|nao carrega)\b/.test(normalized);
+}
 function lastAssistantEarthOffer() {
   const lines = Array.from(output?.querySelectorAll('p') || []).reverse();
   const last = lines.find(line => /\[CORE\].*(?:J\.A\.R\.V\.I\.S|ULTRON)/i.test(line.textContent || ''))?.textContent || '';
@@ -207,6 +215,16 @@ function lastAssistantEarthOffer() {
 
 async function routeSingle(command, run, index = 0) {
   const prefix = `step-${index + 1}`;
+  if (isEarthStatusIntent(command)) {
+    const earthState = window.ULTRON_EARTH?.state || null;
+    const available = Boolean(earthState?.available);
+    const current = available
+      ? (earthState.visible ? (earthState.ready ? 'visualização aberta (' + earthState.mode + ')' : 'janela aberta; inicializando ou aguardando configuração') : 'módulo instalado, mas janela fechada')
+      : 'módulo indisponível nesta página';
+    const text = 'GLOBO // ' + current + '.' + (earthState?.needsToken ? ' Token Mapbox ainda não configurado neste navegador.' : '') + (earthState?.lastError ? ' Último erro: ' + earthState.lastError : '');
+    log(text, !available);
+    return {route:'earth-status',ok:available,result:{text,...earthState}};
+  }
   const earthIntent = parseEarthIntent(command);
   const isAffirmation = /^(?:sim|quero|pode|claro|isso|isso mesmo|ok|certo|confirmo|com certeza)[.!?\s]*$/.test(normalize(command));
   const place = earthIntent?.place ?? (isAffirmation ? lastAssistantEarthOffer()?.place : null);
@@ -222,9 +240,8 @@ async function routeSingle(command, run, index = 0) {
       log(ok ? 'EARTH // Visualização aberta' + (place ? ' em ' + place : '') + ' (' + (result?.mode || 'globe') + ').' : 'EARTH // Falha ao abrir visualização: ' + (result?.error || 'indisponível'), !ok);
       return {route:'earth-visual',ok,result:{text:ok ? 'Visualização geográfica aberta' + (place ? ': '+place : '') + '.' : 'Não foi possível abrir a visualização.',place,...result}};
     }
-    window.dispatchEvent(new CustomEvent('ultron:earth-location',{detail:{place}}));
-    log('EARTH // Solicitação de abertura do globo enviada.');
-    return {route:'earth-visual',ok:true,result:{text:'Abrindo globo interativo.',place}};
+    log('EARTH // O módulo ainda não foi registrado; comando não executado.',true);
+    return {route:'earth-visual',ok:false,result:{text:'Módulo de globo indisponível nesta página.',place}};
   }
 
   const devices = await waitForRuntime(() => window.ULTRON_DEVICES, 2500);
