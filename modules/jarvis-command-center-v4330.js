@@ -189,7 +189,7 @@ if (stage) {
           show('GLOBO 3D', 'Carregando globo dentro do Neural Ring...');
           // Reuse the same module URL already declared in index.html; importing it
           // here also handles a quick click before the deferred module has finished.
-          await import('./jarvis-earth.js?v=4.43.0');
+          await import('./jarvis-earth.js?v=4.43.0-2');
           earth = window.ULTRON_EARTH;
         }
         if (!earth?.open) throw new Error('Módulo geográfico não inicializado');
