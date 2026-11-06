@@ -160,7 +160,8 @@ if (earthVisual) {
         dragPan:true,dragRotate:false,
         scrollZoom:true,doubleClickZoom:true,touchZoomRotate:true,touchPitch:false,
         boxZoom:false,keyboard:false,cooperativeGestures:false,
-        attributionControl:true,antialias:true,maxZoom:20
+        attributionControl:true,antialias:!mobileGPU,maxZoom:20,
+        fadeDuration:mobileGPU?0:300
       });
       referenceMap=map;
       // Pinch zoom and double-tap zoom remain enabled; two-finger twisting won't spin.
@@ -250,6 +251,8 @@ if (earthVisual) {
   const DETAIL_ENTRY_ALTITUDE = 0.6;
   const DETAIL_EXIT_ZOOM = 4.4;
   const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
+  const mobileGPU = window.matchMedia('(max-width: 820px), (pointer: coarse)').matches;
+  const lowMemory = Number(navigator.deviceMemory || 4) <= 2;
   const normalizePlace = value => String(value || '').normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
   const altitudeForZoom = zoom => zoom >= 10 ? 0.36 : zoom >= 8 ? 0.65 : zoom >= 6 ? 1.0 : zoom >= 4 ? 1.7 : 2.35;
@@ -387,7 +390,8 @@ if (earthVisual) {
             dragPan: true, dragRotate: false,
             scrollZoom: true, boxZoom: false, doubleClickZoom: true,
             touchZoomRotate: true, touchPitch: false, keyboard: false,
-            cooperativeGestures: false, attributionControl: true, antialias: true
+            cooperativeGestures: false, attributionControl: true, antialias: !mobileGPU,
+            fadeDuration:mobileGPU?0:300
           });
           streetMap = map;
           map.touchZoomRotate?.enable?.();
@@ -510,6 +514,16 @@ if (earthVisual) {
             const result = focus(lat, lng, 10, true);
             if (result.ok) terminal('Ponto selecionado: ' + lat.toFixed(4) + ', ' + lng.toFixed(4) + '.');
           });
+        // Avoid huge WebGL buffers on high-DPI phones. Keep desktop sharp.
+        try {
+          const renderer = globe.renderer?.();
+          renderer?.setPixelRatio?.(Math.min(
+            window.devicePixelRatio || 1,
+            mobileGPU ? (lowMemory ? 1 : 1.35) : 1.8
+          ));
+        } catch (error) {
+          console.warn('[EARTH] Renderer pixel-density cap unavailable:',error);
+        }
         const controls = globe.controls();
         controls.autoRotate = false;
         controls.autoRotateSpeed = 0;
@@ -801,6 +815,11 @@ if (earthVisual) {
   ringButton?.addEventListener('pointerdown', restoreRing);
   ringButton?.addEventListener('click', restoreRing);
   window.addEventListener('ultron:earth-location', event => { void locate(event.detail?.place || ''); });
+  document.addEventListener('visibilitychange', () => {
+    if (!globe || !visible || referenceMode) return;
+    if (document.hidden) globe.pauseAnimation?.();
+    else globe.resumeAnimation?.();
+  });
   if (typeof ResizeObserver !== 'undefined') {
     const observer=new ResizeObserver(syncSize);
     observer.observe(earthVisual);

@@ -216,7 +216,7 @@ screenModal?.addEventListener("click", (event) => {
 
 $("btn-send")?.addEventListener("click", execute);
 $("command-input")?.addEventListener("keydown", (event) => {
-  if (event.key === "Enter" && !event.shiftKey) {
+  if (event.key === "Enter" && !event.shiftKey && !event.isComposing && event.keyCode !== 229) {
     event.preventDefault();
     execute();
   }

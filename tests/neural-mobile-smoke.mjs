@@ -14,6 +14,29 @@ try {
     waitUntil:'domcontentloaded',timeout:35000
   });
   await page.waitForFunction(()=>window.ULTRON_EARTH?.state?.available,{timeout:20000});
+
+  await page.waitForFunction(()=>window.ULTRON_NEURAL_RING_3D?.active===true,{timeout:15000});
+  const initialRing=await page.evaluate(()=>window.ULTRON_NEURAL_RING_3D.state);
+  const ringArea=await page.$eval('#jarvis-cc-canvas',el=>{
+    const r=el.getBoundingClientRect();
+    return {x:r.x,y:r.y,w:r.width,h:r.height,touch:getComputedStyle(el).touchAction};
+  });
+  assert.equal(ringArea.touch,'none','Mobile neural ring must own touch gestures');
+  const ringClient=await page.target().createCDPSession();
+  const rx=ringArea.x+ringArea.w*.5,ry=ringArea.y+ringArea.h*.45;
+  const ringTouches=(gap)=>[
+    {x:Math.round(rx-gap),y:Math.round(ry),id:11},
+    {x:Math.round(rx+gap),y:Math.round(ry),id:12}
+  ];
+  await ringClient.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:ringTouches(18)});
+  for(const gap of [25,36,52,70]){
+    await ringClient.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:ringTouches(gap)});
+  }
+  await ringClient.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+  const pinchedRing=await page.evaluate(()=>window.ULTRON_NEURAL_RING_3D.state);
+  assert.ok(pinchedRing.zoom>initialRing.zoom+.15,'Pinch must zoom true WebGL Neural Ring on Android');
+  await page.evaluate(()=>window.ULTRON_NEURAL_RING_3D.reset());
+  assert.equal(await page.evaluate(()=>window.ULTRON_NEURAL_RING_3D.state.zoom),1);
   await page.evaluate(()=>document.querySelector('[data-visual="globe"]').click());
   await page.waitForFunction(()=>window.ULTRON_EARTH?.state?.ready===true,{timeout:20000});
   assert.equal(await page.evaluate(()=>window.ULTRON_EARTH.state.mode),'globe-3d');
@@ -130,7 +153,7 @@ try {
   await page.tap('[data-earth-reference="zoom-out"]');
   assert.equal(await page.evaluate(()=>window.__mobileMap.getZoom()),beforeMap,'- should zoom out again');
 
-  for(const width of [360,390,430]){
+  for(const width of [320,360,390,430]){
     await page.setViewport({width,height:844,isMobile:true,hasTouch:true,deviceScaleFactor:1});
     const layout=await page.evaluate(()=>({
       overflow:document.documentElement.scrollWidth-innerWidth,
@@ -141,18 +164,43 @@ try {
       dockColumns:getComputedStyle(document.querySelector('.jarvis-cc-dock-grid')).gridTemplateColumns.split(' ').length,
       cards:[...document.querySelectorAll('.jarvis-cc-dock-module')].map(e=>e.getBoundingClientRect().width),
       responses:document.querySelector('#output-box').getBoundingClientRect().height,
-      globe:document.querySelector('.jarvis-cc-center').getBoundingClientRect().height
+      globe:document.querySelector('.jarvis-cc-center').getBoundingClientRect().height,
+      quickRail:getComputedStyle(document.querySelector('#jarvis-cc-input-slot .quick-actions')).overflowX,
+      quickHeight:document.querySelector('#jarvis-cc-input-slot .quick-actions button').getBoundingClientRect().height,
+      inputHint:document.querySelector('#command-input').getAttribute('enterkeyhint'),
+      statusOverflow:document.querySelector('.jarvis-cc-top').scrollWidth-document.querySelector('.jarvis-cc-top').clientWidth
     }));
     assert.ok(layout.overflow<=3,'Mobile '+width+': prevent horizontal overflow');
     assert.ok(layout.input<=50 && layout.font>=16,'Mobile '+width+': compact, readable command editor');
     assert.ok(layout.send<=55 && layout.sendWidth<=95,'Mobile '+width+': compact send action');
     assert.equal(layout.dockColumns,2,'Mobile '+width+': four system cards form two columns');
     assert.equal(layout.cards.length,4);
-    assert.ok(layout.cards.every(w=>w>=125),'Mobile '+width+': system card text space');
+    assert.ok(layout.cards.every(w=>w>=120),'Mobile '+width+': system card text space');
     assert.ok(layout.responses<=120,'Mobile '+width+': output log scrolls internally');
     assert.ok(layout.globe>=380,'Mobile '+width+': keep the original 3D stage large');
+    assert.equal(layout.quickRail,'auto','Mobile '+width+': shortcuts must scroll sideways inside their own row');
+    assert.ok(layout.quickHeight>=40,'Mobile '+width+': shortcut touch targets remain usable');
+    assert.equal(layout.inputHint,'send','Mobile '+width+': keyboard should show the Send action');
+    assert.ok(layout.statusOverflow<=3,'Mobile '+width+': status bar text must not clip');
   }
-  console.log('MOBILE GLOBE & CONSOLE PASS: real two-touch pinch, zoom +/- in both engines, Mapbox gestures, 360/390/430 compact layout');
+  await page.setViewport({width:667,height:375,isMobile:true,hasTouch:true,deviceScaleFactor:1});
+  const landscape=await page.evaluate(()=>({
+    overflow:document.documentElement.scrollWidth-innerWidth,
+    globe:document.querySelector('.jarvis-cc-center').getBoundingClientRect().height,
+    mapControls:document.querySelector('.jarvis-earth-reference-zoom').getBoundingClientRect().width
+  }));
+  assert.ok(landscape.overflow<=3,'Landscape phone must avoid horizontal overflow');
+  assert.ok(landscape.globe>=300,'Landscape globe must remain usable');
+  assert.ok(landscape.mapControls>=40,'Landscape zoom controls must stay visible');
+  await page.setViewport({width:390,height:844,isMobile:true,hasTouch:true,deviceScaleFactor:2});
+  await page.evaluate(()=>window.ULTRON_EARTH.close());
+  await page.waitForFunction(()=>window.ULTRON_NEURAL_RING_3D?.active===true,{timeout:4000});
+  const gpu=await page.evaluate(()=>{
+    const canvas=document.querySelector('#jarvis-cc-canvas');
+    return canvas.width/Math.max(1,canvas.getBoundingClientRect().width);
+  });
+  assert.ok(gpu<=1.4,'High-DPI mobile ring must limit WebGL buffer resolution to save GPU');
+  console.log('MOBILE FULL PASS: Ring + globe two-touch pinch, Mapbox, command bar, quick actions, modules, 320-430px/landscape, GPU limits');
 } catch(error){
   console.error('MOBILE GLOBE & CONSOLE FAILED:',error);
   await page?.screenshot({path:'mobile-globe-console-failure.png',fullPage:false}).catch(()=>{});

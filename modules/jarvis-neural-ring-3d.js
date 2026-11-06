@@ -77,21 +77,33 @@ export function createNeuralRing3D(canvas,{onError}={}) {
   const colors=[[.91,.25,.34],[.29,.65,1.],[.84,.91,1.],[.45,.35,.68]],
     scales=[1.04,.88,1.13,.49],alphas=[.80,.63,.57,.43];
   let visible=false,paused=false,disposed=false,frame=0,lastFrame=0;
+  let cachedWidth=0,cachedHeight=0;
+  const mobileMedia=window.matchMedia('(max-width: 820px)');
+  const lowMemory=Number(navigator.deviceMemory||4)<=2;
   let yaw=0,pitch=0,zoom=1,dragging=null;
+  const touchPoints=new Map();
+  let pinch=null;
+  const touchDistance=()=>{
+    const p=[...touchPoints.values()];
+    return p.length<2?0:Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y);
+  };
   const clamp=(v,min,max)=>Math.max(min,Math.min(max,v));
   let started=performance.now();const reduce=window.matchMedia('(prefers-reduced-motion: reduce)');
   function resize(){
     if(disposed)return;
-    const r=canvas.getBoundingClientRect(),dpr=Math.min(window.devicePixelRatio||1,1.6);
+    const r=canvas.getBoundingClientRect(),dpr=Math.min(window.devicePixelRatio||1,mobileMedia.matches?(lowMemory?1:1.35):1.6);
     const width=Math.max(1,Math.round(r.width*dpr)),height=Math.max(1,Math.round(r.height*dpr));
-    if(canvas.width!==width||canvas.height!==height){canvas.width=width;canvas.height=height;}
-    gl.viewport(0,0,width,height);
+    if(width!==cachedWidth||height!==cachedHeight){
+      cachedWidth=width;cachedHeight=height;
+      canvas.width=width;canvas.height=height;
+      gl.viewport(0,0,width,height);
+    }
   }
   function render(now){
     frame=0;if(!visible||paused||disposed||document.hidden)return;
-    const interval=window.matchMedia('(max-width: 700px)').matches?34:25;
+    const interval=mobileMedia.matches?(lowMemory?50:34):25;
     if(now-lastFrame>=interval){
-      lastFrame=now;resize();
+      lastFrame=now;
       gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
       gl.useProgram(program);
       gl.uniform1f(locations.time,reduce.matches?0:(now-started)/1000);
@@ -116,27 +128,57 @@ export function createNeuralRing3D(canvas,{onError}={}) {
   document.addEventListener('visibilitychange',onVisibility);
   canvas.addEventListener('webglcontextlost',onContextLost);
   // Move the true WebGL geometry by dragging: hover alone never rotates.
+  const releasePointer=id=>{
+    if(canvas.releasePointerCapture&&id!=null&&canvas.hasPointerCapture?.(id)){
+      try{canvas.releasePointerCapture(id);}catch{}
+    }
+  };
   const beginDrag=event=>{
-    if (!visible || disposed || event.button!==0) return;
+    if(!visible||disposed)return;
+    if(event.pointerType!=='touch'&&event.button!==0)return;
+    if(event.pointerType==='touch'){
+      touchPoints.set(event.pointerId,{x:event.clientX,y:event.clientY});
+      if(touchPoints.size>=2){
+        pinch={distance:Math.max(1,touchDistance()),zoom};
+        dragging=null;
+        event.preventDefault();
+        return;
+      }
+    }
     dragging={pointerId:event.pointerId,x:event.clientX,y:event.clientY,yaw,pitch};
-    if(canvas.setPointerCapture && event.pointerId!=null) {
-      try {canvas.setPointerCapture(event.pointerId);} catch {}
+    if(canvas.setPointerCapture&&event.pointerId!=null){
+      try{canvas.setPointerCapture(event.pointerId);}catch{}
     }
     event.preventDefault();
   };
   const moveDrag=event=>{
-    if(!dragging || !visible) return;
-    if(event.pointerId!=null && event.pointerId!==dragging.pointerId) return;
-    if(event.pointerType==='mouse' && !(event.buttons&1)) {endDrag();return;}
+    if(!visible||disposed)return;
+    if(event.pointerType==='touch'&&touchPoints.has(event.pointerId)){
+      touchPoints.set(event.pointerId,{x:event.clientX,y:event.clientY});
+      if(pinch&&touchPoints.size>=2){
+        zoom=clamp(pinch.zoom*touchDistance()/pinch.distance,.62,1.9);
+        event.preventDefault();
+        return;
+      }
+    }
+    if(!dragging)return;
+    if(event.pointerId!=null&&event.pointerId!==dragging.pointerId)return;
+    if(event.pointerType==='mouse'&&!(event.buttons&1)){endDrag();return;}
     yaw=dragging.yaw+(event.clientX-dragging.x)*.009;
     pitch=clamp(dragging.pitch+(event.clientY-dragging.y)*.009,-1.45,1.45);
   };
   const endDrag=event=>{
-    if(!dragging) return;
-    const id=dragging.pointerId;dragging=null;
-    if(canvas.releasePointerCapture && id!=null && canvas.hasPointerCapture?.(id)) {
-      try{canvas.releasePointerCapture(id);}catch{}
+    if(event?.pointerType==='touch'){
+      touchPoints.delete(event.pointerId);
+      if(touchPoints.size<2)pinch=null;
+      if(dragging?.pointerId===event.pointerId)dragging=null;
+      releasePointer(event.pointerId);
+      return;
     }
+    const id=dragging?.pointerId;
+    dragging=null;
+    if(!event){touchPoints.clear();pinch=null;}
+    releasePointer(id);
   };
   const adjustZoom=event=>{
     if(!visible || disposed || event.ctrlKey) return;
@@ -151,15 +193,20 @@ export function createNeuralRing3D(canvas,{onError}={}) {
   window.addEventListener('blur',endDrag);
   canvas.addEventListener('wheel',adjustZoom,{passive:false});
   const observer=typeof ResizeObserver==='function'?new ResizeObserver(resize):null;
+  const viewportResize=()=>resize();
+  window.addEventListener('orientationchange',viewportResize);
+  window.addEventListener('resize',viewportResize);
   observer?.observe(canvas.parentElement||canvas);
   return {
     engine:'webgl',get active(){return visible&&!paused;},get rings(){return colors.length;},
     get state(){return {yaw,pitch,zoom,dragging:Boolean(dragging),active:visible&&!paused};},
-    setVisible(value){visible=Boolean(value);canvas.hidden=!visible;cancelAnimationFrame(frame);if(!visible)endDrag();if(visible)start();},
+    setVisible(value){visible=Boolean(value);canvas.hidden=!visible;cancelAnimationFrame(frame);if(!visible)endDrag();if(visible){resize();start();}},
     resize,
     reset(){started=performance.now();yaw=0;pitch=0;zoom=1;endDrag();return {ok:true,engine:'webgl'};},
     destroy(){
       disposed=true;visible=false;cancelAnimationFrame(frame);observer?.disconnect();
+      window.removeEventListener('orientationchange',viewportResize);
+      window.removeEventListener('resize',viewportResize);
       endDrag();canvas.removeEventListener('pointerdown',beginDrag);
       window.removeEventListener('pointermove',moveDrag,true);
       window.removeEventListener('pointerup',endDrag,true);

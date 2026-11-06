@@ -49,8 +49,8 @@ jobs:
       - name: Verify JARVIS branding and release
         run: |
           grep -q 'J.A.R.V.I.S // Command Center' index.html
-          grep -q 'jarvis-command-center-v4330.js?v=4.48.0' index.html
-          grep -q 'jarvis-command-center-v4330.css?v=4.48.0' index.html
+          grep -q 'jarvis-command-center-v4330.js?v=4.49.0' index.html
+          grep -q 'jarvis-command-center-v4330.css?v=4.49.0' index.html
           ! grep -q 'src="modules/jarvis-holographic-core-v4310.js' index.html
           grep -q 'jarvis-brand-v4310.js?v=4.31.0' index.html
           grep -q 'stark-bootstrap.js?v=4.31.0' index.html

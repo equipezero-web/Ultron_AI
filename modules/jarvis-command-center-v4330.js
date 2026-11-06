@@ -41,6 +41,13 @@ if (stage) {
   relocate('#output-box', '#jarvis-cc-response-slot');
   relocate('.command-row', '#jarvis-cc-input-slot');
   relocate('.quick-actions', '#jarvis-cc-input-slot');
+  const textComposer = document.getElementById('command-input');
+  if (textComposer) {
+    textComposer.setAttribute('enterkeyhint','send');
+    textComposer.setAttribute('aria-label','Digite um comando para o Jarvis');
+    textComposer.setAttribute('autocapitalize','sentences');
+    textComposer.setAttribute('spellcheck','true');
+  }
   // The legacy .jarvis-cc-actions container is intentionally hidden by CSS.
   // Keep the Earth entry point alongside the visible quick actions instead.
   const globeQuickButton = ui.querySelector('[data-cc="earth"]');
@@ -121,7 +128,7 @@ if (stage) {
   async function bootNeuralRing() {
     if (ringEngine) return ringEngine;
     if (ringPromise) return ringPromise;
-    ringPromise = import('./jarvis-neural-ring-3d.js?v=4.47.0')
+    ringPromise = import('./jarvis-neural-ring-3d.js?v=4.49.0')
       .then(module => module.createNeuralRing3D(canvas,{onError:report3D}))
       .then(engine => {
         ringEngine = engine;
@@ -157,7 +164,8 @@ if (stage) {
   ui.querySelectorAll('[data-visual]').forEach(button => button.addEventListener('click',() => setVisualMode(button.dataset.visual)));
   const updateClock = () => {clock.textContent=new Date().toLocaleTimeString('pt-BR',{hour12:false});};
   updateClock();
-  setInterval(updateClock,1000);
+  setInterval(()=>{if (!document.hidden) updateClock();},1000);
+  document.addEventListener('visibilitychange',()=>{if (!document.hidden) updateClock();});
   void bootNeuralRing();
   function logEvent(message){
     const p=document.createElement('p');p.textContent='› '+message;
@@ -185,7 +193,7 @@ if (stage) {
       try {
         let earth = window.ULTRON_EARTH;
         if (!earth?.open) {
-          await import('./jarvis-earth.js?v=4.48.0');
+          await import('./jarvis-earth.js?v=4.49.0');
           earth = window.ULTRON_EARTH;
         }
         if (!earth?.open) throw new Error('Motor terrestre não inicializado');
@@ -263,5 +271,5 @@ if (stage) {
   window.addEventListener('ultron:processing-end',()=>{state.textContent='STANDBY';});
   window.addEventListener('ultron:speech-start',()=>{state.textContent='FALANDO';logEvent('VOICE // OUTPUT');});
   window.addEventListener('ultron:speech-end',()=>{state.textContent='STANDBY';});
-  window.JARVIS_COMMAND_CENTER = {version:'4.47.0',setVisualMode,open:(name)=>actions[name]?.(),get active(){return true;}};
+  window.JARVIS_COMMAND_CENTER = {version:'4.49.0',setVisualMode,open:(name)=>actions[name]?.(),get active(){return true;}};
 }
