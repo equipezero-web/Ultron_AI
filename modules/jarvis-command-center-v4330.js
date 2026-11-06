@@ -37,6 +37,10 @@ if (stage) {
   relocate('#output-box', '#jarvis-cc-response-slot');
   relocate('.command-row', '#jarvis-cc-input-slot');
   relocate('.quick-actions', '#jarvis-cc-input-slot');
+  // The legacy .jarvis-cc-actions container is intentionally hidden by CSS.
+  // Keep the Earth entry point alongside the visible quick actions instead.
+  const globeQuickButton = ui.querySelector('[data-cc="earth"]');
+  ui.querySelector('#jarvis-cc-input-slot .quick-actions')?.append(globeQuickButton);
   // Mirror the same MediaStream without relocating the source video or
   // opening a second camera; preserve modal and canvas-overlay behavior.
   const compactPreview = ui.querySelector('.optical-preview');
@@ -174,11 +178,25 @@ if (stage) {
     }
   }
   const scrollTo = (selector) => document.querySelector(selector)?.scrollIntoView({behavior:'smooth',block:'center'});
+  let openingEarth = false;
   const actions = {
-    earth() {
-      const earth = window.ULTRON_EARTH;
-      if (earth?.open) earth.open();
-      else show('GLOBO 3D', 'O explorador ainda não foi carregado neste navegador. Atualize a página e tente novamente.');
+    async earth() {
+      if (openingEarth) return;
+      openingEarth = true;
+      try {
+        let earth = window.ULTRON_EARTH;
+        if (!earth?.open) {
+          show('GLOBO 3D', 'Inicializando o explorador 3D...');
+          // Reuse the same module URL already declared in index.html; importing it
+          // here also handles a quick click before the deferred module has finished.
+          await import('./jarvis-earth.js?v=4.41.0');
+          earth = window.ULTRON_EARTH;
+        }
+        if (!earth?.open) throw new Error('Módulo geográfico não inicializado');
+        await earth.open();
+      } catch (error) {
+        show('GLOBO 3D', 'Falha ao abrir explorador: ' + (error?.message || 'erro desconhecido') + '. Tente novamente.');
+      } finally { openingEarth = false; }
     },
     status() {
       const voice = window.ULTRON_VOICE_MATCH?.state;
