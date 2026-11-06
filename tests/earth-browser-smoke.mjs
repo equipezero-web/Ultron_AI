@@ -60,7 +60,9 @@ try {
   await page.evaluate(() => document.querySelector('.jarvis-earth-selection-close').click());
   assert.equal(await page.$eval('.jarvis-earth-selection-close', el => el.hidden), true);
 
+  console.log('Ring button hit-test:', await page.evaluate(() => {const b=document.querySelector('[data-visual="ring"]');const r=b.getBoundingClientRect();const h=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2);return {x:r.x,y:r.y,w:r.width,h:r.height,hit:h?.outerHTML?.slice(0,220),clickable:b===h||b.contains(h),scrollY:window.scrollY};}));
   await page.click('[data-visual="ring"]');
+  console.log('Ring after physical click:', await page.evaluate(() => ({visible:window.ULTRON_EARTH.state.visible,events:window.__earthEvents?.slice(-5),scrollY:window.scrollY})));
   assert.equal(await page.evaluate(() => window.ULTRON_EARTH.state.visible), false, 'Ring button must restore neural orb');
   assert.equal(await page.evaluate(() => window.ULTRON_EARTH.state.expanded), false);
   await page.click('[data-visual="globe"]');
