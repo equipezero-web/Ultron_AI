@@ -223,7 +223,17 @@ if (stage) {
       }
     }
   };
-  ui.querySelectorAll('[data-cc]').forEach((button) => button.addEventListener('click', () => actions[button.dataset.cc]?.()));
+  // Quick Earth control also activates on pointerdown: layout changes must not eat a click.
+  let quickEarthPointerAt = 0;
+  globeQuickButton?.addEventListener('pointerdown', event => {
+    if (event.button !== 0) return;
+    quickEarthPointerAt = Date.now();
+    void actions.earth();
+  });
+  ui.querySelectorAll('[data-cc]').forEach((button) => button.addEventListener('click', () => {
+    if (button.dataset.cc === 'earth' && Date.now() - quickEarthPointerAt < 750) return;
+    actions[button.dataset.cc]?.();
+  }));
   window.addEventListener('ultron:processing-start',()=>{state.textContent='PROCESSANDO';logEvent('CORE // PROCESSING');});
   window.addEventListener('ultron:processing-end',()=>{state.textContent='STANDBY';});
   window.addEventListener('ultron:speech-start',()=>{state.textContent='FALANDO';logEvent('VOICE // OUTPUT');});
