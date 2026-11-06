@@ -252,7 +252,7 @@ body.jarvis-command-center .jarvis-earth-hint{bottom:4px;background:rgba(2,9,19,
 body.jarvis-command-center .jarvis-earth-explorer{position:fixed;inset:0;z-index:9990;display:block;overflow:hidden;background:#030713;color:#d7f3ff;font-family:inherit}
 body.jarvis-command-center .jarvis-earth-explorer[hidden],body.jarvis-command-center .jarvis-earth-token[hidden]{display:none!important}
 body.jarvis-command-center .jarvis-earth-map{position:absolute;inset:0;width:100%;height:100%;background:radial-gradient(circle at 50% 45%,#10314b,#020617 68%)}
-body.jarvis-command-center .jarvis-earth-hud{position:absolute;inset:16px 16px auto;z-index:4;display:flex;flex-wrap:wrap;align-items:center;gap:10px;pointer-events:none}
+body.jarvis-command-center .jarvis-earth-hud{position:absolute;inset:16px 16px auto;z-index:20;display:flex;flex-wrap:wrap;align-items:center;gap:10px;pointer-events:none}
 body.jarvis-command-center .jarvis-earth-brand{background:rgba(2,9,23,.91);border:1px solid #1d657f;border-radius:12px;padding:11px 14px;display:flex;flex-direction:column;min-width:168px;gap:5px;box-shadow:0 0 24px #010712bb}
 body.jarvis-command-center .jarvis-earth-brand strong{color:#7de7ff;letter-spacing:.08em;font-size:13px}
 body.jarvis-command-center .jarvis-earth-brand small{color:#a0b9cf;font-size:9px;letter-spacing:.08em}
