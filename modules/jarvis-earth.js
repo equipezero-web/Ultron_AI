@@ -413,9 +413,12 @@ if (earthToggle) {
       else start();
     }
   }
-  shell.addEventListener('click', event => {
-    const button = event.target.closest('[data-earth]');
-    if (button) navigate(button.dataset.earth);
+  // Bind Earth controls at the button itself so other HUD listeners cannot swallow clicks.
+  shell.querySelectorAll('[data-earth]').forEach(button => {
+    button.addEventListener('click', event => {
+      event.stopPropagation();
+      navigate(button.dataset.earth);
+    });
   });
   searchForm.addEventListener('submit', event => {
     event.preventDefault();
