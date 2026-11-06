@@ -251,7 +251,7 @@ if (earthVisual) {
   const DETAIL_ENTRY_ALTITUDE = 0.6;
   const DETAIL_EXIT_ZOOM = 4.4;
   const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
-  const mobileGPU = window.matchMedia('(max-width: 820px), (pointer: coarse)').matches;
+  const mobileGPU = window.matchMedia?.('(max-width: 820px), (pointer: coarse)')?.matches ?? false;
   const lowMemory = Number(navigator.deviceMemory || 4) <= 2;
   const normalizePlace = value => String(value || '').normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
