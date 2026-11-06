@@ -37,6 +37,10 @@ if (stage) {
   relocate('#output-box', '#jarvis-cc-response-slot');
   relocate('.command-row', '#jarvis-cc-input-slot');
   relocate('.quick-actions', '#jarvis-cc-input-slot');
+  // The legacy .jarvis-cc-actions container is intentionally hidden by CSS.
+  // Keep the Earth entry point alongside the visible quick actions instead.
+  const globeQuickButton = ui.querySelector('[data-cc="earth"]');
+  ui.querySelector('#jarvis-cc-input-slot .quick-actions')?.append(globeQuickButton);
   // Mirror the same MediaStream without relocating the source video or
   // opening a second camera; preserve modal and canvas-overlay behavior.
   const compactPreview = ui.querySelector('.optical-preview');
