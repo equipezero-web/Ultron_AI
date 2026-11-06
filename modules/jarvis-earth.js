@@ -283,8 +283,14 @@ if (earthVisual) {
     }
     return { ok: false, error: 'Comando desconhecido' };
   }
-  earthButton?.addEventListener('click', () => { if (!visible) void open(); });
-  ringButton?.addEventListener('click', () => { if (visible) close(); });
+  const activateEarth = () => { if (!visible) void open(); };
+  const restoreRing = () => { if (visible) close(); };
+  // Pointerdown fires before responsive zoom can move the button under the pointer.
+  // Click remains for keyboard and accessibility activation.
+  earthButton?.addEventListener('pointerdown', activateEarth);
+  earthButton?.addEventListener('click', activateEarth);
+  ringButton?.addEventListener('pointerdown', restoreRing);
+  ringButton?.addEventListener('click', restoreRing);
   window.addEventListener('ultron:earth-location', event => { void locate(event.detail?.place || ''); });
   if (typeof ResizeObserver !== 'undefined') new ResizeObserver(syncSize).observe(earthVisual);
   window.ULTRON_EARTH = {
