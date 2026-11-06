@@ -1212,3 +1212,11 @@ body.jarvis-command-center .jarvis-earth-reference-zoom button:active{
     transition-duration:.001ms!important;
   }
 }
+
+/* Stable click target: keep the contextual Mapbox panel stationary while it fades.
+   Transform transitions previously moved the Minimize button between touch down/up. */
+body.jarvis-command-center .jarvis-earth-reference-side{
+  opacity:0;
+  transition:opacity 180ms ease,visibility 0ms!important;
+}
+body.jarvis-command-center .jarvis-earth-reference-side.is-open{opacity:1}
