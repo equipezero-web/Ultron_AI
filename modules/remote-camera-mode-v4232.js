@@ -57,11 +57,12 @@ if (!window[PATCH_KEY]) {
   }
 
   function openSensorPanel() {
+    if (document.body.classList.contains('jarvis-command-center')) return; // Inline Optical Sensor only
     screenModal?.classList.add('open');
     screenModal?.setAttribute('aria-hidden', 'false');
   }
 
-  async function showRemoteCamera({ openPanel = true } = {}) {
+  async function showRemoteCamera({ openPanel = false } = {}) {
     if (openPanel) openSensorPanel();
 
     const display = window.ULTRON_REMOTE_CAMERA_DISPLAY;
