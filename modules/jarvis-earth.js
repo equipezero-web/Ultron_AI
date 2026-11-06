@@ -145,8 +145,9 @@ if (earthToggle) {
     const token = publicToken();
     if (!token || !/^pk\.[A-Za-z0-9._-]{20,}$/.test(token)) {
       tokenForm.hidden = false;
+      tokenForm.querySelector('input')?.focus();
       setStatus('Configure seu token público Mapbox para carregar o globo.', true);
-      return { ok: false, error: 'Token público Mapbox não configurado' };
+      return { ok: false, requiresToken: true, mode: 'mapbox-setup', error: 'Token público Mapbox não configurado' };
     }
     tokenForm.hidden = true;
     pendingInit = (async () => {
