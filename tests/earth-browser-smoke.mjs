@@ -67,6 +67,9 @@ try {
   assert.equal(await page.evaluate(() => window.ULTRON_EARTH.state.expanded), false);
   await page.click('[data-visual="globe"]');
   assert.equal(await page.evaluate(() => window.ULTRON_EARTH.state.visible), true, 'Globe toggle should reopen same 3D sphere');
+  await page.evaluate(() => window.ULTRON_EARTH.close());
+  await page.click('[data-cc="earth"]');
+  assert.equal(await page.evaluate(() => window.ULTRON_EARTH.state.visible), true, 'The Globe 3D quick button must activate the globe on physical press');
 
   console.log('BROWSER EARTH PASS: actual buttons, transparent globe, China in center, expanded zoom, click-only X, return to ring');
   if (errors.length) console.log('Other page script errors:', errors.slice(0, 4));
