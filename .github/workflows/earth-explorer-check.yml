@@ -51,3 +51,39 @@ jobs:
           assert.ok(!/pk\.eyJ[A-Za-z0-9._-]+/.test(js), 'Do not commit a literal Mapbox token');
           console.log('Earth Explorer integration and token safety checks passed');
           NODE
+
+      - name: Regression test for satellite activation command routing
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import assert from 'node:assert/strict';
+          const source = fs.readFileSync('modules/ultron-orchestrator-v4270.js', 'utf8');
+          const earth = fs.readFileSync('modules/jarvis-earth.js', 'utf8');
+          const a = source.indexOf('const geoAliases =');
+          const b = source.indexOf('function lastAssistantEarthOffer()', a);
+          assert.ok(a >= 0 && b > a, 'Earth command parser unavailable');
+          const normalize = text => String(text || '').normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
+          const parseEarthIntent = new Function('normalize', source.slice(a, b) + '\nreturn parseEarthIntent;')(normalize);
+          const cases = [
+            ['Ativar mapa por satélite', ''],
+            ['ativar o mapa por satélite', ''],
+            ['Jarvis, abra o mapa por satélite', ''],
+            ['quero ver mapa por satélite', ''],
+            ['Ative o globo', ''],
+            ['Mostre-me o globo', ''],
+            ['Me mostre a China', 'china'],
+            ['Mostre o mapa do Brasil', 'brasil'],
+            ['Mostre o clima', null],
+            ['Mostre a câmera', null],
+            ['Mostre fotos da China', null],
+            ['Mostre meu pedido', null]
+          ];
+          for (const [input, expected] of cases) {
+            const actual = parseEarthIntent(input)?.place ?? null;
+            assert.equal(actual, expected, 'Wrong Earth route for: ' + input);
+          }
+          assert.ok(source.includes('result?.requiresToken'), 'Mapbox setup should be a waiting state');
+          assert.ok(earth.includes('requiresToken: true'), 'Mapbox UI must flag token configuration');
+          console.log('Earth command routing cases passed:', cases.length);
+          NODE
