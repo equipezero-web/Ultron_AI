@@ -308,3 +308,17 @@ body.jarvis-command-center .jarvis-earth-basic[hidden]{display:none!important}
 body.jarvis-command-center .jarvis-earth-basic canvas{touch-action:none!important;pointer-events:auto!important}
 body.jarvis-command-center .jarvis-earth-basic iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 body.jarvis-command-center .jarvis-earth-token button[data-earth=basic]{background:transparent;color:#adddf6;border-color:#477b97}
+
+/* Earth visualization embedded in the Neural Ring rather than a page overlay. */
+body.jarvis-command-center .jarvis-cc-visual .jarvis-earth-explorer{position:absolute!important;inset:0!important;width:100%;height:100%;z-index:9;border-radius:18px;overflow:hidden}
+body.jarvis-command-center .jarvis-cc-visual.jarvis-earth-active > canvas{opacity:.12}
+body.jarvis-command-center .jarvis-cc-visual .jarvis-earth-hud{inset:6px 7px auto;display:flex;flex-direction:column;gap:5px}
+body.jarvis-command-center .jarvis-cc-visual .jarvis-earth-brand{display:none}
+body.jarvis-command-center .jarvis-cc-visual .jarvis-earth-search{min-width:0;width:100%;max-width:none;flex:0 0 auto;box-sizing:border-box;padding:2px}
+body.jarvis-command-center .jarvis-cc-visual .jarvis-earth-toolbar{order:2;display:flex;justify-content:center;flex-wrap:wrap;gap:3px;margin:0}
+body.jarvis-command-center .jarvis-cc-visual .jarvis-earth-toolbar button{padding:3px 6px;min-height:25px;font-size:9px}
+body.jarvis-command-center .jarvis-cc-visual .jarvis-earth-notice{bottom:16px;left:8px;max-width:calc(100% - 16px);padding:5px;font-size:9px}
+body.jarvis-command-center .jarvis-cc-visual .jarvis-earth-token{max-width:calc(100% - 16px);max-height:85%;overflow:auto;box-sizing:border-box;padding:10px}
+body.jarvis-command-center .jarvis-cc-visual .jarvis-earth-side{width:min(95%,310px);padding:116px 10px 10px}
+body.jarvis-command-center .jarvis-cc-visual .jarvis-earth-map canvas,body.jarvis-command-center .jarvis-cc-visual .jarvis-earth-basic canvas{pointer-events:auto!important;touch-action:none!important}
+body.jarvis-command-center .jarvis-cc-visual.jarvis-earth-active::after{content:"";position:absolute;inset:3%;z-index:11;pointer-events:none;border:1px solid #5299ba55;border-radius:50%}

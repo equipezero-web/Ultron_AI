@@ -43,7 +43,7 @@ if (earthToggle) {
   shell.id = 'jarvis-earth-explorer';
   shell.className = 'jarvis-earth-explorer';
   shell.hidden = true;
-  shell.setAttribute('role', 'dialog');
+  shell.setAttribute('role', 'region');
   shell.setAttribute('aria-label', 'Explorador geográfico do JARVIS');
   shell.innerHTML = [
     '<div class="jarvis-earth-map" aria-label="Globo satélite 3D"></div>',
@@ -59,7 +59,8 @@ if (earthToggle) {
     '<p class="jarvis-earth-credit">Fotos georreferenciadas: Wikimedia Commons (autor e licença disponíveis ao abrir cada imagem). Mapa: © Mapbox.</p>',
     '<button type="button" class="jarvis-earth-reset" data-earth="reset">MINIMIZAR E RETORNAR À VISÃO GLOBAL</button></aside>'
   ].join('');
-  document.body.append(shell);
+  const visualHost = document.querySelector('.jarvis-cc-visual');
+  (visualHost || document.body).append(shell);
   const mapHost = shell.querySelector('.jarvis-earth-map');
   const panel = shell.querySelector('.jarvis-earth-side');
   const notice = shell.querySelector('.jarvis-earth-notice');
@@ -191,6 +192,7 @@ if (earthToggle) {
     requestController?.abort();
     stopSpin();
     shell.hidden = true;
+    visualHost?.classList.remove('jarvis-earth-active');
     panel.classList.remove('is-open');
     panel.setAttribute('aria-hidden', 'true');
     if (ringToggle && ringToggle.getAttribute('aria-pressed') !== 'true') ringToggle.click();
@@ -259,6 +261,8 @@ if (earthToggle) {
   }
   function open() {
     shell.hidden = false;
+    visualHost?.classList.add('jarvis-earth-active');
+    window.JARVIS_COMMAND_CENTER?.setVisualMode?.('globe');
     requestAnimationFrame(() => {
       map?.resize();
       if (basicGlobe && basicHost) basicGlobe.width(basicHost.clientWidth).height(basicHost.clientHeight);
@@ -431,9 +435,14 @@ if (earthToggle) {
   });
   document.addEventListener('keydown', event => { if (event.key === 'Escape' && !shell.hidden) close(); });
   earthToggle.addEventListener('click', () => { open(); });
-  ringToggle?.addEventListener('click', () => {
-    shell.hidden = true; stopSpin(); requestController?.abort(); ++requestId;
-  });
+  ringToggle?.addEventListener('click', () => close());
+  if (visualHost && typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(() => {
+      if (shell.hidden) return;
+      map?.resize();
+      if (basicGlobe && basicHost) basicGlobe.width(basicHost.clientWidth).height(basicHost.clientHeight);
+    }).observe(visualHost);
+  }
   window.addEventListener('ultron:earth-location', event => { locate(event.detail?.place); });
   window.ULTRON_EARTH = {
     open, locate, navigate,

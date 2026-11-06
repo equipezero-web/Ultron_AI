@@ -24,6 +24,8 @@ try {
   await page.waitForFunction(() => window.ULTRON_EARTH?.state?.visible === true, { timeout: 12000 });
   await page.waitForFunction(() => window.ULTRON_EARTH?.state?.ready === true, { timeout: 40000 });
   const mode = await page.evaluate(() => window.ULTRON_EARTH.state.mode);
+  assert.equal(await page.$eval('#jarvis-earth-explorer', el => el.parentElement?.classList.contains('jarvis-cc-visual')), true, 'Globe must remain inside the Neural Ring');
+  assert.equal(await page.$eval('#jarvis-earth-explorer', el => getComputedStyle(el).position), 'absolute', 'Globe must not cover the full screen');
   assert.ok(['globe-basic', 'map-2d'].includes(mode), 'Expected globe fallback without Mapbox token; got: ' + mode);
   const hasRenderer = await page.evaluate(() => Boolean(document.querySelector('.jarvis-earth-basic canvas, .jarvis-earth-basic iframe')));
   assert.equal(hasRenderer, true, 'A globe canvas or alternative map iframe must be present');

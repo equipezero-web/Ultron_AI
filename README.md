@@ -83,13 +83,13 @@ Nunca publique o arquivo `.env`.
 
 ## Explorador geográfico Mapbox (v4.40)
 
-A aba de globo do J.A.R.V.I.S abre um explorador em tela cheia baseado no exemplo Mapbox fornecido pelo operador: projeção de globo, estilo `satellite-streets-v12`, relevo raster-DEM, busca de localidades, marcadores, clique para coordenadas e retorno suave à visão global.
+A aba de globo do J.A.R.V.I.S apresenta o explorador dentro da visualização central do Neural Ring, sem abrir outra tela, baseado no exemplo Mapbox fornecido pelo operador: projeção de globo, estilo `satellite-streets-v12`, relevo raster-DEM, busca de localidades, marcadores, clique para coordenadas e retorno suave à visão global.
 
 A escolha de uma localização abre um **painel lateral** com fotos próximas obtidas dinamicamente da Wikimedia Commons, quando existem imagens georreferenciadas na região. Cada fotografia aponta para a página da fonte com autoria e licença. Imagens são independentes do satélite; podem não estar disponíveis para todos os locais.
 
 **Ativação do Mapbox:** no painel do J.A.R.V.I.S., clique em **GLOBO 3D** ou envie o comando `Ativar mapa por satélite`. O globo básico abre mesmo sem token; se quiser o satélite de alta resolução, informe seu token **público** (`pk.`) no campo **Ativar mapa por satélite**. Ele é guardado apenas no `localStorage` do navegador em `jarvis_mapbox_pk_v1`. Para trocá-lo, clique em **⚙ Token** dentro do explorador. O GitHub bloqueou a inclusão do token fornecido no código do repositório; por isso, não o grave diretamente em arquivos versionados. Recomenda-se restringir esse token a `https://equipezero-web.github.io` no painel Mapbox e verificar suas cotas e custos de uso.
 
-A biblioteca Mapbox GL JS é carregada sob demanda. Requer conexão com a Internet e suporte WebGL. O botão **✕ Sair** retorna ao painel do J.A.R.V.I.S; **◎ Global** e **Minimizar** recuam a câmera para o globo, mantendo a exploração aberta. O comportamento do mouse/rolagem no painel principal permanece separado do mapa.
+A biblioteca Mapbox GL JS é carregada sob demanda. Requer conexão com a Internet e suporte WebGL. O botão **✕ Sair** retorna ao anel holográfico central; **◎ Global** e **Minimizar** recuam a câmera para o globo, mantendo a exploração aberta. O comportamento do mouse/rolagem no painel principal permanece separado do mapa.
 
 
 ### Diagnóstico de abertura do globo

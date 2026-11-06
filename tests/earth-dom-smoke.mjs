@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { JSDOM } from 'jsdom';
 
-const dom = new JSDOM('<!doctype html><html><body><main class="orb-stage"><button type="button" data-visual="ring" aria-pressed="true">Anel</button><button type="button" data-visual="globe" aria-pressed="false">Globo</button></main></body></html>', {
+const dom = new JSDOM('<!doctype html><html><body><main class="orb-stage"><div class="jarvis-cc-visual"></div><button type="button" data-visual="ring" aria-pressed="true">Anel</button><button type="button" data-visual="globe" aria-pressed="false">Globo</button></main></body></html>', {
   url: 'https://example.test/',
   runScripts: 'outside-only',
   pretendToBeVisual: true
@@ -50,6 +50,7 @@ assert.equal(typeof window.ULTRON_EARTH?.open, 'function', 'Earth API should reg
 document.querySelector('[data-visual="globe"]').click();
 await new Promise(resolve => setTimeout(resolve, 75));
 assert.equal(window.ULTRON_EARTH.state.visible, true, 'Globe button must show explorer');
+assert.equal(document.querySelector('#jarvis-earth-explorer').parentElement, document.querySelector('.jarvis-cc-visual'), 'Globe must render within the Neural Ring');
 assert.equal(window.ULTRON_EARTH.state.ready, true, 'Basic globe must initialize without a Mapbox token');
 assert.equal(window.ULTRON_EARTH.state.mode, 'globe-basic');
 assert.equal(window.ULTRON_EARTH.state.needsToken, true);
