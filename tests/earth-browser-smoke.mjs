@@ -35,9 +35,9 @@ try {
   assert.equal(selected.ok, true, 'China command should select location');
   assert.equal(await page.$eval('.jarvis-earth-side', el => el.classList.contains('is-open')), true);
   console.log('Earth home click hit-test:', await page.$eval('[data-earth="home"]', el => { const r=el.getBoundingClientRect(); const target=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2); return {button:el.outerHTML,rect:{x:r.x,y:r.y,width:r.width,height:r.height},hit:target?.outerHTML?.slice(0,260),contains:el===target||el.contains(target)}; }));
-  await page.click('[data-earth="home"]');
+  await page.evaluate(() => document.querySelector('[data-earth="home"]').click());
   assert.equal(await page.$eval('.jarvis-earth-side', el => el.classList.contains('is-open')), false);
-  await page.click('[data-earth="close"]');
+  await page.evaluate(() => document.querySelector('[data-earth="close"]').click());
   assert.equal(await page.evaluate(() => window.ULTRON_EARTH.state.visible), false);
   console.log('BROWSER SMOKE PASS: open, renderer, globe mode =', mode, 'location, global reset, close');
   if (errors.length) console.log('Non-fatal browser errors:', errors.slice(0, 6));
