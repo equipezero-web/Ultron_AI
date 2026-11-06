@@ -22,6 +22,10 @@ if (stage) {
       <button type="button" data-cc="files">ARQUIVOS</button>
     </div><div class="jarvis-cc-panel" id="jarvis-cc-panel" hidden aria-live="polite"></div></div>`;
   stage.appendChild(ui);
+  // Keep the two real sphere-mode controls next to the sphere, above the camera widget.
+  // This prevents camera resize from moving buttons between pointerdown and pointerup.
+  const sphereControls = ui.querySelector('.jarvis-cc-orb-controls');
+  if (sphereControls) ui.querySelector('.jarvis-cc-camera-slot')?.before(sphereControls);
   // Reuse the real controls and their original IDs so existing listeners,
   // voice recognition, gateway status and camera integrations remain intact.
   const relocate = (selector, slot) => {
