@@ -17,9 +17,18 @@ try {
   await page.waitForSelector('[data-visual="globe"]', { timeout: 30000 });
   assert.equal(await page.evaluate(() => window.ULTRON_EARTH?.state?.visible), false);
 
+  await page.evaluate(() => {
+    window.__earthEvents = [];
+    for (const type of ['pointerdown', 'pointerup', 'click']) {
+      document.addEventListener(type, event => { window.__earthEvents.push({
+        type, tag:event.target?.tagName, html:event.target?.outerHTML?.slice(0,180),
+        x:event.clientX, y:event.clientY, scrollY:window.scrollY
+      }); }, true);
+    }
+  });
   console.log('Globe button pre-click hit:', await page.evaluate(() => { const b=document.querySelector('[data-visual="globe"]'); const r=b.getBoundingClientRect(); const hit=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2); return {x:r.x,y:r.y,w:r.width,h:r.height,hit:hit?.outerHTML?.slice(0,300),isButton:b===hit||b.contains(hit),display:getComputedStyle(b).display,pointerEvents:getComputedStyle(b).pointerEvents}; }));
   await page.click('[data-visual="globe"]');
-  console.log('Globe after physical click:', await page.evaluate(() => ({state:window.ULTRON_EARTH?.state,mode:document.querySelector('[data-visual="globe"]')?.getAttribute('aria-pressed')})));
+  console.log('Globe after physical click:', await page.evaluate(() => ({state:window.ULTRON_EARTH?.state,mode:document.querySelector('[data-visual="globe"]')?.getAttribute('aria-pressed'),events:window.__earthEvents,scrollY:window.scrollY,buttonRect:(() => {const r=document.querySelector('[data-visual="globe"]').getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,hit:document.elementFromPoint(r.left+r.width/2,r.top+r.height/2)?.outerHTML?.slice(0,180)}})()})));
   await page.waitForFunction(() => window.ULTRON_EARTH?.state?.visible === true, { timeout: 4000 });
   await page.waitForFunction(() => window.ULTRON_EARTH?.state?.ready === true, { timeout: 15000 });
   const result = await page.evaluate(() => ({
