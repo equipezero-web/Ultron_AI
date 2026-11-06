@@ -85,9 +85,17 @@ try {
   const afterHover = await page.evaluate(() => window.ULTRON_EARTH.state.view);
   assert.ok(Math.abs(afterHover.lat-beforeHover.lat)<0.01 && Math.abs(afterHover.lng-beforeHover.lng)<0.01,
     'Moving the mouse without holding must not rotate the globe');
+  console.log('Globe canvas drag hit:', await page.evaluate(({x,y}) => ({
+    hit:document.elementFromPoint(x,y)?.outerHTML?.slice(0,220),
+    canvasRect:(()=>{const r=document.querySelector('.jarvis-earth-renderer canvas').getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height}})(),
+    view:window.ULTRON_EARTH.state.view
+  }), {x:cx,y:cy}));
   await page.mouse.down();
+  console.log('Globe pointer down:', await page.evaluate(() => ({dragging:window.ULTRON_EARTH.state.dragging, view:window.ULTRON_EARTH.state.view})));
   await page.mouse.move(cx + 90,cy + 35,{steps:8});
+  console.log('Globe pointer move:', await page.evaluate(() => ({dragging:window.ULTRON_EARTH.state.dragging, view:window.ULTRON_EARTH.state.view})));
   await page.mouse.up();
+  console.log('Globe pointer up:', await page.evaluate(() => ({dragging:window.ULTRON_EARTH.state.dragging, view:window.ULTRON_EARTH.state.view})));
   await page.waitForFunction(() => window.ULTRON_EARTH.state.dragRequiresHold === true, {timeout:2000});
   const afterDrag = await page.evaluate(() => window.ULTRON_EARTH.state.view);
   assert.ok(Math.abs(afterDrag.lat-afterHover.lat)>0.05 || Math.abs(afterDrag.lng-afterHover.lng)>0.05,
