@@ -75,6 +75,8 @@ if (earthVisual) {
   let visible = false;
   let lastError = null;
   let selectedPlace = null;
+  let dragState = null;
+  let lastDragEndedAt = 0;
   let plannedAltitude = null;
   let requestSequence = 0;
   const DETAIL_ENTRY_ALTITUDE = 0.6;
@@ -322,6 +324,7 @@ if (earthVisual) {
           .pointRadius(0.28)
           .pointAltitude(0.015)
           .onGlobeClick(({ lat, lng }) => {
+            if (Date.now() - lastDragEndedAt < 250) return; // A drag is not a location click.
             const result = focus(lat, lng, 10, true);
             if (result.ok) terminal('Ponto selecionado: ' + lat.toFixed(4) + ', ' + lng.toFixed(4) + '.');
           });
@@ -332,18 +335,43 @@ if (earthVisual) {
         controls.enablePan = false;
         controls.enableZoom = false; // Wheel is routed explicitly to zoom, never rotation.
         controls.enableRotate = false; // Mouse hover cannot rotate the globe.
-        let holdingGlobe = false;
+        // Globe.gl's OrbitControls stays disabled for rotation. Drive the camera
+        // ourselves only while the primary button is held, so a hover or mouseup
+        // can never leave OrbitControls stuck in the rotate state.
         const startDrag = event => {
-          if (streetMode || event.target.closest('.jarvis-earth-selection-close')) return;
+          if (!visible || streetMode || event.target.closest?.('.jarvis-earth-selection-close')) return;
           if (event.pointerType === 'mouse' && event.button !== 0) return;
-          holdingGlobe = true;
-          controls.enableRotate = true;
+          if (event.button !== undefined && event.button !== 0) return;
+          plannedAltitude = null;
+          controls.autoRotate = false;
+          controls.enableRotate = false;
+          dragState = {
+            pointerId:event.pointerId ?? null,
+            x:event.clientX, y:event.clientY,
+            view:{...(globe.pointOfView() || home)},
+            moved:false
+          };
         };
-        const stopDrag = () => { holdingGlobe = false; controls.enableRotate = false; };
+        const stopDrag = () => {
+          if (dragState?.moved) lastDragEndedAt = Date.now();
+          dragState = null;
+          controls.enableRotate = false;
+        };
+        const moveDrag = event => {
+          if (!dragState || !visible || streetMode) return;
+          if (event.pointerType === 'mouse' && !(event.buttons & 1)) return stopDrag();
+          if (dragState.pointerId != null && event.pointerId != null && event.pointerId !== dragState.pointerId) return;
+          const dx = event.clientX - dragState.x;
+          const dy = event.clientY - dragState.y;
+          if (Math.abs(dx) + Math.abs(dy) < 2) return;
+          dragState.moved = true;
+          const scale = clamp(dragState.view.altitude * 0.18, 0.015, 0.65);
+          const lat = clamp(dragState.view.lat + dy * scale, -84, 84);
+          const lng = ((dragState.view.lng - dx * scale + 540) % 360) - 180;
+          globe.pointOfView({lat,lng,altitude:dragState.view.altitude},0);
+        };
         canvasHost.addEventListener('pointerdown', startDrag, true);
-        canvasHost.addEventListener('pointermove', event => {
-          if (!holdingGlobe || (event.pointerType === 'mouse' && !(event.buttons & 1))) stopDrag();
-        }, true);
+        window.addEventListener('pointermove', moveDrag, true);
         window.addEventListener('pointerup', stopDrag, true);
         window.addEventListener('pointercancel', stopDrag, true);
         window.addEventListener('blur', stopDrag);
@@ -401,6 +429,7 @@ if (earthVisual) {
   }
   function close() {
     visible = false;
+    dragState = null;
     streetMode = false;
     host.classList.remove('jarvis-earth-map-active');
     plannedAltitude = null;
@@ -524,7 +553,7 @@ if (earthVisual) {
         view: streetMode && streetMap
           ? {lat:streetMap.getCenter().lat,lng:streetMap.getCenter().lng,altitude:altitudeFromMapZoom(streetMap.getZoom()),zoom:streetMap.getZoom()}
           : globe?.pointOfView?.() || null,
-        dragRequiresHold: true, streetZoomAvailable: tokenConfigured, streetMode
+        dragRequiresHold: true, dragging: Boolean(dragState), streetZoomAvailable: tokenConfigured, streetMode
       };
     }
   };
