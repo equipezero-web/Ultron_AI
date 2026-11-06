@@ -1,0 +1,46 @@
+import assert from 'node:assert/strict';
+import puppeteer from 'puppeteer-core';
+
+const url = process.env.JARVIS_TEST_URL || 'http://127.0.0.1:8766/';
+const browser = await puppeteer.launch({
+  executablePath: process.env.CHROME_BIN || '/usr/bin/google-chrome',
+  headless: true,
+  args: ['--no-sandbox', '--disable-dev-shm-usage', '--enable-webgl', '--enable-unsafe-swiftshader']
+});
+let page;
+try {
+  page = await browser.newPage();
+  await page.setViewport({ width: 1365, height: 860, deviceScaleFactor: 1 });
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.message));
+  await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 35000 });
+  await page.waitForSelector('[data-cc="earth"]', { timeout: 30000 });
+  assert.equal(await page.$eval('#jarvis-earth-explorer', el => el.hidden), true, 'Explorer should start closed');
+
+  await page.click('[data-cc="earth"]');
+  await page.waitForFunction(() => window.ULTRON_EARTH?.state?.visible === true, { timeout: 12000 });
+  await page.waitForFunction(() => window.ULTRON_EARTH?.state?.ready === true, { timeout: 40000 });
+  const mode = await page.evaluate(() => window.ULTRON_EARTH.state.mode);
+  assert.ok(['globe-basic', 'map-2d'].includes(mode), 'Expected globe fallback without Mapbox token; got: ' + mode);
+  const hasRenderer = await page.evaluate(() => Boolean(document.querySelector('.jarvis-earth-basic canvas, .jarvis-earth-basic iframe')));
+  assert.equal(hasRenderer, true, 'A globe canvas or alternative map iframe must be present');
+
+  await page.evaluate(() => document.querySelector('[data-earth="basic"]')?.click());
+  const selected = await page.evaluate(() => window.ULTRON_EARTH.locate('China'));
+  assert.equal(selected.ok, true, 'China command should select location');
+  assert.equal(await page.$eval('.jarvis-earth-side', el => el.classList.contains('is-open')), true);
+  await page.click('[data-earth="home"]');
+  assert.equal(await page.$eval('.jarvis-earth-side', el => el.classList.contains('is-open')), false);
+  await page.click('[data-earth="close"]');
+  assert.equal(await page.evaluate(() => window.ULTRON_EARTH.state.visible), false);
+  console.log('BROWSER SMOKE PASS: open, renderer, globe mode =', mode, 'location, global reset, close');
+  if (errors.length) console.log('Non-fatal browser errors:', errors.slice(0, 6));
+} catch (error) {
+  if (page) {
+    await page.screenshot({path:'earth-browser-failure.png', fullPage:false}).catch(() => {});
+    console.error('Browser page errors captured:', await page.evaluate(() => document.querySelector('.jarvis-earth-notice')?.textContent).catch(() => null));
+  }
+  throw error;
+} finally {
+  await browser.close();
+}
