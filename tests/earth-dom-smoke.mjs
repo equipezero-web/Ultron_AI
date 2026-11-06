@@ -78,6 +78,7 @@ assert.equal(earth.navigate('home').ok, true);
 assert.equal(earth.state.expanded, false, 'Returning global must restore neural visual size');
 
 assert.equal(typeof clickHandler, 'function');
+await new Promise(resolve => setTimeout(resolve, 280)); // A drag must not count as a globe click.
 clickHandler({ lat: 37.5, lng: 118.4 });
 assert.equal(earth.state.selectedPlace.lat, 37.5);
 assert.equal(pins.length, 1);
