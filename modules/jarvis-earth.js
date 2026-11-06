@@ -1,7 +1,7 @@
 // Wheel recovery: legacy global listeners may consume wheel events even while arrow scrolling works.
 // Handle only the dashboard background; leave maps, inputs and scrollable panels alone.
 document.addEventListener('wheel', (event) => {
-  if (event.defaultPrevented || event.ctrlKey || event.target.closest('iframe,textarea,input,select,.jarvis-earth-globe,#output-box,.screen-modal')) return;
+  if (event.defaultPrevented || event.ctrlKey || event.target.closest('iframe,textarea,input,select,.jarvis-earth-globe,.jarvis-earth-explorer,#output-box,.screen-modal')) return;
   const doc = document.scrollingElement || document.documentElement;
   if (doc.scrollHeight <= doc.clientHeight + 2) return;
   const before = doc.scrollTop;
@@ -50,7 +50,7 @@ if (earthToggle) {
     '<header class="jarvis-earth-hud">',
     '<div class="jarvis-earth-brand"><strong>J.A.R.V.I.S // EARTH</strong><small>GLOBO 3D • SATÉLITE • EXPLORAÇÃO</small></div>',
     '<form class="jarvis-earth-search" role="search"><input type="search" aria-label="Pesquisar local" placeholder="Cidade, país ou endereço" maxlength="150" required><button type="submit">Localizar</button></form>',
-    '<div class="jarvis-earth-toolbar"><button type="button" data-earth="home">◎ Global</button><button type="button" data-earth="zoom-in">＋</button><button type="button" data-earth="zoom-out">－</button><button type="button" data-earth="rotate" aria-pressed="false">⟳ Girar</button><button type="button" data-earth="close">✕ Sair</button></div>',
+    '<div class="jarvis-earth-toolbar"><button type="button" data-earth="home">◎ Global</button><button type="button" data-earth="zoom-in">＋</button><button type="button" data-earth="zoom-out">－</button><button type="button" data-earth="rotate" aria-pressed="false">⟳ Girar</button><button type="button" data-earth="token">⚙ Token</button><button type="button" data-earth="close">✕ Sair</button></div>',
     '</header>',
     '<div class="jarvis-earth-notice" role="status" aria-live="polite"></div>',
     '<form class="jarvis-earth-token" hidden><h2>Ativar mapa por satélite</h2><p>Informe seu token público Mapbox (iniciado em pk.). Ele ficará somente no armazenamento deste navegador, não no GitHub.</p><input type="password" aria-label="Token público Mapbox" placeholder="pk...." autocomplete="off" required><button type="submit">Ativar globo</button></form>',
@@ -140,7 +140,7 @@ if (earthToggle) {
     if (ringToggle && ringToggle.getAttribute('aria-pressed') !== 'true') ringToggle.click();
   }
   async function init() {
-    if (map?.loaded()) return { ok: true };
+    if (map) return { ok: true };
     if (pendingInit) return pendingInit;
     const token = publicToken();
     if (!token || !/^pk\.[A-Za-z0-9._-]{20,}$/.test(token)) {
@@ -308,6 +308,7 @@ if (earthToggle) {
   }
   function navigate(action) {
     if (action === 'close') return close();
+    if (action === 'token') { tokenForm.hidden = false; tokenForm.querySelector('input').focus(); return; }
     if (action === 'home' || action === 'reset') return reset();
     if (!map) return;
     if (action === 'zoom-in' || action === 'zoom-out') {
@@ -316,10 +317,9 @@ if (earthToggle) {
     }
     if (action === 'rotate') {
       if (spinning) return stopSpin();
-      if (map.getZoom() >= 5) reset();
-      spinning = true;
-      rotateButton.setAttribute('aria-pressed', 'true');
-      spinId = requestAnimationFrame(spin);
+      const start = () => { spinning = true; rotateButton.setAttribute('aria-pressed', 'true'); spinId = requestAnimationFrame(spin); };
+      if (map.getZoom() >= 5) { reset(); map.once('moveend', start); }
+      else start();
     }
   }
   shell.addEventListener('click', event => {
@@ -336,6 +336,7 @@ if (earthToggle) {
     const token = tokenForm.querySelector('input').value.trim();
     if (!/^pk\.[A-Za-z0-9._-]{20,}$/.test(token)) return setStatus('Informe um token público válido, começando com pk.', true);
     saveToken(token);
+    if (map) { map.remove(); map = null; }
     const search = pendingQuery;
     pendingQuery = '';
     if (search) locate(search); else open();
