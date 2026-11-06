@@ -51,8 +51,8 @@ jobs:
           ];
           for (const text of required) assert.ok(js.includes(text), 'Missing Earth feature: ' + text);
           assert.ok(css.includes('.jarvis-earth-explorer') && css.includes('.jarvis-earth-side.is-open'), 'Earth styling missing');
-          assert.ok(html.includes('jarvis-earth.js?v=4.41.0'), 'Earth version missing');
-          assert.ok(html.includes('jarvis-command-center-v4330.css?v=4.41.0'), 'Earth CSS version missing');
+          assert.ok(html.includes('jarvis-earth.js?v=4.43.0'), 'Earth version missing');
+          assert.ok(html.includes('jarvis-command-center-v4330.css?v=4.43.0'), 'Earth CSS version missing');
           assert.equal((html.match(/src="modules\/jarvis-earth.js/g)||[]).length, 1, 'Earth module must load once');
           assert.ok(!/pk\.eyJ[A-Za-z0-9._-]+/.test(js), 'Do not commit a literal Mapbox token');
           console.log('Earth Explorer integration and token safety checks passed');

@@ -8,10 +8,10 @@ const browser = await puppeteer.launch({
   args: ['--no-sandbox', '--disable-dev-shm-usage', '--enable-webgl', '--enable-unsafe-swiftshader']
 });
 let page;
+const errors = [];
 try {
   page = await browser.newPage();
   await page.setViewport({ width: 1365, height: 860, deviceScaleFactor: 1 });
-  const errors = [];
   page.on('pageerror', error => errors.push(error.message));
   await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 35000 });
   await page.waitForSelector('[data-cc="earth"]', { timeout: 30000 });
@@ -41,6 +41,7 @@ try {
   console.log('BROWSER SMOKE PASS: open, renderer, globe mode =', mode, 'location, global reset, close');
   if (errors.length) console.log('Non-fatal browser errors:', errors.slice(0, 6));
 } catch (error) {
+  console.error('Earth browser smoke failure:', error);
   if (page) {
     await page.screenshot({path:'earth-browser-failure.png', fullPage:false}).catch(() => {});
     console.error('Browser page errors captured:', errors.slice(0, 12));
