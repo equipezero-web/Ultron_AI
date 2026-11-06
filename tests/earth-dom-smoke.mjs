@@ -33,6 +33,16 @@ window.Globe = () => host => {
   globeInstalls += 1;
   return globe;
 };
+const router = fs.readFileSync('modules/ultron-orchestrator-v4270.js','utf8');
+const start = router.indexOf('function isEarthStatusIntent(');
+const end = router.indexOf('function lastAssistantEarthOffer()', start);
+assert.ok(start >= 0 && end > start, 'Live Earth status intent missing');
+const normalize = text => String(text || '').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase().replace(/\\s+/g,' ').trim();
+const isEarthStatusIntent = new Function('normalize', router.slice(start,end)+'\\nreturn isEarthStatusIntent;')(normalize);
+assert.equal(isEarthStatusIntent('Você está com integração do globo?'), true);
+assert.equal(isEarthStatusIntent('Por que o globo não ativa?'), true);
+assert.equal(isEarthStatusIntent('Ativar mapa por satélite'), false);
+assert.equal(isEarthStatusIntent('Como está a câmera?'), false);
 const source = fs.readFileSync('modules/jarvis-earth.js','utf8');
 window.eval(source);
 assert.equal(typeof window.ULTRON_EARTH?.open, 'function', 'Earth API should register on dashboard load');
