@@ -1,7 +1,7 @@
 // Wheel recovery: legacy global listeners may consume wheel events even while arrow scrolling works.
 // Handle only the dashboard background; leave maps, inputs and scrollable panels alone.
 document.addEventListener('wheel', (event) => {
-  if (event.defaultPrevented || event.ctrlKey || event.target.closest('iframe,textarea,input,select,.jarvis-earth-globe,.jarvis-earth-explorer,#output-box,.screen-modal')) return;
+  if (event.defaultPrevented || event.ctrlKey || event.target.closest('iframe,textarea,input,select,.jarvis-earth-globe,#output-box,.screen-modal')) return;
   const doc = document.scrollingElement || document.documentElement;
   if (doc.scrollHeight <= doc.clientHeight + 2) return;
   const before = doc.scrollTop;
