@@ -375,7 +375,8 @@ if (earthVisual) {
         window.addEventListener('pointerup', stopDrag, true);
         window.addEventListener('pointercancel', stopDrag, true);
         window.addEventListener('blur', stopDrag);
-        canvasHost.addEventListener('mouseleave', stopDrag);
+        // Continue a held drag even if the cursor crosses the canvas edge.
+        // Release is handled by window.pointerup, pointercancel or blur.
         canvasHost.addEventListener('wheel', event => {
           if (!visible || streetMode) return;
           event.preventDefault();
