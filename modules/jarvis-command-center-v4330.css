@@ -294,3 +294,14 @@ body.jarvis-command-center .jarvis-command-center-ui.jarvis-earth-expanded .jarv
     width:100%!important;height:min(66vh,610px)!important;
   }
 }
+
+/* Reliable mode switches remain adjacent to the neural sphere, independent of camera height. */
+body.jarvis-command-center .jarvis-cc-orb-controls{position:relative;z-index:35;flex:none;align-self:center;pointer-events:auto}
+body.jarvis-command-center .jarvis-cc-orb-controls button{min-width:44px;width:44px;min-height:40px;height:40px;pointer-events:auto}
+body.jarvis-command-center .jarvis-command-center-ui.jarvis-earth-expanded .jarvis-cc-center{z-index:30}
+body.jarvis-command-center .jarvis-command-center-ui.jarvis-earth-expanded .jarvis-cc-orb-controls{
+  position:absolute;top:50px;right:16px;margin:0;z-index:45
+}
+@media(max-width:560px){
+ body.jarvis-command-center .jarvis-command-center-ui.jarvis-earth-expanded .jarvis-cc-orb-controls{top:38px;right:7px}
+}
