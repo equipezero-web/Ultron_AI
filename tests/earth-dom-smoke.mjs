@@ -75,7 +75,8 @@ assert.equal(globeControls.autoRotate, false, 'Rotation must stop centered on Ch
 assert.equal(document.querySelector('.jarvis-earth-selection-close').hidden, true, 'Voice command must not create popup');
 const recife = await earth.locate('Recife');
 assert.equal(recife.ok, true);
-assert.equal(earth.state.expanded, true, 'Close zoom should expand neural visual area');
+assert.equal(earth.state.referenceOverlay, true, 'The reference layout covers the neural stage during zoom');
+assert.equal(earth.state.expanded, false, 'Zoom must not move the overlay controls');
 assert.equal(earth.state.view.altitude, 0.36);
 assert.equal(earth.navigate('home').ok, true);
 assert.equal(earth.state.expanded, false, 'Returning global must restore neural visual size');
@@ -172,7 +173,7 @@ assert.equal(earth.state.referenceMode,true);
 assert.equal(earth.state.referenceOverlay,true);
 assert.equal(document.querySelector('#jarvis-earth-reference-layout').hidden,false);
 assert.equal(createdMap.options.zoom,2.2);
-assert.deepEqual(createdMap.options.center,[-34.877,-8.0476]);
+assert.deepEqual(Array.from(createdMap.options.center),[-34.877,-8.0476]);
 assert.equal(createdMap.options.style,'mapbox://styles/mapbox/satellite-streets-v12');
 assert.equal(createdMap.options.dragRotate,false);
 assert.equal(createdMap.options.scrollZoom,true);

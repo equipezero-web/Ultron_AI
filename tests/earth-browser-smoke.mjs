@@ -54,7 +54,8 @@ try {
 
   const recife = await page.evaluate(() => window.ULTRON_EARTH.locate('Recife'));
   assert.equal(recife.ok, true);
-  assert.equal(await page.evaluate(() => window.ULTRON_EARTH.state.expanded), true, 'Close zoom should expand within Command Center');
+  assert.equal(await page.evaluate(() => window.ULTRON_EARTH.state.referenceOverlay), true, 'Overlay must cover the neural stage during zoom');
+  assert.equal(await page.evaluate(() => window.ULTRON_EARTH.state.expanded), false, 'Zoom must not shift the overlay controls');
 
   await page.evaluate(() => window.ULTRON_EARTH.focus(37.5, 118.4, 10, true));
   assert.equal(await page.$eval('.jarvis-earth-selection-close', el => el.hidden), false);
