@@ -43,3 +43,11 @@ body.jarvis-command-center .ultron-neural-answer-sources a{flex:none;white-space
  body.jarvis-command-center .ultron-neural-answer-sources a{font-size:10px}
 }
 body.jarvis-command-center .ultron-neural-answer:focus-within{outline:1px solid rgba(125,210,239,.65)}
+
+/* Keep the legacy briefing collector alive for refresh/voice controls,
+   but remove duplicate news stories from the command strip below the ring. */
+body.jarvis-command-center .jarvis-intel-panel :is(
+ .jarvis-intel-topics,.jarvis-intel-official,.jarvis-intel-history,
+ .jarvis-intel-footer,.jarvis-intel-message
+){display:none!important}
+body.jarvis-command-center .jarvis-intel-panel{max-height:86px!important;overflow:hidden!important}
