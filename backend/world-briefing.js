@@ -227,6 +227,50 @@ const topicLoad=async(top,now)=>{
     error:errors.length?errors.join("; "):null
   };
 };
+// When RSS lacks media, collect the publisher's *own* Open Graph article photo.
+// Bound to the trusted Agência Brasil domain; never scrape untrusted news URLs.
+export function findPublisherImage(html){
+  const tags=String(html||"").slice(0,420000).match(/<meta\b[^>]*>/gi)||[];
+  const attr=(tag,name)=>{
+    const m=tag.match(new RegExp("\\b"+name+"\\s*=\\s*(?:\"([^\"]+)\"|'([^']+)')","i"));
+    return m?.[1]||m?.[2]||null;
+  };
+  for(const tag of tags){
+    const name=(attr(tag,"property")||attr(tag,"name")||"").toLowerCase();
+    if(!["og:image","og:image:url","twitter:image","twitter:image:src"].includes(name))continue;
+    const image=safeNewsImage(attr(tag,"content")||"");
+    if(image)return image;
+  }
+  return null;
+}
+async function enrichWithPublisherPhotos(groups){
+  const articles=groups.flatMap(group=>group.articles||[]);
+  const selected=articles.filter(a=>{
+    if(a.imageUrl)return false;
+    try{
+      const u=new URL(a.url);
+      return u.protocol==="https:"&&u.hostname==="agenciabrasil.ebc.com.br";
+    }catch{return false;}
+  }).slice(0,6);
+  await Promise.allSettled(selected.map(async article=>{
+    const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),2700);
+    try{
+      const response=await fetch(article.url,{
+        signal:ctrl.signal,redirect:"error",
+        headers:{"Accept":"text/html","User-Agent":"UltronAI-NewsBriefing/1.0"}
+      });
+      if(!response.ok)return;
+      const contentType=response.headers?.get?.("content-type")||"text/html";
+      if(!contentType.includes("html"))return;
+      const html=await response.text();
+      const image=findPublisherImage(html);
+      if(image)article.imageUrl=image;
+    }catch{
+      // A blocked or missing publisher image is not an error in the news report.
+    }finally{clearTimeout(timer);}
+  }));
+}
+
 export async function createWorldBriefing({now=Date.now()}={}) {
   const [topicResults,alertResult,ensoResult]=await Promise.all([
     Promise.all([
@@ -247,6 +291,7 @@ export async function createWorldBriefing({now=Date.now()}={}) {
       .then(bulletin=>({checked:Boolean(bulletin),bulletin,error:bulletin?null:"Status ENSO não localizado no boletim"}))
       .catch(error=>({checked:false,bulletin:null,error:bounded(error?.message,120)}))
   ]);
+  await enrichWithPublisherPhotos(topicResults);
   const result={
     ok:true,version:"1.0",fetchedAt:new Date(now).toISOString(),
     priority:["Brasil","Santa Catarina","Clima e El Niño","Mundo",...regionalTopics.map(t=>t.label)],
