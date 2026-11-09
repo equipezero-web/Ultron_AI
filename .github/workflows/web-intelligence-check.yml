@@ -8,8 +8,12 @@ on:
       - 'backend/research-memory.js'
       - 'backend/news-context.js'
       - 'backend/world-briefing.js'
+      - 'backend/world-intelligence-history.js'
+      - 'scripts/refresh-intelligence-feed.mjs'
+      - 'tests/world-intelligence-history.mjs'
       - 'backend/worker.js'
       - 'tests/world-briefing-context.mjs'
+      - 'tests/world-intelligence-history.mjs'
       - 'backend/wrangler.jsonc'
       - 'modules/provider-ui.js'
       - 'modules/backend-version-check.js'
@@ -21,8 +25,12 @@ on:
       - 'backend/research-memory.js'
       - 'backend/news-context.js'
       - 'backend/world-briefing.js'
+      - 'backend/world-intelligence-history.js'
+      - 'scripts/refresh-intelligence-feed.mjs'
+      - 'tests/world-intelligence-history.mjs'
       - 'backend/worker.js'
       - 'tests/world-briefing-context.mjs'
+      - 'tests/world-intelligence-history.mjs'
       - 'backend/wrangler.jsonc'
       - 'modules/provider-ui.js'
       - 'modules/backend-version-check.js'
@@ -45,6 +53,9 @@ jobs:
           node --check backend/research-memory.js
           node --check backend/news-context.js
           node --check backend/world-briefing.js
+          node --check backend/world-intelligence-history.js
+          node --check scripts/refresh-intelligence-feed.mjs
+          node tests/world-intelligence-history.mjs
           node tests/world-briefing-context.mjs
           node --check backend/worker.js
           grep -q 'shouldResearchBeforeAnswer' backend/worker.js

@@ -59,7 +59,9 @@ globalThis.fetch=async (url)=>{
 try {
   const briefing=await createWorldBriefing({now});
   assert.equal(briefing.ok,true);
-  assert.equal(briefing.topics.length,4);
+  assert.equal(briefing.topics.length,10);
+  assert.ok(briefing.topics.some(t=>t.id==="oceania"));
+  assert.ok(briefing.topics.some(t=>t.id==="africa"));
   assert.equal(briefing.priority[0],"Brasil");
   assert.equal(briefing.priority[1],"Santa Catarina");
   assert.ok(briefing.topics[0].articles.length>=2,"Live and official RSS can provide extra verified headlines");

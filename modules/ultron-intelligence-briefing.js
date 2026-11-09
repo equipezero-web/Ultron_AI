@@ -1,18 +1,25 @@
 import API_CONFIG from "../config.js";
+import {selectWakeIntelligence,HISTORY_WINDOW_MS} from "../backend/world-intelligence-history.js";
 
 // Intelligent, read-only daily situation digest: official weather + sourced news.
 const BACKEND=String(API_CONFIG?.backendUrl||"").replace(/\/+$/,"");
 const REFRESH_MS=10*60*1000;
 const FALLBACK_URL="https://raw.githubusercontent.com/equipezero-web/Ultron_AI/main/data/world-briefing.json";
+const HISTORY_URL="https://raw.githubusercontent.com/equipezero-web/Ultron_AI/main/data/world-intelligence-history.json";
+const LAST_WAKE_KEY="ultron_intelligence_last_wake_at_v1";
+const HISTORY_STALE_MS=2*60*60*1000;
 const MAX_SNAPSHOT_AGE=2*60*60*1000;
 const VOICE_PREF="ultron_world_briefing_auto_voice_v1";
 const summaryLimit=5;
 const root=document.querySelector(".jarvis-cc-console-terminal");
 const output=document.getElementById("output-box");
 let current=null,pending=null,lastRendered="",lastAwake=false;
+let history=null,historyPending=null,historyLoadedAt=0,wakeBusy=false;
+let wakeSummary=null,lastWakeAt=null;
+try{lastWakeAt=localStorage.getItem(LAST_WAKE_KEY)||null;}catch{}
 let lastWakeReadAt=0;
-let autoVoice=false;
-try {autoVoice=localStorage.getItem(VOICE_PREF)==="on";}catch{}
+let autoVoice=true; // Default to a narrated wake briefing if browser audio is permitted.
+try {autoVoice=localStorage.getItem(VOICE_PREF)!=="off";}catch{}
 const fmtTime=new Intl.DateTimeFormat("pt-BR",{
   dateStyle:"short",timeStyle:"short",timeZone:"America/Recife"
 });
@@ -81,9 +88,15 @@ function speak(text,{automatic=false}={}){
     window.speechSynthesis.cancel();
     const utterance=new SpeechSynthesisUtterance(text);
     utterance.lang="pt-BR";utterance.rate=1;utterance.pitch=.96;
-    utterance.onstart=()=>{state.textContent="Lendo boletim em voz alta...";};
-    utterance.onend=()=>{state.textContent="Narração concluída";};
-    utterance.onerror=()=>{state.textContent="Áudio bloqueado ou indisponível. Use o botão Ouvir novamente.";};
+    utterance.onstart=()=>{
+      state.textContent="Lendo relatório de inteligência em voz alta...";
+      window.dispatchEvent(new CustomEvent("ultron:speech-start",{detail:{source:"intelligence-wake",text}}));
+    };
+    const speechEnded=()=>window.dispatchEvent(
+      new CustomEvent("ultron:speech-end",{detail:{source:"intelligence-wake",text}})
+    );
+    utterance.onend=()=>{state.textContent="Narração concluída";speechEnded();};
+    utterance.onerror=()=>{state.textContent="Áudio bloqueado. Use Ouvir para tentar novamente.";speechEnded();};
     window.speechSynthesis.speak(utterance);
     return true;
   }catch{
@@ -106,10 +119,17 @@ const autoButton=elem("button","",autoVoice?"Voz automática: ativada":"Voz auto
 autoButton.type="button";autoButton.setAttribute("aria-pressed",String(autoVoice));
 controls.append(updateButton,voiceButton,autoButton);
 const state=elem("div","jarvis-intel-message","Consultando Brasil, Santa Catarina, clima e mundo...");
+const historyArea=elem("section","jarvis-intel-history");
+historyArea.setAttribute("aria-label","Monitoramento contínuo das últimas 24 horas");
+const historyTitle=elem("strong","jarvis-intel-history-title","MONITOR 24H · PREPARANDO HISTÓRICO");
+const historyMeta=elem("p","jarvis-intel-history-meta",
+  "Coleta agendada independente do navegador; aguardando registro das fontes.");
+const historyList=elem("ul","jarvis-intel-history-list");
+historyArea.append(historyTitle,historyMeta,historyList);
 const storyArea=elem("div","jarvis-intel-topics");
 const officialArea=elem("div","jarvis-intel-official");
 const footer=elem("div","jarvis-intel-footer");
-panel.append(heading,controls,state,storyArea,officialArea,footer);
+panel.append(heading,controls,state,historyArea,storyArea,officialArea,footer);
 if(root)root.append(panel);
 function render(data,{announce=false}={}){
   if(!root)return;
@@ -180,6 +200,156 @@ function render(data,{announce=false}={}){
     ? count+" manchetes recentes recuperadas. Prioridades: Brasil, Santa Catarina, clima e mundo."
     : "Consulta concluída, mas sem manchetes atuais confirmadas.");
 }
+
+function renderMonitor(summary,{waking=false,archiveValid=true}={}){
+  historyList.replaceChildren();
+  if(!summary){
+    historyTitle.textContent="MONITOR 24H · SEM COLETA CONFIRMADA";
+    historyMeta.textContent="O histórico do monitor não está acessível. O boletim ao vivo continuará disponível, quando possível.";
+    return;
+  }
+  const lastCheck=summary.lastCheckAt?formatDate(summary.lastCheckAt):"indisponível";
+  const fresh=archiveValid?"COLETAS RECENTES":"ÚLTIMA COLETA ANTIGA";
+  historyTitle.textContent=(waking?"RELATÓRIO AO ACORDAR":"MONITOR 24H")+" · "+fresh;
+  const period=summary.lastWakeAt
+    ?"Desde sua última ativação ("+formatDate(summary.sinceAt)+")"
+    :"Resumo da janela de 24 horas";
+  historyMeta.textContent=period+" · "+summary.total24h+
+    " notícias publicadas na janela · "+summary.unseenCount+
+    " identificadas desde a última ativação · "+summary.checks24h+
+    " consultas registradas · última: "+lastCheck+".";
+  const stories=(summary.highlights||[]).length?
+    summary.highlights:(summary.recentHighlights||[]);
+  for(const item of stories.slice(0,10)){
+    const li=elem("li");
+    li.append(elem("span","jarvis-intel-category",
+      ((item.category||"mundo").replaceAll("-"," ")).toUpperCase()+" · "));
+    appendLink(li,short(item.title),item.url);
+    li.append(elem("span","jarvis-intel-meta",
+      " — "+short(item.source)+" · "+formatDate(item.publishedAt)));
+    historyList.append(li);
+  }
+  if(!stories.length){
+    historyList.append(elem("li","jarvis-intel-empty",
+      "Ainda não há notícias publicadas nas últimas 24 horas confirmadas pelas fontes coletadas."));
+  }
+  if(summary.alertStatus==="recently-checked" && summary.alerts?.length){
+    const relevant=summary.alerts[0],li=elem("li","jarvis-intel-history-alert");
+    li.append(elem("strong","","INMET · "+relevant.severity+": "));
+    li.append(elem("span","",relevant.title+" · "));
+    appendLink(li,"ver regiões afetadas",relevant.url);
+    historyList.prepend(li);
+  }
+  if(summary.enso?.status){
+    const li=elem("li");
+    li.append(elem("span","",
+      "NOAA / ENSO: "+summary.enso.status+
+      (summary.enso.issued?" · boletim publicado em "+summary.enso.issued:"")+" · "));
+    appendLink(li,"diagnóstico oficial",summary.enso.url);
+    historyList.append(li);
+  }
+}
+function wakingSpeech(summary,{archiveValid=true}={}){
+  const lines=[
+    "Ultron ativado. Este é o relatório das últimas vinte e quatro horas.",
+    "Última coleta: "+formatDate(summary.lastCheckAt)+"."
+  ];
+  if(!archiveValid){
+    lines.push("A coleta está desatualizada. Não posso garantir que os acontecimentos estejam atualizados.");
+  }
+  if(summary.unseenCount){
+    lines.push("Identifiquei "+summary.unseenCount+" notícia ou notícias desde sua última ativação.");
+  }else if(summary.lastWakeAt){
+    lines.push("Não há novas manchetes confirmadas desde o seu último despertar. Estes são os destaques das últimas vinte e quatro horas.");
+  }else{
+    lines.push("Há "+summary.total24h+" notícias verificadas na janela das últimas vinte e quatro horas.");
+  }
+  const stories=(summary.highlights||[]).length?
+    summary.highlights:(summary.recentHighlights||[]);
+  for(const item of stories.slice(0,6)){
+    lines.push((item.category||"mundo").replaceAll("-"," ")+": "+item.title+".");
+  }
+  if(summary.alertStatus==="recently-checked" && summary.alerts?.length){
+    lines.push("Aviso do INMET: "+summary.alerts[0].title+"; severidade "+
+      summary.alerts[0].severity+". Confira a área afetada no portal oficial.");
+  }
+  if(summary.enso?.status){
+    lines.push("O último boletim encontrado da NOAA registra "+
+      summary.enso.status+
+      (summary.enso.issued?", publicação de "+summary.enso.issued:"")+".");
+  }
+  if(!stories.length)lines.push("Ainda não tenho manchetes recentes confirmadas para informar.");
+  return lines.join(" ").slice(0,1750);
+}
+async function loadHistory({force=false}={}){
+  if(historyPending)return historyPending;
+  if(!force&&history&&Date.now()-historyLoadedAt<REFRESH_MS)return history;
+  historyPending=(async()=>{
+    const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),7000);
+    try{
+      const response=await fetch(HISTORY_URL+"?v="+Math.floor(Date.now()/60000),{
+        cache:"no-store",signal:controller.signal,headers:{"Accept":"application/json"}
+      });
+      if(!response.ok)throw Error("Histórico HTTP "+response.status);
+      const data=await response.json();
+      if(data?.ok!==true||!Array.isArray(data.events)||!Array.isArray(data.checks))
+        throw Error("Histórico inválido");
+      history=data;
+      historyLoadedAt=Date.now();
+      const summary=selectWakeIntelligence(history,{lastWakeAt,now:Date.now(),limit:8});
+      wakeSummary=summary;
+      const age=Date.now()-Date.parse(history.updatedAt);
+      renderMonitor(summary,{archiveValid:Number.isFinite(age)&&age<=HISTORY_STALE_MS});
+      return history;
+    }catch(error){
+      if(!history)renderMonitor(null);
+      log("Monitor 24h: "+short(error.message).slice(0,105));
+      return history;
+    }finally{
+      clearTimeout(timer);
+      historyPending=null;
+    }
+  })();
+  return historyPending;
+}
+async function deliverWakeReport(){
+  if(wakeBusy)return;
+  wakeBusy=true;
+  const priorWakeAt=lastWakeAt;
+  const requestedAt=Date.now();
+  try{
+    const archive=await loadHistory({force:true});
+    if(!archive){
+      if(!current)await refresh({reason:"voice-wake"});
+      historyTitle.textContent="RELATÓRIO AO ACORDAR · MONITOR INDISPONÍVEL";
+      log("Ativado. Não foi possível consultar o histórico de 24 horas.");
+      if(current)speak("Ultron ativado. O histórico das últimas vinte e quatro horas está indisponível. "+
+        bulletinText(current),{automatic:true});
+      return;
+    }
+    const age=Date.now()-Date.parse(archive.updatedAt);
+    const valid=Number.isFinite(age)&&age>=-300000&&age<=HISTORY_STALE_MS;
+    const summary=selectWakeIntelligence(archive,{
+      lastWakeAt:priorWakeAt,now:Date.now(),limit:10
+    });
+    wakeSummary=summary;
+    renderMonitor(summary,{waking:true,archiveValid:valid});
+    log("ATIVADO · MONITOR 24H: "+summary.total24h+
+      " acontecimentos arquivados, "+summary.unseenCount+
+      " notícias desde o último despertar. Fontes até "+formatDate(archive.updatedAt)+".");
+    const narration=wakingSpeech(summary,{archiveValid:valid});
+    speak(narration,{automatic:true});
+    if(valid){
+      lastWakeAt=new Date(requestedAt).toISOString();
+      try{localStorage.setItem(LAST_WAKE_KEY,lastWakeAt);}catch{}
+    }else{
+      log("Monitor 24h desatualizado; o marcador de última ativação foi preservado.");
+    }
+  }finally{
+    wakeBusy=false;
+  }
+}
+
 async function refresh({reason="manual",narrate=false}={}){
   if(pending)return pending;
   if(!BACKEND){
@@ -242,6 +412,11 @@ async function refresh({reason="manual",narrate=false}={}){
 }
 updateButton.addEventListener("click",()=>void refresh({reason:"manual"}));
 voiceButton.addEventListener("click",()=>{
+  if(wakeSummary) {
+    const age=history?Date.now()-Date.parse(history.updatedAt):Infinity;
+    speak(wakingSpeech(wakeSummary,{archiveValid:age<=HISTORY_STALE_MS}));
+    return;
+  }
   if(!current){state.textContent="Aguarde a consulta de fontes.";return;}
   speak(bulletinText(current));
 });
@@ -258,31 +433,37 @@ window.addEventListener("ultron:wake-state",event=>{
   const awake=Boolean(event?.detail?.awake);
   if(awake&&!lastAwake&&Date.now()-lastWakeReadAt>12000){
     lastWakeReadAt=Date.now();
-    // The user explicitly activated the assistant. Use cached results if already fresh.
-    const oldEnough=!current||Date.now()-Date.parse(current.fetchedAt)>REFRESH_MS;
-    if(oldEnough){
-      void refresh({reason:"voice-wake",narrate:true});
-    } else {
-      log("Ativado. Boletim de Brasil e mundo disponível; fontes consultadas em "+formatDate(current.fetchedAt)+".");
-      speak(bulletinText(current),{automatic:true});
-    }
+    // The 24h collector kept working while the phone was asleep.
+    // Summarize facts confirmed since the last wake instead of repeating today's snapshot.
+    void deliverWakeReport();
   }
   lastAwake=awake;
 });
 document.addEventListener("visibilitychange",()=>{
   if(document.hidden)return;
   if(!current||Date.now()-Date.parse(current.fetchedAt)>REFRESH_MS)void refresh({reason:"periodic"});
+  void loadHistory();
 });
 window.setInterval(()=>{
   if(document.hidden||navigator.onLine===false)return;
   if(!current||Date.now()-Date.parse(current.fetchedAt)>=REFRESH_MS)void refresh({reason:"periodic"});
+  void loadHistory();
 },REFRESH_MS);
 window.ULTRON_INTELLIGENCE={
   refresh,
+  loadHistory,
+  deliverWakeReport,
   get state(){return {
     active:true,loading:Boolean(pending),updatedAt:current?.fetchedAt||null,
     totalStories:(current?.topics||[]).reduce((n,t)=>n+(t.articles?.length||0),0),
-    autoVoice,lastRendered
+    autoVoice,lastRendered,
+    monitor24h:{available:Boolean(history),lastCheckAt:history?.updatedAt||null,
+      checks:history?.checks?.length||0,events:history?.events?.length||0,
+      lastWakeAt,unseen:wakeSummary?.unseenCount||0,wakeBusy}
   };}
 };
-if(root){log("Inicialização concluída. Buscando boletim de Brasil e mundo...");void refresh({reason:"startup"});}
+if(root){
+  log("Monitor de 24 horas conectado. Carregando o histórico e o boletim atual...");
+  void loadHistory();
+  void refresh({reason:"startup"});
+}

@@ -128,7 +128,7 @@ if (stage) {
   async function bootNeuralRing() {
     if (ringEngine) return ringEngine;
     if (ringPromise) return ringPromise;
-    ringPromise = import('./jarvis-neural-ring-3d.js?v=4.49.0')
+    ringPromise = import('./jarvis-neural-ring-3d.js?v=4.52.0')
       .then(module => module.createNeuralRing3D(canvas,{onError:report3D}))
       .then(engine => {
         ringEngine = engine;
@@ -137,6 +137,7 @@ if (stage) {
         window.ULTRON_NEURAL_RING_3D = {
           engine:'webgl', get active(){return engine.active;}, get rings(){return engine.rings;},
           setVisible:engine.setVisible, resize:engine.resize, reset:engine.reset,
+          zoomBy:engine.zoomBy,
           get state(){return engine.state;}
         };
         window.dispatchEvent(new CustomEvent('ultron:neural-ring-3d-ready'));
@@ -162,6 +163,28 @@ if (stage) {
     if (visualMode === 'ring') void bootNeuralRing();
   }
   ui.querySelectorAll('[data-visual]').forEach(button => button.addEventListener('click',() => setVisualMode(button.dataset.visual)));
+  // Wheel on the full neural stage controls the active 3D view, NEVER the page.
+  // Native WebGL and Mapbox listeners handle gestures directly on their canvases.
+  // This handler covers gaps, labels, and overlay controls without stealing
+  // scrolling from the Mapbox details sidebar or from the terminal below.
+  const stage=ui.querySelector('.jarvis-cc-center');
+  stage?.addEventListener('wheel',event=>{
+    if(event.ctrlKey || !document.body.classList.contains('jarvis-command-center'))return;
+    if(event.target.closest?.('.jarvis-earth-reference-side,textarea,input,select,[contenteditable="true"]'))return;
+    event.preventDefault();
+    event.stopPropagation();
+    if(visualMode==='ring'){
+      // Ring canvas already handled its wheel; gaps around the ring should zoom too.
+      if(event.target!==canvas)ringEngine?.zoomBy?.(event.deltaY);
+      return;
+    }
+    const overNativeMap=Boolean(event.target.closest?.(
+      '.mapboxgl-map,.mapboxgl-canvas,.jarvis-earth-globe,.jarvis-earth-renderer'
+    ));
+    if(!overNativeMap && event.deltaY){
+      window.ULTRON_EARTH?.navigate?.(event.deltaY<0?'zoom-in':'zoom-out');
+    }
+  },{passive:false});
   const updateClock = () => {clock.textContent=new Date().toLocaleTimeString('pt-BR',{hour12:false});};
   updateClock();
   setInterval(()=>{if (!document.hidden) updateClock();},1000);
@@ -271,5 +294,5 @@ if (stage) {
   window.addEventListener('ultron:processing-end',()=>{state.textContent='STANDBY';});
   window.addEventListener('ultron:speech-start',()=>{state.textContent='FALANDO';logEvent('VOICE // OUTPUT');});
   window.addEventListener('ultron:speech-end',()=>{state.textContent='STANDBY';});
-  window.JARVIS_COMMAND_CENTER = {version:'4.49.0',setVisualMode,open:(name)=>actions[name]?.(),get active(){return true;}};
+  window.JARVIS_COMMAND_CENTER = {version:'4.52.0',setVisualMode,open:(name)=>actions[name]?.(),get active(){return true;}};
 }

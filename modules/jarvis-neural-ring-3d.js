@@ -180,11 +180,16 @@ export function createNeuralRing3D(canvas,{onError}={}) {
     if(!event){touchPoints.clear();pinch=null;}
     releasePointer(id);
   };
+  function zoomBy(deltaY){
+    if(!visible||disposed||!Number.isFinite(deltaY))return false;
+    zoom=clamp(zoom*Math.exp(-deltaY*.001),.62,1.9);
+    return true;
+  }
   const adjustZoom=event=>{
     if(!visible || disposed || event.ctrlKey) return;
     event.preventDefault();
     event.stopPropagation();
-    zoom=clamp(zoom*Math.exp(-event.deltaY*.001),.62,1.9);
+    zoomBy(event.deltaY);
   };
   canvas.addEventListener('pointerdown',beginDrag);
   window.addEventListener('pointermove',moveDrag,true);
@@ -201,7 +206,7 @@ export function createNeuralRing3D(canvas,{onError}={}) {
     engine:'webgl',get active(){return visible&&!paused;},get rings(){return colors.length;},
     get state(){return {yaw,pitch,zoom,dragging:Boolean(dragging),active:visible&&!paused};},
     setVisible(value){visible=Boolean(value);canvas.hidden=!visible;cancelAnimationFrame(frame);if(!visible)endDrag();if(visible){resize();start();}},
-    resize,
+    resize,zoomBy,
     reset(){started=performance.now();yaw=0;pitch=0;zoom=1;endDrag();return {ok:true,engine:'webgl'};},
     destroy(){
       disposed=true;visible=false;cancelAnimationFrame(frame);observer?.disconnect();

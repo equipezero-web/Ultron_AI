@@ -1,0 +1,15 @@
+{
+  "ok": true,
+  "version": "2.0",
+  "windowHours": 24,
+  "monitoredBy": "github-actions-scheduled",
+  "targetIntervalMinutes": 15,
+  "updatedAt": null,
+  "oldestEventAt": null,
+  "windowStartAt": null,
+  "events": [],
+  "checks": [],
+  "checkCount": 0,
+  "lastSuccessfulAt": null,
+  "latest": null
+}

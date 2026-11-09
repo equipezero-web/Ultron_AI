@@ -13,6 +13,14 @@ const NOAA_STATUS = "https://www.weather.gov/twc/enso";
 const BRAZIL_RSS = "https://agenciabrasil.ebc.com.br/rss/ultimasnoticias/feed.xml";
 const WORLD_RSS = "https://agenciabrasil.ebc.com.br/rss/internacional/feed.xml";
 const SC_ALERTS = "https://www.defesacivil.sc.gov.br/alerta/";
+const regionalTopics = [
+  {id:"america-latina",label:"América Latina",q:"América Latina notícias hoje política economia desastres"},
+  {id:"europa",label:"Europa",q:"Europa últimas notícias hoje"},
+  {id:"asia",label:"Ásia",q:"Ásia principais notícias hoje"},
+  {id:"africa",label:"África",q:"África notícias hoje"},
+  {id:"oriente-medio",label:"Oriente Médio",q:"Oriente Médio notícias hoje"},
+  {id:"oceania",label:"Oceania",q:"Austrália Nova Zelândia notícias hoje"}
+];
 const topics = [
   { id:"brasil", label:"Brasil", q:"notícias hoje Brasil principais acontecimentos", count:4, maxAge:NOW_MAX_AGE },
   { id:"santa-catarina", label:"Santa Catarina", q:"notícias hoje Santa Catarina Defesa Civil chuvas temporais ocorrências", count:3, maxAge:LONG_MAX_AGE },
@@ -146,6 +154,31 @@ async function fetchAgencyRss(url){
     }).filter(item=>Boolean(item.title&&item.url&&item.publishedAt));
 }
 
+async function regionalHeadlines(top,now) {
+  const query=new URLSearchParams({
+    q:top.q,hl:"pt-BR",gl:"BR",ceid:"BR:pt-419"
+  });
+  try {
+    const xml=await withDeadline(fetchOfficial(
+      "https://news.google.com/rss/search?"+query,{timeout:3900}
+    ),4700);
+    const articles=[...xml.matchAll(/<item\b[^>]*>([\s\S]*?)<\/item>/gi)]
+      .slice(0,12).map(([_,block])=>({
+        title:rssTag(block,"title"),
+        url:rssTag(block,"link"),
+        publishedAt:rssTag(block,"pubDate"),
+        source:rssTag(block,"source")||"Google News"
+      }));
+    return {
+      id:top.id,label:top.label,
+      articles:uniqueStories(articles,now,NOW_MAX_AGE,2),
+      checked:true,error:null
+    };
+  }catch(error){
+    return {id:top.id,label:top.label,articles:[],checked:false,
+      error:bounded(error?.message,90)};
+  }
+}
 const topicLoad=async(top,now)=>{
   const rss=top.id==="brasil"?BRAZIL_RSS:top.id==="mundo"?WORLD_RSS:null;
   const results=await Promise.allSettled([
@@ -166,7 +199,10 @@ const topicLoad=async(top,now)=>{
 };
 export async function createWorldBriefing({now=Date.now()}={}) {
   const [topicResults,alertResult,ensoResult]=await Promise.all([
-    Promise.all(topics.map(topic=>topicLoad(topic,now))),
+    Promise.all([
+      ...topics.map(topic=>topicLoad(topic,now)),
+      ...regionalTopics.map(topic=>regionalHeadlines(topic,now))
+    ]),
     withDeadline(fetchOfficial(OFFICIAL_INMET,{asJson:true}),6000)
       .then(data=>({checked:true,warnings:normalizeWarnings(data,now),error:null}))
       .catch(error=>({checked:false,warnings:[],error:bounded(error?.message,120)})),
@@ -183,7 +219,7 @@ export async function createWorldBriefing({now=Date.now()}={}) {
   ]);
   const result={
     ok:true,version:"1.0",fetchedAt:new Date(now).toISOString(),
-    priority:["Brasil","Santa Catarina","Clima e El Niño","Mundo"],
+    priority:["Brasil","Santa Catarina","Clima e El Niño","Mundo",...regionalTopics.map(t=>t.label)],
     refreshAfterMinutes:10,
     isLive:true,
     topics:topicResults,

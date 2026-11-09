@@ -9,6 +9,7 @@ on:
     paths:
       - 'scripts/refresh-intelligence-feed.mjs'
       - 'backend/world-briefing.js'
+      - 'backend/world-intelligence-history.js'
       - '.github/workflows/automatic-intelligence-snapshot.yml'
 
 permissions:
@@ -36,7 +37,7 @@ jobs:
         run: |
           git config user.name "ultron-intelligence[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/world-briefing.json
+          git add data/world-briefing.json data/world-intelligence-history.json
           if git diff --cached --quiet; then
             echo "No verified update to publish."
             exit 0

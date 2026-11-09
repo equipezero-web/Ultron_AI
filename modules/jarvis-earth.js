@@ -1,12 +1,17 @@
 // Wheel recovery: legacy global listeners may consume wheel events even while arrow scrolling works.
 // Handle only the dashboard background; leave maps, inputs and scrollable panels alone.
 document.addEventListener('wheel', (event) => {
-  if (event.defaultPrevented || event.ctrlKey || event.target.closest('iframe,textarea,input,select,.jarvis-earth-globe,#output-box,.screen-modal')) return;
+  if (event.defaultPrevented || event.ctrlKey ||
+      event.target?.closest?.(
+        'iframe,textarea,input,select,#output-box,.screen-modal,.jarvis-cc-center,.jarvis-cc-visual,.jarvis-earth-globe,.jarvis-earth-reference-layout,.mapboxgl-map'
+      )) return;
   const doc = document.scrollingElement || document.documentElement;
   if (doc.scrollHeight <= doc.clientHeight + 2) return;
   const before = doc.scrollTop;
   requestAnimationFrame(() => {
-    if (Math.abs(doc.scrollTop - before) < 1 && Math.abs(event.deltaY) > 0) {
+    // A map or Neural Ring can cancel the wheel after document capture.
+    // Never synthesize page scrolling for any zoom gesture.
+    if (!event.defaultPrevented && Math.abs(doc.scrollTop - before) < 1 && Math.abs(event.deltaY) > 0) {
       doc.scrollBy({top:event.deltaY,behavior:'instant'});
     }
   });
