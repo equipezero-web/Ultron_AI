@@ -278,7 +278,10 @@ async function execute() {
   await askUltron(command);
 }
 
+let neuralQuestionId=0;
 async function askUltron(command) {
+  const questionId=++neuralQuestionId;
+  window.dispatchEvent(new CustomEvent("ultron:question-start",{detail:{id:questionId,question:command}}));
   const thinking = document.createElement("p");
   thinking.textContent = "> ULTRON CORE: roteando comando e contexto óptico...";
   thinking.dataset.thinking = "true";
@@ -323,9 +326,11 @@ async function askUltron(command) {
     const provider = data.providerLabel || data.provider || "AI";
     addLog(output, `ULTRON [${provider}]: ${data.text}`);
     prepareNeuralResponse(data);
+    window.dispatchEvent(new CustomEvent("ultron:answer",{detail:{id:questionId,text:data.text,visualContext:data.visualContext,webResearch:data.webResearch}}));
     if (data.audioBase64) playVoice(data.audioBase64, data.audioMimeType || "audio/mpeg");
   } catch (error) {
     addLog(output, `ULTRON AI ERROR: ${error.message}`, "alert");
+    window.dispatchEvent(new CustomEvent("ultron:answer-error",{detail:{id:questionId,message:error.message}}));
   } finally {
     thinking.remove();
   }
