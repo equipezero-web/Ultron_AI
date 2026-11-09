@@ -167,8 +167,8 @@ if (stage) {
   // Native WebGL and Mapbox listeners handle gestures directly on their canvases.
   // This handler covers gaps, labels, and overlay controls without stealing
   // scrolling from the Mapbox details sidebar or from the terminal below.
-  const stage=ui.querySelector('.jarvis-cc-center');
-  stage?.addEventListener('wheel',event=>{
+  const neuralStage=ui.querySelector('.jarvis-cc-center');
+  neuralStage?.addEventListener('wheel',event=>{
     if(event.ctrlKey || !document.body.classList.contains('jarvis-command-center'))return;
     if(event.target.closest?.('.jarvis-earth-reference-side,textarea,input,select,[contenteditable="true"]'))return;
     event.preventDefault();
