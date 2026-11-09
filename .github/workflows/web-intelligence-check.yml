@@ -68,5 +68,6 @@ jobs:
         run: |
           node --check modules/provider-ui.js
           node --check modules/ultron-intelligence-briefing.js
+          node --check modules/neural-intelligence-visual.js
           node --check modules/backend-version-check.js
           node --check modules/telemetry-client.js

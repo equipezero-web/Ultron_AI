@@ -1,5 +1,8 @@
 import assert from "node:assert/strict";
-import {createWorldBriefing,normalizeWarnings,parseEnsoBulletin} from "../backend/world-briefing.js";
+import {createWorldBriefing,normalizeWarnings,parseEnsoBulletin,safeNewsImage} from "../backend/world-briefing.js";
+assert.equal(safeNewsImage("javascript:alert(1)"),null);
+assert.equal(safeNewsImage("http://localhost/image.jpg"),null);
+assert.equal(safeNewsImage("https://cdn.example.org/image.jpg"),"https://cdn.example.org/image.jpg");
 const now=Date.now(),fresh=new Date(now-30*60*1000).toISOString();
 const stale=new Date(now-11*24*60*60*1000).toISOString();
 const warning = {
@@ -40,13 +43,14 @@ globalThis.fetch=async (url)=>{
   if(address.includes("agenciabrasil.ebc.com.br/rss/")){
     const item="<item><title><![CDATA[Atualização internacional da Agência Brasil]]></title>"+
       "<link>https://agenciabrasil.ebc.com.br/internacional/noticia-confirmada</link>"+
+      "<enclosure url=\"https://cdn.example.org/rss-photo.jpg\" type=\"image/jpeg\" />"+
       "<pubDate>"+new Date(now-540000).toUTCString()+"</pubDate></item>";
     return {ok:true,text:async()=>"<rss><channel>"+item+"</channel></rss>"};
   }
   if(address.includes("gdeltproject.org")){
     const title="Notícia verificada recente de teste";
     return {ok:true,json:async()=>({articles:[
-      {title,url:"https://agenciabrasil.ebc.com.br/noticias/noticia-teste",domain:"agenciabrasil.ebc.com.br",seendate:fresh},
+      {title,url:"https://agenciabrasil.ebc.com.br/noticias/noticia-teste",domain:"agenciabrasil.ebc.com.br",seendate:fresh,socialimage:"https://cdn.example.org/gdelt-photo.jpg"},
       {title:"Boato antigo",url:"https://example.org/old",domain:"example.org",seendate:stale}
     ]})};
   }
@@ -67,6 +71,10 @@ try {
   assert.ok(briefing.topics[0].articles.length>=2,"Live and official RSS can provide extra verified headlines");
   assert.ok(briefing.topics.every(item=>item.articles.every(article=>Date.parse(article.publishedAt)>=now-7*24*60*60*1000)));
   assert.equal(briefing.topics[0].articles.some(article=>article.title==="Boato antigo"),false);
+  assert.ok(briefing.topics[0].articles.some(article=>article.imageUrl==="https://cdn.example.org/gdelt-photo.jpg"),
+    "GDELT article image must reach the verified bulletin");
+  assert.ok(briefing.topics.find(t=>t.id==="mundo").articles.some(article=>article.imageUrl==="https://cdn.example.org/rss-photo.jpg"),
+    "Official RSS enclosure image must reach the verified bulletin");
   assert.equal(briefing.alerts.checked,true);
   assert.equal(briefing.alerts.warnings[0].title,"Tempestades");
   assert.equal(briefing.enso.bulletin.status,"El Niño Advisory");

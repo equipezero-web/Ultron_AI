@@ -5,13 +5,13 @@ import {HISTORY_WINDOW_MS,mergeIntelligenceHistory,selectWakeIntelligence}
 const now=Date.parse("2026-11-09T18:00:00.000Z");
 const at=ms=>new Date(ms).toISOString();
 const article=(title,url,age)=>({
-  title,url,publishedAt:at(now-age),source:"Agência de testes"
+  title,url,publishedAt:at(now-age),source:"Agência de testes",imageUrl:null
 });
 const result={
   ok:true,partial:false,hasNews:true,
   topics:[
     {id:"brasil",articles:[
-      article("Brasil: chuva e alagamentos","https://example.org/br1?utm_source=feed",35*60000),
+      {...article("Brasil: chuva e alagamentos","https://example.org/br1?utm_source=feed",35*60000),imageUrl:"https://cdn.example.org/photo.jpg"},
       article("Notícia antiga","https://example.org/old",30*60*60000)
     ]},
     {id:"santa-catarina",articles:[
@@ -42,6 +42,8 @@ assert.equal(initial.checkCount,1);
 assert.equal(initial.events.length,4,"Old (>24h) news must not enter the archive");
 assert.ok(initial.events.every(e=>e.publishedAt&&e.firstSeenAt&&e.url));
 assert.ok(initial.events.some(e=>e.category==="asia"));
+assert.equal(initial.events.find(e=>e.category==="brasil")?.imageUrl,"https://cdn.example.org/photo.jpg",
+  "Archive must preserve the actual article image from the verified source");
 const waking=selectWakeIntelligence(initial,{now,lastWakeAt:at(now-60*60000),limit:8});
 assert.equal(waking.unseenCount,4);
 assert.equal(waking.checks24h,1);
@@ -63,6 +65,8 @@ const second=mergeIntelligenceHistory(initial,repeated,{now:later});
 assert.equal(second.events.length,4,"Repeat sources and tracker URLs must not duplicate events");
 assert.equal(second.checkCount,2);
 assert.ok(second.events.every(e=>Date.parse(e.firstSeenAt)===now));
+assert.equal(second.events.find(e=>e.category==="brasil")?.imageUrl,"https://cdn.example.org/photo.jpg",
+  "A later collection must not erase a previously verified photo");
 const noNews=selectWakeIntelligence(second,{now:later,lastWakeAt:at(now+3000)});
 assert.equal(noNews.unseenCount,0,"Wake-up must not repeat old headlines as new");
 assert.ok(noNews.total24h>=4);

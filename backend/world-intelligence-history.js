@@ -27,6 +27,15 @@ function safeUrl(value){
     return u.href;
   } catch {return null;}
 }
+function validatedImage(value){
+  if(typeof value!=="string"||value.length>1800)return null;
+  try{
+    const u=new URL(value);
+    if(!["https:","http:"].includes(u.protocol)||u.username||u.password)return null;
+    if(/^(localhost|\d+\.\d+\.\d+\.\d+|\[.+\])$/i.test(u.hostname))return null;
+    return u.href;
+  }catch{return null;}
+}
 function idFor(value){
   let hash=2166136261;
   for(const char of value){hash^=char.codePointAt(0);hash=Math.imul(hash,16777619);}
@@ -50,6 +59,7 @@ function normalizeEvent(article,category,at,cutoff){
   const id=idFor(url.toLowerCase());
   return {
     id,category,title,url,
+    imageUrl:validatedImage(article?.imageUrl||article?.image||""),
     source:clean(article?.source||new URL(url).hostname,65),
     publishedAt:new Date(published).toISOString(),
     firstSeenAt:new Date(at).toISOString(),
@@ -67,6 +77,7 @@ function validExisting(event,now,cutoff){
     category:clean(event.category,50),
     title:clean(event.title,190),
     url:safeUrl(event.url),
+    imageUrl:validatedImage(event.imageUrl||event.image||""),
     source:clean(event.source,65),
     publishedAt:new Date(published).toISOString(),
     firstSeenAt:new Date(firstSeen??now).toISOString(),
@@ -94,6 +105,7 @@ export function mergeIntelligenceHistory(previous,briefing,{now=Date.now()}={}){
         if(match){
           // Preserve the first observation to determine what changed after wake.
           match.lastSeenAt=event.lastSeenAt;
+          if(!match.imageUrl && event.imageUrl)match.imageUrl=event.imageUrl;
         } else {
           stored.set(event.id,event);added.push(event.id);
         }

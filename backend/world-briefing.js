@@ -29,6 +29,32 @@ const topics = [
 ];
 const clean = v=>String(v??"").replace(/\s+/g," ").trim();
 const bounded = (v,len)=>clean(v).slice(0,len);
+export function safeNewsImage(value){
+  if(typeof value!=="string"||value.length>1800)return null;
+  try{
+    const url=new URL(value.replace(/&amp;/g,"&"));
+    if(url.protocol!=="https:"&&url.protocol!=="http:")return null;
+    if(url.username||url.password||url.port&&!["80","443"].includes(url.port))return null;
+    if(/^(?:localhost|\d+\.\d+\.\d+\.\d+|\[.*\])$/i.test(url.hostname))return null;
+    if(/(?:pixel|tracking|beacon|1x1)(?:\.|\/|\?)/i.test(url.pathname))return null;
+    return url.href;
+  }catch{return null;}
+}
+function rssImage(xml){
+  const block=String(xml||"");
+  const media=[...block.matchAll(/<(?:media:content|media:thumbnail|enclosure)\b([^>]*)\/?\s*>/gi)];
+  for(const [,attributes] of media){
+    const match=attributes.match(/\burl\s*=\s*(?:"([^"]+)"|'([^']+)')/i);
+    if(!match)continue;
+    const type=attributes.match(/\btype\s*=\s*(?:"([^"]+)"|'([^']+)')/i)?.[1]||"";
+    if(type && !type.startsWith("image/"))continue;
+    const url=safeNewsImage(match[1]||match[2]);
+    if(url)return url;
+  }
+  const body=block.match(/<(?:description|content:encoded)\b[^>]*>([\s\S]*?)<\/[^>]+>/i)?.[1]||"";
+  const img=body.match(/<img\b[^>]*\bsrc\s*=\s*(?:"([^"]+)"|'([^']+)')/i);
+  return safeNewsImage(img?.[1]||img?.[2]||"");
+}
 const validUrl = url=>{
   try {
     const u=new URL(url);
@@ -62,7 +88,9 @@ const uniqueStories = (articles, now, maxAge, limit)=>{
     const key=title.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim();
     if(seen.has(key))continue;
     seen.add(key);
-    out.push({title,url,publishedAt,source:bounded(story?.source||new URL(url).hostname,70)});
+    out.push({title,url,publishedAt,
+      source:bounded(story?.source||new URL(url).hostname,70),
+      imageUrl:safeNewsImage(story?.imageUrl||story?.image||story?.socialimage||"")});
   }
   return out.sort((a,b)=>Date.parse(b.publishedAt)-Date.parse(a.publishedAt)).slice(0,limit);
 };
@@ -150,7 +178,8 @@ async function fetchAgencyRss(url){
     .map(match=>{
       const block=match[1];
       return {title:rssTag(block,"title"),url:rssTag(block,"link"),
-        publishedAt:rssTag(block,"pubDate"),source:"Agência Brasil"};
+        publishedAt:rssTag(block,"pubDate"),source:"Agência Brasil",
+        imageUrl:rssImage(block)};
     }).filter(item=>Boolean(item.title&&item.url&&item.publishedAt));
 }
 
@@ -167,7 +196,8 @@ async function regionalHeadlines(top,now) {
         title:rssTag(block,"title"),
         url:rssTag(block,"link"),
         publishedAt:rssTag(block,"pubDate"),
-        source:rssTag(block,"source")||"Google News"
+        source:rssTag(block,"source")||"Google News",
+        imageUrl:rssImage(block)
       }));
     return {
       id:top.id,label:top.label,

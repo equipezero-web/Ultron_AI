@@ -8,6 +8,8 @@ on:
       - 'modules/jarvis-command-center-v4330.js'
       - 'modules/jarvis-command-center-v4330.css'
       - 'modules/ultron-intelligence-briefing.js'
+      - 'modules/neural-intelligence-visual.js'
+      - 'tests/neural-intelligence-visual-smoke.mjs'
       - 'tests/automatic-briefing-browser.mjs'
       - 'tests/neural-wheel-lock-smoke.mjs'
       - 'backend/world-intelligence-history.js'
@@ -25,6 +27,8 @@ on:
       - 'modules/jarvis-command-center-v4330.js'
       - 'modules/jarvis-command-center-v4330.css'
       - 'modules/ultron-intelligence-briefing.js'
+      - 'modules/neural-intelligence-visual.js'
+      - 'tests/neural-intelligence-visual-smoke.mjs'
       - 'tests/automatic-briefing-browser.mjs'
       - 'tests/neural-wheel-lock-smoke.mjs'
       - 'backend/world-intelligence-history.js'
@@ -58,6 +62,7 @@ jobs:
           node tests/neural-mobile-smoke.mjs
           node tests/automatic-briefing-browser.mjs
           node tests/neural-wheel-lock-smoke.mjs
+          node tests/neural-intelligence-visual-smoke.mjs
       - name: Capture failure screenshot
         if: failure()
         uses: actions/upload-artifact@v4
@@ -69,4 +74,5 @@ jobs:
             mobile-globe-console-failure.png
             automatic-briefing-failure.png
             neural-wheel-lock-failure.png
+            neural-intelligence-visual-failure.png
           if-no-files-found: ignore

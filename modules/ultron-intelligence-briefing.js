@@ -199,6 +199,9 @@ function render(data,{announce=false}={}){
   if(announce)log(count
     ? count+" manchetes recentes recuperadas. Prioridades: Brasil, Santa Catarina, clima e mundo."
     : "Consulta concluída, mas sem manchetes atuais confirmadas.");
+  window.dispatchEvent(new CustomEvent("ultron:intelligence-visual-update",{
+    detail:{briefing:data,history,waking:false}
+  }));
 }
 
 function renderMonitor(summary,{waking=false,archiveValid=true}={}){
@@ -248,6 +251,9 @@ function renderMonitor(summary,{waking=false,archiveValid=true}={}){
     appendLink(li,"diagnóstico oficial",summary.enso.url);
     historyList.append(li);
   }
+  window.dispatchEvent(new CustomEvent("ultron:intelligence-visual-update",{
+    detail:{briefing:current,history,summary,waking,archiveValid}
+  }));
 }
 function wakingSpeech(summary,{archiveValid=true}={}){
   const lines=[
@@ -453,6 +459,10 @@ window.ULTRON_INTELLIGENCE={
   refresh,
   loadHistory,
   deliverWakeReport,
+  get visualData(){return {
+    briefing:current,history,summary:wakeSummary,
+    archiveValid:history ? (Date.now()-Date.parse(history.updatedAt)<HISTORY_STALE_MS) : false
+  };},
   get state(){return {
     active:true,loading:Boolean(pending),updatedAt:current?.fetchedAt||null,
     totalStories:(current?.topics||[]).reduce((n,t)=>n+(t.articles?.length||0),0),
