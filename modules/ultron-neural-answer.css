@@ -1,5 +1,6 @@
 /* Neural Ring response overlay v4.55: ring-only initial state, content on demand. */
 body.jarvis-command-center .jarvis-neural-news{display:none!important}
+body.jarvis-command-center .jarvis-neural-news.is-requested{display:flex!important}
 body.jarvis-command-center .jarvis-cc-center{isolation:isolate}
 body.jarvis-command-center .ultron-neural-answer{
   position:absolute;z-index:44;inset:auto clamp(6px,1vw,18px) 12px;
