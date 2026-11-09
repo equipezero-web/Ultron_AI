@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "1.0",
-  "fetchedAt": "2026-11-09T17:17:20.834Z",
+  "fetchedAt": "2026-11-09T18:24:09.064Z",
   "priority": [
     "Brasil",
     "Santa Catarina",
@@ -22,28 +22,32 @@
       "label": "Brasil",
       "articles": [
         {
+          "title": "Relator apresenta diretrizes da proposta de voto distrital misto",
+          "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2026-11/relator-do-distrital-misto-propoe-voto-unico-para-distrital-e-lista",
+          "publishedAt": "2026-11-09T17:10:00.000Z",
+          "source": "Agência Brasil",
+          "imageUrl": null
+        },
+        {
           "title": "Na COP31, OMS defende sistemas de saúde resilientes ao clima",
           "url": "https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-11/na-cop31-oms-defende-sistemas-de-saude-resilientes-ao-clima",
           "publishedAt": "2026-11-09T16:14:00.000Z",
-          "source": "Agência Brasil"
+          "source": "Agência Brasil",
+          "imageUrl": null
         },
         {
           "title": "COP31: Brasil transmite presidência da COP à Turquia",
           "url": "https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-11/cop31-brasil-transmite-presidencia-da-cop-turquia",
           "publishedAt": "2026-11-09T16:06:00.000Z",
-          "source": "Agência Brasil"
+          "source": "Agência Brasil",
+          "imageUrl": null
         },
         {
           "title": "Confira o calendário de pagamento do IPVA de 2027 em São Paulo",
           "url": "https://agenciabrasil.ebc.com.br/geral/noticia/2026-11/confira-o-calendario-de-pagamento-do-ipva-de-2027-em-sao-paulo",
           "publishedAt": "2026-11-09T15:57:00.000Z",
-          "source": "Agência Brasil"
-        },
-        {
-          "title": "Gás do Povo: governo prorroga vigência do auxílio até 2031",
-          "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/gas-do-povo-governo-prorroga-vigencia-do-programa-ate-2031",
-          "publishedAt": "2026-11-09T15:02:00.000Z",
-          "source": "Agência Brasil"
+          "source": "Agência Brasil",
+          "imageUrl": null
         }
       ],
       "checked": true,
@@ -57,19 +61,22 @@
           "title": "Temporais deixam 353 pessoas fora de casa e 11 cidades em emergência em SC",
           "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxOclp6NTJYUHQxVkYxQlFXWXVFQ1R2cGtKS0ZVQUZhLW45T002LURSTXNNTnhxdWlKRG1DNTlkU1F6SFVsSlhlS0ZnUmlGOWJUbzhuNzlNQU1mY0RCVXozQmlfaVV3N0taRXpTeGRvdnJsZHYwdHZicmxpN1JDd2k4dFRSdzlzajd2WkdGaS1SaXBpSUVuVTF5WUlpanBEVGRPWHpWclNpNA?oc=5",
           "publishedAt": "2026-11-09T15:09:58.000Z",
-          "source": "Visor Notícias"
+          "source": "Visor Notícias",
+          "imageUrl": null
         },
         {
           "title": "Defesa Civil alerta para temporais a partir desta sexta-feira e queda de temperatura em SC",
           "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxOLTVtclVpVFdmNHlFZVdJNHhmTDZYSFVWTXI1clIyeHl6OXoyV0VpdkR1SEI4NDhlWm5KSmZaLWJaNzBCNk02aGxjZnlNLTNKREl2dGU1LVI2cmlXQUJCY2ctd240ektkTEhiS2JnUUFMRzJJWGZFenVGM3VoamtXclpaVEFyTlgtWDFjSUs3MlhtV0dINGFpWDEzTmtoeWVlMVlXRXYzUHJ2NlpMdkIycE9CUGQzM1YzNVVLWjBaSDFzRWdNaXN3MnVn?oc=5",
           "publishedAt": "2026-11-06T19:28:18.000Z",
-          "source": "AJ Notícias"
+          "source": "AJ Notícias",
+          "imageUrl": null
         },
         {
           "title": "Cidades atingidas por tornados em SC entram em alerta vermelho para novas tempestades, diz Defesa Civil",
           "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxOTGJhbWhiZDUwLXhQelhSQzhtUndJdW9Jc3k1dU1DWGFwNkhDakpSQWkzMTV5cE5mWkZRYlA3VGkxSUk3U1RTejZudlRTWHVmNHZLLUM5MmFabFdqZFE4a2F5bDE2czZ4S2Nud2M1U3J2MlFRQVBlcHViZ1BhR3ZIYW1vQ2JsZDMwYTZmTkd5TWc0Um1BemgzSVlJWV8tLTBDeWtIVHVUckRLVkRZYkVnOTkyd0hYVXBfdzNFOG9iUG02dlNObHdrZW16djF1NHY1bFpJ0gHiAUFVX3lxTE1jTDBMZU56TGRnZkQ3TzFvWUFQeV9lRTZvUHF3Xzd5Rld2dkh4N1RfdmFpSzVaZkpKYndMSi1mZWNHQlktb3pISFI2Q2NVZ0wyR0VnRU9BNTFmd0NfQVRhTFR4bkNMcldhM3gwSjA3dVBsNG1YemEtcU9UNWZ5ZUdTMk5Od0lIYktXLXJxYVI3VjhLRC14ZkpfQmdZQVlvUVNCakl3cFowbHhKTXdqNWNMMUVZV2VnNnhFYTA3WU9PSUFCSUkxczlpU0stTnh1dDFCMm8zXzRHV19XZjVqc1NGOFE?oc=5",
           "publishedAt": "2026-11-06T19:15:41.000Z",
-          "source": "G1"
+          "source": "G1",
+          "imageUrl": null
         }
       ],
       "checked": true,
@@ -90,13 +97,15 @@
           "title": "ONU diz que 2026 será um dos anos mais quentes já registrados",
           "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/onu-diz-que-2026-sera-um-dos-anos-mais-quentes-ja-registrados",
           "publishedAt": "2026-11-09T13:49:00.000Z",
-          "source": "Agência Brasil"
+          "source": "Agência Brasil",
+          "imageUrl": null
         },
         {
           "title": "Lula vai às Filipinas buscando estreitar vínculo com bloco asiático",
           "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/lula-vai-filipinas-buscando-estreitar-vinculo-com-bloco-asiatico",
           "publishedAt": "2026-11-07T00:16:00.000Z",
-          "source": "Agência Brasil"
+          "source": "Agência Brasil",
+          "imageUrl": null
         }
       ],
       "checked": true,
@@ -117,13 +126,15 @@
           "title": "O que pode estar por trás da onda de alertas de bombas em voos na Europa - UOL Notícias",
           "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxQUWF2NHE1VHB5NXJkZS1tU19mN1gyNW5fdTMxRFdacFBsUDhpUlRidHFLVFdmUVNDVHg0ZU5adzIyQng1YzVIb2s4VTBVdVJMcUY5UTU5b1dTbTBCc1gwaVBzclZIRjNOaEFQQUN1N3QtM05ZYnAybzAza2tKeklhUE1DN2ZoemtoLVRLbl9xbXU5Rl9KUjZWOG1saXRtZXltSFhjR0VvNDI4VWFzdlUtYW41M1VKaDdBVjZIekV1cHYzdXR0TkU3V184ZXFnRTkwSC1MN0N3?oc=5",
           "publishedAt": "2026-11-07T12:18:19.000Z",
-          "source": "UOL Notícias"
+          "source": "UOL Notícias",
+          "imageUrl": null
         },
         {
           "title": "Na Europa, novas ameaças de bombas causam transtornos em aeroportos - Agência Brasil",
           "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5xeWZmTmhUS21HaUI3T0xCQVlLcWswRTF3bkRWN1pELWVTMFdoSUIxak15dWpORXQwNl9nOGg3b3BiQmNXQjRFOWJGX3BtVkdJeFJzSDA4bjFtSmdS?oc=5",
           "publishedAt": "2026-11-07T00:36:00.000Z",
-          "source": "Agência Brasil"
+          "source": "Agência Brasil",
+          "imageUrl": null
         }
       ],
       "checked": true,
