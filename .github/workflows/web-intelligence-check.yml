@@ -7,7 +7,9 @@ on:
       - 'backend/web-research.js'
       - 'backend/research-memory.js'
       - 'backend/news-context.js'
+      - 'backend/world-briefing.js'
       - 'backend/worker.js'
+      - 'tests/world-briefing-context.mjs'
       - 'backend/wrangler.jsonc'
       - 'modules/provider-ui.js'
       - 'modules/backend-version-check.js'
@@ -18,7 +20,9 @@ on:
       - 'backend/web-research.js'
       - 'backend/research-memory.js'
       - 'backend/news-context.js'
+      - 'backend/world-briefing.js'
       - 'backend/worker.js'
+      - 'tests/world-briefing-context.mjs'
       - 'backend/wrangler.jsonc'
       - 'modules/provider-ui.js'
       - 'modules/backend-version-check.js'
@@ -40,14 +44,18 @@ jobs:
           node --check backend/web-research.js
           node --check backend/research-memory.js
           node --check backend/news-context.js
+          node --check backend/world-briefing.js
+          node tests/world-briefing-context.mjs
           node --check backend/worker.js
           grep -q 'shouldResearchBeforeAnswer' backend/worker.js
           grep -q 'loadResearchCache' backend/worker.js
           grep -q 'saveResearchMemory' backend/worker.js
           grep -q '"main": "worker.js"' backend/wrangler.jsonc
+          grep -q 'path === "/api/briefing"' backend/worker.js
           ! grep -q 'import baseWorker' backend/worker.js
       - name: Check frontend integration syntax
         run: |
           node --check modules/provider-ui.js
+          node --check modules/ultron-intelligence-briefing.js
           node --check modules/backend-version-check.js
           node --check modules/telemetry-client.js

@@ -42,6 +42,7 @@ import { buildOperationalPlan } from "./planner.js";
 import { analyzeVisualFrame } from "./vision-analysis.js";
 import { getWebRtcIceServers, webRtcIceHealth } from "./webrtc-ice.js";
 import { loadLiveNewsContext } from "./news-context.js";
+import { createWorldBriefing } from "./world-briefing.js";
 import {
   answerLooksUncertain,
   researchVisualContext,
@@ -858,6 +859,9 @@ async function health(env) {
     voiceRouter: getVoiceRouterStatus(env),
     voiceOrder: ["ElevenLabs", "Google Neural2", "Google WaveNet", "Browser TTS", "XTTS v2"],
     liveNews: true,
+    automaticWorldBriefing: true,
+    briefingPath: "/api/briefing",
+    briefingRefreshMinutes: 10,
     liveNewsEngine: "google-search+google-news+gdelt-parallel",
     visualContext: true,
     localFileContextBridge: true,
@@ -900,6 +904,38 @@ export default {
 
     if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: corsHeaders() });
     if (path === "/api/health" && request.method === "GET") return health(env);
+    if (path === "/api/briefing" && request.method === "GET") {
+      const cacheKey = new Request(new URL("/api/briefing?v=1", request.url),{method:"GET"});
+      const cache = typeof caches !== "undefined" ? caches.default : null;
+      if (cache) {
+        try {
+          const saved=await cache.match(cacheKey);
+          if(saved) return saved;
+        } catch(error) {
+          console.warn("[ULTRON/BRIEFING] Cache read unavailable:",error);
+        }
+      }
+      try {
+        const briefing=await createWorldBriefing();
+        const response=new Response(JSON.stringify(briefing),{
+          status:200,headers:{
+            ...corsHeaders(),"Cache-Control":"public, max-age=60",
+            "CDN-Cache-Control":"public, max-age=600"
+          }
+        });
+        if(cache && ctx?.waitUntil){
+          ctx.waitUntil(cache.put(cacheKey,response.clone()).catch(error=>
+            console.warn("[ULTRON/BRIEFING] Cache write unavailable:",error)));
+        }
+        return response;
+      } catch(error) {
+        return json({
+          ok:false,unavailable:true,
+          error:"Não foi possível conferir os acontecimentos com as fontes agora.",
+          fetchedAt:new Date().toISOString()
+        },503);
+      }
+    }
 
     if (path === "/api/bridge/event" && request.method === "POST") {
       try {
