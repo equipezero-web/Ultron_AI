@@ -59,16 +59,17 @@ try {
     assert.equal(answered.anchored.vertical,true,JSON.stringify(answered.anchored));
     assert.ok(answered.source.includes('example.org/report'));
     assert.ok(answered.overflow<=3,'Response must not overflow viewport');
-    await page.evaluate(()=>{
+    const newsPicture=await page.evaluate(()=>{
       window.dispatchEvent(new CustomEvent('ultron:intelligence-visual-update',{
         detail:{waking:true,briefing:{topics:[{id:'brasil',articles:[{
           title:'Boletim verificado',source:'Agência pública',
           url:'https://example.org/news',imageUrl:'https://example.org/news.jpg'
         }]}]}}
       }));
+      return document.querySelector('.ultron-neural-answer-media img')?.getAttribute('src');
     });
     assert.equal(await page.$eval('.ultron-neural-answer-text',el=>el.textContent),'Boletim verificado','Wake news title must appear over ring');
-    assert.equal(await page.$eval('.ultron-neural-answer-media img',els=>els.length),1,'Wake news must show publisher image inside ring');
+    assert.equal(newsPicture,'https://example.org/news.jpg','Wake news must mount publisher image inside ring');
     await page.evaluate(()=>window.dispatchEvent(new CustomEvent('ultron:speech-start',{detail:{source:'intelligence-wake',text:'Resumo de notícias falado'}})));
     assert.equal(await page.$eval('.ultron-neural-answer-text',el=>el.textContent),'Resumo de notícias falado','Voice text must appear within ring');
     await page.click('.ultron-neural-answer-close');
