@@ -611,6 +611,42 @@ if (earthVisual) {
           const lng = ((dragState.view.lng - dx * scale + 540) % 360) - 180;
           globe.pointOfView({lat,lng,altitude:dragState.view.altitude},0);
         };
+        // Touch Events fallback for mobile browsers that do not dispatch both
+        // touch pointers consistently through Pointer Events (including webOS).
+        // Use the same camera model without enabling OrbitControls rotation.
+        let nativePinch = null;
+        const nativeDistance = touches => Math.hypot(
+          touches[0].clientX - touches[1].clientX,
+          touches[0].clientY - touches[1].clientY
+        );
+        canvasHost.addEventListener('touchstart', event => {
+          if (!visible || streetMode || referenceMode || event.touches.length < 2) return;
+          const view = globe.pointOfView() || home;
+          nativePinch = {
+            distance: Math.max(1, nativeDistance(event.touches)),
+            altitude: view.altitude
+          };
+          dragState = null;
+          event.preventDefault();
+        }, {passive:false,capture:true});
+        canvasHost.addEventListener('touchmove', event => {
+          if (!nativePinch || !visible || streetMode || referenceMode) return;
+          if (event.touches.length < 2) return;
+          const scale = nativePinch.distance / Math.max(1, nativeDistance(event.touches));
+          const altitude = clamp(nativePinch.altitude * scale, 0.06, 5);
+          const view = globe.pointOfView() || home;
+          plannedAltitude = altitude;
+          setExpanded(altitude);
+          globe.pointOfView({...view,altitude},0);
+          if (altitude <= DETAIL_ENTRY_ALTITUDE && hasMapboxToken())
+            prepareStreetDetails({...view,altitude},mapZoomFromAltitude(altitude),false);
+          event.preventDefault();
+        }, {passive:false,capture:true});
+        const endNativePinch = event => {
+          if (event.touches.length < 2) nativePinch = null;
+        };
+        canvasHost.addEventListener('touchend',endNativePinch,{passive:true,capture:true});
+        canvasHost.addEventListener('touchcancel',endNativePinch,{passive:true,capture:true});
         canvasHost.addEventListener('pointerdown', startDrag, true);
         window.addEventListener('pointermove', moveDrag, true);
         window.addEventListener('pointerup', stopDrag, true);
