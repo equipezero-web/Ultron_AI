@@ -99,7 +99,13 @@ export function shouldResearchBeforeAnswer(message) {
 
   if (SEARCH_TERMS.test(text)) return { needed: true, reason: "explicit-search", ttlMinutes: 180 };
   if (CURRENT_TERMS.test(text)) return { needed: true, reason: "freshness", ttlMinutes: 45 };
-  if (FACTUAL_START.test(text) && text.length >= 18) return { needed: true, reason: "factual", ttlMinutes: 10080 };
+  // Do not web-search greetings, conversational replies, creative drafting, or device commands.
+  const conversational=/^(oi|olá|ola|bom dia|boa tarde|boa noite|obrigad[oa]|valeu|sim|não|nao|certo|ok|tudo bem|como vai|quem é você|qual seu nome)[.!?\\s]*$/i;
+  const localAction=/^(abra|abrir|ligue|ligar|desligue|desligar|ative|ativar|pause|parar|pare|toque|execute|rodar|mostre meu|leia meu)\\b/i;
+  if (conversational.test(text)||localAction.test(text)) return { needed:false,reason:"local-action",ttlMinutes:0 };
+  if (FACTUAL_START.test(text)) return { needed: true, reason: "factual", ttlMinutes: 10080 };
+  if (/\\b(explique|me diga|me informe|informações sobre|notícias sobre|dados sobre|história de|qualidade de|compare|comparação|é verdade que|sabe sobre)\\b/i.test(text))
+    return { needed: true, reason:"knowledge-query",ttlMinutes:1440 };
   return { needed: false, reason: "conversation", ttlMinutes: 0 };
 }
 
