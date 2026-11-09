@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "1.0",
-  "fetchedAt": "2026-11-09T15:59:58.161Z",
+  "fetchedAt": "2026-11-09T16:04:02.841Z",
   "priority": [
     "Brasil",
     "Santa Catarina",
@@ -16,16 +16,28 @@
       "label": "Brasil",
       "articles": [
         {
-          "title": "Bora Brasil: Assista às principais notícias e análises do dia - 09-11-2026",
-          "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxOb3psZExmWnVVQWlZVzM0OTBSTDNnVThIbmg5OWdqY1dGQTJ4VXhFYnpFSXZhTFBVc3BoSDMyczVNTlhPOW4xZU9leFktN0h1SFNWemtReEtEMllfZkFMQTRnSW53OV9uQ0RJZWFaT0NDMGg0cjdxZ0tHWVB1RWI2STFmbmh6Vm9IWG4yMmVzaHRJWWxSQ0ZJNWVuQ2daWmpySVpGX0dNSVNlbllkRmhjUA?oc=5",
-          "publishedAt": "2026-11-09T03:19:29.000Z",
-          "source": "Band"
+          "title": "Gás do Povo: governo prorroga vigência do auxílio até 2031",
+          "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/gas-do-povo-governo-prorroga-vigencia-do-programa-ate-2031",
+          "publishedAt": "2026-11-09T15:02:00.000Z",
+          "source": "Agência Brasil"
         },
         {
-          "title": "Jornal da Band ao vivo: Assista às principais notícias do Brasil e do mundo - 09-11-2026",
-          "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxNbDBaQ2J1TUc1c0hTOGJKNVV1bHNNUE94ZHJZVGI1UE5fQ0hxb1N5eWQ5ZVltbVQ0eWxuMXBJTGs2aWwzMjZrdGloQnJYZzBHMFRxc0t2STdBYThodVEyM01RLVNCSk5vMF85T0FjejYxYmtuZXo2VERZemFrVTgyWWRybVVGSWp2SjBxSlIzZHpNc3QyRWpQczNvQzB6Z2o5MXVNdzR6OFBsNGZwX3BoQ1lubVJsX0xkVkt2MzR0dmlLMjQ?oc=5",
-          "publishedAt": "2026-11-09T03:03:00.000Z",
-          "source": "Band"
+          "title": "Fux suspende afastamento de juíza da Lava Jato punida pelo CNJ",
+          "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/fux-suspende-afastamento-de-juiza-da-lava-jato-punida-pelo-cnj",
+          "publishedAt": "2026-11-09T14:44:00.000Z",
+          "source": "Agência Brasil"
+        },
+        {
+          "title": "Anvisa determina recolhimento de emagrecedor Ultra Shape",
+          "url": "https://agenciabrasil.ebc.com.br/saude/noticia/2026-11/anvisa-determina-recolhimento-de-emagrecedor-ultra-shape",
+          "publishedAt": "2026-11-09T13:51:00.000Z",
+          "source": "Agência Brasil"
+        },
+        {
+          "title": "ONU diz que 2026 será um dos anos mais quentes já registrados",
+          "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/onu-diz-que-2026-sera-um-dos-anos-mais-quentes-ja-registrados",
+          "publishedAt": "2026-11-09T13:49:00.000Z",
+          "source": "Agência Brasil"
         }
       ],
       "checked": true,
@@ -67,7 +79,26 @@
     {
       "id": "mundo",
       "label": "Mundo",
-      "articles": [],
+      "articles": [
+        {
+          "title": "ONU diz que 2026 será um dos anos mais quentes já registrados",
+          "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/onu-diz-que-2026-sera-um-dos-anos-mais-quentes-ja-registrados",
+          "publishedAt": "2026-11-09T13:49:00.000Z",
+          "source": "Agência Brasil"
+        },
+        {
+          "title": "Lula vai às Filipinas buscando estreitar vínculo com bloco asiático",
+          "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/lula-vai-filipinas-buscando-estreitar-vinculo-com-bloco-asiatico",
+          "publishedAt": "2026-11-07T00:16:00.000Z",
+          "source": "Agência Brasil"
+        },
+        {
+          "title": "Eleitores dos EUA derrotam big techs e ações de IA despencam",
+          "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/eleitores-dos-eua-derrotam-big-techs-e-acoes-de-ia-despencam",
+          "publishedAt": "2026-11-06T16:12:00.000Z",
+          "source": "Agência Brasil"
+        }
+      ],
       "checked": true,
       "error": null
     }
@@ -125,9 +156,9 @@
     "error": null
   },
   "enso": {
-    "checked": true,
+    "checked": false,
     "bulletin": null,
-    "error": null
+    "error": "Status ENSO não localizado no boletim"
   },
   "officialLinks": [
     {
@@ -144,7 +175,7 @@
     }
   ],
   "hasNews": true,
-  "partial": false,
+  "partial": true,
   "delivery": "github-scheduled-snapshot",
   "live": false,
   "refreshedBy": "scheduled-github-action"
