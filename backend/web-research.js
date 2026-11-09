@@ -1,6 +1,6 @@
 const SERPER_ENDPOINT = "https://google.serper.dev/search";
 const SEARCH_TIMEOUT_MS = 3200;
-const VISUAL_REQUEST=/\\b(imagem|imagens|foto|fotos|fotografia|fotografias|mostre uma|mostre imagens|quero ver|exiba|visualize|ilustre|picture|photos)\\b/i;
+const VISUAL_REQUEST=/\b(imagem|imagens|foto|fotos|fotografia|fotografias|mostre uma|mostre imagens|quero ver|exiba|visualize|ilustre|picture|photos)\b/i;
 
 const CURRENT_TERMS = /\b(hoje|agora|atual|atuais|recente|recentes|ultimo|último|ultimos|últimos|latest|2026|preco|preço|cotacao|cotação|resultado|placar|eleicao|eleição|presidente|ceo|versao|versão|lancamento|lançamento)\b/i;
 const SEARCH_TERMS = /\b(pesquise|pesquisar|procure|buscar|busque|google|internet|web|fontes?|confirme|verifique|investigue)\b/i;
