@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "1.0",
-  "fetchedAt": "2026-11-09T16:06:58.259Z",
+  "fetchedAt": "2026-11-09T16:08:58.090Z",
   "priority": [
     "Brasil",
     "Santa Catarina",
@@ -156,9 +156,16 @@
     "error": null
   },
   "enso": {
-    "checked": false,
-    "bulletin": null,
-    "error": "Status ENSO não localizado no boletim"
+    "checked": true,
+    "bulletin": {
+      "status": "El Niño Advisory",
+      "issued": "8 October 2026",
+      "synopsis": "El Niño continues to strengthen, with a strong-to-very strong El Niño likely through January-March 2027 (remaining greater than an 83&#37; chance).",
+      "source": "NOAA / Climate Prediction Center",
+      "url": "https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.html",
+      "kind": "monthly-climate-bulletin"
+    },
+    "error": null
   },
   "officialLinks": [
     {
@@ -175,7 +182,7 @@
     }
   ],
   "hasNews": true,
-  "partial": true,
+  "partial": false,
   "delivery": "github-scheduled-snapshot",
   "live": false,
   "refreshedBy": "scheduled-github-action"
