@@ -4,12 +4,154 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": null,
-  "oldestEventAt": null,
-  "windowStartAt": null,
-  "events": [],
-  "checks": [],
-  "checkCount": 0,
-  "lastSuccessfulAt": null,
-  "latest": null
+  "updatedAt": "2026-11-09T17:17:20.834Z",
+  "oldestEventAt": "2026-11-09T13:49:00.000Z",
+  "windowStartAt": "2026-11-08T17:17:20.834Z",
+  "events": [
+    {
+      "id": "event-41e86029",
+      "category": "brasil",
+      "title": "Na COP31, OMS defende sistemas de saúde resilientes ao clima",
+      "url": "https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-11/na-cop31-oms-defende-sistemas-de-saude-resilientes-ao-clima",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-09T16:14:00.000Z",
+      "firstSeenAt": "2026-11-09T17:17:20.834Z",
+      "lastSeenAt": "2026-11-09T17:17:20.834Z"
+    },
+    {
+      "id": "event-df6753b5",
+      "category": "brasil",
+      "title": "COP31: Brasil transmite presidência da COP à Turquia",
+      "url": "https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-11/cop31-brasil-transmite-presidencia-da-cop-turquia",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-09T16:06:00.000Z",
+      "firstSeenAt": "2026-11-09T17:17:20.834Z",
+      "lastSeenAt": "2026-11-09T17:17:20.834Z"
+    },
+    {
+      "id": "event-82bacebf",
+      "category": "brasil",
+      "title": "Confira o calendário de pagamento do IPVA de 2027 em São Paulo",
+      "url": "https://agenciabrasil.ebc.com.br/geral/noticia/2026-11/confira-o-calendario-de-pagamento-do-ipva-de-2027-em-sao-paulo",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-09T15:57:00.000Z",
+      "firstSeenAt": "2026-11-09T17:17:20.834Z",
+      "lastSeenAt": "2026-11-09T17:17:20.834Z"
+    },
+    {
+      "id": "event-307a9aed",
+      "category": "santa-catarina",
+      "title": "Temporais deixam 353 pessoas fora de casa e 11 cidades em emergência em SC",
+      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxOclp6NTJYUHQxVkYxQlFXWXVFQ1R2cGtKS0ZVQUZhLW45T002LURSTXNNTnhxdWlKRG1DNTlkU1F6SFVsSlhlS0ZnUmlGOWJUbzhuNzlNQU1mY0RCVXozQmlfaVV3N0taRXpTeGRvdnJsZHYwdHZicmxpN1JDd2k4dFRSdzlzajd2WkdGaS1SaXBpSUVuVTF5WUlpanBEVGRPWHpWclNpNA",
+      "source": "Visor Notícias",
+      "publishedAt": "2026-11-09T15:09:58.000Z",
+      "firstSeenAt": "2026-11-09T17:17:20.834Z",
+      "lastSeenAt": "2026-11-09T17:17:20.834Z"
+    },
+    {
+      "id": "event-e4a2beea",
+      "category": "brasil",
+      "title": "Gás do Povo: governo prorroga vigência do auxílio até 2031",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/gas-do-povo-governo-prorroga-vigencia-do-programa-ate-2031",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-09T15:02:00.000Z",
+      "firstSeenAt": "2026-11-09T17:17:20.834Z",
+      "lastSeenAt": "2026-11-09T17:17:20.834Z"
+    },
+    {
+      "id": "event-6840c897",
+      "category": "mundo",
+      "title": "ONU diz que 2026 será um dos anos mais quentes já registrados",
+      "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/onu-diz-que-2026-sera-um-dos-anos-mais-quentes-ja-registrados",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-09T13:49:00.000Z",
+      "firstSeenAt": "2026-11-09T17:17:20.834Z",
+      "lastSeenAt": "2026-11-09T17:17:20.834Z"
+    }
+  ],
+  "checks": [
+    {
+      "at": "2026-11-09T17:17:20.834Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 6,
+      "newArticles": 6,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "mundo",
+        "europa"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
+    }
+  ],
+  "checkCount": 1,
+  "lastSuccessfulAt": "2026-11-09T17:17:20.834Z",
+  "latest": {
+    "alerts": {
+      "checked": true,
+      "checkedAt": "2026-11-09T17:17:20.834Z",
+      "warnings": [
+        {
+          "id": "56356",
+          "title": "Acumulado de Chuva",
+          "severity": "Perigo Potencial",
+          "phase": "previsto",
+          "regions": [],
+          "startsAt": "2026-11-10T00:00:00.000Z",
+          "endsAt": "2026-11-13T00:00:00.000Z",
+          "source": "INMET",
+          "url": "https://avisos.inmet.gov.br/"
+        },
+        {
+          "id": "56360",
+          "title": "Chuvas Intensas",
+          "severity": "Perigo Potencial",
+          "phase": "previsto",
+          "regions": [],
+          "startsAt": "2026-11-10T00:00:00.000Z",
+          "endsAt": "2026-11-10T00:00:00.000Z",
+          "source": "INMET",
+          "url": "https://avisos.inmet.gov.br/"
+        },
+        {
+          "id": "56361",
+          "title": "Tempestade",
+          "severity": "Perigo Potencial",
+          "phase": "previsto",
+          "regions": [],
+          "startsAt": "2026-11-10T00:00:00.000Z",
+          "endsAt": "2026-11-10T00:00:00.000Z",
+          "source": "INMET",
+          "url": "https://avisos.inmet.gov.br/"
+        },
+        {
+          "id": "56362",
+          "title": "Tempestade",
+          "severity": "Perigo Potencial",
+          "phase": "previsto",
+          "regions": [
+            "DO"
+          ],
+          "startsAt": "2026-11-11T00:00:00.000Z",
+          "endsAt": "2026-11-11T00:00:00.000Z",
+          "source": "INMET",
+          "url": "https://avisos.inmet.gov.br/"
+        }
+      ]
+    },
+    "enso": {
+      "checked": true,
+      "checkedAt": "2026-11-09T17:17:20.834Z",
+      "bulletin": {
+        "status": "El Niño Advisory",
+        "issued": "8 October 2026",
+        "synopsis": "El Niño continues to strengthen, with a strong-to-very strong El Niño likely through January-March 2027 (remaining greater than an 83&#37; chance).",
+        "source": "NOAA / Climate Prediction Center",
+        "url": "https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.html",
+        "kind": "monthly-climate-bulletin"
+      }
+    }
+  }
 }

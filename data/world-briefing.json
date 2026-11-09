@@ -1,12 +1,18 @@
 {
   "ok": true,
   "version": "1.0",
-  "fetchedAt": "2026-11-09T16:08:58.090Z",
+  "fetchedAt": "2026-11-09T17:17:20.834Z",
   "priority": [
     "Brasil",
     "Santa Catarina",
     "Clima e El Niño",
-    "Mundo"
+    "Mundo",
+    "América Latina",
+    "Europa",
+    "Ásia",
+    "África",
+    "Oriente Médio",
+    "Oceania"
   ],
   "refreshAfterMinutes": 10,
   "isLive": true,
@@ -16,27 +22,27 @@
       "label": "Brasil",
       "articles": [
         {
+          "title": "Na COP31, OMS defende sistemas de saúde resilientes ao clima",
+          "url": "https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-11/na-cop31-oms-defende-sistemas-de-saude-resilientes-ao-clima",
+          "publishedAt": "2026-11-09T16:14:00.000Z",
+          "source": "Agência Brasil"
+        },
+        {
+          "title": "COP31: Brasil transmite presidência da COP à Turquia",
+          "url": "https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-11/cop31-brasil-transmite-presidencia-da-cop-turquia",
+          "publishedAt": "2026-11-09T16:06:00.000Z",
+          "source": "Agência Brasil"
+        },
+        {
+          "title": "Confira o calendário de pagamento do IPVA de 2027 em São Paulo",
+          "url": "https://agenciabrasil.ebc.com.br/geral/noticia/2026-11/confira-o-calendario-de-pagamento-do-ipva-de-2027-em-sao-paulo",
+          "publishedAt": "2026-11-09T15:57:00.000Z",
+          "source": "Agência Brasil"
+        },
+        {
           "title": "Gás do Povo: governo prorroga vigência do auxílio até 2031",
           "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/gas-do-povo-governo-prorroga-vigencia-do-programa-ate-2031",
           "publishedAt": "2026-11-09T15:02:00.000Z",
-          "source": "Agência Brasil"
-        },
-        {
-          "title": "Fux suspende afastamento de juíza da Lava Jato punida pelo CNJ",
-          "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/fux-suspende-afastamento-de-juiza-da-lava-jato-punida-pelo-cnj",
-          "publishedAt": "2026-11-09T14:44:00.000Z",
-          "source": "Agência Brasil"
-        },
-        {
-          "title": "Anvisa determina recolhimento de emagrecedor Ultra Shape",
-          "url": "https://agenciabrasil.ebc.com.br/saude/noticia/2026-11/anvisa-determina-recolhimento-de-emagrecedor-ultra-shape",
-          "publishedAt": "2026-11-09T13:51:00.000Z",
-          "source": "Agência Brasil"
-        },
-        {
-          "title": "ONU diz que 2026 será um dos anos mais quentes já registrados",
-          "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/onu-diz-que-2026-sera-um-dos-anos-mais-quentes-ja-registrados",
-          "publishedAt": "2026-11-09T13:49:00.000Z",
           "source": "Agência Brasil"
         }
       ],
@@ -91,14 +97,63 @@
           "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/lula-vai-filipinas-buscando-estreitar-vinculo-com-bloco-asiatico",
           "publishedAt": "2026-11-07T00:16:00.000Z",
           "source": "Agência Brasil"
+        }
+      ],
+      "checked": true,
+      "error": null
+    },
+    {
+      "id": "america-latina",
+      "label": "América Latina",
+      "articles": [],
+      "checked": true,
+      "error": null
+    },
+    {
+      "id": "europa",
+      "label": "Europa",
+      "articles": [
+        {
+          "title": "O que pode estar por trás da onda de alertas de bombas em voos na Europa - UOL Notícias",
+          "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxQUWF2NHE1VHB5NXJkZS1tU19mN1gyNW5fdTMxRFdacFBsUDhpUlRidHFLVFdmUVNDVHg0ZU5adzIyQng1YzVIb2s4VTBVdVJMcUY5UTU5b1dTbTBCc1gwaVBzclZIRjNOaEFQQUN1N3QtM05ZYnAybzAza2tKeklhUE1DN2ZoemtoLVRLbl9xbXU5Rl9KUjZWOG1saXRtZXltSFhjR0VvNDI4VWFzdlUtYW41M1VKaDdBVjZIekV1cHYzdXR0TkU3V184ZXFnRTkwSC1MN0N3?oc=5",
+          "publishedAt": "2026-11-07T12:18:19.000Z",
+          "source": "UOL Notícias"
         },
         {
-          "title": "Eleitores dos EUA derrotam big techs e ações de IA despencam",
-          "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/eleitores-dos-eua-derrotam-big-techs-e-acoes-de-ia-despencam",
-          "publishedAt": "2026-11-06T16:12:00.000Z",
+          "title": "Na Europa, novas ameaças de bombas causam transtornos em aeroportos - Agência Brasil",
+          "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5xeWZmTmhUS21HaUI3T0xCQVlLcWswRTF3bkRWN1pELWVTMFdoSUIxak15dWpORXQwNl9nOGg3b3BiQmNXQjRFOWJGX3BtVkdJeFJzSDA4bjFtSmdS?oc=5",
+          "publishedAt": "2026-11-07T00:36:00.000Z",
           "source": "Agência Brasil"
         }
       ],
+      "checked": true,
+      "error": null
+    },
+    {
+      "id": "asia",
+      "label": "Ásia",
+      "articles": [],
+      "checked": true,
+      "error": null
+    },
+    {
+      "id": "africa",
+      "label": "África",
+      "articles": [],
+      "checked": true,
+      "error": null
+    },
+    {
+      "id": "oriente-medio",
+      "label": "Oriente Médio",
+      "articles": [],
+      "checked": true,
+      "error": null
+    },
+    {
+      "id": "oceania",
+      "label": "Oceania",
+      "articles": [],
       "checked": true,
       "error": null
     }
