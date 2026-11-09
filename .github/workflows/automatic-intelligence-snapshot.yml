@@ -1,0 +1,54 @@
+name: Ultron Intelligence — Atualização do Boletim
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/refresh-intelligence-feed.mjs'
+      - 'backend/world-briefing.js'
+      - '.github/workflows/automatic-intelligence-snapshot.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ultron-intelligence-snapshot
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Fetch grounded Brazil, SC, climate and world sources
+        run: node scripts/refresh-intelligence-feed.mjs
+      - name: Commit latest verified snapshot for raw GitHub fallback
+        shell: bash
+        run: |
+          git config user.name "ultron-intelligence[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/world-briefing.json
+          if git diff --cached --quiet; then
+            echo "No verified update to publish."
+            exit 0
+          fi
+          git commit -m "data: refresh Ultron verified intelligence snapshot [skip ci]"
+          for attempt in 1 2 3; do
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              echo "Updated verified intelligence snapshot."
+              exit 0
+            fi
+            echo "Retrying snapshot publication (attempt $attempt)."
+            sleep 3
+          done
+          echo "::error::Could not publish the intelligence snapshot"
+          exit 1

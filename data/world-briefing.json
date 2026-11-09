@@ -1,0 +1,10 @@
+{
+  "ok": false,
+  "version": "1.0",
+  "fetchedAt": null,
+  "delivery": "not-yet-collected",
+  "topics": [],
+  "hasNews": false,
+  "partial": true,
+  "message": "Aguardando primeira coleta automática confirmada."
+}

@@ -3,6 +3,8 @@ import API_CONFIG from "../config.js";
 // Intelligent, read-only daily situation digest: official weather + sourced news.
 const BACKEND=String(API_CONFIG?.backendUrl||"").replace(/\/+$/,"");
 const REFRESH_MS=10*60*1000;
+const FALLBACK_URL="https://raw.githubusercontent.com/equipezero-web/Ultron_AI/main/data/world-briefing.json";
+const MAX_SNAPSHOT_AGE=2*60*60*1000;
 const VOICE_PREF="ultron_world_briefing_auto_voice_v1";
 const summaryLimit=5;
 const root=document.querySelector(".jarvis-cc-console-terminal");
@@ -119,7 +121,7 @@ function render(data,{announce=false}={}){
   }
   const stamp=Date.parse(data.fetchedAt);
   const isOld=!Number.isFinite(stamp)||Date.now()-stamp>40*60*1000;
-  status.textContent=(isOld?"DADOS ANTIGOS":"CONSULTA CONCLUÍDA")+" · "+formatDate(data.fetchedAt);
+  status.textContent=(isOld?"DADOS ANTIGOS":data.delivery==="github-scheduled-snapshot"?"COLETA VERIFICADA":"CONSULTA CONCLUÍDA")+" · "+formatDate(data.fetchedAt);
   const count=(data.topics||[]).reduce((sum,t)=>sum+(t.articles?.length||0),0);
   state.textContent=count
     ? count+" notícias recentes com links e datas; fontes oficiais de clima abaixo."
@@ -186,15 +188,33 @@ async function refresh({reason="manual",narrate=false}={}){
   updateButton.disabled=true;
   state.textContent="Buscando notícias e avisos oficiais...";
   pending=(async()=>{
-    const controller=new AbortController();
-    const timeout=setTimeout(()=>controller.abort(),16000);
     try{
-      const response=await fetch(BACKEND+"/api/briefing",{
-        method:"GET",cache:"no-store",signal:controller.signal,headers:{"Accept":"application/json"}
-      });
-      if(!response.ok)throw new Error("Serviço HTTP "+response.status);
-      const result=await response.json();
-      if(!result?.ok||!Array.isArray(result?.topics))throw new Error("Boletim inválido");
+      let result;
+      try {
+        const controller=new AbortController();
+        const timer=setTimeout(()=>controller.abort(),8500);
+        try{
+          const response=await fetch(BACKEND+"/api/briefing",{
+            method:"GET",cache:"no-store",signal:controller.signal,headers:{"Accept":"application/json"}
+          });
+          if(!response.ok)throw new Error("Serviço HTTP "+response.status);
+          result=await response.json();
+          if(!result?.ok||!Array.isArray(result?.topics))throw new Error("Boletim inválido");
+        }finally{clearTimeout(timer);}
+      }catch(backendError){
+        // Independent verified snapshot; keep news usable during Cloudflare API outages.
+        const response=await fetch(FALLBACK_URL+"?v="+Math.floor(Date.now()/600000),{
+          method:"GET",cache:"no-store",headers:{"Accept":"application/json"}
+        });
+        if(!response.ok)throw new Error("Backend indisponível e espelho HTTP "+response.status);
+        result=await response.json();
+        if(!result?.ok||result.delivery!=="github-scheduled-snapshot"||!Array.isArray(result.topics))
+          throw new Error("Espelho de notícias ainda não foi atualizado.");
+        const age=Date.now()-Date.parse(result.fetchedAt);
+        if(!Number.isFinite(age)||age< -600000||age>MAX_SNAPSHOT_AGE)
+          throw new Error("Espelho de notícias desatualizado; sem confirmação recente.");
+        log("Backend temporariamente indisponível; usando coleta verificada do GitHub ("+formatDate(result.fetchedAt)+").");
+      }
       const old=current;
       current=result;
       render(result,{announce:reason!=="periodic"});
@@ -214,7 +234,6 @@ async function refresh({reason="manual",narrate=false}={}){
       log("Falha na atualização: "+short(error.message).slice(0,110));
       return null;
     } finally{
-      clearTimeout(timeout);
       updateButton.disabled=false;
       pending=null;
     }

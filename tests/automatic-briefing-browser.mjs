@@ -11,8 +11,21 @@ try {
   page=await browser.newPage();
   await page.setViewport({width:390,height:844,isMobile:true,hasTouch:true,deviceScaleFactor:1});
   await page.setRequestInterception(true);
-  let calls=0,breakFetch=false;
+  let calls=0,breakFetch=false,fallbackOn=false,fallbackCalls=0;
   page.on("request",request=>{
+    if(request.url().includes("/data/world-briefing.json")){
+      fallbackCalls++;
+      if(!fallbackOn){
+        request.respond({status:503,contentType:"application/json",headers:{"access-control-allow-origin":"*"},body:'{"ok":false}'});
+      }else{
+        const payload={ok:true,delivery:"github-scheduled-snapshot",fetchedAt:new Date().toISOString(),
+          topics:[{id:"brasil",label:"Brasil",articles:[{title:"Boletim confirmado do espelho",url:"https://agenciabrasil.ebc.com.br/",source:"Agência Brasil",publishedAt:new Date().toISOString()}]}],
+          alerts:{checked:false,warnings:[]},enso:{checked:false,bulletin:null},hasNews:true,
+          officialLinks:[{label:"INMET",url:"https://avisos.inmet.gov.br/"}]};
+        request.respond({status:200,contentType:"application/json",headers:{"access-control-allow-origin":"*"},body:JSON.stringify(payload)});
+      }
+      return;
+    }
     if(!request.url().includes("/api/briefing")){request.continue();return;}
     calls+=1;
     if(breakFetch){
@@ -81,11 +94,17 @@ try {
   assert.ok(calls>initialCalls,"Manual refresh must call the live backend again");
   await page.click(".jarvis-intel-controls button:nth-child(3)");
   assert.equal(await page.$eval(".jarvis-intel-controls button:nth-child(3)",el=>el.getAttribute("aria-pressed")),"true");
-  breakFetch=true;
+  breakFetch=true;fallbackOn=true;
   await page.click(".jarvis-intel-controls button:first-child");
-  await page.waitForFunction(()=>document.querySelector(".jarvis-intel-message")?.textContent.includes("Última consulta preservada"),{timeout:6000});
-  assert.equal(await page.evaluate(()=>window.ULTRON_INTELLIGENCE.state.totalStories),4,"Past verified content remains on transient network failure");
-  console.log("AUTO BRIEFING BROWSER PASS: startup, categories Brazil/SC/climate/world, verified links, wake, refresh, failure handling, mobile");
+  await page.waitForFunction(()=>window.ULTRON_INTELLIGENCE.state.totalStories===1,{timeout:6500});
+  assert.ok(fallbackCalls>=1,"GitHub snapshot must provide offline-backend failover");
+  assert.ok((await page.$eval(".jarvis-intel-status",el=>el.textContent)).includes("COLETA VERIFICADA"));
+  assert.ok((await page.$eval(".jarvis-intel-topic",el=>el.textContent)).includes("Boletim confirmado do espelho"));
+  fallbackOn=false;
+  await page.click(".jarvis-intel-controls button:first-child");
+  await page.waitForFunction(()=>document.querySelector(".jarvis-intel-message")?.textContent.includes("Última consulta preservada"),{timeout:6500});
+  assert.equal(await page.evaluate(()=>window.ULTRON_INTELLIGENCE.state.totalStories),1,"Past verified content remains after all sources fail");
+  console.log("AUTO BRIEFING BROWSER PASS: startup, Brazil/SC/climate/world, source links, wake, update, GitHub snapshot failover and network failure");
 } catch(error){
   console.error("AUTO BRIEFING BROWSER FAILED:",error);
   await page?.screenshot({path:"automatic-briefing-failure.png",fullPage:false}).catch(()=>{});

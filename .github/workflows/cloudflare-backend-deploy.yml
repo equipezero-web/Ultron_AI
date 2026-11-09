@@ -49,7 +49,19 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: npx --yes wrangler@latest deploy --config wrangler.jsonc
+        run: |
+          for attempt in 1 2 3; do
+            echo "Deploy Cloudflare (attempt ${attempt}/3)"
+            if npx --yes wrangler@4.157.0 deploy --config wrangler.jsonc; then
+              echo "Deploy completed."
+              exit 0
+            fi
+            if [ "${attempt}" -eq 3 ]; then
+              echo "::error::Cloudflare deploy failed after 3 attempts."
+              exit 1
+            fi
+            sleep 15
+          done
       - name: Verify production health
         env:
           BACKEND_HEALTH_URL: https://ultron-backend.lucaalves17-20.workers.dev/api/health
