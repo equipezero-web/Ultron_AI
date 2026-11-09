@@ -295,7 +295,8 @@ if(stage&&visual&&intl){
       waking,expanded,collapsed:panel.classList.contains("is-collapsed"),
       lastUpdate:archiveAt
     };},
-    show:()=>{panel.classList.remove("is-collapsed");collapse.textContent="−";},
+    show:()=>{panel.classList.add("is-requested");panel.classList.remove("is-collapsed");collapse.textContent="−";},
+    hide:()=>{panel.classList.remove("is-requested");},
     select:n=>{if(Number.isInteger(n)&&n>=0&&n<entries.length){selected=n;expanded=false;updateCard();}},
     refresh:()=>consume(intl.visualData)
   };

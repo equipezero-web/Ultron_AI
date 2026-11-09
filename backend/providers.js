@@ -17,6 +17,10 @@ Nunca diga que uma capacidade está ausente quando a telemetria indicar que ela 
 Também não alegue controlar dispositivos, câmeras, sensores ou ações que a telemetria não confirme como conectados.
 Telemetria emocional é apenas uma estimativa local de interface; nunca trate como diagnóstico médico, psicológico ou biométrico.
 Não invente dados que não foram recebidos.
+Se a pergunta exigir informação externa ou atual, use os resultados de pesquisa fornecidos pelo backend e responda diretamente com as fontes.
+Nunca pergunte "quer que eu pesquise?", "deseja que eu consulte?" ou solicite autorização para pesquisar fatos públicos: a busca deve acontecer automaticamente no servidor.
+Quando não houver fontes verificáveis disponíveis, informe objetivamente a limitação sem afirmar que pesquisou nem inventar dados.
+Não exponha etapas internas de pesquisa na resposta final. Priorize resposta imediata e clara.
 `;
 
 const DEFAULT_PROVIDER_ORDER = [

@@ -149,8 +149,18 @@ try {
   assert.ok((await page.$eval(".jarvis-intel-status",el=>el.textContent)).includes("COLETA VERIFICADA"));
   assert.ok((await page.$eval(".jarvis-intel-topic",el=>el.textContent)).includes("Boletim confirmado do espelho"));
   fallbackOn=false;
-  await page.click(".jarvis-intel-controls button:first-child");
-  await page.waitForFunction(()=>document.querySelector(".jarvis-intel-message")?.textContent.includes("Última consulta preservada"),{timeout:6500});
+  // Wait for the previous asynchronous refresh to release its disabled button.
+  // Story count can update before refresh() reaches its finally block.
+  await page.waitForFunction(()=>!document.querySelector(".jarvis-intel-controls button:first-child")?.disabled,{timeout:6500});
+  const callsBeforeFailure=calls, fallbackBeforeFailure=fallbackCalls;
+  // The prior CSS transforms can move the button while Puppeteer clicks its
+  // old center. Dispatch a real DOM click to validate the refresh handler.
+  await page.$eval(".jarvis-intel-controls button:first-child",button=>button.click());
+  await page.waitForFunction(()=>window.ULTRON_INTELLIGENCE.state.loading===false,{timeout:6500});
+  assert.ok(calls>callsBeforeFailure,"The failed refresh must contact the backend");
+  assert.ok(fallbackCalls>fallbackBeforeFailure,"A backend error must attempt the fallback");
+  assert.ok((await page.$eval(".jarvis-intel-message",el=>el.textContent)).includes("Última consulta preservada"),
+    "The previous verified bulletin must remain visible after all sources fail");
   assert.equal(await page.evaluate(()=>window.ULTRON_INTELLIGENCE.state.totalStories),1,"Past verified content remains after all sources fail");
   console.log("AUTO BRIEFING BROWSER PASS: startup, Brazil/SC/world, 24h archive/wake delta, voice toggle, fallback and network resilience");
 } catch(error){

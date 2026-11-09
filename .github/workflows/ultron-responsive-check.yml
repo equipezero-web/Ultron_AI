@@ -1,0 +1,91 @@
+name: Ultron Multi-device UI Check
+
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'modules/ultron-adaptive-display.css'
+      - 'modules/ultron-tv-display.js'
+      - 'modules/ultron-neural-answer.js'
+      - 'modules/ultron-neural-answer.css'
+      - 'tests/neural-answer-smoke.mjs'
+      - 'modules/jarvis-earth.js'
+      - 'tests/neural-mobile-smoke.mjs'
+      - '.github/workflows/ultron-responsive-check.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'modules/ultron-adaptive-display.css'
+      - 'modules/ultron-tv-display.js'
+      - 'modules/ultron-neural-answer.js'
+      - 'modules/ultron-neural-answer.css'
+      - 'tests/neural-answer-smoke.mjs'
+      - 'modules/jarvis-earth.js'
+      - 'tests/neural-mobile-smoke.mjs'
+      - '.github/workflows/ultron-responsive-check.yml'
+  workflow_dispatch:
+
+jobs:
+  ui-multidevice:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate interface assets
+        run: |
+          node --check modules/ultron-tv-display.js
+          node --check modules/ultron-neural-answer.js
+          node --check script.js
+          node --check backend/web-research.js
+          node --check backend/providers.js
+          node --check modules/jarvis-earth.js
+          grep -Fq 'ultron-adaptive-display.css' index.html
+          grep -Fq 'ultron-tv-display.js' index.html
+          grep -Fq 'ultron-tv-display' modules/ultron-adaptive-display.css
+          grep -Fq 'max-width:820px' modules/ultron-adaptive-display.css
+      - name: Install headless browser
+        run: |
+          npm install --no-save --no-package-lock --ignore-scripts puppeteer-core@24.33.0
+          echo "CHROME_BIN=$(command -v google-chrome || command -v chromium || command -v chromium-browser)" >> "$GITHUB_ENV"
+      - name: Verify mobile ring and globe
+        run: |
+          python3 -m http.server 8766 --bind 127.0.0.1 >/tmp/ultron-responsive-http.log 2>&1 &
+          sleep 2
+          node tests/neural-mobile-smoke.mjs
+          node tests/neural-answer-smoke.mjs
+      - name: Verify TV and notebook presentation
+        run: |
+          node --input-type=module <<'NODE'
+          import puppeteer from 'puppeteer-core';
+          import assert from 'node:assert/strict';
+          const browser=await puppeteer.launch({
+            executablePath:process.env.CHROME_BIN||'/usr/bin/google-chrome',
+            headless:true,args:['--no-sandbox','--disable-dev-shm-usage','--enable-webgl','--enable-unsafe-swiftshader']
+          });
+          try {
+            for(const item of [
+              {width:1366,height:768,tv:false},
+              {width:1920,height:1080,tv:true}
+            ]){
+              const page=await browser.newPage();
+              await page.setViewport({width:item.width,height:item.height});
+              await page.goto('http://127.0.0.1:8766/'+(item.tv?'?display=tv':''),{waitUntil:'domcontentloaded'});
+              await page.waitForSelector('.jarvis-command-center-ui');
+              const state=await page.evaluate(()=>({
+                tv:document.body.classList.contains('ultron-tv-display'),
+                overflow:document.documentElement.scrollWidth-innerWidth,
+                visual:!!document.querySelector('.jarvis-cc-visual'),
+                commands:!!document.getElementById('command-input')
+              }));
+              assert.equal(state.tv,item.tv);
+              assert.ok(state.overflow<=3,'No horizontal overflow');
+              assert.ok(state.visual&&state.commands,'Original neural display and command remain mounted');
+              await page.close();
+            }
+            console.log('LAPTOP & TV PRESENTATION PASS');
+          } finally { await browser.close(); }
+          NODE
