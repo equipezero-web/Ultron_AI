@@ -104,7 +104,7 @@ try{
   assert.equal(initial.integrated,true,"News must be inside the original Neural Ring stage");
   assert.equal(initial.visual,"ring");
   assert.equal(initial.ring,true,"3D neural engine should remain animated and active");
-  assert.match(initial.heading, /(?:ULTRON|J\\.A\\.R\\.V\\.I\\.S) \/ INTELLIGENCE/);
+  assert.ok(initial.heading.includes(" / INTELLIGENCE") && (initial.heading.includes("ULTRON") || initial.heading.includes("J.A.R.V.I.S")));
   assert.equal(initial.title,"Brasil confirma novo relatório ambiental");
   assert.ok(initial.image.includes("/br-news.jpg"),"Main photo must be the publisher's verified image URL");
   assert.equal(initial.imageVisible,true,"Valid publisher image should be shown");
