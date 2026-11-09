@@ -4,53 +4,53 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-09T18:24:09.064Z",
+  "updatedAt": "2026-11-09T18:29:17.523Z",
   "oldestEventAt": "2026-11-09T13:49:00.000Z",
-  "windowStartAt": "2026-11-08T18:24:09.064Z",
+  "windowStartAt": "2026-11-08T18:29:17.523Z",
   "events": [
     {
       "id": "event-298aff64",
       "category": "brasil",
       "title": "Relator apresenta diretrizes da proposta de voto distrital misto",
       "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2026-11/relator-do-distrital-misto-propoe-voto-unico-para-distrital-e-lista",
-      "imageUrl": null,
+      "imageUrl": "https://imagens.ebc.com.br/Rr9-fzZyp4bq7v6ReSn4lU-UjNg=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/pzzb1951-2.jpg?itok=IHUPRKMV",
       "source": "Agência Brasil",
       "publishedAt": "2026-11-09T17:10:00.000Z",
       "firstSeenAt": "2026-11-09T18:24:09.064Z",
-      "lastSeenAt": "2026-11-09T18:24:09.064Z"
+      "lastSeenAt": "2026-11-09T18:29:17.523Z"
     },
     {
       "id": "event-41e86029",
       "category": "brasil",
       "title": "Na COP31, OMS defende sistemas de saúde resilientes ao clima",
       "url": "https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-11/na-cop31-oms-defende-sistemas-de-saude-resilientes-ao-clima",
-      "imageUrl": null,
+      "imageUrl": "https://imagens.ebc.com.br/d_3qhD5dx6wDqdrnsYtXdAiMHbI=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/07/27/toms3393.jpg?itok=L5JXMe-9",
       "source": "Agência Brasil",
       "publishedAt": "2026-11-09T16:14:00.000Z",
       "firstSeenAt": "2026-11-09T17:17:20.834Z",
-      "lastSeenAt": "2026-11-09T18:24:09.064Z"
+      "lastSeenAt": "2026-11-09T18:29:17.523Z"
     },
     {
       "id": "event-df6753b5",
       "category": "brasil",
       "title": "COP31: Brasil transmite presidência da COP à Turquia",
       "url": "https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-11/cop31-brasil-transmite-presidencia-da-cop-turquia",
-      "imageUrl": null,
+      "imageUrl": "https://imagens.ebc.com.br/di2axxKX3GYqKe7CZBjFnC2Tkbg=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/09/image-1200-359ea353d96c52dd54dc089a4914ad80.jpeg?itok=KZG29VN4",
       "source": "Agência Brasil",
       "publishedAt": "2026-11-09T16:06:00.000Z",
       "firstSeenAt": "2026-11-09T17:17:20.834Z",
-      "lastSeenAt": "2026-11-09T18:24:09.064Z"
+      "lastSeenAt": "2026-11-09T18:29:17.523Z"
     },
     {
       "id": "event-82bacebf",
       "category": "brasil",
       "title": "Confira o calendário de pagamento do IPVA de 2027 em São Paulo",
       "url": "https://agenciabrasil.ebc.com.br/geral/noticia/2026-11/confira-o-calendario-de-pagamento-do-ipva-de-2027-em-sao-paulo",
-      "imageUrl": null,
+      "imageUrl": "https://imagens.ebc.com.br/L6MviY9P1q7US9G2nliztuR5Q-A=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/08/05/_int1973.jpg?itok=B41iPzYK",
       "source": "Agência Brasil",
       "publishedAt": "2026-11-09T15:57:00.000Z",
       "firstSeenAt": "2026-11-09T17:17:20.834Z",
-      "lastSeenAt": "2026-11-09T18:24:09.064Z"
+      "lastSeenAt": "2026-11-09T18:29:17.523Z"
     },
     {
       "id": "event-307a9aed",
@@ -61,7 +61,7 @@
       "source": "Visor Notícias",
       "publishedAt": "2026-11-09T15:09:58.000Z",
       "firstSeenAt": "2026-11-09T17:17:20.834Z",
-      "lastSeenAt": "2026-11-09T18:24:09.064Z"
+      "lastSeenAt": "2026-11-09T18:29:17.523Z"
     },
     {
       "id": "event-e4a2beea",
@@ -79,11 +79,11 @@
       "category": "mundo",
       "title": "ONU diz que 2026 será um dos anos mais quentes já registrados",
       "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/onu-diz-que-2026-sera-um-dos-anos-mais-quentes-ja-registrados",
-      "imageUrl": null,
+      "imageUrl": "https://imagens.ebc.com.br/DRCBinTonsXqRzXXd1IeKqZ80Zc=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/08/30/pzzb5391.jpg?itok=yOyorZK1",
       "source": "Agência Brasil",
       "publishedAt": "2026-11-09T13:49:00.000Z",
       "firstSeenAt": "2026-11-09T17:17:20.834Z",
-      "lastSeenAt": "2026-11-09T18:24:09.064Z"
+      "lastSeenAt": "2026-11-09T18:29:17.523Z"
     }
   ],
   "checks": [
@@ -116,14 +116,29 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-09T18:29:17.523Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 6,
+      "newArticles": 0,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "mundo",
+        "europa"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
-  "checkCount": 2,
-  "lastSuccessfulAt": "2026-11-09T18:24:09.064Z",
+  "checkCount": 3,
+  "lastSuccessfulAt": "2026-11-09T18:29:17.523Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-09T18:24:09.064Z",
+      "checkedAt": "2026-11-09T18:29:17.523Z",
       "warnings": [
         {
           "id": "56356",
@@ -175,7 +190,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-09T18:24:09.064Z",
+      "checkedAt": "2026-11-09T18:29:17.523Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "8 October 2026",
