@@ -410,8 +410,10 @@ async function refresh({reason="manual",narrate=false}={}){
       log("Falha na atualização: "+short(error.message).slice(0,110));
       return null;
     } finally{
-      updateButton.disabled=false;
+      // Clear in-flight state before re-enabling the next manual refresh.
+      // Otherwise a fast second click can reuse the completed promise.
       pending=null;
+      updateButton.disabled=false;
     }
   })();
   return pending;
