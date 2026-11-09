@@ -98,6 +98,7 @@ export function shouldResearchBeforeAnswer(message) {
   const text = String(message || "").trim();
   if (!text) return { needed: false, reason: "empty", ttlMinutes: 0 };
 
+  if (VISUAL_REQUEST.test(text)) return { needed:true,reason:"visual-request",ttlMinutes:180 };
   if (SEARCH_TERMS.test(text)) return { needed: true, reason: "explicit-search", ttlMinutes: 180 };
   if (CURRENT_TERMS.test(text)) return { needed: true, reason: "freshness", ttlMinutes: 45 };
   // Do not web-search greetings, conversational replies, creative drafting, or device commands.
