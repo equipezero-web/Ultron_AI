@@ -86,6 +86,8 @@ try{
     waitUntil:"domcontentloaded",timeout:35000
   });
   await page.waitForFunction(()=>window.ULTRON_NEURAL_NEWS?.state?.count>=3,{timeout:18000});
+  assert.equal(await page.$eval("#jarvis-neural-news",el=>getComputedStyle(el).display),"none","Neural Ring starts without news overlay");
+  await page.evaluate(()=>window.ULTRON_NEURAL_NEWS.show());
   const initial=await page.evaluate(()=>({
     integrated:document.querySelector(".jarvis-cc-center")?.contains(document.querySelector("#jarvis-neural-news")),
     visual:document.querySelector(".jarvis-cc-visual").dataset.mode,
