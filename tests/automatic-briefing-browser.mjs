@@ -152,8 +152,22 @@ try {
   // Wait for the previous asynchronous refresh to release its disabled button.
   // Story count can update before refresh() reaches its finally block.
   await page.waitForFunction(()=>!document.querySelector(".jarvis-intel-controls button:first-child")?.disabled,{timeout:6500});
+  const callsBeforeFailure=calls, fallbackBeforeFailure=fallbackCalls;
   await page.click(".jarvis-intel-controls button:first-child");
-  await page.waitForFunction(()=>document.querySelector(".jarvis-intel-message")?.textContent.includes("Última consulta preservada"),{timeout:6500});
+  try{
+    await page.waitForFunction(()=>document.querySelector(".jarvis-intel-message")?.textContent.includes("Última consulta preservada"),{timeout:6500});
+  }catch(error){
+    console.error("BRIEFING FAILURE DIAGNOSTICS:",JSON.stringify({
+      callsBeforeFailure,calls,fallbackBeforeFailure,fallbackCalls,breakFetch,fallbackOn,
+      page:await page.evaluate(()=>({
+        message:document.querySelector(".jarvis-intel-message")?.textContent,
+        buttonDisabled:document.querySelector(".jarvis-intel-controls button:first-child")?.disabled,
+        state:window.ULTRON_INTELLIGENCE?.state,
+        recentLogs:[...document.querySelectorAll("#output-box p")].slice(-8).map(x=>x.textContent)
+      }))
+    }));
+    throw error;
+  }
   assert.equal(await page.evaluate(()=>window.ULTRON_INTELLIGENCE.state.totalStories),1,"Past verified content remains after all sources fail");
   console.log("AUTO BRIEFING BROWSER PASS: startup, Brazil/SC/world, 24h archive/wake delta, voice toggle, fallback and network resilience");
 } catch(error){
