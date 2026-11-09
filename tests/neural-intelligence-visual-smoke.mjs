@@ -153,7 +153,7 @@ try{
   assert.ok(map.news>=245);
 
   await page.setViewport({width:390,height:844,isMobile:true,hasTouch:true,deviceScaleFactor:1});
-  await page.evaluate(()=>window.ULTRON_EARTH?.close());
+  await page.evaluate(()=>{window.ULTRON_EARTH?.close();window.ULTRON_NEURAL_NEWS.show();});
   const mobile=await page.evaluate(()=>{
     const panel=document.querySelector("#jarvis-neural-news");
     const rect=panel.getBoundingClientRect();
