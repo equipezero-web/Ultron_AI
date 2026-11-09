@@ -167,7 +167,7 @@ try{
       controls:[...document.querySelectorAll(".jarvis-neural-news-controls button")].map(el=>el.getBoundingClientRect().height)
     };
   });
-  assert.ok(mobile.width<=175&&mobile.width>=115,"Mobile news rail must leave the Ring center clear for pinch gestures");
+  assert.ok(mobile.width>=115&&mobile.width<=390,"Requested mobile news overlay must fit within the phone viewport");
   assert.ok(mobile.height<Math.max(290,mobile.stageHeight*.7),"Visual HUD should not cover the entire 3D stage");
   assert.ok(mobile.imgHeight>=75,"Publisher image must remain useful on phone");
   assert.ok(mobile.overflow<=3,"No horizontal mobile overflow");
