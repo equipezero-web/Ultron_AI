@@ -6,6 +6,9 @@ on:
       - 'index.html'
       - 'modules/ultron-adaptive-display.css'
       - 'modules/ultron-tv-display.js'
+      - 'modules/ultron-neural-answer.js'
+      - 'modules/ultron-neural-answer.css'
+      - 'tests/neural-answer-smoke.mjs'
       - 'modules/jarvis-earth.js'
       - 'tests/neural-mobile-smoke.mjs'
       - '.github/workflows/ultron-responsive-check.yml'
@@ -15,6 +18,9 @@ on:
       - 'index.html'
       - 'modules/ultron-adaptive-display.css'
       - 'modules/ultron-tv-display.js'
+      - 'modules/ultron-neural-answer.js'
+      - 'modules/ultron-neural-answer.css'
+      - 'tests/neural-answer-smoke.mjs'
       - 'modules/jarvis-earth.js'
       - 'tests/neural-mobile-smoke.mjs'
       - '.github/workflows/ultron-responsive-check.yml'
@@ -32,6 +38,10 @@ jobs:
       - name: Validate interface assets
         run: |
           node --check modules/ultron-tv-display.js
+          node --check modules/ultron-neural-answer.js
+          node --check script.js
+          node --check backend/web-research.js
+          node --check backend/providers.js
           node --check modules/jarvis-earth.js
           grep -Fq 'ultron-adaptive-display.css' index.html
           grep -Fq 'ultron-tv-display.js' index.html
@@ -46,6 +56,7 @@ jobs:
           python3 -m http.server 8766 --bind 127.0.0.1 >/tmp/ultron-responsive-http.log 2>&1 &
           sleep 2
           node tests/neural-mobile-smoke.mjs
+          node tests/neural-answer-smoke.mjs
       - name: Verify TV and notebook presentation
         run: |
           node --input-type=module <<'NODE'
