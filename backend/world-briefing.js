@@ -96,7 +96,10 @@ function htmlText(html) {
   return String(html).replace(/<script[\s\S]*?<\/script>/gi," ")
     .replace(/<style[\s\S]*?<\/style>/gi," ")
     .replace(/<[^>]+>/g," ")
-    .replace(/&nbsp;/g," ").replace(/&amp;/g,"&").replace(/&#39;/g,"'")
+    .replace(/&nbsp;|&#160;/gi," ")
+    .replace(/&ntilde;|&#241;|&#x[fF]1;/gi,"ñ")
+    .replace(/&Ntilde;|&#209;|&#x[dD]1;/g,"Ñ")
+    .replace(/&amp;/g,"&").replace(/&#39;/g,"'")
     .replace(/\s+/g," ").trim();
 }
 export function parseEnsoBulletin(html) {

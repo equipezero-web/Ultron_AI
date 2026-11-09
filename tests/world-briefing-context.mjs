@@ -18,6 +18,8 @@ assert.ok(parsed.some(x=>x.title==="Onda de calor"));
 assert.equal(normalizeWarnings({status:"bad"},now).length,0);
 const ens=parseEnsoBulletin("<html><body>issued by CLIMATE PREDICTION CENTER/NCEP/NWS 8 October 2026 ENSO Alert System Status: El Niño Advisory Synopsis: El Niño continues to strengthen, with a strong-to-very strong El Niño likely through January-March 2027. Most Niño indices increased.</body></html>");
 assert.equal(ens.status,"El Niño Advisory");
+const encoded=parseEnsoBulletin("<div>ENSO Alert System Status: El Ni&ntilde;o Advisory</div>");
+assert.equal(encoded.status,"El Niño Advisory","NOAA HTML entities must be decoded before reading ENSO status");
 assert.equal(ens.issued,"8 October 2026");
 assert.ok(ens.synopsis?.includes("El Niño continues"));
 assert.equal(parseEnsoBulletin("<html>NO STATUS OR VERIFIED CONTENT</html>"),null);
