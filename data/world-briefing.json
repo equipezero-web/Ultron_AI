@@ -1,10 +1,151 @@
 {
-  "ok": false,
+  "ok": true,
   "version": "1.0",
-  "fetchedAt": null,
-  "delivery": "not-yet-collected",
-  "topics": [],
-  "hasNews": false,
-  "partial": true,
-  "message": "Aguardando primeira coleta automática confirmada."
+  "fetchedAt": "2026-11-09T15:59:58.161Z",
+  "priority": [
+    "Brasil",
+    "Santa Catarina",
+    "Clima e El Niño",
+    "Mundo"
+  ],
+  "refreshAfterMinutes": 10,
+  "isLive": true,
+  "topics": [
+    {
+      "id": "brasil",
+      "label": "Brasil",
+      "articles": [
+        {
+          "title": "Bora Brasil: Assista às principais notícias e análises do dia - 09-11-2026",
+          "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxOb3psZExmWnVVQWlZVzM0OTBSTDNnVThIbmg5OWdqY1dGQTJ4VXhFYnpFSXZhTFBVc3BoSDMyczVNTlhPOW4xZU9leFktN0h1SFNWemtReEtEMllfZkFMQTRnSW53OV9uQ0RJZWFaT0NDMGg0cjdxZ0tHWVB1RWI2STFmbmh6Vm9IWG4yMmVzaHRJWWxSQ0ZJNWVuQ2daWmpySVpGX0dNSVNlbllkRmhjUA?oc=5",
+          "publishedAt": "2026-11-09T03:19:29.000Z",
+          "source": "Band"
+        },
+        {
+          "title": "Jornal da Band ao vivo: Assista às principais notícias do Brasil e do mundo - 09-11-2026",
+          "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxNbDBaQ2J1TUc1c0hTOGJKNVV1bHNNUE94ZHJZVGI1UE5fQ0hxb1N5eWQ5ZVltbVQ0eWxuMXBJTGs2aWwzMjZrdGloQnJYZzBHMFRxc0t2STdBYThodVEyM01RLVNCSk5vMF85T0FjejYxYmtuZXo2VERZemFrVTgyWWRybVVGSWp2SjBxSlIzZHpNc3QyRWpQczNvQzB6Z2o5MXVNdzR6OFBsNGZwX3BoQ1lubVJsX0xkVkt2MzR0dmlLMjQ?oc=5",
+          "publishedAt": "2026-11-09T03:03:00.000Z",
+          "source": "Band"
+        }
+      ],
+      "checked": true,
+      "error": null
+    },
+    {
+      "id": "santa-catarina",
+      "label": "Santa Catarina",
+      "articles": [
+        {
+          "title": "Temporais deixam 353 pessoas fora de casa e 11 cidades em emergência em SC",
+          "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxOclp6NTJYUHQxVkYxQlFXWXVFQ1R2cGtKS0ZVQUZhLW45T002LURSTXNNTnhxdWlKRG1DNTlkU1F6SFVsSlhlS0ZnUmlGOWJUbzhuNzlNQU1mY0RCVXozQmlfaVV3N0taRXpTeGRvdnJsZHYwdHZicmxpN1JDd2k4dFRSdzlzajd2WkdGaS1SaXBpSUVuVTF5WUlpanBEVGRPWHpWclNpNA?oc=5",
+          "publishedAt": "2026-11-09T15:09:58.000Z",
+          "source": "Visor Notícias"
+        },
+        {
+          "title": "Defesa Civil alerta para temporais a partir desta sexta-feira e queda de temperatura em SC",
+          "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxOLTVtclVpVFdmNHlFZVdJNHhmTDZYSFVWTXI1clIyeHl6OXoyV0VpdkR1SEI4NDhlWm5KSmZaLWJaNzBCNk02aGxjZnlNLTNKREl2dGU1LVI2cmlXQUJCY2ctd240ektkTEhiS2JnUUFMRzJJWGZFenVGM3VoamtXclpaVEFyTlgtWDFjSUs3MlhtV0dINGFpWDEzTmtoeWVlMVlXRXYzUHJ2NlpMdkIycE9CUGQzM1YzNVVLWjBaSDFzRWdNaXN3MnVn?oc=5",
+          "publishedAt": "2026-11-06T19:28:18.000Z",
+          "source": "AJ Notícias"
+        },
+        {
+          "title": "Cidades atingidas por tornados em SC entram em alerta vermelho para novas tempestades, diz Defesa Civil",
+          "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxOTGJhbWhiZDUwLXhQelhSQzhtUndJdW9Jc3k1dU1DWGFwNkhDakpSQWkzMTV5cE5mWkZRYlA3VGkxSUk3U1RTejZudlRTWHVmNHZLLUM5MmFabFdqZFE4a2F5bDE2czZ4S2Nud2M1U3J2MlFRQVBlcHViZ1BhR3ZIYW1vQ2JsZDMwYTZmTkd5TWc0Um1BemgzSVlJWV8tLTBDeWtIVHVUckRLVkRZYkVnOTkyd0hYVXBfdzNFOG9iUG02dlNObHdrZW16djF1NHY1bFpJ0gHiAUFVX3lxTE1jTDBMZU56TGRnZkQ3TzFvWUFQeV9lRTZvUHF3Xzd5Rld2dkh4N1RfdmFpSzVaZkpKYndMSi1mZWNHQlktb3pISFI2Q2NVZ0wyR0VnRU9BNTFmd0NfQVRhTFR4bkNMcldhM3gwSjA3dVBsNG1YemEtcU9UNWZ5ZUdTMk5Od0lIYktXLXJxYVI3VjhLRC14ZkpfQmdZQVlvUVNCakl3cFowbHhKTXdqNWNMMUVZV2VnNnhFYTA3WU9PSUFCSUkxczlpU0stTnh1dDFCMm8zXzRHV19XZjVqc1NGOFE?oc=5",
+          "publishedAt": "2026-11-06T19:15:41.000Z",
+          "source": "G1"
+        }
+      ],
+      "checked": true,
+      "error": null
+    },
+    {
+      "id": "clima",
+      "label": "Clima e El Niño",
+      "articles": [],
+      "checked": true,
+      "error": null
+    },
+    {
+      "id": "mundo",
+      "label": "Mundo",
+      "articles": [],
+      "checked": true,
+      "error": null
+    }
+  ],
+  "alerts": {
+    "checked": true,
+    "warnings": [
+      {
+        "id": "56356",
+        "title": "Acumulado de Chuva",
+        "severity": "Perigo Potencial",
+        "phase": "previsto",
+        "regions": [],
+        "startsAt": "2026-11-10T00:00:00.000Z",
+        "endsAt": "2026-11-13T00:00:00.000Z",
+        "source": "INMET",
+        "url": "https://avisos.inmet.gov.br/"
+      },
+      {
+        "id": "56360",
+        "title": "Chuvas Intensas",
+        "severity": "Perigo Potencial",
+        "phase": "previsto",
+        "regions": [],
+        "startsAt": "2026-11-10T00:00:00.000Z",
+        "endsAt": "2026-11-10T00:00:00.000Z",
+        "source": "INMET",
+        "url": "https://avisos.inmet.gov.br/"
+      },
+      {
+        "id": "56361",
+        "title": "Tempestade",
+        "severity": "Perigo Potencial",
+        "phase": "previsto",
+        "regions": [],
+        "startsAt": "2026-11-10T00:00:00.000Z",
+        "endsAt": "2026-11-10T00:00:00.000Z",
+        "source": "INMET",
+        "url": "https://avisos.inmet.gov.br/"
+      },
+      {
+        "id": "56362",
+        "title": "Tempestade",
+        "severity": "Perigo Potencial",
+        "phase": "previsto",
+        "regions": [
+          "DO"
+        ],
+        "startsAt": "2026-11-11T00:00:00.000Z",
+        "endsAt": "2026-11-11T00:00:00.000Z",
+        "source": "INMET",
+        "url": "https://avisos.inmet.gov.br/"
+      }
+    ],
+    "error": null
+  },
+  "enso": {
+    "checked": true,
+    "bulletin": null,
+    "error": null
+  },
+  "officialLinks": [
+    {
+      "label": "Avisos INMET",
+      "url": "https://avisos.inmet.gov.br/"
+    },
+    {
+      "label": "Defesa Civil SC",
+      "url": "https://www.defesacivil.sc.gov.br/alerta/"
+    },
+    {
+      "label": "NOAA / ENSO",
+      "url": "https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.html"
+    }
+  ],
+  "hasNews": true,
+  "partial": false,
+  "delivery": "github-scheduled-snapshot",
+  "live": false,
+  "refreshedBy": "scheduled-github-action"
 }
