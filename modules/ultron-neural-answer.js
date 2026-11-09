@@ -41,15 +41,24 @@ if(center){
     text.textContent=String(value||'').slice(0,6500);
     media.replaceChildren();sources.replaceChildren();
     if(pending)return;
-    const images=Array.isArray(visual?.images)?visual.images:[];
-    for(const item of images.slice(0,4)){
-      const src=url(typeof item==='string'?item:item?.src||item?.url);
-      if(!src)continue;
+    const images=[
+      ...(Array.isArray(visual?.images)?visual.images:[]),
+      ...(Array.isArray(visual?.cards)?visual.cards:[]).map(card=>({
+        src:card?.image||card?.imageUrl||card?.thumbnail,
+        alt:card?.title||'Imagem da fonte'
+      }))
+    ];
+    const seenImages=new Set();
+    for(const item of images){
+      const src=url(typeof item==='string'?item:item?.src||item?.image||item?.imageUrl);
+      if(!src||seenImages.has(src))continue;
+      seenImages.add(src);
       const img=document.createElement('img');
       img.loading='lazy';img.decoding='async';
       img.src=src;img.alt=String(item?.alt||item?.title||'Imagem vinculada à fonte');
       img.onerror=()=>img.remove();
       media.append(img);
+      if(seenImages.size>=4)break;
     }
     const cards=[...(Array.isArray(visual?.cards)?visual.cards:[]),...(Array.isArray(webResearch?.sources)?webResearch.sources:[])];
     const seen=new Set();
@@ -77,12 +86,31 @@ if(center){
   });
   // Voice text appears immediately even when audio playback is unavailable.
   window.addEventListener('ultron:speech-start',event=>{
-    // An automatic morning briefing may be spoken on wake; it must not
-    // cover the initial ring. Interactive voice responses use this surface.
-    if(event.detail?.source==='intelligence-wake')return;
     const spoken=String(event.detail?.text||'').trim();
-    if(spoken && (box.hidden || text.textContent!==spoken))
-      present(spoken);
+    if(!spoken)return;
+    // Wake is a user activation, not a page-load event. Show its narration
+    // over the 3D stage; never create a second response at the page bottom.
+    const wake=event.detail?.source==='intelligence-wake';
+    if(wake){
+      const payload=window.ULTRON_INTELLIGENCE?.visualData||{};
+      const stories=(payload?.briefing?.topics||[]).flatMap(group=>(group.articles||[]).map(article=>({
+        title:article.title,source:article.source,url:article.url,
+        image:article.imageUrl||article.image||null
+      }))).slice(0,4);
+      present(spoken,{visual:{mode:'news',cards:stories}});
+      return;
+    }
+    if(box.hidden || text.textContent!==spoken)present(spoken);
+  });
+  window.addEventListener('ultron:intelligence-visual-update',event=>{
+    // Background refresh updates stored news, but should not interrupt the
+    // Ring. The wake briefing appears in the Ring on explicit activation.
+    if(!event.detail?.waking)return;
+    const stories=(event.detail?.briefing?.topics||[]).flatMap(group=>(group.articles||[]).map(article=>({
+      title:article.title,source:article.source,url:article.url,
+      image:article.imageUrl||article.image||null
+    }))).slice(0,4);
+    if(stories.length)present(stories[0].title,{visual:{mode:'news',cards:stories}});
   });
   window.ULTRON_NEURAL_ANSWER={show:present,clear,get visible(){return !box.hidden;}};
 }

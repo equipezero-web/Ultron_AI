@@ -42,6 +42,17 @@ try{
   const ringAfterScroll=await wheelOver("#jarvis-cc-canvas",400);
   const ringAfter=await page.evaluate(()=>window.ULTRON_NEURAL_RING_3D.state.zoom);
   assert.ok(ringAfter<ringBefore-.08,"Wheel over Neural Ring must zoom the ring geometry");
+  if(Math.abs(ringAfterScroll-ringScroll)>2){
+    const debug=await page.evaluate(()=>{
+      const el=document.querySelector('#jarvis-cc-canvas'),rect=el.getBoundingClientRect();
+      const target=document.elementFromPoint(rect.left+rect.width/2,rect.top+rect.height/2);
+      return {scrollY:scrollY,scrollHeight:document.documentElement.scrollHeight,
+        viewport:innerHeight,canvas:rect.toJSON(),target:target?.outerHTML?.slice(0,250),
+        centerHeight:document.querySelector('.jarvis-cc-center')?.getBoundingClientRect().height,
+        panelHidden:document.querySelector('.ultron-neural-answer')?.hidden};
+    });
+    console.log('WHEEL LOCK DIAGNOSTICS',JSON.stringify({ringScroll,ringAfterScroll,ringBefore,ringAfter,debug}));
+  }
   assert.ok(Math.abs(ringAfterScroll-ringScroll)<=2,
     "Wheel over Neural Ring must NOT scroll the document");
   const stage=await page.$eval(".jarvis-cc-center",el=>{

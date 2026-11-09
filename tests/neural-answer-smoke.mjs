@@ -35,13 +35,43 @@ try {
       text:document.querySelector('.ultron-neural-answer-text').textContent,
       image:document.querySelectorAll('.ultron-neural-answer-media img').length,
       source:document.querySelector('.ultron-neural-answer-sources a')?.href,
-      overflow:document.documentElement.scrollWidth-innerWidth
+      overflow:document.documentElement.scrollWidth-innerWidth,
+      anchored:(()=>{
+        const panel=document.querySelector('.ultron-neural-answer');
+        const ring=document.querySelector('.jarvis-cc-center');
+        const p=panel.getBoundingClientRect(),c=ring.getBoundingClientRect();
+        return {
+          inside:panel.parentElement===ring,
+          position:getComputedStyle(panel).position,
+          centerTop:c.top,panelTop:p.top,
+          panelBottom:p.bottom,centerBottom:c.bottom,
+          horizontal:p.left>=c.left-3&&p.right<=c.right+3,
+          vertical:p.top>=c.top-3&&p.bottom<=c.bottom+3
+        };
+      })()
     }));
     assert.equal(answered.hidden,false);
     assert.equal(answered.text,'Resposta confirmada');
     assert.equal(answered.image,1);
+    assert.equal(answered.anchored.inside,true,'Answers must belong to 3D neural stage');
+    assert.equal(answered.anchored.position,'absolute','Never flow to the page bottom');
+    assert.equal(answered.anchored.horizontal,true,JSON.stringify(answered.anchored));
+    assert.equal(answered.anchored.vertical,true,JSON.stringify(answered.anchored));
     assert.ok(answered.source.includes('example.org/report'));
     assert.ok(answered.overflow<=3,'Response must not overflow viewport');
+    const newsPicture=await page.evaluate(()=>{
+      window.dispatchEvent(new CustomEvent('ultron:intelligence-visual-update',{
+        detail:{waking:true,briefing:{topics:[{id:'brasil',articles:[{
+          title:'Boletim verificado',source:'Agência pública',
+          url:'https://example.org/news',imageUrl:'https://example.org/news.jpg'
+        }]}]}}
+      }));
+      return document.querySelector('.ultron-neural-answer-media img')?.getAttribute('src');
+    });
+    assert.equal(await page.$eval('.ultron-neural-answer-text',el=>el.textContent),'Boletim verificado','Wake news title must appear over ring');
+    assert.equal(newsPicture,'https://example.org/news.jpg','Wake news must mount publisher image inside ring');
+    await page.evaluate(()=>window.dispatchEvent(new CustomEvent('ultron:speech-start',{detail:{source:'intelligence-wake',text:'Resumo de notícias falado'}})));
+    assert.equal(await page.$eval('.ultron-neural-answer-text',el=>el.textContent),'Resumo de notícias falado','Voice text must appear within ring');
     await page.click('.ultron-neural-answer-close');
     assert.equal(await page.$eval('.ultron-neural-answer',el=>el.hidden),true);
     await page.close();

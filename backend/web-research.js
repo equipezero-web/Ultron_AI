@@ -1,5 +1,6 @@
 const SERPER_ENDPOINT = "https://google.serper.dev/search";
 const SEARCH_TIMEOUT_MS = 3200;
+const VISUAL_REQUEST=/\b(imagem|imagens|foto|fotos|fotografia|fotografias|mostre uma|mostre imagens|quero ver|exiba|visualize|ilustre|picture|photos)\b/i;
 
 const CURRENT_TERMS = /\b(hoje|agora|atual|atuais|recente|recentes|ultimo|último|ultimos|últimos|latest|2026|preco|preço|cotacao|cotação|resultado|placar|eleicao|eleição|presidente|ceo|versao|versão|lancamento|lançamento)\b/i;
 const SEARCH_TERMS = /\b(pesquise|pesquisar|procure|buscar|busque|google|internet|web|fontes?|confirme|verifique|investigue)\b/i;
@@ -97,6 +98,7 @@ export function shouldResearchBeforeAnswer(message) {
   const text = String(message || "").trim();
   if (!text) return { needed: false, reason: "empty", ttlMinutes: 0 };
 
+  if (VISUAL_REQUEST.test(text)) return { needed:true,reason:"visual-request",ttlMinutes:180 };
   if (SEARCH_TERMS.test(text)) return { needed: true, reason: "explicit-search", ttlMinutes: 180 };
   if (CURRENT_TERMS.test(text)) return { needed: true, reason: "freshness", ttlMinutes: 45 };
   // Do not web-search greetings, conversational replies, creative drafting, or device commands.
@@ -193,12 +195,17 @@ export async function searchGoogle(env, query, { limit = 6 } = {}) {
   }
 
   try {
+    const headers={ "X-API-KEY":apiKey,"Content-Type":"application/json" };
+    // Image lookup is opt-in by meaning and runs alongside the regular
+    // search; never block ordinary questions on an optional picture service.
+    const imageLookup=VISUAL_REQUEST.test(q)
+      ? fetchWithTimeout("https://google.serper.dev/images",{
+          method:"POST",headers,
+          body:JSON.stringify({q,gl:"br",hl:"pt-br",num:5})
+        }).then(async response=>response.ok?response.json():null).catch(()=>null)
+      : Promise.resolve(null);
     const response = await fetchWithTimeout(SERPER_ENDPOINT, {
-      method: "POST",
-      headers: {
-        "X-API-KEY": apiKey,
-        "Content-Type": "application/json"
-      },
+      method: "POST",headers,
       body: JSON.stringify({
         q,
         gl: "br",
@@ -217,6 +224,15 @@ export async function searchGoogle(env, query, { limit = 6 } = {}) {
     const organic = Array.isArray(data?.organic) ? data.organic : [];
     const normalized = organic.map(normalizeResult).filter(Boolean);
     const results = dedupeAndRank(normalized, Math.max(3, Math.min(8, Number(limit) || 6)));
+    const imageData=await imageLookup;
+    const images=(Array.isArray(imageData?.images)?imageData.images:[])
+      .map(item=>({
+        src:safeUrl(item?.imageUrl||item?.thumbnailUrl),
+        alt:clean(item?.title||q,160),
+        sourceUrl:safeUrl(item?.link)
+      }))
+      .filter(item=>item.src&&item.sourceUrl)
+      .slice(0,4);
     const extras = {
       answerBox: answerBoxText(data),
       knowledgeGraph: knowledgeGraphText(data)
@@ -231,6 +247,7 @@ export async function searchGoogle(env, query, { limit = 6 } = {}) {
       providerLabel: "Google Search via Serper",
       query: q,
       results,
+      images,
       contextText: buildGoogleContext(q, results, extras),
       extras,
       quality: {
@@ -260,11 +277,12 @@ export async function searchGoogle(env, query, { limit = 6 } = {}) {
 
 export function researchVisualContext(research) {
   const results = Array.isArray(research?.results) ? research.results : [];
-  if (!results.length) return null;
+  const images=Array.isArray(research?.images)?research.images:[];
+  if (!results.length && !images.length) return null;
   return {
     mode: "web-research",
     label: "GOOGLE RESEARCH",
-    images: [],
+    images: images.map(item=>({src:item.src,alt:item.alt})),
     cards: results.slice(0, 4).map((item) => ({
       title: item.title,
       source: item.source,
