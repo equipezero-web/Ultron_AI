@@ -9,6 +9,9 @@ const LONG_MAX_AGE = 7 * 24 * 60 * 60 * 1000;
 const MAX_BRIEFING_WAIT_MS = 11200;
 const OFFICIAL_INMET = "https://apiprevmet3.inmet.gov.br/avisos/ativos";
 const OFFICIAL_ENSO = "https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.html";
+const NOAA_STATUS = "https://www.weather.gov/twc/enso";
+const BRAZIL_RSS = "https://agenciabrasil.ebc.com.br/rss/ultimasnoticias/feed.xml";
+const WORLD_RSS = "https://agenciabrasil.ebc.com.br/rss/internacional/feed.xml";
 const SC_ALERTS = "https://www.defesacivil.sc.gov.br/alerta/";
 const topics = [
   { id:"brasil", label:"Brasil", q:"notícias hoje Brasil principais acontecimentos", count:4, maxAge:NOW_MAX_AGE },
@@ -98,12 +101,12 @@ function htmlText(html) {
 }
 export function parseEnsoBulletin(html) {
   const cleanText=htmlText(html);
-  const status=cleanText.match(/ENSO Alert System Status:\s*(El Niño Advisory|La Niña Advisory|El Niño Watch|La Niña Watch|Not Active)/i)?.[1];
+  const status=cleanText.match(/ENSO\s+Alert\s+System\s+Status\s*[:：-]?\s*(El Ni(?:ñ|n|Ã±)o Advisory|La Ni(?:ñ|n|Ã±)a Advisory|El Ni(?:ñ|n|Ã±)o Watch|La Ni(?:ñ|n|Ã±)a Watch|Not Active)/i)?.[1];
   const issued=cleanText.match(/(?:CLIMATE PREDICTION CENTER\/NCEP\/NWS)\s+(\d{1,2}\s+[A-Za-z]+\s+\d{4})/i)?.[1]||null;
   const synopsis=cleanText.match(/Synopsis:\s*([\s\S]{15,400}?)(?:\s+El Niño strengthened|\s+Most Niño indices|\s+The equatorial|\s+Enhanced convection|$)/i)?.[1]||null;
   if(!status)return null;
   return {
-    status:bounded(status,45),issued:issued?bounded(issued,35):null,
+    status:bounded(status,45).replace(/NiÃ±/g,"Niñ"),issued:issued?bounded(issued,35):null,
     synopsis:synopsis?bounded(synopsis,250):null,
     source:"NOAA / Climate Prediction Center",url:OFFICIAL_ENSO,
     // This is a periodic climate bulletin, NOT an emergency alert.
@@ -122,17 +125,41 @@ async function fetchOfficial(url,{asJson=false,timeout=4900}={}){
     return asJson?response.json():response.text();
   }finally{clearTimeout(timer);}
 }
+function rssTag(xml,tag){
+  const match=String(xml).match(new RegExp("<"+tag+"(?:\\s[^>]*)?>([\\s\\S]*?)<\\/"+tag+">","i"));
+  if(!match)return "";
+  return String(match[1]).replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g,"$1")
+    .replace(/&amp;/g,"&").replace(/&quot;/g,'"').replace(/&apos;|&#39;/g,"'")
+    .replace(/&lt;/g,"<").replace(/&gt;/g,">")
+    .replace(/<[^>]*>/g," ").replace(/\s+/g," ").trim();
+}
+async function fetchAgencyRss(url){
+  const xml=await fetchOfficial(url,{timeout:3700});
+  return [...xml.matchAll(/<item\b[^>]*>([\s\S]*?)<\/item>/gi)].slice(0,22)
+    .map(match=>{
+      const block=match[1];
+      return {title:rssTag(block,"title"),url:rssTag(block,"link"),
+        publishedAt:rssTag(block,"pubDate"),source:"Agência Brasil"};
+    }).filter(item=>Boolean(item.title&&item.url&&item.publishedAt));
+}
+
 const topicLoad=async(top,now)=>{
-  try {
-    const state=await withDeadline(loadLiveNewsContext(top.q,{limit:Math.max(7,top.count*2)}),9200);
-    return {
-      id:top.id,label:top.label,
-      articles:uniqueStories(state?.articles,now,top.maxAge,top.count),
-      checked:true,error:state?.error?bounded(state.error,120):null
-    };
-  } catch(error) {
-    return {id:top.id,label:top.label,articles:[],checked:false,error:bounded(error?.message,120)};
-  }
+  const rss=top.id==="brasil"?BRAZIL_RSS:top.id==="mundo"?WORLD_RSS:null;
+  const results=await Promise.allSettled([
+    withDeadline(loadLiveNewsContext(top.q,{limit:Math.max(7,top.count*2)}),9000),
+    rss?fetchAgencyRss(rss):Promise.resolve([])
+  ]);
+  const articles=[
+    ...(results[0].status==="fulfilled"?results[0].value?.articles||[]:[]),
+    ...(results[1].status==="fulfilled"?results[1].value||[]:[])
+  ];
+  const errors=results.filter(r=>r.status==="rejected")
+    .map(r=>bounded(r.reason?.message,70));
+  return {
+    id:top.id,label:top.label,articles:uniqueStories(articles,now,top.maxAge,top.count),
+    checked:results.some(r=>r.status==="fulfilled"),
+    error:errors.length?errors.join("; "):null
+  };
 };
 export async function createWorldBriefing({now=Date.now()}={}) {
   const [topicResults,alertResult,ensoResult]=await Promise.all([
@@ -140,8 +167,15 @@ export async function createWorldBriefing({now=Date.now()}={}) {
     withDeadline(fetchOfficial(OFFICIAL_INMET,{asJson:true}),6000)
       .then(data=>({checked:true,warnings:normalizeWarnings(data,now),error:null}))
       .catch(error=>({checked:false,warnings:[],error:bounded(error?.message,120)})),
-    withDeadline(fetchOfficial(OFFICIAL_ENSO),6000)
-      .then(html=>({checked:true,bulletin:parseEnsoBulletin(html),error:null}))
+    withDeadline((async()=>{
+      let primary=null;
+      try{primary=parseEnsoBulletin(await fetchOfficial(OFFICIAL_ENSO,{timeout:4000}));}
+      catch{}
+      if(primary)return primary;
+      const secondary=parseEnsoBulletin(await fetchOfficial(NOAA_STATUS,{timeout:3700}));
+      return secondary?{...secondary,url:NOAA_STATUS}:null;
+    })(),8000)
+      .then(bulletin=>({checked:Boolean(bulletin),bulletin,error:bulletin?null:"Status ENSO não localizado no boletim"}))
       .catch(error=>({checked:false,bulletin:null,error:bounded(error?.message,120)}))
   ]);
   const result={

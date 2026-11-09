@@ -30,7 +30,16 @@ globalThis.fetch=async (url)=>{
     return {ok:true,json:async()=>({hoje:[warning],futuro:[]})};
   }
   if(address.includes("enso_advisory")){
-    return {ok:true,text:async()=>"<html>issued by CLIMATE PREDICTION CENTER/NCEP/NWS 8 October 2026 ENSO Alert System Status: El Niño Advisory Synopsis: El Niño is strengthening. Most Niño indices increased.</html>"};
+    return {ok:true,text:async()=>"<html>NOAA Bulletin temporarily unavailable</html>"};
+  }
+  if(address.includes("weather.gov/twc/enso")){
+    return {ok:true,text:async()=>"<html>ENSO Alert System Status: El Niño Advisory Synopsis: El Niño is strengthening. Most Niño indices increased.</html>"};
+  }
+  if(address.includes("agenciabrasil.ebc.com.br/rss/")){
+    const item="<item><title><![CDATA[Atualização internacional da Agência Brasil]]></title>"+
+      "<link>https://agenciabrasil.ebc.com.br/internacional/noticia-confirmada</link>"+
+      "<pubDate>"+new Date(now-540000).toUTCString()+"</pubDate></item>";
+    return {ok:true,text:async()=>"<rss><channel>"+item+"</channel></rss>"};
   }
   if(address.includes("gdeltproject.org")){
     const title="Notícia verificada recente de teste";
@@ -58,6 +67,8 @@ try {
   assert.equal(briefing.alerts.warnings[0].title,"Tempestades");
   assert.equal(briefing.enso.bulletin.status,"El Niño Advisory");
   assert.equal(briefing.enso.bulletin.source,"NOAA / Climate Prediction Center");
+  assert.ok(briefing.topics.find(x=>x.id==="mundo").articles.some(x=>x.source==="Agência Brasil"),"International RSS must be accepted when recent");
+  assert.ok(briefing.enso.bulletin.url.includes("weather.gov/twc/enso"),"NOAA secondary official source must be used when primary cannot be parsed");
   assert.ok(requests.some(q=>q.includes("news.google.com/rss/search")));
   assert.ok(requests.some(q=>q.includes("apiprevmet3.inmet.gov.br")));
   assert.ok(requests.some(q=>q.includes("enso_advisory")));
