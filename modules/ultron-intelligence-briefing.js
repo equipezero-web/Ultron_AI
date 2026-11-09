@@ -88,15 +88,24 @@ function speak(text,{automatic=false}={}){
     window.speechSynthesis.cancel();
     const utterance=new SpeechSynthesisUtterance(text);
     utterance.lang="pt-BR";utterance.rate=1;utterance.pitch=.96;
+    // Speech callbacks may arrive after a newer news refresh has started or
+    // failed; they must never hide the more important data-fetch status.
+    const preserveNewsStatus=()=>/^(Buscando notícias|Última consulta preservada)/.test(state.textContent||"");
     utterance.onstart=()=>{
-      state.textContent="Lendo relatório de inteligência em voz alta...";
+      if(!preserveNewsStatus())state.textContent="Lendo relatório de inteligência em voz alta...";
       window.dispatchEvent(new CustomEvent("ultron:speech-start",{detail:{source:"intelligence-wake",text}}));
     };
     const speechEnded=()=>window.dispatchEvent(
       new CustomEvent("ultron:speech-end",{detail:{source:"intelligence-wake",text}})
     );
-    utterance.onend=()=>{state.textContent="Narração concluída";speechEnded();};
-    utterance.onerror=()=>{state.textContent="Áudio bloqueado. Use Ouvir para tentar novamente.";speechEnded();};
+    utterance.onend=()=>{
+      if(!preserveNewsStatus())state.textContent="Narração concluída";
+      speechEnded();
+    };
+    utterance.onerror=()=>{
+      if(!preserveNewsStatus())state.textContent="Áudio bloqueado. Use Ouvir para tentar novamente.";
+      speechEnded();
+    };
     window.speechSynthesis.speak(utterance);
     return true;
   }catch{
