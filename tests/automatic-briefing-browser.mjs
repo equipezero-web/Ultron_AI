@@ -149,6 +149,9 @@ try {
   assert.ok((await page.$eval(".jarvis-intel-status",el=>el.textContent)).includes("COLETA VERIFICADA"));
   assert.ok((await page.$eval(".jarvis-intel-topic",el=>el.textContent)).includes("Boletim confirmado do espelho"));
   fallbackOn=false;
+  // Wait for the previous asynchronous refresh to release its disabled button.
+  // Story count can update before refresh() reaches its finally block.
+  await page.waitForFunction(()=>!document.querySelector(".jarvis-intel-controls button:first-child")?.disabled,{timeout:6500});
   await page.click(".jarvis-intel-controls button:first-child");
   await page.waitForFunction(()=>document.querySelector(".jarvis-intel-message")?.textContent.includes("Última consulta preservada"),{timeout:6500});
   assert.equal(await page.evaluate(()=>window.ULTRON_INTELLIGENCE.state.totalStories),1,"Past verified content remains after all sources fail");
