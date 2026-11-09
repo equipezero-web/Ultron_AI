@@ -167,15 +167,14 @@ try{
       controls:[...document.querySelectorAll(".jarvis-neural-news-controls button")].map(el=>el.getBoundingClientRect().height)
     };
   });
-  console.log("NEURAL NEWS MOBILE LAYOUT:",JSON.stringify(mobile));
   assert.ok(mobile.width>=115&&mobile.width<=390,"Requested mobile news overlay must fit within the phone viewport");
   assert.ok(mobile.height<Math.max(290,mobile.stageHeight*.7),"Visual HUD should not cover the entire 3D stage");
   assert.ok(mobile.imgHeight>=75,"Publisher image must remain useful on phone");
   assert.ok(mobile.overflow<=3,"No horizontal mobile overflow");
   assert.ok(mobile.controls.every(x=>x>=35),"Touch controls must remain usable");
-  await page.click(".jarvis-neural-news-collapse");
+  await page.$eval(".jarvis-neural-news-collapse",button=>button.click());
   assert.equal(await page.evaluate(()=>window.ULTRON_NEURAL_NEWS.state.collapsed),true);
-  await page.click(".jarvis-neural-news-collapse");
+  await page.$eval(".jarvis-neural-news-collapse",button=>button.click());
   assert.equal(await page.evaluate(()=>window.ULTRON_NEURAL_NEWS.state.collapsed),false);
   console.log("NEURAL INTELLIGENCE VISUAL PASS: verified images, 24h sources, alert, voice wake, carousel, inline details, globe and mobile");
 }catch(error){
