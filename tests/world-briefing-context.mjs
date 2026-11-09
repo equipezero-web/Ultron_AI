@@ -60,7 +60,7 @@ try {
   assert.equal(briefing.topics.length,4);
   assert.equal(briefing.priority[0],"Brasil");
   assert.equal(briefing.priority[1],"Santa Catarina");
-  assert.equal(briefing.topics[0].articles.length,2);
+  assert.ok(briefing.topics[0].articles.length>=2,"Live and official RSS can provide extra verified headlines");
   assert.ok(briefing.topics.every(item=>item.articles.every(article=>Date.parse(article.publishedAt)>=now-7*24*60*60*1000)));
   assert.equal(briefing.topics[0].articles.some(article=>article.title==="Boato antigo"),false);
   assert.equal(briefing.alerts.checked,true);
