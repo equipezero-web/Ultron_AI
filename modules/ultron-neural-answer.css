@@ -51,3 +51,7 @@ body.jarvis-command-center .jarvis-intel-panel :is(
  .jarvis-intel-footer,.jarvis-intel-message
 ){display:none!important}
 body.jarvis-command-center .jarvis-intel-panel{max-height:86px!important;overflow:hidden!important}
+
+/* Prevent browser scroll anchoring from nudging the document as WebGL zoom repaints. */
+html:has(body.jarvis-command-center){overflow-anchor:none}
+body.jarvis-command-center .jarvis-cc-center{overflow-anchor:none!important}
