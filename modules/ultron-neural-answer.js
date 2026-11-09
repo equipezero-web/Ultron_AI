@@ -77,7 +77,12 @@ if(center){
   });
   // Voice text appears immediately even when audio playback is unavailable.
   window.addEventListener('ultron:speech-start',event=>{
-    if(box.hidden&&event.detail?.text)present(event.detail.text);
+    // An automatic morning briefing may be spoken on wake; it must not
+    // cover the initial ring. Interactive voice responses use this surface.
+    if(event.detail?.source==='intelligence-wake')return;
+    const spoken=String(event.detail?.text||'').trim();
+    if(spoken && (box.hidden || text.textContent!==spoken))
+      present(spoken);
   });
   window.ULTRON_NEURAL_ANSWER={show:present,clear,get visible(){return !box.hidden;}};
 }
