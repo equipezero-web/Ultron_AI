@@ -40,5 +40,5 @@ export function parsePlanText(text){
 export function isActionRequest(text){
  const q=String(text||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim().replace(/^(?:jarvis|ultron)[, :]+/,"").replace(/^(?:por favor[, ]+|(?:eu )?quero que voce\s+|pode\s+|consegue\s+)+/,"");
  if(/^(?:nao|nunca|se|e se|como|por que|porque|o que|qual|quais|quem|quando)\b/.test(q))return false;
- return /^(?:abra|abrir|feche|fechar|ative|ativar|desative|desativar|ligue|desligue|mostre|mostrar|oculte|esconda|retorne|volte|centralize|resete|aproxime|afaste|atualize|verifique|consulte|liste|localize|encontre|procure|pesquise|execute|reinicie|suspenda|organize|analise|investigue)\b/.test(q);
+ return /^(?:abra|abrir|feche|fechar|ative|ativar|desative|desativar|ligue|desligue|mostre|mostrar|oculte|esconda|retorne|volte|centralize|resete|aproxime|afaste|atualize|verifique|consulte|liste|localize|encontre|procure|pesquise|execute|reinicie|suspenda|organize|analise|investigue|deixe|ajuste|configure|mude|troque|faca)\b/.test(q);
 }
