@@ -17,7 +17,7 @@ function report() {
   const current=Boolean(window.JARVIS_COMMAND_CENTER?.active);
   return {
     architecture:current?'command-center':'legacy',
-    neuralRing:current?Boolean(window.ULTRON_NEURAL_RING_3D?.active):null,
+    neuralRing:current?Boolean(window.ULTRON_NEURAL_RING_3D?.reset&&window.ULTRON_NEURAL_RING_3D?.zoomBy):null,
     globe:current?Boolean(window.ULTRON_EARTH?.open):null,
     neuralAnswer:current?Boolean(window.ULTRON_NEURAL_ANSWER?.show):null,
     performance: window.ULTRON_PERFORMANCE?.mode || 'full',
