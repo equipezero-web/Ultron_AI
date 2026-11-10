@@ -63,6 +63,7 @@ function currentTelemetry() {
   const gesture = window.ULTRON_HAND_GESTURES?.state || {};
   const remoteCamera = window.ULTRON_MOBILE_CAMERA?.state || {};
   return {
+    systemCapabilities:{neuralRing:!!window.ULTRON_NEURAL_RING_3D,earth:!!window.ULTRON_EARTH,visualContext:!!window.ULTRON_NEURAL_ANSWER,liveNews:!!window.ULTRON_INTELLIGENCE,deviceControl:!!window.ULTRON_DEVICES,orchestration:!!window.ULTRON_ORCHESTRATOR,voiceOutput:!!window.ULTRON_VOICE_OUTPUT,voiceInput:!!window.ULTRON_VOICE_INPUT,memory:!!window.ULTRON_MEMORY,vision:!!window.ULTRON_VISION_ROUTER,starkCore:!!window.ULTRON_STARK_CORE,innerMesh:!!window.ULTRON_STARK_MESH},
     optical: {
       active: Boolean(remoteCamera.active || window.ULTRON_CAMERA_CONTROLLER?.isActive?.()),
       source: remoteCamera.mode || "MOBILE_BRIDGE",
