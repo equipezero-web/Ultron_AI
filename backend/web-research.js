@@ -5,7 +5,7 @@ const VISUAL_REQUEST=/\b(imagem|imagens|foto|fotos|fotografia|fotografias|mostre
 const VISUAL_SUBJECT=/\b(país|países|governo|presidente|cidade|monumento|animal|planeta|vulcão|vulcao|tempestade|furacão|furacao|enchente|terremoto|espécie|especie|paisagem|mapa|veículo|veiculo|carro|moto|produto|celular|edifício|edificio|obra de arte|pessoa|cientista|ator|atriz|cantor|cantora|time|equipe|evento|lugar|destino|fotografia)\b/i;
 export function needsVisualResearch(message){
   const text=String(message||"").trim();
-  return VISUAL_REQUEST.test(text)||VISUAL_SUBJECT.test(text)||/^(?:quem (?:é|e|foi)|onde fica|como é a aparência|mostre|fale sobre|conte sobre)\b/i.test(normalizeResearchQuestion(text));
+  return VISUAL_REQUEST.test(text)||VISUAL_SUBJECT.test(text)||/\b(?:[A-ZÀ-ÖØ-Þ][a-zà-öø-ÿ]{2,})(?:\s+(?:[A-ZÀ-ÖØ-Þ][a-zà-öø-ÿ]{2,}|[A-Z0-9]{2,}))+/u.test(text)||/^(?:quem (?:é|e|foi)|onde fica|como é a aparência|mostre|fale sobre|conte sobre)\b/i.test(normalizeResearchQuestion(text));
 }
 export function normalizeResearchQuestion(message){
   return String(message||'').trim().replace(/^(?:(?:ei|olá|ola|hey)\s+)?(?:jarvis|ultron)[,!:\s]+/i,'').replace(/^(?:por favor[,\s]+|me diga[,\s]+|me fale[,\s]+|me informe[,\s]+)+/i,'').trim();
@@ -270,6 +270,9 @@ export async function searchGoogle(env, query, { limit = 6 } = {}) {
       }))
       .filter(item=>item.src&&item.sourceUrl)
       .slice(0,4);
+    const graphImage=safeUrl(data?.knowledgeGraph?.imageUrl);
+    const graphSource=safeUrl(data?.knowledgeGraph?.descriptionLink||data?.knowledgeGraph?.website);
+    if(graphImage&&graphSource&&!images.some(i=>i.src===graphImage))images.push({src:graphImage,alt:clean(data.knowledgeGraph.title||q,160),sourceUrl:graphSource});
     const extras = {
       answerBox: answerBoxText(data),
       knowledgeGraph: knowledgeGraphText(data)
