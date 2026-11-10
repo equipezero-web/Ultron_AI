@@ -4,10 +4,65 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-09T18:29:17.523Z",
+  "updatedAt": "2026-11-10T00:14:38.811Z",
   "oldestEventAt": "2026-11-09T13:49:00.000Z",
-  "windowStartAt": "2026-11-08T18:29:17.523Z",
+  "windowStartAt": "2026-11-09T00:14:38.811Z",
   "events": [
+    {
+      "id": "event-ed68aa8e",
+      "category": "brasil",
+      "title": "Chuvas deixam feridos, desabrigados e casas destelhadas no Sul",
+      "url": "https://agenciabrasil.ebc.com.br/geral/noticia/2026-11/chuvas-deixam-feridos-desabrigados-e-casas-destelhadas-no-sul",
+      "imageUrl": "https://imagens.ebc.com.br/ihLq4RJykjrx8JLGN7xBdhcUUe4=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/09/22/whatsappimage20260921at11.01.061789999470782_foto.jpeg?itok=BTNOPkQZ",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-09T23:31:00.000Z",
+      "firstSeenAt": "2026-11-10T00:14:38.811Z",
+      "lastSeenAt": "2026-11-10T00:14:38.811Z"
+    },
+    {
+      "id": "event-c71a24cc",
+      "category": "brasil",
+      "title": "STF: ministro Fachin arquiva inquérito das Fake News",
+      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/stf-ministro-fachin-arquiva-inquerito-das-fake-news",
+      "imageUrl": "https://imagens.ebc.com.br/PjUXz7gMw8YGfU9keC_PdPCzPNc=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/09/04/55506386528_e6d3068cf0_6k.jpg?itok=1qlIWikQ",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-09T23:21:00.000Z",
+      "firstSeenAt": "2026-11-10T00:14:38.811Z",
+      "lastSeenAt": "2026-11-10T00:14:38.811Z"
+    },
+    {
+      "id": "event-4901c259",
+      "category": "brasil",
+      "title": "COP31 pode consolidar legado brasileiro na agenda climática",
+      "url": "https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-11/cop31-pode-consolidar-legado-brasileiro-na-agenda-climatica",
+      "imageUrl": "https://imagens.ebc.com.br/2738Zk8yXHKFKmVMRWyzzLSTxrA=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/09/2026-11-09t094927z_625906162_rc29koayvc0y_rtrmadp_3_climate-cop31.jpg?itok=50OUZuf6",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-09T23:12:00.000Z",
+      "firstSeenAt": "2026-11-10T00:14:38.811Z",
+      "lastSeenAt": "2026-11-10T00:14:38.811Z"
+    },
+    {
+      "id": "event-ed7e938d",
+      "category": "brasil",
+      "title": "Bolsa sobe 2,22% e registra maior alta diária desde outubro",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/bolsa-sobe-222-e-registra-maior-alta-diaria-desde-outubro",
+      "imageUrl": "https://imagens.ebc.com.br/CPqVdUOF8Wz-jaPeZy56pDv-AGQ=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2021-10-19t201919z_1667412587_rc26dq9d28av_rtrmadp_3_brazil-economy.jpg?itok=PTcVbDwQ",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-09T22:38:00.000Z",
+      "firstSeenAt": "2026-11-10T00:14:38.811Z",
+      "lastSeenAt": "2026-11-10T00:14:38.811Z"
+    },
+    {
+      "id": "event-de659216",
+      "category": "santa-catarina",
+      "title": "Temporais atingem 54 municípios e deixam 11 cidades em situação de emergência em SC",
+      "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxNM1R3RnRROUVXS2lhalJpTTB0dUtmN1RjQTZqcHZYanBKX29sakdwZkh2bDdxMGlreHlhYURmX19lV1ZMcWItSGgwRDVyRjJDSU1NUVQxN3RLRXRTLThOYXhFZ1hIMkhVUEZFTElRSkJkVm55bTJiV2xxVkxaXzk3bTFEQlo0SFN2eWhLaG5ZRkZxN2F6bUZnWGJodmpTR1M3SU1nMzQxWjdoOEZlclh6dEZnZWJncVkybHk3anZwRXE",
+      "imageUrl": null,
+      "source": "AJ Notícias",
+      "publishedAt": "2026-11-09T19:34:33.000Z",
+      "firstSeenAt": "2026-11-10T00:14:38.811Z",
+      "lastSeenAt": "2026-11-10T00:14:38.811Z"
+    },
     {
       "id": "event-298aff64",
       "category": "brasil",
@@ -61,7 +116,7 @@
       "source": "Visor Notícias",
       "publishedAt": "2026-11-09T15:09:58.000Z",
       "firstSeenAt": "2026-11-09T17:17:20.834Z",
-      "lastSeenAt": "2026-11-09T18:29:17.523Z"
+      "lastSeenAt": "2026-11-10T00:14:38.811Z"
     },
     {
       "id": "event-e4a2beea",
@@ -83,7 +138,7 @@
       "source": "Agência Brasil",
       "publishedAt": "2026-11-09T13:49:00.000Z",
       "firstSeenAt": "2026-11-09T17:17:20.834Z",
-      "lastSeenAt": "2026-11-09T18:29:17.523Z"
+      "lastSeenAt": "2026-11-10T00:14:38.811Z"
     }
   ],
   "checks": [
@@ -131,14 +186,29 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-10T00:14:38.811Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 7,
+      "newArticles": 5,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "mundo",
+        "europa"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
-  "checkCount": 3,
-  "lastSuccessfulAt": "2026-11-09T18:29:17.523Z",
+  "checkCount": 4,
+  "lastSuccessfulAt": "2026-11-10T00:14:38.811Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-09T18:29:17.523Z",
+      "checkedAt": "2026-11-10T00:14:38.811Z",
       "warnings": [
         {
           "id": "56356",
@@ -148,28 +218,6 @@
           "regions": [],
           "startsAt": "2026-11-10T00:00:00.000Z",
           "endsAt": "2026-11-13T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
-        },
-        {
-          "id": "56360",
-          "title": "Chuvas Intensas",
-          "severity": "Perigo Potencial",
-          "phase": "previsto",
-          "regions": [],
-          "startsAt": "2026-11-10T00:00:00.000Z",
-          "endsAt": "2026-11-10T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
-        },
-        {
-          "id": "56361",
-          "title": "Tempestade",
-          "severity": "Perigo Potencial",
-          "phase": "previsto",
-          "regions": [],
-          "startsAt": "2026-11-10T00:00:00.000Z",
-          "endsAt": "2026-11-10T00:00:00.000Z",
           "source": "INMET",
           "url": "https://avisos.inmet.gov.br/"
         },
@@ -190,7 +238,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-09T18:29:17.523Z",
+      "checkedAt": "2026-11-10T00:14:38.811Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "8 October 2026",
