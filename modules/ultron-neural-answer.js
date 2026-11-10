@@ -63,9 +63,15 @@ if(center){
         for(const story of stories){
           const article=document.createElement('article');article.className='ultron-news-story';
           const title=document.createElement('h3');title.textContent=story.title;
-          const desc=document.createElement('p');desc.textContent=String(story.description||story.summary||'Resumo detalhado não disponível na fonte consultada.').slice(0,700);
+          const desc=document.createElement('p');desc.textContent=String(story.description||story.summary||'Resumo detalhado não disponível na fonte consultada.').slice(0,1800);
           const meta=document.createElement('small');meta.textContent=String(story.source||'Fonte consultada')+(story.publishedAt?' · '+new Date(story.publishedAt).toLocaleString('pt-BR'):'');
-          article.append(title,desc,meta);text.append(article);
+          article.append(title,desc,meta);
+          for(const ref of (story.detailSources||[]).slice(0,3)){
+            const href=url(ref.url);if(!href)continue;
+            const link=document.createElement('a');link.href=href;link.target='_blank';link.rel='noopener noreferrer';link.className='ultron-news-detail-source';link.textContent=ref.source||ref.title||'Fonte';
+            article.append(link);
+          }
+          text.append(article);
         }
       }else{
         // The AI response keeps its own sourced descriptions; format the
@@ -186,7 +192,7 @@ if(center){
     const summary=payload?.summary;
     const archive=summary?.highlights?.length?summary.highlights:summary?.recentHighlights;
     const items=Array.isArray(archive)&&archive.length?archive:(payload?.briefing?.topics||[]).flatMap(g=>g.articles||[]);
-    return items.filter(a=>a?.title&&a?.url).slice(0,6).map(a=>({title:a.title,description:a.description||a.summary,source:a.source,url:a.url,publishedAt:a.publishedAt,image:a.imageUrl||a.image||null}));
+    return items.filter(a=>a?.title&&a?.url).slice(0,6).map(a=>({title:a.title,description:a.description||a.summary,detailSources:a.detailSources||[],source:a.source,url:a.url,publishedAt:a.publishedAt,image:a.imageUrl||a.image||null}));
   }
   function wakeIntro(summary){
     return 'JARVIS ativado. Confira os principais acontecimentos das últimas 24 horas, começando pelo Brasil.'+(summary?.lastCheckAt?' Última coleta: '+new Date(summary.lastCheckAt).toLocaleString('pt-BR')+'.':'');
