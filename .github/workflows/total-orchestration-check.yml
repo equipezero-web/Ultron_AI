@@ -119,7 +119,7 @@ jobs:
           grep -Eq 'ultron-core-bridge-v4270[.]js[?]v=4[.][0-9]+[.][0-9]+' index.html
           grep -Eq 'ultron-orchestrator-v4270[.]js[?]v=4[.][0-9]+[.][0-9]+' index.html
           grep -q 'neural-priority-core-v4300.js?v=4.30.0' index.html
-          grep -q 'device-control-v4260.js?v=4.26.0' index.html
+          grep -Eq 'device-control-v4260[.]js[?]v=4[.][0-9]+[.][0-9]+' index.html
           grep -q 'orchestrator-device-verify-v4270.js?v=4.27.0' index.html
           grep -q 'telemetry-client-v4270.js?v=4.27.0' index.html
           grep -Eq 'voice-match-v4290\.js\?v=4\.(29|31)\.0' index.html
