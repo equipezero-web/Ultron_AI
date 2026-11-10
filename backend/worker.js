@@ -401,7 +401,7 @@ async function prepareResearch(env, body) {
   }
   const generalNews=isGeneralNewsIntent(query);
   const policy = generalNews ? {needed:true,reason:"brazil-first-news",ttlMinutes:15} : shouldResearchBeforeAnswer(query);
-  if (!policy.needed) return { body, policy, active: false };
+  if (!policy.needed) return { body: {...body,allowUncertaintyResearch:false,researchMeta:{...(body.researchMeta||{}),skipLegacyResearch:true}}, policy, active: false };
 
   const researchStartedAt = Date.now();
   const newsIntent = generalNews || isNewsIntent(query) || isLiveNewsIntent(query);
