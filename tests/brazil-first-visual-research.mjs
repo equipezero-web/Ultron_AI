@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {needsVisualResearch,shouldResearchBeforeAnswer,searchGoogle,researchVisualContext,normalizeResearchQuestion,resolveResearchQuery,answerLooksUncertain,youtubeVideoId} from '../backend/web-research.js';
+import {needsVisualResearch,shouldResearchBeforeAnswer,searchGoogle,researchVisualContext,normalizeResearchQuestion,resolveResearchQuery,answerLooksUncertain,youtubeVideoId,isSelfCapabilityQuestion,mediaPolicy} from '../backend/web-research.js';
 import {isGeneralNewsIntent,isLiveNewsIntent,loadLiveNewsContext} from '../backend/news-context.js';
 assert.ok(isGeneralNewsIntent('Qual a notícia principal de hoje?'));
 assert.ok(isGeneralNewsIntent('JARVIS, quais são as principais notícias de hoje?'));
@@ -32,13 +32,18 @@ assert.equal(isGeneralNewsIntent('Como anda o governo da China atualmente?'),fal
 assert.ok(needsVisualResearch('Como anda o governo da China atualmente?'));
 assert.ok(shouldResearchBeforeAnswer('Como anda o governo da China atualmente?').needed);
 assert.equal(needsVisualResearch('Quanto é dois mais dois?'),false);
+assert.ok(isSelfCapabilityQuestion('Jarvis, o que você pode fazer?'));
+assert.equal(shouldResearchBeforeAnswer('O que você pode fazer?').needed,false);
+assert.deepEqual(mediaPolicy('Qual é a capital da França?'),{images:false,videos:false});
+assert.deepEqual(mediaPolicy('Como funciona um motor turbo?'),{images:true,videos:true});
 const requests=[];
 const original=globalThis.fetch;
 globalThis.fetch=async (input,init)=>{
  const url=String(input);
  requests.push(url);
- if(url.includes('google.serper.dev/videos'))return new Response(JSON.stringify({videos:[{title:'Vídeo de teste',link:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'}]}),{status:200});
- if(url.includes('google.serper.dev/images'))return new Response(JSON.stringify({images:[{title:'China',imageUrl:'https://example.org/china.jpg',link:'https://example.org/china'}]}),{status:200});
+ const topic=String(init?.body||'').includes('motor turbo')?'Motor turbo':'China';
+ if(url.includes('google.serper.dev/videos'))return new Response(JSON.stringify({videos:[{title:topic+' explicação',link:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'}]}),{status:200});
+ if(url.includes('google.serper.dev/images'))return new Response(JSON.stringify({images:[{title:topic,imageUrl:'https://example.org/china.jpg',link:'https://example.org/china'}]}),{status:200});
  if(url.includes('google.serper.dev/search'))return new Response(JSON.stringify({organic:[{title:'China',link:'https://example.org/china',snippet:'Fonte de teste'}]}),{status:200});
  if(url.includes('news.google.com'))return new Response('<rss></rss>',{status:200});
  if(url.includes('gdeltproject.org')){
