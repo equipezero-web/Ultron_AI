@@ -88,7 +88,7 @@ const uniqueStories = (articles, now, maxAge, limit)=>{
     const key=title.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim();
     if(seen.has(key))continue;
     seen.add(key);
-    out.push({title,url,publishedAt,description:bounded(story?.description||story?.summary||'',650),
+    out.push({title,url,publishedAt,description:bounded(story?.description||story?.summary||'',1100),
       source:bounded(story?.source||new URL(url).hostname,70),
       imageUrl:safeNewsImage(story?.imageUrl||story?.image||story?.socialimage||"")});
   }
@@ -231,6 +231,22 @@ const topicLoad=async(top,now)=>{
 };
 // When RSS lacks media, collect the publisher's *own* Open Graph article photo.
 // Bound to the trusted Agência Brasil domain; never scrape untrusted news URLs.
+export function findPublisherDescription(html,title=""){
+  const markup=String(html||"").slice(0,420000);
+  const clean=value=>String(value||"").replace(/&amp;/g,"&").replace(/&quot;/g,'"').replace(/&#39;|&apos;/g,"'").replace(/&nbsp;/g," ").replace(/<[^>]*>/g," ").replace(/\s+/g," ").trim();
+  const normalize=value=>clean(value).normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9 ]/g," ").replace(/\s+/g," ").trim();
+  const good=value=>clean(value).length>=90&&normalize(value)!==normalize(title);
+  const attr=(tag,name)=>tag.match(new RegExp("\\b"+name+"\\s*=\\s*(?:\"([^\"]+)\"|'([^']+)')","i"))?.slice(1).find(Boolean)||"";
+  const article=markup.match(/<article\b[^>]*>([\s\S]*?)<\/article>/i)?.[1]||"";
+  const paragraphs=[...article.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)].map(m=>clean(m[1])).filter(good);
+  if(paragraphs.length)return paragraphs.slice(0,3).join(" ").slice(0,1100);
+  for(const tag of markup.match(/<meta\b[^>]*>/gi)||[]){
+    if(["og:description","description","twitter:description"].includes((attr(tag,"property")||attr(tag,"name")).toLowerCase())){
+      const value=attr(tag,"content");if(good(value))return clean(value).slice(0,1100);
+    }
+  }
+  return "";
+}
 export function findPublisherImage(html){
   const tags=String(html||"").slice(0,420000).match(/<meta\b[^>]*>/gi)||[];
   const attr=(tag,name)=>{
@@ -248,7 +264,7 @@ export function findPublisherImage(html){
 async function enrichWithPublisherPhotos(groups){
   const articles=groups.flatMap(group=>group.articles||[]);
   const selected=articles.filter(a=>{
-    if(a.imageUrl)return false;
+    if(a.imageUrl&&a.description?.length>=150)return false;
     try{
       const u=new URL(a.url);
       return u.protocol==="https:"&&u.hostname==="agenciabrasil.ebc.com.br";
@@ -266,7 +282,9 @@ async function enrichWithPublisherPhotos(groups){
       if(!contentType.includes("html"))return;
       const html=await response.text();
       const image=findPublisherImage(html);
-      if(image)article.imageUrl=image;
+      if(image&&!article.imageUrl)article.imageUrl=image;
+      const description=findPublisherDescription(html,article.title);
+      if(description.length>(article.description||'').length)article.description=description;
     }catch{
       // A blocked or missing publisher image is not an error in the news report.
     }finally{clearTimeout(timer);}
