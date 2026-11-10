@@ -96,6 +96,7 @@ async function ask(message) {
       body: JSON.stringify({
         message: clean,
         clientOwnsSpeech:true,
+        preferFastResponse:window.ULTRON_VOICE_OUTPUT?.available===true,
         memoryKey: window.ULTRON_MEMORY?.getMemoryKey?.() || null,
         conversationId: window.ULTRON_MEMORY?.getConversationId?.() || null,
         telemetry: currentTelemetry()
