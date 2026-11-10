@@ -15,8 +15,9 @@ function normalizeText(value) {
 
 export function isGeneralNewsIntent(message) {
   const text=normalizeText(message);
-  return /\b(noticias?|novidades?|manchetes?|destaques?|acontecimentos?)\b/.test(text)
-    && !/\b(sobre|china|eua|estados unidos|russia|ucrania|governo|eleicao|futebol|economia|clima|tecnologia|santa catarina|recife|brasil|mundo)\b/.test(text);
+  const cleaned=text.replace(/^(?:jarvis|ultron)[, ]+/,'').replace(/[?!.,]/g,'').trim();
+  return /^(?:(?:quais?|qual|me diga|me fale|mostre|traga|quero saber|me informe|me atualize)\s+)*(?:(?:sao|e|a|as|o|os|principais?|ultimas?|ultimos?|novas?)\s+)*(?:noticias?|novidades?|manchetes?|destaques?|acontecimentos?)(?:\s+(?:principais?|recentes?|atuais?|de hoje|hoje|agora|do dia|da semana|mais importantes?))*$/.test(cleaned)
+    || /^(?:o que|que) (?:esta acontecendo|aconteceu) (?:hoje|agora)$/.test(cleaned);
 }
 
 export function isLiveNewsIntent(message) {
