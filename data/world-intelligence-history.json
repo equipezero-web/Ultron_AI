@@ -4,10 +4,70 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-10T19:45:44.554Z",
+  "updatedAt": "2026-11-10T21:26:02.557Z",
   "oldestEventAt": "2026-11-09T22:38:00.000Z",
-  "windowStartAt": "2026-11-09T19:45:44.554Z",
+  "windowStartAt": "2026-11-09T21:26:02.557Z",
   "events": [
+    {
+      "id": "event-e8db2bc1",
+      "category": "brasil",
+      "title": "Trabalhador poderá autorizar bancos a consultar extrato do FGTS",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/trabalhador-podera-autorizar-bancos-consultar-extrato-do-fgts",
+      "description": "A Caixa Econômica Federal passou a permitir nesta terça-feira (10) que trabalhadores autorizem instituições financeiras a consultar informações do extrato do Fundo de Garantia do Tempo de Serviço (FGTS). O serviço pode ser usado para comprovar renda ou vínculo empregatício em operações financeiras . Com a novidade, o trabalhador não precisa mais baixar, imprimir e entregar o extrato do FGTS ao banco ou à instituição financeira. As informações são consultadas diretamente na base do fundo, desde que haja autorização expressa do titular da conta. Notícias relacionadas: Caixa passa a pagar prêmios de loterias via Pix em apostas digitais. FGTS mantém orçamento de R$ 144,5 bilhões para habitação em 2027. Segundo a Caixa, a medida busca tornar a comprovação de renda e de vínculo de trabalho mais prática e segura , além de reduzir o risco de apresentação de documentos adulterados ou com informações inconsistentes. Entre as principais características do serviço estão: Gratuidade: não há cobrança pela autorização; Escolha do trabalhador: o titular define quais instituições podem consultar os d",
+      "imageUrl": "https://imagens.ebc.com.br/UF78cF--w2JTlWg7FhR7ZACxzSE=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2024/08/08/_mg_8465.jpg?itok=pXI253o_",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-10T20:49:00.000Z",
+      "firstSeenAt": "2026-11-10T21:26:02.557Z",
+      "lastSeenAt": "2026-11-10T21:26:02.557Z"
+    },
+    {
+      "id": "event-cbf1288d",
+      "category": "brasil",
+      "title": "Número de jovens privados de liberdade caiu pela metade em dez anos",
+      "url": "https://agenciabrasil.ebc.com.br/direitos-humanos/noticia/2026-11/numero-de-jovens-privados-de-liberdade-caiu-pela-metade-em-dez-anos",
+      "description": "O número total de adolescentes cumprindo alguma medida de restrição de liberdade no Brasil caiu 48% em 10 anos, saindo de 26,8 mil em 2015 para cerca de 13 mil em 2025. Os dados são do Sistema Nacional de Atendimento Socioeducativo (Sinase), ligado ao Ministério dos Direitos Humanos. Estudo encomendado pelo Conselho Nacional de Justiça (CNJ) indica que o avanço das facções no Brasil pode explicar, entre outros motivos, a redução no número de jovens com restrição de liberdade porque o Estado não entraria mais em alguns territórios, além desses jovens ficarem sob proteção dessas organizações. Notícias relacionadas: Unicef: nenhum país do G20 tem maioridade penal abaixo dos 18 anos. Pediatras se manifestam contrários à redução da maioridade penal. Na Câmara dos Deputados, a Comissão Especial discute Proposta de Emenda à Constituição (PEC) que pode reduzir a maioridade penal no Brasil, atualmente estabelecida em 18 anos. O presidente da comissão, deputado Aluísio Mendes (Republicanos-MA), promete votar o texto no colegiado até o final de novembro. Em audiência pública na Câmara, nesta te",
+      "imageUrl": "https://imagens.ebc.com.br/LHxNhBUhDT-tWX7A9_Ft5EgIHBk=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/abr20092013mca_0446.jpg?itok=rFn8bbpl",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-10T20:45:00.000Z",
+      "firstSeenAt": "2026-11-10T21:26:02.557Z",
+      "lastSeenAt": "2026-11-10T21:26:02.557Z"
+    },
+    {
+      "id": "event-9436c58c",
+      "category": "brasil",
+      "title": "IA pode ajudar a responder desastres naturais, dizem cientistas ao G20",
+      "url": "https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-11/ia-pode-ajudar-responder-desastres-naturais-dizem-cientistas-ao-g20",
+      "description": "A Inteligência Artificial (IA) e novas tecnologias podem ajudar a prever e a reagir a desastres naturais, cada vez mais frequentes no planeta. A afirmação é de cientistas de diversas partes do mundo e faz parte de uma carta de recomendações que será entregue aos líderes que participarão da reunião de cúpula do G20, grupo das principais economias do mundo, em dezembro, nos Estados Unidos. “Os avanços em observação da Terra, sensoriamento remoto, sistemas de alerta precoce, modelagem numérica, gêmeos digitais [representações virtuais de objetos, estruturas, sistemas ou ambientes], tecnologias de drones e IA podem ampliar a compreensão das ameaças e dos riscos, apoiar a tomada de decisão e fortalecer a preparação, a resposta e a recuperação”, descreve o documento. Notícias relacionadas: Ministro pede investimento do G20 em preparação a desastres naturais. Desastres naturais atingiram 93% dos municípios nos últimos 10 anos. Prefeitos pedem recursos da União para prevenção de desastres naturais. A carta foi elaborada pelo S20 (Science20), grupo que reúne associações que representam cienti",
+      "imageUrl": "https://imagens.ebc.com.br/w99fha75x0lcUbw9GJ-g9mq8uos=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/07/26/estragos-14-rqwnc7033zwb5i5sc6pniz2ldc63icgq5ao8o89yps.jpg?itok=cqfs_rY1",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-10T20:42:00.000Z",
+      "firstSeenAt": "2026-11-10T21:26:02.557Z",
+      "lastSeenAt": "2026-11-10T21:26:02.557Z"
+    },
+    {
+      "id": "event-748c039",
+      "category": "brasil",
+      "title": "BC do Paraguai já ressarciu 93% dos clientes do banco Ueno",
+      "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/bc-do-paraguai-ja-ressarciu-93-dos-clientes-do-banco-ueno",
+      "description": "O Banco Central do Paraguai informou que mais de 1,7 milhão de correntistas do Banco Ueno foram ressarcidos. Até esta segunda-feira (9), 1.738.804 de pessoas, correspondentes a 93% dos clientes, receberam os valores, que totalizam 2,126 trilhões de guaranis (equivalente a cerca de R$ 1,92 bilhão). Notícias relacionadas: Presidente do Paraguai nomeia novo presidente do Banco Central. Ex-presidente do Paraguai presta depoimento ao Ministério Público. Após impeachment, Santiago Peña é preso no Paraguai. Conforme o banco, nos próximos dias, serão feitos os pagamentos aos clientes que têm algum tipo de bloqueio, com Certificado de Depósito a Prazo e com operações junto à Agência Financeira de Desenvolvimento (AFD). De acordo com a lei, o prazo máximo para o pagamento é nesta quarta-feira (11). O economista Jorge Schreiner foi nomeado ontem para assumir a presidência do Banco Central após a crise desencadeada pela intervenção no banco digital Ueno . Schreiner foi da diretoria do Banco Central por dois anos, até 1999, e liderou a comissão de valores mobiliários até 2013. Ele substitui Carlo",
+      "imageUrl": "https://imagens.ebc.com.br/mT0xRsbkv_mdoXuYmevK44jrVz4=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/10/banco_central_del_paraguay_by_felipe_mendez.jpg?itok=J5b6OaXs",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-10T20:26:00.000Z",
+      "firstSeenAt": "2026-11-10T21:26:02.557Z",
+      "lastSeenAt": "2026-11-10T21:26:02.557Z"
+    },
+    {
+      "id": "event-bdc4f2c6",
+      "category": "mundo",
+      "title": "Brasil e Espanha firmam acordo para estimular taxação de super-ricos",
+      "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/brasil-e-espanha-firmam-acordo-para-estimular-taxacao-de-super-ricos",
+      "description": "Os governos do Brasil e da Espanha assinaram, nesta terça-feira (10), um memorando de entendimento para ampliar a cooperação na criação e no aprimoramento de políticas tributárias voltadas à população de maior patrimônio. O acordo busca fortalecer a tributação dos super-ricos, estimular sistemas fiscais mais progressivos e combater a concentração de renda e riqueza. A iniciativa também pretende mobilizar outros países em torno de uma articulação internacional sobre o tema. Notícias relacionadas: Brasil apresenta marco de financiamento para área de saúde na COP31. Presidente do Paraguai nomeia novo presidente do Banco Central. ONU diz que 2026 será um dos anos mais quentes já registrados. O documento foi assinado pelos ministros da Fazenda do Brasil, Dario Durigan, e da Espanha, Arcadi España. Entre as medidas previstas estão o intercâmbio de informações e conhecimentos técnicos e a realização de estudos conjuntos. O acordo também prevê o debate sobre reformas tributárias e o fortalecimento da atuação dos dois países em organismos internacionais, como a Organização das Nações Unidas (",
+      "imageUrl": "https://imagens.ebc.com.br/UT_EWwnl3GQLpWh1eVicoXhbFbk=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/10/55645064679_677125d23c_o.jpg?itok=ABeZbg3n",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-10T20:19:00.000Z",
+      "firstSeenAt": "2026-11-10T21:26:02.557Z",
+      "lastSeenAt": "2026-11-10T21:26:02.557Z"
+    },
     {
       "id": "event-93b764c4",
       "category": "santa-catarina",
@@ -18,7 +78,7 @@
       "source": "Jornal do Comércio",
       "publishedAt": "2026-11-10T19:36:58.000Z",
       "firstSeenAt": "2026-11-10T19:45:44.554Z",
-      "lastSeenAt": "2026-11-10T19:45:44.554Z"
+      "lastSeenAt": "2026-11-10T21:26:02.557Z"
     },
     {
       "id": "event-b8968048",
@@ -30,7 +90,7 @@
       "source": "Grêmio Náutico União",
       "publishedAt": "2026-11-10T19:30:22.000Z",
       "firstSeenAt": "2026-11-10T19:33:57.494Z",
-      "lastSeenAt": "2026-11-10T19:45:44.554Z"
+      "lastSeenAt": "2026-11-10T21:26:02.557Z"
     },
     {
       "id": "event-aa3fed6f",
@@ -126,7 +186,7 @@
       "source": "Blog do Jaime",
       "publishedAt": "2026-11-10T18:00:00.000Z",
       "firstSeenAt": "2026-11-10T19:33:57.494Z",
-      "lastSeenAt": "2026-11-10T19:45:44.554Z"
+      "lastSeenAt": "2026-11-10T21:26:02.557Z"
     },
     {
       "id": "event-acbc2221",
@@ -139,6 +199,18 @@
       "publishedAt": "2026-11-10T17:39:00.000Z",
       "firstSeenAt": "2026-11-10T19:33:57.494Z",
       "lastSeenAt": "2026-11-10T19:33:57.494Z"
+    },
+    {
+      "id": "event-f7ed634d",
+      "category": "clima",
+      "title": "População de Fortaleza será alertada em caso de calor extremo",
+      "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQTmhJczRFVDBHaW9jMnhQalFpc1c3Q3NpZDJKZlRPRlFPLWh3RzFIR0tsXzRsTWhWaFI0OUNYeEpuZ1o4YWpYMDMxRmI4VGhic0N2ZmNFMUlna21nd0l3TUhSdHp6ZWM0SjFlakRtT0ktRjlvdkFKTTVCTmNBYmFyMXpDTEJjamZZSnJ0NkZFekhlcFkyRU5UcVlmdUk",
+      "description": "População de Fortaleza será alertada em caso de calor extremo &nbsp;&nbsp; URB News",
+      "imageUrl": null,
+      "source": "URB News",
+      "publishedAt": "2026-11-10T16:07:00.000Z",
+      "firstSeenAt": "2026-11-10T21:26:02.557Z",
+      "lastSeenAt": "2026-11-10T21:26:02.557Z"
     },
     {
       "id": "event-9dee8df7",
@@ -162,7 +234,7 @@
       "source": "ND Mais",
       "publishedAt": "2026-11-10T15:17:04.000Z",
       "firstSeenAt": "2026-11-10T19:33:57.494Z",
-      "lastSeenAt": "2026-11-10T19:45:44.554Z"
+      "lastSeenAt": "2026-11-10T21:26:02.557Z"
     },
     {
       "id": "event-72a2f8d0",
@@ -222,7 +294,7 @@
       "source": "Folha Vitória",
       "publishedAt": "2026-11-10T14:15:27.000Z",
       "firstSeenAt": "2026-11-10T19:33:57.494Z",
-      "lastSeenAt": "2026-11-10T19:45:44.554Z"
+      "lastSeenAt": "2026-11-10T21:26:02.557Z"
     },
     {
       "id": "event-c22589e1",
@@ -234,7 +306,7 @@
       "source": "Diário do Estado",
       "publishedAt": "2026-11-10T13:02:09.000Z",
       "firstSeenAt": "2026-11-10T19:33:57.494Z",
-      "lastSeenAt": "2026-11-10T19:45:44.554Z"
+      "lastSeenAt": "2026-11-10T21:26:02.557Z"
     },
     {
       "id": "event-91209c87",
@@ -246,7 +318,7 @@
       "source": "band.com.br",
       "publishedAt": "2026-11-10T11:13:13.000Z",
       "firstSeenAt": "2026-11-10T19:33:57.494Z",
-      "lastSeenAt": "2026-11-10T19:45:44.554Z"
+      "lastSeenAt": "2026-11-10T21:26:02.557Z"
     },
     {
       "id": "event-6913a802",
@@ -433,14 +505,30 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-10T21:26:02.557Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 14,
+      "newArticles": 6,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "asia"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
-  "checkCount": 5,
-  "lastSuccessfulAt": "2026-11-10T19:45:44.554Z",
+  "checkCount": 6,
+  "lastSuccessfulAt": "2026-11-10T21:26:02.557Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-10T19:45:44.554Z",
+      "checkedAt": "2026-11-10T21:26:02.557Z",
       "warnings": [
         {
           "id": "56369",
@@ -524,7 +612,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-10T19:45:44.554Z",
+      "checkedAt": "2026-11-10T21:26:02.557Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "8 October 2026",
