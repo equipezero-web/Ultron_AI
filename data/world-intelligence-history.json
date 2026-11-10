@@ -4,10 +4,65 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-10T07:24:49.276Z",
-  "oldestEventAt": "2026-11-09T13:49:00.000Z",
-  "windowStartAt": "2026-11-09T07:24:49.276Z",
+  "updatedAt": "2026-11-10T15:42:11.206Z",
+  "oldestEventAt": "2026-11-09T15:57:00.000Z",
+  "windowStartAt": "2026-11-09T15:42:11.206Z",
   "events": [
+    {
+      "id": "event-9dee8df7",
+      "category": "mundo",
+      "title": "Brasil apresenta marco de financiamento para área de saúde na COP31",
+      "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/brasil-apresenta-marco-de-financiamento-para-area-de-saude-na-cop31",
+      "imageUrl": "https://cdn.jsdelivr.net/gh/sergiosdlima/assets-ebc@1.0.0/public/thumbs/thumb_1200x600_agbrasil.png",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-10T15:25:00.000Z",
+      "firstSeenAt": "2026-11-10T15:42:11.206Z",
+      "lastSeenAt": "2026-11-10T15:42:11.206Z"
+    },
+    {
+      "id": "event-72a2f8d0",
+      "category": "brasil",
+      "title": "Defesa de Vorcaro reforça pedido de soltura no STF",
+      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/defesa-de-vorcaro-reforca-pedido-de-soltura-no-stf",
+      "imageUrl": "https://imagens.ebc.com.br/lQgKuZExT0ktoCTbkIjWDhOrzp8=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/03/04/vorca-2-scaled-e1767922829627-1024x688-1.jpg?itok=HxmLgBjy",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-10T14:50:00.000Z",
+      "firstSeenAt": "2026-11-10T15:42:11.206Z",
+      "lastSeenAt": "2026-11-10T15:42:11.206Z"
+    },
+    {
+      "id": "event-8e1224f9",
+      "category": "brasil",
+      "title": "Brasília recebe mutirão gratuito de saúde intestinal e nutrição",
+      "url": "https://agenciabrasil.ebc.com.br/saude/noticia/2026-11/brasilia-recebe-mutirao-gratuito-de-saude-intestinal-e-nutricao",
+      "imageUrl": "https://imagens.ebc.com.br/RpEx9wA61_a-5Q-Ba2qbD9AZ7kc=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/09/24/adobestock_946254162.jpeg?itok=rG-p00t2",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-10T14:23:00.000Z",
+      "firstSeenAt": "2026-11-10T15:42:11.206Z",
+      "lastSeenAt": "2026-11-10T15:42:11.206Z"
+    },
+    {
+      "id": "event-ca790122",
+      "category": "brasil",
+      "title": "Ata do Copom indica que desaceleração da economia não conteve inflação",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/ata-do-copom-indica-que-desaceleracao-da-economia-nao-conteve-inflacao",
+      "imageUrl": "https://imagens.ebc.com.br/SgnUFMdRtJPNTHPG5q90__2MSS4=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2025/07/11/0d4a1789.jpg?itok=9dpF2vXe",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-10T14:20:00.000Z",
+      "firstSeenAt": "2026-11-10T15:42:11.206Z",
+      "lastSeenAt": "2026-11-10T15:42:11.206Z"
+    },
+    {
+      "id": "event-14874eb0",
+      "category": "brasil",
+      "title": "Um terço dos jovens de 16 a 29 anos quer chegar à universidade",
+      "url": "https://agenciabrasil.ebc.com.br/educacao/noticia/2026-11/um-terco-dos-jovens-de-ate-29-anos-quer-chegar-universidade",
+      "imageUrl": "https://imagens.ebc.com.br/vovUc7KNABZBPEQufKcc3grRju4=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/06/toms6007.jpg?itok=IJ4vgguM",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-10T14:18:00.000Z",
+      "firstSeenAt": "2026-11-10T15:42:11.206Z",
+      "lastSeenAt": "2026-11-10T15:42:11.206Z"
+    },
     {
       "id": "event-3088692b",
       "category": "brasil",
@@ -94,7 +149,7 @@
       "source": "AJ Notícias",
       "publishedAt": "2026-11-09T19:34:33.000Z",
       "firstSeenAt": "2026-11-10T00:14:38.811Z",
-      "lastSeenAt": "2026-11-10T07:24:49.276Z"
+      "lastSeenAt": "2026-11-10T15:42:11.206Z"
     },
     {
       "id": "event-298aff64",
@@ -139,39 +194,6 @@
       "publishedAt": "2026-11-09T15:57:00.000Z",
       "firstSeenAt": "2026-11-09T17:17:20.834Z",
       "lastSeenAt": "2026-11-09T18:29:17.523Z"
-    },
-    {
-      "id": "event-307a9aed",
-      "category": "santa-catarina",
-      "title": "Temporais deixam 353 pessoas fora de casa e 11 cidades em emergência em SC",
-      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxOclp6NTJYUHQxVkYxQlFXWXVFQ1R2cGtKS0ZVQUZhLW45T002LURSTXNNTnhxdWlKRG1DNTlkU1F6SFVsSlhlS0ZnUmlGOWJUbzhuNzlNQU1mY0RCVXozQmlfaVV3N0taRXpTeGRvdnJsZHYwdHZicmxpN1JDd2k4dFRSdzlzajd2WkdGaS1SaXBpSUVuVTF5WUlpanBEVGRPWHpWclNpNA",
-      "imageUrl": null,
-      "source": "Visor Notícias",
-      "publishedAt": "2026-11-09T15:09:58.000Z",
-      "firstSeenAt": "2026-11-09T17:17:20.834Z",
-      "lastSeenAt": "2026-11-10T07:24:49.276Z"
-    },
-    {
-      "id": "event-e4a2beea",
-      "category": "brasil",
-      "title": "Gás do Povo: governo prorroga vigência do auxílio até 2031",
-      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/gas-do-povo-governo-prorroga-vigencia-do-programa-ate-2031",
-      "imageUrl": null,
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-09T15:02:00.000Z",
-      "firstSeenAt": "2026-11-09T17:17:20.834Z",
-      "lastSeenAt": "2026-11-09T17:17:20.834Z"
-    },
-    {
-      "id": "event-6840c897",
-      "category": "mundo",
-      "title": "ONU diz que 2026 será um dos anos mais quentes já registrados",
-      "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/onu-diz-que-2026-sera-um-dos-anos-mais-quentes-ja-registrados",
-      "imageUrl": "https://imagens.ebc.com.br/DRCBinTonsXqRzXXd1IeKqZ80Zc=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/08/30/pzzb5391.jpg?itok=yOyorZK1",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-09T13:49:00.000Z",
-      "firstSeenAt": "2026-11-09T17:17:20.834Z",
-      "lastSeenAt": "2026-11-10T07:24:49.276Z"
     }
   ],
   "checks": [
@@ -249,15 +271,42 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-10T15:42:11.206Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 6,
+      "newArticles": 5,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "mundo"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
-  "checkCount": 5,
-  "lastSuccessfulAt": "2026-11-10T07:24:49.276Z",
+  "checkCount": 6,
+  "lastSuccessfulAt": "2026-11-10T15:42:11.206Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-10T07:24:49.276Z",
+      "checkedAt": "2026-11-10T15:42:11.206Z",
       "warnings": [
+        {
+          "id": "56369",
+          "title": "Tempestade",
+          "severity": "Perigo",
+          "phase": "previsto",
+          "regions": [
+            "DO"
+          ],
+          "startsAt": "2026-11-11T00:00:00.000Z",
+          "endsAt": "2026-11-11T00:00:00.000Z",
+          "source": "INMET",
+          "url": "https://avisos.inmet.gov.br/"
+        },
         {
           "id": "56356",
           "title": "Acumulado de Chuva",
@@ -270,7 +319,48 @@
           "url": "https://avisos.inmet.gov.br/"
         },
         {
-          "id": "56362",
+          "id": "56365",
+          "title": "Ventos Costeiros",
+          "severity": "Perigo Potencial",
+          "phase": "vigente",
+          "regions": [
+            "DO"
+          ],
+          "startsAt": "2026-11-10T00:00:00.000Z",
+          "endsAt": "2026-11-11T00:00:00.000Z",
+          "source": "INMET",
+          "url": "https://avisos.inmet.gov.br/"
+        },
+        {
+          "id": "56370",
+          "title": "Tempestade",
+          "severity": "Perigo Potencial",
+          "phase": "previsto",
+          "regions": [
+            "DO",
+            "DO",
+            "DE"
+          ],
+          "startsAt": "2026-11-12T00:00:00.000Z",
+          "endsAt": "2026-11-12T00:00:00.000Z",
+          "source": "INMET",
+          "url": "https://avisos.inmet.gov.br/"
+        },
+        {
+          "id": "56366",
+          "title": "Tempestade",
+          "severity": "Perigo Potencial",
+          "phase": "previsto",
+          "regions": [
+            "DO"
+          ],
+          "startsAt": "2026-11-11T00:00:00.000Z",
+          "endsAt": "2026-11-11T00:00:00.000Z",
+          "source": "INMET",
+          "url": "https://avisos.inmet.gov.br/"
+        },
+        {
+          "id": "56367",
           "title": "Tempestade",
           "severity": "Perigo Potencial",
           "phase": "previsto",
@@ -286,7 +376,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-10T07:24:49.276Z",
+      "checkedAt": "2026-11-10T15:42:11.206Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "8 October 2026",

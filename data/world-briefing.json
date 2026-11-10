@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "1.0",
-  "fetchedAt": "2026-11-10T07:24:49.276Z",
+  "fetchedAt": "2026-11-10T15:42:11.206Z",
   "priority": [
     "Brasil",
     "Santa Catarina",
@@ -22,32 +22,32 @@
       "label": "Brasil",
       "articles": [
         {
-          "title": "Jornal da Band ao vivo: Assista às principais notícias do Brasil e do mundo - 10-11-2026",
-          "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxPUGF6ZTk0RGl2X2xVcWFWTnBXSGpoWUJwdUQtWjVqNmZ1VS1RSXAxR3dOZDc3WG13NUR4UjdqMElTSHNUeVZ3Q1Uyb1AtdlhHUV9WUUoxRjF2aE1QYTJnanVkWm9rRFgycE9XT1hBd2pTd1BkZEZBQTJXLUtYTm94QUVVbnc3blRONVhQN0RJYXJqU2E2QWxJQWZ4dFdnT3AzdkIybDZhZVF6aGtVZTVPaDFVVVplcVhZREFoUVgxYkxiNFk?oc=5",
-          "publishedAt": "2026-11-10T03:01:00.000Z",
-          "source": "Band",
-          "imageUrl": null
-        },
-        {
-          "title": "Bora Brasil: Assista às principais notícias e análises do dia - 10-11-2026",
-          "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxPUVYzbG44VzFNMk9GUnNKNFdmRm5rZFpNbllQY3ZqSDB1WTNmYWswdURwaTlyeEdTV2pIYkYtMGZXM2tHVDBUMEtWMjFGSURyVWw1WXZiSFNWLWZFTGxsTHpLWVRSWEl5OF83d3RlbUhucHl1VFM0NUR3czlPTHVtWEhvOTQ2WlcxM2ZEaVk5anRzWWJwUkVORVZqQTVWdXV2SDVCbTA0bk9mbS1manRuRQ?oc=5",
-          "publishedAt": "2026-11-10T03:01:00.000Z",
-          "source": "Band",
-          "imageUrl": null
-        },
-        {
-          "title": "Judiciário e MPU querem R$ 533 milhões para pagar penduricalhos",
-          "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/judiciario-e-mpu-querem-r-533-milhoes-para-pagar-penduricalhos",
-          "publishedAt": "2026-11-10T00:58:00.000Z",
+          "title": "Defesa de Vorcaro reforça pedido de soltura no STF",
+          "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/defesa-de-vorcaro-reforca-pedido-de-soltura-no-stf",
+          "publishedAt": "2026-11-10T14:50:00.000Z",
           "source": "Agência Brasil",
-          "imageUrl": "https://imagens.ebc.com.br/PlhDsW3Fve_Nm185HxHeg0HB0Mg=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/atoms/image/1103272-1084696-jfcrz_abr_25.07.2017_a81t5606271217.jpg?itok=g5oKiOBv"
+          "imageUrl": "https://imagens.ebc.com.br/lQgKuZExT0ktoCTbkIjWDhOrzp8=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/03/04/vorca-2-scaled-e1767922829627-1024x688-1.jpg?itok=HxmLgBjy"
         },
         {
-          "title": "Chuvas deixam feridos, desabrigados e casas destelhadas no Sul",
-          "url": "https://agenciabrasil.ebc.com.br/geral/noticia/2026-11/chuvas-deixam-feridos-desabrigados-e-casas-destelhadas-no-sul",
-          "publishedAt": "2026-11-09T23:31:00.000Z",
+          "title": "Brasília recebe mutirão gratuito de saúde intestinal e nutrição",
+          "url": "https://agenciabrasil.ebc.com.br/saude/noticia/2026-11/brasilia-recebe-mutirao-gratuito-de-saude-intestinal-e-nutricao",
+          "publishedAt": "2026-11-10T14:23:00.000Z",
           "source": "Agência Brasil",
-          "imageUrl": "https://imagens.ebc.com.br/ihLq4RJykjrx8JLGN7xBdhcUUe4=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/09/22/whatsappimage20260921at11.01.061789999470782_foto.jpeg?itok=BTNOPkQZ"
+          "imageUrl": "https://imagens.ebc.com.br/RpEx9wA61_a-5Q-Ba2qbD9AZ7kc=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/09/24/adobestock_946254162.jpeg?itok=rG-p00t2"
+        },
+        {
+          "title": "Ata do Copom indica que desaceleração da economia não conteve inflação",
+          "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/ata-do-copom-indica-que-desaceleracao-da-economia-nao-conteve-inflacao",
+          "publishedAt": "2026-11-10T14:20:00.000Z",
+          "source": "Agência Brasil",
+          "imageUrl": "https://imagens.ebc.com.br/SgnUFMdRtJPNTHPG5q90__2MSS4=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2025/07/11/0d4a1789.jpg?itok=9dpF2vXe"
+        },
+        {
+          "title": "Um terço dos jovens de 16 a 29 anos quer chegar à universidade",
+          "url": "https://agenciabrasil.ebc.com.br/educacao/noticia/2026-11/um-terco-dos-jovens-de-ate-29-anos-quer-chegar-universidade",
+          "publishedAt": "2026-11-10T14:18:00.000Z",
+          "source": "Agência Brasil",
+          "imageUrl": "https://imagens.ebc.com.br/vovUc7KNABZBPEQufKcc3grRju4=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/06/toms6007.jpg?itok=IJ4vgguM"
         }
       ],
       "checked": true,
@@ -94,6 +94,13 @@
       "label": "Mundo",
       "articles": [
         {
+          "title": "Brasil apresenta marco de financiamento para área de saúde na COP31",
+          "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/brasil-apresenta-marco-de-financiamento-para-area-de-saude-na-cop31",
+          "publishedAt": "2026-11-10T15:25:00.000Z",
+          "source": "Agência Brasil",
+          "imageUrl": "https://cdn.jsdelivr.net/gh/sergiosdlima/assets-ebc@1.0.0/public/thumbs/thumb_1200x600_agbrasil.png"
+        },
+        {
           "title": "ONU diz que 2026 será um dos anos mais quentes já registrados",
           "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/onu-diz-que-2026-sera-um-dos-anos-mais-quentes-ja-registrados",
           "publishedAt": "2026-11-09T13:49:00.000Z",
@@ -114,15 +121,7 @@
     {
       "id": "europa",
       "label": "Europa",
-      "articles": [
-        {
-          "title": "O que pode estar por trás da onda de alertas de bombas em voos na Europa - UOL Notícias",
-          "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxQUWF2NHE1VHB5NXJkZS1tU19mN1gyNW5fdTMxRFdacFBsUDhpUlRidHFLVFdmUVNDVHg0ZU5adzIyQng1YzVIb2s4VTBVdVJMcUY5UTU5b1dTbTBCc1gwaVBzclZIRjNOaEFQQUN1N3QtM05ZYnAybzAza2tKeklhUE1DN2ZoemtoLVRLbl9xbXU5Rl9KUjZWOG1saXRtZXltSFhjR0VvNDI4VWFzdlUtYW41M1VKaDdBVjZIekV1cHYzdXR0TkU3V184ZXFnRTkwSC1MN0N3?oc=5",
-          "publishedAt": "2026-11-07T12:18:19.000Z",
-          "source": "UOL Notícias",
-          "imageUrl": null
-        }
-      ],
+      "articles": [],
       "checked": true,
       "error": null
     },
@@ -159,6 +158,19 @@
     "checked": true,
     "warnings": [
       {
+        "id": "56369",
+        "title": "Tempestade",
+        "severity": "Perigo",
+        "phase": "previsto",
+        "regions": [
+          "DO"
+        ],
+        "startsAt": "2026-11-11T00:00:00.000Z",
+        "endsAt": "2026-11-11T00:00:00.000Z",
+        "source": "INMET",
+        "url": "https://avisos.inmet.gov.br/"
+      },
+      {
         "id": "56356",
         "title": "Acumulado de Chuva",
         "severity": "Perigo Potencial",
@@ -170,7 +182,48 @@
         "url": "https://avisos.inmet.gov.br/"
       },
       {
-        "id": "56362",
+        "id": "56365",
+        "title": "Ventos Costeiros",
+        "severity": "Perigo Potencial",
+        "phase": "vigente",
+        "regions": [
+          "DO"
+        ],
+        "startsAt": "2026-11-10T00:00:00.000Z",
+        "endsAt": "2026-11-11T00:00:00.000Z",
+        "source": "INMET",
+        "url": "https://avisos.inmet.gov.br/"
+      },
+      {
+        "id": "56370",
+        "title": "Tempestade",
+        "severity": "Perigo Potencial",
+        "phase": "previsto",
+        "regions": [
+          "DO",
+          "DO",
+          "DE"
+        ],
+        "startsAt": "2026-11-12T00:00:00.000Z",
+        "endsAt": "2026-11-12T00:00:00.000Z",
+        "source": "INMET",
+        "url": "https://avisos.inmet.gov.br/"
+      },
+      {
+        "id": "56366",
+        "title": "Tempestade",
+        "severity": "Perigo Potencial",
+        "phase": "previsto",
+        "regions": [
+          "DO"
+        ],
+        "startsAt": "2026-11-11T00:00:00.000Z",
+        "endsAt": "2026-11-11T00:00:00.000Z",
+        "source": "INMET",
+        "url": "https://avisos.inmet.gov.br/"
+      },
+      {
+        "id": "56367",
         "title": "Tempestade",
         "severity": "Perigo Potencial",
         "phase": "previsto",
