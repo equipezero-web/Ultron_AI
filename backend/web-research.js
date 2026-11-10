@@ -117,7 +117,9 @@ export function shouldResearchBeforeAnswer(message) {
   if (!text) return { needed: false, reason: "empty", ttlMinutes: 0 };
 
   // Never send private operational data, credentials or personal records to public search.
-  if (/\b(?:senha|password|token|api[_ -]?key|chave secreta|cpf|credenciais)\b/i.test(text)
+  if (/\b(?:meu|minha|meus|minhas|nosso|nossa)\s+(?:senha|password|token|api[_ -]?key|chave secreta|cpf|credenciais)\b/i.test(text)
+      || /\b(?:senha|password|token|api[_ -]?key|chave secreta|cpf|credenciais)\s*[:=]\s*\S{4,}/i.test(text)
+      || /\b\d{3}\.\d{3}\.\d{3}-\d{2}\b/.test(text)
       || /\b(?:meu|minha|meus|minhas|nosso|nossa)\s+(?:saldo|conta|pedido|pedidos|arquivo|arquivos|senha|dados|e-mail|email|agenda|cliente|clientes|faturamento|estoque|sistema|repositório|repositorio)\b/i.test(text))
     return {needed:false,reason:"private-context",ttlMinutes:0};
   if (/^(?:calcule|quanto é|quanto e)\s+\d+[\d\s.,+*/%()-]*[?!.]*$/i.test(text)) return {needed:false,reason:"calculation",ttlMinutes:0};
