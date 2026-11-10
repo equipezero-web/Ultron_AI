@@ -1,3 +1,4 @@
+import {directPlan,runActionPlan} from "./modules/jarvis-action-engine.js?v=4.68.0";
 import {runLocalCommand} from "./modules/jarvis-local-commands.js?v=4.67.0";
 import { CameraController } from "./modules/camera.js";
 import { loadPreferences } from "./modules/storage.js";
@@ -232,6 +233,7 @@ async function execute() {
   const command = input?.value.trim() || "";
   if (!command) return;
   const local=await runLocalCommand(command);if(local){input.value="";addLog(output,local.text);return;}
+  const plan=directPlan(command);if(plan){input.value="";const result=await runActionPlan(plan,command);addLog(output,result.text);return;}
 
   addLog(output, `OPERATOR: ${command}`);
   // Geographic intent is independent from the optical camera and AI vision.
