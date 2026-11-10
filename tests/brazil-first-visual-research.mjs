@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {needsVisualResearch,shouldResearchBeforeAnswer,searchGoogle,researchVisualContext,normalizeResearchQuestion,resolveResearchQuery,answerLooksUncertain} from '../backend/web-research.js';
+import {needsVisualResearch,shouldResearchBeforeAnswer,searchGoogle,researchVisualContext,normalizeResearchQuestion,resolveResearchQuery,answerLooksUncertain,youtubeVideoId} from '../backend/web-research.js';
 import {isGeneralNewsIntent,isLiveNewsIntent,loadLiveNewsContext} from '../backend/news-context.js';
 assert.ok(isGeneralNewsIntent('Qual a notícia principal de hoje?'));
 assert.ok(isGeneralNewsIntent('JARVIS, quais são as principais notícias de hoje?'));
@@ -37,6 +37,7 @@ const original=globalThis.fetch;
 globalThis.fetch=async (input,init)=>{
  const url=String(input);
  requests.push(url);
+ if(url.includes('google.serper.dev/videos'))return new Response(JSON.stringify({videos:[{title:'Vídeo de teste',link:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'}]}),{status:200});
  if(url.includes('google.serper.dev/images'))return new Response(JSON.stringify({images:[{title:'China',imageUrl:'https://example.org/china.jpg',link:'https://example.org/china'}]}),{status:200});
  if(url.includes('google.serper.dev/search'))return new Response(JSON.stringify({organic:[{title:'China',link:'https://example.org/china',snippet:'Fonte de teste'}]}),{status:200});
  if(url.includes('news.google.com'))return new Response('<rss></rss>',{status:200});
@@ -52,6 +53,11 @@ try{
  const research=await searchGoogle({SERPER_API_KEY:'mock'},'Como anda o governo da China atualmente?');
  assert.equal(researchVisualContext(research).images[0].src,'https://example.org/china.jpg');
  assert.ok(requests.some(u=>u.includes('/images')));
+ assert.ok(requests.some(u=>u.includes('/videos')));
+ assert.equal(researchVisualContext(research).videos[0].id,'dQw4w9WgXcQ');
+ assert.equal(youtubeVideoId('https://evil.example/watch?v=dQw4w9WgXcQ'),null);
+ const motor=await searchGoogle({SERPER_API_KEY:'mock'},'Como funciona um motor turbo?');
+ assert.ok(motor.images.length&&motor.videos.length,'Media retrieval must work beyond named countries');
  const news=await loadLiveNewsContext('Quais as novidades de hoje?',{limit:6});
  assert.ok(news.articles.length>=2,JSON.stringify(news));
  assert.equal(news.articles[0].region,'Brasil');
