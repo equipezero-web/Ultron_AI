@@ -1,3 +1,4 @@
+import { loadResearchContext } from "./research-context.js";
 import {
   ProviderGatewayError,
   generateWithProviders,
@@ -448,6 +449,19 @@ async function prepareResearch(env, body) {
     }
   }
 
+  // When Google returns no pictures, use actual encyclopedia images for
+  // non-breaking factual topics. Never treat encyclopedia text as live news.
+  let fallbackVisual=null;
+  if(!fromCache&&!newsIntent&&!research?.images?.length&&policy.reason!=="freshness"&&policy.reason!=="factual-current"){
+    try{
+      const fallback=await loadResearchContext(query,{limit:3,force:true});
+      fallbackVisual=fallback?.visualContext||null;
+      if(!sources.length&&fallback?.items?.length){
+        researchContext=fallback.contextText;
+        sources=dedupeSources(fallback.items.map(i=>({title:i.title,source:i.source,url:i.url,date:null})),8);
+      }
+    }catch{}
+  }
   const researchMs = Date.now() - researchStartedAt;
   const usable = Boolean(researchContext && sources.length);
   return {
@@ -458,6 +472,7 @@ async function prepareResearch(env, body) {
     operatorId,
     cache,
     research,
+    fallbackVisual,
     newsState,
     researchContext,
     sources,
@@ -757,12 +772,12 @@ async function handleAi(request, env) {
 
   if (prepared.active) {
     const {
-      policy, query, newsIntent, operatorId: researchOperatorId, cache, research,
+      policy, query, newsIntent, operatorId: researchOperatorId, cache, research, fallbackVisual,
       newsState, sources, fromCache, researchMs, researchContext
     } = prepared;
 
     if (!researchContext || !sources.length) {
-      const mediaOnly=researchVisualContext(research);
+      const mediaOnly=researchVisualContext(research)||fallbackVisual;
       if(visualHasContent(mediaOnly))data.visualContext={...mediaOnly,caption:data.text||""};
       data.webResearch = {
         requested: true,
@@ -795,10 +810,10 @@ async function handleAi(request, env) {
       const newsVisual = newsState?.visualContext || null;
       const baseVisual = data?.visualContext || null;
       const preferredVisual = {
-        ...(baseVisual||{}),...(researchVisual||{}),...(newsVisual||{}),
-        images:[...(newsVisual?.images||[]),...(researchVisual?.images||[]),...(baseVisual?.images||[])].slice(0,6),
+        ...(baseVisual||{}),...(fallbackVisual||{}),...(researchVisual||{}),...(newsVisual||{}),
+        images:[...(newsVisual?.images||[]),...(researchVisual?.images||[]),...(fallbackVisual?.images||[]),...(baseVisual?.images||[])].slice(0,6),
         videos:[...(researchVisual?.videos||[]),...(baseVisual?.videos||[])].slice(0,3),
-        cards:[...(newsVisual?.cards||[]),...(researchVisual?.cards||[]),...(baseVisual?.cards||[])].slice(0,8)
+        cards:[...(newsVisual?.cards||[]),...(researchVisual?.cards||[]),...(fallbackVisual?.cards||[]),...(baseVisual?.cards||[])].slice(0,8)
       };
       if (newsIntent && sources.length) {
         data.liveData = {
