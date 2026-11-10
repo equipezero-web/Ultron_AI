@@ -17,7 +17,7 @@ export function isResearchFollowUp(message){
 export function resolveResearchQuery(message,previousQuestion=''){
   const q=normalizeResearchQuestion(message);
   const previous=normalizeResearchQuestion(previousQuestion);
-  if(isResearchFollowUp(q)&&previous&&shouldResearchBeforeAnswer(previous).needed&&!isResearchFollowUp(previous))return previous+' — '+q;
+  if(isResearchFollowUp(q)&&previous&&shouldResearchBeforeAnswer(previous).needed&&!isResearchFollowUp(previous)&&!/\b(meu|minha|meus|minhas|senha|cpf|token|chave|endereco|endereço)\b/i.test(previous))return previous+' — '+q;
   return q;
 }
 const CURRENT_TERMS = /\b(hoje|agora|atual|atuais|recentemente|atualmente|ultimamente|recente|recentes|ultimo|último|ultimos|últimos|latest|2026|preco|preço|cotacao|cotação|resultado|placar|eleicao|eleição|presidente|ceo|versao|versão|lancamento|lançamento)\b/i;
@@ -117,13 +117,15 @@ export function shouldResearchBeforeAnswer(message) {
   if (!text) return { needed: false, reason: "empty", ttlMinutes: 0 };
 
   if (/^(?:calcule|quanto é|quanto e)\s+\d+[\d\s.,+*/%()-]*[?!.]*$/i.test(text)) return {needed:false,reason:"calculation",ttlMinutes:0};
-  if (VISUAL_REQUEST.test(text)) return { needed:true,reason:"visual-request",ttlMinutes:180 };
-  if (SEARCH_TERMS.test(text)) return { needed: true, reason: "explicit-search", ttlMinutes: 180 };
-  if (CURRENT_TERMS.test(text)) return { needed: true, reason: "freshness", ttlMinutes: 45 };
+
   // Do not web-search greetings, conversational replies, creative drafting, or device commands.
   const conversational=/^(oi|olá|ola|bom dia|boa tarde|boa noite|obrigad[oa]|valeu|sim|não|nao|certo|ok|tudo bem|como vai|quem é você|qual seu nome)[.!?\s]*$/i;
   const localAction=/^(abra|abrir|ligue|ligar|desligue|desligar|ative|ativar|pause|parar|pare|toque|execute|rodar|mostre meu|leia meu)\b/i;
   if (conversational.test(text)||localAction.test(text)) return { needed:false,reason:"local-action",ttlMinutes:0 };
+  if (/^(?:crie|escreva|redija|rascunhe|invente|gere)\b/i.test(text)&&!SEARCH_TERMS.test(text))return {needed:false,reason:"creative",ttlMinutes:0};
+  if (VISUAL_REQUEST.test(text)) return { needed:true,reason:"visual-request",ttlMinutes:180 };
+  if (SEARCH_TERMS.test(text)) return { needed: true, reason: "explicit-search", ttlMinutes: 180 };
+  if (CURRENT_TERMS.test(text)) return { needed: true, reason: "freshness", ttlMinutes: 15 };
   if (needsVisualResearch(text)&&/\b(como|qual|quais|quem|onde|quando|explique|conte|diga|informe)\b/i.test(text)) return { needed:true,reason:"visual-subject",ttlMinutes:180 };
   if (isResearchFollowUp(text)||/\b(o que aconteceu|aconteceu|situação|situacao|notícias|noticias|novidades|previsão|previsao|temperatura|clima|dólar|dolar|bolsa|cotação|cotacao|governo|eleições|eleicoes)\b/i.test(text)) return {needed:true,reason:"factual-current",ttlMinutes:30};
   if (FACTUAL_START.test(text)) return { needed: true, reason: "factual", ttlMinutes: 10080 };
