@@ -16,7 +16,7 @@ function normalizeText(value) {
 export function isGeneralNewsIntent(message) {
   const text=normalizeText(message);
   const cleaned=text.replace(/^(?:jarvis|ultron)[, ]+/,'').replace(/[?!.,]/g,'').trim();
-  return /^(?:(?:quais?|qual|me diga|me fale|mostre|traga|quero saber|me informe|me atualize)\s+)*(?:(?:sao|e|a|as|o|os|principais?|ultimas?|ultimos?|novas?)\s+)*(?:noticias?|novidades?|manchetes?|destaques?|acontecimentos?)(?:\s+(?:principais?|recentes?|atuais?|de hoje|hoje|agora|do dia|da semana|mais importantes?))*$/.test(cleaned)
+  return /^(?:(?:quais?|qual|me diga|me fale|mostre|traga|quero saber|me informe|me atualize)\s+)*(?:(?:sao|e|a|as|o|os|principal|principais|ultimas?|ultimos?|novas?)\s+)*(?:noticias?|novidades?|manchetes?|destaques?|acontecimentos?)(?:\s+(?:principal|principais|recentes?|atuais?|de hoje|hoje|agora|do dia|da semana|mais importantes?))*$/.test(cleaned)
     || /^(?:o que|que) (?:esta acontecendo|aconteceu) (?:hoje|agora)$/.test(cleaned);
 }
 
