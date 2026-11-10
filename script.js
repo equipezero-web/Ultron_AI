@@ -1,3 +1,4 @@
+import {runLocalCommand} from "./modules/jarvis-local-commands.js?v=4.67.0";
 import { CameraController } from "./modules/camera.js";
 import { loadPreferences } from "./modules/storage.js";
 import { addLog, clock } from "./modules/system.js";
@@ -230,6 +231,7 @@ async function execute() {
   const input = $("command-input");
   const command = input?.value.trim() || "";
   if (!command) return;
+  const local=await runLocalCommand(command);if(local){input.value="";addLog(output,local.text);return;}
 
   addLog(output, `OPERATOR: ${command}`);
   // Geographic intent is independent from the optical camera and AI vision.
