@@ -221,11 +221,11 @@ function visualHasContent(visual) {
 }
 
 function researchVisualFromSources(sources, searchedAt, text, fromCache, research) {
-  if (!sources.length) return null;
   if (!fromCache) {
     const visual = researchVisualContext(research);
     if (visual) return { ...visual, caption: text || "" };
   }
+  if(!sources.length)return null;
   return {
     mode: "web-research",
     label: fromCache ? "RESEARCH MEMORY" : "WEB RESEARCH",
@@ -375,7 +375,8 @@ async function unifiedState(env, operatorId) {
 async function prepareResearch(env, body) {
   const message = String(body?.message || "").trim();
   const laTeamContext = String(body?.laTeamContext || "").trim();
-  if (laTeamContext) {
+  const localFilesContext=String(body?.localFilesContext||"").trim();
+  if (laTeamContext||localFilesContext) {
     return {
       body: {
         ...body,
@@ -400,7 +401,8 @@ async function prepareResearch(env, body) {
     query=resolveResearchQuery(message,prior.lastUserMessage);
   }
   const generalNews=isGeneralNewsIntent(query);
-  const policy = generalNews ? {needed:true,reason:"brazil-first-news",ttlMinutes:15} : shouldResearchBeforeAnswer(query);
+  const classified=shouldResearchBeforeAnswer(query);
+  const policy = generalNews && classified.reason!=="private-context" ? {needed:true,reason:"brazil-first-news",ttlMinutes:15} : classified;
   if (!policy.needed) return { body: {...body,allowUncertaintyResearch:false,researchMeta:{...(body.researchMeta||{}),skipLegacyResearch:true}}, policy, active: false };
 
   const researchStartedAt = Date.now();
