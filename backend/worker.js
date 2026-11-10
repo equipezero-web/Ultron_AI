@@ -857,6 +857,16 @@ async function handleAi(request, env) {
     }
   }
 
+  if(prepared.active){
+    data.mediaStatus={
+      automatic:true,
+      configured:Boolean(env.SERPER_API_KEY),
+      imageCount:data.visualContext?.images?.length||0,
+      videoCount:data.visualContext?.videos?.length||0,
+      imageError:prepared.research?.mediaStatus?.imageError||null,
+      videoError:prepared.research?.mediaStatus?.videoError||null
+    };
+  }
   data.performance = {
     ...(data.performance || {}),
     totalMs: Date.now() - startedAt
@@ -913,6 +923,10 @@ async function health(env) {
     webResearch: {
       enabled: true,
       googleSearch: Boolean(env.SERPER_API_KEY),
+      automaticMedia: true,
+      googleImagesConfigured: Boolean(env.SERPER_API_KEY),
+      googleVideosConfigured: Boolean(env.SERPER_API_KEY),
+      mediaMode:"automatic-google-youtube-v2",
       provider: env.SERPER_API_KEY ? "Google Search via Serper" : null,
       memoryCache: Boolean(env.ULTRON_DB),
       expiringResearchCache: Boolean(env.ULTRON_DB),

@@ -58,6 +58,26 @@ try{
  assert.equal(youtubeVideoId('https://evil.example/watch?v=dQw4w9WgXcQ'),null);
  const motor=await searchGoogle({SERPER_API_KEY:'mock'},'Como funciona um motor turbo?');
  assert.ok(motor.images.length&&motor.videos.length,'Media retrieval must work beyond named countries');
+ // A normal question must yield media even when regular search fails.
+ const successfulMock=globalThis.fetch;
+ globalThis.fetch=async(input,init)=>{
+   const u=String(input);
+   if(u.endsWith('/search'))return new Response('{}',{status:503});
+   return successfulMock(input,init);
+ };
+ const partial=await searchGoogle({SERPER_API_KEY:'mock'},'Como funciona um motor turbo?');
+ assert.equal(partial.results.length,0);
+ assert.ok(partial.images.length&&partial.videos.length,'Text-search failure must preserve actual media');
+ assert.equal(partial.mediaStatus.automatic,true);
+ globalThis.fetch=async(input,init)=>{
+   const u=String(input),q=JSON.parse(init?.body||'{}').q||'';
+   if(u.endsWith('/videos'))return new Response('{}',{status:503});
+   if(u.endsWith('/search')&&q.includes('site:youtube.com/watch'))return new Response(JSON.stringify({organic:[{title:'Motor turbo',link:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'}]}),{status:200});
+   return successfulMock(input,init);
+ };
+ const recovered=await searchGoogle({SERPER_API_KEY:'mock'},'Como funciona um motor turbo?');
+ assert.equal(recovered.videos[0].id,'dQw4w9WgXcQ');
+ globalThis.fetch=successfulMock;
  const news=await loadLiveNewsContext('Quais as novidades de hoje?',{limit:6});
  assert.ok(news.articles.length>=2,JSON.stringify(news));
  assert.equal(news.articles[0].region,'Brasil');

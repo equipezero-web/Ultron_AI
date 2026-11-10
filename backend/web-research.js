@@ -245,37 +245,26 @@ export async function searchGoogle(env, query, { limit = 6, media = true } = {})
   }
 
   try {
-    const headers={ "X-API-KEY":apiKey,"Content-Type":"application/json" };
-    // Image lookup is opt-in by meaning and runs alongside the regular
-    // search; never block ordinary questions on an optional picture service.
-    const imageLookup=media
-      ? fetchWithTimeout("https://google.serper.dev/images",{
-          method:"POST",headers,
-          body:JSON.stringify({q,gl:"br",hl:"pt-br",num:5})
-        }).then(async response=>response.ok?response.json():null).catch(()=>null)
-      : Promise.resolve(null);
-    const videoLookup=media ? fetchWithTimeout("https://google.serper.dev/videos",{method:"POST",headers,body:JSON.stringify({q,gl:"br",hl:"pt-br",num:6})}).then(async response=>response.ok?response.json():null).catch(()=>null):Promise.resolve(null);
-    const response = await fetchWithTimeout(SERPER_ENDPOINT, {
-      method: "POST",headers,
-      body: JSON.stringify({
-        q,
-        gl: "br",
-        hl: "pt-br",
-        num: Math.max(4, Math.min(10, Number(limit) + 2 || 8)),
-        autocorrect: true
-      })
-    });
-
-    const raw = await response.text();
-    let data = {};
-    try { data = raw ? JSON.parse(raw) : {}; } catch { data = {}; }
-
-    if (!response.ok) throw new Error(data?.message || data?.error || raw || `Serper HTTP ${response.status}`);
-
-    const organic = Array.isArray(data?.organic) ? data.organic : [];
-    const normalized = organic.map(normalizeResult).filter(Boolean);
-    const results = dedupeAndRank(normalized, Math.max(3, Math.min(8, Number(limit) || 6)));
-    const [imageData,videoData]=await Promise.all([imageLookup,videoLookup]);
+    const headers={"X-API-KEY":apiKey,"Content-Type":"application/json"};
+    // All public questions request actual media by default, independent of
+    // words such as "image" or "video". A failed text lookup must not discard media.
+    const lookup=async(endpoint,params)=>{
+      try{
+        const response=await fetchWithTimeout("https://google.serper.dev/"+endpoint,{
+          method:"POST",headers,body:JSON.stringify({q,gl:"br",hl:"pt-br",...params})
+        });
+        if(!response.ok)return {data:null,error:"HTTP "+response.status};
+        return {data:await response.json(),error:null};
+      }catch(error){return {data:null,error:String(error?.message||error).slice(0,180)};}
+    };
+    const [web,image,video]=await Promise.all([
+      lookup("search",{num:Math.max(4,Math.min(10,Number(limit)+2||8)),autocorrect:true}),
+      media?lookup("images",{num:5}):Promise.resolve({data:null,error:null}),
+      media?lookup("videos",{num:6}):Promise.resolve({data:null,error:null})
+    ]);
+    const data=web.data||{},imageData=image.data||{},videoData=video.data||{};
+    const organic=Array.isArray(data.organic)?data.organic:[];
+    const results=dedupeAndRank(organic.map(normalizeResult).filter(Boolean),Math.max(3,Math.min(8,Number(limit)||6)));
     const images=(Array.isArray(imageData?.images)?imageData.images:[])
       .map(item=>({
         src:safeUrl(item?.imageUrl||item?.thumbnailUrl),
@@ -289,7 +278,14 @@ export async function searchGoogle(env, query, { limit = 6, media = true } = {})
     const graphSource=safeUrl(data?.knowledgeGraph?.descriptionLink||data?.knowledgeGraph?.website);
     if(graphImage&&graphSource&&!images.some(i=>i.src===graphImage))images.push({src:graphImage,alt:clean(data.knowledgeGraph.title||q,160),sourceUrl:graphSource});
     const videos=[];const seenVideos=new Set();
-    for(const item of [...(Array.isArray(videoData?.videos)?videoData.videos:[]),...organic]){
+    let videoCandidates=[...(Array.isArray(videoData?.videos)?videoData.videos:[]),...organic];
+    if(media&&!videoCandidates.some(item=>youtubeVideoId(item?.link||item?.url))){
+      // A web-search fallback recovers actual YouTube results when the
+      // dedicated video endpoint is unavailable or returns other hosts only.
+      const youtube=await lookup("search",{q:q+" site:youtube.com/watch",num:5});
+      videoCandidates.push(...(Array.isArray(youtube.data?.organic)?youtube.data.organic:[]));
+    }
+    for(const item of videoCandidates){
       const id=youtubeVideoId(item?.link||item?.url);
       if(!id||seenVideos.has(id))continue;
       seenVideos.add(id);videos.push({id,title:clean(item.title||q,160),url:"https://www.youtube.com/watch?v="+id,thumbnail:safeUrl(item.imageUrl||item.thumbnailUrl)||"https://i.ytimg.com/vi/"+id+"/hqdefault.jpg",source:clean(item.channel||item.source||"YouTube",100)});
@@ -318,7 +314,8 @@ export async function searchGoogle(env, query, { limit = 6, media = true } = {})
         averageScore,
         diverseDomains: new Set(results.map((item) => item.source)).size
       },
-      error: null,
+      error: web.error,
+      mediaStatus:{automatic:media,imageCount:images.length,videoCount:videos.length,imageError:image.error,videoError:video.error},
       searchedAt: new Date().toISOString(),
       elapsedMs: Date.now() - startedAt
     };
