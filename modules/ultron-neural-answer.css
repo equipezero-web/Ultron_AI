@@ -117,3 +117,8 @@ body.jarvis-command-center .ultron-news-story p,body.jarvis-command-center .ultr
 body.jarvis-command-center .ultron-news-story small{color:#9ab5c9;font-size:.8em}
 
 body.jarvis-command-center .ultron-news-detail-source{display:inline-block;margin:5px 8px 0 0;color:#9ce6ff;font-size:12px;overflow-wrap:anywhere}
+
+/* User-controlled text visibility leaves media and the close control intact. */
+body.jarvis-command-center .ultron-neural-answer.ultron-text-disabled:not([hidden]){grid-template-columns:minmax(0,1fr)!important}
+body.jarvis-command-center .ultron-neural-answer.ultron-text-disabled .ultron-neural-answer-text,body.jarvis-command-center .ultron-neural-answer.ultron-text-disabled .ultron-neural-answer-sources{display:none!important}
+body.jarvis-command-center .ultron-neural-answer.ultron-text-disabled .ultron-neural-answer-media{grid-column:1/-1!important;max-height:40vh}
