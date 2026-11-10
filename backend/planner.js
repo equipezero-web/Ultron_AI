@@ -5,9 +5,9 @@ const TOOL_POLICY = {
   "news.search": { level: "auto", description: "Consultar notícias e fontes públicas." },
   "research.search": { level: "auto", description: "Pesquisar contexto público para explicações." },
   "device.status": { level: "auto", description: "Consultar estado de dispositivo pareado." },
-  "app.open": { level: "confirm", description: "Abrir aplicativo em dispositivo pareado." },
+  "app.open": { level: "auto", description: "Abrir aplicativo em dispositivo pareado." },
   "notification.push": { level: "confirm", description: "Enviar notificação ao dispositivo." },
-  "tv.control": { level: "confirm", description: "Executar controle ativo na TV." },
+  "tv.control": { level: "auto", description: "Executar controle ativo na TV." },
   "message.send": { level: "blocked", description: "Envio de mensagens ainda não implementado com autorização adequada." },
   "file.delete": { level: "blocked", description: "Exclusão de arquivos não implementada." },
   "purchase.execute": { level: "blocked", description: "Compras/pagamentos não podem ser executados pelo núcleo atual." },
@@ -76,7 +76,7 @@ export function buildOperationalPlan(message, telemetry = {}) {
     steps.push(
       step("status", "Confirmar dispositivo e estado atual", "device.status", "Evitar enviar comando ao dispositivo errado ou offline."),
       step("select", "Selecionar a ação compatível", null, "Mapear a intenção para uma ferramenta autorizada."),
-      step("control", "Executar controle somente com autorização adequada", "tv.control", "Ações ativas em dispositivos exigem permissão."),
+      step("control", "Executar o comando explícito autorizado", "tv.control", "Comando explícito do operador autoriza a ação compatível."),
       step("verify", "Confirmar resultado do comando", "device.status", "Verificar se a alteração ocorreu.")
     );
   } else if (intent === "project") {
@@ -115,7 +115,7 @@ export function buildOperationalPlan(message, telemetry = {}) {
     sensitiveSignals: sensitive,
     steps,
     policy: {
-      auto: "Observação, memória e pesquisa de baixo risco.",
+      auto: "Observação, memória, pesquisa e comandos claros em dispositivos pareados.",
       confirm: "Ações que alteram dispositivos ou enviam algo externamente.",
       blocked: "Ações destrutivas, financeiras ou acesso a segredos sem fluxo seguro dedicado."
     },

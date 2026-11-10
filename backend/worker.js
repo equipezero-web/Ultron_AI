@@ -1,3 +1,4 @@
+import {capabilityAnswer} from "./jarvis-capabilities.js";
 import { deepenNews } from "./news-details.js";
 import { loadResearchContext } from "./research-context.js";
 import {
@@ -50,6 +51,8 @@ import {
   researchVisualContext,
   searchGoogle,
   needsVisualResearch,
+  isSelfCapabilityQuestion,
+  mediaPolicy,
   normalizeResearchQuestion,
   isResearchFollowUp,
   resolveResearchQuery,
@@ -469,7 +472,7 @@ async function prepareResearch(env, body) {
   // When Google returns no pictures, use actual encyclopedia images for
   // non-breaking factual topics. Never treat encyclopedia text as live news.
   let fallbackVisual=null;
-  if(!fromCache&&!newsIntent&&!research?.images?.length&&policy.reason!=="freshness"&&policy.reason!=="factual-current"){
+  if(!fromCache&&!newsIntent&&mediaPolicy(query).images&&!research?.images?.length&&policy.reason!=="freshness"&&policy.reason!=="factual-current"){
     try{
       const fallback=await loadResearchContext(query,{limit:3,force:true});
       fallbackVisual=fallback?.visualContext||null;
@@ -553,7 +556,9 @@ async function executeAiCore(env, body) {
   );
 
   const aiStartedAt = Date.now();
-  let aiResult = await generateWithProviders(env, aiMessage, telemetry, { aiBinding: env.AI });
+  let aiResult = isSelfCapabilityQuestion(message)
+    ? {text:capabilityAnswer({...telemetry,systemCapabilities:{...telemetry.systemCapabilities,deviceBridge:Boolean(env.ULTRON_DB),googleSearch:Boolean(env.SERPER_API_KEY)}}),provider:"jarvis-local",providerLabel:"JARVIS",model:"capability-catalog",attempts:[]}
+    : await generateWithProviders(env, aiMessage, telemetry, { aiBinding: env.AI });
   let aiPasses = 1;
   let researchMs = 0;
   let fallbackResearch = null;

@@ -1,3 +1,4 @@
+import {JARVIS_CAPABILITIES,JARVIS_AUTONOMY} from "./jarvis-capabilities.js";
 export const SYSTEM_INSTRUCTION = `
 Você é J.A.R.V.I.S., o núcleo conversacional deste sistema.
 
@@ -8,7 +9,7 @@ Em perguntas simples, responda em uma ou duas frases.
 Evite cumprimentos longos, introduções, listas desnecessárias e repetições.
 Só dê respostas detalhadas quando o operador pedir detalhes.
 
-Você é um assistente de software integrado ao sistema J.A.R.V.I.S.
+Você é um assistente de software integrado ao sistema J.A.R.V.I.S. Seu conhecimento persistente de produto é o catálogo abaixo; ele descreve funções implementadas, não garante conexão ativa.\n${JARVIS_CAPABILITIES.map(([name,description])=>name+': '+description).join('\n')}\n${JARVIS_AUTONOMY}\nAo responder sobre suas capacidades, inclua os módulos reais (não apenas pesquisa e notícias). Não ofereça localização privada de pessoas, telefones ou e-mails pessoais. Não apresente mídia irrelevante em perguntas simples.
 A telemetria enviada junto com a mensagem pode incluir systemCapabilities. Use esse objeto como a fonte de verdade sobre as capacidades realmente ativas do sistema.
 Se systemCapabilities.tts estiver true, o JARVIS possui saída de voz TTS ativa; se ttsProvider estiver presente, informe esse provedor corretamente quando perguntado.
 Se systemCapabilities.visualContext estiver true, o JARVIS possui painel de contexto visual integrado.
@@ -94,7 +95,9 @@ function buildGroundedTelemetry(env, telemetry = {}, aiBinding = null) {
           : null,
       visualContext: true,
       liveNews: true,
-      visualResearch: true,
+      visualResearch: Boolean(env.SERPER_API_KEY),
+      googleSearch: Boolean(env.SERPER_API_KEY),
+      memory: Boolean(env.ULTRON_DB),
       deviceBridge: Boolean(env.ULTRON_DB),
       aiGateway: true,
       cloudflareAi: Boolean(
