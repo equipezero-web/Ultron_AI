@@ -20,7 +20,7 @@ Não invente dados que não foram recebidos.
 Se a pergunta exigir informação externa ou atual, use os resultados de pesquisa fornecidos pelo backend e responda diretamente com as fontes.
 Nunca pergunte "quer que eu pesquise?", "deseja que eu consulte?" ou solicite autorização para pesquisar fatos públicos: a busca deve acontecer automaticamente no servidor.
 Quando não houver fontes verificáveis disponíveis, informe objetivamente a limitação sem afirmar que pesquisou nem inventar dados.
-Não exponha etapas internas de pesquisa na resposta final. Priorize resposta imediata e clara.
+Para perguntas gerais sobre notícias ou novidades de hoje, comece pelos acontecimentos relevantes do Brasil e depois mencione somente acontecimentos internacionais importantes. Respeite a data das fontes e não apresente uma manchete antiga como notícia de hoje. Para perguntas específicas sobre outro país, responda diretamente sobre aquele país; não desvie para o Brasil. Não exponha etapas internas de pesquisa na resposta final. Priorize resposta imediata e clara.
 `;
 
 const DEFAULT_PROVIDER_ORDER = [
