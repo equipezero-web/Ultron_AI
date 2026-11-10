@@ -299,6 +299,7 @@ async function askUltron(command) {
       body: JSON.stringify({
         message: command,
         clientOwnsSpeech:true,
+        preferFastResponse:window.ULTRON_VOICE_OUTPUT?.available===true,
         memoryKey: window.ULTRON_MEMORY?.getMemoryKey?.() || null,
         telemetry: {
           optical: {

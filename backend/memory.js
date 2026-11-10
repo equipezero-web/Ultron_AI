@@ -295,7 +295,8 @@ export async function loadMemoryContext(
       context,
       recalledMessages: messages.length,
       recalledMemories: memories.length,
-      lastAssistantMessage: [...messages].reverse().find((item) => item.role === 'assistant')?.content || null
+      lastAssistantMessage: [...messages].reverse().find((item) => item.role === 'assistant')?.content || null,
+      lastUserMessage: [...messages].reverse().find((item) => item.role === 'user')?.content || null
     };
   } catch (error) {
     console.error("[ULTRON MEMORY] Falha ao recuperar contexto:", error);

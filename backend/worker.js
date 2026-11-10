@@ -48,6 +48,9 @@ import {
   researchVisualContext,
   searchGoogle,
   needsVisualResearch,
+  normalizeResearchQuestion,
+  isResearchFollowUp,
+  resolveResearchQuery,
   shouldResearchBeforeAnswer
 } from "./web-research.js";
 import {
@@ -389,13 +392,19 @@ async function prepareResearch(env, body) {
     };
   }
 
-  const generalNews=isGeneralNewsIntent(message);
-  const policy = generalNews ? {needed:true,reason:"brazil-first-news",ttlMinutes:15} : shouldResearchBeforeAnswer(message);
-  if (!policy.needed) return { body, policy, active: false };
+  const operatorId = await deriveOperatorId(body?.memoryKey);
+  const conversationId=normalizeConversationId(body?.conversationId);
+  let query=normalizeResearchQuestion(message);
+  if(isResearchFollowUp(message)&&operatorId&&conversationId){
+    const prior=await loadMemoryContext(env,{operatorId,conversationId,recentLimit:4});
+    query=resolveResearchQuery(message,prior.lastUserMessage);
+  }
+  const generalNews=isGeneralNewsIntent(query);
+  const policy = generalNews ? {needed:true,reason:"brazil-first-news",ttlMinutes:15} : shouldResearchBeforeAnswer(query);
+  if (!policy.needed) return { body: {...body,allowUncertaintyResearch:false,researchMeta:{...(body.researchMeta||{}),skipLegacyResearch:true}}, policy, active: false };
 
   const researchStartedAt = Date.now();
-  const operatorId = await deriveOperatorId(body?.memoryKey);
-  const newsIntent = generalNews || isNewsIntent(message) || isLiveNewsIntent(message);
+  const newsIntent = generalNews || isNewsIntent(query) || isLiveNewsIntent(query);
   let cache = null;
   let research = null;
   let newsState = null;
@@ -403,8 +412,8 @@ async function prepareResearch(env, body) {
   let sources = [];
   let fromCache = false;
 
-  if (operatorId && !generalNews && !needsVisualResearch(message)) {
-    cache = await loadResearchCache(env, { operatorId, query: message });
+  if (operatorId && !generalNews && !needsVisualResearch(query)) {
+    cache = await loadResearchCache(env, { operatorId, query });
     if (cache?.hit) {
       fromCache = true;
       researchContext = cacheContext(cache);
@@ -415,8 +424,8 @@ async function prepareResearch(env, body) {
   if (!fromCache) {
     if (newsIntent) {
       const [googleResult, liveResult] = await Promise.allSettled([
-        generalNews ? Promise.resolve(null) : searchGoogle(env, message, { limit: 6 }),
-        loadLiveNewsContext(message, { limit: 6 })
+        generalNews ? Promise.resolve(null) : searchGoogle(env, query, { limit: 6 }),
+        loadLiveNewsContext(query, { limit: 6 })
       ]);
       research = googleResult.status === "fulfilled" ? googleResult.value : null;
       newsState = liveResult.status === "fulfilled" ? liveResult.value : null;
@@ -428,7 +437,7 @@ async function prepareResearch(env, body) {
         ...newsSourceSummary(newsState)
       ], 10);
     } else {
-      research = await searchGoogle(env, message, { limit: 6 });
+      research = await searchGoogle(env, query, { limit: 6 });
       if (research?.results?.length) {
         researchContext = research.contextText;
         sources = dedupeSources(sourceSummary(research), 8);
@@ -441,6 +450,7 @@ async function prepareResearch(env, body) {
   return {
     active: true,
     policy,
+    query,
     newsIntent,
     operatorId,
     cache,
@@ -465,7 +475,7 @@ async function prepareResearch(env, body) {
           }
         }
       : { ...body, allowUncertaintyResearch: false,
-          ...(newsIntent ? {webResearchContext:"Não foram obtidas fontes recentes verificáveis nesta consulta. Não apresente notícias, números ou acontecimentos como fatos atuais. Informe a indisponibilidade de confirmação.",researchMeta:{active:true,reason:policy.reason,newsIntent:true,skipLegacyResearch:true}} : {}) }
+          ...((newsIntent||policy.reason==="freshness"||policy.reason==="factual-current") ? {webResearchContext:"Não foram obtidas fontes recentes verificáveis nesta consulta. Não apresente números, acontecimentos ou dados atuais como fatos confirmados. Informe a indisponibilidade de confirmação.",researchMeta:{active:true,reason:policy.reason,newsIntent,skipLegacyResearch:true}} : {allowUncertaintyResearch:true}) }
   };
 }
 
@@ -526,7 +536,7 @@ async function executeAiCore(env, body) {
     answerLooksUncertain(aiResult.text)
   ) {
     const researchStartedAt = Date.now();
-    fallbackResearch = await searchGoogle(env, message, { limit: 6 });
+    fallbackResearch = await searchGoogle(env, resolveResearchQuery(message,memoryState.lastUserMessage), { limit: 6 });
     researchMs = Date.now() - researchStartedAt;
     if (fallbackResearch?.results?.length && fallbackResearch?.contextText) {
       aiMessage = buildMemoryAwareMessage(
@@ -705,7 +715,9 @@ async function handleAi(request, env) {
   let data = { ...core.data, smartRouting: routing, operationalPlan, backendVersion: BACKEND_VERSION };
 
   if (data.text) {
-    if (data.audioBase64) {
+    if (originalBody?.clientOwnsSpeech===true && originalBody?.preferFastResponse===true && !data.audioBase64) {
+      data.voice={provider:null,providerLabel:null,nextFallback:'browser-tts',deferred:true};
+    } else if (data.audioBase64) {
       data.voice = {
         provider: "elevenlabs",
         providerLabel: "ElevenLabs",
@@ -742,7 +754,7 @@ async function handleAi(request, env) {
 
   if (prepared.active) {
     const {
-      policy, newsIntent, operatorId: researchOperatorId, cache, research,
+      policy, query, newsIntent, operatorId: researchOperatorId, cache, research,
       newsState, sources, fromCache, researchMs, researchContext
     } = prepared;
 
@@ -767,7 +779,7 @@ async function handleAi(request, env) {
       if (!fromCache && researchOperatorId && data?.text && sources.length) {
         memoryWrite = await saveResearchMemory(env, {
           operatorId: researchOperatorId,
-          query: String(originalBody?.message || "").trim(),
+          query: query || String(originalBody?.message || "").trim(),
           answer: data.text,
           sources,
           provider: newsIntent ? "multi-source-live-news" : (research?.provider || "serper-google"),
@@ -802,7 +814,7 @@ async function handleAi(request, env) {
           ? "Research Memory"
           : (newsIntent ? "Google Search + Google News + GDELT" : (research?.providerLabel || "Google Search via Serper")),
         configured: true,
-        query: String(originalBody?.message || "").trim(),
+        query: query || String(originalBody?.message || "").trim(),
         sourceCount: sources.length,
         sources,
         searchedAt: searchedAt || null,
