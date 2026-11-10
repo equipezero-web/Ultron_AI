@@ -22,6 +22,7 @@ export function isGeneralNewsIntent(message) {
 export function isLiveNewsIntent(message) {
   const text = normalizeText(message);
   if (!text) return false;
+  if(isGeneralNewsIntent(message))return true;
 
   const newsWords = /\b(noticia|noticias|novidade|novidades|news|manchete|manchetes|acontecendo|circulando|destaque|destaques|ultimas|agora|hoje)\b/;
   const freshnessWords = /\b(agora|hoje|momento|atual|atuais|recentes|ultima|ultimas|circulando|acontecendo)\b/;
