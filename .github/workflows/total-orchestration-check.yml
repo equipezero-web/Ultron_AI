@@ -14,6 +14,9 @@ on:
       - 'modules/orchestrator-ui-bridge-v4270.js'
       - 'modules/telemetry-client-v4270.js'
       - 'backend/orchestration-engine.js'
+      - 'backend/action-catalog.js'
+      - 'modules/jarvis-action-engine.js'
+      - 'tests/jarvis-autonomy.mjs'
       - 'backend/worker.js'
       - 'backend/wrangler.jsonc'
       - '.github/workflows/total-orchestration-check.yml'
@@ -30,6 +33,9 @@ on:
       - 'modules/orchestrator-ui-bridge-v4270.js'
       - 'modules/telemetry-client-v4270.js'
       - 'backend/orchestration-engine.js'
+      - 'backend/action-catalog.js'
+      - 'modules/jarvis-action-engine.js'
+      - 'tests/jarvis-autonomy.mjs'
       - 'backend/worker.js'
       - 'backend/wrangler.jsonc'
       - '.github/workflows/total-orchestration-check.yml'
@@ -57,6 +63,8 @@ jobs:
           node --check modules/telemetry-client-v4270.js
           node --check backend/orchestration-engine.js
           node --check backend/worker.js
+          node --check modules/jarvis-action-engine.js
+          node tests/jarvis-autonomy.mjs
 
       - name: Verify persistent orchestration backend
         run: |

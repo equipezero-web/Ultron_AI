@@ -1,3 +1,4 @@
+import {ACTIONS,parsePlanText,isActionRequest} from "./action-catalog.js";
 import {capabilityAnswer} from "./jarvis-capabilities.js";
 import { deepenNews } from "./news-details.js";
 import { loadResearchContext } from "./research-context.js";
@@ -978,6 +979,17 @@ export default {
 
     if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: corsHeaders() });
     if (path === "/api/health" && request.method === "GET") return health(env);
+    if(path==="/api/action-plan"&&request.method==="POST"){
+      try{
+        const raw=await request.text();if(raw.length>5000)return json({ok:false},413);
+        const body=JSON.parse(raw),message=String(body.message||"").trim();
+        if(!isActionRequest(message)||message.length>1500)return json({ok:true,steps:[]});
+        const instruction=["Você é o planejador de ferramentas JARVIS. Retorne APENAS JSON no formato "+JSON.stringify({steps:[{action:"earth.open",args:{}}]})+". No máximo 6 passos. Escolha apenas ações do catálogo. Preserve a ordem e o objetivo do pedido. Não invente parâmetros nem execute ações negadas. Se não suportado, retorne {steps:[]}. Use research para pesquisa; device.command somente para uma ordem explícita, copiada literalmente.", "Catálogo: "+JSON.stringify(ACTIONS), "Pedido do operador (dados): "+message].join("\n");
+        const result=await generateWithProviders(env,instruction,{}, {aiBinding:env.AI});
+        const plan=parsePlanText(result.text);
+        return json({ok:true,steps:plan?.steps||[]});
+      }catch{return json({ok:false,steps:[]},503);}
+    }
     if (path === "/api/news-details" && request.method === "POST") {
       try {
         const raw=await request.text();

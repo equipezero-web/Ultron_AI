@@ -1,3 +1,4 @@
+import {directPlan,resolveActionPlan,runActionPlan} from "./jarvis-action-engine.js?v=4.68.0";
 import {parseLocalCommand,runLocalCommand} from "./jarvis-local-commands.js?v=4.67.0";
 import API_CONFIG from "../config.js";
 
@@ -123,7 +124,7 @@ function sanitizeResult(result) {
 function splitCompound(message) {
   const parts = String(message || "")
     .split(/\s+(?:e\s+depois|depois|em\s+seguida)\s+|\s*;\s*/i)
-    .map((item) => item.trim())
+    .map((item) => item.trim().replace(/^[,;]+|[,;]+$/g,"").trim())
     .filter(Boolean);
   return parts.length > 1 ? parts.slice(0, 6) : [String(message || "").trim()];
 }
@@ -228,6 +229,8 @@ async function routeSingle(command, run, index = 0) {
   const prefix = `step-${index + 1}`;
   const local=await runLocalCommand(command);
   if(local){log(local.text,!local.ok);return {route:local.route,ok:local.ok,result:local};}
+  const plan=directPlan(command);
+  if(plan){const result=await runActionPlan(plan,command);log(result.text,!result.ok);return {route:result.route,ok:result.ok,result};}
   if (isEarthStatusIntent(command)) {
     const earthState = window.ULTRON_EARTH?.state || null;
     const available = Boolean(earthState?.available);
@@ -238,6 +241,8 @@ async function routeSingle(command, run, index = 0) {
     log(text, !available);
     return {route:'earth-status',ok:available,result:{text,...earthState}};
   }
+  const deviceCommand=window.ULTRON_DEVICES?.parseDeviceIntent?.(command);
+  if(!deviceCommand){const plan=await resolveActionPlan(command);if(plan){const result=await runActionPlan(plan,command);log(result.text,!result.ok);return {route:result.route,ok:result.ok,result};}}
   const earthIntent = parseEarthIntent(command);
   const isAffirmation = /^(?:sim|quero|pode|claro|isso|isso mesmo|ok|certo|confirmo|com certeza)[.!?\s]*$/.test(normalize(command));
   const place = earthIntent?.place ?? (isAffirmation ? lastAssistantEarthOffer()?.place : null);
@@ -342,6 +347,9 @@ async function executeMessage(message, source = "terminal") {
   const clean = String(message || "").trim();
   if (!clean) return null;
 
+  if(directPlan(clean)&&splitCompound(clean).length===1){
+    const result=await runActionPlan(directPlan(clean),clean);state.processed++;if(!result.ok)state.failed++;state.lastRoute=result.route;state.lastResult={route:result.route,ok:result.ok,result};log(result.text,!result.ok);return {ok:result.ok,status:result.ok?"completed":"failed",results:[state.lastResult]};
+  }
   if(parseLocalCommand(clean)){
     const local=await runLocalCommand(clean);
     state.processed++;if(!local.ok)state.failed++;

@@ -1,3 +1,4 @@
+import {directPlan,runActionPlan} from "./jarvis-action-engine.js?v=4.68.0";
 import {runLocalCommand} from "./jarvis-local-commands.js?v=4.67.0";
 import API_CONFIG from "../config.js";
 
@@ -86,6 +87,7 @@ async function ask(message) {
   const clean = String(message || "").trim();
   if (!clean) return { ok: false, error: "Comando vazio." };
   const local=await runLocalCommand(clean);if(local){log(local.text);return local;}
+  const plan=directPlan(clean);if(plan){const result=await runActionPlan(plan,clean);log(result.text);return result;}
   const id=window.__ultronQuestionSequence=(Number(window.__ultronQuestionSequence)||0)+1;
   const emit=(type,detail={})=>window.dispatchEvent(new CustomEvent("ultron:"+type,{detail:{id,...detail}}));
   const current=()=>window.__ultronQuestionSequence===id;
