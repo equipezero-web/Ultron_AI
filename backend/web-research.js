@@ -3,6 +3,27 @@ const SEARCH_TIMEOUT_MS = 3200;
 const VISUAL_REQUEST=/\b(imagem|imagens|foto|fotos|fotografia|fotografias|mostre uma|mostre imagens|quero ver|exiba|visualize|ilustre|picture|photos)\b/i;
 
 const VISUAL_SUBJECT=/\b(país|países|governo|presidente|cidade|monumento|animal|planeta|vulcão|vulcao|tempestade|furacão|furacao|enchente|terremoto|espécie|especie|paisagem|mapa|veículo|veiculo|carro|moto|produto|celular|edifício|edificio|obra de arte|pessoa|cientista|ator|atriz|cantor|cantora|time|equipe|evento|lugar|destino|fotografia)\b/i;
+export function isSelfCapabilityQuestion(message){
+  const q=normalizeResearchQuestion(message).normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+  return /^(?:o que (?:voce|tu|o jarvis|o ultron) (?:pode|consegue|sabe|faz)|o que (?:voce|tu) (?:e capaz de fazer|faz)|quais (?:sao )?(?:as )?(?:suas|tuas) (?:capacidades|habilidades|funcoes|funcionalidades|ferramentas)|(?:me diga )?quais (?:sao )?(?:as )?funcionalidades (?:do|de) (?:jarvis|ultron)|(?:o que|como) (?:voce|tu) funciona|quem e voce|qual (?:e )?seu nome)(?:\b|[?!]|$)/.test(q);
+}
+export function mediaPolicy(message){
+  const q=normalizeResearchQuestion(message);
+  if(isSelfCapabilityQuestion(q)||!shouldResearchBeforeAnswer(q).needed)return {images:false,videos:false};
+  const normalized=q.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+  const explicit=/\b(?:video|videos|youtube|imagem|imagens|foto|fotos|ilustre|mostre|visualize)\b/.test(normalized);
+  const simple=/^(?:quanto (?:e|vale|custa)|qual (?:e )?(?:a capital|a temperatura|o horario|a hora|a data|o preco|a cotacao|o valor)|que horas|qual a idade|quando nasceu|quando morreu|qual o significado|o que significa)\b/.test(normalized);
+  if(simple&&!explicit)return {images:false,videos:false};
+  const substantive=needsVisualResearch(q)||/\b(?:noticias?|novidades?|aconteceu|como funciona|como fazer|como anda|como esta|explique|historia|tutorial|tecnologia|cientifico|demonstracao)\b/.test(normalized);
+  return {images:explicit||substantive,videos:/\b(?:video|videos|youtube|como funciona|como fazer|tutorial|demonstracao|noticias?|novidades?|aconteceu)\b/.test(normalized)||substantive};
+}
+const MEDIA_STOP=new Set("como funciona fazer qual quais quem quando onde porque sobre explique mostre quero saber atualmente hoje agora jarvis ultron video videos imagem imagens foto fotos uma para pelo pela com que por das dos".split(" "));
+function mediaRelevant(q,title){
+ const words=v=>String(v||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().match(/[a-z0-9]{3,}/g)||[];
+ const terms=[...new Set(words(q).filter(w=>!MEDIA_STOP.has(w)))];
+ const found=new Set(words(title));
+ return !terms.length||terms.some(w=>found.has(w));
+}
 export function needsVisualResearch(message){
   const text=String(message||"").trim();
   return VISUAL_REQUEST.test(text)||VISUAL_SUBJECT.test(text)||/\b(?:[A-ZÀ-ÖØ-Þ][a-zà-öø-ÿ]{2,})(?:\s+(?:[A-ZÀ-ÖØ-Þ][a-zà-öø-ÿ]{2,}|[A-Z0-9]{2,}))+/u.test(text)||/^(?:quem (?:é|e|foi)|onde fica|como é a aparência|mostre|fale sobre|conte sobre)\b/i.test(normalizeResearchQuestion(text));
@@ -115,6 +136,7 @@ function dedupeAndRank(results, limit = 6) {
 export function shouldResearchBeforeAnswer(message) {
   const text = normalizeResearchQuestion(message);
   if (!text) return { needed: false, reason: "empty", ttlMinutes: 0 };
+  if(isSelfCapabilityQuestion(text))return {needed:false,reason:"self-capabilities",ttlMinutes:0};
 
   // Never send private operational data, credentials or personal records to public search.
   if (/\b(?:meu|minha|meus|minhas|nosso|nossa)\s+(?:senha|password|token|api[_ -]?key|chave secreta|cpf|credenciais)\b/i.test(text)
@@ -224,8 +246,9 @@ export function youtubeVideoId(value){
     return /^[A-Za-z0-9_-]{11}$/.test(id||'')?id:null;
   }catch{return null;}
 }
-export async function searchGoogle(env, query, { limit = 6, media = true } = {}) {
+export async function searchGoogle(env, query, { limit = 6, media = null } = {}) {
   const startedAt = Date.now();
+  const selected=media===false?{images:false,videos:false}:media===true?{images:true,videos:true}:mediaPolicy(query);
   const apiKey = String(env?.SERPER_API_KEY || "").trim();
   if (!apiKey) {
     return {
@@ -259,8 +282,8 @@ export async function searchGoogle(env, query, { limit = 6, media = true } = {})
     };
     const [web,image,video]=await Promise.all([
       lookup("search",{num:Math.max(4,Math.min(10,Number(limit)+2||8)),autocorrect:true}),
-      media?lookup("images",{num:5}):Promise.resolve({data:null,error:null}),
-      media?lookup("videos",{num:6}):Promise.resolve({data:null,error:null})
+      selected.images?lookup("images",{num:5}):Promise.resolve({data:null,error:null}),
+      selected.videos?lookup("videos",{num:6}):Promise.resolve({data:null,error:null})
     ]);
     const data=web.data||{},imageData=image.data||{},videoData=video.data||{};
     const organic=Array.isArray(data.organic)?data.organic:[];
@@ -272,14 +295,14 @@ export async function searchGoogle(env, query, { limit = 6, media = true } = {})
         alt:clean(item?.title||q,160),
         sourceUrl:safeUrl(item?.link)
       }))
-      .filter(item=>item.src&&item.sourceUrl)
+      .filter(item=>item.src&&item.sourceUrl&&mediaRelevant(q,item.alt))
       .slice(0,4);
     const graphImage=safeUrl(data?.knowledgeGraph?.imageUrl);
     const graphSource=safeUrl(data?.knowledgeGraph?.descriptionLink||data?.knowledgeGraph?.website);
-    if(graphImage&&graphSource&&!images.some(i=>i.src===graphImage))images.push({src:graphImage,alt:clean(data.knowledgeGraph.title||q,160),sourceUrl:graphSource});
+    if(selected.images&&graphImage&&graphSource&&mediaRelevant(q,data.knowledgeGraph.title)&&!images.some(i=>i.src===graphImage))images.push({src:graphImage,alt:clean(data.knowledgeGraph.title||q,160),sourceUrl:graphSource});
     const videos=[];const seenVideos=new Set();
     let videoCandidates=[...(Array.isArray(videoData?.videos)?videoData.videos:[]),...organic];
-    if(media&&!videoCandidates.some(item=>youtubeVideoId(item?.link||item?.url))){
+    if(selected.videos&&!videoCandidates.some(item=>youtubeVideoId(item?.link||item?.url))){
       // A web-search fallback recovers actual YouTube results when the
       // dedicated video endpoint is unavailable or returns other hosts only.
       const youtube=await lookup("search",{q:q+" site:youtube.com/watch",num:5});
@@ -287,7 +310,7 @@ export async function searchGoogle(env, query, { limit = 6, media = true } = {})
     }
     for(const item of videoCandidates){
       const id=youtubeVideoId(item?.link||item?.url);
-      if(!id||seenVideos.has(id))continue;
+      if(!selected.videos||!id||seenVideos.has(id)||!mediaRelevant(q,item.title))continue;
       seenVideos.add(id);videos.push({id,title:clean(item.title||q,160),url:"https://www.youtube.com/watch?v="+id,thumbnail:safeUrl(item.imageUrl||item.thumbnailUrl)||"https://i.ytimg.com/vi/"+id+"/hqdefault.jpg",source:clean(item.channel||item.source||"YouTube",100)});
       if(videos.length===3)break;
     }
@@ -315,7 +338,7 @@ export async function searchGoogle(env, query, { limit = 6, media = true } = {})
         diverseDomains: new Set(results.map((item) => item.source)).size
       },
       error: web.error,
-      mediaStatus:{automatic:media,imageCount:images.length,videoCount:videos.length,imageError:image.error,videoError:video.error},
+      mediaStatus:{automatic:true,imageCount:images.length,videoCount:videos.length,imageError:image.error,videoError:video.error},
       searchedAt: new Date().toISOString(),
       elapsedMs: Date.now() - startedAt
     };
