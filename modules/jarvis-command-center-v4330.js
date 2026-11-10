@@ -1,3 +1,4 @@
+import { installStarkCommandCenter } from './stark-command-center-adapter.js?v=4.60.0';
 // JARVIS Command Center v4.33.0 — lightweight, functional dashboard.
 const stage = document.querySelector('.orb-stage');
 if (stage) {
@@ -294,5 +295,6 @@ if (stage) {
   window.addEventListener('ultron:processing-end',()=>{state.textContent='STANDBY';});
   window.addEventListener('ultron:speech-start',()=>{state.textContent='FALANDO';logEvent('VOICE // OUTPUT');});
   window.addEventListener('ultron:speech-end',()=>{state.textContent='STANDBY';});
-  window.JARVIS_COMMAND_CENTER = {version:'4.52.0',setVisualMode,open:(name)=>actions[name]?.(),get active(){return true;}};
+  window.JARVIS_COMMAND_CENTER = {version:'4.60.0',setVisualMode,open:(name)=>actions[name]?.(),get active(){return true;}};
+  installStarkCommandCenter(ui,window.JARVIS_COMMAND_CENTER);
 }

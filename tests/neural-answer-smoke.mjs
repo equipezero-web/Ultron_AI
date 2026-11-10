@@ -114,6 +114,23 @@ try {
       throw error;
     }
     assert.ok(await page.$eval('.ultron-neural-answer-media img',el=>el.src.includes('example.org/picture.jpg')));
+    await page.waitForFunction(()=>!!window.ULTRON_NEURAL_PARITY&&window.ULTRON_NEURAL_PARITY.report().starkCore&&window.ULTRON_NEURAL_PARITY.report().innerMesh,{timeout:15000});
+    const parity=await page.evaluate(()=>{
+      const core=window.ULTRON_STARK_CORE,mesh=window.ULTRON_STARK_MESH;
+      const focused=core.focus('COMANDOS');
+      const marked=document.querySelector('#command-input').dataset.starkFocused==='true';
+      core.processing(true);
+      const processing=document.querySelector('#jarvis-cc-state').textContent==='PROCESSANDO';
+      core.processing(false);
+      mesh.clearFocus();
+      return {focused,marked,processing,cleared:!document.querySelector('#command-input').hasAttribute('data-stark-focused'),nodes:mesh.nodes.length,mode:core.mode,legacy:!!document.querySelector('.stark-vortex'),parity:window.ULTRON_NEURAL_PARITY.report()};
+    });
+    assert.ok(parity.focused&&parity.marked&&parity.processing&&parity.cleared&&parity.nodes>0,JSON.stringify(parity));
+    assert.equal(parity.mode,'command-center');
+    assert.equal(parity.legacy,false,'Do not restore legacy vortex over Neural Ring');
+    assert.equal(parity.parity.starkCore,true);
+    assert.equal(parity.parity.innerMesh,true);
+    assert.equal(parity.parity.palmMatrix,false,'PalmMatrix remains untouched in current layout');
     await page.close();
   }
   console.log('NEURAL ANSWER PASS: ring only at boot; on-demand text, image, sources; mobile laptop TV');
