@@ -64,6 +64,7 @@ if(center){
       img.src=src;img.alt=String(item?.alt||item?.title||'Imagem vinculada à fonte');
       const thumbnail=url(item?.thumbnail);
       img.onerror=()=>{
+        if(!img.isConnected)return;
         if(thumbnail&&img.src!==thumbnail){img.src=thumbnail;return;}
         img.remove();
         if(!media.querySelector('img,iframe,.ultron-media-video'))media.textContent='Não foi possível carregar as imagens desta fonte.';
@@ -84,7 +85,11 @@ if(center){
       const poster=document.createElement('img');poster.loading='eager';poster.referrerPolicy='no-referrer';poster.alt=String(item.title||'Vídeo relacionado');
       poster.src=url(item.thumbnail)||'https://i.ytimg.com/vi/'+id+'/hqdefault.jpg';
       const caption=document.createElement('span');caption.textContent='▶ '+String(item.title||'Assistir vídeo no YouTube');
-      button.append(poster,caption);block.append(button);media.append(block);
+      button.append(poster,caption);block.append(button);
+      // Keep the first related video near the first photograph rather than
+      // below a long list of images that is hidden by the compact media lane.
+      const firstImage=media.querySelector(':scope > img');
+      if(videoIds.size===1&&firstImage)firstImage.after(block);else media.append(block);
       button.addEventListener('click',()=>{
         const frame=document.createElement('iframe');
         frame.src='https://www.youtube-nocookie.com/embed/'+id+'?playsinline=1&rel=0';
@@ -140,7 +145,7 @@ if(center){
       return;
     }
     if(box.hidden)present(spoken);
-    else if(text.textContent!==spoken){text.textContent=spoken.slice(0,6500);}
+    // Preserve the full sourced answer and its visuals when narration is abbreviated.
   });
   window.addEventListener('ultron:intelligence-visual-update',event=>{
     // Background refresh updates stored news, but should not interrupt the
