@@ -278,9 +278,8 @@ async function execute() {
   await askUltron(command);
 }
 
-let neuralQuestionId=0;
 async function askUltron(command) {
-  const questionId=++neuralQuestionId;
+  const questionId=window.__ultronQuestionSequence=(Number(window.__ultronQuestionSequence)||0)+1;
   window.dispatchEvent(new CustomEvent("ultron:question-start",{detail:{id:questionId,question:command}}));
   const thinking = document.createElement("p");
   thinking.textContent = "> ULTRON CORE: roteando comando e contexto óptico...";
@@ -323,7 +322,7 @@ async function askUltron(command) {
     const data = await readApiResponse(response);
     if (!response.ok) throw new Error(getErrorMessage(data, response.status));
     if (!data?.text) throw new Error("O gateway respondeu sem texto.");
-    if(questionId!==neuralQuestionId)return; // Discard stale results from older questions.
+    if(questionId!==window.__ultronQuestionSequence)return; // Discard stale results from older questions.
 
     const provider = data.providerLabel || data.provider || "AI";
     addLog(output, `ULTRON [${provider}]: ${data.text}`);
@@ -332,7 +331,7 @@ async function askUltron(command) {
     if (data.audioBase64) playVoice(data.audioBase64, data.audioMimeType || "audio/mpeg");
     else window.ULTRON_VOICE_OUTPUT?.speak?.(data.text,{reason:"fallback",announce:false});
   } catch (error) {
-    if(questionId!==neuralQuestionId)return;
+    if(questionId!==window.__ultronQuestionSequence)return;
     addLog(output, `ULTRON AI ERROR: ${error.message}`, "alert");
     window.dispatchEvent(new CustomEvent("ultron:answer-error",{detail:{id:questionId,message:error.message}}));
   } finally {
