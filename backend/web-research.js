@@ -2,10 +2,10 @@ const SERPER_ENDPOINT = "https://google.serper.dev/search";
 const SEARCH_TIMEOUT_MS = 3200;
 const VISUAL_REQUEST=/\b(imagem|imagens|foto|fotos|fotografia|fotografias|mostre uma|mostre imagens|quero ver|exiba|visualize|ilustre|picture|photos)\b/i;
 
-const VISUAL_SUBJECT=/\b(china|brasil|estados unidos|eua|rússia|russia|ucrânia|ucrania|japão|japao|índia|india|europa|país|países|governo|presidente|cidade|monumento|animal|planeta|vulcão|vulcao|tempestade|furacão|furacao|enchente|terremoto)\b/i;
+const VISUAL_SUBJECT=/\b(país|países|governo|presidente|cidade|monumento|animal|planeta|vulcão|vulcao|tempestade|furacão|furacao|enchente|terremoto|espécie|especie|paisagem|mapa|veículo|veiculo|carro|moto|produto|celular|edifício|edificio|obra de arte|pessoa|cientista|ator|atriz|cantor|cantora|time|equipe|evento|lugar|destino|fotografia)\b/i;
 export function needsVisualResearch(message){
   const text=String(message||"").trim();
-  return VISUAL_REQUEST.test(text)||VISUAL_SUBJECT.test(text);
+  return VISUAL_REQUEST.test(text)||VISUAL_SUBJECT.test(text)||/^(?:quem (?:é|e|foi)|onde fica|como é a aparência|mostre|fale sobre|conte sobre)\b/i.test(normalizeResearchQuestion(text));
 }
 export function normalizeResearchQuestion(message){
   return String(message||'').trim().replace(/^(?:(?:ei|olá|ola|hey)\s+)?(?:jarvis|ultron)[,!:\s]+/i,'').replace(/^(?:por favor[,\s]+|me diga[,\s]+|me fale[,\s]+|me informe[,\s]+)+/i,'').trim();
@@ -22,7 +22,7 @@ export function resolveResearchQuery(message,previousQuestion=''){
 }
 const CURRENT_TERMS = /\b(hoje|agora|atual|atuais|recentemente|atualmente|ultimamente|recente|recentes|ultimo|último|ultimos|últimos|latest|2026|preco|preço|cotacao|cotação|resultado|placar|eleicao|eleição|presidente|ceo|versao|versão|lancamento|lançamento)\b/i;
 const SEARCH_TERMS = /\b(pesquise|pesquisar|procure|buscar|busque|google|internet|web|fontes?|confirme|verifique|investigue)\b/i;
-const FACTUAL_START = /^(quem|quando|onde|qual|quais|quanto|quantos|como funciona|como está|como esta|como anda|como foi|como está indo|o que aconteceu|o que e|o que é|por que|porque)\b/i;
+const FACTUAL_START = /^(quem|quando|onde|qual|quais|quanto|quantos|quantas|como|o que|o quê|por que|por quê|porque|pra que|para que|em que|de que|de onde|a que|existe|existem|é verdade|e verdade|tem|há|ha)\b/i;
 const UNCERTAINTY = /\b(n[aã]o sei|n[aã]o tenho (?:essa |essas )?informa[cç][aã]o|n[aã]o posso confirmar|n[aã]o consigo confirmar|talvez|pode ser|n[aã]o tenho certeza|meu conhecimento|sem acesso (?:a|à) internet|n[aã]o tenho dados atuais|quer que eu pesquise|posso pesquisar|deseja que eu pesquise|preciso pesquisar|informa[cç][oõ]es atualizadas)\b/i;
 
 function clean(value, max = 1200) {
@@ -116,6 +116,10 @@ export function shouldResearchBeforeAnswer(message) {
   const text = normalizeResearchQuestion(message);
   if (!text) return { needed: false, reason: "empty", ttlMinutes: 0 };
 
+  // Never send private operational data, credentials or personal records to public search.
+  if (/\b(?:senha|password|token|api[_ -]?key|chave secreta|cpf|credenciais)\b/i.test(text)
+      || /\b(?:meu|minha|meus|minhas|nosso|nossa)\s+(?:saldo|conta|pedido|pedidos|arquivo|arquivos|senha|dados|e-mail|email|agenda|cliente|clientes|faturamento|estoque|sistema|repositório|repositorio)\b/i.test(text))
+    return {needed:false,reason:"private-context",ttlMinutes:0};
   if (/^(?:calcule|quanto é|quanto e)\s+\d+[\d\s.,+*/%()-]*[?!.]*$/i.test(text)) return {needed:false,reason:"calculation",ttlMinutes:0};
 
   // Do not web-search greetings, conversational replies, creative drafting, or device commands.
@@ -131,6 +135,15 @@ export function shouldResearchBeforeAnswer(message) {
   if (FACTUAL_START.test(text)) return { needed: true, reason: "factual", ttlMinutes: 10080 };
   if (/\b(explique|me diga|me informe|informações sobre|notícias sobre|dados sobre|história de|qualidade de|compare|comparação|é verdade que|sabe sobre)\b/i.test(text))
     return { needed: true, reason:"knowledge-query",ttlMinutes:1440 };
+  // Open-domain default: do not require the subject to be in any catalog.
+  // A question or informative request can concern any entity or discipline.
+  if (/[?？]/.test(text)||/\b(?:fale|conte|explique|explica|detalhes|resuma|resumo|significa|significado|definição|definicao|diferença|diferenca|compare|comparar|recomende|recomendação|recomendacao|vantagens|desvantagens|melhor|melhores|vale a pena|informações|informacoes|dados|sobre|história|historia|me ajude a entender|quero saber|o que acha de)\b/i.test(text))
+    return {needed:true,reason:"open-domain-question",ttlMinutes:180};
+  // Short public subject queries ("fotossíntese", "Tesla Model 3", etc.)
+  // are also searchable, unless clearly a conversational statement.
+  if (/^[\p{L}\p{N}][\p{L}\p{N}\s.'’–-]{1,100}$/u.test(text)&&text.split(/\s+/).length<=6
+      && !/^(?:eu|meu|minha|meus|minhas|nós|nos|estou|sou|tenho|quero|vou|gosto|não|nao|sim|obrigado|obrigada|tá|ta|isso|beleza|perfeito|entendi|vamos|continue|prosseguir|pode|certo|ok|bom|boa|até|ate)\b/i.test(text))
+    return {needed:true,reason:"open-domain-subject",ttlMinutes:180};
   return { needed: false, reason: "conversation", ttlMinutes: 0 };
 }
 
