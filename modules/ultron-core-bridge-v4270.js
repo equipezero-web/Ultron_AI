@@ -83,37 +83,44 @@ function currentTelemetry() {
 async function ask(message) {
   const clean = String(message || "").trim();
   if (!clean) return { ok: false, error: "Comando vazio." };
-  if (!API_BASE) return { ok: false, error: "Backend não configurado." };
-
-  const response = await fetch(`${API_BASE}/api/ai`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    cache: "no-store",
-    body: JSON.stringify({
-      message: clean,
-      memoryKey: window.ULTRON_MEMORY?.getMemoryKey?.() || null,
-      conversationId: window.ULTRON_MEMORY?.getConversationId?.() || null,
-      telemetry: currentTelemetry()
-    })
-  });
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok || !data?.text) {
-    const error = data?.details || data?.error || `HTTP ${response.status}`;
-    log(`AI ERROR: ${error}`, true);
-    return { ok: false, error };
-  }
-
-  const provider = data.providerLabel || data.provider || "AI";
-  log(`ULTRON [${provider}]: ${data.text}`);
-  prepareVisual(data);
-  const played = playAudio(data.audioBase64, data.audioMimeType || "audio/mpeg");
-  if (!played) {
-    window.ULTRON_VOICE_OUTPUT?.speak?.(data.text, {
-      reason: "orchestrator-ai",
-      announce: false
+  const id=window.__ultronQuestionSequence=(Number(window.__ultronQuestionSequence)||0)+1;
+  const emit=(type,detail={})=>window.dispatchEvent(new CustomEvent("ultron:"+type,{detail:{id,...detail}}));
+  const current=()=>window.__ultronQuestionSequence===id;
+  emit("question-start",{question:clean});
+  try {
+    if (!API_BASE) throw new Error("Backend não configurado.");
+    const response = await fetch(`${API_BASE}/api/ai`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      cache: "no-store",
+      body: JSON.stringify({
+        message: clean,
+        clientOwnsSpeech:true,
+        memoryKey: window.ULTRON_MEMORY?.getMemoryKey?.() || null,
+        conversationId: window.ULTRON_MEMORY?.getConversationId?.() || null,
+        telemetry: currentTelemetry()
+      })
     });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok || !data?.text) throw new Error(data?.details || data?.error || `HTTP ${response.status}`);
+    if (!current()) return {ok:true,...data,superseded:true};
+    const provider = data.providerLabel || data.provider || "AI";
+    log(`ULTRON [${provider}]: ${data.text}`);
+    // The orchestrator handles both typed and spoken commands. Publish the
+    // answer to the same Neural Ring surface before audio or legacy visuals.
+    emit("answer",{text:data.text,visualContext:data.visualContext,webResearch:data.webResearch});
+    prepareVisual(data);
+    const played = playAudio(data.audioBase64, data.audioMimeType || "audio/mpeg");
+    if (!played) window.ULTRON_VOICE_OUTPUT?.speak?.(data.text,{reason:"orchestrator-ai",announce:false});
+    return { ok: true, ...data };
+  } catch(error) {
+    const message=String(error?.message||error);
+    if(current()){
+      log(`AI ERROR: ${message}`, true);
+      emit("answer-error",{message});
+    }
+    return {ok:false,error:message};
   }
-  return { ok: true, ...data };
 }
 
 async function activateCamera({ openPreview = true } = {}) {
