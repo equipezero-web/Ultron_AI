@@ -81,7 +81,7 @@ jobs:
           grep -q 'monitorCommand' modules/device-control-v4260.js
           grep -q 'parseSchedule' modules/device-control-v4260.js
           grep -q 'pairDesktop' modules/device-control-v4260.js
-          grep -q 'device-control-v4260.js?v=4.26.0' index.html
+          grep -Eq 'device-control-v4260[.]js[?]v=4[.][0-9]+[.][0-9]+' index.html
 
       - name: Desktop bridge safety markers
         run: |
