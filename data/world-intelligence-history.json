@@ -4,10 +4,22 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-10T19:33:57.494Z",
-  "oldestEventAt": "2026-11-09T19:34:33.000Z",
-  "windowStartAt": "2026-11-09T19:33:57.494Z",
+  "updatedAt": "2026-11-10T19:45:44.554Z",
+  "oldestEventAt": "2026-11-09T22:38:00.000Z",
+  "windowStartAt": "2026-11-09T19:45:44.554Z",
   "events": [
+    {
+      "id": "event-93b764c4",
+      "category": "santa-catarina",
+      "title": "Santa Catarina terá mudança no tempo a partir de quarta-feira, com previsão de temporais na quinta",
+      "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxOTURIQ1Y4X2FOYVZrdkg0X2V5VVozUFpLQmtXWWxxS1Nrc0g5eHNrRExrN0g4Vkd4czBrWXBkTTdTeEI2dDB3akNjM3VVcUJ6VUl4Ym1ZcVhZNHBTdzVLLXVhclBFelRTdU5FWWJyZFB5U0NmVnlhLXU0T1BKelVFX2JFSkd2T1QyaWNlT094a1dvR1BUV1hqeklvRkNzWjNwbVA4LUR1amNZVWctS09QVHRvT09MUlJqLTBKVlZ6S01nSU5hSklRc3JRQ2tyUQ",
+      "description": "Santa Catarina terá mudança no tempo a partir de quarta-feira, com previsão de temporais na quinta &nbsp;&nbsp; Jornal do Comércio",
+      "imageUrl": null,
+      "source": "Jornal do Comércio",
+      "publishedAt": "2026-11-10T19:36:58.000Z",
+      "firstSeenAt": "2026-11-10T19:45:44.554Z",
+      "lastSeenAt": "2026-11-10T19:45:44.554Z"
+    },
     {
       "id": "event-b8968048",
       "category": "mundo",
@@ -18,7 +30,31 @@
       "source": "Grêmio Náutico União",
       "publishedAt": "2026-11-10T19:30:22.000Z",
       "firstSeenAt": "2026-11-10T19:33:57.494Z",
-      "lastSeenAt": "2026-11-10T19:33:57.494Z"
+      "lastSeenAt": "2026-11-10T19:45:44.554Z"
+    },
+    {
+      "id": "event-aa3fed6f",
+      "category": "mundo",
+      "title": "Paciente 63: Por que o 'especialista em fim do mundo' Julio Rojas tem medo da IA",
+      "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE5mYUoybWhsQks3QlNhbW1Ca3JJcHE1TXJVb0w0MFYyVWJHSk13VFVOdVFIcVF0MDJlWWRua21rbEMyQi1pZ3lhQ0FHU2hKSHBHWlFGd3VtbHpyYy16eThkN0pTNNIBaEFVX3lxTE12d2ZwUU1TbjhTZXhPdVAxTTlzbkVBRHhkd1hXQUxYWlNBMlhLY2Z6S01vUmZkUEVhQzU3Wmw2cmNwODNTbkRPRVZCX3NVcC1YTGxiTDNLYjhGY3NpRm1BX0VuWDY5SEo4",
+      "description": "Paciente 63: Por que o 'especialista em fim do mundo' Julio Rojas tem medo da IA &nbsp;&nbsp; BBC",
+      "imageUrl": null,
+      "source": "BBC",
+      "publishedAt": "2026-11-10T19:30:00.000Z",
+      "firstSeenAt": "2026-11-10T19:45:44.554Z",
+      "lastSeenAt": "2026-11-10T19:45:44.554Z"
+    },
+    {
+      "id": "event-46b1159",
+      "category": "brasil",
+      "title": "Vídeo de FHC em casa é investigado pela polícia: o que se sabe sobre imagens",
+      "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE9BWE5RbER2MWMyUjF5S3JjVG0yYzFwOUVBQlZkb1Y2WXJLMm9Bd2xOWk9nTmd6Zjl4a0FLX1hXSmxQcnQxT2lOd2dUSmduS0pCZzQya3k3UXV6amdaQ3NGNkplb9IBaEFVX3lxTE1PSTQtZzhPeGNzcXlMMzFiWjlwUUcwVkJvS0JVdFB0T2FRMThjMlJ4d0RXaWFGYVdsTjFIZjRMTHg5SFB2enUxN3Q1MjlwU29rNVBaY0VpNHN1VThra0poLUE1YTA4T1N3",
+      "description": "Vídeo de FHC em casa é investigado pela polícia: o que se sabe sobre imagens &nbsp;&nbsp; BBC",
+      "imageUrl": null,
+      "source": "BBC",
+      "publishedAt": "2026-11-10T19:26:06.000Z",
+      "firstSeenAt": "2026-11-10T19:45:44.554Z",
+      "lastSeenAt": "2026-11-10T19:45:44.554Z"
     },
     {
       "id": "event-b6550c0",
@@ -37,12 +73,12 @@
       "category": "brasil",
       "title": "CNU 2025: governo republica edital com novas listas de espera",
       "url": "https://agenciabrasil.ebc.com.br/geral/noticia/2026-11/cnu-2025-governo-republica-edital-com-novas-listas-de-espera",
-      "description": "O Ministério da Gestão e da Inovação em Serviços Públicos (MGI) republicou o edital 300/2026 de classificação de candidatos aprovados para preencher as vagas que sobraram da segunda edição do Concurso Público Nacional Unificado (CNU 2), aplicado em 2025. A lista de espera – organizada pela Escola Nacional de Administração Pública (Enap) – é para cargos de nível superior e nível intermediário entre os órgãos e entidades participantes do certame. Notícias relacionadas: Anvisa registra duas novas canetas emagrecedoras de semaglutida. Um terço dos jovens de 16 a 29 anos quer chegar à universidade. Especialistas alertam para risco de reinfecção da",
+      "description": "O Ministério da Gestão e da Inovação em Serviços Públicos (MGI) republicou o edital 300/2026 de classificação de candidatos aprovados para preencher as vagas que sobraram da segunda edição do Concurso Público Nacional Unificado (CNU 2), aplicado em 2025. A lista de espera – organizada pela Escola Nacional de Administração Pública (Enap) – é para cargos de nível superior e nível intermediário entre os órgãos e entidades participantes do certame. Notícias relacionadas: Anvisa registra duas novas canetas emagrecedoras de semaglutida. Um terço dos jovens de 16 a 29 anos quer chegar à universidade. Especialistas alertam para risco de reinfecção da dengue. O reprocessamento dos resultados substitui o Edital Enap 260/2026, publicado em setembro de 2026 e anulado por inteiro, em 6 de outubro, por segurança jurídica. O novo edital segue os mesmos dispositivos e parâmetros dos editais de convocação anteriores do CNU 2, como os critérios de classificação, as regras de reserva de vagas e os prazos. Vagas O novo documento traz o número de vagas para ampla concorrência e para as reservas previstas",
       "imageUrl": "https://imagens.ebc.com.br/Y5-lAKMdjBWEhCsvikP5P3r39C4=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2025/10/05/toms8688.jpg?itok=_6pC23iF",
       "source": "Agência Brasil",
       "publishedAt": "2026-11-10T18:35:00.000Z",
       "firstSeenAt": "2026-11-10T19:33:57.494Z",
-      "lastSeenAt": "2026-11-10T19:33:57.494Z"
+      "lastSeenAt": "2026-11-10T19:45:44.554Z"
     },
     {
       "id": "event-89723a2b",
@@ -54,19 +90,19 @@
       "source": "Estadão",
       "publishedAt": "2026-11-10T18:33:00.000Z",
       "firstSeenAt": "2026-11-10T19:33:57.494Z",
-      "lastSeenAt": "2026-11-10T19:33:57.494Z"
+      "lastSeenAt": "2026-11-10T19:45:44.554Z"
     },
     {
       "id": "event-a3d974d9",
       "category": "brasil",
       "title": "Anvisa determina apreensão de suplementos alimentares",
       "url": "https://agenciabrasil.ebc.com.br/saude/noticia/2026-11/anvisa-determina-apreensao-de-suplementos-alimentares",
-      "description": "A Agência Nacional de Vigilância Sanitária (Anvisa) determinou nesta terça-feira (10) a apreensão de suplementos alimentares divulgados e vendidos de maneira irregular no país. A resolução foi publicada no Diário Oficial da União (DOU). Em nota, a agência informou que suplementos produzidos pela empresa W Nutry Ltda. não podem ser fabricados, vendidos, distribuídos, divulgados nem utilizados. “Não foram identificadas notificações ou registros desses produtos junto à Anvisa”. Notícias relacionadas: Anvisa manda retirar do mercado duas marcas de suplemento alimentar. Anvisa proíbe saneante e pó descolorante. Anvisa determina recolhimento de ema",
+      "description": "A Agência Nacional de Vigilância Sanitária (Anvisa) determinou nesta terça-feira (10) a apreensão de suplementos alimentares divulgados e vendidos de maneira irregular no país. A resolução foi publicada no Diário Oficial da União (DOU). Em nota, a agência informou que suplementos produzidos pela empresa W Nutry Ltda. não podem ser fabricados, vendidos, distribuídos, divulgados nem utilizados. “Não foram identificadas notificações ou registros desses produtos junto à Anvisa”. Notícias relacionadas: Anvisa manda retirar do mercado duas marcas de suplemento alimentar. Anvisa proíbe saneante e pó descolorante. Anvisa determina recolhimento de emagrecedor Ultra Shape. As mesmas sanções foram aplicadas a todos os lotes do suplemento alimentar de colostro bovino em pó da marca Muuh Magic, que não possui notificação sanitária junto à Anvisa. O produto é fabricado pela Hupper Nutrition Ltda. “A divulgação do produto incluía alegações terapêuticas, funcionais e de saúde não autorizadas, incluindo prevenção de diabetes e de doenças crônicas, tratamento de ansiedade e estresse, melhora da saúde",
       "imageUrl": "https://imagens.ebc.com.br/kL4sBdVHau6U467C9Nn7O68ygWw=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/11-11-2020_sede_anvisa-4_0.jpg?itok=-3OpV90w",
       "source": "Agência Brasil",
       "publishedAt": "2026-11-10T18:18:00.000Z",
       "firstSeenAt": "2026-11-10T19:33:57.494Z",
-      "lastSeenAt": "2026-11-10T19:33:57.494Z"
+      "lastSeenAt": "2026-11-10T19:45:44.554Z"
     },
     {
       "id": "event-ca6bd3d2",
@@ -78,7 +114,7 @@
       "source": "Tribuna do Sertão",
       "publishedAt": "2026-11-10T18:03:00.000Z",
       "firstSeenAt": "2026-11-10T19:33:57.494Z",
-      "lastSeenAt": "2026-11-10T19:33:57.494Z"
+      "lastSeenAt": "2026-11-10T19:45:44.554Z"
     },
     {
       "id": "event-626384fb",
@@ -90,7 +126,7 @@
       "source": "Blog do Jaime",
       "publishedAt": "2026-11-10T18:00:00.000Z",
       "firstSeenAt": "2026-11-10T19:33:57.494Z",
-      "lastSeenAt": "2026-11-10T19:33:57.494Z"
+      "lastSeenAt": "2026-11-10T19:45:44.554Z"
     },
     {
       "id": "event-acbc2221",
@@ -126,7 +162,7 @@
       "source": "ND Mais",
       "publishedAt": "2026-11-10T15:17:04.000Z",
       "firstSeenAt": "2026-11-10T19:33:57.494Z",
-      "lastSeenAt": "2026-11-10T19:33:57.494Z"
+      "lastSeenAt": "2026-11-10T19:45:44.554Z"
     },
     {
       "id": "event-72a2f8d0",
@@ -186,7 +222,7 @@
       "source": "Folha Vitória",
       "publishedAt": "2026-11-10T14:15:27.000Z",
       "firstSeenAt": "2026-11-10T19:33:57.494Z",
-      "lastSeenAt": "2026-11-10T19:33:57.494Z"
+      "lastSeenAt": "2026-11-10T19:45:44.554Z"
     },
     {
       "id": "event-c22589e1",
@@ -198,7 +234,7 @@
       "source": "Diário do Estado",
       "publishedAt": "2026-11-10T13:02:09.000Z",
       "firstSeenAt": "2026-11-10T19:33:57.494Z",
-      "lastSeenAt": "2026-11-10T19:33:57.494Z"
+      "lastSeenAt": "2026-11-10T19:45:44.554Z"
     },
     {
       "id": "event-91209c87",
@@ -210,7 +246,7 @@
       "source": "band.com.br",
       "publishedAt": "2026-11-10T11:13:13.000Z",
       "firstSeenAt": "2026-11-10T19:33:57.494Z",
-      "lastSeenAt": "2026-11-10T19:33:57.494Z"
+      "lastSeenAt": "2026-11-10T19:45:44.554Z"
     },
     {
       "id": "event-6913a802",
@@ -234,7 +270,7 @@
       "source": "Jornal Diário do Povo",
       "publishedAt": "2026-11-10T09:03:00.000Z",
       "firstSeenAt": "2026-11-10T19:33:57.494Z",
-      "lastSeenAt": "2026-11-10T19:33:57.494Z"
+      "lastSeenAt": "2026-11-10T19:45:44.554Z"
     },
     {
       "id": "event-3088692b",
@@ -319,18 +355,6 @@
       "publishedAt": "2026-11-09T22:38:00.000Z",
       "firstSeenAt": "2026-11-10T00:14:38.811Z",
       "lastSeenAt": "2026-11-10T00:14:38.811Z"
-    },
-    {
-      "id": "event-de659216",
-      "category": "santa-catarina",
-      "title": "Temporais atingem 54 municípios e deixam 11 cidades em situação de emergência em SC",
-      "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxNM1R3RnRROUVXS2lhalJpTTB0dUtmN1RjQTZqcHZYanBKX29sakdwZkh2bDdxMGlreHlhYURmX19lV1ZMcWItSGgwRDVyRjJDSU1NUVQxN3RLRXRTLThOYXhFZ1hIMkhVUEZFTElRSkJkVm55bTJiV2xxVkxaXzk3bTFEQlo0SFN2eWhLaG5ZRkZxN2F6bUZnWGJodmpTR1M3SU1nMzQxWjdoOEZlclh6dEZnZWJncVkybHk3anZwRXE",
-      "description": "",
-      "imageUrl": null,
-      "source": "AJ Notícias",
-      "publishedAt": "2026-11-09T19:34:33.000Z",
-      "firstSeenAt": "2026-11-10T00:14:38.811Z",
-      "lastSeenAt": "2026-11-10T15:42:11.206Z"
     }
   ],
   "checks": [
@@ -393,14 +417,30 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-10T19:45:44.554Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 14,
+      "newArticles": 3,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "asia"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
-  "checkCount": 4,
-  "lastSuccessfulAt": "2026-11-10T19:33:57.494Z",
+  "checkCount": 5,
+  "lastSuccessfulAt": "2026-11-10T19:45:44.554Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-10T19:33:57.494Z",
+      "checkedAt": "2026-11-10T19:45:44.554Z",
       "warnings": [
         {
           "id": "56369",
@@ -484,7 +524,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-10T19:33:57.494Z",
+      "checkedAt": "2026-11-10T19:45:44.554Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "8 October 2026",
