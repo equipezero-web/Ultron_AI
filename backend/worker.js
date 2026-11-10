@@ -52,6 +52,7 @@ import {
   searchGoogle,
   needsVisualResearch,
   isSelfCapabilityQuestion,
+  mediaPolicy,
   normalizeResearchQuestion,
   isResearchFollowUp,
   resolveResearchQuery,
@@ -471,7 +472,7 @@ async function prepareResearch(env, body) {
   // When Google returns no pictures, use actual encyclopedia images for
   // non-breaking factual topics. Never treat encyclopedia text as live news.
   let fallbackVisual=null;
-  if(!fromCache&&!newsIntent&&!research?.images?.length&&policy.reason!=="freshness"&&policy.reason!=="factual-current"){
+  if(!fromCache&&!newsIntent&&mediaPolicy(query).images&&!research?.images?.length&&policy.reason!=="freshness"&&policy.reason!=="factual-current"){
     try{
       const fallback=await loadResearchContext(query,{limit:3,force:true});
       fallbackVisual=fallback?.visualContext||null;
