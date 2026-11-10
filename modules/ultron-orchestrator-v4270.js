@@ -124,7 +124,7 @@ function sanitizeResult(result) {
 function splitCompound(message) {
   const parts = String(message || "")
     .split(/\s+(?:e\s+depois|depois|em\s+seguida)\s+|\s*;\s*/i)
-    .map((item) => item.trim())
+    .map((item) => item.trim().replace(/^[,;]+|[,;]+$/g,"").trim())
     .filter(Boolean);
   return parts.length > 1 ? parts.slice(0, 6) : [String(message || "").trim()];
 }
