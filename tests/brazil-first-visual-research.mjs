@@ -14,6 +14,18 @@ assert.equal(shouldResearchBeforeAnswer('Quanto é 2 + 2?').needed,false);
 assert.match(resolveResearchQuery('E hoje?','Como anda o governo da China?'),/China.*hoje/);
 assert.equal(resolveResearchQuery('E hoje?','Qual meu saldo?'),'E hoje?');
 assert.ok(answerLooksUncertain('Quer que eu pesquise?'));
+for(const question of [
+ 'Como funciona um motor turbo?', 'Quem foi Nikola Tesla?', 'Quanto custa a Pulsar N150?',
+ 'O que aconteceu na Argentina hoje?', 'Como está o mercado de inteligência artificial?',
+ 'Qual a diferença entre mitose e meiose?', 'Me fale sobre a Islândia',
+ 'Fotossíntese', 'Mercado de semicondutores', 'Qual é a capital do Cazaquistão?',
+ 'O Japão tem terremotos?', 'O que significa entropia?', 'Vale a pena usar energia solar?'
+]) assert.ok(shouldResearchBeforeAnswer(question).needed,question);
+for(const question of ['Jarvis, ligue a TV agora','Escreva uma história sobre a China hoje','Qual meu saldo?','Qual minha senha?','Mostre meus arquivos','Obrigado','Quanto é 2 + 2?']) assert.equal(shouldResearchBeforeAnswer(question).needed,false,question);
+assert.ok(needsVisualResearch('Quem foi Nikola Tesla?'));
+assert.ok(needsVisualResearch('Mostre uma foto de um axolote'));
+assert.equal(isGeneralNewsIntent('O que aconteceu na Argentina hoje?'),false);
+assert.equal(isGeneralNewsIntent('Quais as novidades do iPhone hoje?'),false);
 assert.ok(isGeneralNewsIntent('Quais as novidades de hoje?'));
 assert.ok(isLiveNewsIntent('Quais as novidades?'));
 assert.equal(isGeneralNewsIntent('Como anda o governo da China atualmente?'),false);
