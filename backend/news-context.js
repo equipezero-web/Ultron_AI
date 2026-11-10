@@ -13,11 +13,17 @@ function normalizeText(value) {
     .trim();
 }
 
+export function isGeneralNewsIntent(message) {
+  const text=normalizeText(message);
+  return /\b(noticias?|novidades?|manchetes?|destaques?|acontecimentos?)\b/.test(text)
+    && !/\b(sobre|china|eua|estados unidos|russia|ucrania|governo|eleicao|futebol|economia|clima|tecnologia|santa catarina|recife|brasil|mundo)\b/.test(text);
+}
+
 export function isLiveNewsIntent(message) {
   const text = normalizeText(message);
   if (!text) return false;
 
-  const newsWords = /\b(noticia|noticias|news|manchete|manchetes|acontecendo|circulando|destaque|destaques|ultimas|agora|hoje)\b/;
+  const newsWords = /\b(noticia|noticias|novidade|novidades|news|manchete|manchetes|acontecendo|circulando|destaque|destaques|ultimas|agora|hoje)\b/;
   const freshnessWords = /\b(agora|hoje|momento|atual|atuais|recentes|ultima|ultimas|circulando|acontecendo)\b/;
 
   return newsWords.test(text) && (freshnessWords.test(text) || /\b(noticia|noticias|manchete|manchetes)\b/.test(text));
@@ -236,6 +242,18 @@ async function fetchGdeltArticlesParallel(message, limit = 6) {
 }
 
 async function fetchLiveArticles(message, limit = 6) {
+  if(isGeneralNewsIntent(message)){
+    const [br,world]=await Promise.allSettled([
+      fetchLiveArticles("notícias Brasil hoje",Math.max(4,limit)),
+      fetchLiveArticles("notícias internacionais mundo hoje",Math.max(3,limit))
+    ]);
+    const cutoff=Date.now()-24*60*60*1000;
+    const recent=items=>(items||[]).filter(a=>Date.parse(a.publishedAt)>=cutoff&&Date.parse(a.publishedAt)<=Date.now()+300000);
+    const domestic=br.status==="fulfilled"?recent(br.value.articles):[];
+    const international=world.status==="fulfilled"?recent(world.value.articles):[];
+    const articles=dedupeArticles([...domestic.slice(0,4).map(a=>({...a,region:"Brasil"})),...international.slice(0,2).map(a=>({...a,region:"Mundo"}))],limit);
+    return {articles,attempts:[...(br.status==="fulfilled"?br.value.attempts:[]),...(world.status==="fulfilled"?world.value.attempts:[])]};
+  }
   const [gdelt, google] = await Promise.allSettled([
     fetchGdeltArticlesParallel(message, limit),
     fetchGoogleNewsArticles(message, limit)
@@ -270,6 +288,7 @@ function buildContextText(articles) {
 
   return [
     "NOTÍCIAS REAIS RECENTES RECUPERADAS PARA ESTA RESPOSTA:",
+    "Em boletins gerais, apresente primeiro os acontecimentos do Brasil; depois somente acontecimentos internacionais relevantes. Não force notícias internacionais quando as fontes não sustentarem sua importância.",
     "Compare as fontes abaixo. Não invente fatos, números ou acontecimentos ausentes.",
     "Se os resultados forem insuficientes ou divergirem, diga isso explicitamente.",
     "Responda em português do Brasil e mencione as fontes principais.",
