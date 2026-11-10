@@ -126,7 +126,11 @@ function tvIntent(n) {
 
 function desktopIntent(n, raw) {
   if (!/\b(computador|pc|windows|notebook)\b/.test(n)) return null;
-  const confirm = isConfirmed(raw);
+  // A direct, unambiguous operator imperative is authorization. Do not
+  // infer permission from a question, a hypothetical or a negated request.
+  const direct=n.replace(/^(?:jarvis|ultron)[, :]+/,"").replace(/^por favor[, ]+/,"");
+  const explicit=/^(?:desligue|reinicie|suspenda)\s+(?:o\s+)?(?:meu\s+)?(?:computador|pc|notebook|windows)(?:\s+agora)?[.!]*$/.test(direct);
+  const confirm = isConfirmed(raw)||explicit;
   const url = String(raw || "").match(/https?:\/\/[^\s]+/i)?.[0];
   if (url && /\b(abra|abrir|acesse|acessar)\b/.test(n)) return { deviceType: "desktop", command: "desktop.open.url", payload: { url }, label: `abrir ${url} no computador` };
   if (/\b(desligue|desliga|desligar)\b/.test(n)) return { deviceType: "desktop", command: "desktop.shutdown", payload: { confirm }, sensitive: true, label: "desligar o computador" };
@@ -165,6 +169,8 @@ function mobileIntent(n) {
 export function parseDeviceIntent(text) {
   const n = normalizeSpeech(text);
   if (!n) return null;
+  const direct=n.replace(/^(?:jarvis|ultron)[, :]+/,"").replace(/^por favor[, ]+/,"");
+  if(/^(?:nao|nunca|como|por que|porque|e se|se eu|o que|quais|qual|voce pode|voce consegue|eu posso)\b/.test(direct)&&!/\b(status|estado|online)\b/.test(direct))return null;
   return tvIntent(n) || desktopIntent(n, text) || mobileIntent(n);
 }
 
