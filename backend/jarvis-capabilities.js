@@ -7,7 +7,7 @@ export const JARVIS_CAPABILITIES = [
   ["Neural Ring e Terra", "Ativar e desativar os textos do painel de respostas por comando local, preservando imagens, vídeos e narração; anel 3D interativo, globo terrestre, localização de países e lugares no globo, mapas e visualização Mapbox quando configurado."],
   ["Visão e interação", "Sensor óptico, análise de imagens e câmera do celular por bridge, câmera local quando autorizada, gestos e Voice Match quando configurados."],
   ["Dispositivos pareados", "Consultar status e controlar TV LG, desktop e celular: volume, mídia, canais, entradas, aplicativos, energia e funções compatíveis, conforme conexão e permissões."],
-  ["Automação e orquestração", "Interpretar comandos, dividir pedidos em etapas, selecionar módulos, executar comandos permitidos, agendar ações suportadas, verificar resultados e registrar histórico."],
+  ["Automação e orquestração", "Interpretar comandos, planejar ações tipadas com o motor semântico, executar sequências de até seis etapas, interromper em falha, acionar módulos de interface, globo, notícias, arquivos, memória, diagnóstico e dispositivos autorizados, agendar ações suportadas e registrar histórico."],
   ["Arquivos e sistemas internos", "Pesquisar arquivos autorizados via Filespace/RAG local e consultar contexto da L&A Team quando conectado e autorizado."],
   ["Diagnóstico", "Consultar telemetria, estado dos módulos e PARITY CHECK; identificar falhas e sugerir ou executar recuperações já implementadas."]
 ];
