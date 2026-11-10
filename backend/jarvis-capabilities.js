@@ -4,7 +4,7 @@ export const JARVIS_CAPABILITIES = [
   ["Conversa e memória", "Compreender perguntas em português, manter contexto, lembrar informações autorizadas e responder por texto e voz."],
   ["Inteligência web", "Pesquisar fatos públicos, comparar fontes e datas; recuperar imagens e vídeos pertinentes e exibi-los no Neural Ring."],
   ["Monitor mundial", "Consultar notícias, acompanhar o histórico de 24h, priorizar Brasil nos boletins gerais e apresentar introdução, manchetes e descrições ao despertar."],
-  ["Neural Ring e Terra", "Anel 3D interativo, globo terrestre, localização de países e lugares no globo, mapas e visualização Mapbox quando configurado."],
+  ["Neural Ring e Terra", "Ativar e desativar os textos do painel de respostas por comando local, preservando imagens, vídeos e narração; anel 3D interativo, globo terrestre, localização de países e lugares no globo, mapas e visualização Mapbox quando configurado."],
   ["Visão e interação", "Sensor óptico, análise de imagens e câmera do celular por bridge, câmera local quando autorizada, gestos e Voice Match quando configurados."],
   ["Dispositivos pareados", "Consultar status e controlar TV LG, desktop e celular: volume, mídia, canais, entradas, aplicativos, energia e funções compatíveis, conforme conexão e permissões."],
   ["Automação e orquestração", "Interpretar comandos, dividir pedidos em etapas, selecionar módulos, executar comandos permitidos, agendar ações suportadas, verificar resultados e registrar histórico."],

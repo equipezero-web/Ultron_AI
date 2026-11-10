@@ -1,3 +1,4 @@
+import {parseLocalCommand,runLocalCommand} from "./jarvis-local-commands.js?v=4.67.0";
 import API_CONFIG from "../config.js";
 
 const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
@@ -225,6 +226,8 @@ function lastAssistantEarthOffer() {
 
 async function routeSingle(command, run, index = 0) {
   const prefix = `step-${index + 1}`;
+  const local=await runLocalCommand(command);
+  if(local){log(local.text,!local.ok);return {route:local.route,ok:local.ok,result:local};}
   if (isEarthStatusIntent(command)) {
     const earthState = window.ULTRON_EARTH?.state || null;
     const available = Boolean(earthState?.available);
@@ -339,6 +342,13 @@ async function executeMessage(message, source = "terminal") {
   const clean = String(message || "").trim();
   if (!clean) return null;
 
+  if(parseLocalCommand(clean)){
+    const local=await runLocalCommand(clean);
+    state.processed++;if(!local.ok)state.failed++;
+    state.lastRoute=local.route;state.lastResult={route:local.route,ok:local.ok,result:local};
+    log(local.text,!local.ok);
+    return {ok:local.ok,status:local.ok?"completed":"failed",results:[state.lastResult]};
+  }
   state.busy = true;
   document.getElementById("system-mode")?.replaceChildren(document.createTextNode("ORCHESTRATING"));
   log(`INPUT ${source.toUpperCase()} // ${clean}`);

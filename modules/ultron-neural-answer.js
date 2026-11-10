@@ -27,9 +27,21 @@ if(center){
   let pendingAnswer=false;
   let dismissed=false,awake=false;
   let activeWakeStories=[];
+  let textEnabled=true;
+  try{textEnabled=localStorage.getItem('ultron-neural-text-enabled')!=='false';}catch{}
+  let hasContent=false;
+  function syncVisibility(){
+    box.classList.toggle('ultron-text-disabled',!textEnabled);
+    text.hidden=!textEnabled;
+    sources.hidden=!textEnabled;
+    const hasMedia=!!media.querySelector('img,iframe,.ultron-media-video');
+    box.hidden=dismissed||!hasContent||(!textEnabled&&!hasMedia);
+  }
+  function setTextEnabled(enabled){textEnabled=Boolean(enabled);try{localStorage.setItem('ultron-neural-text-enabled',String(textEnabled));}catch{}syncVisibility();return textEnabled;}
+  syncVisibility();
   const clear=()=>{
     dismissed=true;pendingAnswer=false;
-    box.hidden=true;text.textContent='';
+    hasContent=false;box.hidden=true;text.textContent='';
     media.replaceChildren();sources.replaceChildren();
   };
   close.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();clear();});
@@ -48,11 +60,11 @@ if(center){
   };
   const present=(value,{pending=false,visual=null,webResearch=null}={})=>{
     if(dismissed)return;
-    box.hidden=false;
+    hasContent=true;box.hidden=false;
     status.textContent=pending?'ULTRON // CONSULTANDO FONTES':'ULTRON // RESPOSTA';
     text.textContent=String(value||'').slice(0,6500);
     media.replaceChildren();sources.replaceChildren();
-    if(pending)return;
+    if(pending){syncVisibility();return;}
     if(visual?.mode==='news'){
       const stories=(visual.cards||[]).filter(c=>c?.title&&c?.url).slice(0,6);
       const raw=String(value||'');
@@ -108,7 +120,7 @@ if(center){
       img.onerror=()=>{
         if(!img.isConnected)return;
         if(thumbnail&&img.src!==thumbnail){img.src=thumbnail;return;}
-        img.remove();
+        img.remove();syncVisibility();
         if(!media.querySelector('img,iframe,.ultron-media-video'))media.textContent='Não foi possível carregar as imagens desta fonte.';
       };
       media.append(img);
@@ -154,6 +166,7 @@ if(center){
       sources.append(a);
       if(seen.size>=4)break;
     }
+    syncVisibility();
   };
   window.addEventListener('ultron:question-start',event=>{
     dismissed=false;activeWakeStories=[];
@@ -185,7 +198,7 @@ if(center){
       present(spoken,{visual:{mode:'news',cards:stories,introduction:wakeIntro(payload.summary)}});
       return;
     }
-    if(box.hidden)present(spoken);
+    if(box.hidden&&textEnabled&&!hasContent)present(spoken);
     // Preserve the full sourced answer and its visuals when narration is abbreviated.
   });
   function wakeStories(payload){
@@ -205,5 +218,5 @@ if(center){
       present('',{visual:{mode:'news',cards:stories,introduction:wakeIntro(event.detail.summary)}});
     }
   });
-  window.ULTRON_NEURAL_ANSWER={show:(value,options)=>{dismissed=false;present(value,options);},clear,get visible(){return !box.hidden;}};
+  window.ULTRON_NEURAL_ANSWER={show:(value,options)=>{dismissed=false;present(value,options);},clear,setTextEnabled,get textEnabled(){return textEnabled;},get visible(){return !box.hidden;}};
 }
