@@ -11,8 +11,16 @@ try {
   page=await browser.newPage();
   await page.setViewport({width:390,height:844,isMobile:true,hasTouch:true,deviceScaleFactor:1});
   await page.setRequestInterception(true);
-  let calls=0,breakFetch=false,fallbackOn=false,fallbackCalls=0,historyCalls=0;
+  let calls=0,breakFetch=false,fallbackOn=false,fallbackCalls=0,historyCalls=0,detailCalls=0;
   page.on("request",request=>{
+    if(request.url().includes("/api/news-details")){
+      const headers={"access-control-allow-origin":"*","access-control-allow-methods":"POST, OPTIONS","access-control-allow-headers":"content-type"};
+      if(request.method()==="OPTIONS"){request.respond({status:204,headers});return;}
+      detailCalls++;
+      const body=JSON.parse(request.postData()||"{}");
+      request.respond({status:200,headers,contentType:"application/json",body:JSON.stringify({ok:true,details:(body.stories||[]).map((item,index)=>({index,title:item.title,status:"detailed",description:"Detalhes confirmados da notícia: "+item.title+". As equipes responsáveis informaram as medidas adotadas e os próximos passos.",sources:[{source:"Fonte de teste",url:"https://example.org/reportagem"}]}))})});
+      return;
+    }
     if(request.url().includes("/data/world-intelligence-history.json")){
       historyCalls++;
       const now=Date.now(),at=minutes=>new Date(now-minutes*60000).toISOString();
@@ -121,6 +129,8 @@ try {
   await page.waitForFunction(()=>window.ULTRON_INTELLIGENCE?.state?.monitor24h?.lastWakeAt,{
     timeout:10000
   });
+  assert.ok(detailCalls>=1,"Wake must request individual headline details");
+  await page.waitForFunction(()=>document.querySelector(".ultron-neural-answer")?.textContent.includes("Detalhes confirmados da notícia"),{timeout:6500});
   assert.ok(historyCalls>=2,"The history is consulted on startup and refreshed at wake");
   const afterWake=await page.$eval("#output-box",el=>el.textContent);
   assert.ok(afterWake.includes("MONITOR 24H"),"Voice activation must proactively present a 24h summary");
@@ -143,7 +153,9 @@ try {
   await page.click(".jarvis-intel-controls button:nth-child(3)");
   assert.equal(await page.$eval(".jarvis-intel-controls button:nth-child(3)",el=>el.getAttribute("aria-pressed")),"false");
   breakFetch=true;fallbackOn=true;
-  await page.click(".jarvis-intel-controls button:first-child");
+  await page.waitForFunction(()=>!document.querySelector(".jarvis-intel-controls button:first-child")?.disabled,{timeout:6500});
+  // Validate the refresh handler independently of animations in the expanded report.
+  await page.$eval(".jarvis-intel-controls button:first-child",button=>button.click());
   await page.waitForFunction(()=>window.ULTRON_INTELLIGENCE.state.totalStories===1,{timeout:6500});
   assert.ok(fallbackCalls>=1,"GitHub snapshot must provide offline-backend failover");
   assert.ok((await page.$eval(".jarvis-intel-status",el=>el.textContent)).includes("COLETA VERIFICADA"));
