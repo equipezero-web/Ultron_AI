@@ -215,7 +215,7 @@ function cacheContext(cache) {
 function visualHasContent(visual) {
   return Boolean(
     visual &&
-    ((Array.isArray(visual.images) && visual.images.length) ||
+    ((Array.isArray(visual.images) && visual.images.length) || (Array.isArray(visual.videos) && visual.videos.length) ||
       (Array.isArray(visual.cards) && visual.cards.length))
   );
 }
@@ -414,7 +414,8 @@ async function prepareResearch(env, body) {
   let sources = [];
   let fromCache = false;
 
-  if (operatorId && !generalNews && !needsVisualResearch(query)) {
+  // Text-only cached results cannot satisfy a multimedia query.
+  if (operatorId && !generalNews && body?.textOnly===true && !needsVisualResearch(query)) {
     cache = await loadResearchCache(env, { operatorId, query });
     if (cache?.hit) {
       fromCache = true;
@@ -426,7 +427,7 @@ async function prepareResearch(env, body) {
   if (!fromCache) {
     if (newsIntent) {
       const [googleResult, liveResult] = await Promise.allSettled([
-        generalNews ? Promise.resolve(null) : searchGoogle(env, query, { limit: 6 }),
+        searchGoogle(env, generalNews?"principais notícias Brasil hoje":query, { limit: 6 }),
         loadLiveNewsContext(query, { limit: 6 })
       ]);
       research = googleResult.status === "fulfilled" ? googleResult.value : null;
@@ -435,8 +436,8 @@ async function prepareResearch(env, body) {
         .filter(Boolean)
         .join("\n\n--- FONTES DE NOTÍCIAS COMPLEMENTARES ---\n\n");
       sources = dedupeSources([
-        ...sourceSummary(research),
-        ...newsSourceSummary(newsState)
+        ...newsSourceSummary(newsState),
+        ...sourceSummary(research)
       ], 10);
     } else {
       research = await searchGoogle(env, query, { limit: 6 });
@@ -761,6 +762,8 @@ async function handleAi(request, env) {
     } = prepared;
 
     if (!researchContext || !sources.length) {
+      const mediaOnly=researchVisualContext(research);
+      if(visualHasContent(mediaOnly))data.visualContext={...mediaOnly,caption:data.text||""};
       data.webResearch = {
         requested: true,
         used: false,
@@ -791,9 +794,12 @@ async function handleAi(request, env) {
       const researchVisual = researchVisualFromSources(sources, searchedAt, data?.text, fromCache, research);
       const newsVisual = newsState?.visualContext || null;
       const baseVisual = data?.visualContext || null;
-      const preferredVisual = visualHasContent(newsVisual)
-        ? { ...newsVisual, images: [...(newsVisual.images||[]),...(researchVisual?.images||[])].slice(0,4) }
-        : (researchVisual?.images?.length ? researchVisual : (visualHasContent(baseVisual) ? baseVisual : researchVisual));
+      const preferredVisual = {
+        ...(baseVisual||{}),...(researchVisual||{}),...(newsVisual||{}),
+        images:[...(newsVisual?.images||[]),...(researchVisual?.images||[]),...(baseVisual?.images||[])].slice(0,6),
+        videos:[...(researchVisual?.videos||[]),...(baseVisual?.videos||[])].slice(0,3),
+        cards:[...(newsVisual?.cards||[]),...(researchVisual?.cards||[]),...(baseVisual?.cards||[])].slice(0,8)
+      };
       if (newsIntent && sources.length) {
         data.liveData = {
           ...(data?.liveData || {}),
