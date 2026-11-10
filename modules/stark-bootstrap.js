@@ -68,7 +68,7 @@ if (!window[BOOT_KEY]) {
   await import('./stark-zoom-diagnostics.js?v=4.12.1');
   await import('./stark-production-bridge.js?v=4.12.1');
   await import('./backend-version-check.js?v=4.31.0');
-  await import('./neural-parity.js?v=4.18.0');
+  await import('./neural-parity.js?v=4.60.0');
 
   loadStyle(NEURAL_FOCUS_STYLE_ID, 'modules/neural-focus-v4250.css?v=4.25.0');
   await import('./neural-spatial-control-v4250.js?v=4.25.0');
