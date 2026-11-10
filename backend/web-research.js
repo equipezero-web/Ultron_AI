@@ -213,7 +213,18 @@ async function fetchWithTimeout(url, options = {}, timeoutMs = SEARCH_TIMEOUT_MS
   }
 }
 
-export async function searchGoogle(env, query, { limit = 6 } = {}) {
+export function youtubeVideoId(value){
+  try{
+    const u=new URL(String(value||''));
+    if(!['https:','http:'].includes(u.protocol))return null;
+    const host=u.hostname.toLowerCase();
+    const id=host==='youtu.be'?u.pathname.split('/')[1]:
+      ['youtube.com','www.youtube.com','m.youtube.com','www.youtube-nocookie.com'].includes(host)
+        ? (u.searchParams.get('v')||u.pathname.match(/^\/(?:embed|shorts|live)\/([^/]+)/)?.[1]):null;
+    return /^[A-Za-z0-9_-]{11}$/.test(id||'')?id:null;
+  }catch{return null;}
+}
+export async function searchGoogle(env, query, { limit = 6, media = true } = {}) {
   const startedAt = Date.now();
   const apiKey = String(env?.SERPER_API_KEY || "").trim();
   if (!apiKey) {
@@ -237,12 +248,13 @@ export async function searchGoogle(env, query, { limit = 6 } = {}) {
     const headers={ "X-API-KEY":apiKey,"Content-Type":"application/json" };
     // Image lookup is opt-in by meaning and runs alongside the regular
     // search; never block ordinary questions on an optional picture service.
-    const imageLookup=needsVisualResearch(q)
+    const imageLookup=media
       ? fetchWithTimeout("https://google.serper.dev/images",{
           method:"POST",headers,
           body:JSON.stringify({q,gl:"br",hl:"pt-br",num:5})
         }).then(async response=>response.ok?response.json():null).catch(()=>null)
       : Promise.resolve(null);
+    const videoLookup=media ? fetchWithTimeout("https://google.serper.dev/videos",{method:"POST",headers,body:JSON.stringify({q,gl:"br",hl:"pt-br",num:6})}).then(async response=>response.ok?response.json():null).catch(()=>null):Promise.resolve(null);
     const response = await fetchWithTimeout(SERPER_ENDPOINT, {
       method: "POST",headers,
       body: JSON.stringify({
@@ -263,10 +275,11 @@ export async function searchGoogle(env, query, { limit = 6 } = {}) {
     const organic = Array.isArray(data?.organic) ? data.organic : [];
     const normalized = organic.map(normalizeResult).filter(Boolean);
     const results = dedupeAndRank(normalized, Math.max(3, Math.min(8, Number(limit) || 6)));
-    const imageData=await imageLookup;
+    const [imageData,videoData]=await Promise.all([imageLookup,videoLookup]);
     const images=(Array.isArray(imageData?.images)?imageData.images:[])
       .map(item=>({
         src:safeUrl(item?.imageUrl||item?.thumbnailUrl),
+        thumbnail:safeUrl(item?.thumbnailUrl),
         alt:clean(item?.title||q,160),
         sourceUrl:safeUrl(item?.link)
       }))
@@ -275,6 +288,13 @@ export async function searchGoogle(env, query, { limit = 6 } = {}) {
     const graphImage=safeUrl(data?.knowledgeGraph?.imageUrl);
     const graphSource=safeUrl(data?.knowledgeGraph?.descriptionLink||data?.knowledgeGraph?.website);
     if(graphImage&&graphSource&&!images.some(i=>i.src===graphImage))images.push({src:graphImage,alt:clean(data.knowledgeGraph.title||q,160),sourceUrl:graphSource});
+    const videos=[];const seenVideos=new Set();
+    for(const item of [...(Array.isArray(videoData?.videos)?videoData.videos:[]),...organic]){
+      const id=youtubeVideoId(item?.link||item?.url);
+      if(!id||seenVideos.has(id))continue;
+      seenVideos.add(id);videos.push({id,title:clean(item.title||q,160),url:"https://www.youtube.com/watch?v="+id,thumbnail:safeUrl(item.imageUrl||item.thumbnailUrl)||"https://i.ytimg.com/vi/"+id+"/hqdefault.jpg",source:clean(item.channel||item.source||"YouTube",100)});
+      if(videos.length===3)break;
+    }
     const extras = {
       answerBox: answerBoxText(data),
       knowledgeGraph: knowledgeGraphText(data)
@@ -290,6 +310,7 @@ export async function searchGoogle(env, query, { limit = 6 } = {}) {
       query: q,
       results,
       images,
+      videos,
       contextText: buildGoogleContext(q, results, extras),
       extras,
       quality: {
@@ -320,11 +341,13 @@ export async function searchGoogle(env, query, { limit = 6 } = {}) {
 export function researchVisualContext(research) {
   const results = Array.isArray(research?.results) ? research.results : [];
   const images=Array.isArray(research?.images)?research.images:[];
-  if (!results.length && !images.length) return null;
+  const videos=Array.isArray(research?.videos)?research.videos:[];
+  if (!results.length && !images.length&&!videos.length) return null;
   return {
     mode: "web-research",
     label: "GOOGLE RESEARCH",
-    images: images.map(item=>({src:item.src,alt:item.alt,sourceUrl:item.sourceUrl})),
+    images: images.map(item=>({src:item.src,thumbnail:item.thumbnail,alt:item.alt,sourceUrl:item.sourceUrl})),
+    videos,
     cards: results.slice(0, 4).map((item) => ({
       title: item.title,
       source: item.source,
