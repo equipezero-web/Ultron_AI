@@ -1,11 +1,15 @@
+import {deepenNews,meaningfulDescription} from '../backend/news-details.js';
 import assert from "node:assert/strict";
-import {createWorldBriefing,normalizeWarnings,parseEnsoBulletin,safeNewsImage,findPublisherImage} from "../backend/world-briefing.js";
+import {createWorldBriefing,normalizeWarnings,parseEnsoBulletin,safeNewsImage,findPublisherImage,findPublisherDescription} from "../backend/world-briefing.js";
 assert.equal(safeNewsImage("javascript:alert(1)"),null);
 assert.equal(safeNewsImage("http://localhost/image.jpg"),null);
 assert.equal(safeNewsImage("https://cdn.example.org/image.jpg"),"https://cdn.example.org/image.jpg");
 assert.equal(findPublisherImage('<meta content="https://cdn.example.org/article.jpg" property="og:image">'),
   "https://cdn.example.org/article.jpg","Extract an actual publisher OG image regardless of attribute order");
 assert.equal(findPublisherImage('<meta content="javascript:alert(1)" property="og:image">'),null);
+const detailText="As equipes de defesa civil foram mobilizadas em três municípios após as chuvas intensas. O atendimento inclui abrigos temporários e acompanhamento das áreas de risco.";
+assert.ok(findPublisherDescription('<article><p>'+detailText+'</p></article>','Chuvas em municípios').includes('abrigos temporários'));
+assert.equal(meaningfulDescription('Chuvas em municípios','Chuvas em municípios'),false);
 const now=Date.now(),fresh=new Date(now-30*60*1000).toISOString();
 const stale=new Date(now-11*24*60*60*1000).toISOString();
 const warning = {
@@ -97,5 +101,17 @@ try {
   assert.ok(requests.some(q=>q.includes("news.google.com/rss/search")));
   assert.ok(requests.some(q=>q.includes("apiprevmet3.inmet.gov.br")));
   assert.ok(requests.some(q=>q.includes("enso_advisory")));
+  globalThis.fetch=async(input,init)=>{
+    assert.ok(String(input).endsWith('/search'),'Detailed news must use text search only');
+    return new Response(JSON.stringify({organic:[
+      {title:'Defesa Civil mobiliza equipes após chuvas intensas',link:'https://example.org/defesa-civil',snippet:detailText},
+      {title:'Mercado financeiro abre em alta',link:'https://example.org/mercado',snippet:'Informação completamente diferente. Este texto não deve aparecer na notícia sobre as equipes mobilizadas.'}
+    ]}),{status:200});
+  };
+  const [detail]=await deepenNews({SERPER_API_KEY:'mock'},[{title:'Defesa Civil mobiliza equipes após chuvas intensas',description:'Defesa Civil mobiliza equipes após chuvas intensas'}]);
+  assert.equal(detail.status,'detailed');
+  assert.ok(detail.description.includes('abrigos temporários'));
+  assert.equal(detail.sources[0].url,'https://example.org/defesa-civil');
+  assert.ok(!detail.description.includes('Mercado financeiro'));
   console.log("WORLD BRIEFING PASS: sourced Brazil/SC/climate/world, freshness filters, INMET warnings, NOAA status and official links");
 }finally{globalThis.fetch=realFetch;}
