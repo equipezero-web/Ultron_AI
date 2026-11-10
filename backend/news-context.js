@@ -31,10 +31,10 @@ export function isLiveNewsIntent(message) {
 }
 
 function stripNewsBoilerplate(message) {
-  const raw = String(message || "").trim();
+  const raw = normalizeText(message);
   const cleaned = raw
-    .replace(/\b(ultron|por favor|me diga|me fale|mostre|mostrar|quais|qual|que)\b/gi, " ")
-    .replace(/\b(noticias?|manchetes?|news|circulando|acontecendo|agora|hoje|atuais?|recentes?|momento|destaques?)\b/gi, " ")
+    .replace(/\b(ultron|jarvis|por favor|me diga|me fale|mostre|mostrar|quais|qual|que)\b/gi, " ")
+    .replace(/\b(noticias?|novidades?|manchetes?|news|circulando|acontecendo|agora|hoje|atuais?|recentes?|momento|destaques?|principal|principais|ultimas?)\b/gi, " ")
     .replace(/[?!.:,;]+/g, " ")
     .replace(/\s+/g, " ")
     .trim();
@@ -141,8 +141,9 @@ async function runGdeltQuery(query, { limit = 6, timespan = "24h", sort = "Hybri
 async function fetchGoogleNewsArticles(message, limit = 6) {
   const subject = stripNewsBoilerplate(message);
   const query = subject || "Brasil";
+  const isWorld=/\b(internacionais|mundo)\b/i.test(query);
   const params = new URLSearchParams({
-    q: query,
+    q: (isWorld ? "mundo principais acontecimentos" : query)+" when:1d",
     hl: "pt-BR",
     gl: "BR",
     ceid: "BR:pt-419"
@@ -201,7 +202,11 @@ function dedupeArticles(items, limit) {
 
 async function fetchGdeltArticlesParallel(message, limit = 6) {
   const subject = stripNewsBoilerplate(message);
-  const queryPlan = subject
+  const generalWorld=/\b(internacionais|mundo)\b/i.test(subject);
+  const queryPlan = generalWorld ? [
+    {query:"(world OR international) sourcelang:English",timespan:"24h",label:"mundo-24h"},
+    {query:"(China OR United States OR Europe OR Ukraine OR climate) sourcelang:English",timespan:"24h",label:"mundo-temas-24h"}
+  ] : subject
     ? [
         { query: `${subject} sourcecountry:Brazil`, timespan: "24h", label: "brasil-24h" },
         { query: subject, timespan: "48h", label: "tema-global-48h" },
@@ -252,7 +257,7 @@ async function fetchLiveArticles(message, limit = 6) {
     const recent=items=>(items||[]).filter(a=>Date.parse(a.publishedAt)>=cutoff&&Date.parse(a.publishedAt)<=Date.now()+300000);
     const domestic=br.status==="fulfilled"?recent(br.value.articles):[];
     const international=world.status==="fulfilled"?recent(world.value.articles):[];
-    const articles=dedupeArticles([...domestic.slice(0,4).map(a=>({...a,region:"Brasil"})),...international.slice(0,2).map(a=>({...a,region:"Mundo"}))],limit);
+    const articles=dedupeArticles([...domestic.slice(0,4).map(a=>({...a,region:"Brasil"})),...international.slice(0,3).map(a=>({...a,region:"Mundo"}))],limit);
     return {articles,attempts:[...(br.status==="fulfilled"?br.value.attempts:[]),...(world.status==="fulfilled"?world.value.attempts:[])]};
   }
   const [gdelt, google] = await Promise.allSettled([
@@ -348,18 +353,23 @@ export async function loadLiveNewsContext(message, { limit = 6 } = {}) {
       };
     }
 
-    const images = articles.filter((article) => article.image).map((article) => ({
+    const domestic=articles.filter(a=>a.region==="Brasil");
+    const international=articles.filter(a=>a.region==="Mundo");
+    const highlights=domestic.length&&international.length ? [...domestic.slice(0,3),...international.slice(0,1)] : articles.slice(0,4);
+    const images = highlights.filter((article) => article.image).map((article) => ({
       src: article.image,
       alt: article.title,
-      title: article.title
+      title: article.title,
+      sourceUrl: article.url
     }));
 
-    const cards = articles.slice(0, 4).map((article) => ({
+    const cards = highlights.map((article) => ({
       title: article.title,
       source: article.source,
       publishedAt: article.publishedAt,
       url: article.url,
-      image: article.image
+      image: article.image,
+      region: article.region || null
     }));
 
     return {
