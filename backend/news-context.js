@@ -24,7 +24,7 @@ export function isLiveNewsIntent(message) {
   if (!text) return false;
   if(isGeneralNewsIntent(message))return true;
 
-  const newsWords = /\b(noticia|noticias|novidade|novidades|news|manchete|manchetes|acontecendo|circulando|destaque|destaques|ultimas|agora|hoje)\b/;
+  const newsWords = /\b(noticia|noticias|novidade|novidades|news|manchete|manchetes|acontecendo|circulando|destaque|destaques|ultimas)\b/;
   const freshnessWords = /\b(agora|hoje|momento|atual|atuais|recentes|ultima|ultimas|circulando|acontecendo)\b/;
 
   return newsWords.test(text) && (freshnessWords.test(text) || /\b(noticia|noticias|manchete|manchetes)\b/.test(text));
