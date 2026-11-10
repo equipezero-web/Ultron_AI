@@ -1,6 +1,7 @@
 const output = document.getElementById('output-box');
 let lastReport = null;
 let syncTimer = null;
+let lastSignature='';
 
 function log(message, alert = false) {
   if (!output || !message) return;
@@ -13,10 +14,15 @@ function log(message, alert = false) {
 }
 
 function report() {
+  const current=Boolean(window.JARVIS_COMMAND_CENTER?.active);
   return {
+    architecture:current?'command-center':'legacy',
+    neuralRing:current?Boolean(window.ULTRON_NEURAL_RING_3D?.active):null,
+    globe:current?Boolean(window.ULTRON_EARTH?.open):null,
+    neuralAnswer:current?Boolean(window.ULTRON_NEURAL_ANSWER?.show):null,
     performance: window.ULTRON_PERFORMANCE?.mode || 'full',
-    starkCore: Boolean(window.ULTRON_STARK_CORE),
-    innerMesh: Boolean(window.ULTRON_STARK_MESH),
+    starkCore: Boolean(current?window.ULTRON_STARK_CORE?.active&&window.ULTRON_STARK_CORE?.mode==='command-center':window.ULTRON_STARK_CORE),
+    innerMesh: Boolean(current?window.ULTRON_STARK_MESH?.active&&window.ULTRON_STARK_MESH?.mode==='command-center':window.ULTRON_STARK_MESH),
     fileMesh: Boolean(window.ULTRON_FILE_MESH),
     neuralInput: Boolean(window.ULTRON_NEURAL_INPUT),
     neuralCommandRouter: Boolean(window.ULTRON_NEURAL_COMMAND),
@@ -64,17 +70,21 @@ window.addEventListener('ultron:neural-command-ready', () => scheduleSync('neura
 window.addEventListener('ultron:performance-mode', () => scheduleSync('performance-change'));
 window.addEventListener('resize', () => scheduleSync('resize'));
 
-setTimeout(async () => {
-  const current = await sync('bootstrap');
-  const missing = Object.entries(current)
-    .filter(([key, value]) => !['performance', 'cameraActive'].includes(key) && value === false)
-    .map(([key]) => key);
-  if (missing.length) {
-    log(`PARITY CHECK // módulos ausentes: ${missing.join(', ')}`, true);
-  } else {
-    log(`PARITY READY // ${String(current.performance).toUpperCase()} // Neural Command + gestos + Palm Matrix sincronizados em desktop e mobile.`);
-  }
-}, 900);
+function diagnostics(current){
+  // PalmMatrix remains untouched: it is optional in the current architecture.
+  const optional=current.architecture==='command-center'?['palmMatrix']: [];
+  const missing=Object.entries(current).filter(([key,value])=>key!=='cameraActive'&&!optional.includes(key)&&value===false).map(([key])=>key);
+  const signature=JSON.stringify([current.architecture,missing,current.palmMatrix]);
+  if(signature===lastSignature)return;
+  lastSignature=signature;
+  if(missing.length)log('PARITY CHECK // módulos ausentes: '+missing.join(', '),true);
+  else log('PARITY READY // '+current.architecture.toUpperCase()+' // StarkCore + InnerMesh operacionais');
+  if(optional.length&&!current.palmMatrix)log('PALM MATRIX // não inicializado (legado opcional, sem alteração).');
+}
+for(const type of ['ultron:stark-current-ready','ultron:neural-ring-3d-ready','ultron:stark-bootstrap-ready']){
+  window.addEventListener(type,()=>setTimeout(()=>sync(type).then(diagnostics).catch(()=>{}),300));
+}
+setTimeout(()=>sync('bootstrap').then(diagnostics).catch(()=>{}),1500);
 
 window.ULTRON_NEURAL_PARITY = {
   sync,
