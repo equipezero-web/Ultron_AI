@@ -322,6 +322,7 @@ async function askUltron(command) {
     const data = await readApiResponse(response);
     if (!response.ok) throw new Error(getErrorMessage(data, response.status));
     if (!data?.text) throw new Error("O gateway respondeu sem texto.");
+    if(questionId!==neuralQuestionId)return; // Discard stale results from older questions.
 
     const provider = data.providerLabel || data.provider || "AI";
     addLog(output, `ULTRON [${provider}]: ${data.text}`);
@@ -329,6 +330,7 @@ async function askUltron(command) {
     window.dispatchEvent(new CustomEvent("ultron:answer",{detail:{id:questionId,text:data.text,visualContext:data.visualContext,webResearch:data.webResearch}}));
     if (data.audioBase64) playVoice(data.audioBase64, data.audioMimeType || "audio/mpeg");
   } catch (error) {
+    if(questionId!==neuralQuestionId)return;
     addLog(output, `ULTRON AI ERROR: ${error.message}`, "alert");
     window.dispatchEvent(new CustomEvent("ultron:answer-error",{detail:{id:questionId,message:error.message}}));
   } finally {
