@@ -17,6 +17,7 @@ try {
     // depending on example.org or the external network.
     await page.setRequestInterception(true);
     page.on('request',req=>{
+      if(req.url().includes('youtube-nocookie.com/embed/'))return req.respond({status:200,contentType:'text/html',body:'<html><body>Test video player</body></html>'});
       if(req.url().includes('/api/orchestrator/')){
         const headers={'access-control-allow-origin':'*','access-control-allow-methods':'POST, OPTIONS','access-control-allow-headers':'content-type, authorization'};
         if(req.method()==='OPTIONS')return req.respond({status:204,headers});
@@ -25,7 +26,7 @@ try {
       if(req.url().includes('/api/ai')){
         const headers={'access-control-allow-origin':'*','access-control-allow-methods':'POST, OPTIONS','access-control-allow-headers':'content-type, authorization'};
         if(req.method()==='OPTIONS')return req.respond({status:204,headers});
-        return req.respond({status:200,headers,contentType:'application/json',body:JSON.stringify({text:'Resposta real do fluxo de comando: China',provider:'mock',visualContext:{images:[{src:'https://example.org/picture.jpg',alt:'China'}],cards:[{title:'China',url:'https://example.org/report'}]}})});
+        return req.respond({status:200,headers,contentType:'application/json',body:JSON.stringify({text:'Resposta real do fluxo de comando: China',provider:'mock',visualContext:{images:[{src:'https://example.org/picture.jpg',alt:'China'}],videos:[{id:'dQw4w9WgXcQ',title:'Vídeo de teste',thumbnail:'https://example.org/picture.jpg',url:'https://www.youtube.com/watch?v=dQw4w9WgXcQ'}],cards:[{title:'China',url:'https://example.org/report'}]}})});
       }
       if(/^https:\/\/example\.org\/(picture|news)\.jpg$/.test(req.url()))
         return req.respond({status:200,contentType:'image/svg+xml',body:'<svg xmlns="http://www.w3.org/2000/svg" width="420" height="280"><rect width="420" height="280" fill="#406b92"/></svg>'});
@@ -114,6 +115,11 @@ try {
       throw error;
     }
     assert.ok(await page.$eval('.ultron-neural-answer-media img',el=>el.src.includes('example.org/picture.jpg')));
+    await page.$eval('.ultron-media-play',el=>el.click());
+    const player=await page.$eval('.ultron-media-video iframe',el=>({src:el.src,width:el.getBoundingClientRect().width}));
+    assert.ok(player.src.includes('youtube-nocookie.com/embed/dQw4w9WgXcQ')&&player.width>0,'Inline player must be mounted in Ring');
+    const separate=await page.evaluate(()=>{const t=document.querySelector('.ultron-neural-answer-text').getBoundingClientRect(),m=document.querySelector('.ultron-neural-answer-media').getBoundingClientRect();return t.right<=m.left+2||t.bottom<=m.top+2;});
+    assert.ok(separate,'Media must never overlap answer text');
     await page.waitForFunction(()=>!!window.ULTRON_NEURAL_PARITY&&window.ULTRON_NEURAL_PARITY.report().starkCore&&window.ULTRON_NEURAL_PARITY.report().innerMesh,{timeout:15000});
     const parity=await page.evaluate(()=>{
       const core=window.ULTRON_STARK_CORE,mesh=window.ULTRON_STARK_MESH;
