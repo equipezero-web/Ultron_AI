@@ -450,6 +450,22 @@ async function prepareResearch(env, body) {
     }
   }
 
+  // A direct news question also needs details about each reported event.
+  // Keep the original article order and images; enrich only matching headlines.
+  if(newsIntent&&!fromCache&&newsState?.visualContext?.cards?.length){
+    const cards=newsState.visualContext.cards.slice(0,4);
+    const details=await deepenNews(env,cards);
+    const sections=[];
+    for(const item of details){
+      const card=cards[item.index];
+      if(!card||item.status!=="detailed")continue;
+      card.description=item.description;
+      card.detailSources=item.sources;
+      sections.push("MANCHETE: "+card.title+"\nDETALHES CONFIRMADOS NAS FONTES: "+item.description+"\nFONTES COMPLEMENTARES: "+item.sources.map(x=>x.source+" — "+x.url).join("; "));
+    }
+    if(sections.length)researchContext+=(researchContext?"\n\n":"")+sections.join("\n\n");
+  }
+
   // When Google returns no pictures, use actual encyclopedia images for
   // non-breaking factual topics. Never treat encyclopedia text as live news.
   let fallbackVisual=null;
