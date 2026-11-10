@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "1.0",
-  "fetchedAt": "2026-11-10T15:42:11.206Z",
+  "fetchedAt": "2026-11-10T19:33:57.494Z",
   "priority": [
     "Brasil",
     "Santa Catarina",
@@ -22,32 +22,36 @@
       "label": "Brasil",
       "articles": [
         {
-          "title": "Defesa de Vorcaro reforça pedido de soltura no STF",
-          "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/defesa-de-vorcaro-reforca-pedido-de-soltura-no-stf",
-          "publishedAt": "2026-11-10T14:50:00.000Z",
+          "title": "CNU 2025: governo republica edital com novas listas de espera",
+          "url": "https://agenciabrasil.ebc.com.br/geral/noticia/2026-11/cnu-2025-governo-republica-edital-com-novas-listas-de-espera",
+          "publishedAt": "2026-11-10T18:35:00.000Z",
+          "description": "O Ministério da Gestão e da Inovação em Serviços Públicos (MGI) republicou o edital 300/2026 de classificação de candidatos aprovados para preencher as vagas que sobraram da segunda edição do Concurso Público Nacional Unificado (CNU 2), aplicado em 2025. A lista de espera – organizada pela Escola Nacional de Administração Pública (Enap) – é para cargos de nível superior e nível intermediário entre os órgãos e entidades participantes do certame. Notícias relacionadas: Anvisa registra duas novas canetas emagrecedoras de semaglutida. Um terço dos jovens de 16 a 29 anos quer chegar à universidade. Especialistas alertam para risco de reinfecção da",
           "source": "Agência Brasil",
-          "imageUrl": "https://imagens.ebc.com.br/lQgKuZExT0ktoCTbkIjWDhOrzp8=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/03/04/vorca-2-scaled-e1767922829627-1024x688-1.jpg?itok=HxmLgBjy"
+          "imageUrl": "https://imagens.ebc.com.br/Y5-lAKMdjBWEhCsvikP5P3r39C4=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2025/10/05/toms8688.jpg?itok=_6pC23iF"
         },
         {
-          "title": "Brasília recebe mutirão gratuito de saúde intestinal e nutrição",
-          "url": "https://agenciabrasil.ebc.com.br/saude/noticia/2026-11/brasilia-recebe-mutirao-gratuito-de-saude-intestinal-e-nutricao",
-          "publishedAt": "2026-11-10T14:23:00.000Z",
-          "source": "Agência Brasil",
-          "imageUrl": "https://imagens.ebc.com.br/RpEx9wA61_a-5Q-Ba2qbD9AZ7kc=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/09/24/adobestock_946254162.jpeg?itok=rG-p00t2"
+          "title": "Bosch negocia motores elétricos feitos no Brasil com 7 montadoras no Brasil",
+          "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxNMjhUdnZwSkpJczd4cG1GYUczQnMtVjNOeHZxVUZmZ3h5ZWE4ZEhMYjM1eG90ZFE5SGQ0azBkZnZBUGNuVmFsSEtFb2UzWV9kSkVVYzdETUNnek9OVnBacnVhT1VBQTNJaXh3ajNuOXl0M3RJX0ZJb3gwdVpDWk5RbnVCNGpKcWlMSDQ2QV9XVTVFb2dVRGZDdVRsWVV0ODNMN3dxQ1pDWFdjVGktNXVoRDM2YUZYTlZiXzNGQlhoY1lsOFktYjRjcGdYQzBlYlNZ0gHWAUFVX3lxTE5mQl9vekM2Q2xoLXBIQXFHUExRNkx6d1psbUxQdVJCYzdINDhKTDFmSFlGdEExQzV3T1I3dW00X3hkZjZVRnZjb3hlajl6QmY5dDJneTFmZUNXTlBsX1BwREhrSEJrUmJrLTI1cDhvbHpNbFc1bld5LU5WdVJNWi1qdWNoUktEOHVRSEQ2UEgzSDJvakllQXhwVlUxTEFLLUc3WDJaanp5bmxOaUU2N1pDYXE1WGxEVk1LQk5HZ3BaS0JZS2d0TU5TUTBJcjhrc25nQnN0V0E?oc=5",
+          "publishedAt": "2026-11-10T18:33:00.000Z",
+          "description": "Bosch negocia motores elétricos feitos no Brasil com 7 montadoras no Brasil &nbsp;&nbsp; Estadão",
+          "source": "Estadão",
+          "imageUrl": null
         },
         {
-          "title": "Ata do Copom indica que desaceleração da economia não conteve inflação",
-          "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/ata-do-copom-indica-que-desaceleracao-da-economia-nao-conteve-inflacao",
-          "publishedAt": "2026-11-10T14:20:00.000Z",
+          "title": "Anvisa determina apreensão de suplementos alimentares",
+          "url": "https://agenciabrasil.ebc.com.br/saude/noticia/2026-11/anvisa-determina-apreensao-de-suplementos-alimentares",
+          "publishedAt": "2026-11-10T18:18:00.000Z",
+          "description": "A Agência Nacional de Vigilância Sanitária (Anvisa) determinou nesta terça-feira (10) a apreensão de suplementos alimentares divulgados e vendidos de maneira irregular no país. A resolução foi publicada no Diário Oficial da União (DOU). Em nota, a agência informou que suplementos produzidos pela empresa W Nutry Ltda. não podem ser fabricados, vendidos, distribuídos, divulgados nem utilizados. “Não foram identificadas notificações ou registros desses produtos junto à Anvisa”. Notícias relacionadas: Anvisa manda retirar do mercado duas marcas de suplemento alimentar. Anvisa proíbe saneante e pó descolorante. Anvisa determina recolhimento de ema",
           "source": "Agência Brasil",
-          "imageUrl": "https://imagens.ebc.com.br/SgnUFMdRtJPNTHPG5q90__2MSS4=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2025/07/11/0d4a1789.jpg?itok=9dpF2vXe"
+          "imageUrl": "https://imagens.ebc.com.br/kL4sBdVHau6U467C9Nn7O68ygWw=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/11-11-2020_sede_anvisa-4_0.jpg?itok=-3OpV90w"
         },
         {
-          "title": "Um terço dos jovens de 16 a 29 anos quer chegar à universidade",
-          "url": "https://agenciabrasil.ebc.com.br/educacao/noticia/2026-11/um-terco-dos-jovens-de-ate-29-anos-quer-chegar-universidade",
-          "publishedAt": "2026-11-10T14:18:00.000Z",
+          "title": "Dinheiro esquecido no sistema financeiro ultrapassa R$ 6 bilhões",
+          "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxOeV9XakxwVVFIdFQ4LVFPd21QcnN5Q0gzVWlTdndJckJyUEFzaUVneXBwWFo1aUh4bDF3SzVSSEdlV09WWWYxVzY5ajFDVGQ3ZXVoWURXUHRIQUNVRUxMT1o5c25hY2NZdDVWUnhlcWE0bGhkRzJISHU4eUpzSHhOQTB5aDdNemRHUUJWU2hoUWRUQmhmMGw1X3FVQlkxOGJXVGh4ZE43U0JNRWFnUFZObjdwY2x0Q0JqQ2dxUXBR?oc=5",
+          "publishedAt": "2026-11-10T17:39:00.000Z",
+          "description": "Dinheiro esquecido no sistema financeiro ultrapassa R$ 6 bilhões &nbsp;&nbsp; Agência Brasil",
           "source": "Agência Brasil",
-          "imageUrl": "https://imagens.ebc.com.br/vovUc7KNABZBPEQufKcc3grRju4=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/06/toms6007.jpg?itok=IJ4vgguM"
+          "imageUrl": null
         }
       ],
       "checked": true,
@@ -58,24 +62,27 @@
       "label": "Santa Catarina",
       "articles": [
         {
-          "title": "Temporais atingem 54 municípios e deixam 11 cidades em situação de emergência em SC",
-          "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxNM1R3RnRROUVXS2lhalJpTTB0dUtmN1RjQTZqcHZYanBKX29sakdwZkh2bDdxMGlreHlhYURmX19lV1ZMcWItSGgwRDVyRjJDSU1NUVQxN3RLRXRTLThOYXhFZ1hIMkhVUEZFTElRSkJkVm55bTJiV2xxVkxaXzk3bTFEQlo0SFN2eWhLaG5ZRkZxN2F6bUZnWGJodmpTR1M3SU1nMzQxWjdoOEZlclh6dEZnZWJncVkybHk3anZwRXE?oc=5",
-          "publishedAt": "2026-11-09T19:34:33.000Z",
-          "source": "AJ Notícias",
+          "title": "Defesa Civil de SC atende municípios atingidos por chuva forte nesse fim de semana; 11 decretaram situação de emergência.",
+          "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxPaHpVT2ZpZDNiWW43RUszODlDRFd5WEVvOXhPRDhMU194Z1ExaFFPLUl0OXRkYVU2WkUxWTNqSlR1ZGljbFJ6LUtqcEZFakZvQXhjVXI0NkYxb3M4VVdva3ZScGxGN3U0OEV0ZFNSYmh3RHBKWjJNNzdFLVBDT0ZVcUhvU1F6T2g5OUFkT2xESTJUemlTZVBuRnZZcTcwZzFFNlhrNXprUllFNGpPYU1Memx6Q254eXhmb0JVYVpjSmFlRzVaYzk4Z0lTNFNGTmNDQWFYbmhIZVY0b0xUYmloYQ?oc=5",
+          "publishedAt": "2026-11-10T18:00:00.000Z",
+          "description": "Defesa Civil de SC atende municípios atingidos por chuva forte nesse fim de semana; 11 decretaram situação de emergência. &nbsp;&nbsp; Blog do Jaime",
+          "source": "Blog do Jaime",
           "imageUrl": null
         },
         {
-          "title": "Temporais deixam 353 pessoas fora de casa e 11 cidades em emergência em SC",
-          "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxOclp6NTJYUHQxVkYxQlFXWXVFQ1R2cGtKS0ZVQUZhLW45T002LURSTXNNTnhxdWlKRG1DNTlkU1F6SFVsSlhlS0ZnUmlGOWJUbzhuNzlNQU1mY0RCVXozQmlfaVV3N0taRXpTeGRvdnJsZHYwdHZicmxpN1JDd2k4dFRSdzlzajd2WkdGaS1SaXBpSUVuVTF5WUlpanBEVGRPWHpWclNpNA?oc=5",
-          "publishedAt": "2026-11-09T15:09:58.000Z",
-          "source": "Visor Notícias",
+          "title": "Nova frente fria já tem data para chegar com temporais após 'calorão' de 32°C tomar lugar do frio intenso em SC",
+          "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxOUVBrNE9MelNkYXlrb2FXMzdmUXU1YWwzbF8xN0kzSWdoS1gySGpZU09TMWNPSlFGMFpvV3JLNWZZUXBjR3ZDNzhGc0xzRjNpZmdBTU1Fbkc4Z3RJelRMUXVWbGdnRl9QRUJiOUtvU3BtLVkxR2c2cEhMN080ZHZzcndycTJUUzljaC1iMnBlU3ZUNmhyb3BlemNMYnRrdURiRW9wWmgzVQ?oc=5",
+          "publishedAt": "2026-11-10T15:17:04.000Z",
+          "description": "Nova frente fria já tem data para chegar com temporais após 'calorão' de 32°C tomar lugar do frio intenso em SC &nbsp;&nbsp; ND Mais",
+          "source": "ND Mais",
           "imageUrl": null
         },
         {
-          "title": "Cidades atingidas por tornados em SC entram em alerta vermelho para novas tempestades, diz Defesa Civil",
-          "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxOTGJhbWhiZDUwLXhQelhSQzhtUndJdW9Jc3k1dU1DWGFwNkhDakpSQWkzMTV5cE5mWkZRYlA3VGkxSUk3U1RTejZudlRTWHVmNHZLLUM5MmFabFdqZFE4a2F5bDE2czZ4S2Nud2M1U3J2MlFRQVBlcHViZ1BhR3ZIYW1vQ2JsZDMwYTZmTkd5TWc0Um1BemgzSVlJWV8tLTBDeWtIVHVUckRLVkRZYkVnOTkyd0hYVXBfdzNFOG9iUG02dlNObHdrZW16djF1NHY1bFpJ0gHiAUFVX3lxTE1jTDBMZU56TGRnZkQ3TzFvWUFQeV9lRTZvUHF3Xzd5Rld2dkh4N1RfdmFpSzVaZkpKYndMSi1mZWNHQlktb3pISFI2Q2NVZ0wyR0VnRU9BNTFmd0NfQVRhTFR4bkNMcldhM3gwSjA3dVBsNG1YemEtcU9UNWZ5ZUdTMk5Od0lIYktXLXJxYVI3VjhLRC14ZkpfQmdZQVlvUVNCakl3cFowbHhKTXdqNWNMMUVZV2VnNnhFYTA3WU9PSUFCSUkxczlpU0stTnh1dDFCMm8zXzRHV19XZjVqc1NGOFE?oc=5",
-          "publishedAt": "2026-11-06T19:15:41.000Z",
-          "source": "G1",
+          "title": "Santa Catarina terá sol, aumento das temperaturas e retorno dos temporais nos próximos dias",
+          "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxOQ1A5c01yQVBDUnoyeWZhZUFQa0cwSmpwVC1PVkptN1FCcDc2UGVLU3VXUWliRlpzY0FwcHVTRC12QzZPa3JGdE1iOXJZU2FVZC0ySW5JYlBwSF96Y1hJSElaZnd1NXcxQk9JbnBkWXM2S1h1UWFheTRPRXNVTU9FNW9YVzlVeGQxaU9HaENMUUhfNlVvS0RSNmJVd2hsU09KVmQ4cVJKV0dwMG1OekpBMG15OVhFN1dsWE0tTU1Pcw?oc=5",
+          "publishedAt": "2026-11-10T11:05:27.000Z",
+          "description": "Santa Catarina terá sol, aumento das temperaturas e retorno dos temporais nos próximos dias &nbsp;&nbsp; Reporter Sul",
+          "source": "Reporter Sul",
           "imageUrl": null
         }
       ],
@@ -85,7 +92,32 @@
     {
       "id": "clima",
       "label": "Clima e El Niño",
-      "articles": [],
+      "articles": [
+        {
+          "title": "El Niño vai até quando? Veja o que as previsões indicam para 2027",
+          "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxNYWpZRUpBa0g2aDlHTjJMNDROcE9DTkQ0Y25HN0dZaWpGUTdJbUNJWHd1WTdOenQyYVozSUpwcFBxcXZYMGg2aTQ1ZWFSVl90NFFRZENVVW5YZ0NLSmZMX2ZTVndRZkdudGwya2xNYjU5S0JIb1ZuRzktMW5pN0pmVDQzU1BTcWV6WjdrdDltWVU4TWhpdmdLdk1OZFRIYnhObU05bFdn?oc=5",
+          "publishedAt": "2026-11-10T14:15:27.000Z",
+          "description": "El Niño vai até quando? Veja o que as previsões indicam para 2027 &nbsp;&nbsp; Folha Vitória",
+          "source": "Folha Vitória",
+          "imageUrl": null
+        },
+        {
+          "title": "Fortaleza (CE): Defesa Civil enviará alertas de calor extremo; saiba como funciona",
+          "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxQR0ZUWFZqcjY3Uko1c05NS2Q2bGFyeFlSSDVCVUFkRXBUU1dtcUFNVEZDT1E5RnA2b0NZb1dHOXJLRjR2NkJvdGNDZ3F0RzgwMTdLYm4wbWRrWkt1TFo3UW1qZm1rdDNZX2ZRQ2ZSazZXY0tNWjJvcllpc3V0c3RIdHVEbmRUYkZKNDN0RlRpaWtSWEdUZXF0YmRzZHJYQUdHQzJvc3hzdFpBVkR6VHpGaw?oc=5",
+          "publishedAt": "2026-11-10T13:02:09.000Z",
+          "description": "Fortaleza (CE): Defesa Civil enviará alertas de calor extremo; saiba como funciona &nbsp;&nbsp; Diário do Estado",
+          "source": "Diário do Estado",
+          "imageUrl": null
+        },
+        {
+          "title": "El Niño bate recorde em outubro e painel prevê impacto nas chuvas",
+          "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxQa1h0WDM3ZDVmZFQwZjN1OE91OXk1LU1HeVBkYjRHNXFNVGs0UTYxRFZhekM2Mmk0N28zeE5zdWFOZG1aTWE0a2wyWGZPNWNtZ1ZTem9MRGVvbUtfdnFIYTFmNExtSlNDakV6VDkzVzlxQjlMZGdua19oc3BrWC1rZndHd1pFSGw0MlFmRWEyd0taU2J1NmZ1SzJwelhvd25wTnpSME5kOHhZME1NVXpYSzEtcUpBa3ZNUUZTZnln?oc=5",
+          "publishedAt": "2026-11-10T09:03:00.000Z",
+          "description": "El Niño bate recorde em outubro e painel prevê impacto nas chuvas &nbsp;&nbsp; Jornal Diário do Povo",
+          "source": "Jornal Diário do Povo",
+          "imageUrl": null
+        }
+      ],
       "checked": true,
       "error": null
     },
@@ -94,18 +126,28 @@
       "label": "Mundo",
       "articles": [
         {
-          "title": "Brasil apresenta marco de financiamento para área de saúde na COP31",
-          "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/brasil-apresenta-marco-de-financiamento-para-area-de-saude-na-cop31",
-          "publishedAt": "2026-11-10T15:25:00.000Z",
-          "source": "Agência Brasil",
-          "imageUrl": "https://cdn.jsdelivr.net/gh/sergiosdlima/assets-ebc@1.0.0/public/thumbs/thumb_1200x600_agbrasil.png"
+          "title": "Confira a edição de novembro de 2026 da Revista GNU",
+          "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1uSHEwNmlRcXBsRzIxSW9wNVFEMkpYbkR2OGhiVGp4NGY1X0NfQlBtUHYwZHRma0xpS2lsb1FTbkZWMDRVa3gwOVduOHNySG5waXhFc1pINzNodDBXRF9UdnNNSW16M1BjSksyYzBjaw?oc=5",
+          "publishedAt": "2026-11-10T19:30:22.000Z",
+          "description": "Confira a edição de novembro de 2026 da Revista GNU &nbsp;&nbsp; Grêmio Náutico União",
+          "source": "Grêmio Náutico União",
+          "imageUrl": null
         },
         {
-          "title": "ONU diz que 2026 será um dos anos mais quentes já registrados",
-          "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/onu-diz-que-2026-sera-um-dos-anos-mais-quentes-ja-registrados",
-          "publishedAt": "2026-11-09T13:49:00.000Z",
-          "source": "Agência Brasil",
-          "imageUrl": "https://imagens.ebc.com.br/DRCBinTonsXqRzXXd1IeKqZ80Zc=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/08/30/pzzb5391.jpg?itok=yOyorZK1"
+          "title": "TCS amplia presença nas grandes maratonas do mundo e chega à Maratona do Rio",
+          "url": "https://news.google.com/rss/articles/CBMihgJBVV95cUxQUVl0a2hvS1hkZElGVF9fbmgyM1F0M2IzOEhuTlFZOW1KLW5DZXdwUmVCRUJrY2JxZUZhSzlIQkRmb3U3WVhhLVd5Y0dOOFp4SlFfNGFJdGV3Y2lmcklBYWw2VEVGMXk1YlhLS2JyUmpqZC1NRkJqcGhyeFNUR3RJSjlXZzRlQ2h6MXZQTktWT2RRNnU5Wm9lUTBfU0x5SFl6Y29SV3FQY196SWJma0RCNnZ6WUEzY2o0bHVQUE5wYm16ek9HMFBmM2RsczdHODZZb0dndmlQQmdmcnlKYjVOTk9iT0JaTHJxTzd2bjJzaHptU0h1UjZmOFZkZGZIeC1UYXhHNV9R?oc=5",
+          "publishedAt": "2026-11-10T18:56:00.000Z",
+          "description": "TCS amplia presença nas grandes maratonas do mundo e chega à Maratona do Rio &nbsp;&nbsp; Terra",
+          "source": "Terra",
+          "imageUrl": null
+        },
+        {
+          "title": "Principais notícias do mundo na tarde de hoje (10)",
+          "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxOT1hsb0NqLXdKRWxMZkkwaE1oNXJxTUpvRmNsakhaeWdNTmF6d05lTkNmcXZKYkN2cDRIbHZFVjdxSlR1Zmphc0NVMEFrYjRjVURMb053T0M4YUY5MFRBSDQ2bWdkUnVLYmpUSlBDaU1tOTJPVUtuYXctX3J5X0ZZaVdKWXZGZ1RuVkE0a1ROd0UzQkc3X0FrMDdrYzhmOTV1eE1hS0ZNYXAtRXF4?oc=5",
+          "publishedAt": "2026-11-10T18:03:00.000Z",
+          "description": "Principais notícias do mundo na tarde de hoje (10) &nbsp;&nbsp; Tribuna do Sertão",
+          "source": "Tribuna do Sertão",
+          "imageUrl": null
         }
       ],
       "checked": true,
@@ -128,7 +170,16 @@
     {
       "id": "asia",
       "label": "Ásia",
-      "articles": [],
+      "articles": [
+        {
+          "title": "Lula participa da COP31 e busca ampliar relações comerciais na Ásia - band.com.br",
+          "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxONGY4ZnJBc0c0LXRDUXY0a0NVVU0wLTFKSW04VlRSRUx0MkFqSXJzajFtbUxuRlY2VWpTMmxVWnBMZDBMYUFIT3ZfMWxLSXVJbVIxdHdfNW5WRUQ5dHZIaThyQUV1TEZoUGVYZFM2b192eWJ5QS05WTlwZ0xBcUVETGJVbGRxODNtX19wa3dWNUQtYTNkVDVwRXV2bU92TDMtNFdoQzhlUE52WUE?oc=5",
+          "publishedAt": "2026-11-10T11:13:13.000Z",
+          "description": "Lula participa da COP31 e busca ampliar relações comerciais na Ásia &nbsp;&nbsp; band.com.br",
+          "source": "band.com.br",
+          "imageUrl": null
+        }
+      ],
       "checked": true,
       "error": null
     },
