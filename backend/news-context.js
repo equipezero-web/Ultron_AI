@@ -78,6 +78,7 @@ function normalizeArticle(article, index) {
   return {
     id: `news-${index + 1}`,
     title,
+    description:String(article?.description||article?.snippet||'').replace(/\s+/g,' ').trim().slice(0,650),
     url,
     image: /^https?:\/\//i.test(image) ? image : null,
     source: source || domainLabel(url),
@@ -171,6 +172,7 @@ async function fetchGoogleNewsArticles(message, limit = 6) {
     return {
       id: `gnews-${index + 1}`,
       title,
+      description:xmlTag(block,'description').replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim().slice(0,650),
       url: link,
       image: null,
       source,
@@ -290,7 +292,7 @@ function buildContextText(articles) {
   if (!articles.length) return "";
   const rows = articles.map((item, index) => {
     const when = item.publishedAt || "horário não informado";
-    return `${index + 1}. ${item.region?`[${item.region}] `:""}${item.title}\nFonte: ${item.source}\nData/hora: ${when}\nLink: ${item.url}`;
+    return `${index + 1}. ${item.region?`[${item.region}] `:""}${item.title}\n${item.description?`Descrição da fonte: ${item.description}\n`:''}Fonte: ${item.source}\nData/hora: ${when}\nLink: ${item.url}`;
   });
 
   return [
@@ -366,6 +368,7 @@ export async function loadLiveNewsContext(message, { limit = 6 } = {}) {
 
     const cards = highlights.map((article) => ({
       title: article.title,
+      description: article.description||'',
       source: article.source,
       publishedAt: article.publishedAt,
       url: article.url,
