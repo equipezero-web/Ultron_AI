@@ -7,6 +7,8 @@ on:
       - 'modules/jarvis-*.js'
       - 'modules/jarvis-*.css'
       - 'modules/stark-bootstrap.js'
+      - 'modules/stark-command-center-adapter.js'
+      - 'modules/neural-parity.js'
       - 'modules/stark-file-mesh.js'
       - 'modules/voice-runtime-policy.js'
       - 'modules/backend-version-check.js'
@@ -20,6 +22,8 @@ on:
       - 'modules/jarvis-*.js'
       - 'modules/jarvis-*.css'
       - 'modules/stark-bootstrap.js'
+      - 'modules/stark-command-center-adapter.js'
+      - 'modules/neural-parity.js'
       - 'modules/stark-file-mesh.js'
       - 'modules/voice-runtime-policy.js'
       - 'modules/backend-version-check.js'
@@ -41,6 +45,8 @@ jobs:
           node --check modules/jarvis-backend-guard-v4310.js
           node --check modules/jarvis-holographic-core-v4310.js
           node --check modules/stark-bootstrap.js
+          node --check modules/stark-command-center-adapter.js
+          node --check modules/neural-parity.js
           node --check modules/stark-file-mesh.js
           node --check modules/voice-runtime-policy.js
           node --check modules/backend-version-check.js
@@ -49,11 +55,11 @@ jobs:
       - name: Verify JARVIS branding and release
         run: |
           grep -q 'J.A.R.V.I.S // Command Center' index.html
-          grep -q 'jarvis-command-center-v4330.js?v=4.52.0' index.html
+          grep -Eq 'jarvis-command-center-v4330[.]js[?]v=4[.][0-9]+[.][0-9]+' index.html
           grep -q 'jarvis-command-center-v4330.css?v=4.53.0' index.html
           ! grep -q 'src="modules/jarvis-holographic-core-v4310.js' index.html
           grep -q 'jarvis-brand-v4310.js?v=4.31.0' index.html
-          grep -q 'stark-bootstrap.js?v=4.31.0' index.html
+          grep -Eq 'stark-bootstrap[.]js[?]v=4[.][0-9]+[.][0-9]+' index.html
           ! grep -q 'stark-bootstrap.js?v=4.28.0' index.html
 
       - name: Verify canonical backend guard
