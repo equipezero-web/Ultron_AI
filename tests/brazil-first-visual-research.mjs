@@ -18,7 +18,7 @@ globalThis.fetch=async (input,init)=>{
  if(url.includes('news.google.com'))return new Response('<rss></rss>',{status:200});
  if(url.includes('gdeltproject.org')){
    const q=new URL(url).searchParams.get('query')||'';
-   const world=/internacionais|mundo/i.test(q);
+   const world=/internacionais|mundo|world OR international|United States/i.test(q);
    const region=world?'world':'brasil';
    return new Response(JSON.stringify({articles:Array.from({length:5},(_,i)=>({title:region+' notícia '+i,url:'https://example.org/'+region+'/'+i,socialimage:'https://example.org/'+region+'/'+i+'.jpg',seendate:new Date().toISOString(),domain:'example.org',language:'Portuguese',sourcecountry:'Brazil'}))}),{status:200});
  }
