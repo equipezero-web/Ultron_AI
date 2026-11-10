@@ -86,6 +86,7 @@ async function searchWikipedia(query, lang, limit = 4) {
   });
 
   const response = await fetch(`https://${lang}.wikipedia.org/w/api.php?${params.toString()}`, {
+    signal:AbortSignal.timeout(2800),
     headers: {
       "Accept": "application/json",
       "User-Agent": "UltronAI/1.0 (visual research context)"
@@ -130,7 +131,8 @@ function buildVisualContext(items, query) {
     .map((item) => ({
       src: item.image,
       alt: item.title,
-      title: item.title
+      title: item.title,
+      sourceUrl:item.url
     }));
 
   const cards = items.slice(0, 4).map((item) => ({
@@ -151,8 +153,8 @@ function buildVisualContext(items, query) {
   };
 }
 
-export async function loadResearchContext(message, { limit = 4 } = {}) {
-  if (!isResearchIntent(message)) {
+export async function loadResearchContext(message, { limit = 4, force = false } = {}) {
+  if (!force&&!isResearchIntent(message)) {
     return {
       active: false,
       query: "",

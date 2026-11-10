@@ -1,3 +1,4 @@
+import { loadResearchContext } from "./research-context.js";
 import {
   ProviderGatewayError,
   generateWithProviders,
@@ -215,7 +216,7 @@ function cacheContext(cache) {
 function visualHasContent(visual) {
   return Boolean(
     visual &&
-    ((Array.isArray(visual.images) && visual.images.length) ||
+    ((Array.isArray(visual.images) && visual.images.length) || (Array.isArray(visual.videos) && visual.videos.length) ||
       (Array.isArray(visual.cards) && visual.cards.length))
   );
 }
@@ -414,7 +415,8 @@ async function prepareResearch(env, body) {
   let sources = [];
   let fromCache = false;
 
-  if (operatorId && !generalNews && !needsVisualResearch(query)) {
+  // Text-only cached results cannot satisfy a multimedia query.
+  if (operatorId && !generalNews && body?.textOnly===true && !needsVisualResearch(query)) {
     cache = await loadResearchCache(env, { operatorId, query });
     if (cache?.hit) {
       fromCache = true;
@@ -426,7 +428,7 @@ async function prepareResearch(env, body) {
   if (!fromCache) {
     if (newsIntent) {
       const [googleResult, liveResult] = await Promise.allSettled([
-        generalNews ? Promise.resolve(null) : searchGoogle(env, query, { limit: 6 }),
+        searchGoogle(env, generalNews?"principais notícias Brasil hoje":query, { limit: 6 }),
         loadLiveNewsContext(query, { limit: 6 })
       ]);
       research = googleResult.status === "fulfilled" ? googleResult.value : null;
@@ -435,8 +437,8 @@ async function prepareResearch(env, body) {
         .filter(Boolean)
         .join("\n\n--- FONTES DE NOTÍCIAS COMPLEMENTARES ---\n\n");
       sources = dedupeSources([
-        ...sourceSummary(research),
-        ...newsSourceSummary(newsState)
+        ...newsSourceSummary(newsState),
+        ...sourceSummary(research)
       ], 10);
     } else {
       research = await searchGoogle(env, query, { limit: 6 });
@@ -447,6 +449,19 @@ async function prepareResearch(env, body) {
     }
   }
 
+  // When Google returns no pictures, use actual encyclopedia images for
+  // non-breaking factual topics. Never treat encyclopedia text as live news.
+  let fallbackVisual=null;
+  if(!fromCache&&!newsIntent&&!research?.images?.length&&policy.reason!=="freshness"&&policy.reason!=="factual-current"){
+    try{
+      const fallback=await loadResearchContext(query,{limit:3,force:true});
+      fallbackVisual=fallback?.visualContext||null;
+      if(!sources.length&&fallback?.items?.length){
+        researchContext=fallback.contextText;
+        sources=dedupeSources(fallback.items.map(i=>({title:i.title,source:i.source,url:i.url,date:null})),8);
+      }
+    }catch{}
+  }
   const researchMs = Date.now() - researchStartedAt;
   const usable = Boolean(researchContext && sources.length);
   return {
@@ -457,6 +472,7 @@ async function prepareResearch(env, body) {
     operatorId,
     cache,
     research,
+    fallbackVisual,
     newsState,
     researchContext,
     sources,
@@ -756,11 +772,13 @@ async function handleAi(request, env) {
 
   if (prepared.active) {
     const {
-      policy, query, newsIntent, operatorId: researchOperatorId, cache, research,
+      policy, query, newsIntent, operatorId: researchOperatorId, cache, research, fallbackVisual,
       newsState, sources, fromCache, researchMs, researchContext
     } = prepared;
 
     if (!researchContext || !sources.length) {
+      const mediaOnly=researchVisualContext(research)||fallbackVisual;
+      if(visualHasContent(mediaOnly))data.visualContext={...mediaOnly,caption:data.text||""};
       data.webResearch = {
         requested: true,
         used: false,
@@ -791,9 +809,12 @@ async function handleAi(request, env) {
       const researchVisual = researchVisualFromSources(sources, searchedAt, data?.text, fromCache, research);
       const newsVisual = newsState?.visualContext || null;
       const baseVisual = data?.visualContext || null;
-      const preferredVisual = visualHasContent(newsVisual)
-        ? { ...newsVisual, images: [...(newsVisual.images||[]),...(researchVisual?.images||[])].slice(0,4) }
-        : (researchVisual?.images?.length ? researchVisual : (visualHasContent(baseVisual) ? baseVisual : researchVisual));
+      const preferredVisual = {
+        ...(baseVisual||{}),...(fallbackVisual||{}),...(researchVisual||{}),...(newsVisual||{}),
+        images:[...(newsVisual?.images||[]),...(researchVisual?.images||[]),...(fallbackVisual?.images||[]),...(baseVisual?.images||[])].slice(0,6),
+        videos:[...(researchVisual?.videos||[]),...(baseVisual?.videos||[])].slice(0,3),
+        cards:[...(newsVisual?.cards||[]),...(researchVisual?.cards||[]),...(fallbackVisual?.cards||[]),...(baseVisual?.cards||[])].slice(0,8)
+      };
       if (newsIntent && sources.length) {
         data.liveData = {
           ...(data?.liveData || {}),
