@@ -4,10 +4,43 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-10T00:14:38.811Z",
+  "updatedAt": "2026-11-10T07:24:49.276Z",
   "oldestEventAt": "2026-11-09T13:49:00.000Z",
-  "windowStartAt": "2026-11-09T00:14:38.811Z",
+  "windowStartAt": "2026-11-09T07:24:49.276Z",
   "events": [
+    {
+      "id": "event-3088692b",
+      "category": "brasil",
+      "title": "Jornal da Band ao vivo: Assista às principais notícias do Brasil e do mundo - 10-11-2026",
+      "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxPUGF6ZTk0RGl2X2xVcWFWTnBXSGpoWUJwdUQtWjVqNmZ1VS1RSXAxR3dOZDc3WG13NUR4UjdqMElTSHNUeVZ3Q1Uyb1AtdlhHUV9WUUoxRjF2aE1QYTJnanVkWm9rRFgycE9XT1hBd2pTd1BkZEZBQTJXLUtYTm94QUVVbnc3blRONVhQN0RJYXJqU2E2QWxJQWZ4dFdnT3AzdkIybDZhZVF6aGtVZTVPaDFVVVplcVhZREFoUVgxYkxiNFk",
+      "imageUrl": null,
+      "source": "Band",
+      "publishedAt": "2026-11-10T03:01:00.000Z",
+      "firstSeenAt": "2026-11-10T07:24:49.276Z",
+      "lastSeenAt": "2026-11-10T07:24:49.276Z"
+    },
+    {
+      "id": "event-8a5c23ff",
+      "category": "brasil",
+      "title": "Bora Brasil: Assista às principais notícias e análises do dia - 10-11-2026",
+      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxPUVYzbG44VzFNMk9GUnNKNFdmRm5rZFpNbllQY3ZqSDB1WTNmYWswdURwaTlyeEdTV2pIYkYtMGZXM2tHVDBUMEtWMjFGSURyVWw1WXZiSFNWLWZFTGxsTHpLWVRSWEl5OF83d3RlbUhucHl1VFM0NUR3czlPTHVtWEhvOTQ2WlcxM2ZEaVk5anRzWWJwUkVORVZqQTVWdXV2SDVCbTA0bk9mbS1manRuRQ",
+      "imageUrl": null,
+      "source": "Band",
+      "publishedAt": "2026-11-10T03:01:00.000Z",
+      "firstSeenAt": "2026-11-10T07:24:49.276Z",
+      "lastSeenAt": "2026-11-10T07:24:49.276Z"
+    },
+    {
+      "id": "event-1e191bb9",
+      "category": "brasil",
+      "title": "Judiciário e MPU querem R$ 533 milhões para pagar penduricalhos",
+      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/judiciario-e-mpu-querem-r-533-milhoes-para-pagar-penduricalhos",
+      "imageUrl": "https://imagens.ebc.com.br/PlhDsW3Fve_Nm185HxHeg0HB0Mg=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/atoms/image/1103272-1084696-jfcrz_abr_25.07.2017_a81t5606271217.jpg?itok=g5oKiOBv",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-10T00:58:00.000Z",
+      "firstSeenAt": "2026-11-10T07:24:49.276Z",
+      "lastSeenAt": "2026-11-10T07:24:49.276Z"
+    },
     {
       "id": "event-ed68aa8e",
       "category": "brasil",
@@ -17,7 +50,7 @@
       "source": "Agência Brasil",
       "publishedAt": "2026-11-09T23:31:00.000Z",
       "firstSeenAt": "2026-11-10T00:14:38.811Z",
-      "lastSeenAt": "2026-11-10T00:14:38.811Z"
+      "lastSeenAt": "2026-11-10T07:24:49.276Z"
     },
     {
       "id": "event-c71a24cc",
@@ -61,7 +94,7 @@
       "source": "AJ Notícias",
       "publishedAt": "2026-11-09T19:34:33.000Z",
       "firstSeenAt": "2026-11-10T00:14:38.811Z",
-      "lastSeenAt": "2026-11-10T00:14:38.811Z"
+      "lastSeenAt": "2026-11-10T07:24:49.276Z"
     },
     {
       "id": "event-298aff64",
@@ -116,7 +149,7 @@
       "source": "Visor Notícias",
       "publishedAt": "2026-11-09T15:09:58.000Z",
       "firstSeenAt": "2026-11-09T17:17:20.834Z",
-      "lastSeenAt": "2026-11-10T00:14:38.811Z"
+      "lastSeenAt": "2026-11-10T07:24:49.276Z"
     },
     {
       "id": "event-e4a2beea",
@@ -138,7 +171,7 @@
       "source": "Agência Brasil",
       "publishedAt": "2026-11-09T13:49:00.000Z",
       "firstSeenAt": "2026-11-09T17:17:20.834Z",
-      "lastSeenAt": "2026-11-10T00:14:38.811Z"
+      "lastSeenAt": "2026-11-10T07:24:49.276Z"
     }
   ],
   "checks": [
@@ -201,20 +234,35 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-10T07:24:49.276Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 7,
+      "newArticles": 3,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "mundo",
+        "europa"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
-  "checkCount": 4,
-  "lastSuccessfulAt": "2026-11-10T00:14:38.811Z",
+  "checkCount": 5,
+  "lastSuccessfulAt": "2026-11-10T07:24:49.276Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-10T00:14:38.811Z",
+      "checkedAt": "2026-11-10T07:24:49.276Z",
       "warnings": [
         {
           "id": "56356",
           "title": "Acumulado de Chuva",
           "severity": "Perigo Potencial",
-          "phase": "previsto",
+          "phase": "vigente",
           "regions": [],
           "startsAt": "2026-11-10T00:00:00.000Z",
           "endsAt": "2026-11-13T00:00:00.000Z",
@@ -238,7 +286,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-10T00:14:38.811Z",
+      "checkedAt": "2026-11-10T07:24:49.276Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "8 October 2026",

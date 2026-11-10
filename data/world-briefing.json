@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "1.0",
-  "fetchedAt": "2026-11-10T00:14:38.811Z",
+  "fetchedAt": "2026-11-10T07:24:49.276Z",
   "priority": [
     "Brasil",
     "Santa Catarina",
@@ -22,32 +22,32 @@
       "label": "Brasil",
       "articles": [
         {
+          "title": "Jornal da Band ao vivo: Assista às principais notícias do Brasil e do mundo - 10-11-2026",
+          "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxPUGF6ZTk0RGl2X2xVcWFWTnBXSGpoWUJwdUQtWjVqNmZ1VS1RSXAxR3dOZDc3WG13NUR4UjdqMElTSHNUeVZ3Q1Uyb1AtdlhHUV9WUUoxRjF2aE1QYTJnanVkWm9rRFgycE9XT1hBd2pTd1BkZEZBQTJXLUtYTm94QUVVbnc3blRONVhQN0RJYXJqU2E2QWxJQWZ4dFdnT3AzdkIybDZhZVF6aGtVZTVPaDFVVVplcVhZREFoUVgxYkxiNFk?oc=5",
+          "publishedAt": "2026-11-10T03:01:00.000Z",
+          "source": "Band",
+          "imageUrl": null
+        },
+        {
+          "title": "Bora Brasil: Assista às principais notícias e análises do dia - 10-11-2026",
+          "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxPUVYzbG44VzFNMk9GUnNKNFdmRm5rZFpNbllQY3ZqSDB1WTNmYWswdURwaTlyeEdTV2pIYkYtMGZXM2tHVDBUMEtWMjFGSURyVWw1WXZiSFNWLWZFTGxsTHpLWVRSWEl5OF83d3RlbUhucHl1VFM0NUR3czlPTHVtWEhvOTQ2WlcxM2ZEaVk5anRzWWJwUkVORVZqQTVWdXV2SDVCbTA0bk9mbS1manRuRQ?oc=5",
+          "publishedAt": "2026-11-10T03:01:00.000Z",
+          "source": "Band",
+          "imageUrl": null
+        },
+        {
+          "title": "Judiciário e MPU querem R$ 533 milhões para pagar penduricalhos",
+          "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/judiciario-e-mpu-querem-r-533-milhoes-para-pagar-penduricalhos",
+          "publishedAt": "2026-11-10T00:58:00.000Z",
+          "source": "Agência Brasil",
+          "imageUrl": "https://imagens.ebc.com.br/PlhDsW3Fve_Nm185HxHeg0HB0Mg=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/atoms/image/1103272-1084696-jfcrz_abr_25.07.2017_a81t5606271217.jpg?itok=g5oKiOBv"
+        },
+        {
           "title": "Chuvas deixam feridos, desabrigados e casas destelhadas no Sul",
           "url": "https://agenciabrasil.ebc.com.br/geral/noticia/2026-11/chuvas-deixam-feridos-desabrigados-e-casas-destelhadas-no-sul",
           "publishedAt": "2026-11-09T23:31:00.000Z",
           "source": "Agência Brasil",
           "imageUrl": "https://imagens.ebc.com.br/ihLq4RJykjrx8JLGN7xBdhcUUe4=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/09/22/whatsappimage20260921at11.01.061789999470782_foto.jpeg?itok=BTNOPkQZ"
-        },
-        {
-          "title": "STF: ministro Fachin arquiva inquérito das Fake News",
-          "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/stf-ministro-fachin-arquiva-inquerito-das-fake-news",
-          "publishedAt": "2026-11-09T23:21:00.000Z",
-          "source": "Agência Brasil",
-          "imageUrl": "https://imagens.ebc.com.br/PjUXz7gMw8YGfU9keC_PdPCzPNc=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/09/04/55506386528_e6d3068cf0_6k.jpg?itok=1qlIWikQ"
-        },
-        {
-          "title": "COP31 pode consolidar legado brasileiro na agenda climática",
-          "url": "https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-11/cop31-pode-consolidar-legado-brasileiro-na-agenda-climatica",
-          "publishedAt": "2026-11-09T23:12:00.000Z",
-          "source": "Agência Brasil",
-          "imageUrl": "https://imagens.ebc.com.br/2738Zk8yXHKFKmVMRWyzzLSTxrA=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/09/2026-11-09t094927z_625906162_rc29koayvc0y_rtrmadp_3_climate-cop31.jpg?itok=50OUZuf6"
-        },
-        {
-          "title": "Bolsa sobe 2,22% e registra maior alta diária desde outubro",
-          "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/bolsa-sobe-222-e-registra-maior-alta-diaria-desde-outubro",
-          "publishedAt": "2026-11-09T22:38:00.000Z",
-          "source": "Agência Brasil",
-          "imageUrl": "https://imagens.ebc.com.br/CPqVdUOF8Wz-jaPeZy56pDv-AGQ=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2021-10-19t201919z_1667412587_rc26dq9d28av_rtrmadp_3_brazil-economy.jpg?itok=PTcVbDwQ"
         }
       ],
       "checked": true,
@@ -99,13 +99,6 @@
           "publishedAt": "2026-11-09T13:49:00.000Z",
           "source": "Agência Brasil",
           "imageUrl": "https://imagens.ebc.com.br/DRCBinTonsXqRzXXd1IeKqZ80Zc=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/08/30/pzzb5391.jpg?itok=yOyorZK1"
-        },
-        {
-          "title": "Lula vai às Filipinas buscando estreitar vínculo com bloco asiático",
-          "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/lula-vai-filipinas-buscando-estreitar-vinculo-com-bloco-asiatico",
-          "publishedAt": "2026-11-07T00:16:00.000Z",
-          "source": "Agência Brasil",
-          "imageUrl": "https://imagens.ebc.com.br/XIZy8FaqwBMKD2a_ZPDpJUVZxVs=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2025/10/24/54876274624_8abf493f14_o.jpg?itok=4Z7y8VhN"
         }
       ],
       "checked": true,
@@ -127,13 +120,6 @@
           "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxQUWF2NHE1VHB5NXJkZS1tU19mN1gyNW5fdTMxRFdacFBsUDhpUlRidHFLVFdmUVNDVHg0ZU5adzIyQng1YzVIb2s4VTBVdVJMcUY5UTU5b1dTbTBCc1gwaVBzclZIRjNOaEFQQUN1N3QtM05ZYnAybzAza2tKeklhUE1DN2ZoemtoLVRLbl9xbXU5Rl9KUjZWOG1saXRtZXltSFhjR0VvNDI4VWFzdlUtYW41M1VKaDdBVjZIekV1cHYzdXR0TkU3V184ZXFnRTkwSC1MN0N3?oc=5",
           "publishedAt": "2026-11-07T12:18:19.000Z",
           "source": "UOL Notícias",
-          "imageUrl": null
-        },
-        {
-          "title": "Na Europa, novas ameaças de bombas causam transtornos em aeroportos - Agência Brasil",
-          "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5xeWZmTmhUS21HaUI3T0xCQVlLcWswRTF3bkRWN1pELWVTMFdoSUIxak15dWpORXQwNl9nOGg3b3BiQmNXQjRFOWJGX3BtVkdJeFJzSDA4bjFtSmdS?oc=5",
-          "publishedAt": "2026-11-07T00:36:00.000Z",
-          "source": "Agência Brasil",
           "imageUrl": null
         }
       ],
@@ -176,7 +162,7 @@
         "id": "56356",
         "title": "Acumulado de Chuva",
         "severity": "Perigo Potencial",
-        "phase": "previsto",
+        "phase": "vigente",
         "regions": [],
         "startsAt": "2026-11-10T00:00:00.000Z",
         "endsAt": "2026-11-13T00:00:00.000Z",
