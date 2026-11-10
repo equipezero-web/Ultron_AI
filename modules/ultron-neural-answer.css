@@ -115,3 +115,5 @@ body.jarvis-command-center .ultron-news-story{border-top:1px solid #35516a;paddi
 body.jarvis-command-center .ultron-news-story h3,body.jarvis-command-center .ultron-news-line:is(h3){font-size:1.05em;margin:0 0 5px;color:#9ce6ff}
 body.jarvis-command-center .ultron-news-story p,body.jarvis-command-center .ultron-news-line{margin:0 0 6px;white-space:pre-wrap}
 body.jarvis-command-center .ultron-news-story small{color:#9ab5c9;font-size:.8em}
+
+body.jarvis-command-center .ultron-news-detail-source{display:inline-block;margin:5px 8px 0 0;color:#9ce6ff;font-size:12px;overflow-wrap:anywhere}

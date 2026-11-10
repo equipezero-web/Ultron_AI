@@ -1,3 +1,4 @@
+import { deepenNews } from "./news-details.js";
 import { loadResearchContext } from "./research-context.js";
 import {
   ProviderGatewayError,
@@ -447,6 +448,22 @@ async function prepareResearch(env, body) {
         sources = dedupeSources(sourceSummary(research), 8);
       }
     }
+  }
+
+  // A direct news question also needs details about each reported event.
+  // Keep the original article order and images; enrich only matching headlines.
+  if(newsIntent&&!fromCache&&newsState?.visualContext?.cards?.length){
+    const cards=newsState.visualContext.cards.slice(0,4);
+    const details=await deepenNews(env,cards);
+    const sections=[];
+    for(const item of details){
+      const card=cards[item.index];
+      if(!card||item.status!=="detailed")continue;
+      card.description=item.description;
+      card.detailSources=item.sources;
+      sections.push("MANCHETE: "+card.title+"\nDETALHES CONFIRMADOS NAS FONTES: "+item.description+"\nFONTES COMPLEMENTARES: "+item.sources.map(x=>x.source+" — "+x.url).join("; "));
+    }
+    if(sections.length)researchContext+=(researchContext?"\n\n":"")+sections.join("\n\n");
   }
 
   // When Google returns no pictures, use actual encyclopedia images for
@@ -956,8 +973,19 @@ export default {
 
     if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: corsHeaders() });
     if (path === "/api/health" && request.method === "GET") return health(env);
+    if (path === "/api/news-details" && request.method === "POST") {
+      try {
+        const raw=await request.text();
+        if(raw.length>12000)return json({ok:false,error:"Consulta muito longa."},413);
+        const body=JSON.parse(raw);
+        const stories=Array.isArray(body?.stories)?body.stories:[];
+        if(!stories.length||stories.length>6)return json({ok:false,error:"Envie de 1 a 6 manchetes."},400);
+        const details=await deepenNews(env,stories);
+        return json({ok:true,details});
+      }catch{return json({ok:false,error:"Não foi possível aprofundar as notícias."},400);}
+    }
     if (path === "/api/briefing" && request.method === "GET") {
-      const cacheKey = new Request(new URL("/api/briefing?v=1", request.url),{method:"GET"});
+      const cacheKey = new Request(new URL("/api/briefing?v=2", request.url),{method:"GET"});
       const cache = typeof caches !== "undefined" ? caches.default : null;
       if (cache) {
         try {

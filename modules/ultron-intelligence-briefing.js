@@ -282,7 +282,7 @@ function wakingSpeech(summary,{archiveValid=true}={}){
   const stories=(summary.highlights||[]).length?
     summary.highlights:(summary.recentHighlights||[]);
   for(const item of stories.slice(0,6)){
-    lines.push("Título: "+item.title+". Descrição: "+(item.description||"A fonte confirmou esta manchete; resumo detalhado indisponível.")+".");
+    lines.push("Título: "+item.title+". Descrição: "+((item.description||"A fonte confirmou esta manchete; resumo detalhado indisponível.").slice(0,500))+".");
   }
   if(summary.alertStatus==="recently-checked" && summary.alerts?.length){
     lines.push("Aviso do INMET: "+summary.alerts[0].title+"; severidade "+
@@ -294,7 +294,7 @@ function wakingSpeech(summary,{archiveValid=true}={}){
       (summary.enso.issued?", publicação de "+summary.enso.issued:"")+".");
   }
   if(!stories.length)lines.push("Ainda não tenho manchetes recentes confirmadas para informar.");
-  return lines.join(" ").slice(0,1750);
+  return lines.join(" ").slice(0,4400);
 }
 async function loadHistory({force=false}={}){
   if(historyPending)return historyPending;
@@ -327,6 +327,28 @@ async function loadHistory({force=false}={}){
   })();
   return historyPending;
 }
+async function deepenWakeSummary(summary){
+  const list=summary?.highlights?.length?summary.highlights:summary?.recentHighlights;
+  if(!BACKEND||!Array.isArray(list)||!list.length)return summary;
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),6500);
+  try{
+    const selected=list.slice(0,6);
+    const response=await fetch(BACKEND+"/api/news-details",{
+      method:"POST",headers:{"Content-Type":"application/json"},cache:"no-store",signal:controller.signal,
+      body:JSON.stringify({stories:selected.map(s=>({title:s.title,description:s.description||""}))})
+    });
+    if(!response.ok)return summary;
+    const data=await response.json();
+    if(!data?.ok||!Array.isArray(data.details))return summary;
+    for(const detail of data.details){
+      const item=selected[detail.index];
+      if(!item||detail.title!==item.title.slice(0,240)||detail.status!=="detailed")continue;
+      if(detail.description?.length>(item.description||"").length)item.description=detail.description;
+      item.detailSources=detail.sources||[];
+    }
+  }catch{}finally{clearTimeout(timer);}
+  return summary;
+}
 async function deliverWakeReport(){
   if(wakeBusy)return;
   wakeBusy=true;
@@ -352,8 +374,16 @@ async function deliverWakeReport(){
     log("ATIVADO · MONITOR 24H: "+summary.total24h+
       " acontecimentos arquivados, "+summary.unseenCount+
       " notícias desde o último despertar. Fontes até "+formatDate(archive.updatedAt)+".");
-    const narration=wakingSpeech(summary,{archiveValid:valid});
-    speak(narration,{automatic:true});
+    // Show the initial verified headlines immediately; add source details
+    // without requiring another question. Do not interrupt a newer command.
+    const questionSequence=window.__ultronQuestionSequence||0;
+    await deepenWakeSummary(summary);
+    if((window.__ultronQuestionSequence||0)===questionSequence){
+      wakeSummary=summary;
+      renderMonitor(summary,{waking:true,archiveValid:valid});
+      const narration=wakingSpeech(summary,{archiveValid:valid});
+      speak(narration,{automatic:true});
+    }
     if(valid){
       lastWakeAt=new Date(requestedAt).toISOString();
       try{localStorage.setItem(LAST_WAKE_KEY,lastWakeAt);}catch{}
