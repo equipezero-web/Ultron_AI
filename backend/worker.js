@@ -464,7 +464,8 @@ async function prepareResearch(env, body) {
             skipLegacyResearch: true
           }
         }
-      : { ...body, allowUncertaintyResearch: false }
+      : { ...body, allowUncertaintyResearch: false,
+          ...(newsIntent ? {webResearchContext:"Não foram obtidas fontes recentes verificáveis nesta consulta. Não apresente notícias, números ou acontecimentos como fatos atuais. Informe a indisponibilidade de confirmação.",researchMeta:{active:true,reason:policy.reason,newsIntent:true,skipLegacyResearch:true}} : {}) }
   };
 }
 
