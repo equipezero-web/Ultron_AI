@@ -24,11 +24,14 @@ if(center){
   sources.setAttribute('aria-label','Fontes da resposta');
   box.append(head,text,media,sources);center.append(box);
   let requestId=0;
+  let pendingAnswer=false;
   const clear=()=>{
     box.hidden=true;text.textContent='';
     media.replaceChildren();sources.replaceChildren();
   };
   close.addEventListener('click',clear);
+  // A scroll within the response must not zoom the ring or move the document.
+  box.addEventListener('wheel',event=>event.stopPropagation(),{passive:true});
   const url=value=>{
     try{
       const u=new URL(value);
@@ -60,7 +63,7 @@ if(center){
       media.append(img);
       if(seenImages.size>=4)break;
     }
-    const cards=[...(Array.isArray(visual?.cards)?visual.cards:[]),...(Array.isArray(webResearch?.sources)?webResearch.sources:[])];
+    const cards=[...(Array.isArray(visual?.images)?visual.images:[]).filter(i=>i?.sourceUrl).map(i=>({url:i.sourceUrl,title:i.alt||'Fonte da imagem'})),...(Array.isArray(visual?.cards)?visual.cards:[]),...(Array.isArray(webResearch?.sources)?webResearch.sources:[])];
     const seen=new Set();
     for(const item of cards){
       const href=url(item?.url);if(!href||seen.has(href))continue;
@@ -74,20 +77,23 @@ if(center){
   };
   window.addEventListener('ultron:question-start',event=>{
     requestId=Number(event.detail?.id||requestId+1);
+    pendingAnswer=true;
     present('Consultando informações para responder…',{pending:true});
   });
   window.addEventListener('ultron:answer',event=>{
     if(event.detail?.id&&Number(event.detail.id)!==requestId)return;
+    pendingAnswer=false;
     present(event.detail?.text,{visual:event.detail?.visualContext,webResearch:event.detail?.webResearch});
   });
   window.addEventListener('ultron:answer-error',event=>{
     if(event.detail?.id&&Number(event.detail.id)!==requestId)return;
+    pendingAnswer=false;
     present('Não consegui confirmar uma resposta agora. '+String(event.detail?.message||'Falha de conexão.').slice(0,200));
   });
   // Voice text appears immediately even when audio playback is unavailable.
   window.addEventListener('ultron:speech-start',event=>{
     const spoken=String(event.detail?.text||'').trim();
-    if(!spoken)return;
+    if(!spoken||pendingAnswer)return;
     // Wake is a user activation, not a page-load event. Show its narration
     // over the 3D stage; never create a second response at the page bottom.
     const wake=event.detail?.source==='intelligence-wake';
@@ -100,12 +106,13 @@ if(center){
       present(spoken,{visual:{mode:'news',cards:stories}});
       return;
     }
-    if(box.hidden || text.textContent!==spoken)present(spoken);
+    if(box.hidden)present(spoken);
+    else if(text.textContent!==spoken){text.textContent=spoken.slice(0,6500);}
   });
   window.addEventListener('ultron:intelligence-visual-update',event=>{
     // Background refresh updates stored news, but should not interrupt the
     // Ring. The wake briefing appears in the Ring on explicit activation.
-    if(!event.detail?.waking)return;
+    if(!event.detail?.waking||pendingAnswer)return;
     const stories=(event.detail?.briefing?.topics||[]).flatMap(group=>(group.articles||[]).map(article=>({
       title:article.title,source:article.source,url:article.url,
       image:article.imageUrl||article.image||null

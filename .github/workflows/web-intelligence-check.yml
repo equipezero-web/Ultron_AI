@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'backend/web-research.js'
+      - 'tests/brazil-first-visual-research.mjs'
       - 'backend/research-memory.js'
       - 'backend/news-context.js'
       - 'backend/world-briefing.js'
@@ -22,6 +23,7 @@ on:
   pull_request:
     paths:
       - 'backend/web-research.js'
+      - 'tests/brazil-first-visual-research.mjs'
       - 'backend/research-memory.js'
       - 'backend/news-context.js'
       - 'backend/world-briefing.js'
@@ -57,6 +59,7 @@ jobs:
           node --check scripts/refresh-intelligence-feed.mjs
           node tests/world-intelligence-history.mjs
           node tests/world-briefing-context.mjs
+          node tests/brazil-first-visual-research.mjs
           node --check backend/worker.js
           grep -q 'shouldResearchBeforeAnswer' backend/worker.js
           grep -q 'loadResearchCache' backend/worker.js

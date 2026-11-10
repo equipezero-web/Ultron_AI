@@ -2,6 +2,11 @@ const SERPER_ENDPOINT = "https://google.serper.dev/search";
 const SEARCH_TIMEOUT_MS = 3200;
 const VISUAL_REQUEST=/\b(imagem|imagens|foto|fotos|fotografia|fotografias|mostre uma|mostre imagens|quero ver|exiba|visualize|ilustre|picture|photos)\b/i;
 
+const VISUAL_SUBJECT=/\b(china|brasil|estados unidos|eua|rússia|russia|ucrânia|ucrania|japão|japao|índia|india|europa|país|países|governo|presidente|cidade|monumento|animal|planeta|vulcão|vulcao|tempestade|furacão|furacao|enchente|terremoto)\b/i;
+export function needsVisualResearch(message){
+  const text=String(message||"").trim();
+  return VISUAL_REQUEST.test(text)||VISUAL_SUBJECT.test(text);
+}
 const CURRENT_TERMS = /\b(hoje|agora|atual|atuais|recente|recentes|ultimo|último|ultimos|últimos|latest|2026|preco|preço|cotacao|cotação|resultado|placar|eleicao|eleição|presidente|ceo|versao|versão|lancamento|lançamento)\b/i;
 const SEARCH_TERMS = /\b(pesquise|pesquisar|procure|buscar|busque|google|internet|web|fontes?|confirme|verifique|investigue)\b/i;
 const FACTUAL_START = /^(quem|quando|onde|qual|quais|quanto|quantos|como funciona|o que e|o que é|por que|porque)\b/i;
@@ -105,6 +110,7 @@ export function shouldResearchBeforeAnswer(message) {
   const conversational=/^(oi|olá|ola|bom dia|boa tarde|boa noite|obrigad[oa]|valeu|sim|não|nao|certo|ok|tudo bem|como vai|quem é você|qual seu nome)[.!?\s]*$/i;
   const localAction=/^(abra|abrir|ligue|ligar|desligue|desligar|ative|ativar|pause|parar|pare|toque|execute|rodar|mostre meu|leia meu)\b/i;
   if (conversational.test(text)||localAction.test(text)) return { needed:false,reason:"local-action",ttlMinutes:0 };
+  if (needsVisualResearch(text)&&/\b(como|qual|quais|quem|onde|quando|explique|conte|diga|informe)\b/i.test(text)) return { needed:true,reason:"visual-subject",ttlMinutes:180 };
   if (FACTUAL_START.test(text)) return { needed: true, reason: "factual", ttlMinutes: 10080 };
   if (/\b(explique|me diga|me informe|informações sobre|notícias sobre|dados sobre|história de|qualidade de|compare|comparação|é verdade que|sabe sobre)\b/i.test(text))
     return { needed: true, reason:"knowledge-query",ttlMinutes:1440 };
@@ -198,7 +204,7 @@ export async function searchGoogle(env, query, { limit = 6 } = {}) {
     const headers={ "X-API-KEY":apiKey,"Content-Type":"application/json" };
     // Image lookup is opt-in by meaning and runs alongside the regular
     // search; never block ordinary questions on an optional picture service.
-    const imageLookup=VISUAL_REQUEST.test(q)
+    const imageLookup=needsVisualResearch(q)
       ? fetchWithTimeout("https://google.serper.dev/images",{
           method:"POST",headers,
           body:JSON.stringify({q,gl:"br",hl:"pt-br",num:5})
@@ -282,7 +288,7 @@ export function researchVisualContext(research) {
   return {
     mode: "web-research",
     label: "GOOGLE RESEARCH",
-    images: images.map(item=>({src:item.src,alt:item.alt})),
+    images: images.map(item=>({src:item.src,alt:item.alt,sourceUrl:item.sourceUrl})),
     cards: results.slice(0, 4).map((item) => ({
       title: item.title,
       source: item.source,

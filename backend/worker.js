@@ -41,12 +41,13 @@ import {
 import { buildOperationalPlan } from "./planner.js";
 import { analyzeVisualFrame } from "./vision-analysis.js";
 import { getWebRtcIceServers, webRtcIceHealth } from "./webrtc-ice.js";
-import { loadLiveNewsContext } from "./news-context.js";
+import { loadLiveNewsContext, isGeneralNewsIntent, isLiveNewsIntent } from "./news-context.js";
 import { createWorldBriefing } from "./world-briefing.js";
 import {
   answerLooksUncertain,
   researchVisualContext,
   searchGoogle,
+  needsVisualResearch,
   shouldResearchBeforeAnswer
 } from "./web-research.js";
 import {
@@ -388,12 +389,13 @@ async function prepareResearch(env, body) {
     };
   }
 
-  const policy = shouldResearchBeforeAnswer(message);
+  const generalNews=isGeneralNewsIntent(message);
+  const policy = generalNews ? {needed:true,reason:"brazil-first-news",ttlMinutes:15} : shouldResearchBeforeAnswer(message);
   if (!policy.needed) return { body, policy, active: false };
 
   const researchStartedAt = Date.now();
   const operatorId = await deriveOperatorId(body?.memoryKey);
-  const newsIntent = isNewsIntent(message);
+  const newsIntent = generalNews || isNewsIntent(message) || isLiveNewsIntent(message);
   let cache = null;
   let research = null;
   let newsState = null;
@@ -401,7 +403,7 @@ async function prepareResearch(env, body) {
   let sources = [];
   let fromCache = false;
 
-  if (operatorId) {
+  if (operatorId && !generalNews && !needsVisualResearch(message)) {
     cache = await loadResearchCache(env, { operatorId, query: message });
     if (cache?.hit) {
       fromCache = true;
@@ -413,7 +415,7 @@ async function prepareResearch(env, body) {
   if (!fromCache) {
     if (newsIntent) {
       const [googleResult, liveResult] = await Promise.allSettled([
-        searchGoogle(env, message, { limit: 6 }),
+        generalNews ? Promise.resolve(null) : searchGoogle(env, message, { limit: 6 }),
         loadLiveNewsContext(message, { limit: 6 })
       ]);
       research = googleResult.status === "fulfilled" ? googleResult.value : null;
@@ -462,7 +464,8 @@ async function prepareResearch(env, body) {
             skipLegacyResearch: true
           }
         }
-      : { ...body, allowUncertaintyResearch: false }
+      : { ...body, allowUncertaintyResearch: false,
+          ...(newsIntent ? {webResearchContext:"Não foram obtidas fontes recentes verificáveis nesta consulta. Não apresente notícias, números ou acontecimentos como fatos atuais. Informe a indisponibilidade de confirmação.",researchMeta:{active:true,reason:policy.reason,newsIntent:true,skipLegacyResearch:true}} : {}) }
   };
 }
 
@@ -775,8 +778,8 @@ async function handleAi(request, env) {
       const newsVisual = newsState?.visualContext || null;
       const baseVisual = data?.visualContext || null;
       const preferredVisual = visualHasContent(newsVisual)
-        ? newsVisual
-        : (visualHasContent(baseVisual) ? baseVisual : researchVisual);
+        ? { ...newsVisual, images: [...(newsVisual.images||[]),...(researchVisual?.images||[])].slice(0,4) }
+        : (researchVisual?.images?.length ? researchVisual : (visualHasContent(baseVisual) ? baseVisual : researchVisual));
       if (newsIntent && sources.length) {
         data.liveData = {
           ...(data?.liveData || {}),

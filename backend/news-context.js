@@ -13,21 +13,28 @@ function normalizeText(value) {
     .trim();
 }
 
+export function isGeneralNewsIntent(message) {
+  const text=normalizeText(message);
+  return /\b(noticias?|novidades?|manchetes?|destaques?|acontecimentos?)\b/.test(text)
+    && !/\b(sobre|china|eua|estados unidos|russia|ucrania|governo|eleicao|futebol|economia|clima|tecnologia|santa catarina|recife|brasil|mundo)\b/.test(text);
+}
+
 export function isLiveNewsIntent(message) {
   const text = normalizeText(message);
   if (!text) return false;
+  if(isGeneralNewsIntent(message))return true;
 
-  const newsWords = /\b(noticia|noticias|news|manchete|manchetes|acontecendo|circulando|destaque|destaques|ultimas|agora|hoje)\b/;
+  const newsWords = /\b(noticia|noticias|novidade|novidades|news|manchete|manchetes|acontecendo|circulando|destaque|destaques|ultimas|agora|hoje)\b/;
   const freshnessWords = /\b(agora|hoje|momento|atual|atuais|recentes|ultima|ultimas|circulando|acontecendo)\b/;
 
   return newsWords.test(text) && (freshnessWords.test(text) || /\b(noticia|noticias|manchete|manchetes)\b/.test(text));
 }
 
 function stripNewsBoilerplate(message) {
-  const raw = String(message || "").trim();
+  const raw = normalizeText(message);
   const cleaned = raw
-    .replace(/\b(ultron|por favor|me diga|me fale|mostre|mostrar|quais|qual|que)\b/gi, " ")
-    .replace(/\b(noticias?|manchetes?|news|circulando|acontecendo|agora|hoje|atuais?|recentes?|momento|destaques?)\b/gi, " ")
+    .replace(/\b(ultron|jarvis|por favor|me diga|me fale|mostre|mostrar|quais|qual|que)\b/gi, " ")
+    .replace(/\b(noticias?|novidades?|manchetes?|news|circulando|acontecendo|agora|hoje|atuais?|recentes?|momento|destaques?|principal|principais|ultimas?)\b/gi, " ")
     .replace(/[?!.:,;]+/g, " ")
     .replace(/\s+/g, " ")
     .trim();
@@ -134,8 +141,9 @@ async function runGdeltQuery(query, { limit = 6, timespan = "24h", sort = "Hybri
 async function fetchGoogleNewsArticles(message, limit = 6) {
   const subject = stripNewsBoilerplate(message);
   const query = subject || "Brasil";
+  const isWorld=/\b(internacionais|mundo)\b/i.test(query);
   const params = new URLSearchParams({
-    q: query,
+    q: (isWorld ? "mundo principais acontecimentos" : query)+" when:1d",
     hl: "pt-BR",
     gl: "BR",
     ceid: "BR:pt-419"
@@ -194,7 +202,11 @@ function dedupeArticles(items, limit) {
 
 async function fetchGdeltArticlesParallel(message, limit = 6) {
   const subject = stripNewsBoilerplate(message);
-  const queryPlan = subject
+  const generalWorld=/\b(internacionais|mundo)\b/i.test(subject);
+  const queryPlan = generalWorld ? [
+    {query:"(world OR international) sourcelang:English",timespan:"24h",label:"mundo-24h"},
+    {query:"(China OR United States OR Europe OR Ukraine OR climate) sourcelang:English",timespan:"24h",label:"mundo-temas-24h"}
+  ] : subject
     ? [
         { query: `${subject} sourcecountry:Brazil`, timespan: "24h", label: "brasil-24h" },
         { query: subject, timespan: "48h", label: "tema-global-48h" },
@@ -236,6 +248,18 @@ async function fetchGdeltArticlesParallel(message, limit = 6) {
 }
 
 async function fetchLiveArticles(message, limit = 6) {
+  if(isGeneralNewsIntent(message)){
+    const [br,world]=await Promise.allSettled([
+      fetchLiveArticles("notícias Brasil hoje",Math.max(4,limit)),
+      fetchLiveArticles("notícias internacionais mundo hoje",Math.max(3,limit))
+    ]);
+    const cutoff=Date.now()-24*60*60*1000;
+    const recent=items=>(items||[]).filter(a=>Date.parse(a.publishedAt)>=cutoff&&Date.parse(a.publishedAt)<=Date.now()+300000);
+    const domestic=br.status==="fulfilled"?recent(br.value.articles):[];
+    const international=world.status==="fulfilled"?recent(world.value.articles):[];
+    const articles=dedupeArticles([...domestic.slice(0,4).map(a=>({...a,region:"Brasil"})),...international.slice(0,3).map(a=>({...a,region:"Mundo"}))],limit);
+    return {articles,attempts:[...(br.status==="fulfilled"?br.value.attempts:[]),...(world.status==="fulfilled"?world.value.attempts:[])]};
+  }
   const [gdelt, google] = await Promise.allSettled([
     fetchGdeltArticlesParallel(message, limit),
     fetchGoogleNewsArticles(message, limit)
@@ -265,11 +289,12 @@ function buildContextText(articles) {
   if (!articles.length) return "";
   const rows = articles.map((item, index) => {
     const when = item.publishedAt || "horário não informado";
-    return `${index + 1}. ${item.title}\nFonte: ${item.source}\nData/hora: ${when}\nLink: ${item.url}`;
+    return `${index + 1}. ${item.region?`[${item.region}] `:""}${item.title}\nFonte: ${item.source}\nData/hora: ${when}\nLink: ${item.url}`;
   });
 
   return [
     "NOTÍCIAS REAIS RECENTES RECUPERADAS PARA ESTA RESPOSTA:",
+    "Em boletins gerais, apresente primeiro os acontecimentos do Brasil; depois somente acontecimentos internacionais relevantes. Não force notícias internacionais quando as fontes não sustentarem sua importância.",
     "Compare as fontes abaixo. Não invente fatos, números ou acontecimentos ausentes.",
     "Se os resultados forem insuficientes ou divergirem, diga isso explicitamente.",
     "Responda em português do Brasil e mencione as fontes principais.",
@@ -328,18 +353,23 @@ export async function loadLiveNewsContext(message, { limit = 6 } = {}) {
       };
     }
 
-    const images = articles.filter((article) => article.image).map((article) => ({
+    const domestic=articles.filter(a=>a.region==="Brasil");
+    const international=articles.filter(a=>a.region==="Mundo");
+    const highlights=domestic.length&&international.length ? [...domestic.slice(0,3),...international.slice(0,1)] : articles.slice(0,4);
+    const images = highlights.filter((article) => article.image).map((article) => ({
       src: article.image,
       alt: article.title,
-      title: article.title
+      title: article.title,
+      sourceUrl: article.url
     }));
 
-    const cards = articles.slice(0, 4).map((article) => ({
+    const cards = highlights.map((article) => ({
       title: article.title,
       source: article.source,
       publishedAt: article.publishedAt,
       url: article.url,
-      image: article.image
+      image: article.image,
+      region: article.region || null
     }));
 
     return {

@@ -213,7 +213,9 @@ window.fetch = async function ultronVoiceFallbackFetch(input, init = {}) {
   try {
     const data = await response.clone().json();
 
-    if (isAi && response.ok && data?.text && !data?.audioBase64) {
+    let clientOwnsSpeech=false;
+    try{clientOwnsSpeech=JSON.parse(init?.body||"{}")?.clientOwnsSpeech===true;}catch{}
+    if (isAi && !clientOwnsSpeech && response.ok && data?.text && !data?.audioBase64) {
       speakWithBrowser(data.text, {
         reason: looksLikeQuotaError(data?.voice?.attempts) ? "quota" : "fallback"
       });
