@@ -131,7 +131,7 @@ export function shouldResearchBeforeAnswer(message) {
   if (/^(?:crie|escreva|redija|rascunhe|invente|gere)\b/i.test(text)&&!SEARCH_TERMS.test(text))return {needed:false,reason:"creative",ttlMinutes:0};
   if (VISUAL_REQUEST.test(text)) return { needed:true,reason:"visual-request",ttlMinutes:180 };
   if (SEARCH_TERMS.test(text)) return { needed: true, reason: "explicit-search", ttlMinutes: 180 };
-  if (CURRENT_TERMS.test(text)||/\b(?:quanto custa|quanto vale|como está|como esta|como anda|em que pé|última atualização|ultima atualizacao|está acontecendo|esta acontecendo)\b/i.test(text)) return { needed: true, reason: "freshness", ttlMinutes: 15 };
+  if (CURRENT_TERMS.test(text)||/\b(?:quanto custa|quanto vale|como está|como esta|como anda|em que pé|última atualização|ultima atualizacao|está acontecendo|esta acontecendo)(?=\s|[?!.,:]|$)/i.test(text)) return { needed: true, reason: "freshness", ttlMinutes: 15 };
   if (needsVisualResearch(text)&&/\b(como|qual|quais|quem|onde|quando|explique|conte|diga|informe)\b/i.test(text)) return { needed:true,reason:"visual-subject",ttlMinutes:180 };
   if (isResearchFollowUp(text)||/\b(o que aconteceu|aconteceu|situação|situacao|notícias|noticias|novidades|previsão|previsao|temperatura|clima|dólar|dolar|bolsa|cotação|cotacao|governo|eleições|eleicoes)\b/i.test(text)) return {needed:true,reason:"factual-current",ttlMinutes:30};
   if (FACTUAL_START.test(text)) return { needed: true, reason: "factual", ttlMinutes: 10080 };
