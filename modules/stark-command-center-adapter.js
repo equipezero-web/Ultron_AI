@@ -7,7 +7,7 @@ export function installStarkCommandCenter(ui, centerApi){
   const labels={COMANDOS:'command',COMMANDS:'command',SISTEMA:'status',STATUS:'status',AGENDA:'agenda','CÂMERA':'camera',CAMERA:'camera','VISÃO':'camera',DISPOSITIVOS:'devices',ARQUIVOS:'files',GLOBO:'earth','GLOBO 3D':'earth','NEURAL RING':'ring'};
   const norm=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase();
   const actionOf=v=>Object.entries(labels).find(([key])=>norm(key)===norm(v))?.[1]||String(v||'').toLowerCase();
-  const targetOf=a=>a==='command'?ui.querySelector('#command-input'):a==='ring'?ui.querySelector('[data-visual="ring"]'):ui.querySelector('[data-cc="'+CSS.escape(a)+'"]');
+  const targetOf=a=>a==='command'?ui.querySelector('#command-input'):a==='ring'?ui.querySelector('[data-visual="ring"]'):a==='globe'?ui.querySelector('[data-visual="globe"]'):ui.querySelector('[data-cc="'+CSS.escape(a)+'"]');
   const visible=el=>{const r=el?.getBoundingClientRect();return !!r&&r.width>0&&r.height>0&&getComputedStyle(el).visibility!=='hidden';};
   let focused=null,processing=false,alert=null,level=0,production=[];
   const clearFocus=()=>{ui.querySelectorAll('[data-stark-focused]').forEach(el=>el.removeAttribute('data-stark-focused'));focused=null;};
@@ -17,11 +17,13 @@ export function installStarkCommandCenter(ui, centerApi){
     if(!targetOf(a))return false;
     focus(a);
     if(a==='command')targetOf(a).focus({preventScroll:true});
+    else if(a==='globe')centerApi.open('earth');
     else if(a==='ring'){window.ULTRON_EARTH?.close?.();centerApi.setVisualMode('ring');}
     else centerApi.open(a);
     return true;
   };
   const ring=()=>window.ULTRON_NEURAL_RING_3D;
+  const style=document.createElement('style');style.textContent='.jarvis-command-center-ui [data-stark-focused]{outline:2px solid #70dfff;outline-offset:2px}';ui.append(style);
   const setProcessing=active=>{processing=Boolean(active);status.textContent=alert|| (processing?'PROCESSANDO':'STANDBY');};
   const core={
     mode:'command-center',get active(){return ui.isConnected&&!!centerApi.active;},
