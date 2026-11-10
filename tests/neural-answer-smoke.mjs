@@ -17,6 +17,11 @@ try {
     // depending on example.org or the external network.
     await page.setRequestInterception(true);
     page.on('request',req=>{
+      if(req.url().includes('/api/ai')){
+        const headers={'access-control-allow-origin':'*','access-control-allow-methods':'POST, OPTIONS','access-control-allow-headers':'content-type, authorization'};
+        if(req.method()==='OPTIONS')return req.respond({status:204,headers});
+        return req.respond({status:200,headers,contentType:'application/json',body:JSON.stringify({text:'Resposta real do fluxo de comando: China',provider:'mock',visualContext:{images:[{src:'https://example.org/picture.jpg',alt:'China'}],cards:[{title:'China',url:'https://example.org/report'}]}})});
+      }
       if(/^https:\/\/example\.org\/(picture|news)\.jpg$/.test(req.url()))
         return req.respond({status:200,contentType:'image/svg+xml',body:'<svg xmlns="http://www.w3.org/2000/svg" width="420" height="280"><rect width="420" height="280" fill="#406b92"/></svg>'});
       return req.continue();
@@ -85,6 +90,14 @@ try {
     assert.equal(await page.$eval('.ultron-neural-answer-text',el=>el.textContent),'Resumo de notícias falado','Voice text must appear within ring');
     await page.click('.ultron-neural-answer-close');
     assert.equal(await page.$eval('.ultron-neural-answer',el=>el.hidden),true);
+    // Exercise the real command path (not just synthetic answer events).
+    await page.evaluate(()=>{
+      const input=document.querySelector('#command-input');
+      input.value='Como anda o governo da China atualmente?';
+      document.querySelector('#btn-send').click();
+    });
+    await page.waitForFunction(()=>document.querySelector('.ultron-neural-answer-text')?.textContent==='Resposta real do fluxo de comando: China',{timeout:12000});
+    assert.ok(await page.$eval('.ultron-neural-answer-media img',el=>el.src.includes('example.org/picture.jpg')));
     await page.close();
   }
   console.log('NEURAL ANSWER PASS: ring only at boot; on-demand text, image, sources; mobile laptop TV');
