@@ -299,6 +299,7 @@ async function askUltron(command) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         message: command,
+        clientOwnsSpeech:true,
         memoryKey: window.ULTRON_MEMORY?.getMemoryKey?.() || null,
         telemetry: {
           optical: {
@@ -329,6 +330,7 @@ async function askUltron(command) {
     prepareNeuralResponse(data);
     window.dispatchEvent(new CustomEvent("ultron:answer",{detail:{id:questionId,text:data.text,visualContext:data.visualContext,webResearch:data.webResearch}}));
     if (data.audioBase64) playVoice(data.audioBase64, data.audioMimeType || "audio/mpeg");
+    else window.ULTRON_VOICE_OUTPUT?.speak?.(data.text,{reason:"fallback",announce:false});
   } catch (error) {
     if(questionId!==neuralQuestionId)return;
     addLog(output, `ULTRON AI ERROR: ${error.message}`, "alert");
