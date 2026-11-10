@@ -29,6 +29,8 @@ if(center){
     media.replaceChildren();sources.replaceChildren();
   };
   close.addEventListener('click',clear);
+  // A scroll within the response must not zoom the ring or move the document.
+  box.addEventListener('wheel',event=>event.stopPropagation(),{passive:true});
   const url=value=>{
     try{
       const u=new URL(value);
@@ -60,7 +62,7 @@ if(center){
       media.append(img);
       if(seenImages.size>=4)break;
     }
-    const cards=[...(Array.isArray(visual?.cards)?visual.cards:[]),...(Array.isArray(webResearch?.sources)?webResearch.sources:[])];
+    const cards=[...(Array.isArray(visual?.images)?visual.images:[]).filter(i=>i?.sourceUrl).map(i=>({url:i.sourceUrl,title:i.alt||'Fonte da imagem'})),...(Array.isArray(visual?.cards)?visual.cards:[]),...(Array.isArray(webResearch?.sources)?webResearch.sources:[])];
     const seen=new Set();
     for(const item of cards){
       const href=url(item?.url);if(!href||seen.has(href))continue;
@@ -100,7 +102,8 @@ if(center){
       present(spoken,{visual:{mode:'news',cards:stories}});
       return;
     }
-    if(box.hidden || text.textContent!==spoken)present(spoken);
+    if(box.hidden)present(spoken);
+    else if(text.textContent!==spoken){text.textContent=spoken.slice(0,6500);}
   });
   window.addEventListener('ultron:intelligence-visual-update',event=>{
     // Background refresh updates stored news, but should not interrupt the
