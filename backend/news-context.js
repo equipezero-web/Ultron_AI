@@ -284,7 +284,7 @@ function buildContextText(articles) {
   if (!articles.length) return "";
   const rows = articles.map((item, index) => {
     const when = item.publishedAt || "horário não informado";
-    return `${index + 1}. ${item.title}\nFonte: ${item.source}\nData/hora: ${when}\nLink: ${item.url}`;
+    return `${index + 1}. ${item.region?`[${item.region}] `:""}${item.title}\nFonte: ${item.source}\nData/hora: ${when}\nLink: ${item.url}`;
   });
 
   return [
