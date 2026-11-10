@@ -125,6 +125,20 @@ try {
     assert.ok(player.src.includes('youtube-nocookie.com/embed/dQw4w9WgXcQ')&&player.width>0,'Inline player must be mounted in Ring');
     const separate=await page.evaluate(()=>{const t=document.querySelector('.ultron-neural-answer-text').getBoundingClientRect(),m=document.querySelector('.ultron-neural-answer-media').getBoundingClientRect();return t.right<=m.left+2||t.bottom<=m.top+2;});
     assert.ok(separate,'Media must never overlap answer text');
+    // Use the real typed command route; local UI actions must not rely on AI.
+    const aiBefore=await page.evaluate(()=>window.__ultronQuestionSequence||0);
+    await page.evaluate(()=>{document.querySelector('#command-input').value='JARVIS, desative os textos do Neural Ring';document.querySelector('#btn-send').click();});
+    await page.waitForFunction(()=>window.ULTRON_NEURAL_ANSWER?.textEnabled===false,{timeout:6000});
+    assert.equal(await page.$eval('.ultron-neural-answer-text',el=>getComputedStyle(el).display),'none');
+    assert.ok(await page.$('.ultron-media-video iframe'),'Video remains mounted when texts are disabled');
+    await page.evaluate(()=>{document.querySelector('#command-input').value='Ative os textos do Neural Ring';document.querySelector('#btn-send').click();});
+    await page.waitForFunction(()=>window.ULTRON_NEURAL_ANSWER?.textEnabled===true,{timeout:6000});
+    assert.equal(await page.$eval('.ultron-neural-answer-text',el=>el.textContent),'Resposta real do fluxo de comando: China');
+    assert.equal(await page.evaluate(()=>window.__ultronQuestionSequence||0),aiBefore,'Interface commands must not start an AI request');
+    await page.evaluate(()=>{document.querySelector('#command-input').value='JARVIS, o que você pode fazer?';document.querySelector('#btn-send').click();});
+    await page.waitForFunction(()=>document.querySelector('.ultron-neural-answer-text')?.textContent.includes('Controle da interface'),{timeout:6000});
+    assert.equal(await page.$eval('.ultron-neural-answer-media',el=>el.children.length),0,'Self-knowledge must not display unrelated media');
+    assert.equal(await page.$eval('.ultron-neural-answer-sources',el=>el.children.length),0,'Self-knowledge must not display Google links');
     await page.waitForFunction(()=>!!window.ULTRON_NEURAL_PARITY&&window.ULTRON_NEURAL_PARITY.report().starkCore&&window.ULTRON_NEURAL_PARITY.report().innerMesh,{timeout:15000});
     const parity=await page.evaluate(()=>{
       const core=window.ULTRON_STARK_CORE,mesh=window.ULTRON_STARK_MESH;
