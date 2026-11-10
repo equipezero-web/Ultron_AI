@@ -84,18 +84,22 @@ try {
     const newsPicture=await page.evaluate(()=>{
       window.dispatchEvent(new CustomEvent('ultron:intelligence-visual-update',{
         detail:{waking:true,briefing:{topics:[{id:'brasil',articles:[{
-          title:'Boletim verificado',source:'Agência pública',
+          title:'Boletim verificado',description:'Descrição confirmada da notícia',source:'Agência pública',
           url:'https://example.org/news',imageUrl:'https://example.org/news.jpg'
         }]}]}}
       }));
       return document.querySelector('.ultron-neural-answer-media img')?.getAttribute('src');
     });
-    assert.equal(await page.$eval('.ultron-neural-answer-text',el=>el.textContent),'Boletim verificado','Wake news title must appear over ring');
+    assert.ok(await page.$eval('.ultron-news-intro',el=>el.textContent.includes('JARVIS ativado')));
+    assert.equal(await page.$eval('.ultron-news-story h3',el=>el.textContent),'Boletim verificado');
+    assert.equal(await page.$eval('.ultron-news-story p',el=>el.textContent),'Descrição confirmada da notícia');
     assert.equal(newsPicture,'https://example.org/news.jpg','Wake news must mount publisher image inside ring');
     await page.evaluate(()=>window.dispatchEvent(new CustomEvent('ultron:speech-start',{detail:{source:'intelligence-wake',text:'Resumo de notícias falado'}})));
-    assert.equal(await page.$eval('.ultron-neural-answer-text',el=>el.textContent),'Resumo de notícias falado','Voice text must appear within ring');
+    assert.equal(await page.$eval('.ultron-news-story h3',el=>el.textContent),'Boletim verificado','Narration must preserve the structured report');
     await page.click('.ultron-neural-answer-close');
     assert.equal(await page.$eval('.ultron-neural-answer',el=>el.hidden),true);
+    await page.evaluate(()=>{window.dispatchEvent(new CustomEvent('ultron:speech-start',{detail:{source:'intelligence-wake',text:'Narração atrasada'}}));window.dispatchEvent(new CustomEvent('ultron:answer',{detail:{id:10,text:'Resposta atrasada'}}));});
+    assert.equal(await page.$eval('.ultron-neural-answer',el=>el.hidden),true,'Closing must suppress late speech and answers');
     // Exercise the real command path (not just synthetic answer events).
     await page.evaluate(()=>{
       const input=document.querySelector('#command-input');
@@ -115,7 +119,8 @@ try {
       throw error;
     }
     assert.ok(await page.$eval('.ultron-neural-answer-media img',el=>el.src.includes('example.org/picture.jpg')));
-    await page.$eval('.ultron-media-play',el=>el.click());
+    await page.click('.ultron-media-play');
+    await page.waitForSelector('.ultron-media-video iframe',{timeout:5000});
     const player=await page.$eval('.ultron-media-video iframe',el=>({src:el.src,width:el.getBoundingClientRect().width}));
     assert.ok(player.src.includes('youtube-nocookie.com/embed/dQw4w9WgXcQ')&&player.width>0,'Inline player must be mounted in Ring');
     const separate=await page.evaluate(()=>{const t=document.querySelector('.ultron-neural-answer-text').getBoundingClientRect(),m=document.querySelector('.ultron-neural-answer-media').getBoundingClientRect();return t.right<=m.left+2||t.bottom<=m.top+2;});

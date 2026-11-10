@@ -104,3 +104,14 @@ body.jarvis-command-center .ultron-media-video a,.ultron-media-note{display:bloc
  body.jarvis-command-center .ultron-neural-answer:has(iframe) .ultron-neural-answer-text{max-height:100px}
 }
 body.jarvis-command-center.ultron-tv-display .ultron-neural-answer:has(.ultron-neural-answer-media:not(:empty)){width:calc(100% - 24px);max-width:none}
+
+/* v4.64: actual controls must win hit testing over the 3D surface. */
+body.jarvis-command-center .jarvis-cc-center>.ultron-neural-answer:not([hidden]){z-index:150!important;pointer-events:auto!important;touch-action:pan-y!important}
+body.jarvis-command-center .ultron-neural-answer :is(button,a,iframe){pointer-events:auto!important;touch-action:manipulation!important}
+body.jarvis-command-center .ultron-neural-answer .ultron-media-video iframe{touch-action:auto!important}
+body.jarvis-command-center .ultron-neural-answer-close{position:relative;z-index:2}
+body.jarvis-command-center .ultron-neural-answer-text .ultron-news-intro{margin:0 0 10px;font-weight:500;color:#cfeaff}
+body.jarvis-command-center .ultron-news-story{border-top:1px solid #35516a;padding:9px 0}
+body.jarvis-command-center .ultron-news-story h3,body.jarvis-command-center .ultron-news-line:is(h3){font-size:1.05em;margin:0 0 5px;color:#9ce6ff}
+body.jarvis-command-center .ultron-news-story p,body.jarvis-command-center .ultron-news-line{margin:0 0 6px;white-space:pre-wrap}
+body.jarvis-command-center .ultron-news-story small{color:#9ab5c9;font-size:.8em}

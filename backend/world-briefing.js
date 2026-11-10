@@ -88,7 +88,7 @@ const uniqueStories = (articles, now, maxAge, limit)=>{
     const key=title.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim();
     if(seen.has(key))continue;
     seen.add(key);
-    out.push({title,url,publishedAt,
+    out.push({title,url,publishedAt,description:bounded(story?.description||story?.summary||'',650),
       source:bounded(story?.source||new URL(url).hostname,70),
       imageUrl:safeNewsImage(story?.imageUrl||story?.image||story?.socialimage||"")});
   }
@@ -179,6 +179,7 @@ async function fetchAgencyRss(url){
       const block=match[1];
       return {title:rssTag(block,"title"),url:rssTag(block,"link"),
         publishedAt:rssTag(block,"pubDate"),source:"Agência Brasil",
+        description:rssTag(block,"description"),
         imageUrl:rssImage(block)};
     }).filter(item=>Boolean(item.title&&item.url&&item.publishedAt));
 }
@@ -197,6 +198,7 @@ async function regionalHeadlines(top,now) {
         url:rssTag(block,"link"),
         publishedAt:rssTag(block,"pubDate"),
         source:rssTag(block,"source")||"Google News",
+        description:rssTag(block,"description"),
         imageUrl:rssImage(block)
       }));
     return {

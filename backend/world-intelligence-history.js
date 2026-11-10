@@ -59,6 +59,7 @@ function normalizeEvent(article,category,at,cutoff){
   const id=idFor(url.toLowerCase());
   return {
     id,category,title,url,
+    description:clean(article?.description||article?.summary||'',650),
     imageUrl:validatedImage(article?.imageUrl||article?.image||""),
     source:clean(article?.source||new URL(url).hostname,65),
     publishedAt:new Date(published).toISOString(),
@@ -77,6 +78,7 @@ function validExisting(event,now,cutoff){
     category:clean(event.category,50),
     title:clean(event.title,190),
     url:safeUrl(event.url),
+    description:clean(event.description||event.summary||'',650),
     imageUrl:validatedImage(event.imageUrl||event.image||""),
     source:clean(event.source,65),
     publishedAt:new Date(published).toISOString(),
@@ -106,6 +108,7 @@ export function mergeIntelligenceHistory(previous,briefing,{now=Date.now()}={}){
           // Preserve the first observation to determine what changed after wake.
           match.lastSeenAt=event.lastSeenAt;
           if(!match.imageUrl && event.imageUrl)match.imageUrl=event.imageUrl;
+          if(!match.description&&event.description)match.description=event.description;
         } else {
           stored.set(event.id,event);added.push(event.id);
         }
