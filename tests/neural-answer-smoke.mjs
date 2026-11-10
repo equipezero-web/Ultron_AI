@@ -13,6 +13,14 @@ try {
   ]){
     const page=await browser.newPage();
     await page.setViewport(viewport);
+    // Use a deterministic local response for test pictures rather than
+    // depending on example.org or the external network.
+    await page.setRequestInterception(true);
+    page.on('request',req=>{
+      if(/^https:\/\/example\.org\/(picture|news)\.jpg$/.test(req.url()))
+        return req.respond({status:200,contentType:'image/svg+xml',body:'<svg xmlns="http://www.w3.org/2000/svg" width="420" height="280"><rect width="420" height="280" fill="#406b92"/></svg>'});
+      return req.continue();
+    });
     await page.goto('http://127.0.0.1:8766/'+(viewport.width===1920?'?display=tv':''),{waitUntil:'domcontentloaded'});
     await page.waitForFunction(()=>Boolean(window.ULTRON_NEURAL_ANSWER),{timeout:12000});
     const initial=await page.evaluate(()=>({
@@ -53,6 +61,7 @@ try {
     assert.equal(answered.hidden,false);
     assert.equal(answered.text,'Resposta confirmada');
     assert.equal(answered.image,1);
+    await page.waitForFunction(()=>document.querySelector('.ultron-neural-answer-media img')?.naturalWidth===420,{timeout:6000});
     const columns=await page.$eval('.ultron-neural-answer',el=>getComputedStyle(el).gridTemplateColumns);
     assert.ok(columns.split(' ').length>=2,'Text and image must occupy separate columns');
     assert.equal(answered.anchored.inside,true,'Answers must belong to 3D neural stage');
