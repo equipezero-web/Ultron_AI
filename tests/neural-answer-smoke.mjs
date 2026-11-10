@@ -156,7 +156,7 @@ try {
     assert.equal(parity.parity.starkCore,true);
     assert.equal(parity.parity.innerMesh,true);
     assert.equal(parity.parity.palmMatrix,false,'PalmMatrix remains untouched in current layout');
-    const operation=await page.evaluate(async()=>await window.ULTRON_ORCHESTRATOR.execute('Verifique o parity check depois feche a resposta','test'));
+    const operation=await page.evaluate(async()=>await window.ULTRON_ORCHESTRATOR.execute('Verifique o parity check, depois feche a resposta','test'));
     assert.equal(operation.ok,true);
     assert.equal(operation.results.length,2);
     assert.equal(operation.results[0].result.steps[0].action,'parity.check');
