@@ -17,6 +17,11 @@ try {
     // depending on example.org or the external network.
     await page.setRequestInterception(true);
     page.on('request',req=>{
+      if(req.url().includes('/api/orchestrator/')){
+        const headers={'access-control-allow-origin':'*','access-control-allow-methods':'POST, OPTIONS','access-control-allow-headers':'content-type, authorization'};
+        if(req.method()==='OPTIONS')return req.respond({status:204,headers});
+        return req.respond({status:200,headers,contentType:'application/json',body:JSON.stringify({ok:true,runId:'test-run',plan:{complex:false},runs:[]})});
+      }
       if(req.url().includes('/api/ai')){
         const headers={'access-control-allow-origin':'*','access-control-allow-methods':'POST, OPTIONS','access-control-allow-headers':'content-type, authorization'};
         if(req.method()==='OPTIONS')return req.respond({status:204,headers});
@@ -96,7 +101,18 @@ try {
       input.value='Como anda o governo da China atualmente?';
       document.querySelector('#btn-send').click();
     });
-    await page.waitForFunction(()=>document.querySelector('.ultron-neural-answer-text')?.textContent==='Resposta real do fluxo de comando: China',{timeout:12000});
+    try{
+      await page.waitForFunction(()=>document.querySelector('.ultron-neural-answer-text')?.textContent==='Resposta real do fluxo de comando: China',{timeout:12000});
+    }catch(error){
+      console.error('COMMAND FLOW DIAGNOSTICS',JSON.stringify(await page.evaluate(()=>({
+        text:document.querySelector('.ultron-neural-answer-text')?.textContent,
+        terminal:document.querySelector('#output-box')?.textContent?.slice(-1800),
+        route:window.ULTRON_ORCHESTRATOR?.state?.lastRoute,
+        busy:window.ULTRON_ORCHESTRATOR?.state?.busy,
+        core:!!window.ULTRON_CORE
+      }))));
+      throw error;
+    }
     assert.ok(await page.$eval('.ultron-neural-answer-media img',el=>el.src.includes('example.org/picture.jpg')));
     await page.close();
   }
