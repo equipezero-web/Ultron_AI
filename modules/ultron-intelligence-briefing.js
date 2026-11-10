@@ -61,7 +61,7 @@ function bulletinText(data){
   for(const topic of data.topics||[]){
     const fresh=(topic.articles||[]).slice(0,topic.id==="brasil"?2:1);
     if(!fresh.length)continue;
-    lines.push(topic.label+": "+fresh.map(story=>story.title).join(". ")+".");
+    for(const story of fresh)lines.push("Título: "+story.title+". Descrição: "+(story.description||"A fonte confirmou esta manchete; resumo detalhado indisponível.")+".");
   }
   if(data.alerts?.checked && data.alerts.warnings?.length){
     const warning=data.alerts.warnings[0];
@@ -282,7 +282,7 @@ function wakingSpeech(summary,{archiveValid=true}={}){
   const stories=(summary.highlights||[]).length?
     summary.highlights:(summary.recentHighlights||[]);
   for(const item of stories.slice(0,6)){
-    lines.push((item.category||"mundo").replaceAll("-"," ")+": "+item.title+".");
+    lines.push("Título: "+item.title+". Descrição: "+(item.description||"A fonte confirmou esta manchete; resumo detalhado indisponível.")+".");
   }
   if(summary.alertStatus==="recently-checked" && summary.alerts?.length){
     lines.push("Aviso do INMET: "+summary.alerts[0].title+"; severidade "+
