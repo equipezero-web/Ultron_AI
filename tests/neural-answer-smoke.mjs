@@ -13,7 +13,7 @@ try {
   ]){
     const page=await browser.newPage();
     await page.setViewport(viewport);
-    await page.goto('http://127.0.0.1:8766/',{waitUntil:'domcontentloaded'});
+    await page.goto('http://127.0.0.1:8766/'+(viewport.width===1920?'?display=tv':''),{waitUntil:'domcontentloaded'});
     await page.waitForFunction(()=>Boolean(window.ULTRON_NEURAL_ANSWER),{timeout:12000});
     const initial=await page.evaluate(()=>({
       hidden:document.querySelector('.ultron-neural-answer').hidden,
@@ -53,6 +53,8 @@ try {
     assert.equal(answered.hidden,false);
     assert.equal(answered.text,'Resposta confirmada');
     assert.equal(answered.image,1);
+    const columns=await page.$eval('.ultron-neural-answer',el=>getComputedStyle(el).gridTemplateColumns);
+    assert.ok(columns.split(' ').length>=2,'Text and image must occupy separate columns');
     assert.equal(answered.anchored.inside,true,'Answers must belong to 3D neural stage');
     assert.equal(answered.anchored.position,'absolute','Never flow to the page bottom');
     assert.equal(answered.anchored.horizontal,true,JSON.stringify(answered.anchored));
