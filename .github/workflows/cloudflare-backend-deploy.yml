@@ -5,6 +5,9 @@ on:
     branches: [main]
     paths:
       - 'backend/**'
+      - 'modules/jarvis-global-weather.js'
+      - 'modules/jarvis-weather-model.js'
+      - 'modules/jarvis-weather-insight-model.js'
       - '.github/workflows/cloudflare-backend-deploy.yml'
   workflow_dispatch:
 
