@@ -55,6 +55,39 @@ function log(text){
   while(output.children.length>90)output.firstElementChild?.remove();
   output.scrollTop=output.scrollHeight;
 }
+async function loadMeteorologyMonitor(){
+  if(!BACKEND)return null;
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),6000);
+  try{
+    const response=await fetch(BACKEND+"/api/geo/monitor",{
+      method:"GET",cache:"no-store",signal:controller.signal,headers:{"Accept":"application/json"}
+    });
+    if(!response.ok)throw Error("Monitor HTTP "+response.status);
+    const report=await response.json();
+    if(!report?.ok||report.cadenceHours!==3||!Array.isArray(report.regions))throw Error("Fonte de monitoramento inválida");
+    const age=Date.now()-Date.parse(report.checkedAt);
+    if(!report.checkedAt||!Number.isFinite(age)||age< -300000||age>4*60*60*1000){
+      weatherText.textContent="Monitoramento meteorológico: nenhuma amostra recente confirmada. Aguardando coleta do Cloudflare.";
+      return null;
+    }
+    const selected=report.regions.slice(0,6).filter(x=>
+      typeof x.name==="string"&&Number.isFinite(x.temperatureC)&&
+      Number.isFinite(x.rainChancePercent)&&x.source==="Open-Meteo.com");
+    if(!selected.length)return null;
+    const readable=selected.slice(0,3).map(x=>short(x.name)+": temperatura modelada "+
+      Number(x.temperatureC).toLocaleString("pt-BR",{maximumFractionDigits:1})+" graus; chance máxima de chuva "+
+      Number(x.rainChancePercent).toLocaleString("pt-BR",{maximumFractionDigits:0})+" por cento.").join(" ");
+    weatherText.textContent="Última coleta "+formatDate(report.checkedAt)+
+      ". "+selected.map(x=>short(x.name)+" "+x.temperatureC+" °C; chuva "+x.rainChancePercent+"%").join(" · ")+
+      ". Modelos Open-Meteo; amostragem de localidades, não alerta oficial.";
+    return readable+" Dados modelados da Open-Meteo, amostra de "+formatDate(report.checkedAt)+
+      "; não é alerta oficial.";
+  }catch{
+    weatherText.textContent="Monitoramento meteorológico separado temporariamente indisponível; demais notícias e avisos permanecem ativos.";
+    return null;
+  }finally{clearTimeout(timer);}
+}
+
 function bulletinText(data){
   if(!data?.ok)return "Não foi possível confirmar o noticiário atualizado.";
   const lines=["Boletim de inteligência do Ultron. Dados consultados em "+formatDate(data.fetchedAt)+"."];
@@ -135,10 +168,15 @@ const historyMeta=elem("p","jarvis-intel-history-meta",
   "Coleta agendada independente do navegador; aguardando registro das fontes.");
 const historyList=elem("ul","jarvis-intel-history-list");
 historyArea.append(historyTitle,historyMeta,historyList);
+const weatherArea=elem("section","jarvis-intel-weather-sampler");
+weatherArea.setAttribute("aria-label","Monitoramento meteorológico mundial por amostragens");
+weatherArea.append(elem("strong","", "METEOROLOGIA MUNDIAL · AMOSTRAS A CADA 3 HORAS"));
+const weatherText=elem("p","jarvis-intel-weather","Aguardando amostras recentes do banco D1.");
+weatherArea.append(weatherText);
 const storyArea=elem("div","jarvis-intel-topics");
 const officialArea=elem("div","jarvis-intel-official");
 const footer=elem("div","jarvis-intel-footer");
-panel.append(heading,controls,state,historyArea,storyArea,officialArea,footer);
+panel.append(heading,controls,state,historyArea,weatherArea,storyArea,officialArea,footer);
 if(root)root.append(panel);
 function render(data,{announce=false}={}){
   if(!root)return;
@@ -381,7 +419,9 @@ async function deliverWakeReport(){
     if((window.__ultronQuestionSequence||0)===questionSequence){
       wakeSummary=summary;
       renderMonitor(summary,{waking:true,archiveValid:valid});
-      const narration=wakingSpeech(summary,{archiveValid:valid});
+      const weatherTextForVoice=await loadMeteorologyMonitor();
+      const narration=wakingSpeech(summary,{archiveValid:valid})+
+        (weatherTextForVoice?" Meteorologia amostral: "+weatherTextForVoice:"");
       speak(narration,{automatic:true});
     }
     if(valid){
@@ -433,6 +473,7 @@ async function refresh({reason="manual",narrate=false}={}){
       const old=current;
       current=result;
       render(result,{announce:reason!=="periodic"});
+      void loadMeteorologyMonitor();
       const before=new Set((old?.topics||[]).flatMap(t=>t.articles||[]).map(a=>a.url));
       const newly=(result.topics||[]).flatMap(t=>t.articles||[]).filter(a=>!before.has(a.url));
       lastRendered=result.fetchedAt;
