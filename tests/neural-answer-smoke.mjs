@@ -451,6 +451,9 @@ try {
         workspace:{w:workspace.width,h:workspace.height},
         metrics:{w:metrics.width,h:metrics.height},
         map:{w:map.width,h:map.height},mode:panel.dataset.mode,
+        screen:panel.dataset.screen,
+        columns:getComputedStyle(document.querySelector('.jarvis-geo-workspace')).gridTemplateColumns,
+        innerWidth:window.innerWidth,
         scroll:getComputedStyle(panel).overflowY,
         hidden:panel.hidden};
     });
