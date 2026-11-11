@@ -171,8 +171,9 @@ if (stage) {
   // scrolling from the Mapbox details sidebar or from the terminal below.
   const neuralStage=ui.querySelector('.jarvis-cc-center');
   neuralStage?.addEventListener('wheel',event=>{
-    if(event.ctrlKey || !document.body.classList.contains('jarvis-command-center'))return;
-    if(event.target.closest?.('.jarvis-earth-reference-side,textarea,input,select,[contenteditable="true"]'))return;
+    // Normal wheel is reserved for page scrolling by the global stage router.
+    if(!event.ctrlKey || !document.body.classList.contains('jarvis-command-center'))return;
+    if(event.target.closest?.('.jarvis-earth-reference-side,.jarvis-geo-visual,.jarvis-neural-news,textarea,input,select,[contenteditable="true"]'))return;
     event.preventDefault();
     event.stopPropagation();
     if(visualMode==='ring'){
