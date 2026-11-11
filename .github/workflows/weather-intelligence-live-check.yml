@@ -100,3 +100,40 @@ jobs:
           }
           console.log('WORLD WEATHER INTELLIGENCE LIVE CHECK COMPLETE');
           NODE
+
+
+  personal-weather-live:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify private watchlist route after production deploy
+        run: |
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict';
+          const url='https://ultron-backend.lucaalves17-20.workers.dev/api/geo/watchlist';
+          const memoryKey='ci-world-weather-private-monitor-verification-20261111-00000';
+          let result=null;
+          for(let i=0;i<12;i++){
+            const ctl=AbortSignal.timeout(12000);
+            try{
+              const response=await fetch(url,{method:'POST',signal:ctl,
+                headers:{'Content-Type':'application/json'},
+                body:JSON.stringify({memoryKey})});
+              const data=await response.json();
+              console.log('Watchlist production attempt',i+1,'HTTP',response.status,'ok',data.ok,'cadenceHours',data.cadenceHours);
+              if(response.status===200&&data.ok===true&&Array.isArray(data.watches)){
+                result=data;break;
+              }
+            }catch(error){console.log('Transient public probe failure',String(error));}
+            if(i<11)await new Promise(resolve=>setTimeout(resolve,12000));
+          }
+          assert.ok(result,'The user-specific world weather watchlist endpoint is NOT active in Cloudflare production');
+          assert.equal(result.cadenceHours,3);
+          assert.equal(result.notifications,false);
+          assert.ok(Array.isArray(result.history));
+          console.log('PRIVATE WORLD WEATHER WATCHLIST VERIFIED IN PRODUCTION');
+          NODE
