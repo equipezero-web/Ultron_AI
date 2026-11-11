@@ -35,6 +35,10 @@ assert.ok(GEO_PALETTE.weather);
 assert.match(scene.source.disclaimer,/não observação/i);
 assert.ok(validateGeoScenario(scene),"Weather model must fit native Neural Ring geospatial contract");
 assert.equal(geoFrame(scene,3).points.length,1);
+assert.equal(geoFrame(scene,1).metrics.rainMm,normalized.days[0].rainMm);
+assert.equal(geoFrame(scene,0).metrics.temperatureC,normalized.current.temperatureC);
+const metricTamper=JSON.parse(JSON.stringify(scene));metricTamper.frames[1].metrics.rainMm=-99;
+assert.equal(validateGeoScenario(metricTamper),null,'Invalid negative rainfall must not reach cards');
 assert.equal(geoFrame(scene,1,"dry").points.length,0,"Raw precipitation must NOT be recast as ENSO drought");
 
 const missing=provider();missing.current.temperature_2m=null;
