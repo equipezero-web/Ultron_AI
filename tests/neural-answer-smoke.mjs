@@ -619,6 +619,15 @@ try {
       document.querySelector('.jarvis-geo-place-bar input').value='Tokyo';
       document.querySelector('.jarvis-geo-place-bar').requestSubmit();
     });
+    await new Promise(resolve=>setTimeout(resolve,1350));
+    const searchDebug=await page.evaluate(()=>({
+      result:document.querySelector('.jarvis-geo-place-results')?.textContent,
+      hidden:document.querySelector('.jarvis-geo-place-results')?.hidden,
+      buttonCount:document.querySelectorAll('.jarvis-geo-place-results button').length,
+      query:document.querySelector('.jarvis-geo-place-bar input')?.value,
+      panelHidden:document.querySelector('.jarvis-geo-visual')?.hidden
+    }));
+    console.log('PHASE5 SEARCH DEBUG',JSON.stringify(searchDebug));
     await page.waitForFunction(()=>{
       const root=document.querySelector('.jarvis-geo-place-results');
       return root?.querySelectorAll('button').length||/não encontrada|Erro|indisponível/.test(root?.textContent||'');
