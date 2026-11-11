@@ -61,6 +61,8 @@ try {
          body:JSON.stringify(response)});
       }
       if(req.url().includes('/api/geo/watchlist/configure')){
+        const headers={'access-control-allow-origin':'*','access-control-allow-methods':'POST, OPTIONS','access-control-allow-headers':'content-type'};
+        if(req.method()==='OPTIONS')return req.respond({status:204,headers});
         const body=JSON.parse(req.postData()||'{}');
         assert.ok(typeof body.memoryKey==='string'&&body.memoryKey.length>=32);
         assert.equal(body.id,1850147);
@@ -69,6 +71,8 @@ try {
          contentType:'application/json',body:JSON.stringify({ok:true,action:body.action})});
       }
       if(req.url().endsWith('/api/geo/watchlist')){
+        const headers={'access-control-allow-origin':'*','access-control-allow-methods':'POST, OPTIONS','access-control-allow-headers':'content-type'};
+        if(req.method()==='OPTIONS')return req.respond({status:204,headers});
         const body=JSON.parse(req.postData()||'{}');
         assert.ok(body.memoryKey?.length>=32);
         return req.respond({status:200,headers:{'access-control-allow-origin':'*'},
