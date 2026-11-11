@@ -327,6 +327,25 @@ jobs:
               const error=JSON.parse(body);
               assert.equal(error.ok,false);
               console.log('::warning::Worldwide forecast returned a validated 502; provider/model data may be temporarily unavailable. No forecast was invented.');
+              try{
+                const direct=new URL('https://api.open-meteo.com/v1/forecast');
+                for(const [key,value] of Object.entries({
+                  latitude:'35.6895',longitude:'139.69171',timezone:'auto',forecast_days:'16',
+                  current:'temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m',
+                  daily:'temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max'
+                }))direct.searchParams.set(key,value);
+                const raw=await (await fetch(direct,{signal:AbortSignal.timeout(12000)})).json();
+                console.log('FORECAST_DIAGNOSTIC',JSON.stringify({
+                  fetchedAt:new Date().toISOString(),timezone:raw.timezone,utc_offset_seconds:raw.utc_offset_seconds,
+                  current:raw.current,
+                  dates:raw.daily?.time?.slice(0,3),
+                  lastDates:raw.daily?.time?.slice(-3),
+                  lengths:Object.fromEntries(Object.entries(raw.daily||{}).map(([key,value])=>[key,value?.length])),
+                  nullFields:Object.fromEntries(Object.entries(raw.daily||{}).map(([key,value])=>
+                    [key,Array.isArray(value)?value.map((x,i)=>x===null?i:null).filter(x=>x!==null).slice(0,10):[]]))
+                }));
+              }catch(error){console.log('FORECAST_DIAGNOSTIC_FAILED',String(error));}
+
             }
           }
 
