@@ -15,6 +15,9 @@ on:
       - 'modules/jarvis-geospatial-visual.css'
       - 'tests/jarvis-phase3-geospatial.mjs'
       - 'tests/jarvis-phase4.mjs'
+      - 'tests/jarvis-global-weather.mjs'
+      - 'modules/jarvis-global-weather.js'
+      - 'backend/weather-global.js'
       - 'modules/jarvis-weather-model.js'
       - 'modules/jarvis-action-engine.js'
       - 'backend/weather-live.js'
@@ -35,6 +38,9 @@ on:
       - 'modules/jarvis-geospatial-visual.css'
       - 'tests/jarvis-phase3-geospatial.mjs'
       - 'tests/jarvis-phase4.mjs'
+      - 'tests/jarvis-global-weather.mjs'
+      - 'modules/jarvis-global-weather.js'
+      - 'backend/weather-global.js'
       - 'modules/jarvis-weather-model.js'
       - 'modules/jarvis-action-engine.js'
       - 'backend/weather-live.js'
@@ -63,6 +69,9 @@ jobs:
           node --check modules/jarvis-geospatial-visual.js
           node tests/jarvis-phase3-geospatial.mjs
           node tests/jarvis-phase4.mjs
+          node --check modules/jarvis-global-weather.js
+          node --check backend/weather-global.js
+          node tests/jarvis-global-weather.mjs
           grep -Fq 'ultron-adaptive-display.css' index.html
           grep -Fq 'ultron-tv-display.js' index.html
           grep -Fq 'ultron-tv-display' modules/ultron-adaptive-display.css
