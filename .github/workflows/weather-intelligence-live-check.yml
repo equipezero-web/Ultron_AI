@@ -137,3 +137,41 @@ jobs:
           assert.ok(Array.isArray(result.history));
           console.log('PRIVATE WORLD WEATHER WATCHLIST VERIFIED IN PRODUCTION');
           NODE
+
+  diagnose-personal-watchlist:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - name: Inspect most recent Cloudflare deployment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api 'repos/equipezero-web/Ultron_AI/actions/workflows/cloudflare-backend-deploy.yml/runs?branch=main&per_page=2' --jq '.workflow_runs[] | [.id,.status,.conclusion,.created_at,.html_url] | @tsv'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Probe private D1 watchlist and live forecast
+        run: |
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict';
+          const base='https://ultron-backend.lucaalves17-20.workers.dev';
+          const key='ci-world-weather-private-monitor-verification-20261111-00000';
+          const forecast=await fetch(base+'/api/geo/global?city=Tokyo&days=3',{signal:AbortSignal.timeout(15000)});
+          console.log('Forecast production:',forecast.status);
+          assert.equal(forecast.status,200);
+          const watch=await fetch(base+'/api/geo/watchlist',{method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({memoryKey:key}),signal:AbortSignal.timeout(15000)});
+          const data=await watch.json();
+          console.log('Private watchlist:',watch.status,JSON.stringify(data).slice(0,950));
+          assert.equal(watch.status,200,'Watchlist not active on production Worker');
+          assert.equal(data.ok,true);
+          assert.equal(data.cadenceHours,3);
+          assert.equal(data.notifications,false);
+          assert.ok(Array.isArray(data.watches));
+          console.log('PERSONAL WATCHLIST VERIFIED LIVE IN CLOUDFLARE');
+          NODE
