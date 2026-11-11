@@ -16,7 +16,30 @@ try {
     // Use a deterministic local response for test pictures rather than
     // depending on example.org or the external network.
     await page.setRequestInterception(true);
+    let weatherProxyOffline=false;
     page.on('request',req=>{
+      if(weatherProxyOffline&&(/\/api\/geo\/(global|locations)/.test(req.url()))){
+        return req.respond({status:404,headers:{'access-control-allow-origin':'*'},contentType:'application/json',
+          body:JSON.stringify({error:'Rota não encontrada'})});
+      }
+      if(req.url().includes('geocoding-api.open-meteo.com/v1/search')){
+        return req.respond({status:200,headers:{'access-control-allow-origin':'*'},contentType:'application/json',
+          body:JSON.stringify({results:[{id:1850147,name:'Tokyo',latitude:35.6895,longitude:139.6917,
+            country:'Japan',country_code:'JP',admin1:'Tokyo',timezone:'Asia/Tokyo'}]})});
+      }
+      if(req.url().includes('api.open-meteo.com/v1/forecast')){
+        const offset=9*3600000,local=new Date(Date.now()+offset);
+        const midnight=Date.UTC(local.getUTCFullYear(),local.getUTCMonth(),local.getUTCDate());
+        const dates=Array.from({length:16},(_,i)=>new Date(midnight+i*86400000).toISOString().slice(0,10));
+        const payload={utc_offset_seconds:32400,
+          current:{time:local.toISOString().slice(0,16),temperature_2m:18.2,relative_humidity_2m:64,
+            precipitation:0,wind_speed_10m:10},
+          daily:{time:dates,temperature_2m_min:Array(16).fill(12),temperature_2m_max:Array(16).fill(23),
+            precipitation_sum:Array(16).fill(2.5),precipitation_probability_max:Array(16).fill(40)}};
+        return req.respond({status:200,headers:{'access-control-allow-origin':'*'},contentType:'application/json',
+          body:JSON.stringify(payload)});
+      }
+
       if(req.url().includes('youtube-nocookie.com/embed/'))return req.respond({status:200,contentType:'text/html',body:'<html><body>Test video player</body></html>'});
       if(req.url().includes('/api/orchestrator/')){
         const headers={'access-control-allow-origin':'*','access-control-allow-methods':'POST, OPTIONS','access-control-allow-headers':'content-type, authorization'};
@@ -392,6 +415,27 @@ try {
     await page.evaluate(()=>window.ULTRON_GEO_VISUAL.setFrame(16));
     assert.equal(await page.evaluate(()=>window.ULTRON_GEO_VISUAL.state.frame),16);
     await page.evaluate(()=>window.ULTRON_GEO_VISUAL.close());
+    // Cloudflare D1 deploy outage must not disable public worldwide forecast.
+    weatherProxyOffline=true;
+    const recovered=await page.evaluate(async()=>{
+      const result=await window.ULTRON_ORCHESTRATOR.execute(
+        'Jarvis, mostre a previsão do tempo em Tokyo no globo 3D por 16 dias','global-provider-fallback');
+      return {result,state:window.ULTRON_GEO_VISUAL?.state};
+    });
+    assert.equal(recovered.result.ok,true,'Direct Open-Meteo recovery must work: '+JSON.stringify(recovered));
+    assert.equal(recovered.state.mode,'3d');
+    assert.equal(recovered.state.frameCount,17);
+    assert.equal(recovered.state.scenario,'weather-global-1850147');
+    await page.evaluate(()=>window.ULTRON_GEO_VISUAL.setMode('2d'));
+    await page.evaluate(()=>{
+      document.querySelector('.jarvis-geo-place-bar input').value='Tokyo';
+      document.querySelector('.jarvis-geo-place-bar').requestSubmit();
+    });
+    await page.waitForFunction(()=>document.querySelectorAll('.jarvis-geo-place-results button').length===1,{timeout:7000});
+    await page.evaluate(()=>document.querySelector('.jarvis-geo-place-results button').click());
+    await page.waitForFunction(()=>document.querySelector('.jarvis-geo-place-results')?.textContent?.includes('atualizada'),{timeout:7000});
+    await page.evaluate(()=>window.ULTRON_GEO_VISUAL.close());
+    weatherProxyOffline=false;
     await page.evaluate(()=>window.__phase3EarthRestore());
     await page.close();
   }

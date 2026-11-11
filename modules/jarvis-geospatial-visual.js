@@ -1,5 +1,6 @@
 import API_CONFIG from "../config.js";
 import {globalWeatherScenario} from "./jarvis-global-weather.js?v=4.73.0";
+import {searchGlobalLocations,loadGlobalWeather} from "../backend/weather-global.js?v=4.74.0";
 import {GEO_SCENARIOS,GEO_PALETTE,geoFrame,validateGeoScenario,BRAZIL_OUTLINE_URL,WORLD_OUTLINE_URL,brazilXY,worldXY,geoJSONPaths} from "./jarvis-geospatial-model.js?v=4.73.0";
 
 // The visualization remains INSIDE the Neural Ring stage, no new page or pop-up.
@@ -199,14 +200,27 @@ if(stage){
 
  const backend=String(API_CONFIG.backendUrl||"").replace(/\/+$/,"");
  const getJson=async(url)=>{
-   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);
+   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),10000);
+   let proxyError=null;
    try{
      const response=await fetch(url,{headers:{Accept:"application/json"},signal:controller.signal,cache:"no-store"});
      const data=await response.json();
      if(!response.ok||!data?.ok)throw Error(data?.error||"Serviço meteorológico indisponível");
      return data;
-   }finally{clearTimeout(timer);}
- };
+   }catch(error){proxyError=error;}
+   finally{clearTimeout(timer);}
+   // Worldwide queries can use Open-Meteo directly if the D1-bound Worker is stale.
+   const params=new URL(url);
+   let data;
+   if(params.pathname==="/api/geo/locations"){
+     data=await searchGlobalLocations(params.searchParams.get("q"));
+   }else if(params.pathname==="/api/geo/global"){
+     data=await loadGlobalWeather({id:params.searchParams.get("id"),query:params.searchParams.get("city"),
+       days:params.searchParams.get("days")||"7"});
+   }else throw proxyError||Error("Serviço indisponível");
+   if(!data?.ok)throw Error(data?.error||proxyError?.message||"Consulta meteorológica indisponível");
+   return data;
+ }
  async function showLocation(id,days=Number(daysChoice.value)){
    const queryId=Number(id);
    if(!Number.isSafeInteger(queryId)||queryId<1)return {ok:false,error:"Localidade inválida"};
