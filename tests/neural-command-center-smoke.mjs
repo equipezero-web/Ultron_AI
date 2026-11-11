@@ -76,7 +76,8 @@ try {
   await page.mouse.move(rx+120,ry+78);
   assert.equal((await page.evaluate(()=>window.ULTRON_NEURAL_RING_3D.state)).yaw,afterRelease.yaw,
     'Free mouse movement must not leave the Neural Ring stuck rotating');
-  await page.mouse.wheel({deltaY:-260});
+  await page.keyboard.down('Control');
+  try{await page.mouse.wheel({deltaY:-260});}finally{await page.keyboard.up('Control');}
   const afterWheel=await page.evaluate(()=>window.ULTRON_NEURAL_RING_3D.state);
   assert.ok(afterWheel.zoom>1,'Wheel zoom must change the ring geometry scale');
   await page.evaluate(()=>window.ULTRON_NEURAL_RING_3D.reset());
