@@ -1,6 +1,8 @@
 import API_CONFIG from "../config.js";
 import {globalWeatherScenario} from "./jarvis-global-weather.js?v=4.73.0";
 import {searchGlobalLocations,loadGlobalWeather} from "../backend/weather-global.js?v=4.74.0";
+import {loadWeatherInsight} from "../backend/weather-intelligence.js?v=4.75.0";
+import {insightScenario,insightSummary,monitorSummary,WEATHER_INSIGHT_LABELS} from "./jarvis-weather-insight-model.js?v=4.75.0";
 import {GEO_SCENARIOS,GEO_PALETTE,geoFrame,validateGeoScenario,BRAZIL_OUTLINE_URL,WORLD_OUTLINE_URL,brazilXY,worldXY,geoJSONPaths} from "./jarvis-geospatial-model.js?v=4.73.0";
 
 // The visualization remains INSIDE the Neural Ring stage, no new page or pop-up.
@@ -35,6 +37,22 @@ if(stage){
  placeBar.append(placeInput,daysChoice,placeSearch,placeRefresh);
  const placeResults=document.createElement("div");placeResults.className="jarvis-geo-place-results";placeResults.hidden=true;
  placeResults.setAttribute("aria-live","polite");
+ const insightBar=document.createElement("form");insightBar.className="jarvis-geo-insight-bar";insightBar.hidden=true;
+ const insightType=document.createElement("select");insightType.setAttribute("aria-label","Análise meteorológica mundial");
+ for(const [id,label] of Object.entries(WEATHER_INSIGHT_LABELS)){
+   const opt=document.createElement("option");opt.value=id;opt.textContent=label;insightType.append(opt);
+ }
+ const insightYear=document.createElement("input");insightYear.type="number";insightYear.min="1940";
+ insightYear.max=String(new Date().getUTCFullYear()-1);
+ insightYear.value=String(new Date().getUTCFullYear()-1);insightYear.setAttribute("aria-label","Ano histórico");
+ const insightMonth=document.createElement("select");insightMonth.setAttribute("aria-label","Mês histórico");
+ for(let m=1;m<=12;m++){const o=document.createElement("option");o.value=String(m);o.textContent=String(m).padStart(2,"0");insightMonth.append(o);}
+ const insightSubmit=document.createElement("button");insightSubmit.type="submit";insightSubmit.textContent="Analisar";
+ const monitorButton=document.createElement("button");monitorButton.type="button";monitorButton.textContent="Situação 24h";
+ insightBar.append(insightType,insightYear,insightMonth,insightSubmit,monitorButton);
+ const toggleHistory=()=>{const show=insightType.value==="history";insightYear.hidden=!show;insightMonth.hidden=!show;};
+ insightType.addEventListener("change",toggleHistory);toggleHistory();
+
 
  const timeline=document.createElement("div");timeline.className="jarvis-geo-timeline";
  const play=document.createElement("button");play.type="button";play.textContent="▶";
@@ -60,7 +78,7 @@ if(stage){
  officialAlerts.target="_blank";officialAlerts.rel="noopener noreferrer";
  officialAlerts.textContent="Consultar alertas oficiais do INMET";officialAlerts.hidden=true;
  footer.append(source,officialAlerts,caveat);
- panel.append(head,controls,placeBar,placeResults,timeline,evidence,canvas,list,detail,footer);stage.append(panel);
+ panel.append(head,controls,placeBar,insightBar,placeResults,timeline,evidence,canvas,list,detail,footer);stage.append(panel);
  for(const type of ["pointerdown","pointerup","wheel","click","touchstart","touchend"]){
    panel.addEventListener(type,event=>event.stopPropagation(),{passive:true});
  }
@@ -180,6 +198,7 @@ if(stage){
    caveat.textContent=dataset.source.disclaimer;
    officialAlerts.hidden=!dataset.id.startsWith("weather-")||dataset.projection==="world";
    placeBar.hidden=dataset.projection!=="world";
+   insightBar.hidden=dataset.projection!=="world";
    placeRefresh.disabled=!/^weather-global-\d+$/.test(dataset.id);
    if(refreshClock!==null){clearInterval(refreshClock);refreshClock=null;}
    if(/^weather-global-\d+$/.test(dataset.id))refreshClock=setInterval(()=>{
@@ -260,6 +279,50 @@ if(stage){
  placeRefresh.addEventListener("click",()=>{
    const id=Number(dataset?.id?.match(/^weather-global-(\d+)$/)?.[1]);
    if(id>0)void showLocation(id);
+ });
+
+ insightBar.addEventListener("submit",async event=>{
+   event.preventDefault();
+   const id=Number(dataset?.id?.match(/global-(\d+)/)?.[1]);
+   if(!Number.isSafeInteger(id)||id<=0){placeResults.hidden=false;placeResults.textContent="Selecione uma localidade na pesquisa mundial.";return;}
+   const type=insightType.value,key=++seq,query=new URL(backend+"/api/geo/insight");
+   query.searchParams.set("type",type);query.searchParams.set("id",String(id));
+   if(type==="history"){query.searchParams.set("year",insightYear.value);query.searchParams.set("month",insightMonth.value);}
+   placeResults.hidden=false;placeResults.textContent="Consultando "+WEATHER_INSIGHT_LABELS[type]+"...";
+   try{
+     let data=null;
+     try{data=await getJson(query.toString());}catch{}
+     if(!data?.ok)data=await loadWeatherInsight({type,id,year:type==="history"?Number(insightYear.value):undefined,
+       month:type==="history"?Number(insightMonth.value):undefined});
+     if(!data?.ok)throw Error(data?.error||"Não há dados válidos");
+     if(key!==seq||panel.hidden)return;
+     if(type==="alerts"){
+       placeResults.replaceChildren();
+       const intro=document.createElement("p");intro.textContent=insightSummary(data);
+       placeResults.append(intro);
+       for(const bulletin of (data.bulletins||[]).slice(0,12)){
+         const item=document.createElement("a");item.href=bulletin.url;item.target="_blank";
+         item.rel="noopener noreferrer";
+         item.textContent=(bulletin.title||"Aviso")+" — "+(bulletin.severity||"")+
+           " — "+(bulletin.areas?.join?.(", ")||bulletin.areas||"")+
+           " — validade "+(bulletin.expiresAt||"não informada");
+         placeResults.append(item);
+       }
+       return;
+     }
+     const scene=insightScenario(data);
+     if(!scene)throw Error("Não há dados geográficos válidos para exibição");
+     const result=await open({data:scene,view:mode});
+     if(!result?.ok)throw Error(result?.error||"Mapa indisponível");
+     placeResults.textContent=insightSummary(data);
+   }catch(error){if(key===seq)placeResults.textContent=error?.message||"Análise indisponível";}
+ });
+ monitorButton.addEventListener("click",async()=>{
+   const key=++seq;placeResults.hidden=false;placeResults.textContent="Consultando amostras persistentes...";
+   try{
+     const data=await getJson(backend+"/api/geo/monitor");
+     if(key===seq&&!panel.hidden)placeResults.textContent=monitorSummary(data)||"Sem amostras disponíveis";
+   }catch(error){if(key===seq)placeResults.textContent=error?.message||"Monitoramento indisponível";}
  });
 
  function closePanel(){
