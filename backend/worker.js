@@ -1,4 +1,5 @@
 import {vetClientTaskContext,contextSearchQuery} from "./task-context.js";
+import {loadLiveWeather} from "./weather-live.js";
 import {ACTIONS,parsePlanText,isActionRequest} from "./action-catalog.js";
 import {capabilityAnswer} from "./jarvis-capabilities.js";
 import { deepenNews } from "./news-details.js";
@@ -994,6 +995,14 @@ export default {
 
     if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: corsHeaders() });
     if (path === "/api/health" && request.method === "GET") return health(env);
+    // Read-only forecast route: exact city allowlist and fixed weather provider host.
+    if (path === "/api/geo/weather" && request.method === "GET") {
+      const result = await loadLiveWeather(url.searchParams.get("city"));
+      return new Response(JSON.stringify(result), {
+        status:result.ok?200:(result.status||503),
+        headers:{...corsHeaders(),"Cache-Control":result.ok?"public, max-age=300":"no-store","X-Content-Type-Options":"nosniff"}
+      });
+    }
     if(path==="/api/action-plan"&&request.method==="POST"){
       try{
         const raw=await request.text();if(raw.length>5000)return json({ok:false},413);
