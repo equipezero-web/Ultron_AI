@@ -111,6 +111,150 @@ if(stage){
  if(typeof ResizeObserver!=="undefined")new ResizeObserver(resize).observe(stage);
  window.addEventListener("resize",resize,{passive:true});
  resize();
+
+ // Map camera is independent of the 3D Earth camera. Only actual geocoded
+ // points and IBGE/Natural Earth contours are shown; no synthetic rain raster.
+ let mapZoom=1,mapCenter=null;
+ const pointerPositions=new Map();
+ let dragStart=null,pinchStart=null;
+ const baseViewport=()=>dataset?.projection==="world"?
+   {x:0,y:0,w:900,h:550}:{x:35,y:27,w:745,h:465};
+ const clamp=(n,low,high)=>Math.max(low,Math.min(high,n));
+ function drawMapViewport(){
+   const base=baseViewport(),w=base.w/mapZoom,h=base.h/mapZoom;
+   if(!mapCenter)mapCenter={x:base.x+base.w/2,y:base.y+base.h/2};
+   const x=clamp(mapCenter.x-w/2,0,900-w),y=clamp(mapCenter.y-h/2,0,550-h);
+   mapCenter={x:x+w/2,y:y+h/2};
+   svg.setAttribute("viewBox",[x,y,w,h].map(n=>n.toFixed(2)).join(" "));
+   svg.setAttribute("preserveAspectRatio","xMidYMid meet");
+   mapZoomLabel.textContent=Math.round(mapZoom*100)+"%";
+   mapZoomIn.disabled=mapZoom>=5;
+   mapZoomOut.disabled=mapZoom<=1;
+ }
+ function setMapZoom(value){
+   if(!dataset)return;
+   mapZoom=clamp(Number(value)||1,1,5);
+   drawMapViewport();
+ }
+ function focusMap(){
+   const p=geoFrame(dataset,frameIndex,"all")?.points?.find(p=>p.id===selected)||
+     geoFrame(dataset,frameIndex,"all")?.points?.[0];
+   if(!p)return;
+   const {x,y}=dataset.projection==="world"?worldXY(p.lng,p.lat):brazilXY(p.lng,p.lat);
+   if(Number.isFinite(x)&&Number.isFinite(y)){mapCenter={x,y};setMapZoom(2.7);}
+ }
+ function resetMap(){mapZoom=1;mapCenter=null;drawMapViewport();}
+ mapZoomIn.addEventListener("click",()=>setMapZoom(mapZoom*1.55));
+ mapZoomOut.addEventListener("click",()=>setMapZoom(mapZoom/1.55));
+ mapFocus.addEventListener("click",focusMap);
+ mapReset.addEventListener("click",resetMap);
+ svg.style.touchAction="none";
+ svg.addEventListener("wheel",event=>{
+   if(mode!=="2d"||panel.hidden)return;
+   event.preventDefault();event.stopPropagation();
+   setMapZoom(mapZoom*(event.deltaY<0?1.25:1/1.25));
+ },{passive:false});
+ const pointerDistance=()=>{
+   const values=[...pointerPositions.values()];
+   return values.length<2?0:Math.hypot(values[0].x-values[1].x,values[0].y-values[1].y);
+ };
+ svg.addEventListener("pointerdown",event=>{
+   if(mode!=="2d"||(event.pointerType!=="touch"&&event.button!==0))return;
+   pointerPositions.set(event.pointerId,{x:event.clientX,y:event.clientY});
+   try{svg.setPointerCapture(event.pointerId);}catch{}
+   if(pointerPositions.size===1){
+     dragStart={x:event.clientX,y:event.clientY,center:{...(mapCenter||{x:450,y:275})}};
+     pinchStart=null;
+   }else{
+     pinchStart=pointerDistance();dragStart=null;
+   }
+ });
+ svg.addEventListener("pointermove",event=>{
+   if(mode!=="2d"||!pointerPositions.has(event.pointerId))return;
+   pointerPositions.set(event.pointerId,{x:event.clientX,y:event.clientY});
+   if(pointerPositions.size>=2){
+     const next=pointerDistance();
+     if(pinchStart&&next>0)setMapZoom(mapZoom*next/pinchStart);
+     pinchStart=next;return;
+   }
+   if(!dragStart)return;
+   const rect=svg.getBoundingClientRect(),base=baseViewport();
+   if(rect.width<1||rect.height<1)return;
+   mapCenter={
+     x:dragStart.center.x-(event.clientX-dragStart.x)*base.w/mapZoom/rect.width,
+     y:dragStart.center.y-(event.clientY-dragStart.y)*base.h/mapZoom/rect.height
+   };
+   drawMapViewport();
+ });
+ const releasePointer=event=>{
+   pointerPositions.delete(event.pointerId);
+   if(pointerPositions.size===1){
+     const remaining=[...pointerPositions.values()][0];
+     dragStart={x:remaining.x,y:remaining.y,center:{...(mapCenter||{x:450,y:275})}};
+   }else dragStart=null;
+   pinchStart=null;
+ };
+ svg.addEventListener("pointerup",releasePointer);
+ svg.addEventListener("pointercancel",releasePointer);
+ svg.addEventListener("lostpointercapture",releasePointer);
+ function renderMetrics(frame){
+   metricPanel.replaceChildren();
+   const heading=document.createElement("div");heading.className="jarvis-geo-metric-heading";
+   const place=document.createElement("strong");place.textContent=frame.points[0]?.name||dataset.title;
+   const time=document.createElement("small");time.textContent=frame.name+" · "+frame.type;
+   heading.append(place,time);metricPanel.append(heading);
+   const definitions=[
+     ["temperatureC","TEMPERATURA ESTIMADA","°C"],
+     ["humidityPercent","UMIDADE","%"],
+     ["precipitationMm","CHUVA ESTIMADA","mm"],
+     ["windKmh","VENTO ESTIMADO","km/h"],
+     ["minC","MÍNIMA PREVISTA","°C"],
+     ["maxC","MÁXIMA PREVISTA","°C"],
+     ["rainMm","CHUVA PREVISTA","mm"],
+     ["rainChancePercent","CHANCE MÁXIMA DE CHUVA","%"]
+   ];
+   const available=definitions.filter(([key])=>Number.isFinite(frame.metrics?.[key]));
+   if(available.length){
+     const grid=document.createElement("div");grid.className="jarvis-geo-metric-grid";
+     for(const [key,label,unit] of available){
+       const card=document.createElement("div");card.className="jarvis-geo-metric-card";
+       card.dataset.metric=key;
+       const title=document.createElement("small");title.textContent=label;
+       const value=document.createElement("strong");
+       value.textContent=frame.metrics[key].toLocaleString("pt-BR",{maximumFractionDigits:1})+" "+unit;
+       card.append(title,value);grid.append(card);
+     }
+     metricPanel.append(grid);
+   }else{
+     const note=document.createElement("p");note.className="jarvis-geo-metric-empty";
+     note.textContent="Camada qualitativa: os dados publicados não contêm medidas numéricas para este ponto.";
+     metricPanel.append(note);
+   }
+   const precipitation=dataset.frames.filter(f=>Number.isFinite(f.metrics?.rainMm));
+   if(precipitation.length){
+     const title=document.createElement("strong");title.className="jarvis-geo-chart-title";
+     title.textContent="CHUVA PREVISTA · PRÓXIMOS DIAS";metricPanel.append(title);
+     const chart=document.createElement("div");chart.className="jarvis-geo-rain-chart";
+     const max=Math.max(1,...precipitation.map(f=>f.metrics.rainMm));
+     for(const f of precipitation){
+       const row=document.createElement("div");row.className="jarvis-geo-rain-row";
+       if(f.id===frame.id)row.dataset.active="true";
+       const date=document.createElement("small");date.textContent=f.name;
+       const track=document.createElement("div");track.className="jarvis-geo-rain-track";
+       const bar=document.createElement("span");bar.style.width=(f.metrics.rainMm/max*100).toFixed(2)+"%";
+       track.append(bar);
+       const value=document.createElement("strong");
+       value.textContent=f.metrics.rainMm.toLocaleString("pt-BR",{maximumFractionDigits:1})+" mm";
+       row.append(date,track,value);chart.append(row);
+     }
+     metricPanel.append(chart);
+   }
+   const disclaimer=document.createElement("p");disclaimer.className="jarvis-geo-metric-disclaimer";
+   disclaimer.textContent=available.length?
+    "Estimativa numérica por localidade, não radar ou mapa de chuva por bairro. Fonte e período informados abaixo.":
+    "Pontos geográficos representativos, não extensão real de impactos ou medição por município.";
+   metricPanel.append(disclaimer);
+ }
  function renderMap(frame){
    svg.replaceChildren();
    const bg=e("rect",{width:900,height:550,fill:"#091a2c",rx:12});svg.append(bg);
