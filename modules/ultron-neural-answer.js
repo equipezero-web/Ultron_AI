@@ -1,3 +1,4 @@
+import {buildMediaModel} from "./jarvis-media-model.js?v=4.70.0";
 /* One response surface in the Neural Ring, without news or images at boot. */
 const center=document.querySelector('.jarvis-cc-center');
 if(center){
@@ -23,6 +24,15 @@ if(center){
   sources.className='ultron-neural-answer-sources';
   sources.setAttribute('aria-label','Fontes da resposta');
   box.append(head,text,media,sources);center.append(box);
+  // Layout is based on usable stage space as well as the screen width.
+  const syncLayout=()=>{
+    const width=center.getBoundingClientRect().width||window.innerWidth;
+    box.dataset.layout=document.body.classList.contains('ultron-tv-display')?'tv':
+      width<550||window.matchMedia('(max-width:820px)').matches?'compact':'wide';
+  };
+  if(typeof ResizeObserver!=='undefined')new ResizeObserver(syncLayout).observe(center);
+  window.addEventListener('resize',syncLayout,{passive:true});
+  syncLayout();
   let requestId=0;
   let pendingAnswer=false;
   let dismissed=false,awake=false;
@@ -34,7 +44,7 @@ if(center){
     box.classList.toggle('ultron-text-disabled',!textEnabled);
     text.hidden=!textEnabled;
     sources.hidden=!textEnabled;
-    const hasMedia=!!media.querySelector('img,iframe,.ultron-media-video');
+    const hasMedia=!!media.querySelector('.ultron-image-card img,.ultron-media-video iframe,.ultron-media-video button');
     box.hidden=dismissed||!hasContent||(!textEnabled&&!hasMedia);
   }
   function setTextEnabled(enabled){textEnabled=Boolean(enabled);try{localStorage.setItem('ultron-neural-text-enabled',String(textEnabled));}catch{}syncVisibility();return textEnabled;}
@@ -60,6 +70,7 @@ if(center){
   };
   const present=(value,{pending=false,visual=null,webResearch=null}={})=>{
     if(dismissed)return;
+    syncLayout();
     hasContent=true;box.hidden=false;
     status.textContent=pending?'ULTRON // CONSULTANDO FONTES':'ULTRON // RESPOSTA';
     text.textContent=String(value||'').slice(0,6500);
@@ -98,62 +109,82 @@ if(center){
         }
       }
     }
-    if(webResearch?.requested&&!visual?.images?.length&&!visual?.videos?.length&&!visual?.cards?.some(c=>c.image||c.imageUrl||c.thumbnail)){
-      const note=document.createElement('p');note.className='ultron-media-note';note.textContent='Nenhuma mídia disponível nas fontes consultadas.';media.append(note);
+    const collection=buildMediaModel(visual);
+    const makeHeading=(name)=>{const h=document.createElement('h3');h.className='ultron-media-heading';h.textContent=name;return h;};
+    const makeMeta=(source,date)=>{
+      const small=document.createElement('small');small.className='ultron-media-source';
+      small.textContent=[source,date].filter(Boolean).join(' · ')||'Imagem relacionada ao assunto';
+      return small;
+    };
+    if(collection.images.length){
+      const imageSection=document.createElement('section');
+      imageSection.className='ultron-media-images';
+      imageSection.setAttribute('aria-label','Imagens relacionadas à resposta');
+      imageSection.append(makeHeading('IMAGENS'));
+      const grid=document.createElement('div');grid.className='ultron-image-grid';
+      for(const item of collection.images){
+        const figure=document.createElement('figure');figure.className='ultron-image-card';
+        const img=document.createElement('img');img.loading='lazy';img.decoding='async';img.referrerPolicy='no-referrer';
+        img.alt=item.alt;img.src=item.src;img.width=160;img.height=160;
+        const caption=document.createElement('figcaption');
+        const title=document.createElement('strong');title.textContent=item.title;caption.append(title);
+        caption.append(makeMeta(item.source,item.date));
+        if(item.description){const details=document.createElement('p');details.textContent=item.description;caption.append(details);}
+        if(item.sourceUrl){
+          const a=document.createElement('a');a.href=item.sourceUrl;a.target='_blank';a.rel='noopener noreferrer';
+          a.textContent='Fonte da imagem';caption.append(a);
+        }
+        img.onerror=()=>{
+          if(!img.isConnected)return;
+          if(item.thumbnail&&img.src!==item.thumbnail){img.src=item.thumbnail;return;}
+          figure.remove();
+          if(!grid.children.length)imageSection.remove();
+          syncVisibility();
+        };
+        figure.append(img,caption);grid.append(figure);
+      }
+      imageSection.append(grid);media.append(imageSection);
     }
-    const images=[
-      ...(Array.isArray(visual?.images)?visual.images:[]),
-      ...(Array.isArray(visual?.cards)?visual.cards:[]).map(card=>({
-        src:card?.image||card?.imageUrl||card?.thumbnail,
-        alt:card?.title||'Imagem da fonte'
-      }))
-    ];
-    const seenImages=new Set();
-    for(const item of images){
-      const src=url(typeof item==='string'?item:item?.src||item?.image||item?.imageUrl);
-      if(!src||seenImages.has(src))continue;
-      seenImages.add(src);
-      const img=document.createElement('img');
-      img.loading='eager';img.decoding='async';img.referrerPolicy='no-referrer';
-      img.src=src;img.alt=String(item?.alt||item?.title||'Imagem vinculada à fonte');
-      const thumbnail=url(item?.thumbnail);
-      img.onerror=()=>{
-        if(!img.isConnected)return;
-        if(thumbnail&&img.src!==thumbnail){img.src=thumbnail;return;}
-        img.remove();syncVisibility();
-        if(!media.querySelector('img,iframe,.ultron-media-video'))media.textContent='Não foi possível carregar as imagens desta fonte.';
-      };
-      media.append(img);
-      if(seenImages.size>=4)break;
+    if(collection.videos.length){
+      const videoSection=document.createElement('section');
+      videoSection.className='ultron-media-videos';
+      videoSection.setAttribute('aria-label','Vídeos relacionados à resposta');
+      videoSection.append(makeHeading('VÍDEOS'));
+      const videoGrid=document.createElement('div');videoGrid.className='ultron-video-grid';
+      for(const item of collection.videos){
+        const block=document.createElement('article');block.className='ultron-media-video';
+        const button=document.createElement('button');button.type='button';button.className='ultron-media-play';
+        button.setAttribute('aria-label','Reproduzir '+item.title);
+        const poster=document.createElement('img');poster.loading='lazy';poster.decoding='async';
+        poster.referrerPolicy='no-referrer';poster.alt='Prévia do vídeo: '+item.title;poster.src=item.poster;
+        const playLabel=document.createElement('span');playLabel.className='ultron-video-play-label';playLabel.textContent='▶ Reproduzir vídeo';
+        button.append(poster,playLabel);
+        const info=document.createElement('div');info.className='ultron-video-info';
+        const title=document.createElement('strong');title.textContent=item.title;info.append(title);
+        info.append(makeMeta(item.source,item.date));
+        if(item.description){const details=document.createElement('p');details.textContent=item.description;info.append(details);}
+        block.append(button,info);videoGrid.append(block);
+        button.addEventListener('click',event=>{
+          event.preventDefault();event.stopPropagation();
+          if(block.querySelector('iframe'))return;
+          const frame=document.createElement('iframe');
+          frame.src='https://www.youtube-nocookie.com/embed/'+item.id+'?playsinline=1&rel=0&autoplay=1';
+          frame.title=item.title;frame.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';
+          frame.allowFullscreen=true;frame.loading='eager';frame.referrerPolicy='strict-origin-when-cross-origin';
+          const player=document.createElement('div');player.className='ultron-video-player';player.append(frame);
+          const fallback=document.createElement('a');fallback.href=item.sourceUrl;fallback.target='_blank';
+          fallback.rel='noopener noreferrer';fallback.className='ultron-video-fallback';
+          fallback.textContent='Caso o vídeo não permita reprodução incorporada, abrir no YouTube';
+          button.replaceWith(player);info.append(fallback);
+          syncVisibility();
+        });
+      }
+      videoSection.append(videoGrid);media.append(videoSection);
     }
-    // Only embed real, validated YouTube video IDs. Never frame arbitrary pages.
-    const videos=Array.isArray(visual?.videos)?visual.videos:[];
-    const videoIds=new Set();
-    for(const item of videos){
-      const id=String(item?.id||'');
-      if(!/^[A-Za-z0-9_-]{11}$/.test(id)||videoIds.has(id))continue;
-      videoIds.add(id);
-      const block=document.createElement('section');block.className='ultron-media-video';
-      const button=document.createElement('button');button.type='button';button.className='ultron-media-play';
-      button.setAttribute('aria-label','Reproduzir '+String(item.title||'vídeo'));
-      const poster=document.createElement('img');poster.loading='eager';poster.referrerPolicy='no-referrer';poster.alt=String(item.title||'Vídeo relacionado');
-      poster.src=url(item.thumbnail)||'https://i.ytimg.com/vi/'+id+'/hqdefault.jpg';
-      const caption=document.createElement('span');caption.textContent='▶ '+String(item.title||'Assistir vídeo no YouTube');
-      button.append(poster,caption);block.append(button);
-      // Keep the first related video near the first photograph rather than
-      // below a long list of images that is hidden by the compact media lane.
-      const firstImage=media.querySelector(':scope > img');
-      if(videoIds.size===1&&firstImage)firstImage.after(block);else media.append(block);
-      button.addEventListener('click',()=>{
-        const frame=document.createElement('iframe');
-        frame.src='https://www.youtube-nocookie.com/embed/'+id+'?playsinline=1&rel=0&autoplay=1';
-        frame.title=String(item.title||'Vídeo do YouTube');
-        frame.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';
-        frame.allowFullscreen=true;frame.referrerPolicy='strict-origin-when-cross-origin';
-        const fallback=document.createElement('a');fallback.href='https://www.youtube.com/watch?v='+id;fallback.target='_blank';fallback.rel='noopener noreferrer';fallback.textContent='Se a reprodução for bloqueada, abrir no YouTube';
-        block.replaceChildren(frame,fallback);
-      });
-      if(videoIds.size>=3)break;
+    if(!collection.images.length&&!collection.videos.length&&webResearch?.requested){
+      const note=document.createElement('p');note.className='ultron-media-note';
+      note.textContent='Nenhuma imagem ou vídeo relevante disponível nas fontes consultadas.';
+      media.append(note);
     }
     const cards=[...(Array.isArray(visual?.videos)?visual.videos:[]).map(v=>({url:v.url,title:v.title})),...(Array.isArray(visual?.images)?visual.images:[]).filter(i=>i?.sourceUrl).map(i=>({url:i.sourceUrl,title:i.alt||'Fonte da imagem'})),...(Array.isArray(visual?.cards)?visual.cards:[]),...(Array.isArray(webResearch?.sources)?webResearch.sources:[])];
     const seen=new Set();
