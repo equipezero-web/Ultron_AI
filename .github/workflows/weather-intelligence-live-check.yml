@@ -68,6 +68,20 @@ jobs:
           const pageHtml=page.text;
           assert.match(pageHtml,/ultron-intelligence-briefing[.]js[?]v=4[.]76[.]0/);
           assert.match(pageHtml,/jarvis-weather-wake[.]css[?]v=4[.]76[.]0/);
+          // Diagnostic only: network/provider failures must not be hidden or
+          // mistaken for valid weather, but should not break unrelated UI CI.
+          const cityForecast=await get('recife-city-forecast',
+            base+'/api/geo/weather?city=recife');
+          if(cityForecast.status===200){
+            assert.equal(cityForecast.json?.ok,true);
+            assert.equal(cityForecast.json?.city?.key,'recife');
+            assert.ok(cityForecast.json?.days?.length>=1);
+            console.log('BRAZILIAN CITY FORECAST BACKEND ACTIVE');
+          }else{
+            console.log('::warning::Brazilian 11-city weather route unavailable (HTTP '+cityForecast.status+
+              '): '+String(cityForecast.json?.code||cityForecast.json?.error||'unknown').slice(0,150)+
+              '. Browser fallback provides independently validated Open-Meteo forecasts.');
+          }
           const monitor=await get('monitor',base+'/api/geo/monitor');
           assert.equal(monitor.status,200,'Cloudflare/D1 monitoring endpoint unavailable');
           assert.equal(monitor.json?.ok,true);
