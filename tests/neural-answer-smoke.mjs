@@ -110,7 +110,14 @@ try {
     await page.evaluate(()=>window.dispatchEvent(new CustomEvent('ultron:speech-start',{detail:{source:'intelligence-wake',text:'Resumo de notícias falado'}})));
     assert.equal(await page.$eval('.ultron-news-story h3',el=>el.textContent),'Boletim verificado','Narration must preserve the structured report');
     await page.click('.ultron-neural-answer-close');
-    assert.equal(await page.$eval('.ultron-neural-answer',el=>el.hidden),true);
+    const closed=await page.evaluate(()=>{
+      const box=document.querySelector('.ultron-neural-answer'),button=document.querySelector('.ultron-neural-answer-close');
+      const rect=button.getBoundingClientRect();
+      const at=document.elementFromPoint(rect.x+rect.width/2,rect.y+rect.height/2);
+      return {hidden:box.hidden,layout:box.dataset.layout,at:at?.className||at?.tagName,buttonRect:{x:rect.x,y:rect.y,width:rect.width,height:rect.height},
+      style:{display:getComputedStyle(button).display,pointer:getComputedStyle(button).pointerEvents,z:getComputedStyle(button).zIndex}};
+    });
+    assert.equal(closed.hidden,true,JSON.stringify(closed));
     await page.evaluate(()=>{window.dispatchEvent(new CustomEvent('ultron:speech-start',{detail:{source:'intelligence-wake',text:'Narração atrasada'}}));window.dispatchEvent(new CustomEvent('ultron:answer',{detail:{id:10,text:'Resposta atrasada'}}));});
     assert.equal(await page.$eval('.ultron-neural-answer',el=>el.hidden),true,'Closing must suppress late speech and answers');
     // Exercise the real command path (not just synthetic answer events).
