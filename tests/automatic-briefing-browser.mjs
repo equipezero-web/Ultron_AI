@@ -13,6 +13,16 @@ try {
   await page.setRequestInterception(true);
   let calls=0,breakFetch=false,fallbackOn=false,fallbackCalls=0,historyCalls=0,detailCalls=0;
   page.on("request",request=>{
+    if(request.url().includes("/api/geo/monitor")){
+      const now=new Date(Date.now()-2*60000).toISOString();
+      request.respond({status:200,contentType:"application/json",
+        headers:{"access-control-allow-origin":"*"},
+        body:JSON.stringify({ok:true,cadenceHours:3,checkedAt:now,regions:[
+          {name:"Recife",source:"Open-Meteo.com",temperatureC:29.2,rainChancePercent:60,rainMm:3},
+          {name:"Florianópolis",source:"Open-Meteo.com",temperatureC:22.4,rainChancePercent:35,rainMm:0}
+        ],disclaimer:"Amostras do modelo, não alertas oficiais"})});
+      return;
+    }
     if(request.url().includes("/api/news-details")){
       const headers={"access-control-allow-origin":"*","access-control-allow-methods":"POST, OPTIONS","access-control-allow-headers":"content-type"};
       if(request.method()==="OPTIONS"){request.respond({status:204,headers});return;}
@@ -117,6 +127,12 @@ try {
   assert.ok(audit.links.every(url=>url.startsWith("https://")),"Only safe source links allowed");
   assert.ok(audit.status.includes("CONSULTA CONCLUÍDA"));
   assert.ok(audit.weather.includes("INMET") && audit.weather.includes("NOAA"));
+  await page.waitForFunction(()=>document.querySelector(".jarvis-intel-weather-sampler")?.textContent?.includes("Recife"),{timeout:6500});
+  const sample=await page.$eval(".jarvis-intel-weather-sampler",el=>el.textContent);
+  assert.ok(sample.includes("A CADA 3 HORAS"));
+  assert.ok(sample.includes("29.2 °C"));
+  assert.ok(sample.includes("não alerta oficial"));
+
   assert.ok(audit.terminal.includes("[INTEL]"));
   assert.ok(audit.overflow<=3);
   assert.ok(audit.buttons.every(height=>height>=40),"Mobile touch targets must be usable");
