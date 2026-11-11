@@ -30,3 +30,6 @@ node tests/neural-answer-smoke.mjs
 ```
 
 A CI em GitHub Actions valida os testes de modelo, segurança e UI responsiva; o deploy Cloudflare pode ser verificado separadamente em produção.
+
+## Recuperação sem Cloudflare
+Se as novas rotas do Worker responderem 404/5xx (por exemplo, falha de deploy de vínculo D1), o módulo cliente usa as mesmas funções de validação para consultar **diretamente** os endpoints públicos `geocoding-api.open-meteo.com` e `api.open-meteo.com`, por CORS. Nenhum token é exposto. Isso só funciona com acesso à rede e com o serviço público da Open-Meteo disponível; não constitui um backend de monitoramento 24 horas. Em uso comercial, migrar para acesso contratado e/ou servidor autorizado, não depender da API pública gratuita.
