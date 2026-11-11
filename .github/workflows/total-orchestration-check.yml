@@ -18,6 +18,10 @@ on:
       - 'modules/jarvis-action-engine.js'
       - 'tests/jarvis-autonomy.mjs'
       - 'tests/jarvis-phase1.mjs'
+      - 'tests/jarvis-phase2-media.mjs'
+      - 'modules/jarvis-media-model.js'
+      - 'modules/ultron-neural-answer.js'
+      - 'modules/ultron-neural-answer.css'
       - 'modules/jarvis-intent-engine.js'
       - 'modules/jarvis-task-context.js'
       - 'backend/task-context.js'
@@ -41,6 +45,10 @@ on:
       - 'modules/jarvis-action-engine.js'
       - 'tests/jarvis-autonomy.mjs'
       - 'tests/jarvis-phase1.mjs'
+      - 'tests/jarvis-phase2-media.mjs'
+      - 'modules/jarvis-media-model.js'
+      - 'modules/ultron-neural-answer.js'
+      - 'modules/ultron-neural-answer.css'
       - 'modules/jarvis-intent-engine.js'
       - 'modules/jarvis-task-context.js'
       - 'backend/task-context.js'
@@ -77,6 +85,9 @@ jobs:
           node --check backend/task-context.js
           node tests/jarvis-autonomy.mjs
           node tests/jarvis-phase1.mjs
+          node --check modules/jarvis-media-model.js
+          node --check modules/ultron-neural-answer.js
+          node tests/jarvis-phase2-media.mjs
 
       - name: Verify persistent orchestration backend
         run: |
