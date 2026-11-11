@@ -129,6 +129,30 @@ try {
          body:JSON.stringify({type:'FeatureCollection',features:[{type:'Feature',
            geometry:{type:'Polygon',coordinates:[[[-122,48],[-66,48],[-66,24],[-122,24],[-122,48]]]}}]})});
       }
+      if(req.url().includes('/api/geo/intensity')){
+        const u=new URL(req.url()),layer=u.searchParams.get('layer')||'rain';
+        const region=u.searchParams.get('region')||'brazil',day=Number(u.searchParams.get('day')||'0');
+        const samples=region==='world'?40:35,cols=region==='world'?8:7,rows=5,
+         west=region==='world'?-180:-74,east=region==='world'?180:-34,
+         north=region==='world'?60:6,south=region==='world'?-60:-34;
+        const values=Array.from({length:samples},(_,i)=>{
+          const row=Math.floor(i/cols),col=i%cols,dx=(east-west)/cols,dy=(north-south)/rows;
+          const bounds=[west+dx*col,north-dy*(row+1),west+dx*(col+1),north-dy*row];
+          const lat=(bounds[1]+bounds[3])/2,lng=(bounds[0]+bounds[2])/2;
+          return {id:region+'-'+row+'-'+col,lat,lng,bounds,
+            value:day*8+i*2,color:i%2?'#3276f1':'#e24b9b',
+            label:i%2?'2,5–10 mm':'>50 mm',time:'2026-11-'+String(11+day).padStart(2,'0'),unit:'mm/dia'};
+        });
+        const legend=[{color:'#3c5571',label:'Sem chuva'},{color:'#3276f1',label:'Moderada'},
+          {color:'#e24b9b',label:'Intensa'}];
+        return req.respond({status:200,headers:{'access-control-allow-origin':'*'},
+          contentType:'application/json',body:JSON.stringify({ok:true,layer,region,day,
+            label:layer==='rain'?'Chuva prevista':'Intensidade do modelo',unit:'mm/dia',
+            dataTime:'2026-11-'+String(11+day).padStart(2,'0'),
+            sampledCount:samples,totalSamples:samples,cells:values,legend,
+            source:{name:'Open-Meteo — previsão numérica',url:'https://open-meteo.com/en/docs'},
+            disclaimer:'Valores em pontos fixos, não radar.'})});
+      }
       if(req.url().includes('/api/geo/weather')){
         if(weatherCityBackendOffline)return req.respond({status:503,headers:{'access-control-allow-origin':'*'},
           contentType:'application/json',body:JSON.stringify({ok:false,error:'Não foi possível consultar o provedor meteorológico.'})});
@@ -436,6 +460,41 @@ try {
     assert.equal(weather.result.ok,true,JSON.stringify(weather));
     assert.equal(weather.state.scenario,'weather-recife');
     assert.equal(weather.state.mode,'2d');
+
+    await page.waitForFunction(()=>document.querySelectorAll('.jarvis-geo-intensity-cell').length>=30,{timeout:7000});
+    const painted=await page.evaluate(()=>({
+      layer:window.ULTRON_GEO_VISUAL.state.layer,
+      count:window.ULTRON_GEO_VISUAL.state.gridCount,
+      shaded:document.querySelectorAll('.jarvis-geo-intensity-cell').length,
+      countryClip:!!document.getElementById('jarvis-geo-brazil-mask'),
+      legend:document.querySelector('.jarvis-geo-intensity-legend')?.textContent,
+      note:document.querySelector('.jarvis-geo-intensity-status')?.textContent
+    }));
+    assert.equal(painted.layer,'rain');
+    assert.equal(painted.count,35);
+    assert.ok(painted.shaded>=30);
+    assert.equal(painted.countryClip,true);
+    assert.match(painted.legend,/Chuva prevista/);
+    assert.match(painted.note,/CÉLULAS|células/);
+    await page.evaluate(()=>{
+      const layer=document.querySelector('.jarvis-geo-intensity-choice');
+      layer.value='drought';layer.dispatchEvent(new Event('change',{bubbles:true}));
+    });
+    await page.waitForFunction(()=>document.querySelector('.jarvis-geo-intensity-status')?.textContent?.includes('ANA'),{timeout:3500});
+    assert.equal(await page.$eval('.jarvis-geo-intensity-cell',els=>els.length),0,
+      'Never invent drought S0–S4 polygons from forecast data');
+    await page.evaluate(()=>{
+      const layer=document.querySelector('.jarvis-geo-intensity-choice');
+      layer.value='soil';layer.dispatchEvent(new Event('change',{bubbles:true}));
+    });
+    await page.waitForFunction(()=>window.ULTRON_GEO_VISUAL.state.layer==='soil'&&window.ULTRON_GEO_VISUAL.state.gridCount>0,{timeout:7000});
+    assert.equal(await page.$eval('.jarvis-geo-intensity-cell',els=>els.length),35);
+    await page.evaluate(()=>{
+      const layer=document.querySelector('.jarvis-geo-intensity-choice');
+      layer.value='rain';layer.dispatchEvent(new Event('change',{bubbles:true}));
+    });
+    await page.waitForFunction(()=>window.ULTRON_GEO_VISUAL.state.layer==='rain'&&window.ULTRON_GEO_VISUAL.state.gridCount>0,{timeout:7000});
+
 
     // Screenshot regression: the 2D map owns the entire Neural Ring stage.
     // It must no longer be a narrow floating pane in front of the large globe.
