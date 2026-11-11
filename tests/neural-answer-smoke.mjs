@@ -481,7 +481,7 @@ try {
       layer.value='drought';layer.dispatchEvent(new Event('change',{bubbles:true}));
     });
     await page.waitForFunction(()=>document.querySelector('.jarvis-geo-intensity-status')?.textContent?.includes('ANA'),{timeout:3500});
-    assert.equal(await page.$eval('.jarvis-geo-intensity-cell',els=>els.length),0,
+    assert.equal(await page.$$eval('.jarvis-geo-intensity-cell',els=>els.length),0,
       'Never invent drought S0–S4 polygons from forecast data');
     await page.evaluate(()=>{
       const layer=document.querySelector('.jarvis-geo-intensity-choice');
