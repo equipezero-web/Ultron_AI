@@ -4,6 +4,8 @@ on:
     paths:
       - 'backend/weather-intelligence.js'
       - 'backend/weather-monitor.js'
+      - 'backend/weather-watchlist.js'
+      - 'tests/jarvis-weather-watchlist.mjs'
       - 'backend/worker.js'
       - 'modules/jarvis-weather-insight-model.js'
       - 'modules/jarvis-action-engine.js'
@@ -13,6 +15,8 @@ on:
     paths:
       - 'backend/weather-intelligence.js'
       - 'backend/weather-monitor.js'
+      - 'backend/weather-watchlist.js'
+      - 'tests/jarvis-weather-watchlist.mjs'
       - 'backend/worker.js'
       - '.github/workflows/weather-intelligence-live-check.yml'
   workflow_dispatch:
