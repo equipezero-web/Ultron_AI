@@ -383,9 +383,9 @@ async function unifiedState(env, operatorId) {
 function vettedTaskContext(body) {
  const c=body?.taskContext,q=String(body?.message||"").trim();
  if(!c||c.followup!==true||!q||q.length>600)return null;
- if(!/^(?:e\\s+|agora\\s+|compare\\s+|foque\\s+|mais detalhes|e os detalhes)/i.test(q))return null;
- const secret=/\\b(?:senha|token|api[_ -]?key|cpf|password|credenciais|meu saldo|meus clientes|minha conta|meus pedidos)\\b/i;
- const take=(value,n)=>typeof value==="string"?value.replace(/[\\r\\n<>]/g," ").replace(/\\s+/g," ").trim().slice(0,n):"";
+ if(!/^(?:e\s+|agora\s+|compare\s+|foque\s+|mais detalhes|e os detalhes)/i.test(q))return null;
+ const secret=/\b(?:senha|token|api[_ -]?key|cpf|password|credenciais|meu saldo|meus clientes|minha conta|meus pedidos)\b/i;
+ const take=(value,n)=>typeof value==="string"?value.replace(/[\r\n<>]/g," ").replace(/\s+/g," ").trim().slice(0,n):"";
  const topic=take(c.topic,180),region=take(c.region,100),lastQuestion=take(c.lastQuestion,280);
  if(!topic&&!lastQuestion)return null;
  if(secret.test(q+" "+topic+" "+lastQuestion+" "+region))return null;
