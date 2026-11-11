@@ -73,8 +73,19 @@ try {
     assert.equal(answered.text,'Resposta confirmada');
     assert.equal(answered.image,1);
     await page.waitForFunction(()=>document.querySelector('.ultron-neural-answer-media img')?.naturalWidth===420,{timeout:6000});
-    const columns=await page.$eval('.ultron-neural-answer',el=>getComputedStyle(el).gridTemplateColumns);
-    assert.ok(columns.split(' ').length>=2,'Text and image must occupy separate columns');
+    const presentation=await page.$eval('.ultron-neural-answer',el=>({
+      layout:el.dataset.layout,columns:getComputedStyle(el).gridTemplateColumns.split(' ').filter(Boolean).length
+    }));
+    if(viewport.width<=820){
+      assert.equal(presentation.layout,'compact','Phone must use an accessible stacked response');
+      assert.equal(presentation.columns,1,'Phone text and visual lanes must stack instead of squeezing');
+    }else assert.ok(presentation.columns>=2,'Laptop/TV text and visual lanes must occupy separate columns');
+    const compactPhoto=await page.$eval('.ultron-image-card > img',el=>({
+      width:el.getBoundingClientRect().width,height:el.getBoundingClientRect().height,
+      parent:el.parentElement.className
+    }));
+    assert.ok(Math.abs(compactPhoto.width-compactPhoto.height)<=2,JSON.stringify(compactPhoto));
+    assert.ok(compactPhoto.width<=185,'Images must stay compact and square, never cover the stage');
     assert.equal(answered.anchored.inside,true,'Answers must belong to 3D neural stage');
     assert.equal(answered.anchored.position,'absolute','Never flow to the page bottom');
     assert.equal(answered.anchored.horizontal,true,JSON.stringify(answered.anchored));
@@ -93,6 +104,8 @@ try {
     assert.ok(await page.$eval('.ultron-news-intro',el=>el.textContent.includes('JARVIS ativado')));
     assert.equal(await page.$eval('.ultron-news-story h3',el=>el.textContent),'Boletim verificado');
     assert.equal(await page.$eval('.ultron-news-story p',el=>el.textContent),'Descrição confirmada da notícia');
+    assert.equal(await page.$eval('.ultron-image-card figcaption strong',el=>el.textContent),'Boletim verificado');
+    assert.match(await page.$eval('.ultron-image-card figcaption',el=>el.textContent),/Agência pública/);
     assert.equal(newsPicture,'https://example.org/news.jpg','Wake news must mount publisher image inside ring');
     await page.evaluate(()=>window.dispatchEvent(new CustomEvent('ultron:speech-start',{detail:{source:'intelligence-wake',text:'Resumo de notícias falado'}})));
     assert.equal(await page.$eval('.ultron-news-story h3',el=>el.textContent),'Boletim verificado','Narration must preserve the structured report');
@@ -128,6 +141,27 @@ try {
     assert.equal(followupBody.taskContext?.region,'japao');
     await page.waitForFunction(()=>!window.ULTRON_ORCHESTRATOR?.state?.busy,{timeout:12000});
     assert.ok(await page.$eval('.ultron-neural-answer-media img',el=>el.src.includes('example.org/picture.jpg')));
+    const mediaLayout=await page.evaluate(()=>{
+      const images=document.querySelector('.ultron-media-images');
+      const videos=document.querySelector('.ultron-media-videos');
+      const image=images?.querySelector('.ultron-image-card > img');
+      const player=videos?.querySelector('.ultron-media-play > img');
+      const info=images?.querySelector('.ultron-image-card figcaption');
+      const videoInfo=videos?.querySelector('.ultron-video-info strong');
+      const pi=image?.getBoundingClientRect(),pv=player?.getBoundingClientRect();
+      return {imageSection:!!images,videoSection:!!videos,distinct:images?.parentElement===videos?.parentElement&&images!==videos,
+       imageSquare:Math.abs(pi?.width-pi?.height)<=2,imageWidth:pi?.width,videoRatio:pv?.width/pv?.height,
+       videoBelow:images?.getBoundingClientRect().bottom<=videos?.getBoundingClientRect().top+2,
+       imageInfo:info?.textContent,videoInfo:videoInfo?.textContent,
+       overflow:document.documentElement.scrollWidth-innerWidth};
+    });
+    assert.ok(mediaLayout.imageSection&&mediaLayout.videoSection&&mediaLayout.distinct,JSON.stringify(mediaLayout));
+    assert.ok(mediaLayout.imageSquare&&mediaLayout.imageWidth<=185,JSON.stringify(mediaLayout));
+    assert.ok(Math.abs(mediaLayout.videoRatio-16/9)<0.08,JSON.stringify(mediaLayout));
+    assert.ok(mediaLayout.videoBelow,'Video must occupy its own lane BELOW the photos');
+    assert.match(mediaLayout.imageInfo,/China/);
+    assert.match(mediaLayout.videoInfo,/Vídeo de teste/);
+    assert.ok(mediaLayout.overflow<=3,'Media layout must not widen the viewport');
     await page.click('.ultron-media-play');
     await page.waitForSelector('.ultron-media-video iframe',{timeout:5000});
     const player=await page.$eval('.ultron-media-video iframe',el=>({src:el.src,width:el.getBoundingClientRect().width}));
@@ -190,5 +224,5 @@ try {
     assert.equal(contextual.context.topic,'El Niño');
     await page.close();
   }
-  console.log('NEURAL ANSWER PASS: ring only at boot; on-demand text, image, sources; mobile laptop TV');
+  console.log('NEURAL ANSWER PASS: ring-only boot; responsive stacked/split layout; compact square image cards; distinct inline video lane; mobile/laptop/TV');
 }finally{await browser.close();}
