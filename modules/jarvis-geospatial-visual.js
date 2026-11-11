@@ -106,8 +106,18 @@ if(stage){
  let geoLoading={brazil:null,world:null},seq=0,filterKind="all",refreshClock=null;
  const ns="http://www.w3.org/2000/svg";
  const e=(tag,attr={})=>{const el=document.createElementNS(ns,tag);for(const [k,v] of Object.entries(attr))el.setAttribute(k,String(v));return el;};
- function resize(){panel.dataset.screen=document.body.classList.contains("ultron-tv-display")?"tv":
-   stage.getBoundingClientRect().width<660||window.innerWidth<=820?"compact":"wide";}
+ function resize(){
+   const compact=stage.getBoundingClientRect().width<660||window.innerWidth<=820;
+   panel.dataset.screen=document.body.classList.contains("ultron-tv-display")?"tv":compact?"compact":"wide";
+   // The host can use a desktop CSS viewport with a narrow embedded Neural Ring.
+   // Compute columns from the actual stage, not media queries alone.
+   workspace.style.setProperty("grid-template-columns",
+     compact?"minmax(0,1fr)":"minmax(0,1.15fr) minmax(260px,.85fr)","important");
+   workspace.style.setProperty("flex",compact?"0 0 auto":"1 1 340px","important");
+   workspace.style.setProperty("overflow",compact?"visible":"hidden","important");
+   canvas.style.setProperty("height",compact?"280px":"100%","important");
+   canvas.style.setProperty("min-height",compact?"220px":"0","important");
+ }
  if(typeof ResizeObserver!=="undefined")new ResizeObserver(resize).observe(stage);
  window.addEventListener("resize",resize,{passive:true});
  resize();
