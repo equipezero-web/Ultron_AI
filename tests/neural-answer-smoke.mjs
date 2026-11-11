@@ -271,7 +271,11 @@ try {
     assert.match(mapped.warning,/Não são limites de desastre/);
     assert.ok(mapped.inside&&mapped.overflow<=3,JSON.stringify(mapped));
     await page.click('.jarvis-geo-region');
-    assert.ok(await page.$eval('.jarvis-geo-detail',el=>el.textContent.includes('boletim')));
+    const regionDetail=await page.$eval('.jarvis-geo-detail',el=>({
+      text:el.textContent,link:el.querySelector('a')?.href||null,
+      selected:document.querySelector('.jarvis-geo-region[aria-pressed=true]')?.dataset.id||null
+    }));
+    assert.ok(regionDetail.link?.includes('gov.br/cemaden'),JSON.stringify(regionDetail));
     await page.select('.jarvis-geo-filter','wet');
     assert.ok((await page.$eval('.jarvis-geo-visual',el=>el.querySelectorAll('.jarvis-geo-marker').length))>=1);
     await page.click('.jarvis-geo-modes [data-mode="3d"]');
