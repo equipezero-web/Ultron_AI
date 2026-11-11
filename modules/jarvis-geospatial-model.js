@@ -53,7 +53,7 @@ const validURL=value=>{
 };
 const clean=(value,n)=>String(value||"").replace(/[\r\n<>]/g," ").replace(/\s+/g," ").trim().slice(0,n);
 export function validateGeoScenario(input){
- if(!input||typeof input!=="object"||!Array.isArray(input.frames)||!input.frames.length||input.frames.length>12)return null;
+ if(!input||typeof input!=="object"||!Array.isArray(input.frames)||!input.frames.length||input.frames.length>17)return null;
  if(!input.source||!validURL(input.source.url)||!clean(input.source.disclaimer,350))return null;
  const frames=[];
  for(const frame of input.frames){
@@ -76,7 +76,7 @@ export function validateGeoScenario(input){
     kind:["observed","forecast","illustrative","current-estimate","short-term-forecast"].includes(frame.kind)?frame.kind:"illustrative",
     description:clean(frame.description,350),points});
  }
- return {id:clean(input.id,55),title:clean(input.title,110),
+ return {id:clean(input.id,55),title:clean(input.title,110),projection:input.projection==="world"?"world":"brazil",
    source:{name:clean(input.source.name,150),url:validURL(input.source.url),
      basePeriod:clean(input.source.basePeriod,180),disclaimer:clean(input.source.disclaimer,350)},frames};
 }
@@ -89,18 +89,20 @@ export function geoFrame(dataset,index=0,category="all"){
 }
 export const BRAZIL_OUTLINE_URL="https://servicodados.ibge.gov.br/api/v3/malhas/paises/BR?formato=application/vnd.geo+json";
 export function brazilXY(lng,lat){return {x:55+(Number(lng)+74)*16.6,y:50+(6-Number(lat))*10.3};}
-export function geoJSONPaths(geojson){
+export const WORLD_OUTLINE_URL="https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_admin_0_countries.geojson";
+export function worldXY(lng,lat){return {x:50+(Number(lng)+180)*(800/360),y:35+(90-Number(lat))*(480/180)};}
+export function geoJSONPaths(geojson,{projection="brazil"}={}){
  if(!geojson||typeof geojson!=="object")return [];
  const features=geojson.type==="FeatureCollection"?geojson.features:[geojson];
  const paths=[];
- for(const item of (features||[]).slice(0,10)){
+ for(const item of (features||[]).slice(0,projection==="world"?250:10)){
   const g=item?.geometry||item;
   const polygons=g?.type==="Polygon"?[g.coordinates]:g?.type==="MultiPolygon"?g.coordinates:[];
   for(const poly of polygons.slice(0,20))for(const ring of (poly||[]).slice(0,1)){
    if(!Array.isArray(ring)||ring.length<3||ring.length>8000)continue;
-   const pts=ring.filter(p=>Array.isArray(p)&&Number.isFinite(p[0])&&Number.isFinite(p[1])).map(p=>brazilXY(p[0],p[1]));
+   const pts=ring.filter(p=>Array.isArray(p)&&Number.isFinite(p[0])&&Number.isFinite(p[1])).map(p=>projection==="world"?worldXY(p[0],p[1]):brazilXY(p[0],p[1]));
    if(pts.length>2)paths.push("M"+pts.map(p=>p.x.toFixed(1)+","+p.y.toFixed(1)).join("L")+"Z");
   }
  }
- return paths.slice(0,60);
+ return paths.slice(0,projection==="world"?350:60);
 }
