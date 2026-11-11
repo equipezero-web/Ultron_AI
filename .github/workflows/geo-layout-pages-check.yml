@@ -1,0 +1,43 @@
+name: JARVIS Full Stage Geo Pages Verification
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/geo-layout-pages-check.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  geo-pages-published:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify full-stage map CSS published at the JARVIS public URL
+        run: |
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict';
+          const base='https://equipezero-web.github.io/Ultron_AI/';
+          async function get(label,url){
+            let error;
+            for(let attempt=1;attempt<=8;attempt++){
+              try{
+                const response=await fetch(url,{cache:'no-store',signal:AbortSignal.timeout(15000)});
+                const body=await response.text();
+                console.log(label,'HTTP',response.status,'attempt',attempt,'bytes',body.length);
+                if(response.ok)return body;
+                error=new Error(label+' returned HTTP '+response.status);
+              }catch(e){error=e;console.log(label,String(e));}
+              if(attempt<8)await new Promise(resolve=>setTimeout(resolve,5000));
+            }
+            throw error;
+          }
+          const html=await get('index',base);
+          assert.match(html,/modules\/jarvis-geospatial-visual\.css\?v=4\.81\.0/);
+          const css=await get('geo-css',base+'modules/jarvis-geospatial-visual.css?v=4.81.0');
+          assert.match(css,/Full-stage 2D visualization/);
+          assert.match(css,/width:100%!important;height:100%!important/);
+          assert.match(css,/jarvis-geo-2d svg/);
+          console.log('FULL-STAGE 2D MAP IS PUBLISHED IN JARVIS PAGES');
+          NODE
