@@ -178,12 +178,14 @@ try {
       window.ULTRON_EARTH={state,async locate(place){state.selectedPlace=place;return {ok:true}}};
       window.ULTRON_TASK_CONTEXT.captureQuestion('Analise os impactos do El Niño no Brasil');
       window.ULTRON_TASK_CONTEXT.recordAction({action:'earth.open'},{ok:true});
+      const before=window.ULTRON_TASK_CONTEXT.snapshot();
+      const decision=window.ULTRON_TASK_CONTEXT.resolve('Agora foque no Nordeste');
       const result=await window.ULTRON_ORCHESTRATOR.execute('Agora foque no Nordeste','test-context');
       window.ULTRON_EARTH=original;
-      return {result,context:window.ULTRON_TASK_CONTEXT.snapshot(),selected:state.selectedPlace};
+      return {result,before,decision,context:window.ULTRON_TASK_CONTEXT.snapshot(),selected:state.selectedPlace};
     });
     assert.equal(contextual.result.ok,true);
-    assert.equal(contextual.selected,'nordeste');
+    assert.equal(contextual.selected,'nordeste',JSON.stringify(contextual));
     assert.equal(contextual.context.region,'nordeste');
     assert.equal(contextual.context.topic,'El Niño');
     await page.close();
