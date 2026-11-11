@@ -1,0 +1,74 @@
+name: JARVIS Spatial Weather Live Production Verification
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/jarvis-phase5-live-check.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  spatial-weather-production:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify new Phase 5 deployed weather endpoint and Pages
+        run: |
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict';
+          const base='https://ultron-backend.lucaalves17-20.workers.dev';
+          const page='https://equipezero-web.github.io/Ultron_AI/';
+          async function get(label,url,matcher){
+            let last;
+            for(let attempt=1;attempt<=14;attempt++){
+              try{
+                const response=await fetch(url,{cache:'no-store',signal:AbortSignal.timeout(13000)});
+                const body=await response.text();
+                console.log(label,'attempt',attempt,'HTTP',response.status,'sample',body.slice(0,500));
+                if(matcher(response,body))return {response,body};
+                last=new Error(label+' status='+response.status+' body='+body.slice(0,200));
+              }catch(error){last=error;console.log(label,'attempt',attempt,String(error));}
+              if(attempt<14)await new Promise(resolve=>setTimeout(resolve,5500));
+            }
+            throw last;
+          }
+          const html=(await get('HTML',page,(r,s)=>r.ok&&s.includes('jarvis-geospatial-visual.css?v=4.90.0'))).body;
+          assert.match(html,/jarvis-geospatial-visual[.]js[?]v=4[.]90[.]0/);
+          const script=(await get('Intensity viewer',page+'modules/jarvis-geospatial-visual.js?v=4.90.0',(r,s)=>r.ok&&s.includes('intensityLegendRender'))).body;
+          assert.match(script,/jarvis-geo-intensity-cell/);
+          const module=(await get('Scientific class model',page+'modules/jarvis-spatial-intensity.js?v=4.90.0',(r,s)=>r.ok&&s.includes('loadSpatialIntensity'))).body;
+          assert.match(module,/soil_moisture_0_to_7cm/);
+          const rain=JSON.parse((await get('Brazil rain colored grid',base+'/api/geo/intensity?layer=rain&region=brazil&day=0',(r,s)=>{
+            if(!r.ok)return false;
+            try{const d=JSON.parse(s);return d.ok&&d.sampledCount>=30&&d.cells?.length>=30;}catch{return false;}
+          })).body);
+          assert.equal(rain.layer,'rain');assert.equal(rain.region,'brazil');
+          assert.ok(rain.cells.every(c=>/^#[0-9a-f]{6}$/i.test(c.color)&&Number.isFinite(c.value)));
+          assert.ok(rain.legend?.length>=6);
+          assert.match(rain.source.url,/open-meteo/);
+          console.log('PHASE5 COLORED GRID VERIFIED IN CLOUDFLARE:',rain.sampledCount,
+            'date',rain.dataTime,'source',rain.source.name);
+          for(const layer of ['temp','soil','air','marine','river']){
+            const res=await get('Layer '+layer,base+'/api/geo/intensity?layer='+layer+'&region=brazil&day=0',(r,s)=>{
+              if(!r.ok)return false;
+              try{return JSON.parse(s).ok===true;}catch{return false;}
+            });
+            const data=JSON.parse(res.body);
+            assert.ok(data.sampledCount>=12);assert.ok(data.source.url.startsWith('https://'));
+            console.log('PHASE5 LAYER LIVE',layer,'samples',data.sampledCount);
+          }
+          const official=await fetch(base+'/api/geo/intensity?layer=drought&region=brazil&day=0',{signal:AbortSignal.timeout(13000)});
+          const drought=await official.json();
+          assert.equal(official.status,409);assert.equal(drought.official,true);
+          assert.match(drought.source,/monitordesecas.ana.gov.br/);
+          console.log('PHASE5 DROUGHT SAFETY: Official monthly ANA link, no fabricated severity cells');
+          console.log('PHASE5 PUBLIC PRODUCTION VERIFIED');
+          NODE
+      - name: Show Cloudflare backend deploy status
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api 'repos/equipezero-web/Ultron_AI/actions/workflows/cloudflare-backend-deploy.yml/runs?branch=main&per_page=3' --jq '.workflow_runs[] | [.id,.status,.conclusion,.created_at,.html_url] | @tsv'
