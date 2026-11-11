@@ -1,0 +1,73 @@
+name: JARVIS Scroll Live Pages Check
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/jarvis-scroll-live-check.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  scroll-pages-live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install headless Chromium client
+        run: npm install --no-save --no-package-lock --ignore-scripts puppeteer-core@24.33.0
+      - name: Verify source code and real page wheel scrolling in production
+        run: |
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict';
+          import puppeteer from 'puppeteer-core';
+          const root='https://equipezero-web.github.io/Ultron_AI/';
+          async function get(name,url,pattern){
+            let err;
+            for(let attempt=1;attempt<=12;attempt++){
+              try{
+                const r=await fetch(url,{cache:'no-store',signal:AbortSignal.timeout(12000)});
+                const body=await r.text();
+                console.log(name,'attempt',attempt,'HTTP',r.status,'match',pattern.test(body));
+                if(r.status===200&&pattern.test(body))return body;
+                err=new Error(name+' not yet published');
+              }catch(error){err=error;console.log(name,'attempt',attempt,String(error));}
+              if(attempt<12)await new Promise(resolve=>setTimeout(resolve,5000));
+            }
+            throw err;
+          }
+          await get('Published HTML',root,/jarvis-earth[.]js[?]v=4[.]91[.]0/);
+          await get('Published Ring',root+'modules/jarvis-neural-ring-3d.js?v=4.91.0',/scrollGesture/);
+          await get('Published globe scroll router',root+'modules/jarvis-earth.js?v=4.91.0',/Ctrl[+]wheel/);
+          await get('Published 2D map',root+'modules/jarvis-geospatial-visual.js?v=4.91.0',/touchLastY/);
+          const browser=await puppeteer.launch({
+            executablePath:process.env.CHROME_BIN||'/usr/bin/google-chrome',
+            headless:true,args:['--no-sandbox','--disable-dev-shm-usage','--enable-webgl','--enable-unsafe-swiftshader']
+          });
+          try{
+            const page=await browser.newPage();
+            await page.setViewport({width:1440,height:900,deviceScaleFactor:1});
+            await page.goto(root,{waitUntil:'domcontentloaded',timeout:35000});
+            await page.waitForFunction(()=>window.ULTRON_NEURAL_RING_3D?.active===true,{timeout:30000});
+            await page.evaluate(()=>{
+              const spacer=document.createElement('div');spacer.style.height='1100px';
+              document.body.append(spacer);window.scrollTo(0,35);
+            });
+            const before=await page.evaluate(()=>window.scrollY);
+            const rect=await page.$eval('#jarvis-cc-canvas',el=>{
+              const r=el.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2};
+            });
+            await page.mouse.move(Math.max(10,Math.min(1420,rect.x)),Math.max(15,Math.min(850,rect.y)));
+            await page.mouse.wheel({deltaY:280});
+            await new Promise(resolve=>setTimeout(resolve,300));
+            const after=await page.evaluate(()=>window.scrollY);
+            console.log('PUBLIC SCROLL PROOF',JSON.stringify({before,after}));
+            assert.ok(after>before+30,'Public Ring wheel still traps page scrolling');
+            const zoom=await page.evaluate(()=>window.ULTRON_NEURAL_RING_3D.state.zoom);
+            await page.keyboard.down('Control');
+            try{await page.mouse.wheel({deltaY:-220});}finally{await page.keyboard.up('Control');}
+            const zoomed=await page.evaluate(()=>window.ULTRON_NEURAL_RING_3D.state.zoom);
+            assert.ok(zoomed>zoom+.05,'Ctrl+wheel must preserve zoom');
+            console.log('JARVIS PAGE SCROLL FIX VERIFIED LIVE ON GITHUB PAGES');
+          }finally{await browser.close();}
+          NODE
