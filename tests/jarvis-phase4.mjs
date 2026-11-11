@@ -60,6 +60,28 @@ assert.equal(url.searchParams.get("forecast_days"),"3");
 assert.equal((await loadLiveWeather("https://malicious.site",{now,fetchImpl:async()=>{throw Error("should not fetch")}})).status,400);
 assert.equal((await loadLiveWeather("Recife",{now,fetchImpl:async()=>{throw Error("down")}})).ok,false);
 assert.equal((await loadLiveWeather("Recife",{now,fetchImpl:async()=>({ok:true,json:async()=>({})})})).ok,false);
+
+let attempts=0;
+const recovered=await loadLiveWeather("Recife",{now,pause:async()=>{},fetchImpl:async()=>{
+ attempts++;
+ if(attempts===1)throw Error("temporary connection reset");
+ return {ok:true,json:async()=>provider()};
+}});
+assert.equal(recovered.ok,true,"Transient upstream network failure must retry safely");
+assert.equal(attempts,2,"Never exceed one retry");
+let limited=0;
+const rateLimited=await loadLiveWeather("Recife",{now,pause:async()=>{},fetchImpl:async()=>{
+ limited++;return {ok:false,status:429};
+}});
+assert.equal(rateLimited.code,"WEATHER_PROVIDER_RATE_LIMIT");
+assert.equal(limited,1,"Never retry provider rate limits");
+let invalidResponses=0;
+const invalidData=await loadLiveWeather("Recife",{now,pause:async()=>{},fetchImpl:async()=>{
+ invalidResponses++;return {ok:true,json:async()=>({})};
+}});
+assert.equal(invalidData.code,"WEATHER_PROVIDER_INVALID_DATA");
+assert.equal(invalidResponses,1,"Do not retry invalid or invented forecasts");
+
 assert.equal(validatePlan({steps:[{action:"weather.show",args:{city:"Recife",view:"3d"}}]}).steps[0].args.city,"recife");
 assert.equal(validatePlan({steps:[{action:"weather.show",args:{city:"Unknown",view:"2d"}}]}),null);
 assert.equal(validatePlan({steps:[{action:"weather.show",args:{city:"Recife",view:"satellite"}}]}),null);
