@@ -19,6 +19,7 @@ on:
       - 'tests/jarvis-autonomy.mjs'
       - 'tests/jarvis-phase1.mjs'
       - 'tests/jarvis-phase3.mjs'
+      - 'tests/jarvis-phase3-geospatial.mjs'
       - 'modules/jarvis-geospatial-model.js'
       - 'modules/jarvis-geospatial-visual.js'
       - 'modules/jarvis-geospatial-visual.css'
@@ -51,6 +52,7 @@ on:
       - 'tests/jarvis-autonomy.mjs'
       - 'tests/jarvis-phase1.mjs'
       - 'tests/jarvis-phase3.mjs'
+      - 'tests/jarvis-phase3-geospatial.mjs'
       - 'modules/jarvis-geospatial-model.js'
       - 'modules/jarvis-geospatial-visual.js'
       - 'modules/jarvis-geospatial-visual.css'
@@ -99,6 +101,7 @@ jobs:
           node --check modules/jarvis-geospatial-visual.js
           node --check modules/jarvis-earth.js
           node tests/jarvis-phase3.mjs
+          node tests/jarvis-phase3-geospatial.mjs
           node --check modules/jarvis-media-model.js
           node --check modules/ultron-neural-answer.js
           node tests/jarvis-phase2-media.mjs
