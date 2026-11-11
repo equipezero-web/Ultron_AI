@@ -37,6 +37,30 @@ try {
   assert.ok(pinchedRing.zoom>initialRing.zoom+.15,'Pinch must zoom true WebGL Neural Ring on Android');
   await page.evaluate(()=>window.ULTRON_NEURAL_RING_3D.reset());
   assert.equal(await page.evaluate(()=>window.ULTRON_NEURAL_RING_3D.state.zoom),1);
+
+  // One-finger VERTICAL swipe over WebGL must advance the page even while
+  // the canvases retain touch-action:none to preserve two-finger pinch.
+  await page.evaluate(()=>{
+    const spacer=document.createElement('div');spacer.style.height='1300px';
+    spacer.id='touch-page-scroll-spacer';document.body.append(spacer);
+    window.scrollTo(0,0);
+  });
+  const scrollTouch=async (selector,session,id)=>{
+    const r=await page.$eval(selector,el=>{
+      const x=el.getBoundingClientRect();return {x:x.x,y:x.y,w:x.width,h:x.height};
+    });
+    const x=Math.round(Math.max(25,Math.min(365,r.x+r.w*.5)));
+    const y=Math.round(Math.max(160,Math.min(770,r.y+r.h*.60)));
+    await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x,y,id}]});
+    for(const d of [12,26,43,65,95,130])
+      await session.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x,y:y-d,id}]});
+    await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+    await new Promise(resolve=>setTimeout(resolve,220));
+    return page.evaluate(()=>window.scrollY);
+  };
+  const ringScroll=await scrollTouch('#jarvis-cc-canvas',ringClient,70);
+  assert.ok(ringScroll>30,'Vertical one-finger swipe over Neural Ring must scroll the document: '+ringScroll);
+  await page.evaluate(()=>window.scrollTo(0,0));
   await page.evaluate(()=>document.querySelector('[data-visual="globe"]').click());
   await page.waitForFunction(()=>window.ULTRON_EARTH?.state?.ready===true,{timeout:20000});
   assert.equal(await page.evaluate(()=>window.ULTRON_EARTH.state.mode),'globe-3d');
@@ -58,6 +82,9 @@ try {
   assert.ok(overlay.plus>=40 && overlay.minus>=40,'Touch zoom buttons need a usable size');
   assert.ok(overlay.viewport<=3,'Globe must not overflow the phone viewport');
 
+  const globeScroll=await scrollTouch('.jarvis-earth-renderer canvas',ringClient,71);
+  assert.ok(globeScroll>30,'Vertical one-finger swipe over globe must scroll page: '+globeScroll);
+  await page.evaluate(()=>window.scrollTo(0,0));
   const startingAltitude=await page.evaluate(()=>window.ULTRON_EARTH.state.view.altitude);
   await page.tap('[data-earth-reference="zoom-in"]');
   await page.waitForFunction(prev=>window.ULTRON_EARTH.state.view.altitude < prev-.01,{timeout:3000},startingAltitude);
