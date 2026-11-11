@@ -34,7 +34,12 @@ if(stage){
  const placeSearch=document.createElement("button");placeSearch.type="submit";placeSearch.textContent="Buscar";
  const placeRefresh=document.createElement("button");placeRefresh.type="button";placeRefresh.textContent="↻";
  placeRefresh.setAttribute("aria-label","Atualizar meteorologia da cidade selecionada");
- placeBar.append(placeInput,daysChoice,placeSearch,placeRefresh);
+ const watchAdd=document.createElement("button");watchAdd.type="button";watchAdd.textContent="+ Acompanhar";
+ watchAdd.title="Acompanhar esta cidade com coletas de 3 em 3 horas no Cloudflare";
+ const watchList=document.createElement("button");watchList.type="button";watchList.textContent="Acompanhamentos";
+ placeBar.append(placeInput,daysChoice,placeSearch,placeRefresh,watchAdd,watchList);
+ const watchPanel=document.createElement("div");watchPanel.className="jarvis-geo-watch-panel";watchPanel.hidden=true;
+ watchPanel.setAttribute("aria-live","polite");
  const placeResults=document.createElement("div");placeResults.className="jarvis-geo-place-results";placeResults.hidden=true;
  placeResults.setAttribute("aria-live","polite");
  const insightBar=document.createElement("form");insightBar.className="jarvis-geo-insight-bar";insightBar.hidden=true;
@@ -78,7 +83,7 @@ if(stage){
  officialAlerts.target="_blank";officialAlerts.rel="noopener noreferrer";
  officialAlerts.textContent="Consultar alertas oficiais do INMET";officialAlerts.hidden=true;
  footer.append(source,officialAlerts,caveat);
- panel.append(head,controls,placeBar,insightBar,placeResults,timeline,evidence,canvas,list,detail,footer);stage.append(panel);
+ panel.append(head,controls,placeBar,watchPanel,insightBar,placeResults,timeline,evidence,canvas,list,detail,footer);stage.append(panel);
  for(const type of ["pointerdown","pointerup","wheel","click","touchstart","touchend"]){
    panel.addEventListener(type,event=>event.stopPropagation(),{passive:true});
  }
@@ -200,6 +205,8 @@ if(stage){
    placeBar.hidden=dataset.projection!=="world";
    insightBar.hidden=dataset.projection!=="world";
    placeRefresh.disabled=!/^weather-global-\d+$/.test(dataset.id);
+   watchAdd.disabled=!/^weather-global-\d+$/.test(dataset.id);
+   watchPanel.hidden=dataset.projection!=="world";
    if(refreshClock!==null){clearInterval(refreshClock);refreshClock=null;}
    if(/^weather-global-\d+$/.test(dataset.id))refreshClock=setInterval(()=>{
      if(panel.hidden||document.hidden)return;
@@ -325,10 +332,65 @@ if(stage){
    }catch(error){if(key===seq)placeResults.textContent=error?.message||"Monitoramento indisponível";}
  });
 
+
+ const postWatch=async(path,body={})=>{
+   const key=window.ULTRON_MEMORY?.getMemoryKey?.();
+   if(typeof key!=="string"||key.length<32)throw Error("Entre em sua sessão de memória JARVIS para acompanhar cidades.");
+   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);
+   try{
+     const response=await fetch(backend+path,{method:"POST",cache:"no-store",
+       headers:{"Content-Type":"application/json"},signal:controller.signal,
+       body:JSON.stringify({memoryKey:key,...body})});
+     const data=await response.json();
+     if(!response.ok||data?.ok===false)throw Error(data?.error||"Monitoramento D1 indisponível");
+     return data;
+   }finally{clearTimeout(timer);}
+ };
+ async function renderWatches(){
+   watchPanel.hidden=false;watchPanel.textContent="Consultando acompanhamento privado...";
+   try{
+     const data=await postWatch("/api/geo/watchlist");
+     watchPanel.replaceChildren();
+     const heading=document.createElement("strong");heading.textContent="MONITORAMENTO PESSOAL · 3 EM 3 HORAS";
+     watchPanel.append(heading);
+     if(!data.watches?.length){const p=document.createElement("p");p.textContent="Nenhuma cidade acompanhada. Abra uma previsão mundial e use + Acompanhar.";watchPanel.append(p);}
+     for(const city of data.watches||[]){
+       const row=document.createElement("div");row.className="jarvis-geo-watch-row";
+       const name=document.createElement("span");name.textContent=city.name+", "+city.country+" — "+
+         (city.last_checked_at?"última coleta "+city.last_checked_at:"aguardando a primeira coleta");
+       const remove=document.createElement("button");remove.type="button";remove.textContent="Parar";
+       remove.setAttribute("aria-label","Parar acompanhamento de "+city.name);
+       remove.addEventListener("click",async()=>{
+         try{await postWatch("/api/geo/watchlist/configure",{action:"remove",id:city.location_id});await renderWatches();}
+         catch(error){watchPanel.textContent=error.message||"Erro ao remover";}
+       });
+       row.append(name,remove);watchPanel.append(row);
+       const latest=data.history?.find(s=>s.locationId===city.location_id);
+       if(latest){
+         const status=document.createElement("small");
+         status.textContent="Amostra "+latest.fetchedAt+" · "+latest.summary.temperatureC+" °C · chuva "+
+           latest.summary.rainMm+" mm (modelo Open-Meteo, não alerta oficial)";
+         watchPanel.append(status);
+       }
+     }
+     const note=document.createElement("small");note.textContent="Máximo de 6 cidades. Amostras D1 por 7 dias. Não envia notificações push nem substitui alertas oficiais.";
+     watchPanel.append(note);
+   }catch(error){watchPanel.textContent=error?.message||"Monitoramento pessoal indisponível";}
+ }
+ watchAdd.addEventListener("click",async()=>{
+   const id=Number(dataset?.id?.match(/^weather-global-(\d+)$/)?.[1]);
+   if(!id){watchPanel.hidden=false;watchPanel.textContent="Primeiro abra a previsão de uma cidade mundial.";return;}
+   watchPanel.hidden=false;watchPanel.textContent="Salvando cidade...";
+   try{await postWatch("/api/geo/watchlist/configure",{action:"add",id});await renderWatches();}
+   catch(error){watchPanel.textContent=error?.message||"Não foi possível ativar o acompanhamento";}
+ });
+ watchList.addEventListener("click",()=>void renderWatches());
+ window.ULTRON_WEATHER_WATCH={list:renderWatches};
+
  function closePanel(){
    stop();panel.hidden=true;selected=null;seq++;
    if(refreshClock!==null){clearInterval(refreshClock);refreshClock=null;}
-   placeResults.hidden=true;
+   placeResults.hidden=true;watchPanel.hidden=true;
    window.ULTRON_EARTH?.clearThematicLayer?.();
    return {ok:true,closed:true};
  }

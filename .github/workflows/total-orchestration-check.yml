@@ -29,6 +29,8 @@ on:
       - 'modules/jarvis-weather-insight-model.js'
       - 'modules/jarvis-global-weather.js'
       - 'backend/weather-global.js'
+      - 'backend/weather-watchlist.js'
+      - 'tests/jarvis-weather-watchlist.mjs'
       - 'modules/jarvis-weather-model.js'
       - 'backend/weather-live.js'
       - 'modules/jarvis-geospatial-model.js'
@@ -73,6 +75,8 @@ on:
       - 'modules/jarvis-weather-insight-model.js'
       - 'modules/jarvis-global-weather.js'
       - 'backend/weather-global.js'
+      - 'backend/weather-watchlist.js'
+      - 'tests/jarvis-weather-watchlist.mjs'
       - 'modules/jarvis-weather-model.js'
       - 'backend/weather-live.js'
       - 'modules/jarvis-geospatial-model.js'
@@ -130,6 +134,8 @@ jobs:
           node --check modules/jarvis-global-weather.js
           node --check backend/weather-global.js
           node tests/jarvis-global-weather.mjs
+          node --check backend/weather-watchlist.js
+          node tests/jarvis-weather-watchlist.mjs
           node --check backend/weather-intelligence.js
           node --check backend/weather-monitor.js
           node tests/jarvis-weather-intelligence.mjs
@@ -319,7 +325,9 @@ jobs:
               const decoded=JSON.parse(body);
               assert.equal(decoded.ok,true);
               assert.equal(decoded.location.countryCode,'JP');
-              assert.equal(decoded.days.length,16);
+              assert.ok(decoded.days.length>=15&&decoded.days.length<=16,'Forecast range must reflect provider availability');
+              assert.equal(decoded.requestedDays,16);
+              assert.equal(decoded.partialForecast,decoded.days.length<16);
               assert.ok(decoded.source.url.includes('open-meteo.com'));
               console.log('WORKER GLOBAL 16-DAY FORECAST VERIFIED');
             }else{

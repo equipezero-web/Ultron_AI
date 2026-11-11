@@ -17,6 +17,7 @@ try {
     // depending on example.org or the external network.
     await page.setRequestInterception(true);
     let weatherProxyOffline=false;
+    let watchSaved=false;
     page.on('request',req=>{
       if(weatherProxyOffline&&(/\/api\/geo\/(global|locations)/.test(req.url()))){
         return req.respond({status:404,headers:{'access-control-allow-origin':'*'},contentType:'application/json',
@@ -58,6 +59,27 @@ try {
           name:'Nenhuma fonte oficial integrada',url:null,disclaimer:'Não significa ausência de avisos.'};}
         return req.respond({status:200,headers:{'access-control-allow-origin':'*'},contentType:'application/json',
          body:JSON.stringify(response)});
+      }
+      if(req.url().includes('/api/geo/watchlist/configure')){
+        const headers={'access-control-allow-origin':'*','access-control-allow-methods':'POST, OPTIONS','access-control-allow-headers':'content-type'};
+        if(req.method()==='OPTIONS')return req.respond({status:204,headers});
+        const body=JSON.parse(req.postData()||'{}');
+        assert.ok(typeof body.memoryKey==='string'&&body.memoryKey.length>=32);
+        assert.equal(body.id,1850147);
+        watchSaved=body.action==='add';
+        return req.respond({status:200,headers:{'access-control-allow-origin':'*'},
+         contentType:'application/json',body:JSON.stringify({ok:true,action:body.action})});
+      }
+      if(req.url().endsWith('/api/geo/watchlist')){
+        const headers={'access-control-allow-origin':'*','access-control-allow-methods':'POST, OPTIONS','access-control-allow-headers':'content-type'};
+        if(req.method()==='OPTIONS')return req.respond({status:204,headers});
+        const body=JSON.parse(req.postData()||'{}');
+        assert.ok(body.memoryKey?.length>=32);
+        return req.respond({status:200,headers:{'access-control-allow-origin':'*'},
+         contentType:'application/json',
+         body:JSON.stringify({ok:true,cadenceHours:3,
+           watches:watchSaved?[{location_id:1850147,name:'Tokyo',country:'Japan',last_checked_at:null}]:[],
+           history:[]})});
       }
       if(req.url().includes('/api/geo/monitor')){
         return req.respond({status:200,headers:{'access-control-allow-origin':'*'},contentType:'application/json',
@@ -423,6 +445,19 @@ try {
     assert.match(worldwide.note,/Natural Earth/);
     assert.match(worldwide.source,/open-meteo/);
     assert.equal(await page.$eval('.jarvis-geo-place-bar',el=>el.hidden),false);
+    // Explicit personal opt-in from the same ring; no implicit monitoring.
+    await page.evaluate(()=>{
+      const old=window.ULTRON_MEMORY||{};
+      window.ULTRON_MEMORY={...old,getMemoryKey:()=>('test-memory-key-'+('z'.repeat(44)))};
+    });
+    await page.click('.jarvis-geo-place-bar button[title^="Acompanhar"]');
+    await page.waitForFunction(()=>document.querySelector('.jarvis-geo-watch-panel')?.textContent?.includes('Tokyo'),{timeout:7000});
+    assert.ok(watchSaved,'User explicitly opted into watchlist');
+    assert.ok((await page.$eval('.jarvis-geo-watch-panel',el=>el.textContent)).includes('3 EM 3 HORAS'));
+    await page.click('.jarvis-geo-watch-row button');
+    await page.waitForFunction(()=>document.querySelector('.jarvis-geo-watch-panel')?.textContent?.includes('Nenhuma cidade'),{timeout:7000});
+    assert.equal(watchSaved,false,'Stopping monitoring removes the sample');
+
     await page.evaluate(()=>{
       document.querySelector('.jarvis-geo-place-bar input').value='Tokyo';
       document.querySelector('.jarvis-geo-place-bar').requestSubmit();
