@@ -10,6 +10,10 @@ on:
       - 'modules/ultron-neural-answer.css'
       - 'tests/neural-answer-smoke.mjs'
       - 'modules/jarvis-earth.js'
+      - 'modules/jarvis-geospatial-model.js'
+      - 'modules/jarvis-geospatial-visual.js'
+      - 'modules/jarvis-geospatial-visual.css'
+      - 'tests/jarvis-phase3-geospatial.mjs'
       - 'tests/neural-mobile-smoke.mjs'
       - '.github/workflows/ultron-responsive-check.yml'
   push:
@@ -22,6 +26,10 @@ on:
       - 'modules/ultron-neural-answer.css'
       - 'tests/neural-answer-smoke.mjs'
       - 'modules/jarvis-earth.js'
+      - 'modules/jarvis-geospatial-model.js'
+      - 'modules/jarvis-geospatial-visual.js'
+      - 'modules/jarvis-geospatial-visual.css'
+      - 'tests/jarvis-phase3-geospatial.mjs'
       - 'tests/neural-mobile-smoke.mjs'
       - '.github/workflows/ultron-responsive-check.yml'
   workflow_dispatch:
@@ -43,6 +51,9 @@ jobs:
           node --check backend/web-research.js
           node --check backend/providers.js
           node --check modules/jarvis-earth.js
+          node --check modules/jarvis-geospatial-model.js
+          node --check modules/jarvis-geospatial-visual.js
+          node tests/jarvis-phase3-geospatial.mjs
           grep -Fq 'ultron-adaptive-display.css' index.html
           grep -Fq 'ultron-tv-display.js' index.html
           grep -Fq 'ultron-tv-display' modules/ultron-adaptive-display.css
