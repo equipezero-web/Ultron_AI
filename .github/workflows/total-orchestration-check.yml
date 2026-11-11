@@ -18,6 +18,11 @@ on:
       - 'modules/jarvis-action-engine.js'
       - 'tests/jarvis-autonomy.mjs'
       - 'tests/jarvis-phase1.mjs'
+      - 'tests/jarvis-phase3.mjs'
+      - 'modules/jarvis-geospatial-model.js'
+      - 'modules/jarvis-geospatial-visual.js'
+      - 'modules/jarvis-geospatial-visual.css'
+      - 'modules/jarvis-earth.js'
       - 'tests/jarvis-phase2-media.mjs'
       - 'modules/jarvis-media-model.js'
       - 'modules/ultron-neural-answer.js'
@@ -45,6 +50,11 @@ on:
       - 'modules/jarvis-action-engine.js'
       - 'tests/jarvis-autonomy.mjs'
       - 'tests/jarvis-phase1.mjs'
+      - 'tests/jarvis-phase3.mjs'
+      - 'modules/jarvis-geospatial-model.js'
+      - 'modules/jarvis-geospatial-visual.js'
+      - 'modules/jarvis-geospatial-visual.css'
+      - 'modules/jarvis-earth.js'
       - 'tests/jarvis-phase2-media.mjs'
       - 'modules/jarvis-media-model.js'
       - 'modules/ultron-neural-answer.js'
@@ -85,6 +95,10 @@ jobs:
           node --check backend/task-context.js
           node tests/jarvis-autonomy.mjs
           node tests/jarvis-phase1.mjs
+          node --check modules/jarvis-geospatial-model.js
+          node --check modules/jarvis-geospatial-visual.js
+          node --check modules/jarvis-earth.js
+          node tests/jarvis-phase3.mjs
           node --check modules/jarvis-media-model.js
           node --check modules/ultron-neural-answer.js
           node tests/jarvis-phase2-media.mjs
