@@ -23,6 +23,12 @@ try {
         if(req.method()==='OPTIONS')return req.respond({status:204,headers});
         return req.respond({status:200,headers,contentType:'application/json',body:JSON.stringify({ok:true,runId:'test-run',plan:{complex:false},runs:[]})});
       }
+      if(req.url().includes('/api/geo/locations')){
+        return req.respond({status:200,headers:{'access-control-allow-origin':'*'},
+         contentType:'application/json',body:JSON.stringify({ok:true,query:'Tokyo',
+           locations:[{id:1850147,key:'global-1850147',name:'Tokyo',country:'Japan',region:'Tokyo',
+             countryCode:'JP',lat:35.6895,lng:139.6917,label:'Tokyo, Tokyo, Japan'}]})});
+      }
       if(req.url().includes('/api/geo/global')){
         const location={id:1850147,key:'global-1850147',name:'Tokyo',country:'Japan',countryCode:'JP',
           region:'Tokyo',lat:35.6895,lng:139.6917,label:'Tokyo, Tokyo, Japan',timezone:'Asia/Tokyo'};
@@ -374,6 +380,15 @@ try {
     assert.ok(worldwide.marker>650,'Tokyo marker must appear on the world projection');
     assert.match(worldwide.note,/Natural Earth/);
     assert.match(worldwide.source,/open-meteo/);
+    assert.equal(await page.$eval('.jarvis-geo-place-bar',el=>el.hidden),false);
+    await page.evaluate(()=>{
+      document.querySelector('.jarvis-geo-place-bar input').value='Tokyo';
+      document.querySelector('.jarvis-geo-place-bar').requestSubmit();
+    });
+    await page.waitForFunction(()=>document.querySelectorAll('.jarvis-geo-place-results button').length===1,{timeout:5000});
+    await page.evaluate(()=>document.querySelector('.jarvis-geo-place-results button')?.click());
+    await page.waitForFunction(()=>document.querySelector('.jarvis-geo-place-results')?.textContent?.includes('atualizada'),{timeout:6000});
+    assert.equal(await page.$eval('.jarvis-geo-place-bar input',el=>el.value),'Tokyo, Tokyo, Japan');
     await page.evaluate(()=>window.ULTRON_GEO_VISUAL.setFrame(16));
     assert.equal(await page.evaluate(()=>window.ULTRON_GEO_VISUAL.state.frame),16);
     await page.evaluate(()=>window.ULTRON_GEO_VISUAL.close());
