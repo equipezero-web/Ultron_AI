@@ -175,7 +175,7 @@ try {
     const contextual=await page.evaluate(async()=>{
       const original=window.ULTRON_EARTH;
       const state={visible:true,selectedPlace:''};
-      window.ULTRON_EARTH={state,async locate(place){state.selectedPlace=place;return {ok:true}}};
+      window.ULTRON_EARTH={state,async open(){state.visible=true;return {ok:true}},async locate(place){state.selectedPlace=place;return {ok:true}}};
       window.ULTRON_TASK_CONTEXT.captureQuestion('Analise os impactos do El Niño no Brasil');
       window.ULTRON_TASK_CONTEXT.recordAction({action:'earth.open'},{ok:true});
       const before=window.ULTRON_TASK_CONTEXT.snapshot();
