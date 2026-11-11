@@ -240,6 +240,7 @@ if (earthVisual) {
   };
   let globe = null;
   let thematicPoints=[];
+  let spatialPolygons=[];
   let thematicPlaying=false;
   const themeSource='jarvis-thematic-geo';
   const themeHeat='jarvis-thematic-heat';
@@ -298,7 +299,61 @@ if (earthVisual) {
     // The caller may set the dataset before the WebGL engine finishes loading.
     return {ok:Boolean(onGlobe||onMap||(!visible&&valid.length===0)),staged:!onGlobe&&!onMap,count:valid.length,playing:thematicPlaying};
   }
-  function clearThematicLayer(){return setThematicLayer([],{playing:false});}
+  // Real sampled geo-cell footprints. Do not extrapolate between cells:
+  // each polygon displays the value at its own sampled model grid coordinate.
+  const spatialSource="jarvis-sampled-intensity-geo",spatialFill="jarvis-sampled-intensity-fill";
+  const spatialFeatures=()=>({type:"FeatureCollection",features:spatialPolygons.map(cell=>({
+    type:"Feature",properties:{color:cell.color,id:cell.id},
+    geometry:{type:"Polygon",coordinates:[cell.ring]}
+  }))});
+  function applySpatialToMap(map){
+    if(!map||!map.isStyleLoaded?.()||typeof map.getSource!=="function")return false;
+    try{
+      const source=map.getSource(spatialSource);
+      if(source)source.setData(spatialFeatures());
+      else map.addSource(spatialSource,{type:"geojson",data:spatialFeatures()});
+      if(!map.getLayer(spatialFill))map.addLayer({
+        id:spatialFill,type:"fill",source:spatialSource,
+        paint:{"fill-color":["get","color"],"fill-opacity":.4,"fill-outline-color":"#bce8f0"}
+      });
+      map.setLayoutProperty(spatialFill,"visibility",spatialPolygons.length?"visible":"none");
+      return true;
+    }catch(error){console.warn("[EARTH] Spatial map fill unavailable:",error);return false;}
+  }
+  function applySpatialToGlobe(){
+    if(!globe||typeof globe.polygonsData!=="function")return false;
+    try{
+      const geo=spatialPolygons.map(p=>({color:p.color,geometry:{type:"Polygon",coordinates:[p.ring]}}));
+      globe.polygonsData(geo).polygonCapColor(p=>{
+        const x=p.color;return "rgba("+parseInt(x.slice(1,3),16)+","+
+          parseInt(x.slice(3,5),16)+","+parseInt(x.slice(5,7),16)+",0.52)";
+      }).polygonSideColor(()=>"rgba(0,0,0,0)")
+        .polygonStrokeColor(p=>p.color)
+        .polygonAltitude(0.004);
+      return true;
+    }catch(error){console.warn("[EARTH] Globe sampled-fill unavailable:",error);return false;}
+  }
+  function setThematicGrid(cells){
+    if(!Array.isArray(cells)||cells.length>40)return {ok:false,error:"Máximo 40 células espaciais"};
+    const normalized=[];
+    for(const cell of cells){
+      const bounds=cell?.bounds,hex=cell?.color;
+      if(!Array.isArray(bounds)||bounds.length!==4||!/^#[\da-f]{6}$/i.test(hex||""))
+        return {ok:false,error:"Célula sem limites geográficos válidos"};
+      const [w,s,e,n]=bounds;
+      if(![w,s,e,n].every(Number.isFinite)||w>=e||s>=n||w< -180||e>180||s< -90||n>90)
+        return {ok:false,error:"Coordenadas de célula inválidas"};
+      normalized.push({id:String(cell.id||"").slice(0,60),color:hex,
+        ring:[[w,s],[e,s],[e,n],[w,n],[w,s]]});
+    }
+    spatialPolygons=normalized;
+    const globeOk=applySpatialToGlobe(),mapOk=applySpatialToMap(referenceMap)||applySpatialToMap(streetMap);
+    return {ok:true,count:normalized.length,staged:!globeOk&&!mapOk};
+  }
+  function clearThematicLayer(){
+    setThematicGrid([]);
+    return setThematicLayer([],{playing:false});
+  }
   let streetMap = null;
   let streetLoading = null;
   let mapboxLibraryLoading = null;
@@ -582,6 +637,7 @@ if (earthVisual) {
             if (result.ok) terminal('Ponto selecionado: ' + lat.toFixed(4) + ', ' + lng.toFixed(4) + '.');
           });
         if(thematicPoints.length)applyThematicToGlobe();
+        if(spatialPolygons.length)applySpatialToGlobe();
         // Avoid huge WebGL buffers on high-DPI phones. Keep desktop sharp.
         try {
           const renderer = globe.renderer?.();
@@ -931,7 +987,7 @@ if (earthVisual) {
   }
   window.ULTRON_EARTH = {
     open, close, locate, navigate, focus, clearSelection, enterStreetDetails,
-    setThematicLayer, clearThematicLayer,
+    setThematicLayer, setThematicGrid, clearThematicLayer,
     resetReferenceMap, get referenceMap(){return referenceMap;},
     get state() {
       const tokenConfigured = hasMapboxToken();
