@@ -49,10 +49,12 @@ export function createTaskContext({storage=null,now=()=>Date.now(),conversationI
  const captureQuestion=(message)=>{
    if(isPrivateTurn(message))return snapshot();
    const type=classifyOperatorTurn(message);
-   if(type.kind==="command"||type.kind==="negated")return snapshot();
+   if(type.kind==="negated")return snapshot();
    const raw=clipped(message,280);
    if(raw.length<9||/^(?:e |agora |entao |depois |isso |ele |ela |la\b)/i.test(normalizeIntent(raw)))return snapshot();
    const s=load();s.lastPublicQuestion=raw;s.topic=extractTopic(raw);
+   const region=raw.match(/\b(?:no|na|em|para o|para a)\s+([A-ZÀ-Ú][\p{L} -]{2,55})[?!.,]*$/u);
+   if(region&&!isPrivateTurn(region[1]))s.region=clipped(region[1],100);
    persist();return snapshot();
  };
  const recordAction=(step,result={})=>{
@@ -79,6 +81,11 @@ export function createTaskContext({storage=null,now=()=>Date.now(),conversationI
    const region=clipped(focus?.[1],100);
    if(focus&&region&&!isPrivateTurn(region)&&(snap.visualization==="globe"||/\b(?:globo|mapa)\b/.test(q))){
       return {message:source,kind:"contextual-action",command:"Localize "+region+" no globo",used:true,region,context:snap};
+   }
+   if(focus&&region&&snap.lastPublicQuestion){
+      return {message:source,kind:"contextual-question",used:true,
+       researchQuery:"Assunto anterior: "+snap.topic+". Pergunta anterior: "+snap.lastPublicQuestion+". Região em foco: "+region+". Pedido atual: "+source,
+       context:snap,region};
    }
    const geoShortcut=q.match(/^(?:e |agora )?(?:no|na|em)\s+(.+?)\??$/);
    const comparison=q.match(/^(?:agora\s+)?(?:compare|comparar|comparacao|comparacao\s+com|e\s+compare)\s+(?:com\s+)?(.+?)[?!.,]*$/);
