@@ -10,7 +10,8 @@ export const GEO_PALETTE={
   dry:{color:"#eda75d",title:"Tendência de chuva abaixo da média",short:"Seca / menos chuva"},
   wet:{color:"#67c5ef",title:"Tendência de chuva acima da média",short:"Mais chuva"},
   heat:{color:"#e76e75",title:"Temperatura acima da média",short:"Mais calor"},
-  observed:{color:"#d89c78",title:"Seca observada",short:"Seca observada"}
+  observed:{color:"#d89c78",title:"Seca observada",short:"Seca observada"},
+  weather:{color:"#a6d0f2",title:"Previsão numérica de curto prazo",short:"Tempo previsto"}
 };
 const spot=(id,name,lat,lng,kind,detail,source=GEO_SOURCE.url)=>({id,name,lat,lng,kind,detail,source,region:true});
 export const GEO_SCENARIOS={
@@ -72,7 +73,7 @@ export function validateGeoScenario(input){
    points.push({id,name,lat,lng,kind:item.kind,detail,source});
   }
   frames.push({id:clean(frame.id,45),name:clean(frame.name,90),type:clean(frame.type,100),
-    kind:["observed","forecast","illustrative"].includes(frame.kind)?frame.kind:"illustrative",
+    kind:["observed","forecast","illustrative","current-estimate","short-term-forecast"].includes(frame.kind)?frame.kind:"illustrative",
     description:clean(frame.description,350),points});
  }
  return {id:clean(input.id,55),title:clean(input.title,110),

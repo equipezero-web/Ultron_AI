@@ -1,4 +1,5 @@
 import {TASK_CONTEXT} from "./jarvis-task-context.js?v=4.69.0";
+import {WEATHER_CITIES,weatherGeoScenario,weatherSummary} from "./jarvis-weather-model.js?v=4.72.0";
 import {classifyOperatorTurn} from "./jarvis-intent-engine.js?v=4.69.0";
 import API_CONFIG from "../config.js";
 import {validatePlan,isActionRequest} from "../backend/action-catalog.js?v=4.68.0";
@@ -18,7 +19,25 @@ export function directPlan(message){
  const geoRequested=/\b(?:globo|mapa|visualizacao|visualize|visualizar|destaque|marque|pinte|mostre|mostra|simulacao|simule|simular|crie|gere)\b/.test(q);
  const actionPrefix=/^(?:por favor |pode |consegue |me |agora )*(?:mostre|mostra|mostrar|exiba|abra|abrir|crie|gere|gerar|simule|simular|visualize|visualizar|destaque|marque|analise|investigue|pesquise|apresente)\b/.test(q);
  if(enso&&geoRequested&&actionPrefix){
-   return {steps:[action("geo.show",{scenario:"enso",view:/\b(?:2d|mapa plano|mapa bidimensional)\b/.test(q)?"2d":"3d"})]};
+   const first=action("geo.show",{scenario:"enso",view:/\b(?:2d|mapa plano|mapa bidimensional)\b/.test(q)?"2d":"3d"});
+   // Two explicitly requested operations remain ordered; no arbitrary model actions.
+   const tail=q.match(/\b(?:e depois|em seguida)\s+(?:mostre|destaque|filtre)(?: apenas| so| somente)?\s+(?:as |os )?(?:regioes? )?(?:com |de )?(mais chuva|chuva acima|menos chuva|chuva abaixo|seca|calor)\b/);
+   if(tail){
+     const kind=/calor/.test(tail[1])?"heat":/mais chuva|chuva acima/.test(tail[1])?"wet":"dry";
+     return {steps:[first,action("geo.filter",{kind})]};
+   }
+   return {steps:[first]};
+ }
+ const weatherTerms=/\b(?:previsao(?: do tempo)?|tempo|clima|chuva|meteorologia|temperatura)\b/.test(q);
+ if(!enso&&weatherTerms&&actionPrefix){
+   const city=Object.values(WEATHER_CITIES).find(item=>{
+      const n=item.name.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+      return new RegExp("\\b"+n.replace(/\s+/g,"\\s+")+"\\b").test(q);
+   });
+   if(city||/\b(?:previsao do tempo|no globo|no mapa|mapa|globo)\b/.test(q)){
+     return {steps:[action("weather.show",{city:(city||WEATHER_CITIES.recife).key,
+       view:/\b(?:globo|3d)\b/.test(q)?"3d":"2d"})]};
+   }
  }
  if(currentGeo?.visible){
    if(/^(?:agora |entao |me |por favor )*(?:mostre|abra|mude|troque|altere|passe|volte|visualize|exiba|ir)\b.*\b(?:2d|mapa plano)\b/.test(q)){
@@ -66,6 +85,27 @@ function publish(text,visual=null){
 async function executeStep(step,original){
  const w=W(),a=step.args,answer=w.ULTRON_NEURAL_ANSWER;
  switch(step.action){
+ case "weather.show":{
+   const endpoint=String(API_CONFIG.backendUrl||"").replace(/\/$/,"")+
+     "/api/geo/weather?city="+encodeURIComponent(a.city);
+   const controller=new AbortController();
+   const timer=setTimeout(()=>controller.abort(),8500);
+   let payload;
+   try{
+     const response=await fetch(endpoint,{headers:{Accept:"application/json"},signal:controller.signal,cache:"no-store"});
+     payload=await response.json();
+     if(!response.ok||!payload?.ok)throw Error(payload?.error||"Não foi possível confirmar os dados meteorológicos");
+   }finally{clearTimeout(timer);}
+   if(payload.city?.key!==a.city||!Array.isArray(payload.days)||payload.days.length<1)throw Error("Dados meteorológicos inconsistentes");
+   const dataset=weatherGeoScenario(payload),summary=weatherSummary(payload);
+   if(!dataset||!summary)throw Error("Previsão inválida; nenhuma simulação será apresentada");
+   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.71.0");
+   const geo=requireApi(w.ULTRON_GEO_VISUAL,"open");
+   const result=await geo.open({data:dataset,view:a.view});
+   if(!result?.ok||!geo.state.visible||geo.state.scenario!==dataset.id||geo.state.mode!==a.view)
+     throw Error(result?.error||"Mapa não foi confirmado");
+   return {text:summary,verified:true};
+ }
  case "geo.show":case "geo.view2d":case "geo.view3d":case "geo.play":case "geo.pause":case "geo.next":case "geo.previous":case "geo.filter":case "geo.close":{
    if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.71.0");
    const geo=w.ULTRON_GEO_VISUAL;
@@ -77,8 +117,8 @@ async function executeStep(step,original){
     case "geo.view3d":result=await geo.setMode("3d");break;
     case "geo.play":result=geo.play();break;
     case "geo.pause":result=geo.pause();break;
-    case "geo.next":result=geo.setFrame((geo.state.frame+1)%3);break;
-    case "geo.previous":result=geo.setFrame((geo.state.frame+2)%3);break;
+    case "geo.next":result=geo.setFrame((geo.state.frame+1)%Math.max(1,geo.state.frameCount||3));break;
+    case "geo.previous":result=geo.setFrame((geo.state.frame+Math.max(1,geo.state.frameCount||3)-1)%Math.max(1,geo.state.frameCount||3));break;
     case "geo.filter":result=geo.applyFilter(a.kind);break;
     case "geo.close":result=geo.close();break;
    }

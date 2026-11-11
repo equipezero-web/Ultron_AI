@@ -23,6 +23,20 @@ try {
         if(req.method()==='OPTIONS')return req.respond({status:204,headers});
         return req.respond({status:200,headers,contentType:'application/json',body:JSON.stringify({ok:true,runId:'test-run',plan:{complex:false},runs:[]})});
       }
+      if(req.url().includes('/api/geo/weather')){
+        const payload={
+          ok:true,city:{key:'recife',name:'Recife',lat:-8.0476,lng:-34.877},
+          fetchedAt:'2026-11-11T12:00:00.000Z',
+          current:{time:'2026-11-11T09:00',temperatureC:29,humidityPercent:75,precipitationMm:0},
+          days:[
+            {date:'2026-11-11',minC:24,maxC:31,rainMm:1.1,rainChancePercent:30},
+            {date:'2026-11-12',minC:23,maxC:30,rainMm:12,rainChancePercent:85},
+            {date:'2026-11-13',minC:24,maxC:32,rainMm:0,rainChancePercent:10}
+          ],source:{name:'Open-Meteo',url:'https://open-meteo.com/en/docs'},kind:'short-term-numeric-forecast'
+        };
+        return req.respond({status:200,headers:{'access-control-allow-origin':'*'},
+          contentType:'application/json',body:JSON.stringify(payload)});
+      }
       if(req.url().includes('/api/ai')){
         const headers={'access-control-allow-origin':'*','access-control-allow-methods':'POST, OPTIONS','access-control-allow-headers':'content-type, authorization'};
         if(req.method()==='OPTIONS')return req.respond({status:204,headers});
@@ -301,6 +315,28 @@ try {
     await page.click('.jarvis-geo-close');
     assert.equal(await page.evaluate(()=>window.ULTRON_GEO_VISUAL.state.visible),false);
     assert.equal(await page.evaluate(()=>window.__phase3MockState.layerCount),0);
+    // Phase 4: a real action chain must fetch a weather payload and render
+    // distinct numeric forecast days inside the same Neural Ring (all viewports).
+    const weather=await page.evaluate(async()=>{
+      const result=await window.ULTRON_ORCHESTRATOR.execute('JARVIS, mostre a previsão do tempo em Recife no mapa 2D','phase4-test');
+      const state=window.ULTRON_GEO_VISUAL.state;
+      return {result,state,
+        description:document.querySelector('.jarvis-geo-evidence')?.textContent,
+        source:document.querySelector('.jarvis-geo-footer a')?.href};
+    });
+    assert.equal(weather.result.ok,true,JSON.stringify(weather));
+    assert.equal(weather.state.scenario,'weather-recife');
+    assert.equal(weather.state.mode,'2d');
+    assert.equal(weather.state.frameCount,4,'Current estimate plus 3 forecast days');
+    assert.ok(weather.description?.includes('mm'),'Must display sourced precipitation values');
+    assert.match(weather.source,/open-meteo/);
+    assert.equal(await page.$eval('.jarvis-geo-2d',el=>el.hidden),false);
+    await page.evaluate(()=>window.ULTRON_GEO_VISUAL.setFrame(3));
+    assert.equal(await page.evaluate(()=>window.ULTRON_GEO_VISUAL.state.frame),3);
+    await page.evaluate(()=>window.ULTRON_GEO_VISUAL.setMode('3d'));
+    assert.equal(await page.evaluate(()=>window.ULTRON_GEO_VISUAL.state.mode),'3d');
+    assert.ok(await page.evaluate(()=>window.__phase3MockState.layerCount)>0,'Forecast marker must be sent to globe');
+    await page.evaluate(()=>window.ULTRON_GEO_VISUAL.close());
     await page.evaluate(()=>window.__phase3EarthRestore());
     await page.close();
   }

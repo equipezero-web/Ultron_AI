@@ -1,3 +1,4 @@
+import {weatherCity} from "../modules/jarvis-weather-model.js";
 // Shared allowlist: only these typed actions can be executed by the autonomy engine.
 export const ACTIONS={
  "text.set":"Exibir/ocultar textos do Neural Ring (enabled boolean)",
@@ -16,6 +17,7 @@ export const ACTIONS={
  "device.command":"Executar comando de dispositivo explicitamente pedido (command string; usa roteador existente)",
  "research":"Responder pergunta/pesquisar assunto (question string; usa core existente)",
  "geo.show":"Visualizar o dataset ENSO em 2D/3D (scenario='enso', view='2d' ou '3d')",
+ "weather.show":"Buscar previsão numérica atual via Open-Meteo para cidade brasileira permitida e mostrar no mapa 2D ou globo 3D (city string, view 2d/3d)",
  "geo.view2d":"Mudar visualização geográfica para mapa 2D",
  "geo.view3d":"Mudar visualização geográfica para globo 3D",
  "geo.play":"Reproduzir quadros didáticos sem confundir com previsão",
@@ -37,8 +39,13 @@ export function validatePlan(value){
    if(a.scenario!=="enso"||!["2d","3d"].includes(a.view))return null;
    args={scenario:a.scenario,view:a.view};
   }
+  if(action==="weather.show"){
+   const city=weatherCity(a.city);
+   if(!city||!["2d","3d"].includes(a.view))return null;
+   args={city:city.key,view:a.view};
+  }
   if(action==="geo.filter"){
-   if(!["all","observed","dry","wet","heat"].includes(a.kind))return null;
+   if(!["all","observed","dry","wet","heat","weather"].includes(a.kind))return null;
    args={kind:a.kind};
   }
   if(action==="ring.zoom"){if(!["in","out"].includes(a.direction))return null;args={direction:a.direction};}

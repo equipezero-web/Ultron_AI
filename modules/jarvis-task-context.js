@@ -2,6 +2,7 @@
 // Only non-sensitive topic/region/mode is retained in sessionStorage. Reset on
 // conversation change, inactivity expiry or explicit operator reset.
 import {normalizeIntent,isPrivateTurn,classifyOperatorTurn} from "./jarvis-intent-engine.js?v=4.69.0";
+import {weatherCity} from "./jarvis-weather-model.js?v=4.72.0";
 const KEY="ultron_task_context_v1",TTL=2*60*60*1000;
 const fresh=(at,conversationId)=>({version:1,conversationId:String(conversationId||""),topic:"",region:"",visualization:"ring",lastPublicQuestion:"",lastAction:"",updatedAt:at});
 const clipped=(v,n)=>String(v||"").replace(/[\r\n<>]/g," ").replace(/\s+/g," ").trim().slice(0,n);
@@ -72,6 +73,11 @@ export function createTaskContext({storage=null,now=()=>Date.now(),conversationI
    else if(action==="geo.view3d"||(action==="geo.show"&&args.view==="3d"))s.visualization="globe";
    else if(action==="geo.close")s.visualization="ring";
    if(action==="geo.show"&&args.scenario==="enso"&&!isPrivateTurn("El Niño"))s.topic="El Niño — tendências regionais no Brasil";
+   if(action==="weather.show"){
+     const city=weatherCity(args.city);
+     if(city){s.region=city.name;s.topic="Previsão meteorológica de curto prazo — "+city.name;}
+     s.visualization=args.view==="3d"?"globe":"map-2d";
+   }
    s.lastAction=clipped(action||result.route,70);
    persist();return snapshot();
  };
