@@ -490,3 +490,15 @@ body.jarvis-command-center .jarvis-geo-visual[data-mode="3d"] .jarvis-geo-intens
  body.jarvis-command-center .jarvis-geo-intensity-bar input[type="range"]{width:70px}
  body.jarvis-command-center .jarvis-geo-intensity-legend{font-size:10px}
 }
+
+
+/* v4.91: Nested weather panels must hand scrolling back to the document
+   at their natural top/bottom edges; only map gestures use their canvas. */
+body.jarvis-command-center .jarvis-cc-center>.jarvis-geo-visual,
+body.jarvis-command-center .jarvis-cc-center>.jarvis-geo-visual[data-mode="2d"],
+body.jarvis-command-center .jarvis-geo-metrics,
+body.jarvis-command-center .jarvis-geo-region-list,
+body.jarvis-command-center .jarvis-geo-place-results,
+body.jarvis-command-center .jarvis-geo-watch-panel{
+  overscroll-behavior-y:auto!important;
+}
