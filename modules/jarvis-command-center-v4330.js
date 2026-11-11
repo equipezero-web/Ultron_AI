@@ -129,7 +129,7 @@ if (stage) {
   async function bootNeuralRing() {
     if (ringEngine) return ringEngine;
     if (ringPromise) return ringPromise;
-    ringPromise = import('./jarvis-neural-ring-3d.js?v=4.52.0')
+    ringPromise = import('./jarvis-neural-ring-3d.js?v=4.91.0')
       .then(module => module.createNeuralRing3D(canvas,{onError:report3D}))
       .then(engine => {
         ringEngine = engine;
@@ -219,7 +219,7 @@ if (stage) {
       try {
         let earth = window.ULTRON_EARTH;
         if (!earth?.open) {
-          await import('./jarvis-earth.js?v=4.49.0');
+          await import('./jarvis-earth.js?v=4.91.0');
           earth = window.ULTRON_EARTH;
         }
         if (!earth?.open) throw new Error('Motor terrestre não inicializado');
