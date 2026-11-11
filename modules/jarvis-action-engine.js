@@ -1,5 +1,6 @@
 import {TASK_CONTEXT} from "./jarvis-task-context.js?v=4.69.0";
-import {WEATHER_CITIES,weatherGeoScenario,weatherSummary} from "./jarvis-weather-model.js?v=4.72.0";
+import {WEATHER_CITIES,weatherCity,weatherGeoScenario,weatherSummary} from "./jarvis-weather-model.js?v=4.72.0";
+import {globalWeatherScenario,globalWeatherSummary} from "./jarvis-global-weather.js?v=4.73.0";
 import {classifyOperatorTurn} from "./jarvis-intent-engine.js?v=4.69.0";
 import API_CONFIG from "../config.js";
 import {validatePlan,isActionRequest} from "../backend/action-catalog.js?v=4.68.0";
@@ -28,15 +29,19 @@ export function directPlan(message){
    }
    return {steps:[first]};
  }
- const weatherTerms=/\b(?:previsao(?: do tempo)?|tempo|clima|chuva|meteorologia|temperatura)\b/.test(q);
+ const weatherTerms=/\b(?:previsao(?: do tempo)?|tempo|clima|chuva|meteorologia|meteorologica|temperatura|vento)\b/.test(q);
  if(!enso&&weatherTerms&&actionPrefix){
-   const city=Object.values(WEATHER_CITIES).find(item=>{
-      const n=item.name.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
-      return new RegExp("\\b"+n.replace(/\s+/g,"\\s+")+"\\b").test(q);
-   });
-   if(city||/\b(?:previsao do tempo|no globo|no mapa|mapa|globo)\b/.test(q)){
-     return {steps:[action("weather.show",{city:(city||WEATHER_CITIES.recife).key,
-       view:/\b(?:globo|3d)\b/.test(q)?"3d":"2d"})]};
+   const requestedDays=/\b(?:16|dezesseis)\s+dias\b|\bduas semanas\b/.test(q)?16:
+     /\b(?:7|sete)\s+dias\b|\buma semana\b/.test(q)?7:3;
+   const cityRequest=q.match(/\b(?:tempo|clima|chuva|temperatura|vento|meteorologia|meteorologica)\b(?:\s+(?:atual|prevista|de hoje))?\s+(?:em|de|para|no|na)\s+(.+?)(?=\s+(?:no|na|pelo)\s+(?:mapa|globo)|\s+(?:em\s+)?(?:2d|3d)\b|$)/);
+   const rawCity=cityRequest?.[1]?.replace(/\s+(?:por|durante|para)\s+(?:3|7|16)\s+dias.*$/,"")
+     .replace(/\s+(?:nos|pelos)\s+proximos\s+(?:3|7|16)\s+dias.*$/,"").trim();
+   const city=rawCity?weatherCity(rawCity):null;
+   const view=/\b(?:globo|3d)\b/.test(q)?"3d":"2d";
+   if(city&&requestedDays===3)return {steps:[action("weather.show",{city:city.key,view})]};
+   if(rawCity)return {steps:[action("weather.global",{city:rawCity,view,days:requestedDays===3?7:requestedDays})]};
+   if(/\b(?:previsao do tempo|no globo|no mapa|mapa|globo)\b/.test(q)){
+     return {steps:[action("weather.show",{city:WEATHER_CITIES.recife.key,view})]};
    }
  }
  if(currentGeo?.visible){
@@ -85,6 +90,28 @@ function publish(text,visual=null){
 async function executeStep(step,original){
  const w=W(),a=step.args,answer=w.ULTRON_NEURAL_ANSWER;
  switch(step.action){
+ case "weather.global":{
+   const endpoint=String(API_CONFIG.backendUrl||"").replace(/\/$/,"")+
+     "/api/geo/global?city="+encodeURIComponent(a.city)+"&days="+encodeURIComponent(a.days);
+   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);
+   let report;
+   try{
+     const response=await fetch(endpoint,{headers:{Accept:"application/json"},signal:controller.signal,cache:"no-store"});
+     report=await response.json();
+     if(!response.ok||!report?.ok)throw Error(report?.error||"Previsão mundial indisponível");
+   }finally{clearTimeout(timer);}
+   if(report.kind!=="global-short-term-forecast"||report.days?.length!==a.days||
+      !report.location?.key?.startsWith("global-")||!report.source?.url?.includes("open-meteo.com"))
+      throw Error("A previsão mundial retornada não foi validada");
+   const data=globalWeatherScenario(report),summary=globalWeatherSummary(report);
+   if(!data||!summary)throw Error("Não foi possível construir a visualização mundial");
+   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.73.0");
+   const geo=requireApi(w.ULTRON_GEO_VISUAL,"open");
+   const result=await geo.open({data,view:a.view});
+   if(!result?.ok||!geo.state.visible||geo.state.scenario!==data.id||geo.state.mode!==a.view)
+     throw Error(result?.error||"Não foi possível verificar o mapa mundial");
+   return {text:summary,verified:true};
+ }
  case "weather.show":{
    const endpoint=String(API_CONFIG.backendUrl||"").replace(/\/$/,"")+
      "/api/geo/weather?city="+encodeURIComponent(a.city);
