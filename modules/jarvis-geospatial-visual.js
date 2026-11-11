@@ -292,6 +292,122 @@ if(stage){
     "Pontos geográficos representativos, não extensão real de impactos ou medição por município.";
    metricPanel.append(disclaimer);
  }
+
+ const intensityProjection=()=>scopeChoice.value==="world"?"world":"brazil";
+ const currentIntensityDay=()=>Math.max(0,Math.min(2,frameIndex-1));
+ function intensityLegendRender(report,issue=""){
+   intensityLegend.replaceChildren();intensityMessage.replaceChildren();
+   const spec=SPATIAL_LAYERS[layerChoice.value];
+   if(!spec)return;
+   const name=document.createElement("strong");name.textContent=spec.label+" · "+spec.unit;
+   intensityLegend.append(name);
+   const scale=document.createElement("div");scale.className="jarvis-geo-intensity-scale";
+   for(const entry of (report?.legend||spec.colors.map((color,i)=>({color,label:spec.labels[i]})))){
+     const item=document.createElement("span");item.className="jarvis-geo-intensity-band";
+     const swatch=document.createElement("i");swatch.style.background=entry.color;
+     const label=document.createElement("small");label.textContent=entry.label;
+     item.append(swatch,label);scale.append(item);
+   }
+   intensityLegend.append(scale);
+   const note=document.createElement("small");note.className="jarvis-geo-intensity-caption";
+   note.textContent=report?.ok?
+     "MODELO AMOSTRADO · "+report.sampledCount+"/"+report.totalSamples+
+     " células · "+report.dataTime+" · "+report.source.name+" · Sem interpolação local.":
+     (issue||"Selecione uma camada para consultar o provedor.");
+   intensityMessage.append(note);
+   const link=document.createElement("a");link.target="_blank";link.rel="noopener noreferrer";
+   link.href=report?.source?.url||spec.sourceUrl;
+   link.textContent=layerChoice.value==="drought"?"Abrir mapa mensal oficial ANA":
+     layerChoice.value==="alerts"?"Consultar avisos oficiais":"Ver documentação da fonte";
+   intensityMessage.append(link);
+   if(layerChoice.value==="drought"){
+     const explanation=document.createElement("p");
+     explanation.textContent="As classes S0–S4 são do Monitor de Secas da ANA, de periodicidade mensal. Sem polígonos oficiais validados, o JARVIS não pinta áreas como se fossem seca extrema. Selecione 'Umidade do solo' para visualizar valores coloridos de modelo (não classes de seca).";
+     intensityMessage.append(explanation);
+   }
+ }
+ function applyIntensityToEarth(){
+   const globe=window.ULTRON_EARTH;
+   if(!globe)return;
+   const cells=intensityReport?.ok?intensityReport.cells:[];
+   const geographic=cells.filter(c=>Array.isArray(c.bounds));
+   globe.setThematicGrid?.(geographic);
+   if(cells.length&&!geographic.length){
+     globe.setThematicLayer?.(cells.slice(0,25).map(c=>({
+       id:c.id,name:intensityReport.label,lat:c.lat,lng:c.lng,
+       kind:"weather",detail:c.value+" "+intensityReport.unit,
+       color:c.color
+     })));
+   }else if(dataset){
+     const f=geoFrame(dataset,frameIndex,filterKind);
+     if(f)globe.setThematicLayer?.(f.points.map(p=>({
+       ...p,color:GEO_PALETTE[p.kind]?.color||"#91d7f0"
+     })),{playing:mode==="3d"&&playing});
+   }
+ }
+ const intensityUrl=(layer,region,day)=>String(API_CONFIG.backendUrl||"").replace(/\/$/,"")+
+   "/api/geo/intensity?layer="+encodeURIComponent(layer)+
+   "&region="+encodeURIComponent(region)+"&day="+day;
+ async function fetchIntensity(layer,region,day){
+   const key=layer+":"+region+":"+day,now=Date.now(),cached=intensityCache.get(key);
+   if(cached&&now-cached.at<30*60*1000)return cached.data;
+   const url=intensityUrl(layer,region,day);
+   let data=null;
+   const abort=new AbortController(),timer=setTimeout(()=>abort.abort(),11500);
+   try{
+     const response=await fetch(url,{headers:{Accept:"application/json"},
+       cache:"no-store",signal:abort.signal});
+     const body=await response.json();
+     if(response.ok&&body?.ok)data=body;
+   }catch{}finally{clearTimeout(timer);}
+   if(!data?.ok)data=await loadSpatialIntensity({layer,region,day});
+   if(data?.ok)intensityCache.set(key,{at:now,data});
+   return data;
+ }
+ async function chooseIntensity({refresh=false}={}){
+   if(!dataset||panel.hidden)return {ok:false,error:"Mapa fechado"};
+   const layer=layerChoice.value,region=scopeChoice.value,day=currentIntensityDay();
+   if(refresh)intensityCache.delete(layer+":"+region+":"+day);
+   const requestId=++intensityToken;
+   intensityReport=null;
+   window.ULTRON_EARTH?.setThematicGrid?.([]);
+   intensityLegendRender(null,"Carregando células de modelo...");
+   if(mode==="2d")renderMap(geoFrame(dataset,frameIndex,filterKind));
+   if(["drought","alerts"].includes(layer)){
+     intensityLegendRender(null,layer==="drought"?
+       "Seca observada oficialmente: consulte o mapa mensal da ANA, não a previsão de chuva.":
+       "Avisos oficiais dependem de área, validade e emissor; consultar fonte oficial.");
+     return {ok:false,official:true};
+   }
+   if(SPATIAL_LAYERS[layer]?.days&&frameIndex>3&&dataset.frames.length>4){
+     intensityLegendRender(null,"A camada espacial cobre apenas os três primeiros dias. O restante da previsão permanece por localidade.");
+     return {ok:false,partial:true};
+   }
+   try{
+     const data=await fetchIntensity(layer,region,day);
+     if(requestId!==intensityToken||panel.hidden)return {ok:false,stale:true};
+     if(!data?.ok)throw Error(data?.error||"Camada espacial indisponível");
+     if(data.layer!==layer||data.region!==region||data.day!==day||
+       !Array.isArray(data.cells)||!Array.isArray(data.legend))throw Error("Fonte espacial inconsistente");
+     intensityReport=data;intensityLegendRender(data);
+     if(mode==="2d")renderMap(geoFrame(dataset,frameIndex,filterKind));
+     applyIntensityToEarth();
+     return {ok:true,count:data.sampledCount};
+   }catch(error){
+     if(requestId===intensityToken){
+       intensityLegendRender(null,"Fonte indisponível: "+String(error?.message||error).slice(0,140));
+     }
+     return {ok:false,error:String(error?.message||error)};
+   }
+ }
+ layerChoice.addEventListener("change",()=>void chooseIntensity());
+ scopeChoice.addEventListener("change",async()=>{
+   resetMap();await loadOutline(intensityProjection());draw();void chooseIntensity();
+ });
+ intensityRefresh.addEventListener("click",()=>void chooseIntensity({refresh:true}));
+ overlayOpacity.addEventListener("input",()=>{
+   if(mode==="2d"&&dataset)renderMap(geoFrame(dataset,frameIndex,filterKind));
+ });
  function renderMap(frame){
    svg.replaceChildren();
    const bg=e("rect",{width:900,height:550,fill:"#091a2c",rx:12});svg.append(bg);
