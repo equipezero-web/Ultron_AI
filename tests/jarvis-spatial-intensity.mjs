@@ -27,7 +27,7 @@ async function mock(url,options){
  return {ok:true,json:async()=>lat.map((x,i)=>({
    latitude:Number(x),longitude:Number(lon[i]),
    daily:{time:day,[d||"dummy"]:[i*2,i*2+10,i*2+20]},
-   current:{time:"2026-11-11T18:00",[cur||"dummy"]:i*3+5},
+   current:{time:"2026-11-11T18:00",[cur||"dummy"]:cur==="wave_height"?i*.2:i*3+5},
    hourly:{time:["2026-11-11T19:00"],[hr||"dummy"]:[.1+i*.002]}
  }))};
 }
