@@ -1,5 +1,5 @@
 import API_CONFIG from "../config.js";
-import {SPATIAL_LAYERS,loadSpatialIntensity,spatialSummary} from "./jarvis-spatial-intensity.js?v=5.0.0";
+import {SPATIAL_LAYERS,loadSpatialIntensity,spatialSummary} from "./jarvis-spatial-intensity.js?v=4.90.0";
 import {globalWeatherScenario} from "./jarvis-global-weather.js?v=4.82.0";
 import {searchGlobalLocations,loadGlobalWeather} from "../backend/weather-global.js?v=4.74.0";
 import {loadWeatherInsight} from "../backend/weather-intelligence.js?v=4.75.0";
