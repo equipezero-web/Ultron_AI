@@ -48,6 +48,10 @@ export function normalizeWeatherPayload(payload,cityInput,{now=()=>new Date().to
  if(t===null||humidity===null||currentRain===null||!time)return null;
  const fetchedAt=now();
  if(typeof fetchedAt!=="string"||!Number.isFinite(Date.parse(fetchedAt)))return null;
+ // Provider timestamps are local to the returned city. Allow timezone offsets
+ // but reject historical / badly cached "current" data rather than calling it live.
+ if(days[0]?.date!==time.slice(0,10))return null;
+ if(Math.abs(Date.parse(time.slice(0,16)+":00Z")-Date.parse(fetchedAt))>36*3600*1000)return null;
  return {
   ok:true,city:{...city},fetchedAt,current:{time,temperatureC:t,humidityPercent:humidity,precipitationMm:currentRain},
   days,source:{...WEATHER_SOURCE},kind:"short-term-numeric-forecast",isOfficialAlert:false
@@ -71,7 +75,7 @@ export function weatherGeoScenario(report){
     description:"Condições estimadas pelo modelo para "+city.name+" em "+report.current.time+". Não são medições locais confirmadas.",
     points:[point("weather-current",`Temperatura estimada: ${num(report.current.temperatureC)} °C; umidade: ${num(report.current.humidityPercent)}%; precipitação atual estimada: ${num(report.current.precipitationMm)} mm.`)]},
    ...report.days.map((d,i)=>({id:"day-"+i,name:d.date,type:"previsão numérica de curto prazo",kind:"short-term-forecast",
-    description:"Previsão de curto prazo para "+city.name+"; pode mudar conforme novas atualizações. Nenhuma indicação de alerta oficial.",
+    description:"Previsão de curto prazo para "+city.name+" em "+d.date+": de "+num(d.minC)+" °C a "+num(d.maxC)+" °C; precipitação acumulada "+num(d.rainMm)+" mm e probabilidade máxima de precipitação "+num(d.rainChancePercent)+"%. Não é alerta oficial.",
     points:[point("weather-day-"+i,`Mínima ${num(d.minC)} °C; máxima ${num(d.maxC)} °C; chuva prevista ${num(d.rainMm)} mm; probabilidade máxima de precipitação ${num(d.rainChancePercent)}%.`)]}))
   ]
  };
