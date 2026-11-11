@@ -2,6 +2,8 @@ import {TASK_CONTEXT} from "./jarvis-task-context.js?v=4.69.0";
 import {WEATHER_CITIES,weatherCity,weatherGeoScenario,weatherSummary} from "./jarvis-weather-model.js?v=4.72.0";
 import {globalWeatherScenario,globalWeatherSummary} from "./jarvis-global-weather.js?v=4.73.0";
 import {loadGlobalWeather} from "../backend/weather-global.js?v=4.74.0";
+import {loadWeatherInsight} from "../backend/weather-intelligence.js?v=4.75.0";
+import {insightSummary,insightScenario,monitorSummary} from "./jarvis-weather-insight-model.js?v=4.75.0";
 import {classifyOperatorTurn} from "./jarvis-intent-engine.js?v=4.69.0";
 import API_CONFIG from "../config.js";
 import {validatePlan,isActionRequest} from "../backend/action-catalog.js?v=4.73.0";
@@ -29,6 +31,29 @@ export function directPlan(message){
      return {steps:[first,action("geo.filter",{kind})]};
    }
    return {steps:[first]};
+ }
+ // Each scientific layer is a distinct data source. Avoid defaulting all questions to the forecast.
+ if(actionPrefix&&/\b(?:monitoramento meteorologico|monitoramento do clima|boletim de monitoramento|monitoramento mundial|monitoramento 24h)\b/.test(q)){
+   return {steps:[action("weather.monitor")]};
+ }
+ if(actionPrefix){
+   const type=/\b(?:qualidade do ar|poluicao|pm2[.,]?5|aqi)\b/.test(q)?"air":
+     /\b(?:historico|historia climatica|dados historicos|reanalise)\b/.test(q)?"history":
+     /\b(?:oceanos?|oceanografia|ondas do mar|correntes oceanicas|temperatura do mar|mare)\b/.test(q)?"marine":
+     /\b(?:vazao|cheias|rios?|enchentes|inundacoes|inundacao)\b/.test(q)?"flood":
+     /\b(?:ensemble|ensembles|incerteza|incertezas|comparacao de modelos|faixa dos modelos)\b/.test(q)?"ensemble":
+     /\b(?:alertas? oficiais?|avisos? meteorologicos|avisos? de tempo|avisos? oficiais)\b/.test(q)?"alerts":null;
+   if(type){
+     const y=q.match(/\b(19[4-9]\d|20\d{2})\b/),m=q.match(/\bmes\s+(\d{1,2})\b/);
+     const target=q.match(/\b(?:em|para|na cidade de|no municipio de)\s+([\p{L}\p{M}\p{N} .,'’()-]{2,96}?)(?=\s+(?:no|na|pelo)\s+(?:globo|mapa)|\s+\b(?:em\s+)?(?:2d|3d)\b|$)/u);
+     const city=target?.[1]?.trim();
+     if(city){
+       const args={type,city,view:/\b(?:globo|3d)\b/.test(q)?"3d":"2d"};
+       if(type==="history"&&y)args.year=Number(y[1]);
+       if(type==="history"&&m)args.month=Number(m[1]);
+       return {steps:[action("weather.insight",args)]};
+     }
+   }
  }
  const weatherTerms=/\b(?:previsao(?: do tempo)?|tempo|clima|chuva|meteorologia|meteorologica|temperatura|vento)\b/.test(q);
  if(!enso&&weatherTerms&&actionPrefix){
@@ -91,6 +116,56 @@ function publish(text,visual=null){
 async function executeStep(step,original){
  const w=W(),a=step.args,answer=w.ULTRON_NEURAL_ANSWER;
  switch(step.action){
+ case "weather.monitor":{
+   const endpoint=String(API_CONFIG.backendUrl||"").replace(/\/$/,"")+"/api/geo/monitor";
+   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),10000);
+   let report;
+   try{
+     const res=await fetch(endpoint,{headers:{Accept:"application/json"},signal:controller.signal,cache:"no-store"});
+     report=await res.json();
+     if(!res.ok||!report?.ok)throw Error(report?.error||"Monitoramento persistente indisponível");
+   }finally{clearTimeout(timer);}
+   const summary=monitorSummary(report);
+   if(!summary)throw Error("Monitoramento ainda não possui resposta válida");
+   publish(summary);
+   return {text:summary,verified:true};
+ }
+ case "weather.insight":{
+   const url=new URL(String(API_CONFIG.backendUrl||"").replace(/\/$/,"")+"/api/geo/insight");
+   url.searchParams.set("type",a.type);url.searchParams.set("city",a.city);
+   if(a.year)url.searchParams.set("year",String(a.year));
+   if(a.month)url.searchParams.set("month",String(a.month));
+   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),11000);
+   let report=null;
+   try{
+     const res=await fetch(url.toString(),{headers:{Accept:"application/json"},signal:controller.signal,cache:"no-store"});
+     const body=await res.json();
+     if(res.ok&&body?.ok)report=body;
+   }catch{}
+   finally{clearTimeout(timer);}
+   // Sources are public and host-restricted. Browser-only access may be blocked by CORS,
+   // in which case the action reports the error rather than inventing measurements.
+   if(!report){
+     report=await loadWeatherInsight({type:a.type,city:a.city,year:a.year,month:a.month});
+   }
+   if(!report?.ok||report.type!==a.type)throw Error(report?.error||"Não foi possível confirmar dados desta fonte");
+   const summary=insightSummary(report);
+   if(!summary)throw Error("Dados de inteligência meteorológica incompletos");
+   if(a.type==="alerts"){
+     const cards=(report.bulletins||[]).map(x=>({title:x.title,url:x.url,
+       description:x.source+" — "+x.severity+" — "+(x.areas?.join?.(", ")||x.areas||"")+" — "+(x.expiresAt||"validade não informada")}));
+     publish(summary,cards.length?{mode:"news",introduction:"Avisos publicados pela autoridade oficial; verifique a fonte, a área e a validade.",cards}:null);
+     return {text:summary,verified:true};
+   }
+   const data=insightScenario(report);
+   if(!data)throw Error("A fonte não forneceu séries geográficas utilizáveis");
+   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.75.0");
+   const geo=requireApi(w.ULTRON_GEO_VISUAL,"open");
+   const result=await geo.open({data,view:a.view});
+   if(!result?.ok||geo.state?.scenario!==data.id||geo.state?.mode!==a.view)
+     throw Error(result?.error||"O painel de análise não pôde ser confirmado");
+   return {text:summary,verified:true};
+ }
  case "weather.global":{
    const endpoint=String(API_CONFIG.backendUrl||"").replace(/\/$/,"")+
      "/api/geo/global?city="+encodeURIComponent(a.city)+"&days="+encodeURIComponent(a.days);
