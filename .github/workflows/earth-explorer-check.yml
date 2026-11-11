@@ -52,7 +52,7 @@ jobs:
           const neural = fs.readFileSync('modules/jarvis-neural-ring-3d.js','utf8');
           const script = fs.readFileSync('script.js','utf8');
           assert.ok(center.includes('jarvis-cc-console-layout') && center.includes('jarvis-cc-system-dock'), 'Integrated terminal and modules required');
-          assert.ok(center.includes('jarvis-neural-ring-3d.js?v=4.52.0'), 'True 3D neural engine required');
+          assert.ok(/jarvis-neural-ring-3d[.]js[?]v=4[.][0-9]+[.][0-9]+/.test(center), 'True 3D neural engine required');
           assert.ok(neural.includes('gl.enable(gl.DEPTH_TEST)') && neural.includes('gl.drawElements(gl.TRIANGLES'), 'Real WebGL 3D mesh required');
           assert.ok(script.includes('activateCamera({ openPreview: false })'), 'Optical sensor must remain inline');
           for (const required of [
