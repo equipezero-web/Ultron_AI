@@ -1,5 +1,5 @@
 import {TASK_CONTEXT} from "./modules/jarvis-task-context.js?v=4.69.0";
-import {directPlan,runActionPlan} from "./modules/jarvis-action-engine.js?v=4.68.0";
+import {directPlan,runActionPlan} from "./modules/jarvis-action-engine.js?v=4.69.0";
 import {runLocalCommand} from "./modules/jarvis-local-commands.js?v=4.67.0";
 import { CameraController } from "./modules/camera.js";
 import { loadPreferences } from "./modules/storage.js";
