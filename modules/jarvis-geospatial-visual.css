@@ -111,3 +111,17 @@ body.jarvis-command-center.ultron-tv-display .jarvis-geo-evidence,
 body.jarvis-command-center.ultron-tv-display .jarvis-geo-region,
 body.jarvis-command-center.ultron-tv-display .jarvis-geo-detail{font-size:16px}
 @media(prefers-reduced-motion:reduce){body.jarvis-command-center .jarvis-geo-marker{animation:none!important}}
+
+/* Prevent the flex container from squeezing its cards and placing detail over
+   invisible (clipped) region buttons on small screens. Scroll within HUD. */
+body.jarvis-command-center .jarvis-cc-center>.jarvis-geo-visual>*{
+  flex-shrink:0;min-width:0
+}
+body.jarvis-command-center .jarvis-geo-region-list{
+  position:relative;z-index:1;flex:0 0 auto;min-height:40px;
+  overflow-y:auto;overflow-x:hidden
+}
+body.jarvis-command-center .jarvis-geo-region{
+  position:relative;z-index:2;flex-shrink:0
+}
+body.jarvis-command-center .jarvis-geo-detail{flex:0 0 auto;position:relative}
