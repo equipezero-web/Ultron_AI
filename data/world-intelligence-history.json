@@ -4,10 +4,142 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-11T15:55:43.486Z",
-  "oldestEventAt": "2026-11-10T16:07:00.000Z",
-  "windowStartAt": "2026-11-10T15:55:43.486Z",
+  "updatedAt": "2026-11-11T22:26:57.531Z",
+  "oldestEventAt": "2026-11-10T22:28:00.000Z",
+  "windowStartAt": "2026-11-10T22:26:57.531Z",
   "events": [
+    {
+      "id": "event-63f46f3",
+      "category": "mundo",
+      "title": "SBT News alcança 2 milhões de seguidores no Instagram",
+      "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxNYUMwZ1JSbzItZlVNMkV1bzl3T3dvZFNuaFJKcjQzN2Rtc1kxWkxZQWdXVWpOSjdSak5Wbjd1TkJOcEZYNWdiUklCQk9TNG1VVHhfNjRsMnlEYVhFZUt3MDR4ZTB3Wk9DMm9USnhCTDhVTGFIWk5DWjg1N0s1dmRoWnNZT3ZXczlhV2VOTS1hUk1wX1YtSy1tdUthU25mQUZ0dWVoUg",
+      "description": "SBT News alcança 2 milhões de seguidores no Instagram &nbsp;&nbsp; SBT News",
+      "imageUrl": null,
+      "source": "SBT News",
+      "publishedAt": "2026-11-11T22:17:50.000Z",
+      "firstSeenAt": "2026-11-11T22:26:57.531Z",
+      "lastSeenAt": "2026-11-11T22:26:57.531Z"
+    },
+    {
+      "id": "event-abda1360",
+      "category": "clima",
+      "title": "El Niño e temporais no Sul e Sudeste: Inmet explica o que favorece os eventos extremos",
+      "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5LYTU0M3NSd3RQLW16Y3p0OWstN2ZxMlh4ay1KamViUThPdXRyaFZzTDhveGQzSHBWeWd5bktENjI4UlVabHhmMGQ3UFhMN0xtaVpuU0JuRXlJaER4R1pwdWxsejBJZFotTmc",
+      "description": "El Niño e temporais no Sul e Sudeste: Inmet explica o que favorece os eventos extremos &nbsp;&nbsp; CompreRural",
+      "imageUrl": null,
+      "source": "CompreRural",
+      "publishedAt": "2026-11-11T21:53:46.000Z",
+      "firstSeenAt": "2026-11-11T22:26:57.531Z",
+      "lastSeenAt": "2026-11-11T22:26:57.531Z"
+    },
+    {
+      "id": "event-fb8c75f2",
+      "category": "brasil",
+      "title": "Projetos de servidores públicos disputam sete prêmios de R$ 12 mil",
+      "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2026-11/projetos-de-servidores-publicos-disputam-sete-premios-de-r-12-mil",
+      "description": "Um total de 14 projetos criados por servidores públicos disputa, até o dia 27, o Prêmio Espírito Público . As iniciativas finalistas, criadas por servidores públicos brasileiros das cinco regiões brasileiras, foram selecionadas entre 867 inscritos. Agora, as melhores práticas serão avaliadas tanto por um grupo de especialistas como por votação popular. Notícias relacionadas: Eleições: fórum de servidores públicos denuncia censura na internet. Os vencedores em cada uma das sete categorias receberão R$ 12 mil e serão anunciados no dia 9 de dezembro, em uma cerimônia em Brasília (DF). O prêmio está na oitava edição e é promovido pelo instituto República.org. As sete categorias dos projetos são: desenvolvimento social, educação, gestão de pessoas, gestão e transformação digital, meio ambiente e emergência climática, saúde e segurança pública. O projeto mais votado pelo público durante a votação popular será anunciado na mesma cerimônia e receberá um certificado adicional como “Prêmio Especial do Público”. Nesse caso, não há premiação em dinheiro. Os projetos estão disponíveis para votaçã",
+      "imageUrl": "https://imagens.ebc.com.br/PeLQRPNn7qu9KjYT4Jeqz8dzxQI=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/atoms/image/1109814-mcamgo_abr02232018795920180223.jpg?itok=jJr3ymMP",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-11T21:47:00.000Z",
+      "firstSeenAt": "2026-11-11T22:26:57.531Z",
+      "lastSeenAt": "2026-11-11T22:26:57.531Z"
+    },
+    {
+      "id": "event-64f626f7",
+      "category": "brasil",
+      "title": "BB e banco alemão farão aporte de 100 milhões de euros em bioeconomia",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/bb-e-banco-alemao-farao-aporte-de-100-milhoes-de-euros-em-bioeconomia",
+      "description": "O Banco do Brasil (BB) e o banco de desenvolvimento alemão KfW avançaram na estruturação de nova operação de financiamento de 100 milhões de euros para fortalecer cadeias produtivas sustentáveis da bioeconomia, com foco na Amazônia. A iniciativa foi anunciada nesta quarta-feira (11), durante a COP31, por meio de declaração conjunta da Cooperação Financeira Brasil–Alemanha. Os recursos serão destinados ao refinanciamento de operações de crédito do BB voltadas a pequenos produtores, agricultores familiares, comunidades tradicionais, povos indígenas, cooperativas e micro, pequenas e médias empresas. Notícias relacionadas: Governo anuncia medidas de ajuste para economia de até R$ 60 bilhões . Proposta que facilita transição tributária será enviada ao Congresso. O objetivo é ampliar o acesso ao financiamento para atividades que geram renda a partir da biodiversidade e do uso sustentável dos recursos naturais. Para o vice-presidente de Governo e Sustentabilidade do Banco do Brasil, José Ricardo Sasseron, o fortalecimento da bioeconomia depende diretamente das condições oferecidas a quem vi",
+      "imageUrl": "https://imagens.ebc.com.br/mmr-kZ_EH097feHPcw-Nt87ibfs=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/09/02/floresta_amazonica_conservada_em_caracarai_rr.jpg?itok=2Q1CHcRT",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-11T21:21:00.000Z",
+      "firstSeenAt": "2026-11-11T22:26:57.531Z",
+      "lastSeenAt": "2026-11-11T22:26:57.531Z"
+    },
+    {
+      "id": "event-797b94b",
+      "category": "mundo",
+      "title": "Quer ficar por dentro de tudo o que acontece no esporte? No Imirante Esportes, você acompanha as principais notícias, os resultados, os destaques e os bastidores do mundo esportivo",
+      "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE55QjZyTVlsQ1Q0cFNEdW04cWx6NU9ScUtrNkNwSTJzc1d5Z250Sm5OdlhmSThxbFltM2xpR1B2RWYwZldGOHotRGNjUE0tZEo1UVZueFVR",
+      "description": "Quer ficar por dentro de tudo o que acontece no esporte? No Imirante Esportes, você acompanha as principais notícias, os resultados, os destaques e os bastidores do mundo esportivo. &nbsp;&nbsp; Instagram",
+      "imageUrl": null,
+      "source": "Instagram",
+      "publishedAt": "2026-11-11T21:12:58.000Z",
+      "firstSeenAt": "2026-11-11T22:26:57.531Z",
+      "lastSeenAt": "2026-11-11T22:26:57.531Z"
+    },
+    {
+      "id": "event-53e4cadd",
+      "category": "brasil",
+      "title": "História política do Brasil revela a importância estratégica dos vice-presidentes",
+      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxQeVpfcHBjRHlYLVlzNFlwOWlfUWkwZTNpdERuNnF0U1JXSDdhR3JGV3Bla2VJd0kzc0czemNEY2xCUy1Rdi1yMXh1OXZ6OVhGTzU4UWd6c0kxTjlTVm1QRjdvMzJXNXduUmZaM09KdEFfR3RWOUJpTUxBMVpxQVNaUERDVTdwaFVoLXIwdzhlZ0pnWk5pMENtcUhwVjZaUUxWZ2g5S1JRZ0lGQ0lJR0VxWnc0bnhGRTd5UTNBS0V3",
+      "description": "História política do Brasil revela a importância estratégica dos vice-presidentes &nbsp;&nbsp; Gazeta do Povo",
+      "imageUrl": null,
+      "source": "Gazeta do Povo",
+      "publishedAt": "2026-11-11T21:07:00.000Z",
+      "firstSeenAt": "2026-11-11T22:26:57.531Z",
+      "lastSeenAt": "2026-11-11T22:26:57.531Z"
+    },
+    {
+      "id": "event-2f7e1757",
+      "category": "brasil",
+      "title": "Governo anuncia medidas de ajuste para economia de até R$ 60 bilhões",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/governo-anuncia-medidas-de-ajuste-para-economia-de-ate-r-60-bilhoes",
+      "description": "O governo federal prepara um pacote de medidas de ajuste fiscal com potencial de gerar uma economia entre R$ 50 bilhões e R$ 60 bilhões em 2027. A proposta foi apresentada nesta quarta-feira (11) pelo ministro do Planejamento e Orçamento, Bruno Moretti, durante audiência pública na Comissão Mista de Orçamento (CMO), no Congresso Nacional. As medidas serão reunidas em um projeto de lei complementar (PLP), negociado com lideranças do Senado. O objetivo é reforçar o controle das despesas, ampliar a arrecadação e contribuir para o cumprimento da meta fiscal do próximo ano. Notícias relacionadas: Proposta que facilita transição tributária será enviada ao Congresso. Segundo Moretti, o pacote combina iniciativas de aumento de receitas e racionalização de gastos, com a preservação de despesas essenciais à garantia de direitos sociais. “Entre medidas de receitas e medidas de despesas, sempre buscando proteger as despesas que são cruciais para assegurar direitos, racionalizar algumas despesas, rever gastos tributários que não entregam aqueles resultados que são pretendidos e até rever alguns p",
+      "imageUrl": "https://imagens.ebc.com.br/t0iA4VRV9ltbc284NUSZ_2INP8w=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/11/reuniao_de_lideres-5_1.jpg?itok=x-AX5jZ1",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-11T20:48:00.000Z",
+      "firstSeenAt": "2026-11-11T22:26:57.531Z",
+      "lastSeenAt": "2026-11-11T22:26:57.531Z"
+    },
+    {
+      "id": "event-4bcc7e86",
+      "category": "mundo",
+      "title": "Nova York tem menor número de tiroteios e homicídios da história",
+      "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxNSzJOMFY4LUg3TElqeExPb3RZc1RRdWVtYW1JMXlxQzFaLWF3Tk5ybTBVOHdTTEhrbktKb1BDc3ozOXJJYVdfRzJJcjZPQmdvSlRHaXNBcjZpTkw0NWJCRmVUc3Y0TkRqcUVWeDJ3OS1Ja1ZUS1E0SjN3MEh4R0psUmdWTi1zZUpLNVEyMVg2NlZhY1cwcHZQVGM0Y0tQMGxwY3FwT3dyRWtvQWJzS2NqbEkxYTk",
+      "description": "Nova York tem menor número de tiroteios e homicídios da história &nbsp;&nbsp; Folha de S.Paulo",
+      "imageUrl": null,
+      "source": "Folha de S.Paulo",
+      "publishedAt": "2026-11-11T20:30:00.000Z",
+      "firstSeenAt": "2026-11-11T22:26:57.531Z",
+      "lastSeenAt": "2026-11-11T22:26:57.531Z"
+    },
+    {
+      "id": "event-4b27b6a2",
+      "category": "europa",
+      "title": "Zagueiro de R$ 618 milhões, Arroyo entra na mira da Europa e Gabigol pode ser negociado: as últimas notícias do Cruzeiro - Terra",
+      "url": "https://news.google.com/rss/articles/CBMirwJBVV95cUxNWE12SHpfbTNSV25kMldUUlpRdEIzeVNLQnlyWHZFajFWQ2w5UGY1UFFONGRZRWt6MkpsTk45WDM2MWI5R1pCRWw4TmJOdUF2NERXSnhnUGZ0Vjk2MlQ5cXowNnBzZUJrbDAwMVc3MjRSUDQzTlIwbmQyc0xmRU9HZXcxaWdTajZMdVF4RkwyamtTN3JHRDBwdzFscl9DckdIVzdTVmNhMmRrR2VsUVNzX2E5OWMzZGtSTkc4LS12Vks5bTd5bGNTcmFBOWZnc1E1NFppT01KTlBrR2ZHYUgya3hjR1dpQ2J3QzJIdWtubHBYUUJXQ3ZFVVRtVlQtMDhrSEVkNnRkUEgzMUJ1dVRNVEcyaWJCZ2I1SXE2MjZLSzkwbEotUTVibEZ2UnJGREU",
+      "description": "Zagueiro de R$ 618 milhões, Arroyo entra na mira da Europa e Gabigol pode ser negociado: as últimas notícias do Cruzeiro &nbsp;&nbsp; Terra",
+      "imageUrl": null,
+      "source": "Terra",
+      "publishedAt": "2026-11-11T19:01:00.000Z",
+      "firstSeenAt": "2026-11-11T22:26:57.531Z",
+      "lastSeenAt": "2026-11-11T22:26:57.531Z"
+    },
+    {
+      "id": "event-8355439c",
+      "category": "santa-catarina",
+      "title": "Defesa Civil prevê temporais em SC e aumento da instabilidade na quinta-feira",
+      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxPRzNIaUNRM1BEMTk3bzBJUk1pN2V5Z0t1RDlnOENNb3J6blRmVlNKcjhHME1uTENMSFF1LTQ3R3RXeWd5T25KWGh0TE9MRVRkTWdIUlI2TC1Vbk9EbXRrYVlfdk9PTkVBNmJyUU5TMnpCUVdnLUlsRXNjaW53QmtESkRRQ3lOQVNoTFZoMXU4QXg4WVBzWW85SVBIR2dueV9VZkVVcERiVkhsc1lxRVFMYmg1RVgza3diZTJ5ZlRn",
+      "description": "Defesa Civil prevê temporais em SC e aumento da instabilidade na quinta-feira &nbsp;&nbsp; Oeste Mais",
+      "imageUrl": null,
+      "source": "Oeste Mais",
+      "publishedAt": "2026-11-11T18:37:55.000Z",
+      "firstSeenAt": "2026-11-11T22:26:57.531Z",
+      "lastSeenAt": "2026-11-11T22:26:57.531Z"
+    },
+    {
+      "id": "event-eae3cc65",
+      "category": "santa-catarina",
+      "title": "Temporais com granizo e vento forte podem atingir maior parte de SC nesta quinta",
+      "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxNV3VvYlo0S0p4QXhWQkF1NlBUaVo3azk4NWpoalpsLXEyRTJ3bC0tMWstbUlrS2cxU3ZlTm1KVEhmZVRIM3g1eWxjOC16eG1KMjBPeWxJV19zbG0xYTdlSzhFal9kZE15Q3B0ckwySjIwdWxfcm9UazlmME91aDkzblVlUDZyelpfeUtQMm5lN211T3E5aW8xRUhCSFF6Q1oyNlcwaWpwcWZFVTIyeHhKTVN6TFlVaVBl",
+      "description": "Temporais com granizo e vento forte podem atingir maior parte de SC nesta quinta &nbsp;&nbsp; TopElegance",
+      "imageUrl": null,
+      "source": "TopElegance",
+      "publishedAt": "2026-11-11T15:58:56.000Z",
+      "firstSeenAt": "2026-11-11T22:26:57.531Z",
+      "lastSeenAt": "2026-11-11T22:26:57.531Z"
+    },
     {
       "id": "event-f6ce2c87",
       "category": "brasil",
@@ -66,7 +198,7 @@
       "source": "Agronews Brasil",
       "publishedAt": "2026-11-11T14:15:03.000Z",
       "firstSeenAt": "2026-11-11T15:55:43.486Z",
-      "lastSeenAt": "2026-11-11T15:55:43.486Z"
+      "lastSeenAt": "2026-11-11T22:26:57.531Z"
     },
     {
       "id": "event-14796665",
@@ -105,6 +237,30 @@
       "lastSeenAt": "2026-11-11T15:55:43.486Z"
     },
     {
+      "id": "event-5394826a",
+      "category": "santa-catarina",
+      "title": "Defesa Civil alerta para possibilidade de retorno das chuvas intensas e temporais nesta quarta (11) e quinta-feira (12)",
+      "url": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxPYVdpVWQ4OWtnT1luX3dWb2hKazZUeU94VERRRXQtSjI4RFo0WndyREtqdzhfYjcyeEhVd0xSSjUwUzJmRUdRY05TZUljaWMzbVVvZW9Hc1hrdVJyTG9tT3hmODJfb1dPdXhqdGQtQWxfUm5EYkV2cFJuOG1xckF2cHVhTklOdklXSzlpb3hIdXR3ajhkd3BXYjFERFlwcUhBZGQxMzZoNVUzZHlkb0V3M1dwM3N5NTFENGVkM1VGWkpocUc3YUtrSUlBbjFzbkpPRGstRzRRSEdxcld4SE9uVzR30gHnAUFVX3lxTE9ZNXZtSVg4Vk5WSUZ6X0xqLWJQVVhvdTFHdnlURWFjR3kwbEc2c19VN0NBdkR4QzhiZ3JMSGpFd242ZG1sSExYYnptVF8zR2V0S1JsR2tQeFRnS09RbGtLa1RnSjl1czJJTkFlTmxISUtLNXhpWmI2QnNMM3BhZjh2WGR4bTl1R3ZjcnBGNFc1NTZNcGJrNHZaVWplT2NmOWRSY3lDaU5DRFFQMTh5SU0tdkpHaGg0T2VyU3BPS2dCTzd2c0pTcnQySWU0SHVfcldpZDdZcFFTTGZNQ3ZhUzBuQmtJaDQ3Zw",
+      "description": "Defesa Civil alerta para possibilidade de retorno das chuvas intensas e temporais nesta quarta (11) e quinta-feira (12) &nbsp;&nbsp; Blog do Prisco",
+      "imageUrl": null,
+      "source": "Blog do Prisco",
+      "publishedAt": "2026-11-11T13:20:08.000Z",
+      "firstSeenAt": "2026-11-11T22:26:57.531Z",
+      "lastSeenAt": "2026-11-11T22:26:57.531Z"
+    },
+    {
+      "id": "event-a092ad94",
+      "category": "europa",
+      "title": "Mais de 6 mil escolas recebem ameaças de bomba na Europa - SBT News",
+      "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxONlpDaTRlZmZFbE12WjByMGtxRHh5WDJ3VkZMajhicXdDM1BXRnZ0dlhaRXJpVnJYVDRrRVNXY0xhekNxY3J6aGZZb2l2ZGQ0Yl9lNEluekVJblFiNVVua3h2cEc3aF9ZVlRXdnNSNlBwVnNfVFNybDVRenBwRUtFWWxVZ0MtOFVWQUN1OXFZVWRESEl1WHhsMW1iWQ",
+      "description": "Mais de 6 mil escolas recebem ameaças de bomba na Europa &nbsp;&nbsp; SBT News",
+      "imageUrl": null,
+      "source": "SBT News",
+      "publishedAt": "2026-11-11T12:58:23.000Z",
+      "firstSeenAt": "2026-11-11T22:26:57.531Z",
+      "lastSeenAt": "2026-11-11T22:26:57.531Z"
+    },
+    {
       "id": "event-5679c0ab",
       "category": "santa-catarina",
       "title": "Após três tornados, mais de 40 cidades de SC entram de novo em alerta para temporais com ventos intensos",
@@ -126,7 +282,7 @@
       "source": "TV Sim Brasil",
       "publishedAt": "2026-11-11T11:16:30.000Z",
       "firstSeenAt": "2026-11-11T15:55:43.486Z",
-      "lastSeenAt": "2026-11-11T15:55:43.486Z"
+      "lastSeenAt": "2026-11-11T22:26:57.531Z"
     },
     {
       "id": "event-ecf709a8",
@@ -355,285 +511,9 @@
       "publishedAt": "2026-11-10T22:28:00.000Z",
       "firstSeenAt": "2026-11-11T07:57:54.640Z",
       "lastSeenAt": "2026-11-11T07:57:54.640Z"
-    },
-    {
-      "id": "event-9c90b32e",
-      "category": "santa-catarina",
-      "title": "Santa Catarina enfrenta temporais com tornados e previsão de nova chuva nesta semana",
-      "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxOVGNrVF9OTHI1Wm5jRVN0NE9yMVFKOVM2LWdULThfWEpzczJlcTJFWkczLTJZVDBZR2JRNVFxUV8xRHF1ckFjUGhUcmZld0s3WloweFZMcC1hejNXVV9ZT3pJd1VoUEZSbmVfREpSd3VsUW43dWtVcm9neEJsMnQ5alJwV1NEZUoxZUNKREtQQzZOaW1UMnJPdUVpVGpFMk1kOVJUdmZmOG42cThxZWxwaEpETE42U1B5ZVlFSVVobWZqNHMzWDV2LUo3UQ",
-      "description": "Santa Catarina enfrenta temporais com tornados e previsão de nova chuva nesta semana &nbsp;&nbsp; oimagem.com.br",
-      "imageUrl": null,
-      "source": "oimagem.com.br",
-      "publishedAt": "2026-11-10T22:05:08.000Z",
-      "firstSeenAt": "2026-11-11T07:57:54.640Z",
-      "lastSeenAt": "2026-11-11T07:57:54.640Z"
-    },
-    {
-      "id": "event-e8db2bc1",
-      "category": "brasil",
-      "title": "Trabalhador poderá autorizar bancos a consultar extrato do FGTS",
-      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/trabalhador-podera-autorizar-bancos-consultar-extrato-do-fgts",
-      "description": "A Caixa Econômica Federal passou a permitir nesta terça-feira (10) que trabalhadores autorizem instituições financeiras a consultar informações do extrato do Fundo de Garantia do Tempo de Serviço (FGTS). O serviço pode ser usado para comprovar renda ou vínculo empregatício em operações financeiras . Com a novidade, o trabalhador não precisa mais baixar, imprimir e entregar o extrato do FGTS ao banco ou à instituição financeira. As informações são consultadas diretamente na base do fundo, desde que haja autorização expressa do titular da conta. Notícias relacionadas: Caixa passa a pagar prêmios de loterias via Pix em apostas digitais. FGTS mantém orçamento de R$ 144,5 bilhões para habitação em 2027. Segundo a Caixa, a medida busca tornar a comprovação de renda e de vínculo de trabalho mais prática e segura , além de reduzir o risco de apresentação de documentos adulterados ou com informações inconsistentes. Entre as principais características do serviço estão: Gratuidade: não há cobrança pela autorização; Escolha do trabalhador: o titular define quais instituições podem consultar os d",
-      "imageUrl": "https://imagens.ebc.com.br/UF78cF--w2JTlWg7FhR7ZACxzSE=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2024/08/08/_mg_8465.jpg?itok=pXI253o_",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-10T20:49:00.000Z",
-      "firstSeenAt": "2026-11-10T21:26:02.557Z",
-      "lastSeenAt": "2026-11-10T21:26:02.557Z"
-    },
-    {
-      "id": "event-cbf1288d",
-      "category": "brasil",
-      "title": "Número de jovens privados de liberdade caiu pela metade em dez anos",
-      "url": "https://agenciabrasil.ebc.com.br/direitos-humanos/noticia/2026-11/numero-de-jovens-privados-de-liberdade-caiu-pela-metade-em-dez-anos",
-      "description": "O número total de adolescentes cumprindo alguma medida de restrição de liberdade no Brasil caiu 48% em 10 anos, saindo de 26,8 mil em 2015 para cerca de 13 mil em 2025. Os dados são do Sistema Nacional de Atendimento Socioeducativo (Sinase), ligado ao Ministério dos Direitos Humanos. Estudo encomendado pelo Conselho Nacional de Justiça (CNJ) indica que o avanço das facções no Brasil pode explicar, entre outros motivos, a redução no número de jovens com restrição de liberdade porque o Estado não entraria mais em alguns territórios, além desses jovens ficarem sob proteção dessas organizações. Notícias relacionadas: Unicef: nenhum país do G20 tem maioridade penal abaixo dos 18 anos. Pediatras se manifestam contrários à redução da maioridade penal. Na Câmara dos Deputados, a Comissão Especial discute Proposta de Emenda à Constituição (PEC) que pode reduzir a maioridade penal no Brasil, atualmente estabelecida em 18 anos. O presidente da comissão, deputado Aluísio Mendes (Republicanos-MA), promete votar o texto no colegiado até o final de novembro. Em audiência pública na Câmara, nesta te",
-      "imageUrl": "https://imagens.ebc.com.br/LHxNhBUhDT-tWX7A9_Ft5EgIHBk=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/abr20092013mca_0446.jpg?itok=rFn8bbpl",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-10T20:45:00.000Z",
-      "firstSeenAt": "2026-11-10T21:26:02.557Z",
-      "lastSeenAt": "2026-11-10T21:26:02.557Z"
-    },
-    {
-      "id": "event-9436c58c",
-      "category": "brasil",
-      "title": "IA pode ajudar a responder desastres naturais, dizem cientistas ao G20",
-      "url": "https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-11/ia-pode-ajudar-responder-desastres-naturais-dizem-cientistas-ao-g20",
-      "description": "A Inteligência Artificial (IA) e novas tecnologias podem ajudar a prever e a reagir a desastres naturais, cada vez mais frequentes no planeta. A afirmação é de cientistas de diversas partes do mundo e faz parte de uma carta de recomendações que será entregue aos líderes que participarão da reunião de cúpula do G20, grupo das principais economias do mundo, em dezembro, nos Estados Unidos. “Os avanços em observação da Terra, sensoriamento remoto, sistemas de alerta precoce, modelagem numérica, gêmeos digitais [representações virtuais de objetos, estruturas, sistemas ou ambientes], tecnologias de drones e IA podem ampliar a compreensão das ameaças e dos riscos, apoiar a tomada de decisão e fortalecer a preparação, a resposta e a recuperação”, descreve o documento. Notícias relacionadas: Ministro pede investimento do G20 em preparação a desastres naturais. Desastres naturais atingiram 93% dos municípios nos últimos 10 anos. Prefeitos pedem recursos da União para prevenção de desastres naturais. A carta foi elaborada pelo S20 (Science20), grupo que reúne associações que representam cienti",
-      "imageUrl": "https://imagens.ebc.com.br/w99fha75x0lcUbw9GJ-g9mq8uos=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/07/26/estragos-14-rqwnc7033zwb5i5sc6pniz2ldc63icgq5ao8o89yps.jpg?itok=cqfs_rY1",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-10T20:42:00.000Z",
-      "firstSeenAt": "2026-11-10T21:26:02.557Z",
-      "lastSeenAt": "2026-11-10T21:26:02.557Z"
-    },
-    {
-      "id": "event-748c039",
-      "category": "brasil",
-      "title": "BC do Paraguai já ressarciu 93% dos clientes do banco Ueno",
-      "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/bc-do-paraguai-ja-ressarciu-93-dos-clientes-do-banco-ueno",
-      "description": "O Banco Central do Paraguai informou que mais de 1,7 milhão de correntistas do Banco Ueno foram ressarcidos. Até esta segunda-feira (9), 1.738.804 de pessoas, correspondentes a 93% dos clientes, receberam os valores, que totalizam 2,126 trilhões de guaranis (equivalente a cerca de R$ 1,92 bilhão). Notícias relacionadas: Presidente do Paraguai nomeia novo presidente do Banco Central. Ex-presidente do Paraguai presta depoimento ao Ministério Público. Após impeachment, Santiago Peña é preso no Paraguai. Conforme o banco, nos próximos dias, serão feitos os pagamentos aos clientes que têm algum tipo de bloqueio, com Certificado de Depósito a Prazo e com operações junto à Agência Financeira de Desenvolvimento (AFD). De acordo com a lei, o prazo máximo para o pagamento é nesta quarta-feira (11). O economista Jorge Schreiner foi nomeado ontem para assumir a presidência do Banco Central após a crise desencadeada pela intervenção no banco digital Ueno . Schreiner foi da diretoria do Banco Central por dois anos, até 1999, e liderou a comissão de valores mobiliários até 2013. Ele substitui Carlo",
-      "imageUrl": "https://imagens.ebc.com.br/mT0xRsbkv_mdoXuYmevK44jrVz4=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/10/banco_central_del_paraguay_by_felipe_mendez.jpg?itok=J5b6OaXs",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-10T20:26:00.000Z",
-      "firstSeenAt": "2026-11-10T21:26:02.557Z",
-      "lastSeenAt": "2026-11-10T21:26:02.557Z"
-    },
-    {
-      "id": "event-bdc4f2c6",
-      "category": "mundo",
-      "title": "Brasil e Espanha firmam acordo para estimular taxação de super-ricos",
-      "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/brasil-e-espanha-firmam-acordo-para-estimular-taxacao-de-super-ricos",
-      "description": "Os governos do Brasil e da Espanha assinaram, nesta terça-feira (10), um memorando de entendimento para ampliar a cooperação na criação e no aprimoramento de políticas tributárias voltadas à população de maior patrimônio. O acordo busca fortalecer a tributação dos super-ricos, estimular sistemas fiscais mais progressivos e combater a concentração de renda e riqueza. A iniciativa também pretende mobilizar outros países em torno de uma articulação internacional sobre o tema. Notícias relacionadas: Brasil apresenta marco de financiamento para área de saúde na COP31. Presidente do Paraguai nomeia novo presidente do Banco Central. ONU diz que 2026 será um dos anos mais quentes já registrados. O documento foi assinado pelos ministros da Fazenda do Brasil, Dario Durigan, e da Espanha, Arcadi España. Entre as medidas previstas estão o intercâmbio de informações e conhecimentos técnicos e a realização de estudos conjuntos. O acordo também prevê o debate sobre reformas tributárias e o fortalecimento da atuação dos dois países em organismos internacionais, como a Organização das Nações Unidas (",
-      "imageUrl": "https://imagens.ebc.com.br/UT_EWwnl3GQLpWh1eVicoXhbFbk=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/10/55645064679_677125d23c_o.jpg?itok=ABeZbg3n",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-10T20:19:00.000Z",
-      "firstSeenAt": "2026-11-10T21:26:02.557Z",
-      "lastSeenAt": "2026-11-10T21:26:02.557Z"
-    },
-    {
-      "id": "event-93b764c4",
-      "category": "santa-catarina",
-      "title": "Santa Catarina terá mudança no tempo a partir de quarta-feira, com previsão de temporais na quinta",
-      "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxOTURIQ1Y4X2FOYVZrdkg0X2V5VVozUFpLQmtXWWxxS1Nrc0g5eHNrRExrN0g4Vkd4czBrWXBkTTdTeEI2dDB3akNjM3VVcUJ6VUl4Ym1ZcVhZNHBTdzVLLXVhclBFelRTdU5FWWJyZFB5U0NmVnlhLXU0T1BKelVFX2JFSkd2T1QyaWNlT094a1dvR1BUV1hqeklvRkNzWjNwbVA4LUR1amNZVWctS09QVHRvT09MUlJqLTBKVlZ6S01nSU5hSklRc3JRQ2tyUQ",
-      "description": "Santa Catarina terá mudança no tempo a partir de quarta-feira, com previsão de temporais na quinta &nbsp;&nbsp; Jornal do Comércio",
-      "imageUrl": null,
-      "source": "Jornal do Comércio",
-      "publishedAt": "2026-11-10T19:36:58.000Z",
-      "firstSeenAt": "2026-11-10T19:45:44.554Z",
-      "lastSeenAt": "2026-11-11T01:22:20.785Z"
-    },
-    {
-      "id": "event-b8968048",
-      "category": "mundo",
-      "title": "Confira a edição de novembro de 2026 da Revista GNU",
-      "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE1uSHEwNmlRcXBsRzIxSW9wNVFEMkpYbkR2OGhiVGp4NGY1X0NfQlBtUHYwZHRma0xpS2lsb1FTbkZWMDRVa3gwOVduOHNySG5waXhFc1pINzNodDBXRF9UdnNNSW16M1BjSksyYzBjaw",
-      "description": "Confira a edição de novembro de 2026 da Revista GNU &nbsp;&nbsp; Grêmio Náutico União",
-      "imageUrl": null,
-      "source": "Grêmio Náutico União",
-      "publishedAt": "2026-11-10T19:30:22.000Z",
-      "firstSeenAt": "2026-11-10T19:33:57.494Z",
-      "lastSeenAt": "2026-11-10T21:26:02.557Z"
-    },
-    {
-      "id": "event-aa3fed6f",
-      "category": "mundo",
-      "title": "Paciente 63: Por que o 'especialista em fim do mundo' Julio Rojas tem medo da IA",
-      "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE5mYUoybWhsQks3QlNhbW1Ca3JJcHE1TXJVb0w0MFYyVWJHSk13VFVOdVFIcVF0MDJlWWRua21rbEMyQi1pZ3lhQ0FHU2hKSHBHWlFGd3VtbHpyYy16eThkN0pTNNIBaEFVX3lxTE12d2ZwUU1TbjhTZXhPdVAxTTlzbkVBRHhkd1hXQUxYWlNBMlhLY2Z6S01vUmZkUEVhQzU3Wmw2cmNwODNTbkRPRVZCX3NVcC1YTGxiTDNLYjhGY3NpRm1BX0VuWDY5SEo4",
-      "description": "Paciente 63: Por que o 'especialista em fim do mundo' Julio Rojas tem medo da IA &nbsp;&nbsp; BBC",
-      "imageUrl": null,
-      "source": "BBC",
-      "publishedAt": "2026-11-10T19:30:00.000Z",
-      "firstSeenAt": "2026-11-10T19:45:44.554Z",
-      "lastSeenAt": "2026-11-10T19:45:44.554Z"
-    },
-    {
-      "id": "event-46b1159",
-      "category": "brasil",
-      "title": "Vídeo de FHC em casa é investigado pela polícia: o que se sabe sobre imagens",
-      "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE9BWE5RbER2MWMyUjF5S3JjVG0yYzFwOUVBQlZkb1Y2WXJLMm9Bd2xOWk9nTmd6Zjl4a0FLX1hXSmxQcnQxT2lOd2dUSmduS0pCZzQya3k3UXV6amdaQ3NGNkplb9IBaEFVX3lxTE1PSTQtZzhPeGNzcXlMMzFiWjlwUUcwVkJvS0JVdFB0T2FRMThjMlJ4d0RXaWFGYVdsTjFIZjRMTHg5SFB2enUxN3Q1MjlwU29rNVBaY0VpNHN1VThra0poLUE1YTA4T1N3",
-      "description": "Vídeo de FHC em casa é investigado pela polícia: o que se sabe sobre imagens &nbsp;&nbsp; BBC",
-      "imageUrl": null,
-      "source": "BBC",
-      "publishedAt": "2026-11-10T19:26:06.000Z",
-      "firstSeenAt": "2026-11-10T19:45:44.554Z",
-      "lastSeenAt": "2026-11-10T19:45:44.554Z"
-    },
-    {
-      "id": "event-b6550c0",
-      "category": "mundo",
-      "title": "TCS amplia presença nas grandes maratonas do mundo e chega à Maratona do Rio",
-      "url": "https://news.google.com/rss/articles/CBMihgJBVV95cUxQUVl0a2hvS1hkZElGVF9fbmgyM1F0M2IzOEhuTlFZOW1KLW5DZXdwUmVCRUJrY2JxZUZhSzlIQkRmb3U3WVhhLVd5Y0dOOFp4SlFfNGFJdGV3Y2lmcklBYWw2VEVGMXk1YlhLS2JyUmpqZC1NRkJqcGhyeFNUR3RJSjlXZzRlQ2h6MXZQTktWT2RRNnU5Wm9lUTBfU0x5SFl6Y29SV3FQY196SWJma0RCNnZ6WUEzY2o0bHVQUE5wYm16ek9HMFBmM2RsczdHODZZb0dndmlQQmdmcnlKYjVOTk9iT0JaTHJxTzd2bjJzaHptU0h1UjZmOFZkZGZIeC1UYXhHNV9R",
-      "description": "TCS amplia presença nas grandes maratonas do mundo e chega à Maratona do Rio &nbsp;&nbsp; Terra",
-      "imageUrl": null,
-      "source": "Terra",
-      "publishedAt": "2026-11-10T18:56:00.000Z",
-      "firstSeenAt": "2026-11-10T19:33:57.494Z",
-      "lastSeenAt": "2026-11-10T19:33:57.494Z"
-    },
-    {
-      "id": "event-56c32bfa",
-      "category": "brasil",
-      "title": "CNU 2025: governo republica edital com novas listas de espera",
-      "url": "https://agenciabrasil.ebc.com.br/geral/noticia/2026-11/cnu-2025-governo-republica-edital-com-novas-listas-de-espera",
-      "description": "O Ministério da Gestão e da Inovação em Serviços Públicos (MGI) republicou o edital 300/2026 de classificação de candidatos aprovados para preencher as vagas que sobraram da segunda edição do Concurso Público Nacional Unificado (CNU 2), aplicado em 2025. A lista de espera – organizada pela Escola Nacional de Administração Pública (Enap) – é para cargos de nível superior e nível intermediário entre os órgãos e entidades participantes do certame. Notícias relacionadas: Anvisa registra duas novas canetas emagrecedoras de semaglutida. Um terço dos jovens de 16 a 29 anos quer chegar à universidade. Especialistas alertam para risco de reinfecção da dengue. O reprocessamento dos resultados substitui o Edital Enap 260/2026, publicado em setembro de 2026 e anulado por inteiro, em 6 de outubro, por segurança jurídica. O novo edital segue os mesmos dispositivos e parâmetros dos editais de convocação anteriores do CNU 2, como os critérios de classificação, as regras de reserva de vagas e os prazos. Vagas O novo documento traz o número de vagas para ampla concorrência e para as reservas previstas",
-      "imageUrl": "https://imagens.ebc.com.br/Y5-lAKMdjBWEhCsvikP5P3r39C4=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2025/10/05/toms8688.jpg?itok=_6pC23iF",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-10T18:35:00.000Z",
-      "firstSeenAt": "2026-11-10T19:33:57.494Z",
-      "lastSeenAt": "2026-11-10T19:45:44.554Z"
-    },
-    {
-      "id": "event-89723a2b",
-      "category": "brasil",
-      "title": "Bosch negocia motores elétricos feitos no Brasil com 7 montadoras no Brasil",
-      "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxNMjhUdnZwSkpJczd4cG1GYUczQnMtVjNOeHZxVUZmZ3h5ZWE4ZEhMYjM1eG90ZFE5SGQ0azBkZnZBUGNuVmFsSEtFb2UzWV9kSkVVYzdETUNnek9OVnBacnVhT1VBQTNJaXh3ajNuOXl0M3RJX0ZJb3gwdVpDWk5RbnVCNGpKcWlMSDQ2QV9XVTVFb2dVRGZDdVRsWVV0ODNMN3dxQ1pDWFdjVGktNXVoRDM2YUZYTlZiXzNGQlhoY1lsOFktYjRjcGdYQzBlYlNZ0gHWAUFVX3lxTE5mQl9vekM2Q2xoLXBIQXFHUExRNkx6d1psbUxQdVJCYzdINDhKTDFmSFlGdEExQzV3T1I3dW00X3hkZjZVRnZjb3hlajl6QmY5dDJneTFmZUNXTlBsX1BwREhrSEJrUmJrLTI1cDhvbHpNbFc1bld5LU5WdVJNWi1qdWNoUktEOHVRSEQ2UEgzSDJvakllQXhwVlUxTEFLLUc3WDJaanp5bmxOaUU2N1pDYXE1WGxEVk1LQk5HZ3BaS0JZS2d0TU5TUTBJcjhrc25nQnN0V0E",
-      "description": "Bosch negocia motores elétricos feitos no Brasil com 7 montadoras no Brasil &nbsp;&nbsp; Estadão",
-      "imageUrl": null,
-      "source": "Estadão",
-      "publishedAt": "2026-11-10T18:33:00.000Z",
-      "firstSeenAt": "2026-11-10T19:33:57.494Z",
-      "lastSeenAt": "2026-11-10T19:45:44.554Z"
-    },
-    {
-      "id": "event-a3d974d9",
-      "category": "brasil",
-      "title": "Anvisa determina apreensão de suplementos alimentares",
-      "url": "https://agenciabrasil.ebc.com.br/saude/noticia/2026-11/anvisa-determina-apreensao-de-suplementos-alimentares",
-      "description": "A Agência Nacional de Vigilância Sanitária (Anvisa) determinou nesta terça-feira (10) a apreensão de suplementos alimentares divulgados e vendidos de maneira irregular no país. A resolução foi publicada no Diário Oficial da União (DOU). Em nota, a agência informou que suplementos produzidos pela empresa W Nutry Ltda. não podem ser fabricados, vendidos, distribuídos, divulgados nem utilizados. “Não foram identificadas notificações ou registros desses produtos junto à Anvisa”. Notícias relacionadas: Anvisa manda retirar do mercado duas marcas de suplemento alimentar. Anvisa proíbe saneante e pó descolorante. Anvisa determina recolhimento de emagrecedor Ultra Shape. As mesmas sanções foram aplicadas a todos os lotes do suplemento alimentar de colostro bovino em pó da marca Muuh Magic, que não possui notificação sanitária junto à Anvisa. O produto é fabricado pela Hupper Nutrition Ltda. “A divulgação do produto incluía alegações terapêuticas, funcionais e de saúde não autorizadas, incluindo prevenção de diabetes e de doenças crônicas, tratamento de ansiedade e estresse, melhora da saúde",
-      "imageUrl": "https://imagens.ebc.com.br/kL4sBdVHau6U467C9Nn7O68ygWw=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/11-11-2020_sede_anvisa-4_0.jpg?itok=-3OpV90w",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-10T18:18:00.000Z",
-      "firstSeenAt": "2026-11-10T19:33:57.494Z",
-      "lastSeenAt": "2026-11-10T19:45:44.554Z"
-    },
-    {
-      "id": "event-ca6bd3d2",
-      "category": "mundo",
-      "title": "Principais notícias do mundo na tarde de hoje (10)",
-      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxOT1hsb0NqLXdKRWxMZkkwaE1oNXJxTUpvRmNsakhaeWdNTmF6d05lTkNmcXZKYkN2cDRIbHZFVjdxSlR1Zmphc0NVMEFrYjRjVURMb053T0M4YUY5MFRBSDQ2bWdkUnVLYmpUSlBDaU1tOTJPVUtuYXctX3J5X0ZZaVdKWXZGZ1RuVkE0a1ROd0UzQkc3X0FrMDdrYzhmOTV1eE1hS0ZNYXAtRXF4",
-      "description": "Principais notícias do mundo na tarde de hoje (10) &nbsp;&nbsp; Tribuna do Sertão",
-      "imageUrl": null,
-      "source": "Tribuna do Sertão",
-      "publishedAt": "2026-11-10T18:03:00.000Z",
-      "firstSeenAt": "2026-11-10T19:33:57.494Z",
-      "lastSeenAt": "2026-11-10T19:45:44.554Z"
-    },
-    {
-      "id": "event-626384fb",
-      "category": "santa-catarina",
-      "title": "Defesa Civil de SC atende municípios atingidos por chuva forte nesse fim de semana; 11 decretaram situação de emergência.",
-      "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxPaHpVT2ZpZDNiWW43RUszODlDRFd5WEVvOXhPRDhMU194Z1ExaFFPLUl0OXRkYVU2WkUxWTNqSlR1ZGljbFJ6LUtqcEZFakZvQXhjVXI0NkYxb3M4VVdva3ZScGxGN3U0OEV0ZFNSYmh3RHBKWjJNNzdFLVBDT0ZVcUhvU1F6T2g5OUFkT2xESTJUemlTZVBuRnZZcTcwZzFFNlhrNXprUllFNGpPYU1Memx6Q254eXhmb0JVYVpjSmFlRzVaYzk4Z0lTNFNGTmNDQWFYbmhIZVY0b0xUYmloYQ",
-      "description": "Defesa Civil de SC atende municípios atingidos por chuva forte nesse fim de semana; 11 decretaram situação de emergência. &nbsp;&nbsp; Blog do Jaime",
-      "imageUrl": null,
-      "source": "Blog do Jaime",
-      "publishedAt": "2026-11-10T18:00:00.000Z",
-      "firstSeenAt": "2026-11-10T19:33:57.494Z",
-      "lastSeenAt": "2026-11-11T01:22:20.785Z"
-    },
-    {
-      "id": "event-7603c438",
-      "category": "clima",
-      "title": "El Niño eleva riscos na comercialização da soja 2026/27",
-      "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxOWFVRNVlja29KQ1NNZ0FVc0xGRWpzZ0V4YzR2cHo3X3YteW41aGxrb2J3b2NlQ29FNmROUWVDRWtUUEV3bjh2V0NXNnJkc2FkTGFzV0VxaTB5dENRMlFwTF9HLW8tamE2WnlWWVhReTd6M1dsTjROcXJRZWRQMkdqUGcxLUdfSGE0bFpLU3ZHazNYSDgtV1puS0QwVQ",
-      "description": "El Niño eleva riscos na comercialização da soja 2026/27 &nbsp;&nbsp; Revista Cultivar",
-      "imageUrl": null,
-      "source": "Revista Cultivar",
-      "publishedAt": "2026-11-10T17:40:09.000Z",
-      "firstSeenAt": "2026-11-11T01:22:20.785Z",
-      "lastSeenAt": "2026-11-11T07:57:54.640Z"
-    },
-    {
-      "id": "event-acbc2221",
-      "category": "brasil",
-      "title": "Dinheiro esquecido no sistema financeiro ultrapassa R$ 6 bilhões",
-      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxOeV9XakxwVVFIdFQ4LVFPd21QcnN5Q0gzVWlTdndJckJyUEFzaUVneXBwWFo1aUh4bDF3SzVSSEdlV09WWWYxVzY5ajFDVGQ3ZXVoWURXUHRIQUNVRUxMT1o5c25hY2NZdDVWUnhlcWE0bGhkRzJISHU4eUpzSHhOQTB5aDdNemRHUUJWU2hoUWRUQmhmMGw1X3FVQlkxOGJXVGh4ZE43U0JNRWFnUFZObjdwY2x0Q0JqQ2dxUXBR",
-      "description": "Dinheiro esquecido no sistema financeiro ultrapassa R$ 6 bilhões &nbsp;&nbsp; Agência Brasil",
-      "imageUrl": null,
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-10T17:39:00.000Z",
-      "firstSeenAt": "2026-11-10T19:33:57.494Z",
-      "lastSeenAt": "2026-11-10T19:33:57.494Z"
-    },
-    {
-      "id": "event-f7ed634d",
-      "category": "clima",
-      "title": "População de Fortaleza será alertada em caso de calor extremo",
-      "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQTmhJczRFVDBHaW9jMnhQalFpc1c3Q3NpZDJKZlRPRlFPLWh3RzFIR0tsXzRsTWhWaFI0OUNYeEpuZ1o4YWpYMDMxRmI4VGhic0N2ZmNFMUlna21nd0l3TUhSdHp6ZWM0SjFlakRtT0ktRjlvdkFKTTVCTmNBYmFyMXpDTEJjamZZSnJ0NkZFekhlcFkyRU5UcVlmdUk",
-      "description": "População de Fortaleza será alertada em caso de calor extremo &nbsp;&nbsp; URB News",
-      "imageUrl": null,
-      "source": "URB News",
-      "publishedAt": "2026-11-10T16:07:00.000Z",
-      "firstSeenAt": "2026-11-10T21:26:02.557Z",
-      "lastSeenAt": "2026-11-11T01:22:20.785Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-10T19:33:57.494Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 14,
-      "newArticles": 14,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "asia"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
-    {
-      "at": "2026-11-10T19:45:44.554Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 14,
-      "newArticles": 3,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "asia"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
-    {
-      "at": "2026-11-10T21:26:02.557Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 14,
-      "newArticles": 6,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "asia"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-11T01:22:20.785Z",
       "ok": true,
@@ -681,14 +561,31 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-11T22:26:57.531Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 15,
+      "newArticles": 13,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "europa",
+        "asia"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
-  "checkCount": 6,
-  "lastSuccessfulAt": "2026-11-11T15:55:43.486Z",
+  "checkCount": 4,
+  "lastSuccessfulAt": "2026-11-11T22:26:57.531Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-11T15:55:43.486Z",
+      "checkedAt": "2026-11-11T22:26:57.531Z",
       "warnings": [
         {
           "id": "56356",
@@ -747,7 +644,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-11T15:55:43.486Z",
+      "checkedAt": "2026-11-11T22:26:57.531Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "8 October 2026",
