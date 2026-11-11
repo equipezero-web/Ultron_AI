@@ -33,3 +33,6 @@ A CI em GitHub Actions valida os testes de modelo, segurança e UI responsiva; o
 
 ## Recuperação sem Cloudflare
 Se as novas rotas do Worker responderem 404/5xx (por exemplo, falha de deploy de vínculo D1), o módulo cliente usa as mesmas funções de validação para consultar **diretamente** os endpoints públicos `geocoding-api.open-meteo.com` e `api.open-meteo.com`, por CORS. Nenhum token é exposto. Isso só funciona com acesso à rede e com o serviço público da Open-Meteo disponível; não constitui um backend de monitoramento 24 horas. Em uso comercial, migrar para acesso contratado e/ou servidor autorizado, não depender da API pública gratuita.
+
+## Disponibilidade variável do último dia
+Durante a virada de data local, a API pode devolver o último dia de uma consulta de 16 dias com temperaturas ou chuvas `null`. O JARVIS agora preserva os **15 dias completos** quando o **último** está incompleto e mostra explicitamente `15 de 16 dias disponíveis`, sem converter ausências em zero nem interpolar valores. Lacunas no meio da série continuam invalidando a consulta. O endpoint de produção é publicado novamente quando o normalizador compartilhado muda.

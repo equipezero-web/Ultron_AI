@@ -41,10 +41,17 @@ export function normalizeGlobalForecast(payload,location,{days=7,now=()=>new Dat
   const date=daily.time[i];
   if(typeof date!=="string"||!/^\d{4}-\d{2}-\d{2}$/.test(date)||(i&&date<=daysOut[i-1].date))return null;
   const day={date};
+  let incomplete=false;
   for(const [field,key,min,max] of attributes){
    const n=number(daily[field][i],min,max);
-   if(n===null)return null;
+   if(n===null){incomplete=true;break;}
    day[key]=n;
+  }
+  // A model update can return a partially populated FINAL forecast day.
+  // Never create numbers from null; keep valid previous days and label the shortfall.
+  if(incomplete){
+   if(i===days-1&&daysOut.length>=2)break;
+   return null;
   }
   if(day.minC>day.maxC)return null;
   daysOut.push(day);
@@ -52,7 +59,8 @@ export function normalizeGlobalForecast(payload,location,{days=7,now=()=>new Dat
  if(daysOut[0].date!==current.time.slice(0,10))return null;
  return {ok:true,kind:"global-short-term-forecast",location:{...location},fetchedAt:now(),
   current:{time:current.time,temperatureC:temp,humidityPercent:hum,precipitationMm:rain,windKmh:wind},
-  days:daysOut,source:{...WEATHER_SOURCE,name:"Open-Meteo.com (CC BY 4.0); localidades GeoNames",
+  days:daysOut,requestedDays:days,partialForecast:daysOut.length<days,
+  source:{...WEATHER_SOURCE,name:"Open-Meteo.com (CC BY 4.0); localidades GeoNames",
    disclaimer:"Estimativa numérica, não medição instantânea nem alerta oficial. Até 16 dias de previsão; a incerteza aumenta com o horizonte. Consulte o serviço oficial de alertas do país."},
   isOfficialAlert:false};
 }
@@ -62,7 +70,8 @@ export function globalWeatherSummary(r){
  const d=r.days[0];
  return "Previsão para "+r.location.label+": temperatura modelada "+fmt(r.current.temperatureC)+
   " °C, umidade "+fmt(r.current.humidityPercent)+"%, vento "+fmt(r.current.windKmh)+
-  " km/h. "+r.days.length+" dias de previsão. Hoje ("+d.date+"): "+fmt(d.minC)+" a "+
+  " km/h. "+(r.partialForecast?r.days.length+" de "+r.requestedDays+" dias com dados completos disponíveis":r.days.length+" dias de previsão")+
+  ". Hoje ("+d.date+"): "+fmt(d.minC)+" a "+
   fmt(d.maxC)+" °C; chuva "+fmt(d.rainMm)+" mm, chance máxima "+fmt(d.rainChancePercent)+
   "%. Fonte Open-Meteo/GeoNames; consulta "+r.fetchedAt+". Não é alerta oficial.";
 }
@@ -70,7 +79,7 @@ export function globalWeatherScenario(r){
  if(!globalWeatherSummary(r)||!r.location.key.startsWith("global-"))return null;
  const loc=r.location,point=(id,detail)=>({id,name:loc.label,lat:loc.lat,lng:loc.lng,kind:"weather",detail,source:WEATHER_SOURCE.url});
  return {id:"weather-"+loc.key,title:"Meteorologia mundial — "+loc.name,projection:"world",
-  source:{...r.source,basePeriod:"Consulta "+r.fetchedAt+"; "+r.days.length+" dias"},
+  source:{...r.source,basePeriod:"Consulta "+r.fetchedAt+"; "+r.days.length+" de "+(r.requestedDays||r.days.length)+" dias completos"},
   frames:[
    {id:"current",name:"Estimativa atual",type:"modelo meteorológico, não estação local",kind:"current-estimate",
     description:"Estimativa do modelo para "+loc.label+" em "+r.current.time+": "+fmt(r.current.temperatureC)+" °C, umidade "+

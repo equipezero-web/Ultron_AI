@@ -1,0 +1,16 @@
+/* Sourced global weather samples in wake bulletin; clearly distinct from official warnings. */
+body.jarvis-command-center .jarvis-intel-weather-sampler{
+ border:1px solid rgba(109,171,196,.38);background:rgba(9,27,43,.78);
+ padding:8px 10px;border-radius:8px;min-width:0;max-width:100%;
+ display:flex;flex-direction:column;gap:5px;overflow-wrap:anywhere;
+}
+body.jarvis-command-center .jarvis-intel-weather-sampler strong{
+ font-size:10px;line-height:1.4;color:#acdbe9;letter-spacing:.04em;
+}
+body.jarvis-command-center .jarvis-intel-weather-sampler p{
+ margin:0;font-size:10px;line-height:1.45;color:#d5e6e9;
+}
+@media(max-width:820px){
+ body.jarvis-command-center .jarvis-intel-weather-sampler{padding:7px 8px;gap:4px}
+ body.jarvis-command-center .jarvis-intel-weather-sampler p{font-size:9px}
+}

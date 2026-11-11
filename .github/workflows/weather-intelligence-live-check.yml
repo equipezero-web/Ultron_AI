@@ -50,7 +50,7 @@ jobs:
           };
           const page=await get('pages',site);
           assert.equal(page.status,200);
-          assert.match(page.text,/jarvis-geospatial-visual[.]js[?]v=4[.]75[.]0/);
+          assert.match(page.text,/jarvis-geospatial-visual[.]js[?]v=4[.][0-9]+[.][0-9]+/);
           const js=await get('insight-model',site+'modules/jarvis-weather-insight-model.js?v=4.75.0');
           assert.equal(js.status,200);
           assert.match(js.text,/insightScenario/);

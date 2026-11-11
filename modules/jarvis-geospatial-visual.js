@@ -1,5 +1,5 @@
 import API_CONFIG from "../config.js";
-import {globalWeatherScenario} from "./jarvis-global-weather.js?v=4.73.0";
+import {globalWeatherScenario} from "./jarvis-global-weather.js?v=4.77.0";
 import {searchGlobalLocations,loadGlobalWeather} from "../backend/weather-global.js?v=4.74.0";
 import {loadWeatherInsight} from "../backend/weather-intelligence.js?v=4.75.0";
 import {insightScenario,insightSummary,monitorSummary,WEATHER_INSIGHT_LABELS} from "./jarvis-weather-insight-model.js?v=4.75.0";
