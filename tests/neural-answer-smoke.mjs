@@ -436,6 +436,29 @@ try {
     assert.equal(weather.result.ok,true,JSON.stringify(weather));
     assert.equal(weather.state.scenario,'weather-recife');
     assert.equal(weather.state.mode,'2d');
+
+    // Screenshot regression: the 2D map owns the entire Neural Ring stage.
+    // It must no longer be a narrow floating pane in front of the large globe.
+    const mapLayout=await page.evaluate(()=>{
+      const stage=document.querySelector('.jarvis-cc-center').getBoundingClientRect();
+      const panel=document.querySelector('.jarvis-geo-visual');
+      const overlay=panel.getBoundingClientRect();
+      const map=document.querySelector('.jarvis-geo-2d').getBoundingClientRect();
+      return {stage:{x:stage.x,y:stage.y,w:stage.width,h:stage.height},
+        overlay:{x:overlay.x,y:overlay.y,w:overlay.width,h:overlay.height},
+        map:{w:map.width,h:map.height},mode:panel.dataset.mode,
+        scroll:getComputedStyle(panel).overflowY,
+        hidden:panel.hidden};
+    });
+    assert.equal(mapLayout.mode,'2d');
+    assert.equal(mapLayout.hidden,false);
+    assert.ok(Math.abs(mapLayout.overlay.x-mapLayout.stage.x)<5,JSON.stringify(mapLayout));
+    assert.ok(Math.abs(mapLayout.overlay.y-mapLayout.stage.y)<5,JSON.stringify(mapLayout));
+    assert.ok(mapLayout.overlay.w>mapLayout.stage.w*.95,JSON.stringify(mapLayout));
+    assert.ok(mapLayout.overlay.h>mapLayout.stage.h*.95,JSON.stringify(mapLayout));
+    assert.ok(mapLayout.map.w>mapLayout.stage.w*.76,JSON.stringify(mapLayout));
+    assert.equal(mapLayout.scroll,'auto');
+
     assert.equal(weather.state.frameCount,4,'Current estimate plus 3 forecast days');
     assert.ok(weather.description?.includes('mm'),'Must display sourced precipitation values');
     assert.match(weather.source,/open-meteo/);
@@ -444,6 +467,12 @@ try {
     assert.equal(await page.evaluate(()=>window.ULTRON_GEO_VISUAL.state.frame),3);
     await page.evaluate(()=>window.ULTRON_GEO_VISUAL.setMode('3d'));
     assert.equal(await page.evaluate(()=>window.ULTRON_GEO_VISUAL.state.mode),'3d');
+    if(viewport.width>1000){
+      const stageWidth=await page.$eval('.jarvis-cc-center',el=>el.getBoundingClientRect().width);
+      const hudWidth=await page.$eval('.jarvis-geo-visual',el=>el.getBoundingClientRect().width);
+      assert.ok(hudWidth<stageWidth*.8,'3D mode should recover the compact HUD instead of hiding the globe');
+    }
+
     assert.ok(await page.evaluate(()=>window.__phase3MockState.layerCount)>0,'Forecast marker must be sent to globe');
     await page.evaluate(()=>window.ULTRON_GEO_VISUAL.close());
     // A Cloudflare 503 for the 11-capital route must recover via Open-Meteo
