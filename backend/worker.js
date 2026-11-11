@@ -1,6 +1,8 @@
 import {vetClientTaskContext,contextSearchQuery} from "./task-context.js";
 import {loadLiveWeather} from "./weather-live.js";
 import {searchGlobalLocations,loadGlobalWeather} from "./weather-global.js";
+import {loadWeatherInsight} from "./weather-intelligence.js";
+import {pollWeatherMonitor,latestWeatherMonitor} from "./weather-monitor.js";
 import {ACTIONS,parsePlanText,isActionRequest} from "./action-catalog.js";
 import {capabilityAnswer} from "./jarvis-capabilities.js";
 import { deepenNews } from "./news-details.js";
@@ -996,6 +998,21 @@ export default {
 
     if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: corsHeaders() });
     if (path === "/api/health" && request.method === "GET") return health(env);
+    if(path==="/api/geo/insight"&&request.method==="GET"){
+      const result=await loadWeatherInsight({
+       type:url.searchParams.get("type"),city:url.searchParams.get("city"),id:url.searchParams.get("id"),
+       year:url.searchParams.get("year"),month:url.searchParams.get("month")
+      });
+      return new Response(JSON.stringify(result),{status:result.ok?200:result.status||503,
+       headers:{...corsHeaders(),"Cache-Control":result.ok?"public, max-age=900":"no-store",
+        "X-Content-Type-Options":"nosniff"}});
+    }
+    if(path==="/api/geo/monitor"&&request.method==="GET"){
+      const result=await latestWeatherMonitor(env);
+      return new Response(JSON.stringify(result),{status:result.ok?200:result.status||503,
+       headers:{...corsHeaders(),"Cache-Control":result.ok?"public, max-age=300":"no-store",
+        "X-Content-Type-Options":"nosniff"}});
+    }
     if(path==="/api/geo/locations"&&request.method==="GET"){
       const result=await searchGlobalLocations(url.searchParams.get("q"));
       return new Response(JSON.stringify(result),{status:result.ok?200:result.status||503,headers:{
@@ -1387,5 +1404,6 @@ export default {
 
   async scheduled(controller, env, ctx) {
     ctx.waitUntil(processDueAutomations(env, { limit: 50 }));
+    ctx.waitUntil(pollWeatherMonitor(env).catch(error=>console.warn("JARVIS weather monitor unavailable",String(error?.message||error))));
   }
 };
