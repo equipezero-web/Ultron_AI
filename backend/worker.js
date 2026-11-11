@@ -3,6 +3,7 @@ import {loadLiveWeather} from "./weather-live.js";
 import {searchGlobalLocations,loadGlobalWeather} from "./weather-global.js";
 import {loadWeatherInsight} from "./weather-intelligence.js";
 import {pollWeatherMonitor,latestWeatherMonitor} from "./weather-monitor.js";
+import {configureWeatherWatch,listWeatherWatches,pollPersonalWeatherWatches} from "./weather-watchlist.js";
 import {ACTIONS,parsePlanText,isActionRequest} from "./action-catalog.js";
 import {capabilityAnswer} from "./jarvis-capabilities.js";
 import { deepenNews } from "./news-details.js";
@@ -1007,6 +1008,21 @@ export default {
        headers:{...corsHeaders(),"Cache-Control":result.ok?"public, max-age=900":"no-store",
         "X-Content-Type-Options":"nosniff"}});
     }
+    // Watchlists are private, unlike public forecast and sample-monitor routes.
+    if(path==="/api/geo/watchlist"&&request.method==="POST"){
+      const body=await bodyOf(request);
+      const operatorId=await operatorFrom(body);
+      if(!operatorId)return missingOperator();
+      const result=await listWeatherWatches(env,operatorId);
+      return json(result,result.ok?200:result.status||503);
+    }
+    if(path==="/api/geo/watchlist/configure"&&request.method==="POST"){
+      const body=await bodyOf(request);
+      const operatorId=await operatorFrom(body);
+      if(!operatorId)return missingOperator();
+      const result=await configureWeatherWatch(env,operatorId,{action:body.action,id:body.id});
+      return json(result,result.ok?200:result.status||503);
+    }
     if(path==="/api/geo/monitor"&&request.method==="GET"){
       const result=await latestWeatherMonitor(env);
       return new Response(JSON.stringify(result),{status:result.ok?200:result.status||503,
@@ -1405,5 +1421,6 @@ export default {
   async scheduled(controller, env, ctx) {
     ctx.waitUntil(processDueAutomations(env, { limit: 50 }));
     ctx.waitUntil(pollWeatherMonitor(env).catch(error=>console.warn("JARVIS weather monitor unavailable",String(error?.message||error))));
+    ctx.waitUntil(pollPersonalWeatherWatches(env).catch(error=>console.warn("JARVIS personal weather watch failed",String(error?.message||error))));
   }
 };
