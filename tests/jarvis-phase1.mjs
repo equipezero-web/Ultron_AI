@@ -10,7 +10,7 @@ assert.equal(classifyOperatorTurn("E no Nordeste?").kind,"follow-up");
 assert.equal(splitOperatorSteps("O que aconteceu depois da tempestade?").length,1);
 assert.equal(splitOperatorSteps("Pesquise sobre o El Niño e depois abra o globo; verifique o estado do sistema").length,3);
 assert.equal(splitOperatorSteps("Pesquise as consequências e em seguida me mostre o mapa").length,2);
-assert.equal(isPrivateTurn("Qual o meu saldo?"),false); // "qual o" is not a direct authorization
+assert.equal(isPrivateTurn("Qual o meu saldo?"),true); // Never send private banking context to public search
 assert.equal(isPrivateTurn("Meu saldo atual é R$500"),true);
 let clock=Date.parse("2026-11-11T09:00:00Z"),conversation="chat-1";
 const store=new Map(),storage={getItem:k=>store.get(k)||null,setItem:(k,v)=>store.set(k,v),removeItem:k=>store.delete(k)};
