@@ -151,6 +151,7 @@ if(stage){
    const requested=data||GEO_SCENARIOS[scenario];
    const validated=validateGeoScenario(requested);
    if(!validated)return {ok:false,error:"Cenário sem dados geográficos e fonte verificável"};
+   window.ULTRON_NEURAL_ANSWER?.clear?.(); // Geo visualization gets the ring's attention, no overlapping previous answer.
    stop();dataset=validated;filterKind="all";filter.value="all";selected=null;
    frameIndex=Math.min(1,dataset.frames.length-1);range.max=String(dataset.frames.length-1);
    heading.textContent=dataset.title.toUpperCase();
