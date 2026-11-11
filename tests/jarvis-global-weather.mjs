@@ -45,6 +45,17 @@ const paths=geoJSONPaths({type:"FeatureCollection",features:[{type:"Feature",geo
  coordinates:[[[130,40],[140,40],[140,30],[130,40]]]}}]},{projection:"world"});
 assert.equal(paths.length,1);
 assert.ok(paths[0].startsWith("M"));
+const incompleteLast=p();
+incompleteLast.daily.temperature_2m_max[15]=null;
+incompleteLast.daily.temperature_2m_min[15]=null;
+incompleteLast.daily.precipitation_sum[15]=null;
+const partial=normalizeGlobalForecast(incompleteLast,loc,{days:16,now});
+assert.equal(partial?.ok,true);
+assert.equal(partial.days.length,15);
+assert.equal(partial.requestedDays,16);
+assert.equal(partial.partialForecast,true);
+assert.match(globalWeatherSummary(partial),/15 de 16 dias/);
+assert.equal(globalWeatherScenario(partial).frames.length,16);
 const invalid=p();invalid.daily.temperature_2m_max[3]=null;
 assert.equal(normalizeGlobalForecast(invalid,loc,{days:16,now}),null,"Null numeric values must not be interpolated");
 const stale=p();stale.current.time="2026-11-10T01:00";
