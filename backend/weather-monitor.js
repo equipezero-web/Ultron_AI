@@ -56,17 +56,19 @@ export async function pollWeatherMonitor(env,{now=()=>new Date(),fetchImpl=fetch
   const exists=await db.prepare("SELECT region FROM jarvis_weather_monitor WHERE bucket = ? LIMIT 1").bind(bucket).first();
   if(exists)return {ok:true,skipped:true,reason:"bucket-already-collected",bucket};
  }catch{return {ok:false,error:"Não foi possível consultar deduplicação D1"};}
- // Sequential requests avoid spikes; max 6 provider calls every 3 hours (<50/day).
+ // Two concurrent requests per wave; at most six calls per 3-hour bucket (<50/day).
  const stored=[];
- for(const region of REGIONS){
-  const sample=await collect(region,fetchImpl);
-  if(!sample)continue;
-  try{
-   const checkedAt=date.toISOString();
-   await db.prepare("INSERT OR IGNORE INTO jarvis_weather_monitor (region,bucket,data_json,checked_at) VALUES (?,?,?,?)")
-    .bind(region.key,bucket,JSON.stringify(sample),checkedAt).run();
-   stored.push(region.key);
-  }catch{}
+ for(let offset=0;offset<REGIONS.length;offset+=2){
+  const results=await Promise.all(REGIONS.slice(offset,offset+2).map(async region=>{
+   const sample=await collect(region,fetchImpl);
+   if(!sample)return null;
+   try{
+    await db.prepare("INSERT OR IGNORE INTO jarvis_weather_monitor (region,bucket,data_json,checked_at) VALUES (?,?,?,?)")
+     .bind(region.key,bucket,JSON.stringify(sample),date.toISOString()).run();
+    return region.key;
+   }catch{return null;}
+  }));
+  stored.push(...results.filter(Boolean));
  }
  try{
   const minDate=new Date(date.getTime()-7*86400000).toISOString();
