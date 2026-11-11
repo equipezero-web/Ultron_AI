@@ -59,7 +59,9 @@ export function validateGeoScenario(input){
   if(!Array.isArray(frame.points)||frame.points.length>20||!frame.points.length)return null;
   const points=[];
   for(const item of frame.points){
-   if(item?.lat===null||item?.lat===undefined||item?.lng===null||item?.lng===undefined||typeof item.lat==='boolean'||typeof item.lng==='boolean')return null;
+   if(item?.lat===null||item?.lat===undefined||item?.lng===null||item?.lng===undefined||
+      !['number','string'].includes(typeof item.lat)||!['number','string'].includes(typeof item.lng)||
+      String(item.lat).trim()===''||String(item.lng).trim()==='')return null;
    const lat=Number(item.lat),lng=Number(item.lng);
    if(!Number.isFinite(lat)||!Number.isFinite(lng)||Math.abs(lat)>90||Math.abs(lng)>180||!Object.hasOwn(GEO_PALETTE,item?.kind))return null;
    const name=clean(item.name,100),detail=clean(item.detail,350);
