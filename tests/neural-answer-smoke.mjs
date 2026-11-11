@@ -391,6 +391,7 @@ try {
       window.ULTRON_EARTH={
         state,async open(){state.visible=true;return {ok:true}},
         setThematicLayer(points,{playing=false}={}){state.layerCount=points.length;state.playing=playing;return {ok:true,count:points.length};},
+        setThematicGrid(cells){state.spatialCount=cells.length;return {ok:true,count:cells.length};},
         clearThematicLayer(){state.layerCount=0;return {ok:true}},focus(lat,lng){state.focused=[lat,lng];return {ok:true}}
       };
       const result=await window.ULTRON_ORCHESTRATOR.execute('JARVIS, crie uma simulação 2D do El Niño','phase3-test');
@@ -561,6 +562,7 @@ try {
     assert.equal(await page.evaluate(()=>window.ULTRON_GEO_VISUAL.state.frame),3);
     await page.evaluate(()=>window.ULTRON_GEO_VISUAL.setMode('3d'));
     assert.equal(await page.evaluate(()=>window.ULTRON_GEO_VISUAL.state.mode),'3d');
+    assert.ok(await page.evaluate(()=>window.__phase3MockState.spatialCount)>=30,'3D globe must receive real sampled cell polygons');
     if(viewport.width>1000){
       const stageWidth=await page.$eval('.jarvis-cc-center',el=>el.getBoundingClientRect().width);
       const hudWidth=await page.$eval('.jarvis-geo-visual',el=>el.getBoundingClientRect().width);
