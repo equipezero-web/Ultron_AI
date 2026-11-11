@@ -1,21 +1,36 @@
-// Wheel recovery: legacy global listeners may consume wheel events even while arrow scrolling works.
-// Handle only the dashboard background; leave maps, inputs and scrollable panels alone.
-document.addEventListener('wheel', (event) => {
-  if (event.defaultPrevented || event.ctrlKey ||
-      event.target?.closest?.(
-        'iframe,textarea,input,select,#output-box,.screen-modal,.jarvis-cc-center,.jarvis-cc-visual,.jarvis-earth-globe,.jarvis-earth-reference-layout,.mapboxgl-map'
-      )) return;
-  const doc = document.scrollingElement || document.documentElement;
-  if (doc.scrollHeight <= doc.clientHeight + 2) return;
-  const before = doc.scrollTop;
-  requestAnimationFrame(() => {
-    // A map or Neural Ring can cancel the wheel after document capture.
-    // Never synthesize page scrolling for any zoom gesture.
-    if (!event.defaultPrevented && Math.abs(doc.scrollTop - before) < 1 && Math.abs(event.deltaY) > 0) {
-      doc.scrollBy({top:event.deltaY,behavior:'instant'});
+// Wheel routing for the shared Neural Ring / globe / Mapbox / 2D stage.
+// Standard wheel scrolls the PAGE. Ctrl+wheel is reserved for explicit zoom;
+// maps, news and tooltips may still scroll their OWN overflowable content.
+document.addEventListener('wheel', event => {
+  const target=event.target;
+  if(!document.body.classList.contains('jarvis-command-center')||
+     !target?.closest||event.ctrlKey||event.metaKey)return;
+  const stage=target.closest('.jarvis-cc-center, .jarvis-earth-reference-layout');
+  if(!stage)return;
+  if(target.closest('textarea,input,select,[contenteditable="true"],iframe,.screen-modal'))return;
+  // Capture before Mapbox.gl / Globe.gl / HUD listeners consume wheel input.
+  // Only route this exact user gesture; never scroll during passive hover.
+  if(event.cancelable)event.preventDefault();
+  event.stopImmediatePropagation();
+  const delta=event.deltaY*(event.deltaMode===1?16:event.deltaMode===2?innerHeight:1);
+  if(!Number.isFinite(delta)||Math.abs(delta)<.01)return;
+  // Panels are allowed to scroll independently. At their edges, wheel chains
+  // to the document even if an older stylesheet declares overscroll containment.
+  const overMap=Boolean(target.closest(
+    '#jarvis-cc-canvas,.jarvis-earth-renderer canvas,.mapboxgl-canvas,.jarvis-geo-2d svg'));
+  let scroller=null;
+  if(!overMap)for(let el=target;el&&el!==document.body;el=el.parentElement){
+    if(el===stage)break;
+    if(el.scrollHeight<=el.clientHeight+2)continue;
+    const overflow=getComputedStyle(el).overflowY;
+    if(!/^(auto|scroll)$/.test(overflow))continue;
+    if(delta>0?el.scrollTop<el.scrollHeight-el.clientHeight-2:el.scrollTop>2){
+      scroller=el;break;
     }
-  });
-}, {passive:true,capture:true});
+  }
+  (scroller||document.scrollingElement||document.documentElement)
+    .scrollBy({top:delta,behavior:'instant'});
+},{passive:false,capture:true});
 
 // Restore scrolling if a legacy subsystem leaves an inline overflow lock after a command.
 // Do not interfere with the fullscreen camera modal.
@@ -164,7 +179,7 @@ if (earthVisual) {
         projection:'globe',
         dragPan:true,dragRotate:false,
         scrollZoom:true,doubleClickZoom:true,touchZoomRotate:true,touchPitch:false,
-        boxZoom:false,keyboard:false,cooperativeGestures:false,
+        boxZoom:false,keyboard:false,cooperativeGestures:true,
         attributionControl:true,antialias:!mobileGPU,maxZoom:20,
         fadeDuration:mobileGPU?0:300
       });
