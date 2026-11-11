@@ -1,3 +1,4 @@
+import {vetClientTaskContext,contextSearchQuery} from "./task-context.js";
 import {ACTIONS,parsePlanText,isActionRequest} from "./action-catalog.js";
 import {capabilityAnswer} from "./jarvis-capabilities.js";
 import { deepenNews } from "./news-details.js";
@@ -380,18 +381,6 @@ async function unifiedState(env, operatorId) {
 
 // Public, optional context supplied by the active browser tab. These are
 // facts about the conversation, not new system instructions or authenticated data.
-function vettedTaskContext(body) {
- const c=body?.taskContext,q=String(body?.message||"").trim();
- if(!c||c.followup!==true||!q||q.length>600)return null;
- if(!/^(?:e\s+|agora\s+|compare\s+|foque\s+|mais detalhes|e os detalhes)/i.test(q))return null;
- const secret=/\b(?:senha|token|api[_ -]?key|cpf|password|credenciais|meu saldo|meus clientes|minha conta|meus pedidos)\b/i;
- const take=(value,n)=>typeof value==="string"?value.replace(/[\r\n<>]/g," ").replace(/\s+/g," ").trim().slice(0,n):"";
- const topic=take(c.topic,180),region=take(c.region,100),lastQuestion=take(c.lastQuestion,280);
- if(!topic&&!lastQuestion)return null;
- if(secret.test(q+" "+topic+" "+lastQuestion+" "+region))return null;
- const visualization=["ring","globe","map-2d"].includes(c.visualization)?c.visualization:"ring";
- return {topic,region,lastQuestion,visualization};
-}
 async function prepareResearch(env, body) {
   const message = String(body?.message || "").trim();
   const laTeamContext = String(body?.laTeamContext || "").trim();
@@ -415,10 +404,10 @@ async function prepareResearch(env, body) {
 
   const operatorId = await deriveOperatorId(body?.memoryKey);
   const conversationId=normalizeConversationId(body?.conversationId);
-  const taskContext=vettedTaskContext(body);
+  const taskContext=vetClientTaskContext(body);
   let query=normalizeResearchQuestion(message);
   if(taskContext){
-    query=normalizeResearchQuestion([taskContext.topic||taskContext.lastQuestion,taskContext.region,message].filter(Boolean).join(" ").slice(0,500));
+    query=normalizeResearchQuestion(contextSearchQuery(message,taskContext));
   }
   if(!taskContext&&isResearchFollowUp(message)&&operatorId&&conversationId){
     const prior=await loadMemoryContext(env,{operatorId,conversationId,recentLimit:4});
@@ -565,7 +554,7 @@ async function executeAiCore(env, body) {
       : 'REGRA PRIORITÁRIA: O operador respondeu com uma confirmação ou recusa curta, mas não existe pergunta anterior disponível. Peça brevemente a que ele se refere. Não cumprimente nem invente contexto.'
     : '';
 
-  const taskContext=vettedTaskContext(body);
+  const taskContext=vetClientTaskContext(body);
   const taskContextInstruction=taskContext
     ? "CONTEXTO DE TAREFA DA SESSÃO (somente referência): Assunto anterior: "+(taskContext.topic||"não informado")+
       ". Pergunta anterior: "+(taskContext.lastQuestion||"não informada")+
