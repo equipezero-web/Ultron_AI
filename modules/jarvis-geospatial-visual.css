@@ -277,3 +277,144 @@ body.jarvis-command-center .jarvis-geo-visual[data-mode="2d"] .jarvis-geo-detail
 /* Attribute-driven visibility always wins over 2D layout rules. */
 body.jarvis-command-center .jarvis-cc-center>.jarvis-geo-visual[data-mode="2d"][hidden],
 body.jarvis-command-center .jarvis-cc-center>.jarvis-geo-visual[data-mode="2d"] .jarvis-geo-2d[hidden]{display:none!important}
+
+
+/* Weather Explorer: the real map, not merely its outer panel, now shares the
+   Neural Ring with SOURCE-VALIDATED numeric forecast cards and time series. */
+body.jarvis-command-center .jarvis-geo-workspace[hidden]{display:none!important}
+body.jarvis-command-center .jarvis-cc-center>.jarvis-geo-visual[data-mode="2d"] .jarvis-geo-workspace{
+ display:grid!important;
+ grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);
+ align-items:stretch;gap:clamp(8px,1vw,16px);
+ width:100%;min-width:0;min-height:270px;
+ flex:1 1 340px!important;
+ overflow:hidden;
+}
+body.jarvis-command-center .jarvis-cc-center>.jarvis-geo-visual[data-mode="2d"] .jarvis-geo-2d{
+ display:flex!important;
+ flex-direction:column;
+ width:100%!important;height:100%!important;
+ min-width:0!important;min-height:0!important;
+ flex:1 1 auto!important;
+ overflow:hidden;
+ aspect-ratio:auto!important;
+ align-self:stretch!important;
+ background:radial-gradient(ellipse at center,#132f46,#081b30 70%);
+}
+body.jarvis-command-center .jarvis-cc-center>.jarvis-geo-visual[data-mode="2d"] .jarvis-geo-2d[hidden]{display:none!important}
+body.jarvis-command-center .jarvis-geo-map-tools{
+ display:flex;align-items:center;gap:6px;flex:0 0 auto;
+ padding:5px 7px;border-bottom:1px solid #31506a;
+ background:#0b2136;
+}
+body.jarvis-command-center .jarvis-geo-map-tools button{
+ min-width:34px;min-height:32px;padding:4px 9px;
+ border:1px solid #47738b;border-radius:6px;background:#153449;
+ color:#c9f0ff;cursor:pointer;font:700 13px/1 system-ui,sans-serif;
+}
+body.jarvis-command-center .jarvis-geo-map-tools button:focus-visible,
+body.jarvis-command-center .jarvis-geo-map-tools button:hover{
+ background:#24526a;border-color:#82d8f8;
+}
+body.jarvis-command-center .jarvis-geo-map-tools button:disabled{opacity:.42;cursor:default}
+body.jarvis-command-center .jarvis-geo-map-tools button:nth-child(4){font-size:10px}
+body.jarvis-command-center .jarvis-geo-map-zoom{margin-left:auto;color:#a3d5ec;font:11px ui-monospace,monospace}
+body.jarvis-command-center .jarvis-geo-2d svg{
+ cursor:grab;touch-action:none!important;user-select:none;flex:1 1 auto;
+ width:100%!important;height:100%!important;min-height:0;
+ max-height:none!important;
+}
+body.jarvis-command-center .jarvis-geo-2d svg:active{cursor:grabbing}
+body.jarvis-command-center .jarvis-geo-metrics{
+ display:flex;flex-direction:column;gap:10px;
+ min-width:0;min-height:0;overflow-y:auto;overscroll-behavior:contain;
+ padding:12px;border:1px solid #355773;border-radius:9px;
+ background:linear-gradient(165deg,#0c2539,#091b2e);
+ color:#d5edfa;
+}
+body.jarvis-command-center .jarvis-geo-metric-heading{display:flex;flex-direction:column;gap:3px}
+body.jarvis-command-center .jarvis-geo-metric-heading strong{
+ color:#d1f3ff;font:700 clamp(13px,1.2vw,17px)/1.3 ui-monospace,monospace;
+}
+body.jarvis-command-center .jarvis-geo-metric-heading small{
+ color:#9dc6dc;font:11px/1.35 system-ui,sans-serif;
+}
+body.jarvis-command-center .jarvis-geo-metric-grid{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;
+}
+body.jarvis-command-center .jarvis-geo-metric-card{
+ display:flex;flex-direction:column;justify-content:center;gap:6px;
+ min-height:66px;min-width:0;padding:10px;border-radius:8px;
+ border:1px solid #3e6683;background:#112f48;
+}
+body.jarvis-command-center .jarvis-geo-metric-card small{
+ color:#99c1d3;letter-spacing:.08em;font:700 9px/1.25 ui-monospace,monospace;
+}
+body.jarvis-command-center .jarvis-geo-metric-card strong{
+ color:#def8ff;font:700 clamp(16px,1.55vw,23px)/1.1 system-ui,sans-serif;
+ font-variant-numeric:tabular-nums;overflow-wrap:anywhere;
+}
+body.jarvis-command-center .jarvis-geo-chart-title{
+ color:#aadcf0;letter-spacing:.07em;font:700 10px/1.3 ui-monospace,monospace;
+}
+body.jarvis-command-center .jarvis-geo-rain-chart{display:grid;gap:6px}
+body.jarvis-command-center .jarvis-geo-rain-row{
+ display:grid;grid-template-columns:minmax(70px,95px) minmax(30px,1fr) minmax(50px,65px);
+ gap:8px;align-items:center;min-width:0;padding:4px;border-radius:5px;
+}
+body.jarvis-command-center .jarvis-geo-rain-row[data-active="true"]{background:#21445b}
+body.jarvis-command-center .jarvis-geo-rain-row small{font:10px ui-monospace,monospace;color:#b1d5e5}
+body.jarvis-command-center .jarvis-geo-rain-row strong{
+ text-align:right;color:#d8eff8;font:700 11px ui-monospace,monospace;
+ font-variant-numeric:tabular-nums;
+}
+body.jarvis-command-center .jarvis-geo-rain-track{
+ height:9px;overflow:hidden;border-radius:9px;background:#223b50;
+}
+body.jarvis-command-center .jarvis-geo-rain-track span{
+ display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,#3194c3,#8fe2fd);
+}
+body.jarvis-command-center .jarvis-geo-metric-disclaimer,
+body.jarvis-command-center .jarvis-geo-metric-empty{
+ margin:0;color:#a4bfd0;font:10px/1.4 system-ui,sans-serif;
+}
+body.jarvis-command-center .jarvis-geo-metric-disclaimer{margin-top:auto}
+@media(max-width:980px){
+ body.jarvis-command-center .jarvis-cc-center>.jarvis-geo-visual[data-mode="2d"] .jarvis-geo-workspace{
+  grid-template-columns:minmax(0,1fr);
+  flex:0 0 auto!important;min-height:0;overflow:visible;
+ }
+ body.jarvis-command-center .jarvis-cc-center>.jarvis-geo-visual[data-mode="2d"] .jarvis-geo-2d{
+  min-height:260px!important;height:clamp(260px,48vh,410px)!important;
+  flex:none!important;
+ }
+ body.jarvis-command-center .jarvis-geo-metrics{min-height:190px;overflow:visible}
+ body.jarvis-command-center .jarvis-geo-map-tools button{min-height:40px;min-width:40px}
+}
+@media(max-width:490px){
+ body.jarvis-command-center .jarvis-cc-center>.jarvis-geo-visual[data-mode="2d"] .jarvis-geo-2d{
+  min-height:220px!important;height:280px!important;
+ }
+ body.jarvis-command-center .jarvis-geo-metric-card{min-height:56px;padding:8px}
+ body.jarvis-command-center .jarvis-geo-metrics{padding:9px;gap:8px}
+ body.jarvis-command-center .jarvis-geo-map-tools{gap:4px;padding:4px}
+ body.jarvis-command-center .jarvis-geo-map-tools button{padding:4px 6px}
+}
+
+
+/* The Neural Ring can run in a simulated mobile viewport while Chromium's
+   CSS layout viewport is wider. Stage width is the reliable breakpoint. */
+body.jarvis-command-center .jarvis-cc-center>.jarvis-geo-visual[data-mode="2d"][data-screen="compact"] .jarvis-geo-workspace{
+ grid-template-columns:minmax(0,1fr)!important;
+ height:auto!important;min-height:0!important;
+ flex:0 0 auto!important;overflow:visible!important;
+}
+body.jarvis-command-center .jarvis-cc-center>.jarvis-geo-visual[data-mode="2d"][data-screen="compact"] .jarvis-geo-2d{
+ width:100%!important;min-width:0!important;
+ height:280px!important;min-height:220px!important;
+ flex:0 0 auto!important;
+}
+body.jarvis-command-center .jarvis-cc-center>.jarvis-geo-visual[data-mode="2d"][data-screen="compact"] .jarvis-geo-metrics{
+ width:100%;box-sizing:border-box;min-width:0;
+ max-height:none;overflow:visible;
+}

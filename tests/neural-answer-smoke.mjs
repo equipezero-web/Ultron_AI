@@ -444,9 +444,16 @@ try {
       const panel=document.querySelector('.jarvis-geo-visual');
       const overlay=panel.getBoundingClientRect();
       const map=document.querySelector('.jarvis-geo-2d').getBoundingClientRect();
+      const workspace=document.querySelector('.jarvis-geo-workspace').getBoundingClientRect();
+      const metrics=document.querySelector('.jarvis-geo-metrics').getBoundingClientRect();
       return {stage:{x:stage.x,y:stage.y,w:stage.width,h:stage.height},
         overlay:{x:overlay.x,y:overlay.y,w:overlay.width,h:overlay.height},
+        workspace:{w:workspace.width,h:workspace.height},
+        metrics:{w:metrics.width,h:metrics.height},
         map:{w:map.width,h:map.height},mode:panel.dataset.mode,
+        screen:panel.dataset.screen,
+        columns:getComputedStyle(document.querySelector('.jarvis-geo-workspace')).gridTemplateColumns,
+        innerWidth:window.innerWidth,
         scroll:getComputedStyle(panel).overflowY,
         hidden:panel.hidden};
     });
@@ -457,8 +464,35 @@ try {
     assert.ok(Math.abs(mapLayout.overlay.y-mapLayout.stage.y)<20,JSON.stringify(mapLayout));
     assert.ok(mapLayout.overlay.w>mapLayout.stage.w*.95,JSON.stringify(mapLayout));
     assert.ok(mapLayout.overlay.h>mapLayout.stage.h*.95,JSON.stringify(mapLayout));
-    assert.ok(mapLayout.map.w>mapLayout.stage.w*.76,JSON.stringify(mapLayout));
+    assert.ok(mapLayout.workspace.w>mapLayout.stage.w*.86,JSON.stringify(mapLayout));
+    if(mapLayout.stage.w<660)assert.equal(mapLayout.columns.split(/\\s+/).length,1,'Compact Neural Ring must stack map and metrics');
+    assert.ok(mapLayout.map.w>mapLayout.stage.w*(viewport.width<=980?.76:.42),JSON.stringify(mapLayout));
+    assert.ok(mapLayout.metrics.w>130,JSON.stringify(mapLayout));
     assert.equal(mapLayout.scroll,'auto');
+    const forecastCards=await page.$eval('.jarvis-geo-metrics',el=>el.textContent);
+    assert.match(forecastCards,/MÍNIMA PREVISTA/);
+    assert.match(forecastCards,/CHUVA PREVISTA/);
+    assert.match(forecastCards,/1,1 mm/);
+    assert.match(forecastCards,/CHUVA PREVISTA · PRÓXIMOS DIAS/);
+    assert.equal(await page.$eval('.jarvis-geo-rain-row[data-active="true"] small',el=>el.textContent),'2026-11-11');
+    // Map camera controls must change the REAL SVG viewbox, not its container.
+    const defaultBox=await page.$eval('.jarvis-geo-2d svg',el=>el.getAttribute('viewBox'));
+    await page.evaluate(()=>document.querySelector('[aria-label="Aproximar mapa 2D"]').click());
+    const zoomBox=await page.$eval('.jarvis-geo-2d svg',el=>el.getAttribute('viewBox'));
+    assert.notEqual(zoomBox,defaultBox,'Zoom must change geographic camera');
+    assert.equal(await page.$eval('.jarvis-geo-map-zoom',el=>el.textContent),'155%');
+    await page.evaluate(()=>document.querySelector('[aria-label="Centralizar mapa no local indicado"]').click());
+    assert.equal(await page.$eval('.jarvis-geo-map-zoom',el=>el.textContent),'270%');
+    await page.evaluate(()=>document.querySelector('[aria-label="Restaurar extensão completa do mapa"]').click());
+    assert.equal(await page.$eval('.jarvis-geo-2d svg',el=>el.getAttribute('viewBox')),defaultBox);
+    await page.evaluate(()=>window.ULTRON_GEO_VISUAL.setFrame(0));
+    const currentCards=await page.$eval('.jarvis-geo-metrics',el=>el.textContent);
+    assert.match(currentCards,/TEMPERATURA ESTIMADA/);
+    assert.match(currentCards,/29 °C/);
+    assert.match(currentCards,/UMIDADE/);
+    await page.evaluate(()=>window.ULTRON_GEO_VISUAL.setFrame(2));
+    assert.match(await page.$eval('.jarvis-geo-metric-card[data-metric="rainMm"] strong',el=>el.textContent),/12 mm/);
+    await page.evaluate(()=>window.ULTRON_GEO_VISUAL.setFrame(1));
 
     assert.equal(weather.state.frameCount,4,'Current estimate plus 3 forecast days');
     assert.ok(weather.description?.includes('mm'),'Must display sourced precipitation values');

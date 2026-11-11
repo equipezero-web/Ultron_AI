@@ -1,6 +1,6 @@
 import {TASK_CONTEXT} from "./jarvis-task-context.js?v=4.69.0";
-import {WEATHER_CITIES,weatherCity,weatherGeoScenario,weatherSummary} from "./jarvis-weather-model.js?v=4.72.0";
-import {globalWeatherScenario,globalWeatherSummary} from "./jarvis-global-weather.js?v=4.77.0";
+import {WEATHER_CITIES,weatherCity,weatherGeoScenario,weatherSummary} from "./jarvis-weather-model.js?v=4.82.0";
+import {globalWeatherScenario,globalWeatherSummary} from "./jarvis-global-weather.js?v=4.82.0";
 import {loadGlobalWeather} from "../backend/weather-global.js?v=4.74.0";
 import {loadLiveWeather} from "../backend/weather-live.js?v=4.80.0";
 import {loadWeatherInsight} from "../backend/weather-intelligence.js?v=4.75.0";
@@ -160,7 +160,7 @@ async function executeStep(step,original){
    }
    const data=insightScenario(report);
    if(!data)throw Error("A fonte não forneceu séries geográficas utilizáveis");
-   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.77.0");
+   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.82.0");
    const geo=requireApi(w.ULTRON_GEO_VISUAL,"open");
    const result=await geo.open({data,view:a.view});
    if(!result?.ok||geo.state?.scenario!==data.id||geo.state?.mode!==a.view)
@@ -190,7 +190,7 @@ async function executeStep(step,original){
       throw Error("A previsão mundial retornada não foi validada");
    const data=globalWeatherScenario(report),summary=globalWeatherSummary(report);
    if(!data||!summary)throw Error("Não foi possível construir a visualização mundial");
-   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.77.0");
+   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.82.0");
    const geo=requireApi(w.ULTRON_GEO_VISUAL,"open");
    const result=await geo.open({data,view:a.view});
    if(!result?.ok||!geo.state.visible||geo.state.scenario!==data.id||geo.state.mode!==a.view)
@@ -223,7 +223,7 @@ async function executeStep(step,original){
      throw Error("Dados meteorológicos inconsistentes");
    const dataset=weatherGeoScenario(payload),summary=weatherSummary(payload);
    if(!dataset||!summary)throw Error("Previsão inválida; nenhuma simulação será apresentada");
-   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.77.0");
+   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.82.0");
    const geo=requireApi(w.ULTRON_GEO_VISUAL,"open");
    const result=await geo.open({data:dataset,view:a.view});
    if(!result?.ok||!geo.state.visible||geo.state.scenario!==dataset.id||geo.state.mode!==a.view)
@@ -231,7 +231,7 @@ async function executeStep(step,original){
    return {text:summary,verified:true};
  }
  case "geo.show":case "geo.view2d":case "geo.view3d":case "geo.play":case "geo.pause":case "geo.next":case "geo.previous":case "geo.filter":case "geo.close":{
-   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.77.0");
+   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.82.0");
    const geo=w.ULTRON_GEO_VISUAL;
    if(!geo)throw Error("Motor de visualização geográfica indisponível");
    let result;

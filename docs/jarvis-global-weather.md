@@ -36,3 +36,11 @@ Se as novas rotas do Worker responderem 404/5xx (por exemplo, falha de deploy de
 
 ## Disponibilidade variável do último dia
 Durante a virada de data local, a API pode devolver o último dia de uma consulta de 16 dias com temperaturas ou chuvas `null`. O JARVIS agora preserva os **15 dias completos** quando o **último** está incompleto e mostra explicitamente `15 de 16 dias disponíveis`, sem converter ausências em zero nem interpolar valores. Lacunas no meio da série continuam invalidando a consulta. O endpoint de produção é publicado novamente quando o normalizador compartilhado muda.
+
+
+## Visualização 2D com conteúdo útil (Neural Ring)
+- O **Mapa 2D** combina a geografia oficial com cartões numéricos do período selecionado: temperatura, umidade e precipitação estimadas ou mínima, máxima, acumulado de chuva e probabilidade máxima do dia.
+- O gráfico de chuva compara os períodos disponíveis na previsão, sem preencher datas faltantes nem interpolar dados por município. O destaque acompanha a linha do tempo.
+- Controles **+ / − / ◎ / Brasil ou Mundo** ampliam, reduzem, centralizam no marcador e restauram a extensão geográfica. Mapa aceita arrastar com mouse, gesto de dois dedos e rolagem para zoom sem mover a página.
+- O modo **Globo 3D** continua independente. A área 2D não é um contêiner esticado: mapa e métricas dividem o espaço responsivamente.
+- Os pontos indicam a localidade da consulta. **Não há radar, tiles de nuvens, distribuição espacial da chuva, previsão por bairro nem grade regional completa**: estes exigem dados geográficos multicoordenadas / fontes diferentes. O mapa não simula uma camada espacial que a API não forneceu.

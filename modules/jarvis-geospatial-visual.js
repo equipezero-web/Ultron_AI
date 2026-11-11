@@ -1,9 +1,9 @@
 import API_CONFIG from "../config.js";
-import {globalWeatherScenario} from "./jarvis-global-weather.js?v=4.77.0";
+import {globalWeatherScenario} from "./jarvis-global-weather.js?v=4.82.0";
 import {searchGlobalLocations,loadGlobalWeather} from "../backend/weather-global.js?v=4.74.0";
 import {loadWeatherInsight} from "../backend/weather-intelligence.js?v=4.75.0";
 import {insightScenario,insightSummary,monitorSummary,WEATHER_INSIGHT_LABELS} from "./jarvis-weather-insight-model.js?v=4.75.0";
-import {GEO_SCENARIOS,GEO_PALETTE,geoFrame,validateGeoScenario,BRAZIL_OUTLINE_URL,WORLD_OUTLINE_URL,brazilXY,worldXY,geoJSONPaths} from "./jarvis-geospatial-model.js?v=4.75.0";
+import {GEO_SCENARIOS,GEO_PALETTE,geoFrame,validateGeoScenario,BRAZIL_OUTLINE_URL,WORLD_OUTLINE_URL,brazilXY,worldXY,geoJSONPaths} from "./jarvis-geospatial-model.js?v=4.82.0";
 
 // The visualization remains INSIDE the Neural Ring stage, no new page or pop-up.
 const stage=document.querySelector(".jarvis-cc-center");
@@ -73,7 +73,22 @@ if(stage){
  svg.setAttribute("viewBox","0 0 900 550");svg.setAttribute("role","img");
  svg.setAttribute("aria-label","Mapa interativo do Brasil");
  const svgLabels=document.createElement("div");svgLabels.className="jarvis-geo-map-note";
- canvas.append(svg,svgLabels);
+ const mapTools=document.createElement("div");mapTools.className="jarvis-geo-map-tools";
+ const mapControl=(text,description)=>{
+   const button=document.createElement("button");button.type="button";button.textContent=text;
+   button.setAttribute("aria-label",description);button.title=description;mapTools.append(button);return button;
+ };
+ const mapZoomIn=mapControl("+","Aproximar mapa 2D");
+ const mapZoomOut=mapControl("−","Afastar mapa 2D");
+ const mapFocus=mapControl("◎","Centralizar mapa no local indicado");
+ const mapReset=mapControl("Brasil / Mundo","Restaurar extensão completa do mapa");
+ const mapZoomLabel=document.createElement("span");mapZoomLabel.className="jarvis-geo-map-zoom";
+ mapZoomLabel.textContent="100%";mapTools.append(mapZoomLabel);
+ canvas.append(mapTools,svg,svgLabels);
+ const workspace=document.createElement("div");workspace.className="jarvis-geo-workspace";workspace.hidden=true;
+ const metricPanel=document.createElement("aside");metricPanel.className="jarvis-geo-metrics";
+ metricPanel.setAttribute("aria-label","Dados meteorológicos do período selecionado");
+ workspace.append(canvas,metricPanel);
  const list=document.createElement("div");list.className="jarvis-geo-region-list";list.setAttribute("aria-label","Regiões destacadas");
  const detail=document.createElement("p");detail.className="jarvis-geo-detail";detail.setAttribute("aria-live","polite");
  const footer=document.createElement("footer");footer.className="jarvis-geo-footer";
@@ -83,7 +98,7 @@ if(stage){
  officialAlerts.target="_blank";officialAlerts.rel="noopener noreferrer";
  officialAlerts.textContent="Consultar alertas oficiais do INMET";officialAlerts.hidden=true;
  footer.append(source,officialAlerts,caveat);
- panel.append(head,controls,placeBar,watchPanel,insightBar,placeResults,timeline,evidence,canvas,list,detail,footer);stage.append(panel);
+ panel.append(head,controls,placeBar,watchPanel,insightBar,placeResults,timeline,evidence,workspace,list,detail,footer);stage.append(panel);
  for(const type of ["pointerdown","pointerup","wheel","click","touchstart","touchend"]){
    panel.addEventListener(type,event=>event.stopPropagation(),{passive:true});
  }
@@ -91,11 +106,165 @@ if(stage){
  let geoLoading={brazil:null,world:null},seq=0,filterKind="all",refreshClock=null;
  const ns="http://www.w3.org/2000/svg";
  const e=(tag,attr={})=>{const el=document.createElementNS(ns,tag);for(const [k,v] of Object.entries(attr))el.setAttribute(k,String(v));return el;};
- function resize(){panel.dataset.screen=document.body.classList.contains("ultron-tv-display")?"tv":
-   stage.getBoundingClientRect().width<660||window.innerWidth<=820?"compact":"wide";}
+ function resize(){
+   const compact=stage.getBoundingClientRect().width<660||window.innerWidth<=820;
+   panel.dataset.screen=document.body.classList.contains("ultron-tv-display")?"tv":compact?"compact":"wide";
+   // The host can use a desktop CSS viewport with a narrow embedded Neural Ring.
+   // Compute columns from the actual stage, not media queries alone.
+   workspace.style.setProperty("grid-template-columns",
+     compact?"minmax(0,1fr)":"minmax(0,1.15fr) minmax(260px,.85fr)","important");
+   workspace.style.setProperty("flex",compact?"0 0 auto":"1 1 340px","important");
+   workspace.style.setProperty("overflow",compact?"visible":"hidden","important");
+   canvas.style.setProperty("height",compact?"280px":"100%","important");
+   canvas.style.setProperty("min-height",compact?"220px":"0","important");
+ }
  if(typeof ResizeObserver!=="undefined")new ResizeObserver(resize).observe(stage);
  window.addEventListener("resize",resize,{passive:true});
  resize();
+
+ // Map camera is independent of the 3D Earth camera. Only actual geocoded
+ // points and IBGE/Natural Earth contours are shown; no synthetic rain raster.
+ let mapZoom=1,mapCenter=null;
+ const pointerPositions=new Map();
+ let dragStart=null,pinchStart=null;
+ const baseViewport=()=>dataset?.projection==="world"?
+   {x:0,y:0,w:900,h:550}:{x:35,y:27,w:745,h:465};
+ const clamp=(n,low,high)=>Math.max(low,Math.min(high,n));
+ function drawMapViewport(){
+   const base=baseViewport(),w=base.w/mapZoom,h=base.h/mapZoom;
+   if(!mapCenter)mapCenter={x:base.x+base.w/2,y:base.y+base.h/2};
+   const x=clamp(mapCenter.x-w/2,0,900-w),y=clamp(mapCenter.y-h/2,0,550-h);
+   mapCenter={x:x+w/2,y:y+h/2};
+   svg.setAttribute("viewBox",[x,y,w,h].map(n=>n.toFixed(2)).join(" "));
+   svg.setAttribute("preserveAspectRatio","xMidYMid meet");
+   mapZoomLabel.textContent=Math.round(mapZoom*100)+"%";
+   mapZoomIn.disabled=mapZoom>=5;
+   mapZoomOut.disabled=mapZoom<=1;
+ }
+ function setMapZoom(value){
+   if(!dataset)return;
+   mapZoom=clamp(Number(value)||1,1,5);
+   drawMapViewport();
+ }
+ function focusMap(){
+   const p=geoFrame(dataset,frameIndex,"all")?.points?.find(p=>p.id===selected)||
+     geoFrame(dataset,frameIndex,"all")?.points?.[0];
+   if(!p)return;
+   const {x,y}=dataset.projection==="world"?worldXY(p.lng,p.lat):brazilXY(p.lng,p.lat);
+   if(Number.isFinite(x)&&Number.isFinite(y)){mapCenter={x,y};setMapZoom(2.7);}
+ }
+ function resetMap(){mapZoom=1;mapCenter=null;drawMapViewport();}
+ mapZoomIn.addEventListener("click",()=>setMapZoom(mapZoom*1.55));
+ mapZoomOut.addEventListener("click",()=>setMapZoom(mapZoom/1.55));
+ mapFocus.addEventListener("click",focusMap);
+ mapReset.addEventListener("click",resetMap);
+ svg.style.touchAction="none";
+ svg.addEventListener("wheel",event=>{
+   if(mode!=="2d"||panel.hidden)return;
+   event.preventDefault();event.stopPropagation();
+   setMapZoom(mapZoom*(event.deltaY<0?1.25:1/1.25));
+ },{passive:false});
+ const pointerDistance=()=>{
+   const values=[...pointerPositions.values()];
+   return values.length<2?0:Math.hypot(values[0].x-values[1].x,values[0].y-values[1].y);
+ };
+ svg.addEventListener("pointerdown",event=>{
+   if(mode!=="2d"||(event.pointerType!=="touch"&&event.button!==0))return;
+   pointerPositions.set(event.pointerId,{x:event.clientX,y:event.clientY});
+   try{svg.setPointerCapture(event.pointerId);}catch{}
+   if(pointerPositions.size===1){
+     dragStart={x:event.clientX,y:event.clientY,center:{...(mapCenter||{x:450,y:275})}};
+     pinchStart=null;
+   }else{
+     pinchStart=pointerDistance();dragStart=null;
+   }
+ });
+ svg.addEventListener("pointermove",event=>{
+   if(mode!=="2d"||!pointerPositions.has(event.pointerId))return;
+   pointerPositions.set(event.pointerId,{x:event.clientX,y:event.clientY});
+   if(pointerPositions.size>=2){
+     const next=pointerDistance();
+     if(pinchStart&&next>0)setMapZoom(mapZoom*next/pinchStart);
+     pinchStart=next;return;
+   }
+   if(!dragStart)return;
+   const rect=svg.getBoundingClientRect(),base=baseViewport();
+   if(rect.width<1||rect.height<1)return;
+   mapCenter={
+     x:dragStart.center.x-(event.clientX-dragStart.x)*base.w/mapZoom/rect.width,
+     y:dragStart.center.y-(event.clientY-dragStart.y)*base.h/mapZoom/rect.height
+   };
+   drawMapViewport();
+ });
+ const releasePointer=event=>{
+   pointerPositions.delete(event.pointerId);
+   if(pointerPositions.size===1){
+     const remaining=[...pointerPositions.values()][0];
+     dragStart={x:remaining.x,y:remaining.y,center:{...(mapCenter||{x:450,y:275})}};
+   }else dragStart=null;
+   pinchStart=null;
+ };
+ svg.addEventListener("pointerup",releasePointer);
+ svg.addEventListener("pointercancel",releasePointer);
+ svg.addEventListener("lostpointercapture",releasePointer);
+ function renderMetrics(frame){
+   metricPanel.replaceChildren();
+   const heading=document.createElement("div");heading.className="jarvis-geo-metric-heading";
+   const place=document.createElement("strong");place.textContent=frame.points[0]?.name||dataset.title;
+   const time=document.createElement("small");time.textContent=frame.name+" · "+frame.type;
+   heading.append(place,time);metricPanel.append(heading);
+   const definitions=[
+     ["temperatureC","TEMPERATURA ESTIMADA","°C"],
+     ["humidityPercent","UMIDADE","%"],
+     ["precipitationMm","CHUVA ESTIMADA","mm"],
+     ["windKmh","VENTO ESTIMADO","km/h"],
+     ["minC","MÍNIMA PREVISTA","°C"],
+     ["maxC","MÁXIMA PREVISTA","°C"],
+     ["rainMm","CHUVA PREVISTA","mm"],
+     ["rainChancePercent","CHANCE MÁXIMA DE CHUVA","%"]
+   ];
+   const available=definitions.filter(([key])=>Number.isFinite(frame.metrics?.[key]));
+   if(available.length){
+     const grid=document.createElement("div");grid.className="jarvis-geo-metric-grid";
+     for(const [key,label,unit] of available){
+       const card=document.createElement("div");card.className="jarvis-geo-metric-card";
+       card.dataset.metric=key;
+       const title=document.createElement("small");title.textContent=label;
+       const value=document.createElement("strong");
+       value.textContent=frame.metrics[key].toLocaleString("pt-BR",{maximumFractionDigits:1})+" "+unit;
+       card.append(title,value);grid.append(card);
+     }
+     metricPanel.append(grid);
+   }else{
+     const note=document.createElement("p");note.className="jarvis-geo-metric-empty";
+     note.textContent="Camada qualitativa: os dados publicados não contêm medidas numéricas para este ponto.";
+     metricPanel.append(note);
+   }
+   const precipitation=dataset.frames.filter(f=>Number.isFinite(f.metrics?.rainMm));
+   if(precipitation.length){
+     const title=document.createElement("strong");title.className="jarvis-geo-chart-title";
+     title.textContent="CHUVA PREVISTA · PRÓXIMOS DIAS";metricPanel.append(title);
+     const chart=document.createElement("div");chart.className="jarvis-geo-rain-chart";
+     const max=Math.max(1,...precipitation.map(f=>f.metrics.rainMm));
+     for(const f of precipitation){
+       const row=document.createElement("div");row.className="jarvis-geo-rain-row";
+       if(f.id===frame.id)row.dataset.active="true";
+       const date=document.createElement("small");date.textContent=f.name;
+       const track=document.createElement("div");track.className="jarvis-geo-rain-track";
+       const bar=document.createElement("span");bar.style.width=(f.metrics.rainMm/max*100).toFixed(2)+"%";
+       track.append(bar);
+       const value=document.createElement("strong");
+       value.textContent=f.metrics.rainMm.toLocaleString("pt-BR",{maximumFractionDigits:1})+" mm";
+       row.append(date,track,value);chart.append(row);
+     }
+     metricPanel.append(chart);
+   }
+   const disclaimer=document.createElement("p");disclaimer.className="jarvis-geo-metric-disclaimer";
+   disclaimer.textContent=available.length?
+    "Estimativa numérica por localidade, não radar ou mapa de chuva por bairro. Fonte e período informados abaixo.":
+    "Pontos geográficos representativos, não extensão real de impactos ou medição por município.";
+   metricPanel.append(disclaimer);
+ }
  function renderMap(frame){
    svg.replaceChildren();
    const bg=e("rect",{width:900,height:550,fill:"#091a2c",rx:12});svg.append(bg);
@@ -161,6 +330,7 @@ if(stage){
    evidence.textContent=frame.description;
    for(const [key,b] of Object.entries(modeButtons))b.setAttribute("aria-pressed",String(key===mode));
    panel.dataset.mode=mode;
+   workspace.hidden=mode!=="2d";
    canvas.hidden=mode!=="2d";
    list.replaceChildren();
    for(const p of frame.points){
@@ -173,7 +343,7 @@ if(stage){
    const selectedPoint=frame.points.find(p=>p.id===selected);
    if(selectedPoint){detail.textContent="";selectRegion(selectedPoint);}
    else{selected=null;detail.textContent=frame.points.length?"Selecione uma região para ver o que os dados indicam.":"Nenhuma região nessa categoria para o quadro selecionado.";}
-   if(mode==="2d")renderMap(frame);
+   if(mode==="2d"){renderMap(frame);drawMapViewport();renderMetrics(frame);}
    const earth=window.ULTRON_EARTH;
    if(earth?.state?.visible&&typeof earth.setThematicLayer==="function"){
      const points=frame.points.map(p=>({...p,color:GEO_PALETTE[p.kind]?.color||"#91d7f0"}));
@@ -197,11 +367,14 @@ if(stage){
    if(!validated)return {ok:false,error:"Cenário sem dados geográficos e fonte verificável"};
    window.ULTRON_NEURAL_ANSWER?.clear?.(); // Geo visualization gets the ring's attention, no overlapping previous answer.
    stop();dataset=validated;filterKind="all";filter.value="all";selected=null;
+   mapZoom=1;mapCenter=null;pointerPositions.clear();
+   mapReset.textContent=dataset.projection==="world"?"Mundo":"Brasil";
    frameIndex=Math.min(1,dataset.frames.length-1);range.max=String(dataset.frames.length-1);
    heading.textContent=dataset.title.toUpperCase();
    source.href=dataset.source.url;source.textContent=dataset.source.name;
    caveat.textContent=dataset.source.disclaimer;
    officialAlerts.hidden=!dataset.id.startsWith("weather-")||dataset.projection==="world";
+   filter.hidden=dataset.id.startsWith("weather-"); // A single local weather point has no competing ENSO categories.
    placeBar.hidden=dataset.projection!=="world";
    insightBar.hidden=dataset.projection!=="world";
    placeRefresh.disabled=!/^weather-global-\d+$/.test(dataset.id);

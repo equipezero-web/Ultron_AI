@@ -57,6 +57,26 @@ const validURL=value=>{
  try{const u=new URL(String(value||""));return u.protocol==="https:"&&!u.username&&!u.password?u.href:null;}catch{return null;}
 };
 const clean=(value,n)=>String(value||"").replace(/[\r\n<>]/g," ").replace(/\s+/g," ").trim().slice(0,n);
+
+// Optional numeric metrics come only from an already validated, sourced model.
+// Their ranges prevent a UI from silently turning text into invented weather.
+const METRIC_BOUNDS=Object.freeze({
+ temperatureC:[-100,65],humidityPercent:[0,100],precipitationMm:[0,2000],
+ windKmh:[0,500],minC:[-100,65],maxC:[-100,65],
+ rainMm:[0,2000],rainChancePercent:[0,100]
+});
+function validateMetrics(metrics){
+ if(metrics==null)return null;
+ if(typeof metrics!=="object"||Array.isArray(metrics))return false;
+ const result={};
+ for(const [key,value] of Object.entries(metrics)){
+  const bounds=METRIC_BOUNDS[key];
+  if(!bounds||typeof value!=="number"||!Number.isFinite(value)||
+    value<bounds[0]||value>bounds[1])return false;
+  result[key]=value;
+ }
+ return Object.keys(result).length?result:null;
+}
 export function validateGeoScenario(input){
  if(!input||typeof input!=="object"||!Array.isArray(input.frames)||!input.frames.length||input.frames.length>17)return null;
  if(!input.source||!validURL(input.source.url)||!clean(input.source.disclaimer,350))return null;
@@ -77,9 +97,11 @@ export function validateGeoScenario(input){
    if(points.some(previous=>previous.id===id))return null;
    points.push({id,name,lat,lng,kind:item.kind,detail,source});
   }
+  const metrics=validateMetrics(frame.metrics);
+  if(metrics===false)return null;
   frames.push({id:clean(frame.id,45),name:clean(frame.name,90),type:clean(frame.type,100),
     kind:["observed","forecast","illustrative","current-estimate","short-term-forecast"].includes(frame.kind)?frame.kind:"illustrative",
-    description:clean(frame.description,350),points});
+    description:clean(frame.description,350),metrics,points});
  }
  return {id:clean(input.id,55),title:clean(input.title,110),projection:input.projection==="world"?"world":"brazil",
    source:{name:clean(input.source.name,150),url:validURL(input.source.url),
