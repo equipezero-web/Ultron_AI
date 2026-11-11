@@ -23,6 +23,26 @@ try {
         if(req.method()==='OPTIONS')return req.respond({status:204,headers});
         return req.respond({status:200,headers,contentType:'application/json',body:JSON.stringify({ok:true,runId:'test-run',plan:{complex:false},runs:[]})});
       }
+      if(req.url().includes('/api/geo/global')){
+        const location={id:1850147,key:'global-1850147',name:'Tokyo',country:'Japan',countryCode:'JP',
+          region:'Tokyo',lat:35.6895,lng:139.6917,label:'Tokyo, Tokyo, Japan',timezone:'Asia/Tokyo'};
+        const payload={
+          ok:true,kind:'global-short-term-forecast',location,fetchedAt:'2026-11-11T12:00:00.000Z',
+          current:{time:'2026-11-11T21:00',temperatureC:18.2,humidityPercent:64,precipitationMm:0,windKmh:10},
+          days:Array.from({length:16},(_,i)=>({date:'2026-11-'+String(i+11).padStart(2,'0'),
+            minC:12,maxC:23,rainMm:2.5,rainChancePercent:40})),
+          source:{name:'Open-Meteo.com e GeoNames',url:'https://open-meteo.com/en/docs',
+            basePeriod:'test',disclaimer:'Previsão de modelo, não é alerta oficial.'}
+        };
+        return req.respond({status:200,headers:{'access-control-allow-origin':'*'},
+         contentType:'application/json',body:JSON.stringify(payload)});
+      }
+      if(req.url().includes('raw.githubusercontent.com/nvkelso/natural-earth-vector')){
+        return req.respond({status:200,headers:{'access-control-allow-origin':'*'},
+         contentType:'application/geo+json',
+         body:JSON.stringify({type:'FeatureCollection',features:[{type:'Feature',
+           geometry:{type:'Polygon',coordinates:[[[-122,48],[-66,48],[-66,24],[-122,24],[-122,48]]]}}]})});
+      }
       if(req.url().includes('/api/geo/weather')){
         const payload={
           ok:true,city:{key:'recife',name:'Recife',lat:-8.0476,lng:-34.877},
@@ -336,6 +356,26 @@ try {
     await page.evaluate(()=>window.ULTRON_GEO_VISUAL.setMode('3d'));
     assert.equal(await page.evaluate(()=>window.ULTRON_GEO_VISUAL.state.mode),'3d');
     assert.ok(await page.evaluate(()=>window.__phase3MockState.layerCount)>0,'Forecast marker must be sent to globe');
+    await page.evaluate(()=>window.ULTRON_GEO_VISUAL.close());
+    // Global geography must use real world coordinates, never the Brazil-only projection.
+    const worldwide=await page.evaluate(async()=>{
+      const result=await window.ULTRON_ORCHESTRATOR.execute(
+       'Jarvis, mostre a previsão do tempo em Tokyo no mapa 2D por 16 dias','worldwide-test');
+      const state=window.ULTRON_GEO_VISUAL.state;
+      return {result,state,
+        note:document.querySelector('.jarvis-geo-map-note')?.textContent,
+        source:document.querySelector('.jarvis-geo-footer a')?.href,
+        marker:document.querySelector('.jarvis-geo-marker > circle')?.getAttribute('cx')};
+    });
+    assert.equal(worldwide.result.ok,true,JSON.stringify(worldwide));
+    assert.equal(worldwide.state.scenario,'weather-global-1850147',JSON.stringify(worldwide));
+    assert.equal(worldwide.state.mode,'2d');
+    assert.equal(worldwide.state.frameCount,17);
+    assert.ok(worldwide.marker>650,'Tokyo marker must appear on the world projection');
+    assert.match(worldwide.note,/Natural Earth/);
+    assert.match(worldwide.source,/open-meteo/);
+    await page.evaluate(()=>window.ULTRON_GEO_VISUAL.setFrame(16));
+    assert.equal(await page.evaluate(()=>window.ULTRON_GEO_VISUAL.state.frame),16);
     await page.evaluate(()=>window.ULTRON_GEO_VISUAL.close());
     await page.evaluate(()=>window.__phase3EarthRestore());
     await page.close();
