@@ -367,6 +367,7 @@ if(stage){
  async function chooseIntensity({refresh=false}={}){
    if(!dataset||panel.hidden)return {ok:false,error:"Mapa fechado"};
    const layer=layerChoice.value,region=scopeChoice.value,day=currentIntensityDay();
+   intensityKey=layer+":"+region+":"+day;
    if(refresh)intensityCache.delete(layer+":"+region+":"+day);
    const requestId=++intensityToken;
    intensityReport=null;
@@ -535,6 +536,9 @@ if(stage){
      const points=frame.points.map(p=>({...p,color:GEO_PALETTE[p.kind]?.color||"#91d7f0"}));
      earth.setThematicLayer(points,{playing:mode==="3d"&&playing});
    }
+   if(intensityReport?.ok)applyIntensityToEarth();
+   const required=layerChoice.value+":"+scopeChoice.value+":"+currentIntensityDay();
+   if(!panel.hidden&&required!==intensityKey)void chooseIntensity();
  }
  async function setMode(next){
    if(!dataset)return {ok:false,error:"Sem dados carregados"};
@@ -543,7 +547,7 @@ if(stage){
    if(next==="3d"){
      const globe=window.ULTRON_EARTH;
      if(!globe?.state?.visible){const r=await globe?.open?.();if(!r?.ok){mode="2d";draw();return {ok:false,error:r?.error||"Globo indisponível"};}}
-   }else await loadOutline(dataset?.projection);
+   }else await loadOutline(intensityProjection());
    draw();return {ok:true,mode:next,count:geoFrame(dataset,frameIndex,filterKind)?.points.length||0};
  }
  async function open({scenario="enso",view="3d",data=null}={}){
@@ -554,6 +558,8 @@ if(stage){
    window.ULTRON_NEURAL_ANSWER?.clear?.(); // Geo visualization gets the ring's attention, no overlapping previous answer.
    stop();dataset=validated;filterKind="all";filter.value="all";selected=null;
    mapZoom=1;mapCenter=null;pointerPositions.clear();
+   scopeChoice.value=dataset.projection==="world"?"world":"brazil";
+   layerChoice.value="rain";intensityKey="";intensityReport=null;intensityToken++;
    mapReset.textContent=dataset.projection==="world"?"Mundo":"Brasil";
    frameIndex=Math.min(1,dataset.frames.length-1);range.max=String(dataset.frames.length-1);
    heading.textContent=dataset.title.toUpperCase();
@@ -748,6 +754,8 @@ if(stage){
 
  function closePanel(){
    stop();panel.hidden=true;selected=null;seq++;
+   intensityToken++;intensityReport=null;intensityKey="";intensityLegend.replaceChildren();
+   intensityMessage.replaceChildren();
    if(refreshClock!==null){clearInterval(refreshClock);refreshClock=null;}
    placeResults.hidden=true;watchPanel.hidden=true;
    window.ULTRON_EARTH?.clearThematicLayer?.();
@@ -782,6 +790,8 @@ if(stage){
  window.ULTRON_GEO_VISUAL={
    open,close:closePanel,setMode,setFrame,applyFilter,play:()=>togglePlayback(true),pause:()=>togglePlayback(false),
    get state(){return {visible:!panel.hidden,mode,playing,frame:frameIndex,scenario:dataset?.id||null,
-     count:dataset?geoFrame(dataset,frameIndex,filterKind)?.points.length||0:0,frameCount:dataset?.frames.length||0,source:dataset?.source.url||null,filter:filterKind};}
+     count:dataset?geoFrame(dataset,frameIndex,filterKind)?.points.length||0:0,frameCount:dataset?.frames.length||0,
+     source:dataset?.source.url||null,filter:filterKind,layer:intensityReport?.layer||layerChoice.value,
+     gridCount:intensityReport?.ok?intensityReport.sampledCount:0};}
  };
 }
