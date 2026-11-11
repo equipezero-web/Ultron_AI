@@ -492,6 +492,15 @@ try {
     assert.equal(await page.$$eval('.jarvis-geo-intensity-cell',els=>els.length),35);
     await page.evaluate(()=>{
       const layer=document.querySelector('.jarvis-geo-intensity-choice');
+      layer.value='marine';layer.dispatchEvent(new Event('change',{bubbles:true}));
+    });
+    await page.waitForFunction(()=>window.ULTRON_GEO_VISUAL.state.layer==='marine'&&window.ULTRON_GEO_VISUAL.state.gridCount>0,{timeout:7000});
+    assert.equal(await page.$$eval('.jarvis-geo-intensity-cell[clip-path]',els=>els.length),0,
+      'Offshore wave patches must never be clipped to the Brazil land silhouette');
+    assert.ok(await page.$$eval('.jarvis-geo-intensity-cell',els=>els.length)>0,
+      'Actual offshore colored cells must remain visible');
+    await page.evaluate(()=>{
+      const layer=document.querySelector('.jarvis-geo-intensity-choice');
       layer.value='rain';layer.dispatchEvent(new Event('change',{bubbles:true}));
     });
     await page.waitForFunction(()=>window.ULTRON_GEO_VISUAL.state.layer==='rain'&&window.ULTRON_GEO_VISUAL.state.gridCount>0,{timeout:7000});
