@@ -1,3 +1,4 @@
+import {TASK_CONTEXT} from "./jarvis-task-context.js?v=4.69.0";
 import {directPlan,runActionPlan} from "./jarvis-action-engine.js?v=4.68.0";
 import {runLocalCommand} from "./jarvis-local-commands.js?v=4.67.0";
 import API_CONFIG from "../config.js";
@@ -88,6 +89,7 @@ async function ask(message) {
   if (!clean) return { ok: false, error: "Comando vazio." };
   const local=await runLocalCommand(clean);if(local){log(local.text);return local;}
   const plan=directPlan(clean);if(plan){const result=await runActionPlan(plan,clean);log(result.text);return result;}
+  const taskContext=TASK_CONTEXT?.publicContextFor(clean)||null;
   const id=window.__ultronQuestionSequence=(Number(window.__ultronQuestionSequence)||0)+1;
   const emit=(type,detail={})=>window.dispatchEvent(new CustomEvent("ultron:"+type,{detail:{id,...detail}}));
   const current=()=>window.__ultronQuestionSequence===id;
@@ -100,6 +102,7 @@ async function ask(message) {
       cache: "no-store",
       body: JSON.stringify({
         message: clean,
+        taskContext,
         clientOwnsSpeech:true,
         preferFastResponse:window.ULTRON_VOICE_OUTPUT?.available===true,
         memoryKey: window.ULTRON_MEMORY?.getMemoryKey?.() || null,
@@ -114,6 +117,7 @@ async function ask(message) {
     log(`ULTRON [${provider}]: ${data.text}`);
     // The orchestrator handles both typed and spoken commands. Publish the
     // answer to the same Neural Ring surface before audio or legacy visuals.
+    if(data?.text)TASK_CONTEXT?.captureQuestion(clean);
     emit("answer",{text:data.text,visualContext:data.visualContext,webResearch:data.webResearch});
     prepareVisual(data);
     const played = playAudio(data.audioBase64, data.audioMimeType || "audio/mpeg");
