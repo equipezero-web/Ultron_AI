@@ -1,3 +1,5 @@
+import API_CONFIG from "../config.js";
+import {globalWeatherScenario} from "./jarvis-global-weather.js?v=4.73.0";
 import {GEO_SCENARIOS,GEO_PALETTE,geoFrame,validateGeoScenario,BRAZIL_OUTLINE_URL,WORLD_OUTLINE_URL,brazilXY,worldXY,geoJSONPaths} from "./jarvis-geospatial-model.js?v=4.71.0";
 
 // The visualization remains INSIDE the Neural Ring stage, no new page or pop-up.
@@ -21,6 +23,18 @@ if(stage){
  for(const [value,text] of [["all","Todos os sinais"],["observed","Seca observada"],["dry","Chuva abaixo"],["wet","Chuva acima"],["heat","Temperatura alta"],["weather","Tempo previsto"]]){
   const o=document.createElement("option");o.value=value;o.textContent=text;filter.append(o);}
  const controls=document.createElement("div");controls.className="jarvis-geo-controls";controls.append(modeGroup,filter);
+ const placeBar=document.createElement("form");placeBar.className="jarvis-geo-place-bar";placeBar.hidden=true;
+ const placeInput=document.createElement("input");placeInput.type="search";placeInput.maxLength=96;
+ placeInput.placeholder="Cidade, país (ex.: Tokyo, Japan)";placeInput.setAttribute("aria-label","Buscar cidade mundial");
+ const daysChoice=document.createElement("select");daysChoice.setAttribute("aria-label","Horizonte da previsão");
+ for(const n of [3,7,16]){const o=document.createElement("option");o.value=String(n);o.textContent=n+" dias";if(n===7)o.selected=true;daysChoice.append(o);}
+ const placeSearch=document.createElement("button");placeSearch.type="submit";placeSearch.textContent="Buscar";
+ const placeRefresh=document.createElement("button");placeRefresh.type="button";placeRefresh.textContent="↻";
+ placeRefresh.setAttribute("aria-label","Atualizar meteorologia da cidade selecionada");
+ placeBar.append(placeInput,daysChoice,placeSearch,placeRefresh);
+ const placeResults=document.createElement("div");placeResults.className="jarvis-geo-place-results";placeResults.hidden=true;
+ placeResults.setAttribute("aria-live","polite");
+
  const timeline=document.createElement("div");timeline.className="jarvis-geo-timeline";
  const play=document.createElement("button");play.type="button";play.textContent="▶";
  play.setAttribute("aria-label","Percorrer quadros temporais; a animação não cria uma nova previsão");
@@ -45,12 +59,12 @@ if(stage){
  officialAlerts.target="_blank";officialAlerts.rel="noopener noreferrer";
  officialAlerts.textContent="Consultar alertas oficiais do INMET";officialAlerts.hidden=true;
  footer.append(source,officialAlerts,caveat);
- panel.append(head,controls,timeline,evidence,canvas,list,detail,footer);stage.append(panel);
+ panel.append(head,controls,placeBar,placeResults,timeline,evidence,canvas,list,detail,footer);stage.append(panel);
  for(const type of ["pointerdown","pointerup","wheel","click","touchstart","touchend"]){
    panel.addEventListener(type,event=>event.stopPropagation(),{passive:true});
  }
  let dataset=null,frameIndex=1,mode="3d",playing=false,clock=null,selected=null,outlines={brazil:null,world:null};
- let geoLoading={brazil:null,world:null},seq=0,filterKind="all";
+ let geoLoading={brazil:null,world:null},seq=0,filterKind="all",refreshClock=null;
  const ns="http://www.w3.org/2000/svg";
  const e=(tag,attr={})=>{const el=document.createElementNS(ns,tag);for(const [k,v] of Object.entries(attr))el.setAttribute(k,String(v));return el;};
  function resize(){panel.dataset.screen=document.body.classList.contains("ultron-tv-display")?"tv":
@@ -164,6 +178,14 @@ if(stage){
    source.href=dataset.source.url;source.textContent=dataset.source.name;
    caveat.textContent=dataset.source.disclaimer;
    officialAlerts.hidden=!dataset.id.startsWith("weather-")||dataset.projection==="world";
+   placeBar.hidden=dataset.projection!=="world";
+   placeRefresh.disabled=!/^weather-global-\d+$/.test(dataset.id);
+   if(refreshClock!==null){clearInterval(refreshClock);refreshClock=null;}
+   if(/^weather-global-\d+$/.test(dataset.id))refreshClock=setInterval(()=>{
+     if(panel.hidden||document.hidden)return;
+     const id=Number(dataset?.id?.match(/^weather-global-(\d+)$/)?.[1]);
+     if(id>0)void showLocation(id,Math.min(16,Math.max(3,dataset.frames.length-1)));
+   },15*60*1000);
    svg.setAttribute("aria-label",dataset.projection==="world"?"Mapa 2D mundial":"Mapa 2D do Brasil");
    panel.hidden=false;
    const result=await setMode(view);
@@ -174,8 +196,62 @@ if(stage){
    window.dispatchEvent(new CustomEvent("ultron:geo-visualization",{detail:{scenario:dataset.id,mode:view,frame:frameIndex}}));
    return {ok:true,mode:view,scenario:dataset.id,source:dataset.source.url};
  }
+
+ const backend=String(API_CONFIG.backendUrl||"").replace(/\/+$/,"");
+ const getJson=async(url)=>{
+   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);
+   try{
+     const response=await fetch(url,{headers:{Accept:"application/json"},signal:controller.signal,cache:"no-store"});
+     const data=await response.json();
+     if(!response.ok||!data?.ok)throw Error(data?.error||"Serviço meteorológico indisponível");
+     return data;
+   }finally{clearTimeout(timer);}
+ };
+ async function showLocation(id,days=Number(daysChoice.value)){
+   const queryId=Number(id);
+   if(!Number.isSafeInteger(queryId)||queryId<1)return {ok:false,error:"Localidade inválida"};
+   const key=++seq;
+   placeResults.hidden=false;placeResults.textContent="Consultando dados meteorológicos...";
+   try{
+     const response=await getJson(backend+"/api/geo/global?id="+queryId+"&days="+days);
+     const scene=globalWeatherScenario(response);
+     if(key!==seq||panel.hidden)return {ok:false,error:"Consulta cancelada"};
+     if(!scene)throw Error("Previsão sem dados válidos");
+     const result=await open({data:scene,view:mode});
+     if(!result.ok)throw Error(result.error||"Mapa indisponível");
+     placeInput.value=response.location.label;
+     daysChoice.value=String(days);
+     placeResults.textContent="Previsão atualizada: "+response.fetchedAt;
+     return result;
+   }catch(error){
+     if(key===seq)placeResults.textContent=error?.message||"Não foi possível consultar o clima";
+     return {ok:false,error:String(error?.message||error)};
+   }
+ }
+ placeBar.addEventListener("submit",async event=>{
+   event.preventDefault();const query=placeInput.value.trim(),key=++seq;
+   placeResults.hidden=false;placeResults.textContent="Procurando localidades...";
+   try{
+     const response=await getJson(backend+"/api/geo/locations?q="+encodeURIComponent(query));
+     if(key!==seq||panel.hidden)return;
+     placeResults.replaceChildren();
+     if(!response.locations?.length){placeResults.textContent="Localidade não encontrada; inclua o país.";return;}
+     for(const loc of response.locations){
+       const button=document.createElement("button");button.type="button";
+       button.textContent=loc.label;button.addEventListener("click",()=>void showLocation(loc.id));
+       placeResults.append(button);
+     }
+   }catch(error){if(key===seq)placeResults.textContent=error?.message||"Erro na busca";}
+ });
+ placeRefresh.addEventListener("click",()=>{
+   const id=Number(dataset?.id?.match(/^weather-global-(\d+)$/)?.[1]);
+   if(id>0)void showLocation(id);
+ });
+
  function closePanel(){
-   stop();panel.hidden=true;selected=null;
+   stop();panel.hidden=true;selected=null;seq++;
+   if(refreshClock!==null){clearInterval(refreshClock);refreshClock=null;}
+   placeResults.hidden=true;
    window.ULTRON_EARTH?.clearThematicLayer?.();
    return {ok:true,closed:true};
  }
