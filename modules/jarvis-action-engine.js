@@ -183,7 +183,8 @@ async function executeStep(step,original){
      report=await loadGlobalWeather({query:a.city,days:a.days});
      if(!report?.ok)throw Error(report?.error||proxyError?.message||"Previsão mundial indisponível");
    }
-   if(report.kind!=="global-short-term-forecast"||report.days?.length!==a.days||
+   if(report.kind!=="global-short-term-forecast"||!Array.isArray(report.days)||report.days.length<2||report.days.length>a.days||
+      (report.requestedDays!==undefined&&report.requestedDays!==a.days)||
       !report.location?.key?.startsWith("global-")||!report.source?.url?.includes("open-meteo.com"))
       throw Error("A previsão mundial retornada não foi validada");
    const data=globalWeatherScenario(report),summary=globalWeatherSummary(report);
