@@ -1,4 +1,5 @@
 import API_CONFIG from "../config.js";
+import {SPATIAL_LAYERS,loadSpatialIntensity,spatialSummary} from "./jarvis-spatial-intensity.js?v=5.0.0";
 import {globalWeatherScenario} from "./jarvis-global-weather.js?v=4.82.0";
 import {searchGlobalLocations,loadGlobalWeather} from "../backend/weather-global.js?v=4.74.0";
 import {loadWeatherInsight} from "../backend/weather-intelligence.js?v=4.75.0";
@@ -67,6 +68,30 @@ if(stage){
  const frameName=document.createElement("strong");const frameType=document.createElement("small");
  frameText.append(frameName,frameType);timeline.append(play,range,frameText);
  const evidence=document.createElement("p");evidence.className="jarvis-geo-evidence";
+ const intensityBar=document.createElement("div");intensityBar.className="jarvis-geo-intensity-bar";
+ const intensityLabel=document.createElement("label");intensityLabel.textContent="CAMADA DE INTENSIDADE";
+ const layerChoice=document.createElement("select");layerChoice.className="jarvis-geo-intensity-choice";
+ layerChoice.setAttribute("aria-label","Selecionar camada meteorológica colorida");
+ for(const [key,spec] of Object.entries(SPATIAL_LAYERS)){
+   const option=document.createElement("option");option.value=key;option.textContent=spec.label;
+   layerChoice.append(option);
+ }
+ const scopeChoice=document.createElement("select");scopeChoice.setAttribute("aria-label","Abrangência do mapa");
+ for(const [id,name] of [["brazil","Brasil"],["world","Mundo"]]){
+   const option=document.createElement("option");option.value=id;option.textContent=name;
+   scopeChoice.append(option);
+ }
+ const overlayOpacity=document.createElement("input");overlayOpacity.type="range";overlayOpacity.min="20";
+ overlayOpacity.max="90";overlayOpacity.value="66";overlayOpacity.step="5";
+ overlayOpacity.setAttribute("aria-label","Opacidade das células coloridas");
+ const intensityRefresh=document.createElement("button");intensityRefresh.type="button";
+ intensityRefresh.textContent="Atualizar";intensityRefresh.setAttribute("aria-label","Atualizar camada espacial");
+ intensityBar.append(intensityLabel,layerChoice,scopeChoice,overlayOpacity,intensityRefresh);
+ const intensityLegend=document.createElement("div");intensityLegend.className="jarvis-geo-intensity-legend";
+ intensityLegend.setAttribute("aria-live","polite");
+ const intensityMessage=document.createElement("div");intensityMessage.className="jarvis-geo-intensity-status";
+ intensityMessage.setAttribute("aria-live","polite");
+
  const canvas=document.createElement("div");canvas.className="jarvis-geo-2d";canvas.hidden=true;
  canvas.setAttribute("aria-label","Mapa 2D do Brasil e marcadores de tendências regionais");
  const svg=document.createElementNS("http://www.w3.org/2000/svg","svg");
@@ -98,12 +123,14 @@ if(stage){
  officialAlerts.target="_blank";officialAlerts.rel="noopener noreferrer";
  officialAlerts.textContent="Consultar alertas oficiais do INMET";officialAlerts.hidden=true;
  footer.append(source,officialAlerts,caveat);
- panel.append(head,controls,placeBar,watchPanel,insightBar,placeResults,timeline,evidence,workspace,list,detail,footer);stage.append(panel);
+ panel.append(head,controls,placeBar,watchPanel,insightBar,timeline,evidence,intensityBar,intensityLegend,intensityMessage,workspace,list,detail,footer);stage.append(panel);
  for(const type of ["pointerdown","pointerup","wheel","click","touchstart","touchend"]){
    panel.addEventListener(type,event=>event.stopPropagation(),{passive:true});
  }
  let dataset=null,frameIndex=1,mode="3d",playing=false,clock=null,selected=null,outlines={brazil:null,world:null};
  let geoLoading={brazil:null,world:null},seq=0,filterKind="all",refreshClock=null;
+ let intensityReport=null,intensityKey="",intensityToken=0;
+ const intensityCache=new Map();
  const ns="http://www.w3.org/2000/svg";
  const e=(tag,attr={})=>{const el=document.createElementNS(ns,tag);for(const [k,v] of Object.entries(attr))el.setAttribute(k,String(v));return el;};
  function resize(){
