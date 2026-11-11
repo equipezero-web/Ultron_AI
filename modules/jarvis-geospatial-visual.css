@@ -202,3 +202,78 @@ body.jarvis-command-center .jarvis-geo-watch-panel small{color:#b6d6e4}
 @media(max-width:820px){
  body.jarvis-command-center .jarvis-geo-watch-row button{min-height:42px}
 }
+
+
+/* Full-stage 2D visualization — prevents a floating, scroll-heavy map panel
+   from covering the 3D Earth while leaving most of the Neural Ring unused.
+   2D replaces the globe viewport, but the compact 3D controls are unchanged. */
+body.jarvis-command-center .jarvis-cc-center>.jarvis-geo-visual[data-mode="2d"]{
+  position:absolute!important;
+  inset:0!important;
+  top:0!important;right:0!important;bottom:0!important;left:0!important;
+  width:100%!important;height:100%!important;min-height:0!important;
+  max-width:100%!important;max-height:100%!important;
+  box-sizing:border-box!important;margin:0!important;
+  padding:clamp(9px,1.1vw,17px)!important;
+  border-radius:0!important;
+  background:#071725!important;
+  box-shadow:none!important;
+  flex-direction:column;
+  gap:clamp(5px,.55vw,9px);
+  overflow-x:hidden!important;overflow-y:auto!important;
+  overscroll-behavior:contain;
+  scrollbar-width:thin;scrollbar-color:#466b84 #071725;
+  touch-action:pan-y;
+}
+/* Keep the forecast readable without constraining the 2D map to 650 px. */
+body.jarvis-command-center .jarvis-cc-center>.jarvis-geo-visual[data-mode="2d"] .jarvis-geo-2d{
+  width:100%!important;max-width:none!important;min-width:0;
+  height:auto;min-height:220px;
+  flex:1 1 340px!important;
+  align-self:stretch!important;
+  aspect-ratio:auto!important;
+  display:flex;flex-direction:column;
+  border-color:#355975;
+  overflow:hidden;
+}
+body.jarvis-command-center .jarvis-cc-center>.jarvis-geo-visual[data-mode="2d"] .jarvis-geo-2d svg{
+  display:block;
+  flex:1 1 auto;min-height:0;
+  width:100%!important;height:100%!important;max-height:none!important;
+  object-fit:contain;
+}
+body.jarvis-command-center .jarvis-geo-visual[data-mode="2d"] .jarvis-geo-map-note{
+  flex:0 0 auto;padding:6px 9px;font-size:11px;
+}
+body.jarvis-command-center .jarvis-geo-visual[data-mode="2d"] .jarvis-geo-evidence{
+  max-width:100%;line-height:1.4;
+}
+body.jarvis-command-center .jarvis-geo-visual[data-mode="2d"] .jarvis-geo-region-list{
+  max-height:60px;
+}
+body.jarvis-command-center .jarvis-geo-visual[data-mode="2d"] .jarvis-geo-detail{
+  min-height:0;padding:6px 9px;
+}
+/* Compact displays may scroll INSIDE the stage; never capture the page wheel. */
+@media(max-width:820px){
+  body.jarvis-command-center .jarvis-cc-center>.jarvis-geo-visual[data-mode="2d"]{
+    padding:8px!important;gap:6px;
+    max-height:100%!important;
+  }
+  body.jarvis-command-center .jarvis-cc-center>.jarvis-geo-visual[data-mode="2d"] .jarvis-geo-2d{
+    min-height:190px;flex-basis:220px!important;
+  }
+  body.jarvis-command-center .jarvis-geo-visual[data-mode="2d"] .jarvis-geo-map-note{font-size:10px}
+}
+@media(max-width:820px) and (orientation:landscape) and (max-height:540px){
+  body.jarvis-command-center .jarvis-cc-center>.jarvis-geo-visual[data-mode="2d"]{
+    max-height:100%!important;
+  }
+  body.jarvis-command-center .jarvis-cc-center>.jarvis-geo-visual[data-mode="2d"] .jarvis-geo-2d{
+    min-height:165px;
+  }
+}
+
+/* Attribute-driven visibility always wins over 2D layout rules. */
+body.jarvis-command-center .jarvis-cc-center>.jarvis-geo-visual[data-mode="2d"][hidden],
+body.jarvis-command-center .jarvis-cc-center>.jarvis-geo-visual[data-mode="2d"] .jarvis-geo-2d[hidden]{display:none!important}
