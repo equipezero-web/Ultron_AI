@@ -22,6 +22,8 @@ on:
       - 'tests/jarvis-phase3-geospatial.mjs'
       - 'tests/jarvis-phase4.mjs'
       - 'tests/jarvis-global-weather.mjs'
+      - 'modules/jarvis-spatial-intensity.js'
+      - 'tests/jarvis-spatial-intensity.mjs'
       - 'tests/jarvis-weather-intelligence.mjs'
       - 'tests/jarvis-weather-monitor.mjs'
       - 'backend/weather-intelligence.js'
@@ -68,6 +70,8 @@ on:
       - 'tests/jarvis-phase3-geospatial.mjs'
       - 'tests/jarvis-phase4.mjs'
       - 'tests/jarvis-global-weather.mjs'
+      - 'modules/jarvis-spatial-intensity.js'
+      - 'tests/jarvis-spatial-intensity.mjs'
       - 'tests/jarvis-weather-intelligence.mjs'
       - 'tests/jarvis-weather-monitor.mjs'
       - 'backend/weather-intelligence.js'
@@ -134,6 +138,8 @@ jobs:
           node --check modules/jarvis-global-weather.js
           node --check backend/weather-global.js
           node tests/jarvis-global-weather.mjs
+          node --check modules/jarvis-spatial-intensity.js
+          node tests/jarvis-spatial-intensity.mjs
           node --check backend/weather-watchlist.js
           node tests/jarvis-weather-watchlist.mjs
           node --check backend/weather-intelligence.js
@@ -424,4 +430,30 @@ jobs:
             assert.equal(result.countryCode,'JP');
             assert.equal(result.hasTemperature,true);
           } finally {await browser.close();}
+          NODE
+
+  sampled-weather-live-compatibility:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Inspect actual regional model coordinate aggregation
+        run: |
+          node --input-type=module <<'NODE'
+          import {loadSpatialIntensity} from './modules/jarvis-spatial-intensity.js';
+          const layers=['rain','temp','soil','air','marine','river'];
+          let successes=0;
+          for(const layer of layers){
+            const response=await loadSpatialIntensity({layer,region:'brazil',day:0});
+            console.log('REAL SPATIAL',layer,JSON.stringify({ok:response.ok,
+              cells:response.sampledCount,requested:response.totalSamples,
+              time:response.dataTime,source:response.source?.name,
+              error:response.error,status:response.status}).slice(0,500));
+            if(response.ok&&response.sampledCount>0)successes++;
+          }
+          console.log('REAL SPATIAL SOURCES VERIFIED:',successes,'of',layers.length);
+          // Provider outage must be explicit and never turn into fake colors.
           NODE

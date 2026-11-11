@@ -1,5 +1,6 @@
 import {vetClientTaskContext,contextSearchQuery} from "./task-context.js";
 import {loadLiveWeather} from "./weather-live.js";
+import {loadSpatialIntensity} from "../modules/jarvis-spatial-intensity.js";
 import {searchGlobalLocations,loadGlobalWeather} from "./weather-global.js";
 import {loadWeatherInsight} from "./weather-intelligence.js";
 import {pollWeatherMonitor,latestWeatherMonitor} from "./weather-monitor.js";
@@ -1033,6 +1034,25 @@ export default {
       const result=await searchGlobalLocations(url.searchParams.get("q"));
       return new Response(JSON.stringify(result),{status:result.ok?200:result.status||503,headers:{
        ...corsHeaders(),"Cache-Control":result.ok?"public, max-age=3600":"no-store","X-Content-Type-Options":"nosniff"}});
+    }
+    if(path==="/api/geo/intensity"&&request.method==="GET"){
+      const layer=url.searchParams.get("layer")||"rain",region=url.searchParams.get("region")||"brazil",
+       day=url.searchParams.get("day")||"0";
+      // Provider requests are bounded to 40 fixed coordinates, one layer and
+      // one date at a time. Cache per full URL for 30 min to respect free use.
+      const cache=typeof caches!=="undefined"?caches.default:null;
+      const cacheKey=new Request(url.toString(),{method:"GET"});
+      try{
+        const cached=await cache?.match(cacheKey);
+        if(cached)return cached;
+      }catch{}
+      const result=await loadSpatialIntensity({layer,region,day});
+      const response=new Response(JSON.stringify(result),{status:result.ok?200:result.status||503,headers:{
+        ...corsHeaders(),"Cache-Control":result.ok?"public, max-age=1800":"no-store",
+        "Content-Type":"application/json; charset=utf-8",
+        "X-Content-Type-Options":"nosniff"}});
+      if(result.ok&&cache&&ctx?.waitUntil)ctx.waitUntil(cache.put(cacheKey,response.clone()).catch(()=>{}));
+      return response;
     }
     if(path==="/api/geo/global"&&request.method==="GET"){
       const result=await loadGlobalWeather({query:url.searchParams.get("city"),

@@ -1,4 +1,5 @@
 import API_CONFIG from "../config.js";
+import {SPATIAL_LAYERS,loadSpatialIntensity,spatialSummary} from "./jarvis-spatial-intensity.js?v=4.90.0";
 import {globalWeatherScenario} from "./jarvis-global-weather.js?v=4.82.0";
 import {searchGlobalLocations,loadGlobalWeather} from "../backend/weather-global.js?v=4.74.0";
 import {loadWeatherInsight} from "../backend/weather-intelligence.js?v=4.75.0";
@@ -67,6 +68,30 @@ if(stage){
  const frameName=document.createElement("strong");const frameType=document.createElement("small");
  frameText.append(frameName,frameType);timeline.append(play,range,frameText);
  const evidence=document.createElement("p");evidence.className="jarvis-geo-evidence";
+ const intensityBar=document.createElement("div");intensityBar.className="jarvis-geo-intensity-bar";
+ const intensityLabel=document.createElement("label");intensityLabel.textContent="CAMADA DE INTENSIDADE";
+ const layerChoice=document.createElement("select");layerChoice.className="jarvis-geo-intensity-choice";
+ layerChoice.setAttribute("aria-label","Selecionar camada meteorológica colorida");
+ for(const [key,spec] of Object.entries(SPATIAL_LAYERS)){
+   const option=document.createElement("option");option.value=key;option.textContent=spec.label;
+   layerChoice.append(option);
+ }
+ const scopeChoice=document.createElement("select");scopeChoice.setAttribute("aria-label","Abrangência do mapa");
+ for(const [id,name] of [["brazil","Brasil"],["world","Mundo"]]){
+   const option=document.createElement("option");option.value=id;option.textContent=name;
+   scopeChoice.append(option);
+ }
+ const overlayOpacity=document.createElement("input");overlayOpacity.type="range";overlayOpacity.min="20";
+ overlayOpacity.max="90";overlayOpacity.value="66";overlayOpacity.step="5";
+ overlayOpacity.setAttribute("aria-label","Opacidade das células coloridas");
+ const intensityRefresh=document.createElement("button");intensityRefresh.type="button";
+ intensityRefresh.textContent="Atualizar";intensityRefresh.setAttribute("aria-label","Atualizar camada espacial");
+ intensityBar.append(intensityLabel,layerChoice,scopeChoice,overlayOpacity,intensityRefresh);
+ const intensityLegend=document.createElement("div");intensityLegend.className="jarvis-geo-intensity-legend";
+ intensityLegend.setAttribute("aria-live","polite");
+ const intensityMessage=document.createElement("div");intensityMessage.className="jarvis-geo-intensity-status";
+ intensityMessage.setAttribute("aria-live","polite");
+
  const canvas=document.createElement("div");canvas.className="jarvis-geo-2d";canvas.hidden=true;
  canvas.setAttribute("aria-label","Mapa 2D do Brasil e marcadores de tendências regionais");
  const svg=document.createElementNS("http://www.w3.org/2000/svg","svg");
@@ -98,12 +123,14 @@ if(stage){
  officialAlerts.target="_blank";officialAlerts.rel="noopener noreferrer";
  officialAlerts.textContent="Consultar alertas oficiais do INMET";officialAlerts.hidden=true;
  footer.append(source,officialAlerts,caveat);
- panel.append(head,controls,placeBar,watchPanel,insightBar,placeResults,timeline,evidence,workspace,list,detail,footer);stage.append(panel);
+ panel.append(head,controls,placeBar,watchPanel,insightBar,placeResults,timeline,evidence,intensityBar,intensityLegend,intensityMessage,workspace,list,detail,footer);stage.append(panel);
  for(const type of ["pointerdown","pointerup","wheel","click","touchstart","touchend"]){
    panel.addEventListener(type,event=>event.stopPropagation(),{passive:true});
  }
  let dataset=null,frameIndex=1,mode="3d",playing=false,clock=null,selected=null,outlines={brazil:null,world:null};
  let geoLoading={brazil:null,world:null},seq=0,filterKind="all",refreshClock=null;
+ let intensityReport=null,intensityKey="",intensityToken=0;
+ const intensityCache=new Map();
  const ns="http://www.w3.org/2000/svg";
  const e=(tag,attr={})=>{const el=document.createElementNS(ns,tag);for(const [k,v] of Object.entries(attr))el.setAttribute(k,String(v));return el;};
  function resize(){
@@ -127,7 +154,7 @@ if(stage){
  let mapZoom=1,mapCenter=null;
  const pointerPositions=new Map();
  let dragStart=null,pinchStart=null;
- const baseViewport=()=>dataset?.projection==="world"?
+ const baseViewport=()=>scopeChoice.value==="world"?
    {x:0,y:0,w:900,h:550}:{x:35,y:27,w:745,h:465};
  const clamp=(n,low,high)=>Math.max(low,Math.min(high,n));
  function drawMapViewport(){
@@ -150,7 +177,7 @@ if(stage){
    const p=geoFrame(dataset,frameIndex,"all")?.points?.find(p=>p.id===selected)||
      geoFrame(dataset,frameIndex,"all")?.points?.[0];
    if(!p)return;
-   const {x,y}=dataset.projection==="world"?worldXY(p.lng,p.lat):brazilXY(p.lng,p.lat);
+   const {x,y}=scopeChoice.value==="world"?worldXY(p.lng,p.lat):brazilXY(p.lng,p.lat);
    if(Number.isFinite(x)&&Number.isFinite(y)){mapCenter={x,y};setMapZoom(2.7);}
  }
  function resetMap(){mapZoom=1;mapCenter=null;drawMapViewport();}
@@ -265,13 +292,173 @@ if(stage){
     "Pontos geográficos representativos, não extensão real de impactos ou medição por município.";
    metricPanel.append(disclaimer);
  }
+
+ const intensityProjection=()=>scopeChoice.value==="world"?"world":"brazil";
+ const currentIntensityDay=()=>Math.max(0,Math.min(2,frameIndex-1));
+ function intensityLegendRender(report,issue=""){
+   intensityLegend.replaceChildren();intensityMessage.replaceChildren();
+   const spec=SPATIAL_LAYERS[layerChoice.value];
+   if(!spec)return;
+   const name=document.createElement("strong");name.textContent=spec.label+" · "+spec.unit;
+   intensityLegend.append(name);
+   const scale=document.createElement("div");scale.className="jarvis-geo-intensity-scale";
+   for(const entry of (report?.legend||spec.colors.map((color,i)=>({color,label:spec.labels[i]})))){
+     const item=document.createElement("span");item.className="jarvis-geo-intensity-band";
+     const swatch=document.createElement("i");swatch.style.background=entry.color;
+     const label=document.createElement("small");label.textContent=entry.label;
+     item.append(swatch,label);scale.append(item);
+   }
+   intensityLegend.append(scale);
+   const note=document.createElement("small");note.className="jarvis-geo-intensity-caption";
+   note.textContent=report?.ok?
+     "MODELO AMOSTRADO · "+report.sampledCount+"/"+report.totalSamples+
+     " células · "+report.dataTime+" · "+report.source.name+" · Sem interpolação local.":
+     (issue||"Selecione uma camada para consultar o provedor.");
+   intensityMessage.append(note);
+   const link=document.createElement("a");link.target="_blank";link.rel="noopener noreferrer";
+   link.href=report?.source?.url||spec.sourceUrl;
+   link.textContent=layerChoice.value==="drought"?"Abrir mapa mensal oficial ANA":
+     layerChoice.value==="alerts"?"Consultar avisos oficiais":"Ver documentação da fonte";
+   intensityMessage.append(link);
+   if(layerChoice.value==="drought"){
+     const explanation=document.createElement("p");
+     explanation.textContent="As classes S0–S4 são do Monitor de Secas da ANA, de periodicidade mensal. Sem polígonos oficiais validados, o JARVIS não pinta áreas como se fossem seca extrema. Selecione 'Umidade do solo' para visualizar valores coloridos de modelo (não classes de seca).";
+     intensityMessage.append(explanation);
+   }
+ }
+ function applyIntensityToEarth(){
+   const globe=window.ULTRON_EARTH;
+   if(!globe)return;
+   const cells=intensityReport?.ok?intensityReport.cells:[];
+   const geographic=cells.filter(c=>Array.isArray(c.bounds));
+   globe.setThematicGrid?.(geographic);
+   if(cells.length&&!geographic.length){
+     globe.setThematicLayer?.(cells.slice(0,25).map(c=>({
+       id:c.id,name:intensityReport.label,lat:c.lat,lng:c.lng,
+       kind:"weather",detail:c.value+" "+intensityReport.unit,
+       color:c.color
+     })));
+   }else if(dataset){
+     const f=geoFrame(dataset,frameIndex,filterKind);
+     if(f)globe.setThematicLayer?.(f.points.map(p=>({
+       ...p,color:GEO_PALETTE[p.kind]?.color||"#91d7f0"
+     })),{playing:mode==="3d"&&playing});
+   }
+ }
+ const intensityUrl=(layer,region,day)=>String(API_CONFIG.backendUrl||"").replace(/\/$/,"")+
+   "/api/geo/intensity?layer="+encodeURIComponent(layer)+
+   "&region="+encodeURIComponent(region)+"&day="+day;
+ async function fetchIntensity(layer,region,day){
+   const key=layer+":"+region+":"+day,now=Date.now(),cached=intensityCache.get(key);
+   if(cached&&now-cached.at<30*60*1000)return cached.data;
+   const url=intensityUrl(layer,region,day);
+   let data=null;
+   const abort=new AbortController(),timer=setTimeout(()=>abort.abort(),11500);
+   try{
+     const response=await fetch(url,{headers:{Accept:"application/json"},
+       cache:"no-store",signal:abort.signal});
+     const body=await response.json();
+     if(response.ok&&body?.ok)data=body;
+   }catch{}finally{clearTimeout(timer);}
+   if(!data?.ok)data=await loadSpatialIntensity({layer,region,day});
+   if(data?.ok)intensityCache.set(key,{at:now,data});
+   return data;
+ }
+ async function chooseIntensity({refresh=false}={}){
+   if(!dataset||panel.hidden)return {ok:false,error:"Mapa fechado"};
+   const layer=layerChoice.value,region=scopeChoice.value,day=currentIntensityDay();
+   intensityKey=layer+":"+region+":"+day;
+   if(refresh)intensityCache.delete(layer+":"+region+":"+day);
+   const requestId=++intensityToken;
+   intensityReport=null;
+   window.ULTRON_EARTH?.setThematicGrid?.([]);
+   intensityLegendRender(null,"Carregando células de modelo...");
+   if(mode==="2d")renderMap(geoFrame(dataset,frameIndex,filterKind));
+   if(["drought","alerts"].includes(layer)){
+     intensityLegendRender(null,layer==="drought"?
+       "Seca observada oficialmente: consulte o mapa mensal da ANA, não a previsão de chuva.":
+       "Avisos oficiais dependem de área, validade e emissor; consultar fonte oficial.");
+     return {ok:false,official:true};
+   }
+   if(SPATIAL_LAYERS[layer]?.days&&frameIndex>3&&dataset.frames.length>4){
+     intensityLegendRender(null,"A camada espacial cobre apenas os três primeiros dias. O restante da previsão permanece por localidade.");
+     return {ok:false,partial:true};
+   }
+   try{
+     const data=await fetchIntensity(layer,region,day);
+     if(requestId!==intensityToken||panel.hidden)return {ok:false,stale:true};
+     if(!data?.ok)throw Error(data?.error||"Camada espacial indisponível");
+     if(data.layer!==layer||data.region!==region||data.day!==day||
+       !Array.isArray(data.cells)||!Array.isArray(data.legend))throw Error("Fonte espacial inconsistente");
+     intensityReport=data;intensityLegendRender(data);
+     if(mode==="2d")renderMap(geoFrame(dataset,frameIndex,filterKind));
+     applyIntensityToEarth();
+     return {ok:true,count:data.sampledCount};
+   }catch(error){
+     if(requestId===intensityToken){
+       intensityLegendRender(null,"Fonte indisponível: "+String(error?.message||error).slice(0,140));
+     }
+     return {ok:false,error:String(error?.message||error)};
+   }
+ }
+ layerChoice.addEventListener("change",()=>void chooseIntensity());
+ scopeChoice.addEventListener("change",async()=>{
+   resetMap();await loadOutline(intensityProjection());draw();void chooseIntensity();
+ });
+ intensityRefresh.addEventListener("click",()=>void chooseIntensity({refresh:true}));
+ overlayOpacity.addEventListener("input",()=>{
+   if(mode==="2d"&&dataset)renderMap(geoFrame(dataset,frameIndex,filterKind));
+ });
  function renderMap(frame){
    svg.replaceChildren();
    const bg=e("rect",{width:900,height:550,fill:"#091a2c",rx:12});svg.append(bg);
    for(let x=55;x<880;x+=100)svg.append(e("line",{x1:x,x2:x,y1:40,y2:530,stroke:"#35516a","stroke-opacity":".38","stroke-width":1}));
    for(let y=50;y<535;y+=80)svg.append(e("line",{x1:50,x2:875,y1:y,y2:y,stroke:"#35516a","stroke-opacity":".38","stroke-width":1}));
-   const projection=dataset?.projection==="world"?"world":"brazil",outline=outlines[projection];
+   const projection=intensityProjection(),outline=outlines[projection];
    if(outline?.length)for(const d of outline)svg.append(e("path",{d,fill:"#18354b",stroke:"#6c9caa","stroke-width":1.4,"fill-opacity":".83"}));
+   // A rectangle is the fixed model cell (not a rainfall interpolation).
+   // The Brazil outline clips cells to the national boundary; if IBGE is
+   // offline the country is NOT colored outside an authoritative outline.
+   const samples=intensityReport?.ok&&intensityReport.region===projection?intensityReport.cells:[];
+   const hasBrazilClip=projection==="brazil"&&Array.isArray(outline)&&outline.length>0;
+   if(hasBrazilClip){
+     const defs=e("defs"),clip=e("clipPath",{id:"jarvis-geo-brazil-mask"});
+     for(const d of outline)clip.append(e("path",{d}));
+     defs.append(clip);svg.append(defs);
+   }
+   const patches=e("g",{"data-intensity-layer":intensityReport?.layer||"none"});
+   const opacity=Math.max(.2,Math.min(.9,Number(overlayOpacity.value)/100||.66));
+   for(const cell of samples){
+     if(!Array.isArray(cell.bounds)&&!["river"].includes(intensityReport.layer))continue;
+     let shape;
+     if(cell.bounds){
+       if(projection==="brazil"&&!hasBrazilClip)continue;
+       const [w,s,east,n]=cell.bounds,top=projection==="world"?worldXY(w,n):brazilXY(w,n),
+        bottom=projection==="world"?worldXY(east,s):brazilXY(east,s);
+       if(![top.x,top.y,bottom.x,bottom.y].every(Number.isFinite))continue;
+       shape=e("rect",{x:top.x,y:top.y,width:Math.abs(bottom.x-top.x),
+         height:Math.abs(bottom.y-top.y),fill:cell.color,"fill-opacity":opacity,
+         stroke:"#0b2437","stroke-width":.45});
+       if(hasBrazilClip)shape.setAttribute("clip-path","url(#jarvis-geo-brazil-mask)");
+     }else{
+       const point=projection==="world"?worldXY(cell.lng,cell.lat):brazilXY(cell.lng,cell.lat);
+       shape=e("circle",{cx:point.x,cy:point.y,r:10,fill:cell.color,
+        "fill-opacity":opacity,stroke:"#eaf7ff","stroke-width":1});
+     }
+     shape.classList.add("jarvis-geo-intensity-cell");
+     shape.setAttribute("data-sample-id",cell.id);
+     shape.setAttribute("aria-label",intensityReport.label+": "+cell.value+" "+intensityReport.unit);
+     const title=e("title");title.textContent=intensityReport.label+" — "+cell.value+" "+
+       intensityReport.unit+" em ("+cell.lat+", "+cell.lng+") · "+cell.time;
+     shape.append(title);
+     shape.addEventListener("click",()=>{
+       detail.textContent=intensityReport.label+": "+cell.value+" "+intensityReport.unit+
+         " · centro da célula ("+cell.lat+", "+cell.lng+"), "+
+         cell.time+". "+intensityReport.disclaimer;
+     });
+     patches.append(shape);
+   }
+   svg.append(patches);
    for(const p of frame.points){
      const {x,y}=(projection==="world"?worldXY(p.lng,p.lat):brazilXY(p.lng,p.lat)),color=GEO_PALETTE[p.kind]?.color||"#91d7f0";
      if(!Number.isFinite(x)||!Number.isFinite(y))continue;
@@ -284,7 +471,7 @@ if(stage){
      g.addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();selectRegion(p);}});
      svg.append(g);
    }
-   svgLabels.textContent=projection==="world"?
+   svgLabels.textContent=intensityReport?.ok?intensityReport.label+" · CÉLULAS DE MODELO (não radar) · "+intensityReport.dataTime+" · "+intensityReport.sampledCount+" amostras.":projection==="world"?
       (outline?.length?"Mapa mundial: Natural Earth. Coordenadas aproximadas do modelo; não são limites de perigo.":"Contorno mundial indisponível: marcador exibido na grade global."):
       (outline?.length?"Contorno do Brasil: IBGE. Pontos representativos, não limites exatos de impacto.":"Contorno do IBGE indisponível. Pontos georreferenciados exibidos sobre a grade.");
  }
@@ -349,6 +536,9 @@ if(stage){
      const points=frame.points.map(p=>({...p,color:GEO_PALETTE[p.kind]?.color||"#91d7f0"}));
      earth.setThematicLayer(points,{playing:mode==="3d"&&playing});
    }
+   if(intensityReport?.ok)applyIntensityToEarth();
+   const required=layerChoice.value+":"+scopeChoice.value+":"+currentIntensityDay();
+   if(!panel.hidden&&required!==intensityKey)void chooseIntensity();
  }
  async function setMode(next){
    if(!dataset)return {ok:false,error:"Sem dados carregados"};
@@ -357,7 +547,7 @@ if(stage){
    if(next==="3d"){
      const globe=window.ULTRON_EARTH;
      if(!globe?.state?.visible){const r=await globe?.open?.();if(!r?.ok){mode="2d";draw();return {ok:false,error:r?.error||"Globo indisponível"};}}
-   }else await loadOutline(dataset?.projection);
+   }else await loadOutline(intensityProjection());
    draw();return {ok:true,mode:next,count:geoFrame(dataset,frameIndex,filterKind)?.points.length||0};
  }
  async function open({scenario="enso",view="3d",data=null}={}){
@@ -368,6 +558,8 @@ if(stage){
    window.ULTRON_NEURAL_ANSWER?.clear?.(); // Geo visualization gets the ring's attention, no overlapping previous answer.
    stop();dataset=validated;filterKind="all";filter.value="all";selected=null;
    mapZoom=1;mapCenter=null;pointerPositions.clear();
+   scopeChoice.value=dataset.projection==="world"?"world":"brazil";
+   layerChoice.value="rain";intensityKey="";intensityReport=null;intensityToken++;
    mapReset.textContent=dataset.projection==="world"?"Mundo":"Brasil";
    frameIndex=Math.min(1,dataset.frames.length-1);range.max=String(dataset.frames.length-1);
    heading.textContent=dataset.title.toUpperCase();
@@ -562,6 +754,8 @@ if(stage){
 
  function closePanel(){
    stop();panel.hidden=true;selected=null;seq++;
+   intensityToken++;intensityReport=null;intensityKey="";intensityLegend.replaceChildren();
+   intensityMessage.replaceChildren();
    if(refreshClock!==null){clearInterval(refreshClock);refreshClock=null;}
    placeResults.hidden=true;watchPanel.hidden=true;
    window.ULTRON_EARTH?.clearThematicLayer?.();
@@ -596,6 +790,8 @@ if(stage){
  window.ULTRON_GEO_VISUAL={
    open,close:closePanel,setMode,setFrame,applyFilter,play:()=>togglePlayback(true),pause:()=>togglePlayback(false),
    get state(){return {visible:!panel.hidden,mode,playing,frame:frameIndex,scenario:dataset?.id||null,
-     count:dataset?geoFrame(dataset,frameIndex,filterKind)?.points.length||0:0,frameCount:dataset?.frames.length||0,source:dataset?.source.url||null,filter:filterKind};}
+     count:dataset?geoFrame(dataset,frameIndex,filterKind)?.points.length||0:0,frameCount:dataset?.frames.length||0,
+     source:dataset?.source.url||null,filter:filterKind,layer:intensityReport?.layer||layerChoice.value,
+     gridCount:intensityReport?.ok?intensityReport.sampledCount:0};}
  };
 }
