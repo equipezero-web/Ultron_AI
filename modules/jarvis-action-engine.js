@@ -11,6 +11,31 @@ export function directPlan(message){
    return {steps:[action("earth.locate",{place:followup.region})],contextual:true};
  }
  const q=normalizeCommand(message).replace(/[.!?]+$/,"").trim();
+ // Scientific visualizations require a known, cited dataset. Bare model
+ // guesses must never become mapped "risk scores".
+ const currentGeo=typeof window!=="undefined"?window.ULTRON_GEO_VISUAL?.state:null;
+ const enso=/(?:el nino|elnino|enos|enso)/.test(q);
+ const geoRequested=/\b(?:globo|mapa|visualizacao|visualize|visualizar|destaque|marque|pinte|mostre|mostra|simulacao|simule|simular|crie|gere)\b/.test(q);
+ const actionPrefix=/^(?:por favor |pode |consegue |me |agora )*(?:mostre|mostra|mostrar|exiba|abra|abrir|crie|gere|gerar|simule|simular|visualize|visualizar|destaque|marque|analise|investigue|pesquise|apresente)\b/.test(q);
+ if(enso&&geoRequested&&actionPrefix){
+   return {steps:[action("geo.show",{scenario:"enso",view:/\b(?:2d|mapa plano|mapa bidimensional)\b/.test(q)?"2d":"3d"})]};
+ }
+ if(currentGeo?.visible){
+   if(/^(?:agora |entao |me |por favor )*(?:mostre|abra|mude|troque|altere|passe|volte|visualize|exiba|ir)\b.*\b(?:2d|mapa plano)\b/.test(q)){
+     return {steps:[action("geo.view2d")]};
+   }
+   if(/^(?:agora |entao |me |por favor )*(?:mostre|abra|mude|troque|altere|passe|volte|visualize|exiba|ir)\b.*\b(?:3d|globo)\b/.test(q)){
+     return {steps:[action("geo.view3d")]};
+   }
+   if(/^(?:pause|pausar|pare|parar|interrompa|congele)(?: a| o)?(?: simulacao| animacao| visualizacao)?$/.test(q))return {steps:[action("geo.pause")]};
+   if(/^(?:reproduza|reproduzir|continue|retome|inicie|anime|animar)(?: a| o)?(?: simulacao| animacao| visualizacao)?$/.test(q))return {steps:[action("geo.play")]};
+   if(/^(?:proximo quadro|avance o quadro|proximo periodo|avance a linha do tempo)$/.test(q))return {steps:[action("geo.next")]};
+   if(/^(?:quadro anterior|periodo anterior|volte o quadro)$/.test(q))return {steps:[action("geo.previous")]};
+   if(/^(?:feche|fechar|oculte|esconda|desative)(?: o| a)?(?: mapa de impactos| camada climatica| visualizacao geográfica| visualizacao geografica| simulacao| visualizacao 2d| mapa 2d)$/.test(q))return {steps:[action("geo.close")]};
+   const kind=/^(?:mostre|destaque|filtre|mostra)(?: apenas| so| somente)? (?:as |os )?(?:regioes? (?:com|de) )?(?:seca|menos chuva|chuva abaixo|chuva acima|mais chuva|calor)(?: no mapa| no globo)?$/.exec(q);
+   if(kind)return {steps:[action("geo.filter",{kind:/seca|menos chuva|chuva abaixo/.test(q)?"dry":/mais chuva|chuva acima/.test(q)?"wet":"heat"})]};
+ }
+
  const s=q.replace(/^(?:pode |consegue |quero |me )+/,"");
  const rules=[
   [/^(?:feche|fechar|oculte|esconda) (?:a |o )?(?:resposta|painel de respostas)(?: do neural ring)?$/, "answer.close"],
@@ -41,6 +66,39 @@ function publish(text,visual=null){
 async function executeStep(step,original){
  const w=W(),a=step.args,answer=w.ULTRON_NEURAL_ANSWER;
  switch(step.action){
+ case "geo.show":case "geo.view2d":case "geo.view3d":case "geo.play":case "geo.pause":case "geo.next":case "geo.previous":case "geo.filter":case "geo.close":{
+   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.71.0");
+   const geo=w.ULTRON_GEO_VISUAL;
+   if(!geo)throw Error("Motor de visualização geográfica indisponível");
+   let result;
+   switch(step.action){
+    case "geo.show":result=await geo.open({scenario:a.scenario,view:a.view});break;
+    case "geo.view2d":result=await geo.setMode("2d");break;
+    case "geo.view3d":result=await geo.setMode("3d");break;
+    case "geo.play":result=geo.play();break;
+    case "geo.pause":result=geo.pause();break;
+    case "geo.next":result=geo.setFrame((geo.state.frame+1)%3);break;
+    case "geo.previous":result=geo.setFrame((geo.state.frame+2)%3);break;
+    case "geo.filter":result=geo.applyFilter(a.kind);break;
+    case "geo.close":result=geo.close();break;
+   }
+   if(!result?.ok)throw Error(result?.error||"Não foi possível atualizar visualização");
+   const state=geo.state;
+   const verified=step.action==="geo.close"?!state.visible:
+     step.action==="geo.pause"?!state.playing:
+     step.action==="geo.play"?state.playing:
+     step.action==="geo.view2d"?state.mode==="2d":
+     step.action==="geo.view3d"?state.mode==="3d":
+     step.action==="geo.filter"?state.filter===a.kind:
+     step.action==="geo.show"?state.visible&&state.scenario===a.scenario&&state.mode===a.view:
+     Number.isInteger(state.frame);
+   if(!verified)throw Error("Não foi possível verificar estado da visualização");
+   return {text:step.action==="geo.show"?"Exibindo El Niño em "+a.view.toUpperCase()+". Dados sazonais e simulação identificada como ilustrativa.":
+    step.action==="geo.close"?"Visualização geográfica fechada.":
+    step.action==="geo.play"?"Animação ilustrativa iniciada.":
+    step.action==="geo.pause"?"Animação pausada.":
+    "Visualização geográfica atualizada: "+state.mode+" / quadro "+state.frame+".",verified:true};
+ }
  case "text.set":requireApi(answer,"setTextEnabled").setTextEnabled(a.enabled);if(answer.textEnabled!==a.enabled)throw Error("Estado não confirmado");return a.enabled?"Textos ativados.":"Textos desativados.";
  case "answer.close":requireApi(answer,"clear").clear();if(answer.visible)throw Error("Painel ainda aberto");return "Resposta fechada.";
  case "earth.open":case "earth.locate":{
