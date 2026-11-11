@@ -59,12 +59,15 @@ export function validateGeoScenario(input){
   if(!Array.isArray(frame.points)||frame.points.length>20||!frame.points.length)return null;
   const points=[];
   for(const item of frame.points){
-   const lat=Number(item?.lat),lng=Number(item?.lng);
+   if(item?.lat===null||item?.lat===undefined||item?.lng===null||item?.lng===undefined||typeof item.lat==='boolean'||typeof item.lng==='boolean')return null;
+   const lat=Number(item.lat),lng=Number(item.lng);
    if(!Number.isFinite(lat)||!Number.isFinite(lng)||Math.abs(lat)>90||Math.abs(lng)>180||!Object.hasOwn(GEO_PALETTE,item?.kind))return null;
    const name=clean(item.name,100),detail=clean(item.detail,350);
    const source=validURL(item.source||input.source.url);
    if(!name||!detail||!source)return null;
-   points.push({id:clean(item.id||name,65),name,lat,lng,kind:item.kind,detail,source});
+   const id=clean(item.id||name,65);
+   if(points.some(previous=>previous.id===id))return null;
+   points.push({id,name,lat,lng,kind:item.kind,detail,source});
   }
   frames.push({id:clean(frame.id,45),name:clean(frame.name,90),type:clean(frame.type,100),
     kind:["observed","forecast","illustrative"].includes(frame.kind)?frame.kind:"illustrative",
