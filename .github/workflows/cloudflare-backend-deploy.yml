@@ -26,8 +26,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Validate canonical Worker
-        run: node --check worker.js
+      - name: Validate canonical Worker and weather intelligence
+        run: |
+          node --check worker.js
+          node --check weather-intelligence.js
+          node --check weather-monitor.js
       - name: Validate Wrangler config
         run: |
           grep -q '"main": "worker.js"' wrangler.jsonc

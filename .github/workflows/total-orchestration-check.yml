@@ -22,6 +22,11 @@ on:
       - 'tests/jarvis-phase3-geospatial.mjs'
       - 'tests/jarvis-phase4.mjs'
       - 'tests/jarvis-global-weather.mjs'
+      - 'tests/jarvis-weather-intelligence.mjs'
+      - 'tests/jarvis-weather-monitor.mjs'
+      - 'backend/weather-intelligence.js'
+      - 'backend/weather-monitor.js'
+      - 'modules/jarvis-weather-insight-model.js'
       - 'modules/jarvis-global-weather.js'
       - 'backend/weather-global.js'
       - 'modules/jarvis-weather-model.js'
@@ -61,6 +66,11 @@ on:
       - 'tests/jarvis-phase3-geospatial.mjs'
       - 'tests/jarvis-phase4.mjs'
       - 'tests/jarvis-global-weather.mjs'
+      - 'tests/jarvis-weather-intelligence.mjs'
+      - 'tests/jarvis-weather-monitor.mjs'
+      - 'backend/weather-intelligence.js'
+      - 'backend/weather-monitor.js'
+      - 'modules/jarvis-weather-insight-model.js'
       - 'modules/jarvis-global-weather.js'
       - 'backend/weather-global.js'
       - 'modules/jarvis-weather-model.js'
@@ -120,6 +130,10 @@ jobs:
           node --check modules/jarvis-global-weather.js
           node --check backend/weather-global.js
           node tests/jarvis-global-weather.mjs
+          node --check backend/weather-intelligence.js
+          node --check backend/weather-monitor.js
+          node tests/jarvis-weather-intelligence.mjs
+          node tests/jarvis-weather-monitor.mjs
           node --check modules/jarvis-media-model.js
           node --check modules/ultron-neural-answer.js
           node tests/jarvis-phase2-media.mjs
