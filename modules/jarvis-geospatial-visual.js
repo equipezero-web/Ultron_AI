@@ -73,7 +73,22 @@ if(stage){
  svg.setAttribute("viewBox","0 0 900 550");svg.setAttribute("role","img");
  svg.setAttribute("aria-label","Mapa interativo do Brasil");
  const svgLabels=document.createElement("div");svgLabels.className="jarvis-geo-map-note";
- canvas.append(svg,svgLabels);
+ const mapTools=document.createElement("div");mapTools.className="jarvis-geo-map-tools";
+ const mapControl=(text,description)=>{
+   const button=document.createElement("button");button.type="button";button.textContent=text;
+   button.setAttribute("aria-label",description);button.title=description;mapTools.append(button);return button;
+ };
+ const mapZoomIn=mapControl("+","Aproximar mapa 2D");
+ const mapZoomOut=mapControl("−","Afastar mapa 2D");
+ const mapFocus=mapControl("◎","Centralizar mapa no local indicado");
+ const mapReset=mapControl("Brasil / Mundo","Restaurar extensão completa do mapa");
+ const mapZoomLabel=document.createElement("span");mapZoomLabel.className="jarvis-geo-map-zoom";
+ mapZoomLabel.textContent="100%";mapTools.append(mapZoomLabel);
+ canvas.append(mapTools,svg,svgLabels);
+ const workspace=document.createElement("div");workspace.className="jarvis-geo-workspace";workspace.hidden=true;
+ const metricPanel=document.createElement("aside");metricPanel.className="jarvis-geo-metrics";
+ metricPanel.setAttribute("aria-label","Dados meteorológicos do período selecionado");
+ workspace.append(canvas,metricPanel);
  const list=document.createElement("div");list.className="jarvis-geo-region-list";list.setAttribute("aria-label","Regiões destacadas");
  const detail=document.createElement("p");detail.className="jarvis-geo-detail";detail.setAttribute("aria-live","polite");
  const footer=document.createElement("footer");footer.className="jarvis-geo-footer";
@@ -83,7 +98,7 @@ if(stage){
  officialAlerts.target="_blank";officialAlerts.rel="noopener noreferrer";
  officialAlerts.textContent="Consultar alertas oficiais do INMET";officialAlerts.hidden=true;
  footer.append(source,officialAlerts,caveat);
- panel.append(head,controls,placeBar,watchPanel,insightBar,placeResults,timeline,evidence,canvas,list,detail,footer);stage.append(panel);
+ panel.append(head,controls,placeBar,watchPanel,insightBar,placeResults,timeline,evidence,workspace,list,detail,footer);stage.append(panel);
  for(const type of ["pointerdown","pointerup","wheel","click","touchstart","touchend"]){
    panel.addEventListener(type,event=>event.stopPropagation(),{passive:true});
  }
