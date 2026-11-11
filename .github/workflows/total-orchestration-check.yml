@@ -20,6 +20,7 @@ on:
       - 'tests/jarvis-phase1.mjs'
       - 'modules/jarvis-intent-engine.js'
       - 'modules/jarvis-task-context.js'
+      - 'backend/task-context.js'
       - 'backend/worker.js'
       - 'backend/wrangler.jsonc'
       - '.github/workflows/total-orchestration-check.yml'
@@ -42,6 +43,7 @@ on:
       - 'tests/jarvis-phase1.mjs'
       - 'modules/jarvis-intent-engine.js'
       - 'modules/jarvis-task-context.js'
+      - 'backend/task-context.js'
       - 'backend/worker.js'
       - 'backend/wrangler.jsonc'
       - '.github/workflows/total-orchestration-check.yml'
@@ -72,6 +74,7 @@ jobs:
           node --check modules/jarvis-action-engine.js
           node --check modules/jarvis-intent-engine.js
           node --check modules/jarvis-task-context.js
+          node --check backend/task-context.js
           node tests/jarvis-autonomy.mjs
           node tests/jarvis-phase1.mjs
 
