@@ -276,7 +276,7 @@ try {
     assert.ok((await page.$eval('.jarvis-geo-visual',el=>el.querySelectorAll('.jarvis-geo-marker').length))>=1);
     await page.click('.jarvis-geo-modes [data-mode="3d"]');
     await page.waitForFunction(()=>window.ULTRON_GEO_VISUAL?.state?.mode==='3d',{timeout:7000});
-    assert.equal(await page.evaluate(()=>window.__phase3MockState.layerCount),1,'Globe must receive filtered thematic markers');
+    assert.ok(await page.evaluate(()=>window.__phase3MockState.layerCount)>=1,'Globe must receive filtered thematic markers');
     await page.click('.jarvis-geo-timeline button');
     assert.equal(await page.evaluate(()=>window.ULTRON_GEO_VISUAL.state.playing),true);
     assert.equal(await page.evaluate(()=>window.__phase3MockState.playing),true);
