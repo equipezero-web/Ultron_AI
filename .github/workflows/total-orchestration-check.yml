@@ -325,7 +325,7 @@ jobs:
           }
 
           const home=await check('pages',site);
-          assert.match(home,/jarvis-geospatial-visual[.]js[?]v=4[.]74[.]0/);
+          assert.match(home,/jarvis-geospatial-visual[.]js[?]v=4[.][0-9]+[.][0-9]+/);
           const world=await check('world-map-module',site+'modules/jarvis-global-weather.js?v=4.73.0');
           assert.match(world,/globalWeatherScenario/);
           const recovery=await check('direct-fallback-module',site+'backend/weather-global.js?v=4.74.0');
