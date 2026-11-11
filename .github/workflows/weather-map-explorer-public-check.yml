@@ -1,0 +1,43 @@
+name: JARVIS Weather Map Explorer Public Verification
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/weather-map-explorer-public-check.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  published-map-explorer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify source-driven map and metrics served to browsers
+        run: |
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict';
+          const root='https://equipezero-web.github.io/Ultron_AI/';
+          const checks=[
+            ['HTML',root,/jarvis-geospatial-visual[.]css[?]v=4[.]82[.]0/],
+            ['Geospatial explorer',root+'modules/jarvis-geospatial-visual.js?v=4.82.0',/function renderMetrics\(frame\)/],
+            ['Interactive map CSS',root+'modules/jarvis-geospatial-visual.css?v=4.82.0',/Weather Explorer: the real map/],
+            ['Validated numeric frame model',root+'modules/jarvis-geospatial-model.js?v=4.82.0',/function validateMetrics\(metrics\)/],
+            ['Forecast with typed metrics',root+'modules/jarvis-weather-model.js?v=4.82.0',/metrics:\{minC:d[.]minC/]
+          ];
+          for(const [label,url,pattern] of checks){
+            let done=false;
+            for(let attempt=1;attempt<=15;attempt++){
+              try {
+                const response=await fetch(url,{cache:'no-store',signal:AbortSignal.timeout(12000)});
+                const body=await response.text();
+                console.log(label,'HTTP',response.status,'attempt',attempt,'bytes',body.length,'latest',pattern.test(body));
+                if(response.status===200&&pattern.test(body)){done=true;break;}
+              }catch(error){console.log(label,'attempt',attempt,String(error));}
+              if(attempt<15)await new Promise(resolve=>setTimeout(resolve,5500));
+            }
+            assert.ok(done,label+' not published at '+url);
+          }
+          console.log('WORLD WEATHER MAP EXPLORER LIVE IN GITHUB PAGES');
+          NODE
