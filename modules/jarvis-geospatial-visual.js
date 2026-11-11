@@ -40,7 +40,11 @@ if(stage){
  const detail=document.createElement("p");detail.className="jarvis-geo-detail";detail.setAttribute("aria-live","polite");
  const footer=document.createElement("footer");footer.className="jarvis-geo-footer";
  const source=document.createElement("a");source.target="_blank";source.rel="noopener noreferrer";
- const caveat=document.createElement("small");footer.append(source,caveat);
+ const caveat=document.createElement("small");
+ const officialAlerts=document.createElement("a");officialAlerts.href="https://avisos.inmet.gov.br/";
+ officialAlerts.target="_blank";officialAlerts.rel="noopener noreferrer";
+ officialAlerts.textContent="Consultar alertas oficiais do INMET";officialAlerts.hidden=true;
+ footer.append(source,officialAlerts,caveat);
  panel.append(head,controls,timeline,evidence,canvas,list,detail,footer);stage.append(panel);
  for(const type of ["pointerdown","pointerup","wheel","click","touchstart","touchend"]){
    panel.addEventListener(type,event=>event.stopPropagation(),{passive:true});
@@ -157,6 +161,7 @@ if(stage){
    heading.textContent=dataset.title.toUpperCase();
    source.href=dataset.source.url;source.textContent=dataset.source.name;
    caveat.textContent=dataset.source.disclaimer;
+   officialAlerts.hidden=!dataset.id.startsWith("weather-");
    panel.hidden=false;
    const result=await setMode(view);
    if(!result.ok){panel.hidden=true;return result;}
