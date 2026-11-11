@@ -1,5 +1,5 @@
 import {TASK_CONTEXT} from "./jarvis-task-context.js?v=4.69.0";
-import {directPlan,runActionPlan} from "./jarvis-action-engine.js?v=4.69.0";
+import {directPlan,runActionPlan} from "./jarvis-action-engine.js?v=4.71.0";
 import {runLocalCommand} from "./jarvis-local-commands.js?v=4.67.0";
 import API_CONFIG from "../config.js";
 

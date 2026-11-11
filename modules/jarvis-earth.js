@@ -169,6 +169,7 @@ if (earthVisual) {
         fadeDuration:mobileGPU?0:300
       });
       referenceMap=map;
+      map.on('style.load',()=>{if(thematicPoints.length)applyThematicToMap(map);});
       // Pinch zoom and double-tap zoom remain enabled; two-finger twisting won't spin.
       map.touchZoomRotate?.enable?.();
       map.touchZoomRotate?.disableRotation?.();
@@ -215,6 +216,7 @@ if (earthVisual) {
           if(!map.loaded?.())finish(event.error||new Error('Erro ao carregar estilo Mapbox'));
         });
       });
+      if(thematicPoints.length)applyThematicToMap(map);
       return true;
     })().catch(error=>{
       const message=error?.message||String(error);
@@ -237,6 +239,66 @@ if (earthVisual) {
     'sao paulo': [-46.6333, -23.5505, 11]
   };
   let globe = null;
+  let thematicPoints=[];
+  let thematicPlaying=false;
+  const themeSource='jarvis-thematic-geo';
+  const themeHeat='jarvis-thematic-heat';
+  const themeMarkers='jarvis-thematic-markers';
+  const thematicFeatures=()=>({
+    type:'FeatureCollection',
+    features:thematicPoints.map((p,i)=>({
+      type:'Feature',geometry:{type:'Point',coordinates:[p.lng,p.lat]},
+      properties:{id:p.id||String(i),name:p.name,color:p.color||'#76c9ed',kind:p.kind,description:p.detail||''}
+    }))
+  });
+  function applyThematicToMap(map){
+    if(!map||typeof map.getSource!=='function'||typeof map.addSource!=='function')return false;
+    if(!map.isStyleLoaded?.())return false;
+    try{
+      const existing=map.getSource(themeSource);
+      if(existing)existing.setData(thematicFeatures());
+      else map.addSource(themeSource,{type:'geojson',data:thematicFeatures()});
+      if(!map.getLayer(themeHeat))map.addLayer({
+        id:themeHeat,type:'heatmap',source:themeSource,
+        paint:{'heatmap-weight':.6,'heatmap-intensity':.9,
+          'heatmap-radius':38,'heatmap-opacity':.25}
+      });
+      if(!map.getLayer(themeMarkers))map.addLayer({
+        id:themeMarkers,type:'circle',source:themeSource,
+        paint:{'circle-radius':9,'circle-color':['get','color'],
+          'circle-stroke-color':'#051624','circle-stroke-width':2,'circle-opacity':.9}
+      });
+      map.setLayoutProperty?.(themeHeat,'visibility',thematicPoints.length?'visible':'none');
+      map.setLayoutProperty?.(themeMarkers,'visibility',thematicPoints.length?'visible':'none');
+      return true;
+    }catch(error){console.warn('[EARTH] Camada temática Mapbox indisponível:',error);return false;}
+  }
+  function applyThematicToGlobe(){
+    if(!globe||typeof globe.ringsData!=='function')return false;
+    try{
+      globe.ringsData(thematicPoints).ringLat(p=>p.lat).ringLng(p=>p.lng)
+        .ringColor(p=>p.color||'#76c9ed').ringMaxRadius(2.4)
+        .ringPropagationSpeed(thematicPlaying?1.6:0)
+        .ringRepeatPeriod(thematicPlaying?1100:4000);
+      return true;
+    }catch(error){console.warn('[EARTH] Animação temática indisponível:',error);return false;}
+  }
+  function setThematicLayer(points,{playing=false}={}){
+    if(!Array.isArray(points)||points.length>25)return {ok:false,error:'Limite de regiões excedido'};
+    const valid=[];
+    for(const p of points){
+      const lat=Number(p?.lat),lng=Number(p?.lng);
+      if(!Number.isFinite(lat)||!Number.isFinite(lng)||Math.abs(lat)>90||Math.abs(lng)>180)return {ok:false,error:'Coordenadas inválidas'};
+      valid.push({id:String(p.id||''),name:String(p.name||''),kind:String(p.kind||''),detail:String(p.detail||''),
+        lat,lng,color:/^#[0-9A-Fa-f]{6}$/.test(p.color||'')?p.color:'#76c9ed'});
+    }
+    thematicPoints=valid;thematicPlaying=Boolean(playing);
+    const onGlobe=applyThematicToGlobe();
+    const onMap=applyThematicToMap(referenceMap)||applyThematicToMap(streetMap);
+    // The caller may set the dataset before the WebGL engine finishes loading.
+    return {ok:Boolean(onGlobe||onMap||(!visible&&valid.length===0)),staged:!onGlobe&&!onMap,count:valid.length,playing:thematicPlaying};
+  }
+  function clearThematicLayer(){return setThematicLayer([],{playing:false});}
   let streetMap = null;
   let streetLoading = null;
   let mapboxLibraryLoading = null;
@@ -519,6 +581,7 @@ if (earthVisual) {
             const result = focus(lat, lng, 10, true);
             if (result.ok) terminal('Ponto selecionado: ' + lat.toFixed(4) + ', ' + lng.toFixed(4) + '.');
           });
+        if(thematicPoints.length)applyThematicToGlobe();
         // Avoid huge WebGL buffers on high-DPI phones. Keep desktop sharp.
         try {
           const renderer = globe.renderer?.();
@@ -868,6 +931,7 @@ if (earthVisual) {
   }
   window.ULTRON_EARTH = {
     open, close, locate, navigate, focus, clearSelection, enterStreetDetails,
+    setThematicLayer, clearThematicLayer,
     resetReferenceMap, get referenceMap(){return referenceMap;},
     get state() {
       const tokenConfigured = hasMapboxToken();
@@ -882,7 +946,8 @@ if (earthVisual) {
           ? {lat:streetMap.getCenter().lat,lng:streetMap.getCenter().lng,altitude:altitudeFromMapZoom(streetMap.getZoom()),zoom:streetMap.getZoom()}
           : globe?.pointOfView?.() || null,
         dragRequiresHold: true, dragging: Boolean(dragState), streetZoomAvailable: tokenConfigured, streetMode,
-        referenceMode, referenceOverlay: !reference.hidden, referenceSelection
+        referenceMode, referenceOverlay: !reference.hidden, referenceSelection,
+        thematicCount:thematicPoints.length,thematicPlaying
       };
     }
   };

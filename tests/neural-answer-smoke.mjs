@@ -30,6 +30,12 @@ try {
       }
       if(/^https:\/\/example\.org\/(picture|news)\.jpg$/.test(req.url()))
         return req.respond({status:200,contentType:'image/svg+xml',body:'<svg xmlns="http://www.w3.org/2000/svg" width="420" height="280"><rect width="420" height="280" fill="#406b92"/></svg>'});
+      if(req.url().includes('servicodados.ibge.gov.br/api/v3/malhas/paises/BR')){
+        return req.respond({status:200,headers:{'access-control-allow-origin':'*'},contentType:'application/geo+json',
+          body:JSON.stringify({type:'FeatureCollection',features:[{type:'Feature',geometry:{type:'Polygon',coordinates:[
+            [[-72,3],[-52,5],[-36,-5],[-40,-23],[-50,-34],[-57,-30],[-67,-9],[-72,3]]
+          ]}}]})});
+      }
       return req.continue();
     });
     await page.goto('http://127.0.0.1:8766/'+(viewport.width===1920?'?display=tv':''),{waitUntil:'domcontentloaded'});
@@ -229,6 +235,73 @@ try {
     assert.equal(contextual.selected,'nordeste',JSON.stringify(contextual));
     assert.equal(contextual.context.region,'nordeste');
     assert.equal(contextual.context.topic,'El Niño');
+
+    // Phase 3: a normal spoken-style command must render a real 2D map
+    // within the Neural Ring and never claim numeric risk predictions.
+    const geography=await page.evaluate(async()=>{
+      const earth=window.ULTRON_EARTH;
+      const state={visible:false,layerCount:0,playing:false,focused:null};
+      window.ULTRON_EARTH={
+        state,async open(){state.visible=true;return {ok:true}},
+        setThematicLayer(points,{playing=false}={}){state.layerCount=points.length;state.playing=playing;return {ok:true,count:points.length};},
+        clearThematicLayer(){state.layerCount=0;return {ok:true}},focus(lat,lng){state.focused=[lat,lng];return {ok:true}}
+      };
+      const result=await window.ULTRON_ORCHESTRATOR.execute('JARVIS, crie uma simulação 2D do El Niño','phase3-test');
+      const snapshot={result,geo:window.ULTRON_GEO_VISUAL?.state,theme:{...state}};
+      window.__phase3EarthRestore=()=>{window.ULTRON_EARTH=earth;};
+      window.__phase3MockState=state;
+      return snapshot;
+    });
+    assert.equal(geography.result.ok,true,JSON.stringify(geography));
+    assert.equal(geography.geo.mode,'2d');
+    assert.equal(geography.geo.scenario,'enso');
+    await page.waitForFunction(()=>document.querySelector('.jarvis-geo-2d svg path'),{timeout:9000});
+    const mapped=await page.evaluate(()=>{
+      const geo=document.querySelector('.jarvis-geo-visual'),stage=document.querySelector('.jarvis-cc-center');
+      const panel=geo.getBoundingClientRect(),parent=stage.getBoundingClientRect();
+      return {visible:!geo.hidden,markerCount:geo.querySelectorAll('.jarvis-geo-marker').length,
+        paths:geo.querySelectorAll('.jarvis-geo-2d svg path').length,source:geo.querySelector('.jarvis-geo-footer a')?.href,
+        warning:geo.querySelector('.jarvis-geo-footer small')?.textContent,
+        inside:panel.left>=parent.left-3&&panel.right<=parent.right+3,
+        overflow:document.documentElement.scrollWidth-innerWidth};
+    });
+    assert.equal(mapped.visible,true);
+    assert.ok(mapped.markerCount>=5&&mapped.paths>=1,JSON.stringify(mapped));
+    assert.ok(mapped.source.includes('gov.br/cemaden'));
+    assert.match(mapped.warning,/Não são limites de desastre/);
+    assert.ok(mapped.inside&&mapped.overflow<=3,JSON.stringify(mapped));
+    await page.$eval('.jarvis-geo-region',el=>el.scrollIntoView({block:'center',inline:'nearest'}));
+    const hitRegion=await page.evaluate(()=>{
+      const button=document.querySelector('.jarvis-geo-region'),r=button.getBoundingClientRect();
+      const el=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2);
+      return {rect:{left:r.left,top:r.top,width:r.width,height:r.height},
+        tag:el?.tagName,className:String(el?.className||''),inside:button===el||button.contains(el),
+        buttonPointer:getComputedStyle(button).pointerEvents,
+        panelPointer:getComputedStyle(document.querySelector('.jarvis-geo-visual')).pointerEvents,
+        panelZ:getComputedStyle(document.querySelector('.jarvis-geo-visual')).zIndex,
+        scrollY:window.scrollY};
+    });
+    assert.ok(hitRegion.inside,'Regional button must remain clickable after internal scrolling: '+JSON.stringify(hitRegion));
+    await page.click('.jarvis-geo-region');
+    const regionDetail=await page.$eval('.jarvis-geo-detail',el=>({
+      text:el.textContent,link:el.querySelector('a')?.href||null,
+      selected:document.querySelector('.jarvis-geo-region[aria-pressed=true]')?.dataset.id||null
+    }));
+    assert.ok(regionDetail.link?.includes('gov.br/cemaden'),JSON.stringify(regionDetail));
+    await page.select('.jarvis-geo-filter','wet');
+    assert.ok((await page.$eval('.jarvis-geo-visual',el=>el.querySelectorAll('.jarvis-geo-marker').length))>=1);
+    await page.click('.jarvis-geo-modes [data-mode="3d"]');
+    await page.waitForFunction(()=>window.ULTRON_GEO_VISUAL?.state?.mode==='3d',{timeout:7000});
+    assert.ok(await page.evaluate(()=>window.__phase3MockState.layerCount)>=1,'Globe must receive filtered thematic markers');
+    await page.click('.jarvis-geo-timeline button');
+    assert.equal(await page.evaluate(()=>window.ULTRON_GEO_VISUAL.state.playing),true);
+    assert.equal(await page.evaluate(()=>window.__phase3MockState.playing),true);
+    await page.click('.jarvis-geo-timeline button');
+    assert.equal(await page.evaluate(()=>window.ULTRON_GEO_VISUAL.state.playing),false);
+    await page.click('.jarvis-geo-close');
+    assert.equal(await page.evaluate(()=>window.ULTRON_GEO_VISUAL.state.visible),false);
+    assert.equal(await page.evaluate(()=>window.__phase3MockState.layerCount),0);
+    await page.evaluate(()=>window.__phase3EarthRestore());
     await page.close();
   }
   console.log('NEURAL ANSWER PASS: ring-only boot; responsive stacked/split layout; compact square image cards; distinct inline video lane; mobile/laptop/TV');

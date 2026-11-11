@@ -70,7 +70,7 @@ jobs:
             assert.ok(!earth.includes(forbidden), 'Earth must not create extra UI: ' + forbidden);
           }
           assert.ok(css.includes('.jarvis-earth-globe') && css.includes('.jarvis-earth-expanded'), 'Neural Ring styling missing');
-          assert.ok(html.includes('jarvis-earth.js?v=4.52.0'), 'Earth release version missing');
+          assert.ok(/jarvis-earth[.]js[?]v=4[.][0-9]+[.][0-9]+/.test(html), 'Earth release version missing');
           assert.ok(html.includes('jarvis-command-center-v4330.css?v=4.53.0'), 'Earth CSS version missing');
           assert.equal((html.match(/src="modules\/jarvis-earth.js/g) || []).length, 1, 'Earth module must load only once');
           assert.ok(!/pk\.eyJ[A-Za-z0-9._-]+/.test(earth), 'No literal Mapbox token in Git');

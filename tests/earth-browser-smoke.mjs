@@ -45,6 +45,14 @@ try {
   assert.equal(result.secondaryInputs, 0, 'No popup, search, side panel or separate section');
   assert.equal(result.xHidden, true, 'The only X must remain hidden until a location click');
 
+  const thematic=await page.evaluate(()=>window.ULTRON_EARTH.setThematicLayer([
+    {id:'ensotest',name:'Sul',lat:-28.1,lng:-51.1,kind:'wet',detail:'Teste de camada',color:'#67c5ef'}
+  ],{playing:true}));
+  assert.equal(thematic.ok,true,'The physical Globe.gl renderer must support thematic simulation layers');
+  assert.equal(await page.evaluate(()=>window.ULTRON_EARTH.state.thematicCount),1);
+  assert.equal(await page.evaluate(()=>window.ULTRON_EARTH.state.thematicPlaying),true);
+  await page.evaluate(()=>window.ULTRON_EARTH.clearThematicLayer());
+  assert.equal(await page.evaluate(()=>window.ULTRON_EARTH.state.thematicCount),0);
   const china = await page.evaluate(() => window.ULTRON_EARTH.locate('China'));
   assert.equal(china.ok, true, 'Jarvis should locate China');
   await page.waitForFunction(() => {
