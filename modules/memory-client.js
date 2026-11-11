@@ -43,6 +43,7 @@ export function startNewConversation() {
   try {
     localStorage.setItem(CONVERSATION_STORAGE, next);
   } catch {}
+  window.dispatchEvent(new CustomEvent("ultron:new-conversation",{detail:{conversationId:next}}));
   return next;
 }
 
