@@ -72,9 +72,12 @@ export function weatherGeoScenario(report){
   source:{...WEATHER_SOURCE,basePeriod:"Consulta "+report.fetchedAt+" | previsão curta de 3 dias"},
   frames:[
    {id:"estimate",name:"Estimativa atual",type:"modelo meteorológico, não estação de medição",kind:"current-estimate",
+    metrics:{temperatureC:report.current.temperatureC,humidityPercent:report.current.humidityPercent,
+     precipitationMm:report.current.precipitationMm},
     description:"Condições estimadas pelo modelo para "+city.name+" em "+report.current.time+". Não são medições locais confirmadas.",
     points:[point("weather-current",`Temperatura estimada: ${num(report.current.temperatureC)} °C; umidade: ${num(report.current.humidityPercent)}%; precipitação atual estimada: ${num(report.current.precipitationMm)} mm.`)]},
    ...report.days.map((d,i)=>({id:"day-"+i,name:d.date,type:"previsão numérica de curto prazo",kind:"short-term-forecast",
+    metrics:{minC:d.minC,maxC:d.maxC,rainMm:d.rainMm,rainChancePercent:d.rainChancePercent},
     description:"Previsão de curto prazo para "+city.name+" em "+d.date+": de "+num(d.minC)+" °C a "+num(d.maxC)+" °C; precipitação acumulada "+num(d.rainMm)+" mm e probabilidade máxima de precipitação "+num(d.rainChancePercent)+"%. Não é alerta oficial.",
     points:[point("weather-day-"+i,`Mínima ${num(d.minC)} °C; máxima ${num(d.maxC)} °C; chuva prevista ${num(d.rainMm)} mm; probabilidade máxima de precipitação ${num(d.rainChancePercent)}%.`)]}))
   ]
