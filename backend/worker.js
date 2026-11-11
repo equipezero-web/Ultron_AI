@@ -1,5 +1,6 @@
 import {vetClientTaskContext,contextSearchQuery} from "./task-context.js";
 import {loadLiveWeather} from "./weather-live.js";
+import {searchGlobalLocations,loadGlobalWeather} from "./weather-global.js";
 import {ACTIONS,parsePlanText,isActionRequest} from "./action-catalog.js";
 import {capabilityAnswer} from "./jarvis-capabilities.js";
 import { deepenNews } from "./news-details.js";
@@ -995,6 +996,17 @@ export default {
 
     if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: corsHeaders() });
     if (path === "/api/health" && request.method === "GET") return health(env);
+    if(path==="/api/geo/locations"&&request.method==="GET"){
+      const result=await searchGlobalLocations(url.searchParams.get("q"));
+      return new Response(JSON.stringify(result),{status:result.ok?200:result.status||503,headers:{
+       ...corsHeaders(),"Cache-Control":result.ok?"public, max-age=3600":"no-store","X-Content-Type-Options":"nosniff"}});
+    }
+    if(path==="/api/geo/global"&&request.method==="GET"){
+      const result=await loadGlobalWeather({query:url.searchParams.get("city"),
+       id:url.searchParams.get("id"),days:url.searchParams.get("days")||"7"});
+      return new Response(JSON.stringify(result),{status:result.ok?200:result.status||503,headers:{
+       ...corsHeaders(),"Cache-Control":result.ok?"public, max-age=600":"no-store","X-Content-Type-Options":"nosniff"}});
+    }
     // Read-only forecast route: exact city allowlist and fixed weather provider host.
     if (path === "/api/geo/weather" && request.method === "GET") {
       const result = await loadLiveWeather(url.searchParams.get("city"));

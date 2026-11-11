@@ -73,6 +73,11 @@ export function createTaskContext({storage=null,now=()=>Date.now(),conversationI
    else if(action==="geo.view3d"||(action==="geo.show"&&args.view==="3d"))s.visualization="globe";
    else if(action==="geo.close")s.visualization="ring";
    if(action==="geo.show"&&args.scenario==="enso"&&!isPrivateTurn("El Niño"))s.topic="El Niño — tendências regionais no Brasil";
+   if(action==="weather.global"){
+     const city=clipped(args.city,96);
+     if(city&&!isPrivateTurn(city)){s.region=city;s.topic="Previsão meteorológica mundial — "+city;}
+     s.visualization=args.view==="3d"?"globe":"map-2d";
+   }
    if(action==="weather.show"){
      const city=weatherCity(args.city);
      if(city){s.region=city.name;s.topic="Previsão meteorológica de curto prazo — "+city.name;}

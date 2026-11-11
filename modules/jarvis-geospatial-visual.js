@@ -1,4 +1,6 @@
-import {GEO_SCENARIOS,GEO_PALETTE,geoFrame,validateGeoScenario,BRAZIL_OUTLINE_URL,brazilXY,geoJSONPaths} from "./jarvis-geospatial-model.js?v=4.71.0";
+import API_CONFIG from "../config.js";
+import {globalWeatherScenario} from "./jarvis-global-weather.js?v=4.73.0";
+import {GEO_SCENARIOS,GEO_PALETTE,geoFrame,validateGeoScenario,BRAZIL_OUTLINE_URL,WORLD_OUTLINE_URL,brazilXY,worldXY,geoJSONPaths} from "./jarvis-geospatial-model.js?v=4.73.0";
 
 // The visualization remains INSIDE the Neural Ring stage, no new page or pop-up.
 const stage=document.querySelector(".jarvis-cc-center");
@@ -21,6 +23,18 @@ if(stage){
  for(const [value,text] of [["all","Todos os sinais"],["observed","Seca observada"],["dry","Chuva abaixo"],["wet","Chuva acima"],["heat","Temperatura alta"],["weather","Tempo previsto"]]){
   const o=document.createElement("option");o.value=value;o.textContent=text;filter.append(o);}
  const controls=document.createElement("div");controls.className="jarvis-geo-controls";controls.append(modeGroup,filter);
+ const placeBar=document.createElement("form");placeBar.className="jarvis-geo-place-bar";placeBar.hidden=true;
+ const placeInput=document.createElement("input");placeInput.type="search";placeInput.maxLength=96;
+ placeInput.placeholder="Cidade, país (ex.: Tokyo, Japan)";placeInput.setAttribute("aria-label","Buscar cidade mundial");
+ const daysChoice=document.createElement("select");daysChoice.setAttribute("aria-label","Horizonte da previsão");
+ for(const n of [3,7,16]){const o=document.createElement("option");o.value=String(n);o.textContent=n+" dias";if(n===7)o.selected=true;daysChoice.append(o);}
+ const placeSearch=document.createElement("button");placeSearch.type="submit";placeSearch.textContent="Buscar";
+ const placeRefresh=document.createElement("button");placeRefresh.type="button";placeRefresh.textContent="↻";
+ placeRefresh.setAttribute("aria-label","Atualizar meteorologia da cidade selecionada");
+ placeBar.append(placeInput,daysChoice,placeSearch,placeRefresh);
+ const placeResults=document.createElement("div");placeResults.className="jarvis-geo-place-results";placeResults.hidden=true;
+ placeResults.setAttribute("aria-live","polite");
+
  const timeline=document.createElement("div");timeline.className="jarvis-geo-timeline";
  const play=document.createElement("button");play.type="button";play.textContent="▶";
  play.setAttribute("aria-label","Percorrer quadros temporais; a animação não cria uma nova previsão");
@@ -45,12 +59,12 @@ if(stage){
  officialAlerts.target="_blank";officialAlerts.rel="noopener noreferrer";
  officialAlerts.textContent="Consultar alertas oficiais do INMET";officialAlerts.hidden=true;
  footer.append(source,officialAlerts,caveat);
- panel.append(head,controls,timeline,evidence,canvas,list,detail,footer);stage.append(panel);
+ panel.append(head,controls,placeBar,placeResults,timeline,evidence,canvas,list,detail,footer);stage.append(panel);
  for(const type of ["pointerdown","pointerup","wheel","click","touchstart","touchend"]){
    panel.addEventListener(type,event=>event.stopPropagation(),{passive:true});
  }
- let dataset=null,frameIndex=1,mode="3d",playing=false,clock=null,selected=null,outline=null;
- let geoLoading=null,seq=0,filterKind="all";
+ let dataset=null,frameIndex=1,mode="3d",playing=false,clock=null,selected=null,outlines={brazil:null,world:null};
+ let geoLoading={brazil:null,world:null},seq=0,filterKind="all",refreshClock=null;
  const ns="http://www.w3.org/2000/svg";
  const e=(tag,attr={})=>{const el=document.createElementNS(ns,tag);for(const [k,v] of Object.entries(attr))el.setAttribute(k,String(v));return el;};
  function resize(){panel.dataset.screen=document.body.classList.contains("ultron-tv-display")?"tv":
@@ -63,9 +77,10 @@ if(stage){
    const bg=e("rect",{width:900,height:550,fill:"#091a2c",rx:12});svg.append(bg);
    for(let x=55;x<880;x+=100)svg.append(e("line",{x1:x,x2:x,y1:40,y2:530,stroke:"#35516a","stroke-opacity":".38","stroke-width":1}));
    for(let y=50;y<535;y+=80)svg.append(e("line",{x1:50,x2:875,y1:y,y2:y,stroke:"#35516a","stroke-opacity":".38","stroke-width":1}));
+   const projection=dataset?.projection==="world"?"world":"brazil",outline=outlines[projection];
    if(outline?.length)for(const d of outline)svg.append(e("path",{d,fill:"#18354b",stroke:"#6c9caa","stroke-width":1.4,"fill-opacity":".83"}));
    for(const p of frame.points){
-     const {x,y}=brazilXY(p.lng,p.lat),color=GEO_PALETTE[p.kind]?.color||"#91d7f0";
+     const {x,y}=(projection==="world"?worldXY(p.lng,p.lat):brazilXY(p.lng,p.lat)),color=GEO_PALETTE[p.kind]?.color||"#91d7f0";
      if(!Number.isFinite(x)||!Number.isFinite(y))continue;
      const g=e("g",{"data-region-id":p.id,role:"button",tabindex:"0","aria-label":p.name+" — "+GEO_PALETTE[p.kind]?.short});
      g.classList.add("jarvis-geo-marker");
@@ -76,24 +91,25 @@ if(stage){
      g.addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();selectRegion(p);}});
      svg.append(g);
    }
-   svgLabels.textContent=outline?.length?
-      "Contorno do Brasil: IBGE. Pontos representativos, não limites exatos de impacto.":
-      "Contorno do IBGE indisponível. Pontos georreferenciados exibidos sobre a grade.";
+   svgLabels.textContent=projection==="world"?
+      (outline?.length?"Mapa mundial: Natural Earth. Coordenadas aproximadas do modelo; não são limites de perigo.":"Contorno mundial indisponível: marcador exibido na grade global."):
+      (outline?.length?"Contorno do Brasil: IBGE. Pontos representativos, não limites exatos de impacto.":"Contorno do IBGE indisponível. Pontos georreferenciados exibidos sobre a grade.");
  }
- async function loadOutline(){
-   if(outline)return outline;
-   if(geoLoading)return geoLoading;
-   geoLoading=(async()=>{
-     const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),5500);
+ async function loadOutline(which="brazil"){
+   const projection=which==="world"?"world":"brazil";
+   if(outlines[projection])return outlines[projection];
+   if(geoLoading[projection])return geoLoading[projection];
+   geoLoading[projection]=(async()=>{
+     const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),6500);
      try{
-       const response=await fetch(BRAZIL_OUTLINE_URL,{signal:controller.signal,cache:"force-cache"});
-       if(!response.ok)throw Error("IBGE não disponível");
+       const response=await fetch(projection==="world"?WORLD_OUTLINE_URL:BRAZIL_OUTLINE_URL,{signal:controller.signal,cache:"force-cache"});
+       if(!response.ok)throw Error("Contorno indisponível");
        const json=await response.json();
-       outline=geoJSONPaths(json);
-       return outline;
+       outlines[projection]=geoJSONPaths(json,{projection});
+       return outlines[projection];
      }catch{return [];}finally{clearTimeout(timeout);}
-   })().finally(()=>{geoLoading=null;});
-   return geoLoading;
+   })().finally(()=>{geoLoading[projection]=null;});
+   return geoLoading[projection];
  }
  function selectRegion(p){
    selected=p?.id||null;
@@ -101,7 +117,7 @@ if(stage){
    if(!p){detail.textContent="Selecione uma região para consultar o contexto.";return;}
    const b=document.createElement("strong");b.textContent=p.name+" — "+GEO_PALETTE[p.kind]?.short;
    const line=document.createElement("p");line.textContent=p.detail;
-   const link=document.createElement("a");link.href=p.source;link.target="_blank";link.rel="noopener noreferrer";link.textContent="Ver fonte do boletim";
+   const link=document.createElement("a");link.href=p.source;link.target="_blank";link.rel="noopener noreferrer";link.textContent="Ver fonte dos dados";
    detail.append(b,line,link);
    for(const node of list.querySelectorAll("button"))node.setAttribute("aria-pressed",String(node.dataset.id===selected));
    for(const node of svg.querySelectorAll(".jarvis-geo-marker"))node.setAttribute("aria-pressed",String(node.dataset.regionId===selected));
@@ -147,7 +163,7 @@ if(stage){
    if(next==="3d"){
      const globe=window.ULTRON_EARTH;
      if(!globe?.state?.visible){const r=await globe?.open?.();if(!r?.ok){mode="2d";draw();return {ok:false,error:r?.error||"Globo indisponível"};}}
-   }else await loadOutline();
+   }else await loadOutline(dataset?.projection);
    draw();return {ok:true,mode:next,count:geoFrame(dataset,frameIndex,filterKind)?.points.length||0};
  }
  async function open({scenario="enso",view="3d",data=null}={}){
@@ -161,15 +177,81 @@ if(stage){
    heading.textContent=dataset.title.toUpperCase();
    source.href=dataset.source.url;source.textContent=dataset.source.name;
    caveat.textContent=dataset.source.disclaimer;
-   officialAlerts.hidden=!dataset.id.startsWith("weather-");
+   officialAlerts.hidden=!dataset.id.startsWith("weather-")||dataset.projection==="world";
+   placeBar.hidden=dataset.projection!=="world";
+   placeRefresh.disabled=!/^weather-global-\d+$/.test(dataset.id);
+   if(refreshClock!==null){clearInterval(refreshClock);refreshClock=null;}
+   if(/^weather-global-\d+$/.test(dataset.id))refreshClock=setInterval(()=>{
+     if(panel.hidden||document.hidden)return;
+     const id=Number(dataset?.id?.match(/^weather-global-(\d+)$/)?.[1]);
+     if(id>0)void showLocation(id,Math.min(16,Math.max(3,dataset.frames.length-1)));
+   },15*60*1000);
+   svg.setAttribute("aria-label",dataset.projection==="world"?"Mapa 2D mundial":"Mapa 2D do Brasil");
    panel.hidden=false;
    const result=await setMode(view);
    if(!result.ok){panel.hidden=true;return result;}
+   if(view==="3d"&&dataset.projection==="world"&&dataset.frames[frameIndex]?.points?.[0]){
+     selectRegion(dataset.frames[frameIndex].points[0]);
+   }
    window.dispatchEvent(new CustomEvent("ultron:geo-visualization",{detail:{scenario:dataset.id,mode:view,frame:frameIndex}}));
    return {ok:true,mode:view,scenario:dataset.id,source:dataset.source.url};
  }
+
+ const backend=String(API_CONFIG.backendUrl||"").replace(/\/+$/,"");
+ const getJson=async(url)=>{
+   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);
+   try{
+     const response=await fetch(url,{headers:{Accept:"application/json"},signal:controller.signal,cache:"no-store"});
+     const data=await response.json();
+     if(!response.ok||!data?.ok)throw Error(data?.error||"Serviço meteorológico indisponível");
+     return data;
+   }finally{clearTimeout(timer);}
+ };
+ async function showLocation(id,days=Number(daysChoice.value)){
+   const queryId=Number(id);
+   if(!Number.isSafeInteger(queryId)||queryId<1)return {ok:false,error:"Localidade inválida"};
+   const key=++seq;
+   placeResults.hidden=false;placeResults.textContent="Consultando dados meteorológicos...";
+   try{
+     const response=await getJson(backend+"/api/geo/global?id="+queryId+"&days="+days);
+     const scene=globalWeatherScenario(response);
+     if(key!==seq||panel.hidden)return {ok:false,error:"Consulta cancelada"};
+     if(!scene)throw Error("Previsão sem dados válidos");
+     const result=await open({data:scene,view:mode});
+     if(!result.ok)throw Error(result.error||"Mapa indisponível");
+     placeInput.value=response.location.label;
+     daysChoice.value=String(days);
+     placeResults.textContent="Previsão atualizada: "+response.fetchedAt;
+     return result;
+   }catch(error){
+     if(key===seq)placeResults.textContent=error?.message||"Não foi possível consultar o clima";
+     return {ok:false,error:String(error?.message||error)};
+   }
+ }
+ placeBar.addEventListener("submit",async event=>{
+   event.preventDefault();const query=placeInput.value.trim(),key=++seq;
+   placeResults.hidden=false;placeResults.textContent="Procurando localidades...";
+   try{
+     const response=await getJson(backend+"/api/geo/locations?q="+encodeURIComponent(query));
+     if(key!==seq||panel.hidden)return;
+     placeResults.replaceChildren();
+     if(!response.locations?.length){placeResults.textContent="Localidade não encontrada; inclua o país.";return;}
+     for(const loc of response.locations){
+       const button=document.createElement("button");button.type="button";
+       button.textContent=loc.label;button.addEventListener("click",()=>void showLocation(loc.id));
+       placeResults.append(button);
+     }
+   }catch(error){if(key===seq)placeResults.textContent=error?.message||"Erro na busca";}
+ });
+ placeRefresh.addEventListener("click",()=>{
+   const id=Number(dataset?.id?.match(/^weather-global-(\d+)$/)?.[1]);
+   if(id>0)void showLocation(id);
+ });
+
  function closePanel(){
-   stop();panel.hidden=true;selected=null;
+   stop();panel.hidden=true;selected=null;seq++;
+   if(refreshClock!==null){clearInterval(refreshClock);refreshClock=null;}
+   placeResults.hidden=true;
    window.ULTRON_EARTH?.clearThematicLayer?.();
    return {ok:true,closed:true};
  }
