@@ -619,7 +619,14 @@ try {
       document.querySelector('.jarvis-geo-place-bar input').value='Tokyo';
       document.querySelector('.jarvis-geo-place-bar').requestSubmit();
     });
-    await page.waitForFunction(()=>document.querySelectorAll('.jarvis-geo-place-results button').length===1,{timeout:5000});
+    await page.waitForFunction(()=>{
+      const root=document.querySelector('.jarvis-geo-place-results');
+      return root?.querySelectorAll('button').length||/não encontrada|Erro|indisponível/.test(root?.textContent||'');
+    },{timeout:12000});
+    const geoSearchState=await page.$eval('.jarvis-geo-place-results',el=>({
+      text:el.textContent,buttons:el.querySelectorAll('button').length
+    }));
+    assert.equal(geoSearchState.buttons,1,JSON.stringify(geoSearchState));
     await page.evaluate(()=>document.querySelector('.jarvis-geo-place-results button')?.click());
     await page.waitForFunction(()=>document.querySelector('.jarvis-geo-place-results')?.textContent?.includes('atualizada'),{timeout:6000});
     assert.equal(await page.$eval('.jarvis-geo-place-bar input',el=>el.value),'Tokyo, Tokyo, Japan');
