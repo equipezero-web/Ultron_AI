@@ -157,3 +157,28 @@ body.jarvis-command-center .jarvis-geo-place-results{
  body.jarvis-command-center .jarvis-geo-place-bar input{flex:1 1 100%;min-width:0}
  body.jarvis-command-center .jarvis-geo-place-bar :is(button,select){min-height:42px}
 }
+
+
+/* World weather intelligence: compact controls remain inside the Ring at all sizes. */
+body.jarvis-command-center .jarvis-geo-insight-bar{
+ display:flex;flex-wrap:wrap;align-items:center;gap:5px;min-width:0;
+}
+body.jarvis-command-center .jarvis-geo-insight-bar[hidden],
+body.jarvis-command-center .jarvis-geo-insight-bar [hidden]{display:none!important}
+body.jarvis-command-center .jarvis-geo-insight-bar :is(input,select,button){
+ min-height:34px;max-width:100%;background:#10283d;color:#e0f6ff;
+ border:1px solid #537a92;border-radius:7px;padding:5px 7px;
+ font:11px system-ui,sans-serif;
+}
+body.jarvis-command-center .jarvis-geo-insight-bar select:first-child{min-width:120px;flex:1 1 150px}
+body.jarvis-command-center .jarvis-geo-insight-bar input{width:75px}
+body.jarvis-command-center .jarvis-geo-insight-bar button{cursor:pointer;background:#17425a}
+body.jarvis-command-center .jarvis-geo-place-results a{
+ display:inline-flex;max-width:100%;overflow-wrap:anywhere;padding:7px;
+ font:11px/1.35 system-ui,sans-serif;color:#aee6f3;
+ border:1px solid #31516c;border-radius:6px;text-decoration:underline;
+}
+@media(max-width:820px){
+ body.jarvis-command-center .jarvis-geo-insight-bar :is(input,select,button){min-height:42px}
+ body.jarvis-command-center .jarvis-geo-insight-bar select:first-child{flex:1 1 100%}
+}
