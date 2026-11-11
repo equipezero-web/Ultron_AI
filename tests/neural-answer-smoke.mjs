@@ -46,6 +46,25 @@ try {
         if(req.method()==='OPTIONS')return req.respond({status:204,headers});
         return req.respond({status:200,headers,contentType:'application/json',body:JSON.stringify({ok:true,runId:'test-run',plan:{complex:false},runs:[]})});
       }
+      if(req.url().includes('/api/geo/insight')){
+        const p=new URL(req.url()),type=p.searchParams.get('type');
+        const location={id:1850147,key:'global-1850147',name:'Tokyo',country:'Japan',countryCode:'JP',
+         region:'Tokyo',lat:35.6895,lng:139.6917,label:'Tokyo, Tokyo, Japan'};
+        const response={ok:true,type,location,fetchedAt:'2026-11-11T12:00:00Z',
+         source:{name:'Open-Meteo / CAMS',url:'https://open-meteo.com/en/docs/air-quality-api',
+          kind:'air-quality-model',disclaimer:'Previsão de modelo não é um sensor oficial'},
+         metrics:[{label:'PM2.5',value:12,unit:'µg/m³'}],series:[],bulletins:[]};
+        if(type==='alerts'){response.coverage='not-integrated';response.metrics=[];response.source={
+          name:'Nenhuma fonte oficial integrada',url:null,disclaimer:'Não significa ausência de avisos.'};}
+        return req.respond({status:200,headers:{'access-control-allow-origin':'*'},contentType:'application/json',
+         body:JSON.stringify(response)});
+      }
+      if(req.url().includes('/api/geo/monitor')){
+        return req.respond({status:200,headers:{'access-control-allow-origin':'*'},contentType:'application/json',
+         body:JSON.stringify({ok:true,checkedAt:'2026-11-11T12:00:00Z',cadenceHours:3,
+           regions:[{name:'Recife',temperatureC:29,rainMm:5,rainChancePercent:80}],
+           disclaimer:'Amostras de localidades, não do planeta inteiro'})});
+      }
       if(req.url().includes('/api/geo/locations')){
         return req.respond({status:200,headers:{'access-control-allow-origin':'*'},
          contentType:'application/json',body:JSON.stringify({ok:true,query:'Tokyo',
@@ -414,6 +433,22 @@ try {
     assert.equal(await page.$eval('.jarvis-geo-place-bar input',el=>el.value),'Tokyo, Tokyo, Japan');
     await page.evaluate(()=>window.ULTRON_GEO_VISUAL.setFrame(16));
     assert.equal(await page.evaluate(()=>window.ULTRON_GEO_VISUAL.state.frame),16);
+    assert.equal(await page.$eval('.jarvis-geo-insight-bar',el=>el.hidden),false);
+    const air=await page.evaluate(async()=>{
+      return await window.ULTRON_ORCHESTRATOR.execute(
+        'Jarvis, mostre a qualidade do ar em Tokyo no mapa 2D','world-insight-browser');
+    });
+    assert.equal(air.ok,true,JSON.stringify(air));
+    assert.equal(await page.evaluate(()=>window.ULTRON_GEO_VISUAL.state.scenario),'insight-air-global-1850147');
+    assert.match(await page.$eval('.jarvis-geo-evidence',el=>el.textContent),/PM2.5/);
+    await page.select('.jarvis-geo-insight-bar select','alerts');
+    await page.evaluate(()=>document.querySelector('.jarvis-geo-insight-bar').requestSubmit());
+    await page.waitForFunction(()=>document.querySelector('.jarvis-geo-place-results')?.textContent?.includes('Sem fonte oficial integrada'),
+      {timeout:5000});
+    await page.evaluate(()=>document.querySelector('.jarvis-geo-insight-bar button[type=button]').click());
+    await page.waitForFunction(()=>document.querySelector('.jarvis-geo-place-results')?.textContent?.includes('Recife'),
+      {timeout:5000});
+
     await page.evaluate(()=>window.ULTRON_GEO_VISUAL.close());
     // Cloudflare D1 deploy outage must not disable public worldwide forecast.
     weatherProxyOffline=true;
