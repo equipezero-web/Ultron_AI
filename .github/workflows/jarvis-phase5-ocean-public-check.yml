@@ -1,0 +1,38 @@
+name: JARVIS Phase 5 Ocean Map Public Check
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/jarvis-phase5-ocean-public-check.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  ocean-map-public:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify browser caches serve ocean-safe Phase 5 map
+        run: |
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict';
+          const root='https://equipezero-web.github.io/Ultron_AI/';
+          async function check(name,url,match){
+            for(let n=1;n<=14;n++){
+              try{
+                const r=await fetch(url,{cache:'no-store',signal:AbortSignal.timeout(12000)});
+                const body=await r.text();
+                console.log(name,'attempt',n,'HTTP',r.status,'bytes',body.length,'new code',match.test(body));
+                if(r.status===200&&match.test(body))return;
+              }catch(e){console.log(name,'attempt',n,String(e));}
+              if(n<14)await new Promise(resolve=>setTimeout(resolve,5000));
+            }
+            throw Error(name+' not visible on public GitHub Pages');
+          }
+          await check('index',root,/ultron-orchestrator-v4270[.]js[?]v=4[.]90[.]1/);
+          await check('map',root+'modules/jarvis-geospatial-visual.js?v=4.90.1',/const oceanOverlay=intensityReport[?][.]layer==="marine"/);
+          await check('action engine',root+'modules/jarvis-action-engine.js?v=4.90.1',/jarvis-geospatial-visual[.]js[?]v=4[.]90[.]1/);
+          console.log('PHASE5 OCEAN FIX PUBLISHED AND CACHE-BUSTED');
+          NODE
