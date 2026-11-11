@@ -4,7 +4,7 @@ export const mediaUrl=value=>{
  try{const url=new URL(String(value||""));return ["http:","https:"].includes(url.protocol)&&!url.username&&!url.password?url.href:null;}
  catch{return null;}
 };
-const short=(value,max=110)=>String(value||"").replace(/[\\r\\n\\t]+/g," ").replace(/\\s+/g," ").trim().slice(0,max);
+const short=(value,max=110)=>String(value||"").replace(/[\r\n\t]+/g," ").replace(/\s+/g," ").trim().slice(0,max);
 const dateText=value=>{
  if(!value)return "";
  const d=new Date(value);
