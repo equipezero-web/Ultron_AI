@@ -400,3 +400,21 @@ body.jarvis-command-center .jarvis-geo-metric-disclaimer{margin-top:auto}
  body.jarvis-command-center .jarvis-geo-map-tools{gap:4px;padding:4px}
  body.jarvis-command-center .jarvis-geo-map-tools button{padding:4px 6px}
 }
+
+
+/* The Neural Ring can run in a simulated mobile viewport while Chromium's
+   CSS layout viewport is wider. Stage width is the reliable breakpoint. */
+body.jarvis-command-center .jarvis-cc-center>.jarvis-geo-visual[data-mode="2d"][data-screen="compact"] .jarvis-geo-workspace{
+ grid-template-columns:minmax(0,1fr)!important;
+ height:auto!important;min-height:0!important;
+ flex:0 0 auto!important;overflow:visible!important;
+}
+body.jarvis-command-center .jarvis-cc-center>.jarvis-geo-visual[data-mode="2d"][data-screen="compact"] .jarvis-geo-2d{
+ width:100%!important;min-width:0!important;
+ height:280px!important;min-height:220px!important;
+ flex:0 0 auto!important;
+}
+body.jarvis-command-center .jarvis-cc-center>.jarvis-geo-visual[data-mode="2d"][data-screen="compact"] .jarvis-geo-metrics{
+ width:100%;box-sizing:border-box;min-width:0;
+ max-height:none;overflow:visible;
+}
