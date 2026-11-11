@@ -54,6 +54,16 @@ jobs:
           const js=await get('insight-model',site+'modules/jarvis-weather-insight-model.js?v=4.75.0');
           assert.equal(js.status,200);
           assert.match(js.text,/insightScenario/);
+          const worldForecast=await get('world-forecast',
+            base+'/api/geo/global?city=Tokyo&days=16');
+          assert.equal(worldForecast.status,200,'Worker must publish new world forecast normalization');
+          assert.equal(worldForecast.json?.ok,true);
+          assert.equal(worldForecast.json?.requestedDays,16);
+          assert.ok(worldForecast.json?.days?.length>=15&&worldForecast.json?.days?.length<=16);
+          assert.equal(worldForecast.json?.partialForecast,worldForecast.json?.days.length<16);
+          const pageHtml=page.text;
+          assert.match(pageHtml,/ultron-intelligence-briefing[.]js[?]v=4[.]76[.]0/);
+          assert.match(pageHtml,/jarvis-weather-wake[.]css[?]v=4[.]76[.]0/);
           const monitor=await get('monitor',base+'/api/geo/monitor');
           assert.equal(monitor.status,200,'Cloudflare/D1 monitoring endpoint unavailable');
           assert.equal(monitor.json?.ok,true);
