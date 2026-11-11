@@ -364,6 +364,7 @@ if(stage){
    source.href=dataset.source.url;source.textContent=dataset.source.name;
    caveat.textContent=dataset.source.disclaimer;
    officialAlerts.hidden=!dataset.id.startsWith("weather-")||dataset.projection==="world";
+   filter.hidden=dataset.id.startsWith("weather-"); // A single local weather point has no competing ENSO categories.
    placeBar.hidden=dataset.projection!=="world";
    insightBar.hidden=dataset.projection!=="world";
    placeRefresh.disabled=!/^weather-global-\d+$/.test(dataset.id);
