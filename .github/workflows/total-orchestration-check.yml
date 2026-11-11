@@ -214,3 +214,46 @@ jobs:
           grep -q 'observe-auto/active-confirm/destructive-block' backend/orchestration-engine.js
           ! grep -qi 'desktop\.shell\|shell\.exec\|eval(' modules/ultron-orchestrator-v4270.js modules/neural-priority-core-v4300.js
           echo 'Total orchestration safety and integration checks passed.'
+
+
+  phase4-live-production:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test live Pages and Cloudflare Worker
+        run: |
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict';
+          const urls = {
+            health:'https://ultron-backend.lucaalves17-20.workers.dev/api/health',
+            forecast:'https://ultron-backend.lucaalves17-20.workers.dev/api/geo/weather?city=recife',
+            site:'https://equipezero-web.github.io/Ultron_AI/'
+          };
+          async function fetchPublic(name,url) {
+            let lastError;
+            for(let attempt=1;attempt<=3;attempt++){
+              try {
+                const response=await fetch(url,{cache:'no-store',signal:AbortSignal.timeout(10000)});
+                const body=await response.text();
+                console.log(name,'HTTP',response.status,'content-type',response.headers.get('content-type'),'sample',body.slice(0,380));
+                assert.equal(response.status,200,name+' returned non-200 HTTP');
+                return {response,body};
+              }catch(error){lastError=error;console.log(name,'attempt',attempt,'failed:',String(error));}
+            }
+            throw lastError;
+          }
+          const health=JSON.parse((await fetchPublic('health',urls.health)).body);
+          assert.equal(health.status,'online','Live Worker not healthy');
+          const weather=JSON.parse((await fetchPublic('forecast',urls.forecast)).body);
+          assert.equal(weather.ok,true,'Live Phase 4 route not operational');
+          assert.equal(weather.city?.key,'recife','Wrong weather city');
+          assert.equal(weather.kind,'short-term-numeric-forecast','Wrong forecast kind');
+          assert.ok(weather.days?.length>=1,'No forecast days');
+          assert.ok(weather.source?.url?.includes('open-meteo.com'),'Missing source');
+          const site=(await fetchPublic('site',urls.site)).body;
+          assert.ok(site.includes('jarvis-geospatial-visual.js'),'Frontend geographical module missing in public Pages');
+          console.log('PHASE4 LIVE PRODUCTION VERIFIED',JSON.stringify({city:weather.city.name,fetchedAt:weather.fetchedAt,days:weather.days.length}));
+          NODE
