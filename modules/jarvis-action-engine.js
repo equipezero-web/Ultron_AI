@@ -160,7 +160,7 @@ async function executeStep(step,original){
    }
    const data=insightScenario(report);
    if(!data)throw Error("A fonte não forneceu séries geográficas utilizáveis");
-   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.90.0");
+   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.90.1");
    const geo=requireApi(w.ULTRON_GEO_VISUAL,"open");
    const result=await geo.open({data,view:a.view});
    if(!result?.ok||geo.state?.scenario!==data.id||geo.state?.mode!==a.view)
@@ -190,7 +190,7 @@ async function executeStep(step,original){
       throw Error("A previsão mundial retornada não foi validada");
    const data=globalWeatherScenario(report),summary=globalWeatherSummary(report);
    if(!data||!summary)throw Error("Não foi possível construir a visualização mundial");
-   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.90.0");
+   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.90.1");
    const geo=requireApi(w.ULTRON_GEO_VISUAL,"open");
    const result=await geo.open({data,view:a.view});
    if(!result?.ok||!geo.state.visible||geo.state.scenario!==data.id||geo.state.mode!==a.view)
@@ -223,7 +223,7 @@ async function executeStep(step,original){
      throw Error("Dados meteorológicos inconsistentes");
    const dataset=weatherGeoScenario(payload),summary=weatherSummary(payload);
    if(!dataset||!summary)throw Error("Previsão inválida; nenhuma simulação será apresentada");
-   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.90.0");
+   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.90.1");
    const geo=requireApi(w.ULTRON_GEO_VISUAL,"open");
    const result=await geo.open({data:dataset,view:a.view});
    if(!result?.ok||!geo.state.visible||geo.state.scenario!==dataset.id||geo.state.mode!==a.view)
@@ -231,7 +231,7 @@ async function executeStep(step,original){
    return {text:summary,verified:true};
  }
  case "geo.show":case "geo.view2d":case "geo.view3d":case "geo.play":case "geo.pause":case "geo.next":case "geo.previous":case "geo.filter":case "geo.close":{
-   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.90.0");
+   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.90.1");
    const geo=w.ULTRON_GEO_VISUAL;
    if(!geo)throw Error("Motor de visualização geográfica indisponível");
    let result;
