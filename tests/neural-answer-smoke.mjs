@@ -488,7 +488,7 @@ try {
       layer.value='soil';layer.dispatchEvent(new Event('change',{bubbles:true}));
     });
     await page.waitForFunction(()=>window.ULTRON_GEO_VISUAL.state.layer==='soil'&&window.ULTRON_GEO_VISUAL.state.gridCount>0,{timeout:7000});
-    assert.equal(await page.$eval('.jarvis-geo-intensity-cell',els=>els.length),35);
+    assert.equal(await page.$$eval('.jarvis-geo-intensity-cell',els=>els.length),35);
     await page.evaluate(()=>{
       const layer=document.querySelector('.jarvis-geo-intensity-choice');
       layer.value='rain';layer.dispatchEvent(new Event('change',{bubbles:true}));
