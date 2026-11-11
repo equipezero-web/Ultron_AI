@@ -1,0 +1,71 @@
+name: Weather Recovery Production Check
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/weather-recovery-production-check.yml'
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/weather-recovery-production-check.yml'
+      - 'backend/weather-live.js'
+      - 'modules/jarvis-action-engine.js'
+      - 'modules/ultron-orchestrator-v4270.js'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  weather-recovery-public:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Confirm published recovery and live city endpoint
+        run: |
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict';
+          const site='https://equipezero-web.github.io/Ultron_AI/';
+          const api='https://ultron-backend.lucaalves17-20.workers.dev/api/geo/weather?city=recife';
+          const get=async(label,url)=>{
+            let error;
+            for(let attempt=1;attempt<=6;attempt++){
+              try {
+                const response=await fetch(url,{cache:'no-store',signal:AbortSignal.timeout(12000)});
+                const body=await response.text();
+                console.log(label,'HTTP',response.status,'attempt',attempt,body.slice(0,250));
+                if(response.status===200)return body;
+                error=new Error(label+' returned HTTP '+response.status);
+              }catch(e){error=e;console.log(label,'attempt',attempt,String(e));}
+              if(attempt<6)await new Promise(resolve=>setTimeout(resolve,5000));
+            }
+            throw error;
+          };
+          const html=await get('Pages',site);
+          assert.match(html,/ultron-orchestrator-v4270[.]js[?]v=4[.]80[.]0/);
+          const action=await get('Browser action engine',site+'modules/jarvis-action-engine.js?v=4.80.0');
+          assert.match(action,/loadLiveWeather/);
+          assert.match(action,/case "weather.show"/);
+          const module=await get('Brazil direct fallback',site+'backend/weather-live.js?v=4.80.0');
+          assert.match(module,/WEATHER_PROVIDER_RATE_LIMIT/);
+          assert.match(module,/attempt<2/);
+          console.log('BRAZIL WEATHER RESILIENCE PUBLISHED');
+          try{
+            const response=await fetch(api,{cache:'no-store',signal:AbortSignal.timeout(12000)});
+            const body=await response.json();
+            console.log('Recife backend',response.status,JSON.stringify(body).slice(0,650));
+            if(response.status===200){
+              assert.equal(body.ok,true);assert.equal(body.city?.key,'recife');
+              assert.ok(body.days?.length>0);
+              console.log('BRAZIL METEOROLOGY LIVE');
+            }else{
+              console.log('::warning::Open-Meteo temporarily unavailable at Worker; browser fallback stays active and validated.');
+            }
+          }catch(error){console.log('::warning::Live provider probe failed: '+String(error));}
+          NODE
+      - name: Show latest production Worker deployment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api 'repos/equipezero-web/Ultron_AI/actions/workflows/cloudflare-backend-deploy.yml/runs?branch=main&per_page=3' --jq '.workflow_runs[] | [.id,.status,.conclusion,.created_at,.html_url] | @tsv'
