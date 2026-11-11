@@ -266,3 +266,49 @@ jobs:
           assert.ok(site.includes('jarvis-geospatial-visual.js'),'Frontend geographical module missing in public Pages');
           console.log('PHASE4 LIVE PRODUCTION VERIFIED',JSON.stringify({city:weather.city.name,fetchedAt:weather.fetchedAt,days:weather.days.length}));
           NODE
+
+
+  global-weather-live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Confirm worldwide weather endpoints and frontend are published
+        run: |
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict';
+          const base='https://ultron-backend.lucaalves17-20.workers.dev';
+          const site='https://equipezero-web.github.io/Ultron_AI/';
+          const check=async(name,url)=>{
+            let error;
+            for(let i=0;i<4;i++){
+              try {
+                const r=await fetch(url,{cache:'no-store',signal:AbortSignal.timeout(13000)});
+                const body=await r.text();
+                console.log(name,'HTTP',r.status,body.slice(0,500));
+                assert.equal(r.status,200,name+' is not publicly available');
+                return body;
+              }catch(e){error=e;if(i<3)await new Promise(resolve=>setTimeout(resolve,4000));}
+            }
+            throw error;
+          };
+          const locations=JSON.parse(await check('locations',base+'/api/geo/locations?q=Tokyo'));
+          assert.equal(locations.ok,true);
+          assert.ok(locations.locations.some(c=>c.countryCode==='JP'));
+          const seven=JSON.parse(await check('tokyo-7days',base+'/api/geo/global?city=Tokyo&days=7'));
+          assert.equal(seven.ok,true);
+          assert.equal(seven.kind,'global-short-term-forecast');
+          assert.equal(seven.days.length,7);
+          assert.equal(seven.location.countryCode,'JP');
+          assert.ok(seven.source?.url?.includes('open-meteo.com'));
+          const sixteen=JSON.parse(await check('tokyo-16days',base+'/api/geo/global?city=Tokyo&days=16'));
+          assert.equal(sixteen.ok,true);
+          assert.equal(sixteen.days.length,16);
+          const home=await check('pages',site);
+          assert.match(home,/jarvis-geospatial-visual[.]js[?]v=4[.]73[.]0/);
+          const world=await check('world-map-module',site+'modules/jarvis-global-weather.js?v=4.73.0');
+          assert.match(world,/globalWeatherScenario/);
+          console.log('GLOBAL WEATHER VERIFIED IN PRODUCTION: world geocoding, Tokyo 7/16 days, Pages');
+          NODE
