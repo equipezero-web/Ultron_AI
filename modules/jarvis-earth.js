@@ -1,21 +1,36 @@
-// Wheel recovery: legacy global listeners may consume wheel events even while arrow scrolling works.
-// Handle only the dashboard background; leave maps, inputs and scrollable panels alone.
-document.addEventListener('wheel', (event) => {
-  if (event.defaultPrevented || event.ctrlKey ||
-      event.target?.closest?.(
-        'iframe,textarea,input,select,#output-box,.screen-modal,.jarvis-cc-center,.jarvis-cc-visual,.jarvis-earth-globe,.jarvis-earth-reference-layout,.mapboxgl-map'
-      )) return;
-  const doc = document.scrollingElement || document.documentElement;
-  if (doc.scrollHeight <= doc.clientHeight + 2) return;
-  const before = doc.scrollTop;
-  requestAnimationFrame(() => {
-    // A map or Neural Ring can cancel the wheel after document capture.
-    // Never synthesize page scrolling for any zoom gesture.
-    if (!event.defaultPrevented && Math.abs(doc.scrollTop - before) < 1 && Math.abs(event.deltaY) > 0) {
-      doc.scrollBy({top:event.deltaY,behavior:'instant'});
+// Wheel routing for the shared Neural Ring / globe / Mapbox / 2D stage.
+// Standard wheel scrolls the PAGE. Ctrl+wheel is reserved for explicit zoom;
+// maps, news and tooltips may still scroll their OWN overflowable content.
+document.addEventListener('wheel', event => {
+  const target=event.target;
+  if(!document.body.classList.contains('jarvis-command-center')||
+     !target?.closest||event.ctrlKey||event.metaKey)return;
+  const stage=target.closest('.jarvis-cc-center, .jarvis-earth-reference-layout');
+  if(!stage)return;
+  if(target.closest('textarea,input,select,[contenteditable="true"],iframe,.screen-modal'))return;
+  // Capture before Mapbox.gl / Globe.gl / HUD listeners consume wheel input.
+  // Only route this exact user gesture; never scroll during passive hover.
+  if(event.cancelable)event.preventDefault();
+  event.stopImmediatePropagation();
+  const delta=event.deltaY*(event.deltaMode===1?16:event.deltaMode===2?innerHeight:1);
+  if(!Number.isFinite(delta)||Math.abs(delta)<.01)return;
+  // Panels are allowed to scroll independently. At their edges, wheel chains
+  // to the document even if an older stylesheet declares overscroll containment.
+  const overMap=Boolean(target.closest(
+    '#jarvis-cc-canvas,.jarvis-earth-renderer canvas,.mapboxgl-canvas,.jarvis-geo-2d svg'));
+  let scroller=null;
+  if(!overMap)for(let el=target;el&&el!==document.body;el=el.parentElement){
+    if(el===stage)break;
+    if(el.scrollHeight<=el.clientHeight+2)continue;
+    const overflow=getComputedStyle(el).overflowY;
+    if(!/^(auto|scroll)$/.test(overflow))continue;
+    if(delta>0?el.scrollTop<el.scrollHeight-el.clientHeight-2:el.scrollTop>2){
+      scroller=el;break;
     }
-  });
-}, {passive:true,capture:true});
+  }
+  (scroller||document.scrollingElement||document.documentElement)
+    .scrollBy({top:delta,behavior:'instant'});
+},{passive:false,capture:true});
 
 // Restore scrolling if a legacy subsystem leaves an inline overflow lock after a command.
 // Do not interfere with the fullscreen camera modal.
@@ -103,6 +118,32 @@ if (earthVisual) {
   const referenceMapHost = reference.querySelector('.jarvis-earth-reference-map');
   const referenceSide = reference.querySelector('.jarvis-earth-reference-side');
   const referenceStatus = reference.querySelector('#jarvis-earth-reference-status');
+
+  // Mapbox lives under a touch-action:none canvas to keep pinch responsive.
+  // One-finger VERTICAL gestures must nevertheless scroll the dashboard.
+  // Two fingers remain owned by Mapbox cooperative zoom and pan.
+  let mapTouchScroll=null;
+  referenceMapHost.addEventListener('touchstart',event=>{
+    if(event.touches.length!==1){mapTouchScroll=null;return;}
+    const finger=event.touches[0];
+    mapTouchScroll={startX:finger.clientX,startY:finger.clientY,
+      lastY:finger.clientY,scrolling:false};
+  },{passive:true,capture:true});
+  referenceMapHost.addEventListener('touchmove',event=>{
+    if(!mapTouchScroll||event.touches.length!==1)return;
+    const finger=event.touches[0],dx=finger.clientX-mapTouchScroll.startX,
+      dy=finger.clientY-mapTouchScroll.startY;
+    if(!mapTouchScroll.scrolling&&Math.abs(dy)>8&&Math.abs(dy)>Math.abs(dx)*1.2)
+      mapTouchScroll.scrolling=true;
+    if(!mapTouchScroll.scrolling)return;
+    if(event.cancelable)event.preventDefault();
+    event.stopImmediatePropagation();
+    window.scrollBy({top:mapTouchScroll.lastY-finger.clientY,behavior:'instant'});
+    mapTouchScroll.lastY=finger.clientY;
+  },{passive:false,capture:true});
+  for(const type of ['touchend','touchcancel'])
+    referenceMapHost.addEventListener(type,()=>{mapTouchScroll=null;},{passive:true,capture:true});
+
   let referenceMap = null, referenceLoading = null, referenceMode = false;
   let referenceSelection = false;
   function hideReferenceDetails() {
@@ -164,7 +205,7 @@ if (earthVisual) {
         projection:'globe',
         dragPan:true,dragRotate:false,
         scrollZoom:true,doubleClickZoom:true,touchZoomRotate:true,touchPitch:false,
-        boxZoom:false,keyboard:false,cooperativeGestures:false,
+        boxZoom:false,keyboard:false,cooperativeGestures:true,
         attributionControl:true,antialias:!mobileGPU,maxZoom:20,
         fadeDuration:mobileGPU?0:300
       });
@@ -687,7 +728,7 @@ if (earthVisual) {
             pointerId:event.pointerId ?? null,
             x:event.clientX, y:event.clientY,
             view:{...(globe.pointOfView() || home)},
-            moved:false
+            moved:false,touchLastY:event.clientY,scrollGesture:false
           };
         };
         const stopDrag = event => {
@@ -721,6 +762,16 @@ if (earthVisual) {
           if (!dragState) return;
           if (event.pointerType === 'mouse' && !(event.buttons & 1)) return stopDrag();
           if (dragState.pointerId != null && event.pointerId != null && event.pointerId !== dragState.pointerId) return;
+          if(event.pointerType==='touch'&&touchPointers.size===1){
+            const dx=event.clientX-dragState.x,dy=event.clientY-dragState.y;
+            if(!dragState.scrollGesture&&Math.abs(dy)>8&&Math.abs(dy)>Math.abs(dx)*1.2)
+              dragState.scrollGesture=true;
+            if(dragState.scrollGesture){
+              window.scrollBy({top:dragState.touchLastY-event.clientY,behavior:'instant'});
+              dragState.touchLastY=event.clientY;
+              return;
+            }
+          }
           const dx = event.clientX - dragState.x;
           const dy = event.clientY - dragState.y;
           if (Math.abs(dx) + Math.abs(dy) < 2) return;

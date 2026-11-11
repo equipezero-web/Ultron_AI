@@ -122,7 +122,8 @@ try {
   const afterFreeMove = await page.evaluate(() => window.ULTRON_EARTH.state.view);
   assert.ok(Math.abs(afterFreeMove.lat-afterRelease.lat)<0.05 && Math.abs(afterFreeMove.lng-afterRelease.lng)<0.05,
     'After releasing mouse, free movement must not rotate');
-  await page.mouse.wheel({deltaY:-280});
+  await page.keyboard.down('Control');
+  try{await page.mouse.wheel({deltaY:-280});}finally{await page.keyboard.up('Control');}
   await page.waitForFunction(() => window.ULTRON_EARTH?.state?.view?.altitude < 2.5, {timeout:2000});
 
   // Simulate the official Mapbox GL JS engine locally: verify real integrated

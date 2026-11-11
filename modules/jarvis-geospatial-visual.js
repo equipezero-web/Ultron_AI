@@ -200,7 +200,8 @@ if(stage){
    pointerPositions.set(event.pointerId,{x:event.clientX,y:event.clientY});
    try{svg.setPointerCapture(event.pointerId);}catch{}
    if(pointerPositions.size===1){
-     dragStart={x:event.clientX,y:event.clientY,center:{...(mapCenter||{x:450,y:275})}};
+     dragStart={x:event.clientX,y:event.clientY,center:{...(mapCenter||{x:450,y:275})},
+       touchLastY:event.clientY,scrollGesture:false};
      pinchStart=null;
    }else{
      pinchStart=pointerDistance();dragStart=null;
@@ -215,6 +216,16 @@ if(stage){
      pinchStart=next;return;
    }
    if(!dragStart)return;
+   if(event.pointerType==='touch'&&pointerPositions.size===1){
+     const dx=event.clientX-dragStart.x,dy=event.clientY-dragStart.y;
+     if(!dragStart.scrollGesture&&Math.abs(dy)>8&&Math.abs(dy)>Math.abs(dx)*1.2)
+       dragStart.scrollGesture=true;
+     if(dragStart.scrollGesture){
+       window.scrollBy({top:dragStart.touchLastY-event.clientY,behavior:'instant'});
+       dragStart.touchLastY=event.clientY;
+       return;
+     }
+   }
    const rect=svg.getBoundingClientRect(),base=baseViewport();
    if(rect.width<1||rect.height<1)return;
    mapCenter={
@@ -227,7 +238,8 @@ if(stage){
    pointerPositions.delete(event.pointerId);
    if(pointerPositions.size===1){
      const remaining=[...pointerPositions.values()][0];
-     dragStart={x:remaining.x,y:remaining.y,center:{...(mapCenter||{x:450,y:275})}};
+     dragStart={x:remaining.x,y:remaining.y,center:{...(mapCenter||{x:450,y:275})},
+       touchLastY:remaining.y,scrollGesture:false};
    }else dragStart=null;
    pinchStart=null;
  };

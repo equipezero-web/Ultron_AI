@@ -37,6 +37,35 @@ try {
   assert.ok(pinchedRing.zoom>initialRing.zoom+.15,'Pinch must zoom true WebGL Neural Ring on Android');
   await page.evaluate(()=>window.ULTRON_NEURAL_RING_3D.reset());
   assert.equal(await page.evaluate(()=>window.ULTRON_NEURAL_RING_3D.state.zoom),1);
+
+  // One-finger VERTICAL swipe over WebGL must advance the page even while
+  // the canvases retain touch-action:none to preserve two-finger pinch.
+  await page.evaluate(()=>{
+    const spacer=document.createElement('div');spacer.style.height='1300px';
+    spacer.id='touch-page-scroll-spacer';document.body.append(spacer);
+    window.scrollTo(0,0);
+  });
+  const scrollTouch=async (selector,session,id)=>{
+    await page.$eval(selector,el=>el.scrollIntoView({block:'center',inline:'nearest',behavior:'instant'}));
+    const before=await page.evaluate(()=>window.scrollY);
+    const r=await page.$eval(selector,el=>{
+      const x=el.getBoundingClientRect();return {x:x.x,y:x.y,w:x.width,h:x.height};
+    });
+    console.log('SCROLL TOUCH TARGET',selector,JSON.stringify({r,before}));
+    const x=Math.round(Math.max(25,Math.min(365,r.x+r.w*.5)));
+    const y=Math.round(Math.max(160,Math.min(770,r.y+r.h*.60)));
+    await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x,y,id}]});
+    for(const d of [12,26,43,65,95,130])
+      await session.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x,y:y-d,id}]});
+    await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+    await new Promise(resolve=>setTimeout(resolve,220));
+    const after=await page.evaluate(()=>window.scrollY);
+    console.log('SCROLL TOUCH RESULT',selector,JSON.stringify({before,after,delta:after-before}));
+    return after-before;
+  };
+  const ringScroll=await scrollTouch('#jarvis-cc-canvas',ringClient,70);
+  assert.ok(ringScroll>30,'Vertical one-finger swipe over Neural Ring must scroll the document: '+ringScroll);
+  await page.evaluate(()=>window.scrollTo(0,0));
   await page.evaluate(()=>document.querySelector('[data-visual="globe"]').click());
   await page.waitForFunction(()=>window.ULTRON_EARTH?.state?.ready===true,{timeout:20000});
   assert.equal(await page.evaluate(()=>window.ULTRON_EARTH.state.mode),'globe-3d');
@@ -58,6 +87,9 @@ try {
   assert.ok(overlay.plus>=40 && overlay.minus>=40,'Touch zoom buttons need a usable size');
   assert.ok(overlay.viewport<=3,'Globe must not overflow the phone viewport');
 
+  const globeScroll=await scrollTouch('.jarvis-earth-renderer canvas',ringClient,71);
+  assert.ok(globeScroll>30,'Vertical one-finger swipe over globe must scroll page: '+globeScroll);
+  await page.evaluate(()=>window.scrollTo(0,0));
   const startingAltitude=await page.evaluate(()=>window.ULTRON_EARTH.state.view.altitude);
   await page.tap('[data-earth-reference="zoom-in"]');
   await page.waitForFunction(prev=>window.ULTRON_EARTH.state.view.altitude < prev-.01,{timeout:3000},startingAltitude);
@@ -147,6 +179,12 @@ try {
   assert.equal(proof.pan,true);
   assert.equal(proof.mapboxTouch,'none');
   assert.equal(proof.option,true);
+  assert.equal(await page.evaluate(()=>window.__mobileMap.options.cooperativeGestures),true,
+    'Mapbox must respect page scroll and require explicit map gestures');
+  await page.evaluate(()=>window.scrollTo(0,0));
+  const mapboxScroll=await scrollTouch('.jarvis-earth-reference-map .mapboxgl-canvas',ringClient,72);
+  assert.ok(mapboxScroll>30,'Vertical touch swipe over Mapbox must scroll page: '+mapboxScroll);
+  await page.evaluate(()=>window.scrollTo(0,0));
   const beforeMap=await page.evaluate(()=>window.__mobileMap.getZoom());
   await page.tap('[data-earth-reference="zoom-in"]');
   assert.ok((await page.evaluate(()=>window.__mobileMap.getZoom()))>beforeMap,'+ should zoom the Mapbox satellite map');
@@ -193,6 +231,16 @@ try {
   assert.ok(landscape.globe>=300,'Landscape globe must remain usable');
   assert.ok(landscape.mapControls>=40,'Landscape zoom controls must stay visible');
   await page.setViewport({width:390,height:844,isMobile:true,hasTouch:true,deviceScaleFactor:2});
+  // The entire weather map occupies the Neural Ring; a vertical swipe on
+  // the SVG must still allow the operator to reach the command console.
+  await page.setViewport({width:390,height:844,isMobile:true,hasTouch:true,deviceScaleFactor:1});
+  await page.evaluate(()=>window.scrollTo(0,0));
+  const openedMap=await page.evaluate(()=>window.ULTRON_GEO_VISUAL.open({scenario:'enso',view:'2d'}));
+  assert.equal(openedMap.ok,true,JSON.stringify(openedMap));
+  const geoScroll=await scrollTouch('.jarvis-geo-2d svg',ringClient,73);
+  assert.ok(geoScroll>30,'Single-finger vertical gesture over the weather map must scroll page: '+geoScroll);
+  await page.evaluate(()=>{window.ULTRON_GEO_VISUAL.close();window.scrollTo(0,0);});
+
   await page.evaluate(()=>window.ULTRON_EARTH.close());
   await page.waitForFunction(()=>window.ULTRON_NEURAL_RING_3D?.active===true,{timeout:4000});
   const gpu=await page.evaluate(()=>{

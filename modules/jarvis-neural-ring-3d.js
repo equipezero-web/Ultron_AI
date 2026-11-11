@@ -145,7 +145,8 @@ export function createNeuralRing3D(canvas,{onError}={}) {
         return;
       }
     }
-    dragging={pointerId:event.pointerId,x:event.clientX,y:event.clientY,yaw,pitch};
+    dragging={pointerId:event.pointerId,x:event.clientX,y:event.clientY,yaw,pitch,
+      touchLastY:event.clientY,scrollGesture:false};
     if(canvas.setPointerCapture&&event.pointerId!=null){
       try{canvas.setPointerCapture(event.pointerId);}catch{}
     }
@@ -164,6 +165,16 @@ export function createNeuralRing3D(canvas,{onError}={}) {
     if(!dragging)return;
     if(event.pointerId!=null&&event.pointerId!==dragging.pointerId)return;
     if(event.pointerType==='mouse'&&!(event.buttons&1)){endDrag();return;}
+    if(event.pointerType==='touch'&&touchPoints.size===1){
+      const dx=event.clientX-dragging.x,dy=event.clientY-dragging.y;
+      if(!dragging.scrollGesture&&Math.abs(dy)>8&&Math.abs(dy)>Math.abs(dx)*1.2)
+        dragging.scrollGesture=true;
+      if(dragging.scrollGesture){
+        window.scrollBy({top:dragging.touchLastY-event.clientY,behavior:'instant'});
+        dragging.touchLastY=event.clientY;
+        return;
+      }
+    }
     yaw=dragging.yaw+(event.clientX-dragging.x)*.009;
     pitch=clamp(dragging.pitch+(event.clientY-dragging.y)*.009,-1.45,1.45);
   };
@@ -186,7 +197,7 @@ export function createNeuralRing3D(canvas,{onError}={}) {
     return true;
   }
   const adjustZoom=event=>{
-    if(!visible || disposed || event.ctrlKey) return;
+    if(!visible || disposed || !event.ctrlKey) return;
     event.preventDefault();
     event.stopPropagation();
     zoomBy(event.deltaY);
