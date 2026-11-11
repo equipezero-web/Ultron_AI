@@ -18,12 +18,12 @@ if(stage){
    b.setAttribute("aria-pressed","false");modeButtons[mode]=b;modeGroup.append(b);}
  const filter=document.createElement("select");filter.className="jarvis-geo-filter";
  filter.setAttribute("aria-label","Filtrar fenômenos");
- for(const [value,text] of [["all","Todos os sinais"],["observed","Seca observada"],["dry","Chuva abaixo"],["wet","Chuva acima"],["heat","Temperatura alta"]]){
+ for(const [value,text] of [["all","Todos os sinais"],["observed","Seca observada"],["dry","Chuva abaixo"],["wet","Chuva acima"],["heat","Temperatura alta"],["weather","Tempo previsto"]]){
   const o=document.createElement("option");o.value=value;o.textContent=text;filter.append(o);}
  const controls=document.createElement("div");controls.className="jarvis-geo-controls";controls.append(modeGroup,filter);
  const timeline=document.createElement("div");timeline.className="jarvis-geo-timeline";
  const play=document.createElement("button");play.type="button";play.textContent="▶";
- play.setAttribute("aria-label","Reproduzir sequência ilustrativa de quadros");
+ play.setAttribute("aria-label","Percorrer quadros temporais; a animação não cria uma nova previsão");
  const range=document.createElement("input");range.type="range";range.min="0";range.max="2";range.step="1";range.value="1";range.setAttribute("aria-label","Quadro temporal da análise");
  const frameText=document.createElement("div");frameText.className="jarvis-geo-frame-text";
  const frameName=document.createElement("strong");const frameType=document.createElement("small");
@@ -197,6 +197,6 @@ if(stage){
  window.ULTRON_GEO_VISUAL={
    open,close:closePanel,setMode,setFrame,applyFilter,play:()=>togglePlayback(true),pause:()=>togglePlayback(false),
    get state(){return {visible:!panel.hidden,mode,playing,frame:frameIndex,scenario:dataset?.id||null,
-     count:dataset?geoFrame(dataset,frameIndex,filterKind)?.points.length||0:0,source:dataset?.source.url||null,filter:filterKind};}
+     count:dataset?geoFrame(dataset,frameIndex,filterKind)?.points.length||0:0,frameCount:dataset?.frames.length||0,source:dataset?.source.url||null,filter:filterKind};}
  };
 }
