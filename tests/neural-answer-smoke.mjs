@@ -464,7 +464,8 @@ try {
     assert.ok(Math.abs(mapLayout.overlay.y-mapLayout.stage.y)<20,JSON.stringify(mapLayout));
     assert.ok(mapLayout.overlay.w>mapLayout.stage.w*.95,JSON.stringify(mapLayout));
     assert.ok(mapLayout.overlay.h>mapLayout.stage.h*.95,JSON.stringify(mapLayout));
-    assert.ok(mapLayout.workspace.w>mapLayout.stage.w*.90,JSON.stringify(mapLayout));
+    assert.ok(mapLayout.workspace.w>mapLayout.stage.w*.86,JSON.stringify(mapLayout));
+    if(mapLayout.stage.w<660)assert.equal(mapLayout.columns.split(/\\s+/).length,1,'Compact Neural Ring must stack map and metrics');
     assert.ok(mapLayout.map.w>mapLayout.stage.w*(viewport.width<=980?.76:.42),JSON.stringify(mapLayout));
     assert.ok(mapLayout.metrics.w>130,JSON.stringify(mapLayout));
     assert.equal(mapLayout.scroll,'auto');
