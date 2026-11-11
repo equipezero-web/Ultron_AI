@@ -702,7 +702,7 @@ if (earthVisual) {
             pointerId:event.pointerId ?? null,
             x:event.clientX, y:event.clientY,
             view:{...(globe.pointOfView() || home)},
-            moved:false
+            moved:false,touchLastY:event.clientY,scrollGesture:false
           };
         };
         const stopDrag = event => {
@@ -736,6 +736,16 @@ if (earthVisual) {
           if (!dragState) return;
           if (event.pointerType === 'mouse' && !(event.buttons & 1)) return stopDrag();
           if (dragState.pointerId != null && event.pointerId != null && event.pointerId !== dragState.pointerId) return;
+          if(event.pointerType==='touch'&&touchPointers.size===1){
+            const dx=event.clientX-dragState.x,dy=event.clientY-dragState.y;
+            if(!dragState.scrollGesture&&Math.abs(dy)>8&&Math.abs(dy)>Math.abs(dx)*1.2)
+              dragState.scrollGesture=true;
+            if(dragState.scrollGesture){
+              window.scrollBy({top:dragState.touchLastY-event.clientY,behavior:'instant'});
+              dragState.touchLastY=event.clientY;
+              return;
+            }
+          }
           const dx = event.clientX - dragState.x;
           const dy = event.clientY - dragState.y;
           if (Math.abs(dx) + Math.abs(dy) < 2) return;
