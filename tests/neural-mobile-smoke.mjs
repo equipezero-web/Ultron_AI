@@ -46,9 +46,12 @@ try {
     window.scrollTo(0,0);
   });
   const scrollTouch=async (selector,session,id)=>{
+    await page.$eval(selector,el=>el.scrollIntoView({block:'center',inline:'nearest',behavior:'instant'}));
+    const before=await page.evaluate(()=>window.scrollY);
     const r=await page.$eval(selector,el=>{
       const x=el.getBoundingClientRect();return {x:x.x,y:x.y,w:x.width,h:x.height};
     });
+    console.log('SCROLL TOUCH TARGET',selector,JSON.stringify({r,before}));
     const x=Math.round(Math.max(25,Math.min(365,r.x+r.w*.5)));
     const y=Math.round(Math.max(160,Math.min(770,r.y+r.h*.60)));
     await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x,y,id}]});
@@ -56,7 +59,9 @@ try {
       await session.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x,y:y-d,id}]});
     await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
     await new Promise(resolve=>setTimeout(resolve,220));
-    return page.evaluate(()=>window.scrollY);
+    const after=await page.evaluate(()=>window.scrollY);
+    console.log('SCROLL TOUCH RESULT',selector,JSON.stringify({before,after,delta:after-before}));
+    return after-before;
   };
   const ringScroll=await scrollTouch('#jarvis-cc-canvas',ringClient,70);
   assert.ok(ringScroll>30,'Vertical one-finger swipe over Neural Ring must scroll the document: '+ringScroll);
