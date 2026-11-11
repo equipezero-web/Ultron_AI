@@ -19,6 +19,8 @@ export const ACTIONS={
  "geo.show":"Visualizar o dataset ENSO em 2D/3D (scenario='enso', view='2d' ou '3d')",
  "weather.show":"Buscar previsão numérica atual via Open-Meteo para cidade brasileira permitida e mostrar no mapa 2D ou globo 3D (city string, view 2d/3d)",
  "weather.global":"Buscar previsão mundial de 3, 7 ou 16 dias por cidade ou cidade/país e exibir no mapa 2D ou globo 3D (city string, view 2d/3d, days 3/7/16)",
+ "weather.insight":"Mostrar histórico, ar, oceanos, vazão fluvial, incerteza ou avisos oficiais para localidade (type history/air/marine/flood/ensemble/alerts, city, view 2d/3d, year opcional, month opcional)",
+ "weather.monitor":"Consultar resumo persistente das seis localidades de observação 24h do JARVIS (somente leitura)",
  "geo.view2d":"Mudar visualização geográfica para mapa 2D",
  "geo.view3d":"Mudar visualização geográfica para globo 3D",
  "geo.play":"Reproduzir quadros didáticos sem confundir com previsão",
@@ -51,6 +53,19 @@ export function validatePlan(value){
       !/^[\p{L}\p{M}\p{N} .,'’()-]+$/u.test(city)||!["2d","3d"].includes(a.view)||
       ![3,7,16].includes(Number(a.days??7)))return null;
     args={city,view:a.view,days:Number(a.days??7)};
+  }
+  if(action==="weather.insight"){
+    const city=String(a.city||"").trim();
+    if(typeof a.city!=="string"||city.length<2||city.length>96||
+      !/^[\p{L}\p{M}\p{N} .,'’()-]+$/u.test(city)||
+      !["history","air","marine","flood","ensemble","alerts"].includes(a.type)||
+      !["2d","3d"].includes(a.view))return null;
+    const year=a.year===undefined?undefined:Number(a.year),month=a.month===undefined?undefined:Number(a.month);
+    if(year!==undefined&&(!Number.isInteger(year)||year<1940||year>2100))return null;
+    if(month!==undefined&&(!Number.isInteger(month)||month<1||month>12))return null;
+    args={type:a.type,city,view:a.view};
+    if(year!==undefined)args.year=year;
+    if(month!==undefined)args.month=month;
   }
   if(action==="geo.filter"){
    if(!["all","observed","dry","wet","heat","weather"].includes(a.kind))return null;
