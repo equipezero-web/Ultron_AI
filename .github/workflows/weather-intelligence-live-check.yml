@@ -1,0 +1,88 @@
+name: Weather Intelligence Production Verification
+on:
+  pull_request:
+    paths:
+      - 'backend/weather-intelligence.js'
+      - 'backend/weather-monitor.js'
+      - 'backend/worker.js'
+      - 'modules/jarvis-weather-insight-model.js'
+      - 'modules/jarvis-action-engine.js'
+      - '.github/workflows/weather-intelligence-live-check.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'backend/weather-intelligence.js'
+      - 'backend/weather-monitor.js'
+      - 'backend/worker.js'
+      - '.github/workflows/weather-intelligence-live-check.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  weather-intelligence-live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify live Cloudflare Worker and published world intelligence UI
+        run: |
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict';
+          const base='https://ultron-backend.lucaalves17-20.workers.dev';
+          const site='https://equipezero-web.github.io/Ultron_AI/';
+          const get=async(name,url)=>{
+            let last;
+            for(let i=0;i<2;i++){
+              try{
+                const response=await fetch(url,{cache:'no-store',signal:AbortSignal.timeout(16000)});
+                const text=await response.text();
+                console.log(name,'HTTP',response.status,'sample',text.slice(0,320));
+                let json=null;try{json=JSON.parse(text);}catch{}
+                return {status:response.status,text,json};
+              }catch(error){last=error;if(i===0)await new Promise(r=>setTimeout(r,1000));}
+            }
+            console.log(name,'NETWORK ERROR',String(last));
+            throw last;
+          };
+          const page=await get('pages',site);
+          assert.equal(page.status,200);
+          assert.match(page.text,/jarvis-geospatial-visual[.]js[?]v=4[.]75[.]0/);
+          const js=await get('insight-model',site+'modules/jarvis-weather-insight-model.js?v=4.75.0');
+          assert.equal(js.status,200);
+          assert.match(js.text,/insightScenario/);
+          const monitor=await get('monitor',base+'/api/geo/monitor');
+          assert.equal(monitor.status,200,'Cloudflare/D1 monitoring endpoint unavailable');
+          assert.equal(monitor.json?.ok,true);
+          assert.equal(monitor.json?.tracked?.length,6);
+          assert.equal(monitor.json?.cadenceHours,3);
+          console.log('D1 monitor samples',monitor.json?.regions?.length||0);
+          for(const [type,city,extra] of [
+            ['air','Tokyo',''],
+            ['marine','Sydney',''],
+            ['history','Tokyo','&year=2020&month=1'],
+            ['ensemble','Tokyo','']
+          ]){
+            const result=await get(type,base+'/api/geo/insight?type='+type+'&city='+city+extra);
+            assert.equal(result.status,200,type+' source unavailable: '+result.text.slice(0,180));
+            assert.equal(result.json?.ok,true);
+            assert.equal(result.json?.type,type);
+            assert.ok(result.json?.metrics?.length>=1);
+            assert.ok(result.json?.source?.url?.startsWith('https://open-meteo.com/'));
+          }
+          for(const [type,city] of [['flood','London'],['alerts','Miami']]){
+            const result=await get(type,base+'/api/geo/insight?type='+type+'&city='+city);
+            if(result.status===200){
+              assert.equal(result.json?.ok,true);
+              assert.equal(result.json?.type,type);
+              assert.ok(result.json?.source?.name);
+            } else {
+              assert.ok([404,503].includes(result.status),
+                type+' must fail explicitly instead of silently inventing an alert/river');
+            }
+          }
+          console.log('WORLD WEATHER INTELLIGENCE LIVE CHECK COMPLETE');
+          NODE
