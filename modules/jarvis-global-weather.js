@@ -82,11 +82,14 @@ export function globalWeatherScenario(r){
   source:{...r.source,basePeriod:"Consulta "+r.fetchedAt+"; "+r.days.length+" de "+(r.requestedDays||r.days.length)+" dias completos"},
   frames:[
    {id:"current",name:"Estimativa atual",type:"modelo meteorológico, não estação local",kind:"current-estimate",
+    metrics:{temperatureC:r.current.temperatureC,humidityPercent:r.current.humidityPercent,
+     precipitationMm:r.current.precipitationMm,windKmh:r.current.windKmh},
     description:"Estimativa do modelo para "+loc.label+" em "+r.current.time+": "+fmt(r.current.temperatureC)+" °C, umidade "+
      fmt(r.current.humidityPercent)+"%, vento "+fmt(r.current.windKmh)+" km/h. Não é medição instantânea.",
     points:[point("current","Temperatura "+fmt(r.current.temperatureC)+" °C; umidade "+fmt(r.current.humidityPercent)+
      "%; vento "+fmt(r.current.windKmh)+" km/h; precipitação "+fmt(r.current.precipitationMm)+" mm.")]},
    ...r.days.map((d,i)=>({id:"day-"+i,name:d.date,type:"previsão numérica diária",kind:"short-term-forecast",
+    metrics:{minC:d.minC,maxC:d.maxC,rainMm:d.rainMm,rainChancePercent:d.rainChancePercent},
     description:loc.label+" — "+d.date+": "+fmt(d.minC)+" a "+fmt(d.maxC)+" °C; chuva "+fmt(d.rainMm)+
      " mm, chance máxima "+fmt(d.rainChancePercent)+"%. Incerteza crescente, não alerta oficial.",
     points:[point("day-"+i,"Mínima "+fmt(d.minC)+" °C, máxima "+fmt(d.maxC)+" °C; chuva "+
