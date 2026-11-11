@@ -19,7 +19,7 @@ export function splitOperatorSteps(value, maximum = 6) {
  // "O que aconteceu depois da chuva?" is one question, not a sequence.
  // Only split when the following clause begins with a real instruction.
  const actionable=pieces.length>1 && pieces.slice(1).every(part=>
-   ACTION_START.test(normalizeIntent(part).replace(/^(?:(?:e|agora|entao|me)\\s+)+/,"")));
+   ACTION_START.test(normalizeIntent(part).replace(/^(?:(?:e|agora|entao|me)\s+)+/,"")));
  return actionable?pieces.slice(0,maximum):[input];
 }
 export function classifyOperatorTurn(value){
