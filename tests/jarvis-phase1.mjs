@@ -1,3 +1,4 @@
+import {vetClientTaskContext,contextSearchQuery} from "../backend/task-context.js";
 import assert from "node:assert/strict";
 import {normalizeIntent,splitOperatorSteps,classifyOperatorTurn,isPrivateTurn} from "../modules/jarvis-intent-engine.js";
 import {createTaskContext} from "../modules/jarvis-task-context.js";
@@ -41,6 +42,13 @@ assert.match(comparison.researchQuery,/El Niño/);
 tracker.captureQuestion("Minha senha é abc123");
 assert.ok(!JSON.stringify(tracker.snapshot()).includes("abc123"));
 assert.equal(tracker.publicContextFor("Qual minha senha?"),null);
+const meta={message:"E no Nordeste?",taskContext:tracker.publicContextFor("E no Nordeste?")};
+const vetted=vetClientTaskContext(meta);
+assert.ok(vetted?.topic?.includes("El Niño"));
+assert.match(contextSearchQuery(meta.message,vetted),/Nordeste/i);
+assert.equal(vetClientTaskContext({message:"E meu saldo?",taskContext:{followup:true,topic:"minha conta",lastQuestion:"qual meu saldo?"}}),null);
+assert.equal(vetClientTaskContext({message:"Como funciona?",taskContext:{followup:true,topic:"El Niño"}}),null);
+assert.equal(vetClientTaskContext({message:"E no Sul?",taskContext:{followup:true,topic:"minha senha secreta"}}),null);
 let restored=createTaskContext(config);
 assert.equal(restored.snapshot().topic,tracker.snapshot().topic);
 conversation="chat-2";
