@@ -18,7 +18,6 @@ const db={
   async first(){return [...store.values()].find(x=>x.bucket===args[0])||null;},
   async all(){return {results:[...store.values()].sort((a,b)=>b.checked_at.localeCompare(a.checked_at)).slice(0,48)};}
  };}};
-};
 const now=()=>new Date("2026-11-11T12:01:00Z");
 const fetchImpl=async(url,options)=>{const u=new URL(url);
  assert.equal(u.hostname,"api.open-meteo.com");
