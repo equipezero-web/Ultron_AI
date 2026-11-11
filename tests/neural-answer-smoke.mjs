@@ -17,6 +17,7 @@ try {
     // depending on example.org or the external network.
     await page.setRequestInterception(true);
     let weatherProxyOffline=false;
+    let weatherCityBackendOffline=false;
     let watchSaved=false;
     page.on('request',req=>{
       if(weatherProxyOffline&&(/\/api\/geo\/(global|locations)/.test(req.url()))){
@@ -27,6 +28,21 @@ try {
         return req.respond({status:200,headers:{'access-control-allow-origin':'*'},contentType:'application/json',
           body:JSON.stringify({results:[{id:1850147,name:'Tokyo',latitude:35.6895,longitude:139.6917,
             country:'Japan',country_code:'JP',admin1:'Tokyo',timezone:'Asia/Tokyo'}]})});
+      }
+      if(req.url().includes('api.open-meteo.com/v1/forecast')&&
+         new URL(req.url()).searchParams.get('latitude')==='-8.0476'){
+        const offset=-3*60*60*1000,local=new Date(Date.now()+offset);
+        const midnight=Date.UTC(local.getUTCFullYear(),local.getUTCMonth(),local.getUTCDate());
+        const dates=Array.from({length:3},(_,i)=>new Date(midnight+i*86400000).toISOString().slice(0,10));
+        const payload={
+          current:{time:local.toISOString().slice(0,16),temperature_2m:29,
+            relative_humidity_2m:72,precipitation:0},
+          daily:{time:dates,temperature_2m_min:[23,24,23],
+            temperature_2m_max:[31,32,30],precipitation_sum:[2,5,1],
+            precipitation_probability_max:[40,65,20]}
+        };
+        return req.respond({status:200,headers:{'access-control-allow-origin':'*'},
+          contentType:'application/json',body:JSON.stringify(payload)});
       }
       if(req.url().includes('api.open-meteo.com/v1/forecast')){
         const offset=9*3600000,local=new Date(Date.now()+offset);
@@ -114,6 +130,9 @@ try {
            geometry:{type:'Polygon',coordinates:[[[-122,48],[-66,48],[-66,24],[-122,24],[-122,48]]]}}]})});
       }
       if(req.url().includes('/api/geo/weather')){
+        if(weatherCityBackendOffline)return req.respond({status:503,headers:{'access-control-allow-origin':'*'},
+          contentType:'application/json',body:JSON.stringify({ok:false,error:'Não foi possível consultar o provedor meteorológico.'})});
+
         const payload={
           ok:true,city:{key:'recife',name:'Recife',lat:-8.0476,lng:-34.877},
           fetchedAt:'2026-11-11T12:00:00.000Z',
@@ -427,6 +446,21 @@ try {
     assert.equal(await page.evaluate(()=>window.ULTRON_GEO_VISUAL.state.mode),'3d');
     assert.ok(await page.evaluate(()=>window.__phase3MockState.layerCount)>0,'Forecast marker must be sent to globe');
     await page.evaluate(()=>window.ULTRON_GEO_VISUAL.close());
+    // A Cloudflare 503 for the 11-capital route must recover via Open-Meteo
+    // without inferring or inventing measurements.
+    weatherCityBackendOffline=true;
+    const cityRecovery=await page.evaluate(async()=>{
+      const result=await window.ULTRON_ORCHESTRATOR.execute(
+        'JARVIS, mostre a previsão do tempo em Recife no mapa 2D','phase4-city-recovery');
+      return {result,state:window.ULTRON_GEO_VISUAL?.state,
+        evidence:document.querySelector('.jarvis-geo-evidence')?.textContent};
+    });
+    assert.equal(cityRecovery.result.ok,true,'City forecast must recover from a Worker 503: '+JSON.stringify(cityRecovery));
+    assert.equal(cityRecovery.state.scenario,'weather-recife');
+    assert.equal(cityRecovery.state.frameCount,4);
+    assert.match(cityRecovery.evidence,/mm/);
+    await page.evaluate(()=>window.ULTRON_GEO_VISUAL.close());
+    weatherCityBackendOffline=false;
     // Global geography must use real world coordinates, never the Brazil-only projection.
     const worldwide=await page.evaluate(async()=>{
       const result=await window.ULTRON_ORCHESTRATOR.execute(

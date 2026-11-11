@@ -2,6 +2,7 @@ import {TASK_CONTEXT} from "./jarvis-task-context.js?v=4.69.0";
 import {WEATHER_CITIES,weatherCity,weatherGeoScenario,weatherSummary} from "./jarvis-weather-model.js?v=4.72.0";
 import {globalWeatherScenario,globalWeatherSummary} from "./jarvis-global-weather.js?v=4.77.0";
 import {loadGlobalWeather} from "../backend/weather-global.js?v=4.74.0";
+import {loadLiveWeather} from "../backend/weather-live.js?v=4.80.0";
 import {loadWeatherInsight} from "../backend/weather-intelligence.js?v=4.75.0";
 import {insightSummary,insightScenario,monitorSummary} from "./jarvis-weather-insight-model.js?v=4.75.0";
 import {classifyOperatorTurn} from "./jarvis-intent-engine.js?v=4.69.0";
@@ -199,15 +200,27 @@ async function executeStep(step,original){
  case "weather.show":{
    const endpoint=String(API_CONFIG.backendUrl||"").replace(/\/$/,"")+
      "/api/geo/weather?city="+encodeURIComponent(a.city);
-   const controller=new AbortController();
-   const timer=setTimeout(()=>controller.abort(),8500);
-   let payload;
+   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),8000);
+   let payload=null,serverError=null;
    try{
      const response=await fetch(endpoint,{headers:{Accept:"application/json"},signal:controller.signal,cache:"no-store"});
-     payload=await response.json();
-     if(!response.ok||!payload?.ok)throw Error(payload?.error||"Não foi possível confirmar os dados meteorológicos");
-   }finally{clearTimeout(timer);}
-   if(payload.city?.key!==a.city||!Array.isArray(payload.days)||payload.days.length<1)throw Error("Dados meteorológicos inconsistentes");
+     const body=await response.json();
+     if(!response.ok||!body?.ok)throw Error(body?.error||"Backend meteorológico não respondeu");
+     payload=body;
+   }catch(error){serverError=error;}
+   finally{clearTimeout(timer);}
+   // The worldwide module already has direct Open-Meteo recovery; give the
+   // 11 Brazilian capitals the same safe no-key, fixed-coordinate fallback.
+   if(!payload?.ok){
+     let recovery;
+     try{recovery=await loadLiveWeather(a.city);}
+     catch(error){throw Error("Não foi possível obter previsão confirmada para esta cidade. Verifique a conexão e tente novamente.");}
+     if(!recovery?.ok)throw Error(recovery?.error||
+       serverError?.message||"As fontes de previsão estão temporariamente indisponíveis.");
+     payload=recovery;
+   }
+   if(payload.city?.key!==a.city||!Array.isArray(payload.days)||payload.days.length<1)
+     throw Error("Dados meteorológicos inconsistentes");
    const dataset=weatherGeoScenario(payload),summary=weatherSummary(payload);
    if(!dataset||!summary)throw Error("Previsão inválida; nenhuma simulação será apresentada");
    if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.77.0");
