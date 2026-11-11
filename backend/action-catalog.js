@@ -18,6 +18,7 @@ export const ACTIONS={
  "research":"Responder pergunta/pesquisar assunto (question string; usa core existente)",
  "geo.show":"Visualizar o dataset ENSO em 2D/3D (scenario='enso', view='2d' ou '3d')",
  "weather.show":"Buscar previsão numérica atual via Open-Meteo para cidade brasileira permitida e mostrar no mapa 2D ou globo 3D (city string, view 2d/3d)",
+ "weather.global":"Buscar previsão mundial de 3, 7 ou 16 dias por cidade ou cidade/país e exibir no mapa 2D ou globo 3D (city string, view 2d/3d, days 3/7/16)",
  "geo.view2d":"Mudar visualização geográfica para mapa 2D",
  "geo.view3d":"Mudar visualização geográfica para globo 3D",
  "geo.play":"Reproduzir quadros didáticos sem confundir com previsão",
@@ -43,6 +44,13 @@ export function validatePlan(value){
    const city=weatherCity(a.city);
    if(!city||!["2d","3d"].includes(a.view))return null;
    args={city:city.key,view:a.view};
+  }
+  if(action==="weather.global"){
+    const city=String(a.city||"").trim();
+    if(typeof a.city!=="string"||city.length<2||city.length>96||
+      !/^[\p{L}\p{M}\p{N} .,'’()-]+$/u.test(city)||!["2d","3d"].includes(a.view)||
+      ![3,7,16].includes(Number(a.days??7)))return null;
+    args={city,view:a.view,days:Number(a.days??7)};
   }
   if(action==="geo.filter"){
    if(!["all","observed","dry","wet","heat","weather"].includes(a.kind))return null;
