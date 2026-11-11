@@ -11,7 +11,12 @@ export const GEO_PALETTE={
   wet:{color:"#67c5ef",title:"Tendência de chuva acima da média",short:"Mais chuva"},
   heat:{color:"#e76e75",title:"Temperatura acima da média",short:"Mais calor"},
   observed:{color:"#d89c78",title:"Seca observada",short:"Seca observada"},
-  weather:{color:"#a6d0f2",title:"Previsão numérica de curto prazo",short:"Tempo previsto"}
+  weather:{color:"#a6d0f2",title:"Previsão numérica de curto prazo",short:"Tempo previsto"},
+  history:{color:"#c5c6f1",title:"Reanálise histórica",short:"Histórico modelado"},
+  air:{color:"#d4e8a5",title:"Qualidade do ar modelada",short:"Qualidade do ar"},
+  marine:{color:"#74c6d0",title:"Oceanografia modelada",short:"Mar e ondas"},
+  river:{color:"#6cb6e2",title:"Vazão fluvial simulada",short:"Vazão em rios"},
+  uncertainty:{color:"#e7c0ec",title:"Faixa dos membros de ensemble",short:"Incerteza"}
 };
 const spot=(id,name,lat,lng,kind,detail,source=GEO_SOURCE.url)=>({id,name,lat,lng,kind,detail,source,region:true});
 export const GEO_SCENARIOS={
