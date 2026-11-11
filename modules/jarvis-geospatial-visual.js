@@ -154,7 +154,7 @@ if(stage){
  let mapZoom=1,mapCenter=null;
  const pointerPositions=new Map();
  let dragStart=null,pinchStart=null;
- const baseViewport=()=>dataset?.projection==="world"?
+ const baseViewport=()=>scopeChoice.value==="world"?
    {x:0,y:0,w:900,h:550}:{x:35,y:27,w:745,h:465};
  const clamp=(n,low,high)=>Math.max(low,Math.min(high,n));
  function drawMapViewport(){
@@ -177,7 +177,7 @@ if(stage){
    const p=geoFrame(dataset,frameIndex,"all")?.points?.find(p=>p.id===selected)||
      geoFrame(dataset,frameIndex,"all")?.points?.[0];
    if(!p)return;
-   const {x,y}=dataset.projection==="world"?worldXY(p.lng,p.lat):brazilXY(p.lng,p.lat);
+   const {x,y}=scopeChoice.value==="world"?worldXY(p.lng,p.lat):brazilXY(p.lng,p.lat);
    if(Number.isFinite(x)&&Number.isFinite(y)){mapCenter={x,y};setMapZoom(2.7);}
  }
  function resetMap(){mapZoom=1;mapCenter=null;drawMapViewport();}
@@ -413,8 +413,51 @@ if(stage){
    const bg=e("rect",{width:900,height:550,fill:"#091a2c",rx:12});svg.append(bg);
    for(let x=55;x<880;x+=100)svg.append(e("line",{x1:x,x2:x,y1:40,y2:530,stroke:"#35516a","stroke-opacity":".38","stroke-width":1}));
    for(let y=50;y<535;y+=80)svg.append(e("line",{x1:50,x2:875,y1:y,y2:y,stroke:"#35516a","stroke-opacity":".38","stroke-width":1}));
-   const projection=dataset?.projection==="world"?"world":"brazil",outline=outlines[projection];
+   const projection=intensityProjection(),outline=outlines[projection];
    if(outline?.length)for(const d of outline)svg.append(e("path",{d,fill:"#18354b",stroke:"#6c9caa","stroke-width":1.4,"fill-opacity":".83"}));
+   // A rectangle is the fixed model cell (not a rainfall interpolation).
+   // The Brazil outline clips cells to the national boundary; if IBGE is
+   // offline the country is NOT colored outside an authoritative outline.
+   const samples=intensityReport?.ok&&intensityReport.region===projection?intensityReport.cells:[];
+   const hasBrazilClip=projection==="brazil"&&Array.isArray(outline)&&outline.length>0;
+   if(hasBrazilClip){
+     const defs=e("defs"),clip=e("clipPath",{id:"jarvis-geo-brazil-mask"});
+     for(const d of outline)clip.append(e("path",{d}));
+     defs.append(clip);svg.append(defs);
+   }
+   const patches=e("g",{"data-intensity-layer":intensityReport?.layer||"none"});
+   const opacity=Math.max(.2,Math.min(.9,Number(overlayOpacity.value)/100||.66));
+   for(const cell of samples){
+     if(!Array.isArray(cell.bounds)&&!["river"].includes(intensityReport.layer))continue;
+     let shape;
+     if(cell.bounds){
+       if(projection==="brazil"&&!hasBrazilClip)continue;
+       const [w,s,east,n]=cell.bounds,top=projection==="world"?worldXY(w,n):brazilXY(w,n),
+        bottom=projection==="world"?worldXY(east,s):brazilXY(east,s);
+       if(![top.x,top.y,bottom.x,bottom.y].every(Number.isFinite))continue;
+       shape=e("rect",{x:top.x,y:top.y,width:Math.abs(bottom.x-top.x),
+         height:Math.abs(bottom.y-top.y),fill:cell.color,"fill-opacity":opacity,
+         stroke:"#0b2437","stroke-width":.45});
+       if(hasBrazilClip)shape.setAttribute("clip-path","url(#jarvis-geo-brazil-mask)");
+     }else{
+       const point=projection==="world"?worldXY(cell.lng,cell.lat):brazilXY(cell.lng,cell.lat);
+       shape=e("circle",{cx:point.x,cy:point.y,r:10,fill:cell.color,
+        "fill-opacity":opacity,stroke:"#eaf7ff","stroke-width":1});
+     }
+     shape.classList.add("jarvis-geo-intensity-cell");
+     shape.setAttribute("data-sample-id",cell.id);
+     shape.setAttribute("aria-label",intensityReport.label+": "+cell.value+" "+intensityReport.unit);
+     const title=e("title");title.textContent=intensityReport.label+" — "+cell.value+" "+
+       intensityReport.unit+" em ("+cell.lat+", "+cell.lng+") · "+cell.time;
+     shape.append(title);
+     shape.addEventListener("click",()=>{
+       detail.textContent=intensityReport.label+": "+cell.value+" "+intensityReport.unit+
+         " · centro da célula ("+cell.lat+", "+cell.lng+"), "+
+         cell.time+". "+intensityReport.disclaimer;
+     });
+     patches.append(shape);
+   }
+   svg.append(patches);
    for(const p of frame.points){
      const {x,y}=(projection==="world"?worldXY(p.lng,p.lat):brazilXY(p.lng,p.lat)),color=GEO_PALETTE[p.kind]?.color||"#91d7f0";
      if(!Number.isFinite(x)||!Number.isFinite(y))continue;
@@ -427,7 +470,7 @@ if(stage){
      g.addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();selectRegion(p);}});
      svg.append(g);
    }
-   svgLabels.textContent=projection==="world"?
+   svgLabels.textContent=intensityReport?.ok?intensityReport.label+" · CÉLULAS DE MODELO (não radar) · "+intensityReport.dataTime+" · "+intensityReport.sampledCount+" amostras.":projection==="world"?
       (outline?.length?"Mapa mundial: Natural Earth. Coordenadas aproximadas do modelo; não são limites de perigo.":"Contorno mundial indisponível: marcador exibido na grade global."):
       (outline?.length?"Contorno do Brasil: IBGE. Pontos representativos, não limites exatos de impacto.":"Contorno do IBGE indisponível. Pontos georreferenciados exibidos sobre a grade.");
  }
