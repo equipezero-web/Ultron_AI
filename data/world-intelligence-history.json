@@ -4,10 +4,58 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-11T01:22:20.785Z",
-  "oldestEventAt": "2026-11-10T03:01:00.000Z",
-  "windowStartAt": "2026-11-10T01:22:20.785Z",
+  "updatedAt": "2026-11-11T07:57:54.640Z",
+  "oldestEventAt": "2026-11-10T09:03:00.000Z",
+  "windowStartAt": "2026-11-10T07:57:54.640Z",
   "events": [
+    {
+      "id": "event-fe11c1ed",
+      "category": "santa-catarina",
+      "title": "Defesa Civil emite alerta para chuva intensa em Belém nesta terça (10)",
+      "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxON3ZXdU9xUUM3WERxT2kycm8tQmIya0xwdHhGdW8xZFA0UXR2eFNIeFpXaWVWZDlmM01URjZuNDFxQk5DZVhjQlBleks4aE05aDQ0UXpHNmFWZnVXUGwtTFpERDRWUE95djNFYzJJcWRvZHN6NmZETS15ZFY2aS15VTFYM3pyWkJkY2pjRzB2aVhnbl9ELTJtMDBwS2ZHMVQ3Nm9jc2QtczZNMTFZeER0VTdQdTbSAbQBQVVfeXFMTjd2V3VPcVFDN1hEcU9pMnJvLUJiMmtMcHR4RnVvMWRQNFF0dnhTSHhaV2llVmQ5ZjNNVEY2bjQxcUJOQ2VYY0JQZXpLOGhNOWg0NFF6RzZhVmZ1V1BsLUxaREQ0VlBPeXYzRWMySXFkb2RzejZmRE0teWRWNmkteVUxWDN6clpCZGNqY0cwdmlYZ25fRC0ybTAwcEtmRzFUNzZvY3NkLXM2TTExWXhEdFU3UHU2",
+      "description": "Defesa Civil emite alerta para chuva intensa em Belém nesta terça (10) &nbsp;&nbsp; DOL",
+      "imageUrl": null,
+      "source": "DOL",
+      "publishedAt": "2026-11-11T03:27:46.000Z",
+      "firstSeenAt": "2026-11-11T07:57:54.640Z",
+      "lastSeenAt": "2026-11-11T07:57:54.640Z"
+    },
+    {
+      "id": "event-fe833a7",
+      "category": "brasil",
+      "title": "Bora Brasil: Assista às principais notícias e análises do dia - 11-11-2026",
+      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxPQ0hjTUVBY3R1UFBxNkVyY2J6SGdQMDlnV0xDdFBSSEtQRzZyWl93am54UHFtdFNjVHNNbFh5LTYtR2tLb3VPbWNSQTZna0FvQTVYRmJhSHpoUElxdEFMeVRlekpkdmhjZFZMbE10QkFlR3FOVG5XUFpmYTk1ckU0T2lDcFVIVkdsRUVlQjVvc2kxWXZXV19JdjJsMElCeTdqZ2YzRHYwRHhQX1RkdDV2dQ",
+      "description": "Bora Brasil: Assista às principais notícias e análises do dia - 11-11-2026 &nbsp;&nbsp; Band",
+      "imageUrl": null,
+      "source": "Band",
+      "publishedAt": "2026-11-11T03:01:00.000Z",
+      "firstSeenAt": "2026-11-11T07:57:54.640Z",
+      "lastSeenAt": "2026-11-11T07:57:54.640Z"
+    },
+    {
+      "id": "event-b27de7df",
+      "category": "mundo",
+      "title": "Jornal da Band ao vivo: Assista às principais notícias do Brasil e do mundo - 11-11-2026",
+      "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxNV1hLcGdzUkJiMEpyLXU2TEcwT1VTcGhnUHBmRnZWQ3NjNm11amZRbldXYnl4Yzk1d3M2ZDdYM1huelNHbjJOWXdUM1otS2lfS3lrckJxR2d2SmQ5UTBTTzVWX21ERFpjNUhhcnRDZzVjaHh2ZW5PUHJSZVItOENyZE5acEtkZGZrUVVYZVlyYkxubVBwd1Y4QXFCLVlFSlR2SFBHQS1LN3RpVENJWWtlRG1QZjZqeXdZQ0NXMFdqcnlJSVk",
+      "description": "Jornal da Band ao vivo: Assista às principais notícias do Brasil e do mundo - 11-11-2026 &nbsp;&nbsp; Band",
+      "imageUrl": null,
+      "source": "Band",
+      "publishedAt": "2026-11-11T03:01:00.000Z",
+      "firstSeenAt": "2026-11-11T07:57:54.640Z",
+      "lastSeenAt": "2026-11-11T07:57:54.640Z"
+    },
+    {
+      "id": "event-d9474f5b",
+      "category": "brasil",
+      "title": "TSE multa Meta em R$ 7,5 milhões por descumprir decisão nas eleições",
+      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/tse-multa-meta-em-r-75-milhoes-por-descumprir-decisao-nas-eleicoes",
+      "description": "Por unanimidade, o Tribunal Superior Eleitoral (TSE) decidiu nesta terça-feira (10) multar a Meta em R$ 7,5 milhões por entregar informações incompletas sobre as acusações de distribuir conteúdo político enviesado na campanha eleitoral deste ano. A decisão foi motivada por uma representação protocolada pela coligação Brasil Pronto Pra Mais, que apoiou a reeleição do presidente Luiz Inácio Lula da Silva. O jurídico da campanha acusou a Meta, que opera as redes sociais Facebook, Instagram e WhatsApp, de dar tratamento diferenciado para restringir o alcance de conteúdos de Lula e favorecer a campanha de Flávio Bolsonaro (PL). O advogado Angelo Longo Ferraro citou diversas irregularidades que teriam sido cometidas pela Meta, como anúncios pagos com recursos do exterior, publicação de publicidade negativa com uso de inteligência artificial e retirada de recomendações de postagens favoráveis a Lula . \"Para a Meta, tudo isso foi um erro. Mas, ela não explica que o erro foi só para um lado. O erro em continuidade é um padrão\", afirmou. Votos Durante o julgamento, prevaleceu o voto do relator",
+      "imageUrl": "https://cdn.jsdelivr.net/gh/sergiosdlima/assets-ebc@1.0.0/public/thumbs/thumb_1200x600_agbrasil.png",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-11T01:56:00.000Z",
+      "firstSeenAt": "2026-11-11T07:57:54.640Z",
+      "lastSeenAt": "2026-11-11T07:57:54.640Z"
+    },
     {
       "id": "event-627ec65d",
       "category": "santa-catarina",
@@ -18,7 +66,43 @@
       "source": "Visor Notícias",
       "publishedAt": "2026-11-11T00:53:33.000Z",
       "firstSeenAt": "2026-11-11T01:22:20.785Z",
-      "lastSeenAt": "2026-11-11T01:22:20.785Z"
+      "lastSeenAt": "2026-11-11T07:57:54.640Z"
+    },
+    {
+      "id": "event-9adb0e7f",
+      "category": "brasil",
+      "title": "Petrobras tem lucro de R$ 39,8 bilhões no 3º trimestre, alta de 21,5%",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/petrobras-tem-lucro-de-r-398-bilhoes-alta-de-215",
+      "description": "A Petrobras atingiu lucro líquido de R$ 39,8 bilhões no 3º trimestre de 2026, que corresponde a alta de 21,5% na comparação com o mesmo período do ano passado. O balanço divulgado pela companhia nesta terça-feira (10) informa que o fluxo de caixa operacional (FCO) alcançou R$ 61,8 bilhões (US$ 12 bilhões), um crescimento de 15% em doze meses. \"Nossa projeção era encerrar o ano com produção média de 3,1 milhões de barris de óleo equivalente por dia, mas nossas estimativas agora apontam para uma média entre 3,3 e 3,4 milhões de barris por dia”, afirmou a presidente da companhia, Magda Chambriard. Em 2026, a Petrobras bateu recorde trimestral na produção de óleo por três vezes, de forma sequencial. Além disso,11 plataformas foram autorizadas a produzir, com segurança, acima da capacidade original sem investimento extra nas unidades de produção. As vendas de derivados no mercado interno alcançaram 1.854 milhões de barris de petróleo por dia (mbpd) no trimestre, o maior volume desde o terceiro trimestre de 2021 e o melhor resultado com o atual parque de refino. Foi registrado também recor",
+      "imageUrl": "https://imagens.ebc.com.br/3sJkiLjFKzGQFgMT1KtXSxBUEO0=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2025/07/14/plataforma_da_petrobras_que_reforcara_o_pre-sal_deixa_singapura04.jpg?itok=REKY4EJ1",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-11T00:37:00.000Z",
+      "firstSeenAt": "2026-11-11T07:57:54.640Z",
+      "lastSeenAt": "2026-11-11T07:57:54.640Z"
+    },
+    {
+      "id": "event-77ce0dee",
+      "category": "brasil",
+      "title": "Bolão de Iturama (MG) leva R$ 3,2 milhões na Mega-Sena",
+      "url": "https://agenciabrasil.ebc.com.br/geral/noticia/2026-11/bolao-de-iturama-mg-leva-r-32-milhoes-na-mega-sena",
+      "description": "Uma aposta de Iturama (MG) acertou as seis dezenas do Concurso 3.084 da Mega-Sena, realizado nesta terça-feira (10). O bolão, de 15 cotas apostou sete dezenas e receberá o total de R$ 3.287.949,90. Os números sorteados são: 06 - 14 - 22 - 30 - 31 - 37 29 apostas acertaram cinco dezenas e irão receber R$ 28.344,40 cada 2.264 apostas acertaram quatro dezenas e irão receber R$ 518,66 cada Apostas Notícias relacionadas: Mega da Virada: Caixa anuncia que prêmio deve superar R$ 1 bilhão. Para o próximo concurso, a estimativa de prêmio é de R$ 20 milhões. As apostas podem ser feitas até as 20h (horário de Brasília) de quinta-feira (12), em qualquer lotérica do país ou pela internet, no site ou aplicativo da Caixa. A aposta simples, com seis dezenas, custa R$ 6.",
+      "imageUrl": "https://imagens.ebc.com.br/P-lgw68pbL2zbssKnwXMui0xoVI=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/megasenadsc_5279.jpg?itok=cbfekMwn",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-11T00:36:00.000Z",
+      "firstSeenAt": "2026-11-11T07:57:54.640Z",
+      "lastSeenAt": "2026-11-11T07:57:54.640Z"
+    },
+    {
+      "id": "event-6c1adf28",
+      "category": "clima",
+      "title": "Calor e chuva irregular pressionam início da safra de soja no Matopiba em ano de El Niño forte",
+      "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxPUUhOWEF4U0t1c3RJNkVkQTRNQ0JBWFZJUnRCY0lFUHhnNExtVkJuVTE1WHlQRW1IeldlSG9pMURwZm9ocTJNaElva3dWRE53UEpxdEc4NHVQQkFCWkQ5dktXMUxSZDlxT2pRTGVoRzFnNlo3NXJLQ1VxMlRKZ2d2Q21zNUhHYk5VR1I2UzNSUnV3MXI4d1lSQzNYek9uNVo5Rmp3Wkk3eTFBUzA2NzE1LUVnRVp2UmJPUTZrbEhsNFZUQmdB",
+      "description": "Calor e chuva irregular pressionam início da safra de soja no Matopiba em ano de El Niño forte &nbsp;&nbsp; Região em Destake",
+      "imageUrl": null,
+      "source": "Região em Destake",
+      "publishedAt": "2026-11-11T00:31:11.000Z",
+      "firstSeenAt": "2026-11-11T07:57:54.640Z",
+      "lastSeenAt": "2026-11-11T07:57:54.640Z"
     },
     {
       "id": "event-1b1f6535",
@@ -54,7 +138,7 @@
       "source": "Tribuna do Sertão",
       "publishedAt": "2026-11-10T23:33:25.000Z",
       "firstSeenAt": "2026-11-11T01:22:20.785Z",
-      "lastSeenAt": "2026-11-11T01:22:20.785Z"
+      "lastSeenAt": "2026-11-11T07:57:54.640Z"
     },
     {
       "id": "event-d06e0467",
@@ -103,6 +187,30 @@
       "publishedAt": "2026-11-10T22:45:36.000Z",
       "firstSeenAt": "2026-11-11T01:22:20.785Z",
       "lastSeenAt": "2026-11-11T01:22:20.785Z"
+    },
+    {
+      "id": "event-2d55a3d",
+      "category": "clima",
+      "title": "Calor fora do normal toma conta de Pernambuco e do Nordeste? El Niño pode agravar situação nos próximos meses",
+      "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxON3hpVVZNdG1YR2ZmMEJsWkVhMjg3RFFMeTFRMVFkWERldlpzc2JiYnpHN093V3hZek9qT3hwMnM1VmtQNlV0Qy1aeG9HUVdKNG10N21ialhUclB0dXJ1UXc1WTk0RG9qbklXZFFBam0tQ01oS2dlcW9vVWZNV0RpaHpHRTdBSm5LV1ZSbExqajEydw",
+      "description": "Calor fora do normal toma conta de Pernambuco e do Nordeste? El Niño pode agravar situação nos próximos meses &nbsp;&nbsp; Portal Fala News",
+      "imageUrl": null,
+      "source": "Portal Fala News",
+      "publishedAt": "2026-11-10T22:28:00.000Z",
+      "firstSeenAt": "2026-11-11T07:57:54.640Z",
+      "lastSeenAt": "2026-11-11T07:57:54.640Z"
+    },
+    {
+      "id": "event-9c90b32e",
+      "category": "santa-catarina",
+      "title": "Santa Catarina enfrenta temporais com tornados e previsão de nova chuva nesta semana",
+      "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxOVGNrVF9OTHI1Wm5jRVN0NE9yMVFKOVM2LWdULThfWEpzczJlcTJFWkczLTJZVDBZR2JRNVFxUV8xRHF1ckFjUGhUcmZld0s3WloweFZMcC1hejNXVV9ZT3pJd1VoUEZSbmVfREpSd3VsUW43dWtVcm9neEJsMnQ5alJwV1NEZUoxZUNKREtQQzZOaW1UMnJPdUVpVGpFMk1kOVJUdmZmOG42cThxZWxwaEpETE42U1B5ZVlFSVVobWZqNHMzWDV2LUo3UQ",
+      "description": "Santa Catarina enfrenta temporais com tornados e previsão de nova chuva nesta semana &nbsp;&nbsp; oimagem.com.br",
+      "imageUrl": null,
+      "source": "oimagem.com.br",
+      "publishedAt": "2026-11-10T22:05:08.000Z",
+      "firstSeenAt": "2026-11-11T07:57:54.640Z",
+      "lastSeenAt": "2026-11-11T07:57:54.640Z"
     },
     {
       "id": "event-e8db2bc1",
@@ -294,7 +402,7 @@
       "source": "Revista Cultivar",
       "publishedAt": "2026-11-10T17:40:09.000Z",
       "firstSeenAt": "2026-11-11T01:22:20.785Z",
-      "lastSeenAt": "2026-11-11T01:22:20.785Z"
+      "lastSeenAt": "2026-11-11T07:57:54.640Z"
     },
     {
       "id": "event-acbc2221",
@@ -426,7 +534,7 @@
       "source": "band.com.br",
       "publishedAt": "2026-11-10T11:13:13.000Z",
       "firstSeenAt": "2026-11-10T19:33:57.494Z",
-      "lastSeenAt": "2026-11-11T01:22:20.785Z"
+      "lastSeenAt": "2026-11-11T07:57:54.640Z"
     },
     {
       "id": "event-6913a802",
@@ -451,48 +559,9 @@
       "publishedAt": "2026-11-10T09:03:00.000Z",
       "firstSeenAt": "2026-11-10T19:33:57.494Z",
       "lastSeenAt": "2026-11-10T19:45:44.554Z"
-    },
-    {
-      "id": "event-3088692b",
-      "category": "brasil",
-      "title": "Jornal da Band ao vivo: Assista às principais notícias do Brasil e do mundo - 10-11-2026",
-      "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxPUGF6ZTk0RGl2X2xVcWFWTnBXSGpoWUJwdUQtWjVqNmZ1VS1RSXAxR3dOZDc3WG13NUR4UjdqMElTSHNUeVZ3Q1Uyb1AtdlhHUV9WUUoxRjF2aE1QYTJnanVkWm9rRFgycE9XT1hBd2pTd1BkZEZBQTJXLUtYTm94QUVVbnc3blRONVhQN0RJYXJqU2E2QWxJQWZ4dFdnT3AzdkIybDZhZVF6aGtVZTVPaDFVVVplcVhZREFoUVgxYkxiNFk",
-      "description": "",
-      "imageUrl": null,
-      "source": "Band",
-      "publishedAt": "2026-11-10T03:01:00.000Z",
-      "firstSeenAt": "2026-11-10T07:24:49.276Z",
-      "lastSeenAt": "2026-11-10T07:24:49.276Z"
-    },
-    {
-      "id": "event-8a5c23ff",
-      "category": "brasil",
-      "title": "Bora Brasil: Assista às principais notícias e análises do dia - 10-11-2026",
-      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxPUVYzbG44VzFNMk9GUnNKNFdmRm5rZFpNbllQY3ZqSDB1WTNmYWswdURwaTlyeEdTV2pIYkYtMGZXM2tHVDBUMEtWMjFGSURyVWw1WXZiSFNWLWZFTGxsTHpLWVRSWEl5OF83d3RlbUhucHl1VFM0NUR3czlPTHVtWEhvOTQ2WlcxM2ZEaVk5anRzWWJwUkVORVZqQTVWdXV2SDVCbTA0bk9mbS1manRuRQ",
-      "description": "",
-      "imageUrl": null,
-      "source": "Band",
-      "publishedAt": "2026-11-10T03:01:00.000Z",
-      "firstSeenAt": "2026-11-10T07:24:49.276Z",
-      "lastSeenAt": "2026-11-10T07:24:49.276Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-10T07:24:49.276Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 7,
-      "newArticles": 3,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "mundo",
-        "europa"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-10T15:42:11.206Z",
       "ok": true,
@@ -570,14 +639,30 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-11T07:57:54.640Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 14,
+      "newArticles": 9,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "asia"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 6,
-  "lastSuccessfulAt": "2026-11-11T01:22:20.785Z",
+  "lastSuccessfulAt": "2026-11-11T07:57:54.640Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-11T01:22:20.785Z",
+      "checkedAt": "2026-11-11T07:57:54.640Z",
       "warnings": [
         {
           "id": "56356",
@@ -609,7 +694,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-11T01:22:20.785Z",
+      "checkedAt": "2026-11-11T07:57:54.640Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "8 October 2026",
