@@ -325,7 +325,9 @@ jobs:
               const decoded=JSON.parse(body);
               assert.equal(decoded.ok,true);
               assert.equal(decoded.location.countryCode,'JP');
-              assert.equal(decoded.days.length,16);
+              assert.ok(decoded.days.length>=15&&decoded.days.length<=16,'Forecast range must reflect provider availability');
+              assert.equal(decoded.requestedDays,16);
+              assert.equal(decoded.partialForecast,decoded.days.length<16);
               assert.ok(decoded.source.url.includes('open-meteo.com'));
               console.log('WORKER GLOBAL 16-DAY FORECAST VERIFIED');
             }else{
