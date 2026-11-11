@@ -4,10 +4,166 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-11T07:57:54.640Z",
-  "oldestEventAt": "2026-11-10T09:03:00.000Z",
-  "windowStartAt": "2026-11-10T07:57:54.640Z",
+  "updatedAt": "2026-11-11T15:55:43.486Z",
+  "oldestEventAt": "2026-11-10T16:07:00.000Z",
+  "windowStartAt": "2026-11-10T15:55:43.486Z",
   "events": [
+    {
+      "id": "event-f6ce2c87",
+      "category": "brasil",
+      "title": "Brasil precisa de uma política nacional para eventos de negócios? novo template",
+      "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE8zTklPMUFiM2hjdUc2MjNYZXRScklWdXBNYXItSFhBUmt1dTFCRGVZZk4wUndPR0tMaG5FRlF3am9FNXVBcUp0N3NzaWZ5RFNtT1l3WEpHVFdtTE5UUzU1RzdreHJzbkU",
+      "description": "Brasil precisa de uma política nacional para eventos de negócios? novo template &nbsp;&nbsp; Portal Radar",
+      "imageUrl": null,
+      "source": "Portal Radar",
+      "publishedAt": "2026-11-11T15:04:14.000Z",
+      "firstSeenAt": "2026-11-11T15:55:43.486Z",
+      "lastSeenAt": "2026-11-11T15:55:43.486Z"
+    },
+    {
+      "id": "event-bd99c57",
+      "category": "brasil",
+      "title": "Congresso prorroga por 60 dias MP que proíbe bets no país",
+      "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2026-11/congresso-prorroga-por-60-dias-mp-que-proibe-bets-no-pais",
+      "description": "O Congresso prorrogou por 60 dias a vigência da Medida Provisória (MP) 1.394/2026 , que proibiu a exploração, a oferta, a intermediação e a publicidade das bets em todo o país. O ato assinado pelo senador Davi Alcolumbre está publicado no Diário Oficial da União desta quarta-feira (11). Notícias relacionadas: Entidades da pediatria defendem que bets devem continuar proibidas. Fux suspende todas as ações judiciais contra proibição de bets no país. PGR pede suspensão de ações contra proibição de bets. Instituída em setembro deste ano, a MP determinou o encerramento das operações das plataformas de apostas on-line no Brasil e estabeleceu regras para a devolução dos valores mantidos pelos apostadores nas contas das empresas. Após assinar o texto, o presidente Luiz Inácio Lula da Silva chegou a comparar as casas de apostas on-line com um “câncer” . “Eu tomei uma medida dura e drástica necessária. Isso é como um câncer. Ou a gente tira o tumor, ou esse tumor vai matar a gente.” Com a publicação da medida, novos depósitos passaram a ser proibidos imediatamente. Fiscalização A medida provisó",
+      "imageUrl": "https://imagens.ebc.com.br/kDG3qdfMXjfFNGOXBnBeZCZgNGg=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2025/03/13/lula4382.jpg?itok=X_F4KEFl",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-11T14:57:00.000Z",
+      "firstSeenAt": "2026-11-11T15:55:43.486Z",
+      "lastSeenAt": "2026-11-11T15:55:43.486Z"
+    },
+    {
+      "id": "event-981fc490",
+      "category": "brasil",
+      "title": "CLDF aprova reeleição de membros da Mesa Diretora",
+      "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2026-11/cldf-aprova-reeleicao-de-membros-da-mesa-diretora",
+      "description": "A Câmara Legislativa do Distrito Federal aprovou, nesta terça-feira (10), por 15 votos a 1, a Proposta de Emenda à Lei Orgânica (Pelo) nº 22/2026 . A medida autoriza deputados distritais reeleitos que já integram a Mesa Diretora a voltarem a disputar um cargo de comando da Casa para os dois primeiros anos da legislatura subsequente. Notícias relacionadas: CLDF vota proposta que libera reeleição de membros da Mesa Diretora. Apresentada pelo Pastor Daniel de Castro (PP) e por outros parlamentares, a proposta já tinha sido aprovada em primeiro turno em 27 de outubro, por 17 votos a 6. Com a aprovação definitiva, em segundo turno, a norma será promulgada com efeitos já para a próxima eleição da Mesa Diretora. A proposta aprovada retoma a redação original da Lei Orgânica que, antes de ser alterada em 2024, estava em conformidade com a Constituição Federal e com decisões do Supremo Tribunal Federal (STF). A Carta Magna proíbe a reeleição de membros das Mesas Diretoras da Câmara dos Deputados e do Senado para o mesmo cargo, dentro de uma mesma legislatura. Já o STF estabeleceu que, embora a",
+      "imageUrl": "https://imagens.ebc.com.br/RsY4jbxN7C4C1rpcN1si3mWX91U=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/124a6307.jpg?itok=DWy6HHqg",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-11T14:50:00.000Z",
+      "firstSeenAt": "2026-11-11T15:55:43.486Z",
+      "lastSeenAt": "2026-11-11T15:55:43.486Z"
+    },
+    {
+      "id": "event-8599bdbf",
+      "category": "mundo",
+      "title": "Centenas de escolas recebem ameaças simultâneas de bomba em nova onda de alarmes na Europa",
+      "url": "https://news.google.com/rss/articles/CBMikAJBVV95cUxNUUgwMmMxSFJwSTdSbUZMTHM2bjVhbFFJaXctaW1ISGNjM0djTmp2eUFKZl9ZVDY5WFZkZFF3X2Q3RzZXV1l0eHVhM0ZtekdXOTdBS2JIdjlXMXQyUUlSLVFCYjhzaHdpMVd2bVpVRENUYW1MRm9UblhsbU1vT3N4eDJrS3VURnRYWVZNR3lJVDJWbDN5djMwSUtaR3NKRHBQOE9pdlFsdmZwNGdsN3hVNkU3aW9kaGxPR01rTHFFdURZQXFrc3Q1UW1KSVdwWWMwVngtMy1WbEVRNlN1em5XWWxZanFfQWRxeWMyNzk0TkhNNFVKcU8tTzBqQzcxbUhveVhrYW5hOVhGQWxTT21BSA",
+      "description": "Centenas de escolas recebem ameaças simultâneas de bomba em nova onda de alarmes na Europa &nbsp;&nbsp; Terra",
+      "imageUrl": null,
+      "source": "Terra",
+      "publishedAt": "2026-11-11T14:46:00.000Z",
+      "firstSeenAt": "2026-11-11T15:55:43.486Z",
+      "lastSeenAt": "2026-11-11T15:55:43.486Z"
+    },
+    {
+      "id": "event-eaab4008",
+      "category": "clima",
+      "title": "El Niño até 2027: o que muda no manejo animal",
+      "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTFB2UkhyLVFoOGFMMjJyX2RycXlZTHRjQjU0SWdrRWJnVTJpdmFTazQ1N255blVGZU9CQkt5LW04N2NCZThBYTNDa2NmRkU0aEQtenhleWV4NEVPQ21vUVd1cnk3cw",
+      "description": "El Niño até 2027: o que muda no manejo animal &nbsp;&nbsp; Agronews Brasil",
+      "imageUrl": null,
+      "source": "Agronews Brasil",
+      "publishedAt": "2026-11-11T14:15:03.000Z",
+      "firstSeenAt": "2026-11-11T15:55:43.486Z",
+      "lastSeenAt": "2026-11-11T15:55:43.486Z"
+    },
+    {
+      "id": "event-14796665",
+      "category": "brasil",
+      "title": "Notícias sobre Lula [Luiz Inácio Lula da Silva]",
+      "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTFB6UmVlMG9BYmJHU1piMDlnRkdvVE5ybFdJbDFqNGpaOWc2eExVekpxdmdrUURSOHhCeEpaUTJBeGlDQ1dSb3RBTzhhbUZoZnZEUlhJdWZmQ2cyU0ZqZ3dBX2lWMkhLWXNVc0JiN3k5SWx1MWRRZUxILQ",
+      "description": "Notícias sobre Lula [Luiz Inácio Lula da Silva] &nbsp;&nbsp; Estadão",
+      "imageUrl": null,
+      "source": "Estadão",
+      "publishedAt": "2026-11-11T14:10:18.000Z",
+      "firstSeenAt": "2026-11-11T15:55:43.486Z",
+      "lastSeenAt": "2026-11-11T15:55:43.486Z"
+    },
+    {
+      "id": "event-2beb54c3",
+      "category": "mundo",
+      "title": "Trabalhadores espanhóis fazem primeira greve geral em 14 anos",
+      "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/trabalhadores-espanhois-fazem-primeira-greve-geral-em-14-anos",
+      "description": "Trabalhadores espanhóis entraram em greve geral nesta quarta-feira (11), enfrentando condições climáticas adversas para montar piquetes em um protesto em massa contra a crise de acessibilidade à moradia no país, a menos de três semanas das eleições gerais antecipadas. Trata-se da primeira greve geral desde que os trabalhadores paralisaram as atividades em 2012 contra as medidas de austeridade durante a crise da dívida na zona do euro. A greve conta com o apoio dos dois maiores sindicatos da Espanha, UGT e CCOO, que representam mais de 1 milhão de trabalhadores, bem como de associações de inquilinos indignadas com o aumento dos aluguéis e os despejos. Notícias relacionadas: Habitação: Espanha antecipa eleições; sindicatos chamam à greve geral. Protestos em Madri entram no 3º dia após despejo de aposentada. O primeiro-ministro Pedro Sánchez espera aproveitar o descontentamento dos eleitores em relação à questão da moradia nas eleições de 29 de novembro para desviar o foco político dos casos de corrupção envolvendo pessoas próximas e de um acidente ferroviário fatal ocorrido no mês pass",
+      "imageUrl": "https://imagens.ebc.com.br/i4GewoUGrxULivcE81ntck02UCQ=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/11/2026-11-11t133005z_1_lynxnpemaa18o_rtroptp_4_spain-strike-madrid.jpg?itok=CTWsmyD5",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-11T14:03:00.000Z",
+      "firstSeenAt": "2026-11-11T15:55:43.486Z",
+      "lastSeenAt": "2026-11-11T15:55:43.486Z"
+    },
+    {
+      "id": "event-192ba415",
+      "category": "mundo",
+      "title": "Apagão mundial vai acontecer em 17 de novembro? Entenda a origem do boato",
+      "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxQdVJWeE1INnRaNnJUeFpiU1hOMExJWmJMREFEMzQ0dE53NzR3MEwtY1ZGR0xDR1B2RmFjNWNlTGY0d093S1pwRldDTlpHQUlra3I3WXN0U1EtYWlUZWR6RTBPTFJVaHRlakVTalBhdHhlZm9JNld1VlhHN0YzUnBKcUNNRHItWURFUDllTGRyYUJvc3Q1MU54bEVua9IBoAFBVV95cUxOVV9pLV80R0gtZzNNNGlqWUhsMXVoNG0tTGR0R25YYjhXcURPOUs4Z3l6WWd2T056T1NfWEQtOHhRRFQzTW5nT0F1ZU9rY2JaSjJkTHYzR0VoaUpKSElER2U5blE2bDRBamtpREs1dFU1LTVOTHBPNnc2aS10OXctZ3hPNUlyWEZJWDUzSHJCaDgwWXhFLVBodFFzdFlUeHJK",
+      "description": "Apagão mundial vai acontecer em 17 de novembro? Entenda a origem do boato &nbsp;&nbsp; Imirante.com",
+      "imageUrl": null,
+      "source": "Imirante.com",
+      "publishedAt": "2026-11-11T13:51:41.000Z",
+      "firstSeenAt": "2026-11-11T15:55:43.486Z",
+      "lastSeenAt": "2026-11-11T15:55:43.486Z"
+    },
+    {
+      "id": "event-5679c0ab",
+      "category": "santa-catarina",
+      "title": "Após três tornados, mais de 40 cidades de SC entram de novo em alerta para temporais com ventos intensos",
+      "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxQNDBmMUM0VzF3WFhEcnlnaFJQd3FaVnk2RHZSLVdwdUhHNzRzLVZmTGtkcEVJN3lobW4zdk1nUUNRWENZSGZnckhQR0NHYUtsWk5OZWRPRmJUeVBUSG10YWVqS1VKeHV3VDFrWFNrWmJPcjVyQjVZd3VJX3EwQVhHMjhsMHFwYzhjbGNxRlJ1UVZISjV2QlR0VFlJTGtjdVNJdnlVUUdOVnpNQzNwRnZuOEJfQ1BnUmNQTlpBdXlTSFZOcmVXZzVQTVZuOU9JX1VCX0Rn",
+      "description": "Após três tornados, mais de 40 cidades de SC entram de novo em alerta para temporais com ventos intensos &nbsp;&nbsp; NSC Total",
+      "imageUrl": null,
+      "source": "NSC Total",
+      "publishedAt": "2026-11-11T11:17:19.000Z",
+      "firstSeenAt": "2026-11-11T15:55:43.486Z",
+      "lastSeenAt": "2026-11-11T15:55:43.486Z"
+    },
+    {
+      "id": "event-9967ba07",
+      "category": "clima",
+      "title": "El Niño só deve perder força a partir de março de 2027",
+      "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxOd2oxbndMcHlTTnR4Z2hKOVJ5UFZ4MkVsb3YzSmx4bXpEa0pHUzE2eENzTXJuWjJOcHZDSzlEV1RSdk5YZWRHLW04MTA2WGo1R3gxTHNMVUZaamtnV2dlUElfbFN2bHZ4eEx5SjV1MThmc3ROSUNlSnQzbWZ3XzNqbXNfczk4ZFBWUHJzbWRmclRmdkZGbEdxZ1A1MUNJS2RpaWV0SmxxMGhGZw",
+      "description": "El Niño só deve perder força a partir de março de 2027 &nbsp;&nbsp; TV Sim Brasil",
+      "imageUrl": null,
+      "source": "TV Sim Brasil",
+      "publishedAt": "2026-11-11T11:16:30.000Z",
+      "firstSeenAt": "2026-11-11T15:55:43.486Z",
+      "lastSeenAt": "2026-11-11T15:55:43.486Z"
+    },
+    {
+      "id": "event-ecf709a8",
+      "category": "santa-catarina",
+      "title": "Defesa Civil alerta para temporais isolados nesta quarta-feira e intensificação das instabilidades na quinta em SC",
+      "url": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxOdlJMMk9kbE85b0dlTUpGaFNRWng4d00yNjR3ekUwb3d2X29OVXdxbEs0Z3RMb2tNZlEyNkx4T1Z0SWVrWWdiUC1QZ0tZTG9TMWYycnFkTm0tWmlzSUhIZWNVdDZyUXdNVWxLUF95enRUMFB2RUxsd1VVeHN0blQyaDZlUndXWEtoTHFIbzZ2TE5MZGZwaDRtYy1zallpRmpTSFNvQ1BXU3ZrREppLTZ6QXZSRXlBTzVuaE5lYUZrYV95d0xaNnE4TGdBY01jc2RMU3B2dVBmRHFZOVdKWWxtMUJTamFUQQ",
+      "description": "Defesa Civil alerta para temporais isolados nesta quarta-feira e intensificação das instabilidades na quinta em SC &nbsp;&nbsp; No Ponto SC",
+      "imageUrl": null,
+      "source": "No Ponto SC",
+      "publishedAt": "2026-11-11T09:32:18.000Z",
+      "firstSeenAt": "2026-11-11T15:55:43.486Z",
+      "lastSeenAt": "2026-11-11T15:55:43.486Z"
+    },
+    {
+      "id": "event-944a7c07",
+      "category": "clima",
+      "title": "Bruno Blecher | O El Niño chegou e pode ficar até fevereiro",
+      "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxQOWRBbVpEQV81a1M1dUpaaGxkamduV0UzeFctRWpNREE0UDRaR2k1dUdFTUN1OFpNY20wNjdiZFdYa1JvanBoSHRtMXRPZ2Yzekl2UHk5N1FwWHBsal9Qd0RVYWM2TDE2WHVDdjRFdE9FVTg4VWhnR1RiRlVVMk51QmxXYUt1SUU",
+      "description": "Bruno Blecher | O El Niño chegou e pode ficar até fevereiro &nbsp;&nbsp; Poder360",
+      "imageUrl": null,
+      "source": "Poder360",
+      "publishedAt": "2026-11-11T09:02:34.000Z",
+      "firstSeenAt": "2026-11-11T15:55:43.486Z",
+      "lastSeenAt": "2026-11-11T15:55:43.486Z"
+    },
+    {
+      "id": "event-ae3c1f1c",
+      "category": "santa-catarina",
+      "title": "Tempo começa a mudar em SC nesta quarta-feira; veja onde pode chover e ter temporais",
+      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxQQ0hielZfdmlvTkNEcVRzc2JWcVk2QWsyZVpNd2hIUDlNN3Y0eWxta0RQb0FNdlpzdXFhanJldUt1TzFyNWRldDJiMjlLQTlqYWd3c0hXT0MxeEU5TlVHcGJBMTF3Z0pfQnQwdDAzbnJndXg0QW15dHM1M1phNHNsUmxCRTRING1odDhFU1hpTkVvTzBoNWhaZ3c4WnQ1alFjakNSSHJ3dFFwVnZoejV6LS1PY2hxdHJQSzBMbHRn",
+      "description": "Tempo começa a mudar em SC nesta quarta-feira; veja onde pode chover e ter temporais &nbsp;&nbsp; SCC10",
+      "imageUrl": null,
+      "source": "SCC10",
+      "publishedAt": "2026-11-11T08:00:00.000Z",
+      "firstSeenAt": "2026-11-11T15:55:43.486Z",
+      "lastSeenAt": "2026-11-11T15:55:43.486Z"
+    },
     {
       "id": "event-fe11c1ed",
       "category": "santa-catarina",
@@ -427,155 +583,9 @@
       "publishedAt": "2026-11-10T16:07:00.000Z",
       "firstSeenAt": "2026-11-10T21:26:02.557Z",
       "lastSeenAt": "2026-11-11T01:22:20.785Z"
-    },
-    {
-      "id": "event-9dee8df7",
-      "category": "mundo",
-      "title": "Brasil apresenta marco de financiamento para área de saúde na COP31",
-      "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/brasil-apresenta-marco-de-financiamento-para-area-de-saude-na-cop31",
-      "description": "",
-      "imageUrl": "https://cdn.jsdelivr.net/gh/sergiosdlima/assets-ebc@1.0.0/public/thumbs/thumb_1200x600_agbrasil.png",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-10T15:25:00.000Z",
-      "firstSeenAt": "2026-11-10T15:42:11.206Z",
-      "lastSeenAt": "2026-11-10T15:42:11.206Z"
-    },
-    {
-      "id": "event-12ad907f",
-      "category": "santa-catarina",
-      "title": "Nova frente fria já tem data para chegar com temporais após 'calorão' de 32°C tomar lugar do frio intenso em SC",
-      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxOUVBrNE9MelNkYXlrb2FXMzdmUXU1YWwzbF8xN0kzSWdoS1gySGpZU09TMWNPSlFGMFpvV3JLNWZZUXBjR3ZDNzhGc0xzRjNpZmdBTU1Fbkc4Z3RJelRMUXVWbGdnRl9QRUJiOUtvU3BtLVkxR2c2cEhMN080ZHZzcndycTJUUzljaC1iMnBlU3ZUNmhyb3BlemNMYnRrdURiRW9wWmgzVQ",
-      "description": "Nova frente fria já tem data para chegar com temporais após 'calorão' de 32°C tomar lugar do frio intenso em SC &nbsp;&nbsp; ND Mais",
-      "imageUrl": null,
-      "source": "ND Mais",
-      "publishedAt": "2026-11-10T15:17:04.000Z",
-      "firstSeenAt": "2026-11-10T19:33:57.494Z",
-      "lastSeenAt": "2026-11-10T21:26:02.557Z"
-    },
-    {
-      "id": "event-72a2f8d0",
-      "category": "brasil",
-      "title": "Defesa de Vorcaro reforça pedido de soltura no STF",
-      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/defesa-de-vorcaro-reforca-pedido-de-soltura-no-stf",
-      "description": "",
-      "imageUrl": "https://imagens.ebc.com.br/lQgKuZExT0ktoCTbkIjWDhOrzp8=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/03/04/vorca-2-scaled-e1767922829627-1024x688-1.jpg?itok=HxmLgBjy",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-10T14:50:00.000Z",
-      "firstSeenAt": "2026-11-10T15:42:11.206Z",
-      "lastSeenAt": "2026-11-10T15:42:11.206Z"
-    },
-    {
-      "id": "event-8e1224f9",
-      "category": "brasil",
-      "title": "Brasília recebe mutirão gratuito de saúde intestinal e nutrição",
-      "url": "https://agenciabrasil.ebc.com.br/saude/noticia/2026-11/brasilia-recebe-mutirao-gratuito-de-saude-intestinal-e-nutricao",
-      "description": "",
-      "imageUrl": "https://imagens.ebc.com.br/RpEx9wA61_a-5Q-Ba2qbD9AZ7kc=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/09/24/adobestock_946254162.jpeg?itok=rG-p00t2",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-10T14:23:00.000Z",
-      "firstSeenAt": "2026-11-10T15:42:11.206Z",
-      "lastSeenAt": "2026-11-10T15:42:11.206Z"
-    },
-    {
-      "id": "event-ca790122",
-      "category": "brasil",
-      "title": "Ata do Copom indica que desaceleração da economia não conteve inflação",
-      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/ata-do-copom-indica-que-desaceleracao-da-economia-nao-conteve-inflacao",
-      "description": "",
-      "imageUrl": "https://imagens.ebc.com.br/SgnUFMdRtJPNTHPG5q90__2MSS4=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2025/07/11/0d4a1789.jpg?itok=9dpF2vXe",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-10T14:20:00.000Z",
-      "firstSeenAt": "2026-11-10T15:42:11.206Z",
-      "lastSeenAt": "2026-11-10T15:42:11.206Z"
-    },
-    {
-      "id": "event-14874eb0",
-      "category": "brasil",
-      "title": "Um terço dos jovens de 16 a 29 anos quer chegar à universidade",
-      "url": "https://agenciabrasil.ebc.com.br/educacao/noticia/2026-11/um-terco-dos-jovens-de-ate-29-anos-quer-chegar-universidade",
-      "description": "",
-      "imageUrl": "https://imagens.ebc.com.br/vovUc7KNABZBPEQufKcc3grRju4=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/06/toms6007.jpg?itok=IJ4vgguM",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-10T14:18:00.000Z",
-      "firstSeenAt": "2026-11-10T15:42:11.206Z",
-      "lastSeenAt": "2026-11-10T15:42:11.206Z"
-    },
-    {
-      "id": "event-a98c09be",
-      "category": "clima",
-      "title": "El Niño vai até quando? Veja o que as previsões indicam para 2027",
-      "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxNYWpZRUpBa0g2aDlHTjJMNDROcE9DTkQ0Y25HN0dZaWpGUTdJbUNJWHd1WTdOenQyYVozSUpwcFBxcXZYMGg2aTQ1ZWFSVl90NFFRZENVVW5YZ0NLSmZMX2ZTVndRZkdudGwya2xNYjU5S0JIb1ZuRzktMW5pN0pmVDQzU1BTcWV6WjdrdDltWVU4TWhpdmdLdk1OZFRIYnhObU05bFdn",
-      "description": "El Niño vai até quando? Veja o que as previsões indicam para 2027 &nbsp;&nbsp; Folha Vitória",
-      "imageUrl": null,
-      "source": "Folha Vitória",
-      "publishedAt": "2026-11-10T14:15:27.000Z",
-      "firstSeenAt": "2026-11-10T19:33:57.494Z",
-      "lastSeenAt": "2026-11-11T01:22:20.785Z"
-    },
-    {
-      "id": "event-c22589e1",
-      "category": "clima",
-      "title": "Fortaleza (CE): Defesa Civil enviará alertas de calor extremo; saiba como funciona",
-      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxQR0ZUWFZqcjY3Uko1c05NS2Q2bGFyeFlSSDVCVUFkRXBUU1dtcUFNVEZDT1E5RnA2b0NZb1dHOXJLRjR2NkJvdGNDZ3F0RzgwMTdLYm4wbWRrWkt1TFo3UW1qZm1rdDNZX2ZRQ2ZSazZXY0tNWjJvcllpc3V0c3RIdHVEbmRUYkZKNDN0RlRpaWtSWEdUZXF0YmRzZHJYQUdHQzJvc3hzdFpBVkR6VHpGaw",
-      "description": "Fortaleza (CE): Defesa Civil enviará alertas de calor extremo; saiba como funciona &nbsp;&nbsp; Diário do Estado",
-      "imageUrl": null,
-      "source": "Diário do Estado",
-      "publishedAt": "2026-11-10T13:02:09.000Z",
-      "firstSeenAt": "2026-11-10T19:33:57.494Z",
-      "lastSeenAt": "2026-11-10T21:26:02.557Z"
-    },
-    {
-      "id": "event-91209c87",
-      "category": "asia",
-      "title": "Lula participa da COP31 e busca ampliar relações comerciais na Ásia - band.com.br",
-      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxONGY4ZnJBc0c0LXRDUXY0a0NVVU0wLTFKSW04VlRSRUx0MkFqSXJzajFtbUxuRlY2VWpTMmxVWnBMZDBMYUFIT3ZfMWxLSXVJbVIxdHdfNW5WRUQ5dHZIaThyQUV1TEZoUGVYZFM2b192eWJ5QS05WTlwZ0xBcUVETGJVbGRxODNtX19wa3dWNUQtYTNkVDVwRXV2bU92TDMtNFdoQzhlUE52WUE",
-      "description": "Lula participa da COP31 e busca ampliar relações comerciais na Ásia &nbsp;&nbsp; band.com.br",
-      "imageUrl": null,
-      "source": "band.com.br",
-      "publishedAt": "2026-11-10T11:13:13.000Z",
-      "firstSeenAt": "2026-11-10T19:33:57.494Z",
-      "lastSeenAt": "2026-11-11T07:57:54.640Z"
-    },
-    {
-      "id": "event-6913a802",
-      "category": "santa-catarina",
-      "title": "Santa Catarina terá sol, aumento das temperaturas e retorno dos temporais nos próximos dias",
-      "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxOQ1A5c01yQVBDUnoyeWZhZUFQa0cwSmpwVC1PVkptN1FCcDc2UGVLU3VXUWliRlpzY0FwcHVTRC12QzZPa3JGdE1iOXJZU2FVZC0ySW5JYlBwSF96Y1hJSElaZnd1NXcxQk9JbnBkWXM2S1h1UWFheTRPRXNVTU9FNW9YVzlVeGQxaU9HaENMUUhfNlVvS0RSNmJVd2hsU09KVmQ4cVJKV0dwMG1OekpBMG15OVhFN1dsWE0tTU1Pcw",
-      "description": "Santa Catarina terá sol, aumento das temperaturas e retorno dos temporais nos próximos dias &nbsp;&nbsp; Reporter Sul",
-      "imageUrl": null,
-      "source": "Reporter Sul",
-      "publishedAt": "2026-11-10T11:05:27.000Z",
-      "firstSeenAt": "2026-11-10T19:33:57.494Z",
-      "lastSeenAt": "2026-11-10T19:33:57.494Z"
-    },
-    {
-      "id": "event-1325ef88",
-      "category": "clima",
-      "title": "El Niño bate recorde em outubro e painel prevê impacto nas chuvas",
-      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxQa1h0WDM3ZDVmZFQwZjN1OE91OXk1LU1HeVBkYjRHNXFNVGs0UTYxRFZhekM2Mmk0N28zeE5zdWFOZG1aTWE0a2wyWGZPNWNtZ1ZTem9MRGVvbUtfdnFIYTFmNExtSlNDakV6VDkzVzlxQjlMZGdua19oc3BrWC1rZndHd1pFSGw0MlFmRWEyd0taU2J1NmZ1SzJwelhvd25wTnpSME5kOHhZME1NVXpYSzEtcUpBa3ZNUUZTZnln",
-      "description": "El Niño bate recorde em outubro e painel prevê impacto nas chuvas &nbsp;&nbsp; Jornal Diário do Povo",
-      "imageUrl": null,
-      "source": "Jornal Diário do Povo",
-      "publishedAt": "2026-11-10T09:03:00.000Z",
-      "firstSeenAt": "2026-11-10T19:33:57.494Z",
-      "lastSeenAt": "2026-11-10T19:45:44.554Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-10T15:42:11.206Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 6,
-      "newArticles": 5,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "mundo"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-10T19:33:57.494Z",
       "ok": true,
@@ -655,14 +665,30 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-11T15:55:43.486Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 13,
+      "newArticles": 13,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "asia"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 6,
-  "lastSuccessfulAt": "2026-11-11T07:57:54.640Z",
+  "lastSuccessfulAt": "2026-11-11T15:55:43.486Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-11T07:57:54.640Z",
+      "checkedAt": "2026-11-11T15:55:43.486Z",
       "warnings": [
         {
           "id": "56356",
@@ -676,12 +702,25 @@
           "url": "https://avisos.inmet.gov.br/"
         },
         {
-          "id": "56370",
+          "id": "56378",
+          "title": "Tempestade",
+          "severity": "Perigo Potencial",
+          "phase": "vigente",
+          "regions": [
+            "DO",
+            "DO"
+          ],
+          "startsAt": "2026-11-11T00:00:00.000Z",
+          "endsAt": "2026-11-12T00:00:00.000Z",
+          "source": "INMET",
+          "url": "https://avisos.inmet.gov.br/"
+        },
+        {
+          "id": "56381",
           "title": "Tempestade",
           "severity": "Perigo Potencial",
           "phase": "previsto",
           "regions": [
-            "DO",
             "DO",
             "DE"
           ],
@@ -689,12 +728,26 @@
           "endsAt": "2026-11-12T00:00:00.000Z",
           "source": "INMET",
           "url": "https://avisos.inmet.gov.br/"
+        },
+        {
+          "id": "56382",
+          "title": "Tempestade",
+          "severity": "Perigo Potencial",
+          "phase": "previsto",
+          "regions": [
+            "DO",
+            "DE"
+          ],
+          "startsAt": "2026-11-13T00:00:00.000Z",
+          "endsAt": "2026-11-13T00:00:00.000Z",
+          "source": "INMET",
+          "url": "https://avisos.inmet.gov.br/"
         }
       ]
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-11T07:57:54.640Z",
+      "checkedAt": "2026-11-11T15:55:43.486Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "8 October 2026",
