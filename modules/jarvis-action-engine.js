@@ -1,9 +1,15 @@
+import {TASK_CONTEXT} from "./jarvis-task-context.js?v=4.69.0";
+import {classifyOperatorTurn} from "./jarvis-intent-engine.js?v=4.69.0";
 import API_CONFIG from "../config.js";
 import {validatePlan,isActionRequest} from "../backend/action-catalog.js?v=4.68.0";
 import {normalizeCommand} from "./jarvis-local-commands.js?v=4.67.0";
 const W=()=>window;
 const action=(action,args={})=>({action,args});
 export function directPlan(message){
+ const followup=TASK_CONTEXT?.resolve(message);
+ if(followup?.kind==="contextual-action"&&followup.command){
+   return {steps:[action("earth.locate",{place:followup.region})],contextual:true};
+ }
  const q=normalizeCommand(message).replace(/[.!?]+$/,"").trim();
  const s=q.replace(/^(?:pode |consegue |quero |me )+/,"");
  const rules=[
@@ -53,7 +59,7 @@ async function executeStep(step,original){
  case "system.status":{const status=await requireApi(w.ULTRON_CORE,"status").status();const text="Estado do sistema: "+JSON.stringify(status||{}).slice(0,1800);publish(text);return text;}
  case "memory.health":{const result=await requireApi(w.ULTRON_MEMORY,"refreshMemoryHealth").refreshMemoryHealth();return "Consulta de saúde da memória concluída.";}
  case "parity.check":{const report=await requireApi(w.ULTRON_NEURAL_PARITY,"sync").sync("operator");const text="PARITY CHECK: "+Object.entries(report||{}).map(([k,v])=>k+": "+String(v)).join(" · ");publish(text);return text;}
- case "device.command":{if(!normalizeCommand(original).includes(normalizeCommand(a.command)))throw Error("Ordem de dispositivo não está no pedido original");const api=requireApi(w.ULTRON_DEVICES,"routeNaturalLanguage");const intent=api.parseDeviceIntent?.(a.command);if(!intent)throw Error("Comando de dispositivo não reconhecido");const r=await api.routeNaturalLanguage(a.command,intent);if(!r?.ok||r.needsConfirmation)throw Error(r?.error?.message||"Dispositivo não confirmou");return r.schedule?"Automação registrada.":r.verified===true?"Comando verificado.":"Comando enviado ao dispositivo; conclusão ainda não confirmada.";}
+ case "device.command":{if(!normalizeCommand(original).includes(normalizeCommand(a.command)))throw Error("Ordem de dispositivo não está no pedido original");const api=requireApi(w.ULTRON_DEVICES,"routeNaturalLanguage");const intent=api.parseDeviceIntent?.(a.command);if(!intent)throw Error("Comando de dispositivo não reconhecido");const r=await api.routeNaturalLanguage(a.command,intent);if(!r?.ok||r.needsConfirmation)throw Error(r?.error?.message||"Dispositivo não confirmou");return {text:r.schedule?"Automação registrada.":r.verified===true?"Comando verificado.":"Comando enviado ao dispositivo; conclusão ainda não confirmada.",verified:r.verified===true||Boolean(r.schedule&&r.ok)};}
  case "research":{const r=await requireApi(w.ULTRON_CORE,"ask").ask(a.question);if(!r?.ok)throw Error(r?.error||"Pesquisa falhou");return "Resposta apresentada.";}
  default:throw Error("Ação não permitida");
  }
@@ -62,24 +68,41 @@ export async function runActionPlan(plan,original){
  const valid=validatePlan(plan);if(!valid)return null;
  const results=[];
  for(const step of valid.steps){
-  try{const text=await executeStep(step,original);results.push({action:step.action,ok:true,text});}
-  catch(e){results.push({action:step.action,ok:false,text:String(e.message||e)});break;}
+  const startedAt=Date.now();
+  try{
+   const raw=await executeStep(step,original);
+   const body=typeof raw==="string"?{text:raw}:raw;
+   const verified=typeof body.verified==="boolean"?body.verified:!["ring.reset","ring.zoom"].includes(step.action);
+   const result={action:step.action,ok:true,verified,status:verified?"verified":"submitted",text:String(body.text||"").slice(0,1800),elapsedMs:Date.now()-startedAt};
+   results.push(result);
+   if(verified)TASK_CONTEXT?.recordAction(step,result);
+   W().dispatchEvent?.(new CustomEvent("ultron:task-step",{detail:{...result}}));
+  }catch(e){
+   const failed={action:step.action,ok:false,verified:false,status:"failed",text:String(e?.message||e).slice(0,350),elapsedMs:Date.now()-startedAt};
+   results.push(failed);
+   W().dispatchEvent?.(new CustomEvent("ultron:task-step",{detail:{...failed}}));
+   break;
+  }
  }
- const ok=results.every(x=>x.ok);
+ const ok=results.length===valid.steps.length&&results.every(x=>x.ok);
+ const verified=ok&&results.every(x=>x.verified);
+ const status=!ok?"failed":verified?"completed":"submitted";
  const text=results.map(x=>x.text).join(" ");
  if(!ok||!results.some(x=>["research","news.refresh","devices.list","files.list","system.status","parity.check"].includes(x.action)))W().ULTRON_VOICE_OUTPUT?.speak?.(text,{reason:"autonomy",announce:false});
- return {ok,handled:true,route:"autonomy",text,steps:results};
+ return {ok,verified,status,handled:true,route:"autonomy",text,steps:results};
 }
 export async function resolveActionPlan(message){
  const direct=directPlan(message);if(direct)return direct;
- if(!isActionRequest(message))return null;
+ const intent=classifyOperatorTurn(message);
+ if(intent.kind==="negated"||intent.kind==="question"||intent.private)return null;
+ if(!intent.action&&!isActionRequest(message))return null;
  // Only ask the semantic planner for explicit operational requests. Public
  // questions remain on the research path; no untrusted search content is executed.
  const q=normalizeCommand(message);
  if(!/\b(?:painel|neural|globo|mapa|anel|textos?|resposta|dispositivos?|arquivos|memoria|parity|boletim|sistema|noticias)\b/.test(q))return null;
  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),6000);
  try{
-  const r=await fetch(String(API_CONFIG.backendUrl||"").replace(/\/$/,"")+"/api/action-plan",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message}),signal:controller.signal});
+  const r=await fetch(String(API_CONFIG.backendUrl||"").replace(/\/$/,"")+"/api/action-plan",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message,taskContext:TASK_CONTEXT?.publicContextFor(message)||null}),signal:controller.signal});
   if(!r.ok)return null;const data=await r.json();
   const plan=validatePlan(data);
   // Semantic plans never receive authority to issue a new device command.
