@@ -125,3 +125,35 @@ body.jarvis-command-center .jarvis-geo-region{
   position:relative;z-index:2;flex-shrink:0
 }
 body.jarvis-command-center .jarvis-geo-detail{flex:0 0 auto;position:relative}
+
+
+/* World weather place search lives INSIDE the existing Neural Ring overlay. */
+body.jarvis-command-center .jarvis-geo-place-bar{
+ display:flex;align-items:stretch;gap:5px;min-width:0;flex-wrap:wrap;
+}
+body.jarvis-command-center .jarvis-geo-place-bar[hidden],
+body.jarvis-command-center .jarvis-geo-place-results[hidden]{display:none!important}
+body.jarvis-command-center .jarvis-geo-place-bar input{
+ min-width:140px;flex:1 1 160px;max-width:100%;min-height:38px;
+ background:#10283d;border:1px solid #537a92;border-radius:7px;color:#e0f6ff;
+ padding:7px;font:12px system-ui,sans-serif;
+}
+body.jarvis-command-center .jarvis-geo-place-bar select{
+ flex:0 0 auto;min-height:38px;background:#10283d;color:#e0f6ff;
+ border:1px solid #537a92;border-radius:7px;font:11px system-ui,sans-serif;
+}
+body.jarvis-command-center .jarvis-geo-place-bar button,
+body.jarvis-command-center .jarvis-geo-place-results button{
+ min-height:38px;max-width:100%;padding:7px 9px;cursor:pointer;
+ color:#e0f6ff;background:#184057;border:1px solid #537a92;
+ border-radius:7px;font:11px system-ui,sans-serif;
+}
+body.jarvis-command-center .jarvis-geo-place-bar button:disabled{opacity:.5;cursor:not-allowed}
+body.jarvis-command-center .jarvis-geo-place-results{
+ display:flex;flex-wrap:wrap;gap:5px;max-height:120px;overflow-y:auto;
+ overscroll-behavior:contain;font:11px/1.4 system-ui,sans-serif;
+}
+@media(max-width:820px){
+ body.jarvis-command-center .jarvis-geo-place-bar input{flex:1 1 100%;min-width:0}
+ body.jarvis-command-center .jarvis-geo-place-bar :is(button,select){min-height:42px}
+}
