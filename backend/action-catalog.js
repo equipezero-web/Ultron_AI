@@ -14,7 +14,16 @@ export const ACTIONS={
  "memory.health":"Consultar saúde da memória",
  "parity.check":"Verificar integração neural",
  "device.command":"Executar comando de dispositivo explicitamente pedido (command string; usa roteador existente)",
- "research":"Responder pergunta/pesquisar assunto (question string; usa core existente)"
+ "research":"Responder pergunta/pesquisar assunto (question string; usa core existente)",
+ "geo.show":"Visualizar o dataset ENSO em 2D/3D (scenario='enso', view='2d' ou '3d')",
+ "geo.view2d":"Mudar visualização geográfica para mapa 2D",
+ "geo.view3d":"Mudar visualização geográfica para globo 3D",
+ "geo.play":"Reproduzir quadros didáticos sem confundir com previsão",
+ "geo.pause":"Pausar animação",
+ "geo.next":"Próximo quadro temporal",
+ "geo.previous":"Quadro temporal anterior",
+ "geo.filter":"Filtrar classe geográfica (kind: all, observed, dry, wet, heat)",
+ "geo.close":"Ocultar a visualização geográfica"
 };
 export function validatePlan(value){
  if(!Array.isArray(value?.steps)||!value.steps.length||value.steps.length>6)return null;
@@ -24,6 +33,14 @@ export function validatePlan(value){
   if(!Object.hasOwn(ACTIONS,action)||typeof a!=="object"||Array.isArray(a))return null;
   let args={};
   if(action==="text.set"){if(typeof a.enabled!=="boolean")return null;args={enabled:a.enabled};}
+  if(action==="geo.show"){
+   if(a.scenario!=="enso"||!["2d","3d"].includes(a.view))return null;
+   args={scenario:a.scenario,view:a.view};
+  }
+  if(action==="geo.filter"){
+   if(!["all","observed","dry","wet","heat"].includes(a.kind))return null;
+   args={kind:a.kind};
+  }
   if(action==="ring.zoom"){if(!["in","out"].includes(a.direction))return null;args={direction:a.direction};}
   if(["earth.locate","device.command","research"].includes(action)){
    const key=action==="earth.locate"?"place":action==="research"?"question":"command";
@@ -40,5 +57,5 @@ export function parsePlanText(text){
 export function isActionRequest(text){
  const q=String(text||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim().replace(/^(?:jarvis|ultron)[, :]+/,"").replace(/^(?:por favor[, ]+|(?:eu )?quero que voce\s+|pode\s+|consegue\s+)+/,"");
  if(/^(?:nao|nunca|se|e se|como|por que|porque|o que|qual|quais|quem|quando)\b/.test(q))return false;
- return /^(?:abra|abrir|feche|fechar|ative|ativar|desative|desativar|ligue|desligue|mostre|mostrar|oculte|esconda|retorne|volte|centralize|resete|aproxime|afaste|atualize|verifique|consulte|liste|localize|encontre|procure|pesquise|execute|reinicie|suspenda|organize|analise|investigue|deixe|ajuste|configure|mude|troque|faca)\b/.test(q);
+ return /^(?:abra|abrir|feche|fechar|ative|ativar|desative|desativar|ligue|desligue|mostre|mostrar|oculte|esconda|retorne|volte|centralize|resete|aproxime|afaste|atualize|verifique|consulte|liste|localize|encontre|procure|pesquise|execute|reinicie|suspenda|organize|analise|investigue|deixe|ajuste|configure|mude|troque|faca|crie|gere|simule|visualize|destaque|marque|pinte|pause|reproduza|retome|avance)\b/.test(q);
 }
