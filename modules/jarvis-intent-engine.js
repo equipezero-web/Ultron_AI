@@ -7,7 +7,7 @@ export function normalizeIntent(value) {
     .replace(/^(?:por favor[,;\s]+|eu quero que voce\s+|quero que voce\s+)+/, "")
     .trim();
 }
-const EXPLICIT_SEQUENCE = /\s*,?\s+(?:e depois|depois|em seguida|e entao|na sequencia)\s+|\s*;\s*/i;
+const EXPLICIT_SEQUENCE = /\s*,?\s+(?:e depois|depois|e em seguida|em seguida|e entao|e na sequencia|na sequencia)\s+|\s*;\s*/i;
 const ACTION_START = /^(?:(?:pode|consegue)\s+)?(?:abra|abrir|ative|ativar|desative|desativar|mostre|mostrar|feche|fechar|oculte|esconda|centralize|centralizar|resete|aproxime|afaste|aumente|diminua|atualize|verifique|consulte|liste|localize|encontre|ache|procure|pesquise|explore|analise|investigue|compare|foque|focar|foca|ajuste|configure|mude|execute|reinicie|suspenda|ligue|desligue|crie|gere|construa|simule|desenhe|retorne|volte)\b/;
 const QUESTION_START = /^(?:o que|quem|quando|onde|qual|quais|quanto|quantos|quantas|por que|porque|como|o que significa|o que aconteceu|tem alguma|ha alguma|existe|sera que)\b/;
 const DENIAL_START = /^(?:nao|nunca|jamais|se |e se |caso |imagine |suponha |hipoteticamente |por que |porque )/;
