@@ -1,6 +1,7 @@
 import {TASK_CONTEXT} from "./jarvis-task-context.js?v=4.69.0";
 import {WEATHER_CITIES,weatherCity,weatherGeoScenario,weatherSummary} from "./jarvis-weather-model.js?v=4.72.0";
 import {globalWeatherScenario,globalWeatherSummary} from "./jarvis-global-weather.js?v=4.73.0";
+import {loadGlobalWeather} from "../backend/weather-global.js?v=4.74.0";
 import {classifyOperatorTurn} from "./jarvis-intent-engine.js?v=4.69.0";
 import API_CONFIG from "../config.js";
 import {validatePlan,isActionRequest} from "../backend/action-catalog.js?v=4.73.0";
@@ -93,19 +94,26 @@ async function executeStep(step,original){
  case "weather.global":{
    const endpoint=String(API_CONFIG.backendUrl||"").replace(/\/$/,"")+
      "/api/geo/global?city="+encodeURIComponent(a.city)+"&days="+encodeURIComponent(a.days);
-   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),12000);
-   let report;
+   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),10000);
+   let report=null,proxyError=null;
    try{
      const response=await fetch(endpoint,{headers:{Accept:"application/json"},signal:controller.signal,cache:"no-store"});
-     report=await response.json();
-     if(!response.ok||!report?.ok)throw Error(report?.error||"Previsão mundial indisponível");
-   }finally{clearTimeout(timer);}
+     const body=await response.json();
+     if(!response.ok||!body?.ok)throw Error(body?.error||"Backend meteorológico indisponível");
+     report=body;
+   }catch(error){proxyError=error;}
+   finally{clearTimeout(timer);}
+   // Safe no-key browser fallback: same fixed Open-Meteo hosts, never user-supplied coordinates.
+   if(!report?.ok){
+     report=await loadGlobalWeather({query:a.city,days:a.days});
+     if(!report?.ok)throw Error(report?.error||proxyError?.message||"Previsão mundial indisponível");
+   }
    if(report.kind!=="global-short-term-forecast"||report.days?.length!==a.days||
       !report.location?.key?.startsWith("global-")||!report.source?.url?.includes("open-meteo.com"))
       throw Error("A previsão mundial retornada não foi validada");
    const data=globalWeatherScenario(report),summary=globalWeatherSummary(report);
    if(!data||!summary)throw Error("Não foi possível construir a visualização mundial");
-   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.73.0");
+   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.74.0");
    const geo=requireApi(w.ULTRON_GEO_VISUAL,"open");
    const result=await geo.open({data,view:a.view});
    if(!result?.ok||!geo.state.visible||geo.state.scenario!==data.id||geo.state.mode!==a.view)
