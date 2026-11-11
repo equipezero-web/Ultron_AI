@@ -420,7 +420,8 @@ if(stage){
    // The Brazil outline clips cells to the national boundary; if IBGE is
    // offline the country is NOT colored outside an authoritative outline.
    const samples=intensityReport?.ok&&intensityReport.region===projection?intensityReport.cells:[];
-   const hasBrazilClip=projection==="brazil"&&Array.isArray(outline)&&outline.length>0;
+   const oceanOverlay=intensityReport?.layer==="marine";
+   const hasBrazilClip=projection==="brazil"&&!oceanOverlay&&Array.isArray(outline)&&outline.length>0;
    if(hasBrazilClip){
      const defs=e("defs"),clip=e("clipPath",{id:"jarvis-geo-brazil-mask"});
      for(const d of outline)clip.append(e("path",{d}));
@@ -432,7 +433,8 @@ if(stage){
      if(!Array.isArray(cell.bounds)&&!["river"].includes(intensityReport.layer))continue;
      let shape;
      if(cell.bounds){
-       if(projection==="brazil"&&!hasBrazilClip)continue;
+       // Ocean wave samples are offshore. Land-only IBGE clip would hide them.
+       if(projection==="brazil"&&!hasBrazilClip&&!oceanOverlay)continue;
        const [w,s,east,n]=cell.bounds,top=projection==="world"?worldXY(w,n):brazilXY(w,n),
         bottom=projection==="world"?worldXY(east,s):brazilXY(east,s);
        if(![top.x,top.y,bottom.x,bottom.y].every(Number.isFinite))continue;
