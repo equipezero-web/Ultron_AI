@@ -218,7 +218,7 @@ body.jarvis-command-center .jarvis-cc-center>.jarvis-geo-visual[data-mode="2d"]{
   border-radius:0!important;
   background:#071725!important;
   box-shadow:none!important;
-  display:flex;flex-direction:column;
+  flex-direction:column;
   gap:clamp(5px,.55vw,9px);
   overflow-x:hidden!important;overflow-y:auto!important;
   overscroll-behavior:contain;
@@ -273,3 +273,7 @@ body.jarvis-command-center .jarvis-geo-visual[data-mode="2d"] .jarvis-geo-detail
     min-height:165px;
   }
 }
+
+/* Attribute-driven visibility always wins over 2D layout rules. */
+body.jarvis-command-center .jarvis-cc-center>.jarvis-geo-visual[data-mode="2d"][hidden],
+body.jarvis-command-center .jarvis-cc-center>.jarvis-geo-visual[data-mode="2d"] .jarvis-geo-2d[hidden]{display:none!important}
