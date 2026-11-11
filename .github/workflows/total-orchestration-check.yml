@@ -22,6 +22,8 @@ on:
       - 'tests/jarvis-phase3-geospatial.mjs'
       - 'tests/jarvis-phase4.mjs'
       - 'tests/jarvis-global-weather.mjs'
+      - 'modules/jarvis-spatial-intensity.js'
+      - 'tests/jarvis-spatial-intensity.mjs'
       - 'tests/jarvis-weather-intelligence.mjs'
       - 'tests/jarvis-weather-monitor.mjs'
       - 'backend/weather-intelligence.js'
@@ -68,6 +70,8 @@ on:
       - 'tests/jarvis-phase3-geospatial.mjs'
       - 'tests/jarvis-phase4.mjs'
       - 'tests/jarvis-global-weather.mjs'
+      - 'modules/jarvis-spatial-intensity.js'
+      - 'tests/jarvis-spatial-intensity.mjs'
       - 'tests/jarvis-weather-intelligence.mjs'
       - 'tests/jarvis-weather-monitor.mjs'
       - 'backend/weather-intelligence.js'
@@ -134,6 +138,8 @@ jobs:
           node --check modules/jarvis-global-weather.js
           node --check backend/weather-global.js
           node tests/jarvis-global-weather.mjs
+          node --check modules/jarvis-spatial-intensity.js
+          node tests/jarvis-spatial-intensity.mjs
           node --check backend/weather-watchlist.js
           node tests/jarvis-weather-watchlist.mjs
           node --check backend/weather-intelligence.js
