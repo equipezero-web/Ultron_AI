@@ -4,10 +4,106 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-10T21:26:02.557Z",
-  "oldestEventAt": "2026-11-09T22:38:00.000Z",
-  "windowStartAt": "2026-11-09T21:26:02.557Z",
+  "updatedAt": "2026-11-11T01:22:20.785Z",
+  "oldestEventAt": "2026-11-10T03:01:00.000Z",
+  "windowStartAt": "2026-11-10T01:22:20.785Z",
   "events": [
+    {
+      "id": "event-627ec65d",
+      "category": "santa-catarina",
+      "title": "SC terá calor de até 30°C e risco de temporais nesta quarta",
+      "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxPY0xmSkZFMFQ4VTFzbTZKc0J3T1E0ckljOElacGZtUG80U3NvejdvRmY4Skp0MlJlZlpBWnktYzd4X2xHRmpUSnlrY0UtQUFURUFuTE04MHdrLTJQdGtpTjhLSlNwN3Itb2xDekU5MjJyT0ZFVm5ORG01bzJHR3BJLW9TeXgxOURuMGlVT2s4ZElGUQ",
+      "description": "SC terá calor de até 30°C e risco de temporais nesta quarta &nbsp;&nbsp; Visor Notícias",
+      "imageUrl": null,
+      "source": "Visor Notícias",
+      "publishedAt": "2026-11-11T00:53:33.000Z",
+      "firstSeenAt": "2026-11-11T01:22:20.785Z",
+      "lastSeenAt": "2026-11-11T01:22:20.785Z"
+    },
+    {
+      "id": "event-1b1f6535",
+      "category": "mundo",
+      "title": "Pânico mundial? Especialistas analisam até que ponto estamos em perigo",
+      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPdnM4dTFiR1U0OERQZ1ExR0ZPY2p4eEVYZUZTUDg1ZXpEUm85bHZlalplS3d1c2pvVURtZjAyUjFaX2kwQmJpMXpTanRjc3U2ZnRwdTFqeUZiSFJVekgyS0tGMUprVTNfd0xMSjVtQkdLV0hPTDJTUWxSRGk0em1ORGxycW9mVkxhaVZSRWVuNGNTdElqdW5STllSUmZDNklYOHlqOVJWcDlnX0FUQWc",
+      "description": "Pânico mundial? Especialistas analisam até que ponto estamos em perigo &nbsp;&nbsp; Paranaíba Mais",
+      "imageUrl": null,
+      "source": "Paranaíba Mais",
+      "publishedAt": "2026-11-10T23:49:01.000Z",
+      "firstSeenAt": "2026-11-11T01:22:20.785Z",
+      "lastSeenAt": "2026-11-11T01:22:20.785Z"
+    },
+    {
+      "id": "event-6779c18",
+      "category": "brasil",
+      "title": "Relator defende redução da maioridade penal com prisões separadas",
+      "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2026-11/relator-defende-reducao-da-maioridade-penal-com-prisoes-separadas",
+      "description": "O deputado federal Mendonça Filho (PL-PE), relator da Proposta de Emenda Constitucional (PEC) sobre a redução da maioridade penal, afirmou nesta terça-feira (10) que defende a punição criminal a partir dos 16 anos, mas que os adolescentes deverão cumprir pena em instituições separadas dos adultos. \"Nós não vamos fazer constar o cumprimento de pena, se porventura for reduzida a maioridade penal para 16 anos, ou qualquer que seja a idade fixada, algo que faça com que jovens cumpram pena no mesmo estabelecimento penal de maiores de 18 anos. Isso é uma coisa pacífica\", assegurou o parlamentar durante audiência pública da comissão especial que debate a PEC na Câmara dos Deputados. Notícias relacionadas: Número de jovens privados de liberdade caiu pela metade em dez anos. Unicef: nenhum país do G20 tem maioridade penal abaixo dos 18 anos. Ele também anunciou que apresentará relatório favorável à redução da maioridade. \"O que existe, na prática, é que a sociedade está cansada desse discurso de vitimismo, quando jovens de 17 e de 16 anos cometem estupros, assassinatos e ficam literalmente im",
+      "imageUrl": "https://imagens.ebc.com.br/MmQv9XZre1Fw4NlMtuDRCumCYvw=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/10/sem_titulo-6.jpg?itok=tSmmkWld",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-10T23:46:00.000Z",
+      "firstSeenAt": "2026-11-11T01:22:20.785Z",
+      "lastSeenAt": "2026-11-11T01:22:20.785Z"
+    },
+    {
+      "id": "event-92a4ae33",
+      "category": "mundo",
+      "title": "Principais notícias do mundo na noite de hoje (10)",
+      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxNelFNOVVjaFpGUTVnZzVod2phTWFsWW1faERuZ1JGTkdiMDFCeEIxdmJDbWl2YkdEazU2RzFjeWQwazRLRHFOa2lvemRzNDJZM0lwWmppbl9XdVEtNXVMMkhDTWZoRzl2akZkNDBORFRkLVpIc0k3UXVGWEFGQndCa0lKV2k3UnJ5YXdTc0J1N2xIZk40TXAyclpyaUFnQ2s5ZVFXSlZuUE9TaTdf",
+      "description": "Principais notícias do mundo na noite de hoje (10) &nbsp;&nbsp; Tribuna do Sertão",
+      "imageUrl": null,
+      "source": "Tribuna do Sertão",
+      "publishedAt": "2026-11-10T23:33:25.000Z",
+      "firstSeenAt": "2026-11-11T01:22:20.785Z",
+      "lastSeenAt": "2026-11-11T01:22:20.785Z"
+    },
+    {
+      "id": "event-d06e0467",
+      "category": "brasil",
+      "title": "Dólar sobe 1,46% e fecha no maior valor em 15 meses",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/dolar-sobe-146-e-fecha-no-maior-valor-em-15-meses",
+      "description": "O dólar disparou nesta terça-feira (10), avançou para perto de R$ 5,60 e fechou no maior valor em mais de 15 meses. A moeda estadunidense subiu 1,46%, pressionada pela inflação acima do esperado nos Estados Unidos, que reforçou a perspectiva de juros mais altos na maior economia do planeta. No mercado acionário, o Ibovespa caiu 0,52%, acompanhando o movimento negativo das bolsas internacionais . O petróleo recuou mais de 1%, ainda refletindo uma possível moderação dos Estados Unidos em relação ao Irã. Notícias relacionadas: Nova plataforma do MDIC identificará oportunidades de comércio com UE. Deputados admitem rever isenções se IVA superar 26,5%. Trabalhador poderá autorizar bancos a consultar extrato do FGTS. Números do dia Dólar comercial: R$ 5,586 (+1,46%) Ibovespa: 171.336,99 pontos (-0,52%) Volume financeiro na B3: R$ 30,16 bilhões S&amp;P 500 (índice das 500 maiores empresas estadunidenses): queda de 0,38% Petróleo tipo Brent para janeiro: US$ 91,49 (-1,17%) Petróleo WTI para dezembro: US$ 86,04 (-0,93%). Câmbio O dólar comercial encerrou o pregão cotado a R$ 5,5860, maior val",
+      "imageUrl": "https://imagens.ebc.com.br/qgr1uCa7n_TP2WKn5oQPmLd6V2M=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/07/23/2026-07-23t123806z_1_lynxmpem6m19r_rtroptp_4_usa-trump-tariffs-indonesia.jpg?itok=6u1xpzSK",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-10T23:25:00.000Z",
+      "firstSeenAt": "2026-11-11T01:22:20.785Z",
+      "lastSeenAt": "2026-11-11T01:22:20.785Z"
+    },
+    {
+      "id": "event-726bcabe",
+      "category": "brasil",
+      "title": "Lula e presidente da Turquia se reúnem e falam de comércio bilateral",
+      "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2026-11/lula-e-presidente-da-turquia-se-reunem-e-falam-de-comercio-bilateral",
+      "description": "Em visita à Turquia para participar da 31ª Conferência sobre Mudança do Clima (COP31) a partir de amanhã (11), o presidente Luiz Inácio Lula da Silva, se encontrou com o presidente Recep Tayyip Erdogan. Na reunião, os dois líderes demonstraram interesse em fortalecer as relações e o comércio entre Brasil e Turquia. Notícias relacionadas: Lula está na Turquia e se prepara para discurso na COP31. COP31: Brasil transmite presidência da COP à Turquia. “Conversamos sobre o avanço do nosso comércio bilateral, que já chegou a 5,9 bilhões de dólares, e observamos que é possível ampliar esse valor rapidamente. Destaquei o interesse de estabelecer parceria mais robusta na área de defesa com a Turquia”, disse Lula em postagem na rede social X. Lula também relatou os cumprimentos dados por Erdogan pela vitória nas eleições presidenciais de outubro . Segundo o presidente brasileiro, seu homólogo destacou “a expressiva mobilização que tomou conta das ruas no Brasil” por conta da disputa eleitoral. COP 31 Lula e Erdogan também conversaram sobre o evento global de mudanças climáticas. O presidente b",
+      "imageUrl": "https://imagens.ebc.com.br/StPyfDFXYfe7pg7sFadSg47xZGw=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/10/55645049863_51e977c6a5_o.jpg?itok=NqS0NFwk",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-10T23:24:00.000Z",
+      "firstSeenAt": "2026-11-11T01:22:20.785Z",
+      "lastSeenAt": "2026-11-11T01:22:20.785Z"
+    },
+    {
+      "id": "event-633f7ab2",
+      "category": "brasil",
+      "title": "O primeiro Papa Leão da história da Igreja Católica defendeu a pena de morte para heréticos e salvou Roma sem armas",
+      "url": "https://news.google.com/rss/articles/CBMi7wFBVV95cUxPRmdUVFMxT25HNTVGbUVYNThzVVU1SUtHYUJFWnYyTG4xaktFZm1pM3hyX3ZzUzF1YTd4VnhfYVNaY2FaZ3JkZUdBWEM1NHlrU3NmVS1GdjFPM0QxNzloY0N6SmJNekZabW96VmNmSW9HdFJIM1JwT3JxSy1ZVkxKZEhwbzNwM3VKMGhRNjIxVFMyZUU4eTg5c0xIdGVibWVHMHFuWVBocy1BVHlUWTdEcHJYeUEyU3daa0pocWVNUV9FWUN5UGdpVGszaDhZRnBZdUdVSVJYVkViU2paSzZuNjF0TmJZUkpiVE9aSFVLSQ",
+      "description": "O primeiro Papa Leão da história da Igreja Católica defendeu a pena de morte para heréticos e salvou Roma sem armas &nbsp;&nbsp; CNN Brasil",
+      "imageUrl": null,
+      "source": "CNN Brasil",
+      "publishedAt": "2026-11-10T23:08:08.000Z",
+      "firstSeenAt": "2026-11-11T01:22:20.785Z",
+      "lastSeenAt": "2026-11-11T01:22:20.785Z"
+    },
+    {
+      "id": "event-7d6b0bec",
+      "category": "mundo",
+      "title": "⚠️ É falso: postagens dizem que o mundo terá apagão na próxima semana | #CidadeAL",
+      "url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxNakRlZWRtQzJNaEExX2MtXzNzU2lrZXBjZTdxSU5haVIta3hUQWQ1RlNEaHl4MTRWN0NZU2Nwa1d5WXN6ZEJiNjc1QVd1R0p2QThjZUhmUHhRcjhZNVB0VTU2LXRzU18xb2l5NEluNWt2YV9TN1FfS2FaN0ZEWXU2UEhRaWk1Y0JXOTRvN29IaHIxams0MUtZSjd0U2lfQzkzSXl2d0g2U1JZQWpibXN1SmhoUEdGQXUtdzk0QXNaNlhDa0ZGUVctbGY1cmFBaEF2Y0o0cA",
+      "description": "⚠️ É falso: postagens dizem que o mundo terá apagão na próxima semana | #CidadeAL &nbsp;&nbsp; TNH1",
+      "imageUrl": null,
+      "source": "TNH1",
+      "publishedAt": "2026-11-10T22:45:36.000Z",
+      "firstSeenAt": "2026-11-11T01:22:20.785Z",
+      "lastSeenAt": "2026-11-11T01:22:20.785Z"
+    },
     {
       "id": "event-e8db2bc1",
       "category": "brasil",
@@ -78,7 +174,7 @@
       "source": "Jornal do Comércio",
       "publishedAt": "2026-11-10T19:36:58.000Z",
       "firstSeenAt": "2026-11-10T19:45:44.554Z",
-      "lastSeenAt": "2026-11-10T21:26:02.557Z"
+      "lastSeenAt": "2026-11-11T01:22:20.785Z"
     },
     {
       "id": "event-b8968048",
@@ -186,7 +282,19 @@
       "source": "Blog do Jaime",
       "publishedAt": "2026-11-10T18:00:00.000Z",
       "firstSeenAt": "2026-11-10T19:33:57.494Z",
-      "lastSeenAt": "2026-11-10T21:26:02.557Z"
+      "lastSeenAt": "2026-11-11T01:22:20.785Z"
+    },
+    {
+      "id": "event-7603c438",
+      "category": "clima",
+      "title": "El Niño eleva riscos na comercialização da soja 2026/27",
+      "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxOWFVRNVlja29KQ1NNZ0FVc0xGRWpzZ0V4YzR2cHo3X3YteW41aGxrb2J3b2NlQ29FNmROUWVDRWtUUEV3bjh2V0NXNnJkc2FkTGFzV0VxaTB5dENRMlFwTF9HLW8tamE2WnlWWVhReTd6M1dsTjROcXJRZWRQMkdqUGcxLUdfSGE0bFpLU3ZHazNYSDgtV1puS0QwVQ",
+      "description": "El Niño eleva riscos na comercialização da soja 2026/27 &nbsp;&nbsp; Revista Cultivar",
+      "imageUrl": null,
+      "source": "Revista Cultivar",
+      "publishedAt": "2026-11-10T17:40:09.000Z",
+      "firstSeenAt": "2026-11-11T01:22:20.785Z",
+      "lastSeenAt": "2026-11-11T01:22:20.785Z"
     },
     {
       "id": "event-acbc2221",
@@ -210,7 +318,7 @@
       "source": "URB News",
       "publishedAt": "2026-11-10T16:07:00.000Z",
       "firstSeenAt": "2026-11-10T21:26:02.557Z",
-      "lastSeenAt": "2026-11-10T21:26:02.557Z"
+      "lastSeenAt": "2026-11-11T01:22:20.785Z"
     },
     {
       "id": "event-9dee8df7",
@@ -294,7 +402,7 @@
       "source": "Folha Vitória",
       "publishedAt": "2026-11-10T14:15:27.000Z",
       "firstSeenAt": "2026-11-10T19:33:57.494Z",
-      "lastSeenAt": "2026-11-10T21:26:02.557Z"
+      "lastSeenAt": "2026-11-11T01:22:20.785Z"
     },
     {
       "id": "event-c22589e1",
@@ -318,7 +426,7 @@
       "source": "band.com.br",
       "publishedAt": "2026-11-10T11:13:13.000Z",
       "firstSeenAt": "2026-11-10T19:33:57.494Z",
-      "lastSeenAt": "2026-11-10T21:26:02.557Z"
+      "lastSeenAt": "2026-11-11T01:22:20.785Z"
     },
     {
       "id": "event-6913a802",
@@ -367,84 +475,9 @@
       "publishedAt": "2026-11-10T03:01:00.000Z",
       "firstSeenAt": "2026-11-10T07:24:49.276Z",
       "lastSeenAt": "2026-11-10T07:24:49.276Z"
-    },
-    {
-      "id": "event-1e191bb9",
-      "category": "brasil",
-      "title": "Judiciário e MPU querem R$ 533 milhões para pagar penduricalhos",
-      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/judiciario-e-mpu-querem-r-533-milhoes-para-pagar-penduricalhos",
-      "description": "",
-      "imageUrl": "https://imagens.ebc.com.br/PlhDsW3Fve_Nm185HxHeg0HB0Mg=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/atoms/image/1103272-1084696-jfcrz_abr_25.07.2017_a81t5606271217.jpg?itok=g5oKiOBv",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-10T00:58:00.000Z",
-      "firstSeenAt": "2026-11-10T07:24:49.276Z",
-      "lastSeenAt": "2026-11-10T07:24:49.276Z"
-    },
-    {
-      "id": "event-ed68aa8e",
-      "category": "brasil",
-      "title": "Chuvas deixam feridos, desabrigados e casas destelhadas no Sul",
-      "url": "https://agenciabrasil.ebc.com.br/geral/noticia/2026-11/chuvas-deixam-feridos-desabrigados-e-casas-destelhadas-no-sul",
-      "description": "",
-      "imageUrl": "https://imagens.ebc.com.br/ihLq4RJykjrx8JLGN7xBdhcUUe4=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/09/22/whatsappimage20260921at11.01.061789999470782_foto.jpeg?itok=BTNOPkQZ",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-09T23:31:00.000Z",
-      "firstSeenAt": "2026-11-10T00:14:38.811Z",
-      "lastSeenAt": "2026-11-10T07:24:49.276Z"
-    },
-    {
-      "id": "event-c71a24cc",
-      "category": "brasil",
-      "title": "STF: ministro Fachin arquiva inquérito das Fake News",
-      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/stf-ministro-fachin-arquiva-inquerito-das-fake-news",
-      "description": "",
-      "imageUrl": "https://imagens.ebc.com.br/PjUXz7gMw8YGfU9keC_PdPCzPNc=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/09/04/55506386528_e6d3068cf0_6k.jpg?itok=1qlIWikQ",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-09T23:21:00.000Z",
-      "firstSeenAt": "2026-11-10T00:14:38.811Z",
-      "lastSeenAt": "2026-11-10T00:14:38.811Z"
-    },
-    {
-      "id": "event-4901c259",
-      "category": "brasil",
-      "title": "COP31 pode consolidar legado brasileiro na agenda climática",
-      "url": "https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-11/cop31-pode-consolidar-legado-brasileiro-na-agenda-climatica",
-      "description": "",
-      "imageUrl": "https://imagens.ebc.com.br/2738Zk8yXHKFKmVMRWyzzLSTxrA=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/09/2026-11-09t094927z_625906162_rc29koayvc0y_rtrmadp_3_climate-cop31.jpg?itok=50OUZuf6",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-09T23:12:00.000Z",
-      "firstSeenAt": "2026-11-10T00:14:38.811Z",
-      "lastSeenAt": "2026-11-10T00:14:38.811Z"
-    },
-    {
-      "id": "event-ed7e938d",
-      "category": "brasil",
-      "title": "Bolsa sobe 2,22% e registra maior alta diária desde outubro",
-      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/bolsa-sobe-222-e-registra-maior-alta-diaria-desde-outubro",
-      "description": "",
-      "imageUrl": "https://imagens.ebc.com.br/CPqVdUOF8Wz-jaPeZy56pDv-AGQ=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2021-10-19t201919z_1667412587_rc26dq9d28av_rtrmadp_3_brazil-economy.jpg?itok=PTcVbDwQ",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-09T22:38:00.000Z",
-      "firstSeenAt": "2026-11-10T00:14:38.811Z",
-      "lastSeenAt": "2026-11-10T00:14:38.811Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-10T00:14:38.811Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 7,
-      "newArticles": 5,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "mundo",
-        "europa"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-10T07:24:49.276Z",
       "ok": true,
@@ -521,28 +554,31 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-11T01:22:20.785Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 14,
+      "newArticles": 9,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "asia"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 6,
-  "lastSuccessfulAt": "2026-11-10T21:26:02.557Z",
+  "lastSuccessfulAt": "2026-11-11T01:22:20.785Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-10T21:26:02.557Z",
+      "checkedAt": "2026-11-11T01:22:20.785Z",
       "warnings": [
-        {
-          "id": "56369",
-          "title": "Tempestade",
-          "severity": "Perigo",
-          "phase": "previsto",
-          "regions": [
-            "DO"
-          ],
-          "startsAt": "2026-11-11T00:00:00.000Z",
-          "endsAt": "2026-11-11T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
-        },
         {
           "id": "56356",
           "title": "Acumulado de Chuva",
@@ -551,19 +587,6 @@
           "regions": [],
           "startsAt": "2026-11-10T00:00:00.000Z",
           "endsAt": "2026-11-13T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
-        },
-        {
-          "id": "56365",
-          "title": "Ventos Costeiros",
-          "severity": "Perigo Potencial",
-          "phase": "vigente",
-          "regions": [
-            "DO"
-          ],
-          "startsAt": "2026-11-10T00:00:00.000Z",
-          "endsAt": "2026-11-11T00:00:00.000Z",
           "source": "INMET",
           "url": "https://avisos.inmet.gov.br/"
         },
@@ -581,38 +604,12 @@
           "endsAt": "2026-11-12T00:00:00.000Z",
           "source": "INMET",
           "url": "https://avisos.inmet.gov.br/"
-        },
-        {
-          "id": "56366",
-          "title": "Tempestade",
-          "severity": "Perigo Potencial",
-          "phase": "previsto",
-          "regions": [
-            "DO"
-          ],
-          "startsAt": "2026-11-11T00:00:00.000Z",
-          "endsAt": "2026-11-11T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
-        },
-        {
-          "id": "56367",
-          "title": "Tempestade",
-          "severity": "Perigo Potencial",
-          "phase": "previsto",
-          "regions": [
-            "DO"
-          ],
-          "startsAt": "2026-11-11T00:00:00.000Z",
-          "endsAt": "2026-11-11T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
         }
       ]
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-10T21:26:02.557Z",
+      "checkedAt": "2026-11-11T01:22:20.785Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "8 October 2026",
