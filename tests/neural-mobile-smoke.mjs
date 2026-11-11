@@ -226,6 +226,16 @@ try {
   assert.ok(landscape.globe>=300,'Landscape globe must remain usable');
   assert.ok(landscape.mapControls>=40,'Landscape zoom controls must stay visible');
   await page.setViewport({width:390,height:844,isMobile:true,hasTouch:true,deviceScaleFactor:2});
+  // The entire weather map occupies the Neural Ring; a vertical swipe on
+  // the SVG must still allow the operator to reach the command console.
+  await page.setViewport({width:390,height:844,isMobile:true,hasTouch:true,deviceScaleFactor:1});
+  await page.evaluate(()=>window.scrollTo(0,0));
+  const openedMap=await page.evaluate(()=>window.ULTRON_GEO_VISUAL.open({scenario:'enso',view:'2d'}));
+  assert.equal(openedMap.ok,true,JSON.stringify(openedMap));
+  const geoScroll=await scrollTouch('.jarvis-geo-2d svg',ringClient,73);
+  assert.ok(geoScroll>30,'Single-finger vertical gesture over the weather map must scroll page: '+geoScroll);
+  await page.evaluate(()=>{window.ULTRON_GEO_VISUAL.close();window.scrollTo(0,0);});
+
   await page.evaluate(()=>window.ULTRON_EARTH.close());
   await page.waitForFunction(()=>window.ULTRON_NEURAL_RING_3D?.active===true,{timeout:4000});
   const gpu=await page.evaluate(()=>{
