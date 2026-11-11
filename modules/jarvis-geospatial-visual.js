@@ -1,6 +1,6 @@
 import API_CONFIG from "../config.js";
 import {globalWeatherScenario} from "./jarvis-global-weather.js?v=4.73.0";
-import {GEO_SCENARIOS,GEO_PALETTE,geoFrame,validateGeoScenario,BRAZIL_OUTLINE_URL,WORLD_OUTLINE_URL,brazilXY,worldXY,geoJSONPaths} from "./jarvis-geospatial-model.js?v=4.71.0";
+import {GEO_SCENARIOS,GEO_PALETTE,geoFrame,validateGeoScenario,BRAZIL_OUTLINE_URL,WORLD_OUTLINE_URL,brazilXY,worldXY,geoJSONPaths} from "./jarvis-geospatial-model.js?v=4.73.0";
 
 // The visualization remains INSIDE the Neural Ring stage, no new page or pop-up.
 const stage=document.querySelector(".jarvis-cc-center");
