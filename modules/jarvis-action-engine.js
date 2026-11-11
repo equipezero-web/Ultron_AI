@@ -3,7 +3,7 @@ import {WEATHER_CITIES,weatherCity,weatherGeoScenario,weatherSummary} from "./ja
 import {globalWeatherScenario,globalWeatherSummary} from "./jarvis-global-weather.js?v=4.73.0";
 import {classifyOperatorTurn} from "./jarvis-intent-engine.js?v=4.69.0";
 import API_CONFIG from "../config.js";
-import {validatePlan,isActionRequest} from "../backend/action-catalog.js?v=4.68.0";
+import {validatePlan,isActionRequest} from "../backend/action-catalog.js?v=4.73.0";
 import {normalizeCommand} from "./jarvis-local-commands.js?v=4.67.0";
 const W=()=>window;
 const action=(action,args={})=>({action,args});
@@ -126,7 +126,7 @@ async function executeStep(step,original){
    if(payload.city?.key!==a.city||!Array.isArray(payload.days)||payload.days.length<1)throw Error("Dados meteorológicos inconsistentes");
    const dataset=weatherGeoScenario(payload),summary=weatherSummary(payload);
    if(!dataset||!summary)throw Error("Previsão inválida; nenhuma simulação será apresentada");
-   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.71.0");
+   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.73.0");
    const geo=requireApi(w.ULTRON_GEO_VISUAL,"open");
    const result=await geo.open({data:dataset,view:a.view});
    if(!result?.ok||!geo.state.visible||geo.state.scenario!==dataset.id||geo.state.mode!==a.view)
@@ -134,7 +134,7 @@ async function executeStep(step,original){
    return {text:summary,verified:true};
  }
  case "geo.show":case "geo.view2d":case "geo.view3d":case "geo.play":case "geo.pause":case "geo.next":case "geo.previous":case "geo.filter":case "geo.close":{
-   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.71.0");
+   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.73.0");
    const geo=w.ULTRON_GEO_VISUAL;
    if(!geo)throw Error("Motor de visualização geográfica indisponível");
    let result;
