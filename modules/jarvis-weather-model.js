@@ -18,7 +18,7 @@ const norm=value=>String(value||"").normalize("NFD").replace(/[\u0300-\u036f]/g,
 const byName=Object.values(WEATHER_CITIES);
 export const weatherCity=value=>byName.find(city=>norm(city.key)===norm(value)||norm(city.name)===norm(value))||null;
 export const WEATHER_SOURCE=Object.freeze({
- name:"Open-Meteo — modelos meteorológicos",
+ name:"Dados meteorológicos por Open-Meteo.com — CC BY 4.0",
  url:"https://open-meteo.com/en/docs",
  disclaimer:"Estimativas numéricas atuais e previsão de até 3 dias, não observação de estação, alerta INMET, simulação física do El Niño ou previsão de impacto local. Verifique avisos oficiais em avisos.inmet.gov.br."
 });
