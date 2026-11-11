@@ -20,6 +20,9 @@ on:
       - 'tests/jarvis-phase1.mjs'
       - 'tests/jarvis-phase3.mjs'
       - 'tests/jarvis-phase3-geospatial.mjs'
+      - 'tests/jarvis-phase4.mjs'
+      - 'modules/jarvis-weather-model.js'
+      - 'backend/weather-live.js'
       - 'modules/jarvis-geospatial-model.js'
       - 'modules/jarvis-geospatial-visual.js'
       - 'modules/jarvis-geospatial-visual.css'
@@ -53,6 +56,9 @@ on:
       - 'tests/jarvis-phase1.mjs'
       - 'tests/jarvis-phase3.mjs'
       - 'tests/jarvis-phase3-geospatial.mjs'
+      - 'tests/jarvis-phase4.mjs'
+      - 'modules/jarvis-weather-model.js'
+      - 'backend/weather-live.js'
       - 'modules/jarvis-geospatial-model.js'
       - 'modules/jarvis-geospatial-visual.js'
       - 'modules/jarvis-geospatial-visual.css'
@@ -102,6 +108,9 @@ jobs:
           node --check modules/jarvis-earth.js
           node tests/jarvis-phase3.mjs
           node tests/jarvis-phase3-geospatial.mjs
+          node --check modules/jarvis-weather-model.js
+          node --check backend/weather-live.js
+          node tests/jarvis-phase4.mjs
           node --check modules/jarvis-media-model.js
           node --check modules/ultron-neural-answer.js
           node tests/jarvis-phase2-media.mjs
