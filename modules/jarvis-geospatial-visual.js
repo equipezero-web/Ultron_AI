@@ -320,6 +320,7 @@ if(stage){
    evidence.textContent=frame.description;
    for(const [key,b] of Object.entries(modeButtons))b.setAttribute("aria-pressed",String(key===mode));
    panel.dataset.mode=mode;
+   workspace.hidden=mode!=="2d";
    canvas.hidden=mode!=="2d";
    list.replaceChildren();
    for(const p of frame.points){
@@ -332,7 +333,7 @@ if(stage){
    const selectedPoint=frame.points.find(p=>p.id===selected);
    if(selectedPoint){detail.textContent="";selectRegion(selectedPoint);}
    else{selected=null;detail.textContent=frame.points.length?"Selecione uma região para ver o que os dados indicam.":"Nenhuma região nessa categoria para o quadro selecionado.";}
-   if(mode==="2d")renderMap(frame);
+   if(mode==="2d"){renderMap(frame);drawMapViewport();renderMetrics(frame);}
    const earth=window.ULTRON_EARTH;
    if(earth?.state?.visible&&typeof earth.setThematicLayer==="function"){
      const points=frame.points.map(p=>({...p,color:GEO_PALETTE[p.kind]?.color||"#91d7f0"}));
@@ -356,6 +357,8 @@ if(stage){
    if(!validated)return {ok:false,error:"Cenário sem dados geográficos e fonte verificável"};
    window.ULTRON_NEURAL_ANSWER?.clear?.(); // Geo visualization gets the ring's attention, no overlapping previous answer.
    stop();dataset=validated;filterKind="all";filter.value="all";selected=null;
+   mapZoom=1;mapCenter=null;pointerPositions.clear();
+   mapReset.textContent=dataset.projection==="world"?"Mundo":"Brasil";
    frameIndex=Math.min(1,dataset.frames.length-1);range.max=String(dataset.frames.length-1);
    heading.textContent=dataset.title.toUpperCase();
    source.href=dataset.source.url;source.textContent=dataset.source.name;
