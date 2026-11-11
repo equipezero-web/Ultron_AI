@@ -270,6 +270,7 @@ try {
     assert.ok(mapped.source.includes('gov.br/cemaden'));
     assert.match(mapped.warning,/Não são limites de desastre/);
     assert.ok(mapped.inside&&mapped.overflow<=3,JSON.stringify(mapped));
+    await page.$eval('.jarvis-geo-region',el=>el.scrollIntoView({block:'center',inline:'nearest'}));
     const hitRegion=await page.evaluate(()=>{
       const button=document.querySelector('.jarvis-geo-region'),r=button.getBoundingClientRect();
       const el=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2);
@@ -280,7 +281,7 @@ try {
         panelZ:getComputedStyle(document.querySelector('.jarvis-geo-visual')).zIndex,
         scrollY:window.scrollY};
     });
-    console.log('PHASE3 HIT REGION',JSON.stringify(hitRegion));
+    assert.ok(hitRegion.inside,'Regional button must remain clickable after internal scrolling: '+JSON.stringify(hitRegion));
     await page.click('.jarvis-geo-region');
     const regionDetail=await page.$eval('.jarvis-geo-detail',el=>({
       text:el.textContent,link:el.querySelector('a')?.href||null,
