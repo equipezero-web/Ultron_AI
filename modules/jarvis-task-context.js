@@ -68,7 +68,10 @@ export function createTaskContext({storage=null,now=()=>Date.now(),conversationI
    }else if(action==="earth.open")s.visualization="globe";
    else if(action==="earth.close")s.visualization="ring";
    else if(action==="ring.reset"||action==="ring.zoom")s.visualization="ring";
-   else if(action==="visualization.2d")s.visualization="map-2d";
+   else if(action==="visualization.2d"||action==="geo.view2d"||(action==="geo.show"&&args.view==="2d"))s.visualization="map-2d";
+   else if(action==="geo.view3d"||(action==="geo.show"&&args.view==="3d"))s.visualization="globe";
+   else if(action==="geo.close")s.visualization="ring";
+   if(action==="geo.show"&&args.scenario==="enso"&&!isPrivateTurn("El Niño"))s.topic="El Niño — tendências regionais no Brasil";
    s.lastAction=clipped(action||result.route,70);
    persist();return snapshot();
  };
