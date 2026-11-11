@@ -1,4 +1,6 @@
-import {directPlan,resolveActionPlan,runActionPlan} from "./jarvis-action-engine.js?v=4.68.0";
+import {TASK_CONTEXT} from "./jarvis-task-context.js?v=4.69.0";
+import {classifyOperatorTurn,splitOperatorSteps} from "./jarvis-intent-engine.js?v=4.69.0";
+import {directPlan,resolveActionPlan,runActionPlan} from "./jarvis-action-engine.js?v=4.69.0";
 import {parseLocalCommand,runLocalCommand} from "./jarvis-local-commands.js?v=4.67.0";
 import API_CONFIG from "../config.js";
 
@@ -21,6 +23,7 @@ const state = {
 };
 
 let queue = Promise.resolve();
+let lastVoiceInput={text:"",at:0};
 const proactiveCooldown = new Map();
 
 function normalize(text) {
@@ -121,13 +124,7 @@ function sanitizeResult(result) {
   }
 }
 
-function splitCompound(message) {
-  const parts = String(message || "")
-    .split(/\s+(?:e\s+depois|depois|em\s+seguida)\s+|\s*;\s*/i)
-    .map((item) => item.trim().replace(/^[,;]+|[,;]+$/g,"").trim())
-    .filter(Boolean);
-  return parts.length > 1 ? parts.slice(0, 6) : [String(message || "").trim()];
-}
+function splitCompound(message) {return splitOperatorSteps(message,6);}
 
 function isAutomationList(text) {
   return /\b(listar|liste|mostrar|mostre)\b.*\bautomac/.test(normalize(text));
@@ -250,12 +247,14 @@ async function routeSingle(command, run, index = 0) {
     const earth = window.ULTRON_EARTH;
     if (earthIntent?.action === 'ring' && earth?.close) {
       earth.close();
+      TASK_CONTEXT?.recordAction({action:"earth.close"},{ok:true});
       log('EARTH // Esfera neural restaurada.');
       return { route:'earth-ring', ok:true, result:{text:'Esfera neural restaurada.'} };
     }
     if (earth?.locate) {
       const result = await earth.locate(place);
-      const ok = result?.ok !== false;
+      const ok = result?.ok === true && Boolean(earth.state?.visible);
+      if(ok)TASK_CONTEXT?.recordAction({action:place?"earth.locate":"earth.open",args:{place}},{ok:true});
       log(ok ? 'EARTH // Globo do Neural Ring centralizado' + (place ? ' em ' + place : '') + '.' : 'EARTH // Falha ao localizar: ' + (result?.error || 'indisponível'), !ok);
       return {route:'earth-visual',ok,result:{text:ok ? 'Globo centralizado' + (place ? ' em ' + place : '') + '.' : 'Não foi possível localizar no globo.',place,...result}};
     }
@@ -347,8 +346,9 @@ async function executeMessage(message, source = "terminal") {
   const clean = String(message || "").trim();
   if (!clean) return null;
 
-  if(directPlan(clean)&&splitCompound(clean).length===1){
-    const result=await runActionPlan(directPlan(clean),clean);state.processed++;if(!result.ok)state.failed++;state.lastRoute=result.route;state.lastResult={route:result.route,ok:result.ok,result};log(result.text,!result.ok);return {ok:result.ok,status:result.ok?"completed":"failed",results:[state.lastResult]};
+  const singlePlan=splitCompound(clean).length===1?directPlan(clean):null;
+  if(singlePlan){
+    const result=await runActionPlan(singlePlan,clean);state.processed++;if(!result.ok)state.failed++;state.lastRoute=result.route;state.lastResult={route:result.route,ok:result.ok,result};log(result.text,!result.ok);return {ok:result.ok,status:result.ok?"completed":"failed",results:[state.lastResult]};
   }
   if(parseLocalCommand(clean)){
     const local=await runLocalCommand(clean);
@@ -365,6 +365,8 @@ async function executeMessage(message, source = "terminal") {
   state.lastRunId = run.runId;
 
   const parts = splitCompound(clean);
+  const intent=classifyOperatorTurn(clean);
+  if(intent.compound)log("INTENÇÃO // "+intent.kind.toUpperCase()+" // "+parts.length+" etapas.");
   if (parts.length > 1) log(`COMANDO COMPOSTO // ${parts.length} etapas em sequência.`);
 
   const results = [];
@@ -378,6 +380,7 @@ async function executeMessage(message, source = "terminal") {
       const routed = await routeSingle(part, run, i);
       results.push(routed);
       finalRoute = finalRoute || routed.route;
+      if(routed?.result?.status==="submitted"&&finalStatus==="completed")finalStatus="submitted";
       if (routed.waitingConfirmation) {
         finalStatus = "waiting-confirmation";
         break;
@@ -425,6 +428,8 @@ async function executeMessage(message, source = "terminal") {
 }
 
 function enqueue(message, source = "terminal") {
+  if(source.startsWith("voice") && lastVoiceInput.text===message && Date.now()-lastVoiceInput.at<900)return queue;
+  if(source.startsWith("voice"))lastVoiceInput={text:message,at:Date.now()};
   queue = queue
     .catch(() => null)
     .then(() => executeMessage(message, source));
@@ -505,7 +510,9 @@ window.addEventListener("ultron:voice-command", (event) => {
 });
 
 window.ULTRON_ORCHESTRATOR = {
-  version: "4.27.0",
+  version: "4.69.0",
+  understand:classifyOperatorTurn,
+  get taskContext(){return TASK_CONTEXT?.snapshot()||null;},
   execute: enqueue,
   history: showHistory,
   refreshState: refreshUnifiedState,

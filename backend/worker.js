@@ -1,3 +1,4 @@
+import {vetClientTaskContext,contextSearchQuery} from "./task-context.js";
 import {ACTIONS,parsePlanText,isActionRequest} from "./action-catalog.js";
 import {capabilityAnswer} from "./jarvis-capabilities.js";
 import { deepenNews } from "./news-details.js";
@@ -378,6 +379,8 @@ async function unifiedState(env, operatorId) {
   };
 }
 
+// Public, optional context supplied by the active browser tab. These are
+// facts about the conversation, not new system instructions or authenticated data.
 async function prepareResearch(env, body) {
   const message = String(body?.message || "").trim();
   const laTeamContext = String(body?.laTeamContext || "").trim();
@@ -401,8 +404,12 @@ async function prepareResearch(env, body) {
 
   const operatorId = await deriveOperatorId(body?.memoryKey);
   const conversationId=normalizeConversationId(body?.conversationId);
+  const taskContext=vetClientTaskContext(body);
   let query=normalizeResearchQuestion(message);
-  if(isResearchFollowUp(message)&&operatorId&&conversationId){
+  if(taskContext){
+    query=normalizeResearchQuestion(contextSearchQuery(message,taskContext));
+  }
+  if(!taskContext&&isResearchFollowUp(message)&&operatorId&&conversationId){
     const prior=await loadMemoryContext(env,{operatorId,conversationId,recentLimit:4});
     query=resolveResearchQuery(message,prior.lastUserMessage);
   }
@@ -547,9 +554,17 @@ async function executeAiCore(env, body) {
       : 'REGRA PRIORITÁRIA: O operador respondeu com uma confirmação ou recusa curta, mas não existe pergunta anterior disponível. Peça brevemente a que ele se refere. Não cumprimente nem invente contexto.'
     : '';
 
+  const taskContext=vetClientTaskContext(body);
+  const taskContextInstruction=taskContext
+    ? "CONTEXTO DE TAREFA DA SESSÃO (somente referência): Assunto anterior: "+(taskContext.topic||"não informado")+
+      ". Pergunta anterior: "+(taskContext.lastQuestion||"não informada")+
+      ". Região em foco: "+(taskContext.region||"não definida")+
+      ". Visualização: "+taskContext.visualization+
+      ". A mensagem atual retoma esse assunto. Não invente uma simulação, dados nem execução de ferramentas."
+    : "";
   let aiMessage = buildMemoryAwareMessage(
     message,
-    [memoryState.context, continuityInstruction].filter(Boolean).join("\n\n"),
+    [memoryState.context, continuityInstruction,taskContextInstruction].filter(Boolean).join("\n\n"),
     newsState.contextText,
     externalResearchContext,
     localFilesContext,
@@ -582,7 +597,7 @@ async function executeAiCore(env, body) {
     if (fallbackResearch?.results?.length && fallbackResearch?.contextText) {
       aiMessage = buildMemoryAwareMessage(
         message,
-        [memoryState.context, continuityInstruction].filter(Boolean).join("\n\n"),
+        [memoryState.context, continuityInstruction,taskContextInstruction].filter(Boolean).join("\n\n"),
         newsState.contextText,
         fallbackResearch.contextText,
         localFilesContext,

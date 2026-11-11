@@ -1,4 +1,5 @@
-import {directPlan,runActionPlan} from "./modules/jarvis-action-engine.js?v=4.68.0";
+import {TASK_CONTEXT} from "./modules/jarvis-task-context.js?v=4.69.0";
+import {directPlan,runActionPlan} from "./modules/jarvis-action-engine.js?v=4.69.0";
 import {runLocalCommand} from "./modules/jarvis-local-commands.js?v=4.67.0";
 import { CameraController } from "./modules/camera.js";
 import { loadPreferences } from "./modules/storage.js";
@@ -302,6 +303,7 @@ async function askUltron(command) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         message: command,
+        taskContext:TASK_CONTEXT?.publicContextFor(command)||null,
         clientOwnsSpeech:true,
         preferFastResponse:window.ULTRON_VOICE_OUTPUT?.available===true,
         memoryKey: window.ULTRON_MEMORY?.getMemoryKey?.() || null,
@@ -332,6 +334,7 @@ async function askUltron(command) {
     const provider = data.providerLabel || data.provider || "AI";
     addLog(output, `ULTRON [${provider}]: ${data.text}`);
     prepareNeuralResponse(data);
+    TASK_CONTEXT?.captureQuestion(command);
     window.dispatchEvent(new CustomEvent("ultron:answer",{detail:{id:questionId,text:data.text,visualContext:data.visualContext,webResearch:data.webResearch}}));
     if (data.audioBase64) playVoice(data.audioBase64, data.audioMimeType || "audio/mpeg");
     else window.ULTRON_VOICE_OUTPUT?.speak?.(data.text,{reason:"fallback",announce:false});

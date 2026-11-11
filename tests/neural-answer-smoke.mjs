@@ -118,6 +118,15 @@ try {
       }))));
       throw error;
     }
+    const ctx=await page.evaluate(()=>window.ULTRON_TASK_CONTEXT?.snapshot());
+    assert.ok(ctx?.lastPublicQuestion?.includes('governo da China'),JSON.stringify(ctx));
+    const followupRequest=page.waitForRequest(req=>req.url().includes('/api/ai')&&req.method()==='POST'&&req.postData()?.includes('"message":"E no Japão?"'),{timeout:12000});
+    await page.evaluate(()=>{document.querySelector('#command-input').value='E no Japão?';document.querySelector('#btn-send').click();});
+    const followupBody=JSON.parse((await followupRequest).postData());
+    assert.equal(followupBody.taskContext?.followup,true);
+    assert.ok(followupBody.taskContext?.lastQuestion?.includes('governo da China'));
+    assert.equal(followupBody.taskContext?.region,'japao');
+    await page.waitForFunction(()=>!window.ULTRON_ORCHESTRATOR?.state?.busy,{timeout:12000});
     assert.ok(await page.$eval('.ultron-neural-answer-media img',el=>el.src.includes('example.org/picture.jpg')));
     await page.click('.ultron-media-play');
     await page.waitForSelector('.ultron-media-video iframe',{timeout:5000});
@@ -162,6 +171,23 @@ try {
     assert.equal(operation.results[0].result.steps[0].action,'parity.check');
     assert.equal(operation.results[1].result.steps[0].action,'answer.close');
     assert.equal(await page.$eval('.ultron-neural-answer',el=>el.hidden),true,'Compound plan must close the actual panel after diagnosis');
+    // A contextual command selects the live globo tool instead of inventing an AI answer.
+    const contextual=await page.evaluate(async()=>{
+      const original=window.ULTRON_EARTH;
+      const state={visible:true,selectedPlace:''};
+      window.ULTRON_EARTH={state,async open(){state.visible=true;return {ok:true}},async locate(place){state.selectedPlace=place;return {ok:true}}};
+      window.ULTRON_TASK_CONTEXT.captureQuestion('Analise os impactos do El Niño no Brasil');
+      window.ULTRON_TASK_CONTEXT.recordAction({action:'earth.open'},{ok:true});
+      const before=window.ULTRON_TASK_CONTEXT.snapshot();
+      const decision=window.ULTRON_TASK_CONTEXT.resolve('Agora foque no Nordeste');
+      const result=await window.ULTRON_ORCHESTRATOR.execute('Agora foque no Nordeste','test-context');
+      window.ULTRON_EARTH=original;
+      return {result,before,decision,context:window.ULTRON_TASK_CONTEXT.snapshot(),selected:state.selectedPlace};
+    });
+    assert.equal(contextual.result.ok,true);
+    assert.equal(contextual.selected,'nordeste',JSON.stringify(contextual));
+    assert.equal(contextual.context.region,'nordeste');
+    assert.equal(contextual.context.topic,'El Niño');
     await page.close();
   }
   console.log('NEURAL ANSWER PASS: ring only at boot; on-demand text, image, sources; mobile laptop TV');

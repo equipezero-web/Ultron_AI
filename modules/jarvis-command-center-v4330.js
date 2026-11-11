@@ -162,6 +162,7 @@ if (stage) {
     ringEngine?.setVisible(visualMode === 'ring');
     canvas.hidden = visualMode !== 'ring' || (!ringEngine && visual.classList.contains('jarvis-ring-fallback'));
     if (visualMode === 'ring') void bootNeuralRing();
+    window.dispatchEvent(new CustomEvent("ultron:visual-mode",{detail:{mode:visualMode}}));
   }
   ui.querySelectorAll('[data-visual]').forEach(button => button.addEventListener('click',() => setVisualMode(button.dataset.visual)));
   // Wheel on the full neural stage controls the active 3D view, NEVER the page.
