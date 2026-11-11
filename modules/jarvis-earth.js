@@ -118,6 +118,32 @@ if (earthVisual) {
   const referenceMapHost = reference.querySelector('.jarvis-earth-reference-map');
   const referenceSide = reference.querySelector('.jarvis-earth-reference-side');
   const referenceStatus = reference.querySelector('#jarvis-earth-reference-status');
+
+  // Mapbox lives under a touch-action:none canvas to keep pinch responsive.
+  // One-finger VERTICAL gestures must nevertheless scroll the dashboard.
+  // Two fingers remain owned by Mapbox cooperative zoom and pan.
+  let mapTouchScroll=null;
+  referenceMapHost.addEventListener('touchstart',event=>{
+    if(event.touches.length!==1){mapTouchScroll=null;return;}
+    const finger=event.touches[0];
+    mapTouchScroll={startX:finger.clientX,startY:finger.clientY,
+      lastY:finger.clientY,scrolling:false};
+  },{passive:true,capture:true});
+  referenceMapHost.addEventListener('touchmove',event=>{
+    if(!mapTouchScroll||event.touches.length!==1)return;
+    const finger=event.touches[0],dx=finger.clientX-mapTouchScroll.startX,
+      dy=finger.clientY-mapTouchScroll.startY;
+    if(!mapTouchScroll.scrolling&&Math.abs(dy)>8&&Math.abs(dy)>Math.abs(dx)*1.2)
+      mapTouchScroll.scrolling=true;
+    if(!mapTouchScroll.scrolling)return;
+    if(event.cancelable)event.preventDefault();
+    event.stopImmediatePropagation();
+    window.scrollBy({top:mapTouchScroll.lastY-finger.clientY,behavior:'instant'});
+    mapTouchScroll.lastY=finger.clientY;
+  },{passive:false,capture:true});
+  for(const type of ['touchend','touchcancel'])
+    referenceMapHost.addEventListener(type,()=>{mapTouchScroll=null;},{passive:true,capture:true});
+
   let referenceMap = null, referenceLoading = null, referenceMode = false;
   let referenceSelection = false;
   function hideReferenceDetails() {
