@@ -1,12 +1,12 @@
 // Official sources are kept distinct: radar/satellite (remote viewers),
 // observed rain gauges (APAC), and numerical predictions (Open-Meteo).
 export const METEO_VIEWERS=Object.freeze({
- radar:{title:"Radar INPE · SIGMA",url:"https://sigma.cptec.inpe.br/radar/",
-   type:"radar",description:"Refletividade observada (dBZ) onde houver cobertura; o horário é controlado pelo INPE."},
- satellite:{title:"Satélite GOES-19 · INPE",url:"https://www.cptec.inpe.br/dsat/",
-   type:"satellite",description:"Imagens de satélite; nuvens não equivalem a precipitação medida."},
- inmet:{title:"INMET · mapas oficiais",url:"https://mapas.inmet.gov.br/",
-   type:"radar-and-weather",description:"Selecione Radar, Satélite ou Avisos no visualizador do INMET."},
+ radar:{title:"Mosaico de radares · RainViewer",url:"https://www.rainviewer.com/api.html",
+   type:"radar",description:"Ecos de radar observados (dBZ), fonte RainViewer; NÃO é radar oficial INPE ou previsão."},
+ satellite:{title:"Satélite GOES-19 · NOAA",url:"https://www.star.nesdis.noaa.gov/GOES/fulldisk_band.php?band=GEOCOLOR&sat=G19",
+   type:"satellite",description:"Imagem orbital GeoColor da NOAA/CIRA; nuvens não equivalem a chuva medida."},
+ inmet:{title:"INMET · estações oficiais",url:"https://apitempo.inmet.gov.br/estacoes/T",
+   type:"station-catalog",description:"Estações geográficas do INMET; status operacional, sem valores de precipitação."},
  apac:{title:"APAC · estações em Pernambuco",
    url:"https://geoportal.apac.pe.gov.br/server/rest/services/met_monitoramento_chuvas_pe/MapServer",
    type:"gauge-observations",description:"Acumulado pluviométrico observado por estação; NÃO é radar nem El Niño."},
