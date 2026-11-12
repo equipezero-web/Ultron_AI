@@ -49,10 +49,17 @@ if (stage) {
     textComposer.setAttribute('autocapitalize','sentences');
     textComposer.setAttribute('spellcheck','true');
   }
-  // The legacy .jarvis-cc-actions container is intentionally hidden by CSS.
-  // Keep the Earth entry point alongside the visible quick actions instead.
-  const globeQuickButton = ui.querySelector('[data-cc="earth"]');
-  ui.querySelector('#jarvis-cc-input-slot .quick-actions')?.append(globeQuickButton);
+  // All the command-center buttons must remain accessible after reparenting.
+  // The legacy .jarvis-cc-actions wrapper is hidden, so move its real buttons
+  // (with their existing event handlers) to the visible quick-action toolbar.
+  const quickBar=ui.querySelector('#jarvis-cc-input-slot .quick-actions');
+  const globeQuickButton=ui.querySelector('[data-cc="earth"]');
+  if(quickBar){
+    for(const button of [...ui.querySelectorAll('.jarvis-cc-actions [data-cc]')]){
+      button.setAttribute('aria-label',button.textContent.trim());
+      quickBar.append(button);
+    }
+  }
   // A single 3D neural stage. All real sensor/gateway/bridge/infra panels
   // remain functional with their original IDs, moved beside the command composer.
   const bottom = ui.querySelector('.jarvis-cc-bottom');
@@ -164,7 +171,13 @@ if (stage) {
     if (visualMode === 'ring') void bootNeuralRing();
     window.dispatchEvent(new CustomEvent("ultron:visual-mode",{detail:{mode:visualMode}}));
   }
-  ui.querySelectorAll('[data-visual]').forEach(button => button.addEventListener('click',() => setVisualMode(button.dataset.visual)));
+  ui.querySelectorAll('[data-visual]').forEach(button => button.addEventListener('click',()=>{
+    // "Globo" must actually initialize the 3D Earth engine; changing only a
+    // text label left an empty visual stage and appeared as a dead button.
+    if(button.dataset.visual==='globe'){void actions.earth();return;}
+    if(window.ULTRON_EARTH?.state?.visible)window.ULTRON_EARTH.close();
+    else setVisualMode('ring');
+  }));
   // Wheel on the full neural stage controls the active 3D view, NEVER the page.
   // Native WebGL and Mapbox listeners handle gestures directly on their canvases.
   // This handler covers gaps, labels, and overlay controls without stealing
@@ -199,17 +212,35 @@ if (stage) {
     log.prepend(p);while(log.children.length>5)log.lastElementChild.remove();
   }
   const state = ui.querySelector('#jarvis-cc-state');
-  function show(title, content) {
-    // No popup and no new section: results go into the existing command terminal.
-    const output = document.getElementById('output-box');
-    if (!output) return;
-    const line = document.createElement('p');
-    line.className = 'jarvis-cc-inline-result';
-    line.textContent = '> [' + title + '] ' + String(content);
+  function show(title, content, action=null) {
+    // In-line actionable results are essential: previously "Configurar TV"
+    // and "Atualizar arquivos" were passed as a third argument but ignored.
+    const output=document.getElementById('output-box');
+    if(!output)return;
+    const line=document.createElement('div');
+    line.className='jarvis-cc-inline-result';
+    line.setAttribute('role','status');
+    const message=document.createElement('p');
+    message.textContent='> ['+title+'] '+String(content);
+    line.append(message);
+    if(action&&typeof action.run==='function'&&typeof action.label==='string'){
+      const button=document.createElement('button');button.type='button';
+      button.className='jarvis-cc-inline-action';
+      button.textContent=action.label.slice(0,65);
+      button.addEventListener('click',event=>{
+        event.stopPropagation();
+        if(button.disabled)return;
+        button.disabled=true;button.setAttribute('aria-busy','true');
+        Promise.resolve().then(()=>action.run()).catch(error=>{
+          show(title,'Não foi possível executar '+action.label+': '+String(error?.message||error).slice(0,140));
+        }).finally(()=>{button.disabled=false;button.removeAttribute('aria-busy');});
+      });
+      line.append(button);
+    }
     output.append(line);
-    while (output.children.length > 90) output.firstElementChild.remove();
-    output.scrollTop = output.scrollHeight;
-    logEvent(title + ' // ATUALIZADO');
+    while(output.children.length>90)output.firstElementChild.remove();
+    output.scrollTop=output.scrollHeight;
+    logEvent(title+' // ATUALIZADO');
   }
   const scrollTo = (selector) => document.querySelector(selector)?.scrollIntoView({behavior:'smooth',block:'center'});
   let openingEarth = false;
@@ -232,15 +263,27 @@ if (stage) {
       } finally { openingEarth = false; }
     },
     status() {
-      const voice = window.ULTRON_VOICE_MATCH?.state;
-      show('STATUS DO SISTEMA', 'Voice Match: ' + (voice?.monitorActive ? 'monitor ativo' : 'monitor inativo') + ' · Câmera: ' + (document.querySelector('#camera-state')?.textContent || 'não informada') + '. Consulte o terminal para diagnósticos detalhados.');
+      const voice=window.ULTRON_VOICE_MATCH?.state;
+      show('STATUS DO SISTEMA','Voice Match: '+
+        (voice?.monitorActive?'monitor ativo':'monitor inativo')+
+        ' · Câmera: '+(document.querySelector('#camera-state')?.textContent||'não informada')+
+        ' · Globo: '+(window.ULTRON_EARTH?.state?.visible?'ativo':'em espera')+
+        '. Consulte o terminal para diagnósticos detalhados.',
+        {label:'Atualizar status',run:()=>actions.status()});
     },
     agenda() {
       const now = new Date();
       show('AGENDA / VISÃO LOCAL', now.toLocaleString('pt-BR',{dateStyle:'full',timeStyle:'short'}) + '. Calendário externo ainda não conectado. Nenhum compromisso é presumido.');
     },
     camera() {
-      show('SENSOR ÓPTICO', 'Câmera disponível no módulo integrado ao lado dos comandos. Clique em ATIVAR SENSOR DO CELULAR para conectar sem abrir outra tela.');
+      const cameraButton=document.getElementById('btn-camera');
+      if(!cameraButton||cameraButton.disabled){
+        show('SENSOR ÓPTICO','O botão da câmera está indisponível ou a câmera já está ativa. Confira o painel Optical Sensor.');
+        return;
+      }
+      // User-initiated click: let the native camera module obtain permission.
+      cameraButton.click();
+      show('SENSOR ÓPTICO','Solicitação enviada ao módulo de câmera do próprio dispositivo. O acesso depende da permissão do navegador.');
     },
     async files() {
       const api = window.ULTRON_LOCAL_FILES;
