@@ -381,7 +381,7 @@ export async function heartbeatDevice(env, { deviceId, deviceSecret } = {}) {
   const device = await authenticateDevice(env, deviceId, deviceSecret);
   if (!device) return { ok: false, error: "Credencial do dispositivo inválida." };
   const stamp = String(device.lastSeenAt || "").trim().replace(" ", "T");
-  const utc = stamp ? Date.parse(/(?:Z|[+-]\\d{2}:?\\d{2})$/i.test(stamp) ? stamp : stamp + "Z") : NaN;
+  const utc = stamp ? Date.parse(/(?:Z|[+-]\d{2}:?\d{2})$/i.test(stamp) ? stamp : stamp + "Z") : NaN;
   const ageMs = Number.isFinite(utc) ? Math.max(0, Date.now() - utc) : Infinity;
   return {
     ok: true, connected: true,
