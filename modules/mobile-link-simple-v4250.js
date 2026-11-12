@@ -39,7 +39,7 @@ async function refresh() {
     if (!result.paired) {
       const code = String(document.getElementById('bridge-session-state')?.textContent || '');
       const pairing = String(document.getElementById('bridge-link-state')?.textContent || '') === 'PAIRING';
-      if (pairing && /^CODE \\d{6}$/.test(code)) {
+      if (pairing && /^CODE \d{6}$/.test(code)) {
         if (!pairingDeadlineAt) pairingDeadlineAt = Date.now() + 10 * 60_000;
         if (Date.now() < pairingDeadlineAt) {
           lastResult = { ...result, status: 'pairing', label: 'PAIRING', session: code };
