@@ -25,10 +25,7 @@ const wbBands={
   limits:[1,3,6,10,20],labels:["até 1 t","1–3 t","3–6 t","6–10 t","10–20 t","mais de 20 t"],
   colors:["#79b1d8","#92ccaf","#e3ce82","#ed9c62","#df7257","#b34562"]}
 };
-// CO2 legacy reliable World Bank indicator (metric tons CO2 per capita).
-wbBands.co2.codes="EN.ATM.CO2E.PC";
-wbBands.co2.label="Emissões de CO₂ por habitante";
-wbBands.co2.unit="t CO₂/pessoa";
+// Current World Bank series excludes land-use change and forestry (LULUCF).
 export const WORLD_GEO_TOPICS=Object.freeze({
  earthquakes:{label:"Terremotos mundiais",kind:"events",source:"USGS",url:"https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php",
    disclaimer:"Magnitude sísmica no epicentro, não intensidade sentida, danos ou perigo por município. Feed de eventos M4,5+ dos últimos sete dias."},
