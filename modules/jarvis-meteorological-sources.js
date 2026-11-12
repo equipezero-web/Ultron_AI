@@ -23,13 +23,14 @@ export function parseMeteoIntent(command){
   const trigger=/^(?:por favor )?(?:me )?(?:mostre|mostra|mostrar|abra|abrir|ative|ativar|acesse|acessar|exiba|exibir|visualize|visualizar|acompanhe|acompanhar|compare|comparar|quero ver|quero acompanhar)\b/;
   if(!trigger.test(q))return null;
   if(/\b(?:central meteorologica|centro meteorologico|painel meteorologico)\b/.test(q))return {tab:"radar",view:"2d"};
-  if(/\bapac\b/.test(q)||(/\bpernambuco\b/.test(q)&&/\b(?:chuvas?|precipitacao|monitoramento|estacoes|acumulado|radar)\b/.test(q)))return {tab:"apac",view:/\b3d\b/.test(q)?"3d":"2d"};
+  if(/\bapac\b/.test(q)||(/\bpernambuco\b/.test(q)&&/\b(?:chuvas?|precipitacao|monitoramento|estacoes|acumulado)\b/.test(q)))return {tab:"apac",view:/\b3d\b/.test(q)?"3d":"2d"};
   if(/\binmet\b/.test(q))return {tab:"inmet",view:"2d"};
   if(/\b(?:satelite|goes|nuvens)\b/.test(q))return {tab:"satellite",view:"2d"};
   if(/\b(?:radar|chuvas? em tempo real|chuva observada)\b/.test(q))return {tab:"radar",view:"2d"};
   return null;
 }
 export function apacColor(mm){
+  if(mm===0)return "#73899a";
   if(mm<2)return "#76b7dd";
   if(mm<10)return "#46bb8e";
   if(mm<30)return "#e3cd5e";
