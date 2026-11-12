@@ -1,6 +1,7 @@
 import {vetClientTaskContext,contextSearchQuery} from "./task-context.js";
 import {loadLiveWeather} from "./weather-live.js";
 import {loadSpatialIntensity} from "../modules/jarvis-spatial-intensity.js";
+import {loadWorldGeo} from "../modules/jarvis-world-geodata.js";
 import {searchGlobalLocations,loadGlobalWeather} from "./weather-global.js";
 import {loadWeatherInsight} from "./weather-intelligence.js";
 import {pollWeatherMonitor,latestWeatherMonitor} from "./weather-monitor.js";
@@ -1034,6 +1035,20 @@ export default {
       const result=await searchGlobalLocations(url.searchParams.get("q"));
       return new Response(JSON.stringify(result),{status:result.ok?200:result.status||503,headers:{
        ...corsHeaders(),"Cache-Control":result.ok?"public, max-age=3600":"no-store","X-Content-Type-Options":"nosniff"}});
+    }
+    if(path==="/api/geo/world"&&request.method==="GET"){
+      const topic=url.searchParams.get("topic"),region=url.searchParams.get("region")||"world";
+      const cache=typeof caches==="object"?caches.default:null;
+      const cacheKey=new Request(url.toString(),{method:"GET"});
+      try{const hit=await cache?.match(cacheKey);if(hit)return hit;}catch{}
+      const data=await loadWorldGeo({topic,region});
+      const response=new Response(JSON.stringify(data),{status:data.ok?200:data.status||503,headers:{
+        ...corsHeaders(),"Content-Type":"application/json; charset=utf-8",
+        "Cache-Control":data.ok?(["population","gdp","co2"].includes(topic)?
+          "public, max-age=86400":"public, max-age=900"):"no-store",
+        "X-Content-Type-Options":"nosniff"}});
+      if(data.ok&&cache&&ctx?.waitUntil)ctx.waitUntil(cache.put(cacheKey,response.clone()).catch(()=>{}));
+      return response;
     }
     if(path==="/api/geo/intensity"&&request.method==="GET"){
       const layer=url.searchParams.get("layer")||"rain",region=url.searchParams.get("region")||"brazil",
