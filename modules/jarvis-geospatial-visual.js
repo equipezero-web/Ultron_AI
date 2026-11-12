@@ -128,6 +128,7 @@ if(stage){
    panel.addEventListener(type,event=>event.stopPropagation(),{passive:true});
  }
  let dataset=null,frameIndex=1,mode="3d",playing=false,clock=null,selected=null,outlines={brazil:null,world:null};
+ let worldCountryShapes=[];
  let geoLoading={brazil:null,world:null},seq=0,filterKind="all",refreshClock=null;
  let intensityReport=null,intensityKey="",intensityToken=0;
  const intensityCache=new Map();
@@ -247,6 +248,7 @@ if(stage){
  svg.addEventListener("pointercancel",releasePointer);
  svg.addEventListener("lostpointercapture",releasePointer);
  function renderMetrics(frame){
+   if(dataset?.theme){renderGlobalMetrics(frame);return;}
    metricPanel.replaceChildren();
    const heading=document.createElement("div");heading.className="jarvis-geo-metric-heading";
    const place=document.createElement("strong");place.textContent=frame.points[0]?.name||dataset.title;
@@ -307,6 +309,61 @@ if(stage){
 
  const intensityProjection=()=>scopeChoice.value==="world"?"world":"brazil";
  const currentIntensityDay=()=>Math.max(0,Math.min(2,frameIndex-1));
+
+ function renderGlobalTheme(){
+   if(!dataset?.theme)return;
+   intensityLegend.replaceChildren();intensityMessage.replaceChildren();
+   const caption=document.createElement("strong");
+   caption.textContent="CAMADA MUNDIAL · "+dataset.title;
+   intensityLegend.append(caption);
+   const scale=document.createElement("div");scale.className="jarvis-geo-intensity-scale";
+   for(const b of dataset.theme.legend){
+     const item=document.createElement("span");item.className="jarvis-geo-intensity-band";
+     const swatch=document.createElement("i");swatch.style.background=b.color;
+     const label=document.createElement("small");label.textContent=b.label;
+     item.append(swatch,label);scale.append(item);
+   }
+   intensityLegend.append(scale);
+   const note=document.createElement("small");note.className="jarvis-geo-intensity-caption";
+   note.textContent=dataset.source.basePeriod+" · "+dataset.theme.coloredBy+
+     " · "+dataset.frames[0].points.length+" localizações. "+dataset.source.disclaimer;
+   intensityMessage.append(note);
+   const link=document.createElement("a");link.target="_blank";link.rel="noopener noreferrer";
+   link.href=dataset.source.url;link.textContent="Ver publicação/fonte oficial";
+   intensityMessage.append(link);
+ }
+ function renderGlobalMetrics(frame){
+   metricPanel.replaceChildren();
+   const heading=document.createElement("div");heading.className="jarvis-geo-metric-heading";
+   const title=document.createElement("strong");title.textContent=dataset.title;
+   const period=document.createElement("small");period.textContent=dataset.source.basePeriod;
+   heading.append(title,period);metricPanel.append(heading);
+   const stat=document.createElement("div");stat.className="jarvis-geo-metric-grid";
+   const count=document.createElement("div");count.className="jarvis-geo-metric-card";
+   const caption=document.createElement("small");caption.textContent="REGISTROS GEOLOCALIZADOS";
+   const value=document.createElement("strong");value.textContent=frame.points.length.toLocaleString("pt-BR");
+   count.append(caption,value);stat.append(count);
+   const meaning=document.createElement("div");meaning.className="jarvis-geo-metric-card";
+   const type=document.createElement("small");type.textContent="COLORAÇÃO";
+   const detailText=document.createElement("strong");detailText.textContent=
+     dataset.theme.coloredBy==="earthquake-magnitude"?"Magnitude USGS":
+     dataset.theme.kind==="country-indicator"?"Indicador anual":"Categoria de evento";
+   meaning.append(type,detailText);stat.append(meaning);metricPanel.append(stat);
+   const infos=document.createElement("div");infos.className="jarvis-geo-global-event-list";
+   for(const p of frame.points.slice(0,25)){
+     const row=document.createElement("button");row.type="button";row.className="jarvis-geo-global-event";
+     const mark=document.createElement("i");mark.style.background=p.color||GEO_PALETTE[p.kind]?.color||"#90d4f7";
+     const text=document.createElement("span");text.textContent=p.name+
+       (p.value!=null?" · "+p.value.toLocaleString("pt-BR",{maximumFractionDigits:2})+
+        (p.unit?" "+p.unit:""):"");
+     row.append(mark,text);
+     row.addEventListener("click",()=>selectRegion(p));
+     infos.append(row);
+   }
+   metricPanel.append(infos);
+   const caveat=document.createElement("small");caveat.className="jarvis-geo-metric-disclaimer";
+   caveat.textContent=dataset.source.disclaimer;metricPanel.append(caveat);
+ }
  function intensityLegendRender(report,issue=""){
    intensityLegend.replaceChildren();intensityMessage.replaceChildren();
    const spec=SPATIAL_LAYERS[layerChoice.value];
@@ -427,6 +484,26 @@ if(stage){
    for(let x=55;x<880;x+=100)svg.append(e("line",{x1:x,x2:x,y1:40,y2:530,stroke:"#35516a","stroke-opacity":".38","stroke-width":1}));
    for(let y=50;y<535;y+=80)svg.append(e("line",{x1:50,x2:875,y1:y,y2:y,stroke:"#35516a","stroke-opacity":".38","stroke-width":1}));
    const projection=intensityProjection(),outline=outlines[projection];
+
+   if(projection==="world"&&dataset?.theme?.kind==="country-indicator"&&worldCountryShapes.length){
+     const values=dataset.theme.countryValues||{};
+     const group=e("g",{"data-global-country-layer":dataset.theme.topic});
+     for(const item of worldCountryShapes){
+       const metric=values[item.id];
+       if(!metric)continue;
+       for(const path of item.paths){
+         const shape=e("path",{d:path,fill:metric.color,"fill-opacity":".83",
+           stroke:"#0a2538","stroke-width":".7"});
+         shape.classList.add("jarvis-geo-world-country");
+         shape.setAttribute("data-iso3",item.id);
+         const title=e("title");
+         title.textContent=item.name+": "+metric.value+" "+dataset.theme.unit+" ("+metric.year+")";
+         shape.append(title);group.append(shape);
+       }
+     }
+     svg.append(group);
+   }
+
    if(outline?.length)for(const d of outline)svg.append(e("path",{d,fill:"#18354b",stroke:"#6c9caa","stroke-width":1.4,"fill-opacity":".83"}));
    // A rectangle is the fixed model cell (not a rainfall interpolation).
    // The Brazil outline clips cells to the national boundary; if IBGE is
@@ -474,7 +551,7 @@ if(stage){
    }
    svg.append(patches);
    for(const p of frame.points){
-     const {x,y}=(projection==="world"?worldXY(p.lng,p.lat):brazilXY(p.lng,p.lat)),color=GEO_PALETTE[p.kind]?.color||"#91d7f0";
+     const {x,y}=(projection==="world"?worldXY(p.lng,p.lat):brazilXY(p.lng,p.lat)),color=p.color||GEO_PALETTE[p.kind]?.color||"#91d7f0";
      if(!Number.isFinite(x)||!Number.isFinite(y))continue;
      const g=e("g",{"data-region-id":p.id,role:"button",tabindex:"0","aria-label":p.name+" — "+GEO_PALETTE[p.kind]?.short});
      g.classList.add("jarvis-geo-marker");
@@ -485,7 +562,7 @@ if(stage){
      g.addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();selectRegion(p);}});
      svg.append(g);
    }
-   svgLabels.textContent=intensityReport?.ok?intensityReport.label+" · CÉLULAS DE MODELO (não radar) · "+intensityReport.dataTime+" · "+intensityReport.sampledCount+" amostras.":projection==="world"?
+   svgLabels.textContent=dataset?.theme?dataset.title+" · "+dataset.source.basePeriod+" · "+dataset.frames[0].points.length+" pontos. "+dataset.source.disclaimer:intensityReport?.ok?intensityReport.label+" · CÉLULAS DE MODELO (não radar) · "+intensityReport.dataTime+" · "+intensityReport.sampledCount+" amostras.":projection==="world"?
       (outline?.length?"Mapa mundial: Natural Earth. Coordenadas aproximadas do modelo; não são limites de perigo.":"Contorno mundial indisponível: marcador exibido na grade global."):
       (outline?.length?"Contorno do Brasil: IBGE. Pontos representativos, não limites exatos de impacto.":"Contorno do IBGE indisponível. Pontos georreferenciados exibidos sobre a grade.");
  }
