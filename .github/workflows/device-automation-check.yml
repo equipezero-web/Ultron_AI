@@ -4,6 +4,8 @@ on:
   push:
     paths:
       - 'backend/device-control-v2.js'
+      - 'backend/device-bridge.js'
+      - 'tests/bridge-authenticated-heartbeat.mjs'
       - 'backend/automation-engine.js'
       - 'backend/worker.js'
       - 'backend/wrangler.jsonc'
@@ -22,6 +24,8 @@ on:
   pull_request:
     paths:
       - 'backend/device-control-v2.js'
+      - 'backend/device-bridge.js'
+      - 'tests/bridge-authenticated-heartbeat.mjs'
       - 'backend/automation-engine.js'
       - 'backend/worker.js'
       - 'backend/wrangler.jsonc'
@@ -60,6 +64,7 @@ jobs:
           python -m py_compile local-core/desktop_bridge.py local-core/device_server.py local-core/server.py
           TZ=America/Recife node tests/bridge-status.mjs
           TZ=UTC node tests/bridge-status.mjs
+          node tests/bridge-authenticated-heartbeat.mjs
 
       - name: Device command policy
         run: |
