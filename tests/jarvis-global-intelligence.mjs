@@ -76,6 +76,9 @@ const db={prepare(query){
      if(query.includes("INSERT OR IGNORE"))store.set(args[0],{bucket:args[0],snapshot_json:args[1],checked_at:args[2]});
      return {success:true};
    }};
+ },async first(){
+   if(query.includes("ORDER BY checked_at"))return [...store.values()].at(-1)||null;
+   return null;
  },async run(){return {success:true};}};
 }};
 const env={ULTRON_DB:db};
