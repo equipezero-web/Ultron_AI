@@ -17,7 +17,7 @@ const intents=[
  ["internet",/\b(?:acesso a internet|uso da internet|usuarios? (?:da|de) internet|conectividade digital)\b/],
  ["urban",/\b(?:urbanizacao|populacao urbana|populacoes urbanas|pessoas nas cidades)\b/],
  ["forest",/\b(?:cobertura florestal|area florestal|florestas? por pais|porcentagem de florestas?)\b/],
- ["renewable",/\b(?:energias? renovaveis?|consumo (?:de energia )?renovavel)\b/],
+ ["renewable",/\b(?:energias? renovav(?:el|eis)|consumo (?:de energia )?renovavel)\b/],
  ["electricity",/\b(?:acesso a (?:energia eletrica|eletricidade)|eletrificacao)\b/],
  ["unemployment",/\b(?:desemprego|taxa de desemprego|pessoas desempregadas)\b/],
  ["gdp",/\b(?:pib|produto interno bruto|economia por pais|riqueza dos paises)\b/],
