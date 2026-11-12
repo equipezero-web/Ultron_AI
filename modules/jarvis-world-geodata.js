@@ -204,7 +204,10 @@ export async function loadWorldGeo({topic,region="world"}={},{fetchImpl=fetch,no
   if(WORLD_GEO_TOPICS[topic].kind==="indicator"){
    const def=wbBands[topic];
    const indicator=new URL("country/all/indicator/"+def.codes,WB_BASE);
-   for(const [k,v] of Object.entries({format:"json",per_page:"3000",mrv:"3"}))indicator.searchParams.set(k,v);
+   // mrv=1 returns the latest available observation for each country (fast WDI path).
+   // In live GitHub checks, mrv=3 on all countries timed out, whereas mrv=1
+   // with 400 rows returned 266 country/aggregate rows successfully.
+   for(const [k,v] of Object.entries({format:"json",per_page:"400",mrv:"1"}))indicator.searchParams.set(k,v);
    const country=new URL("country",WB_BASE);
    country.searchParams.set("format","json");country.searchParams.set("per_page","400");
    const [observations,locations]=await Promise.all([
