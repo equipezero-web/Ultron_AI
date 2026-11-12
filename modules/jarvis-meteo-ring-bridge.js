@@ -25,7 +25,7 @@ function install(){
  };
  const stop=()=>{if(clock!==null)clearInterval(clock);clock=null;
    clearRadarGlobe(window.ULTRON_EARTH);};
- function close(){++token;stop();return originalClose();}
+ function close(){++token;stop();if(mode==="3d")window.ULTRON_EARTH?.close?.();return originalClose();}
  function resetView(){
    content.replaceChildren();reference.replaceChildren();
    panel.dataset.meteoView=mode;panel.dataset.nativeMedia=activeTab;
@@ -135,6 +135,21 @@ function install(){
    const make=(name,attrs)=>{const el=document.createElementNS(ns,name);
      for(const [key,val] of Object.entries(attrs))el.setAttribute(key,String(val));return el;};
    svg.append(make("rect",{width:900,height:550,fill:"#092238"}));
+   // Same IBGE geographic outline used in the existing world map.
+   const contour=make("g",{"data-inmet-outline":"pending"});
+   svg.append(contour);
+   void (async()=>{
+     try{
+       const ctl=new AbortController(),timer=setTimeout(()=>ctl.abort(),6500);
+       let response;try{response=await fetch(BRAZIL_OUTLINE_URL,{signal:ctl.signal});}
+       finally{clearTimeout(timer);}
+       if(!response.ok||runId!==token||!svg.isConnected)return;
+       const paths=geoJSONPaths(await response.json(),{projection:"brazil"});
+       for(const d of paths)contour.append(make("path",{d,fill:"#123950",
+         stroke:"#76b0cb","stroke-width":1.6,"fill-opacity":.27}));
+       contour.setAttribute("data-inmet-outline",paths.length?"ibge":"unavailable");
+     }catch{contour.setAttribute("data-inmet-outline","unavailable");}
+   })();
    const detail=$("p","jarvis-meteo-station-detail","Selecione um ponto: nome da estação, UF e situação.");
    const entries=report.stations.slice(0,600);
    for(const item of entries){
