@@ -1362,11 +1362,6 @@ try {
       window.ULTRON_DEVICES=window.__savedDeviceShortcut;
       window.ULTRON_MOBILE_CAMERA=window.__savedCameraShortcut;
     });
-    // Check TV AFTER the fresh phone pairing scenario, otherwise the TV
-    // shortcut itself creates a valid pairing code that is correctly reused.
-    await page.click('#btn-pair-tv');
-    assert.match(await page.$eval('#output-box',el=>el.textContent),/LG WEBOS/);
-
 
     // Offline local files remain safe, yet permit explicitly chosen files.
     await page.evaluate(()=>{
@@ -1379,9 +1374,11 @@ try {
     await page.click('[data-cc="files"]');
     await page.waitForFunction(()=>document.getElementById('output-box')
       .textContent.includes('LOCAL CORE OFFLINE'),{timeout:5000});
-    await page.$eval('.jarvis-cc-inline-result:last-child',el=>{
-      const b=[...el.querySelectorAll('button')].find(
-        b=>b.textContent.includes('Selecionar arquivos manualmente'));
+    await page.waitForFunction(()=>[...document.querySelectorAll('.jarvis-cc-inline-result button')]
+      .some(b=>b.textContent.includes('Selecionar arquivos manualmente')),{timeout:7000});
+    await page.evaluate(()=>{
+      const all=[...document.querySelectorAll('.jarvis-cc-inline-result button')];
+      const b=all.filter(b=>b.textContent.includes('Selecionar arquivos manualmente')).at(-1);
       b?.setAttribute('data-test-file-picker','true');
     });
     const chooserPromise=page.waitForFileChooser({timeout:8000});
@@ -1393,8 +1390,11 @@ try {
 
     // Agenda is a working, explicitly LOCAL scheduler (no invented Google sync).
     await page.click('[data-cc="agenda"]');
-    await page.$eval('.jarvis-cc-inline-result:last-child',el=>{
-      const b=[...el.querySelectorAll('button')].find(b=>b.textContent.includes('Adicionar compromisso'));
+    await page.waitForFunction(()=>[...document.querySelectorAll('.jarvis-cc-inline-result button')]
+      .some(b=>b.textContent.includes('Adicionar compromisso')),{timeout:7000});
+    await page.evaluate(()=>{
+      const all=[...document.querySelectorAll('.jarvis-cc-inline-result button')];
+      const b=all.filter(b=>b.textContent.includes('Adicionar compromisso')).at(-1);
       b?.setAttribute('data-test-agenda-add','true');
     });
     await page.click('[data-test-agenda-add="true"]');
@@ -1412,6 +1412,11 @@ try {
       localStorage.setItem('jarvis_local_agenda_v1',JSON.stringify(
         all.filter(x=>x.title!=='Teste de agenda local')));
     });
+    // Test TV last: its async Bridge diagnostic can append terminal lines.
+    // It must not interfere with other contextual action buttons.
+    await page.click('#btn-pair-tv');
+    await page.waitForFunction(()=>document.getElementById('output-box')
+      ?.textContent.includes('LG WEBOS'),{timeout:5000});
     await page.close();
   }
   console.log('NEURAL ANSWER PASS: ring-only boot; responsive stacked/split layout; compact square image cards; distinct inline video lane; mobile/laptop/TV');
