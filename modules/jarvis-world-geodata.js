@@ -197,7 +197,8 @@ export function normalizeWorldGeo(topic,region,payload,{now=()=>new Date().toISO
   const sortedYears=[...yearByCountry.values()].sort();
   const period=sortedYears.length?"Dados anuais disponíveis · "+sortedYears[0]+" a "+sortedYears.at(-1):"Dados anuais";
   return shortPoints(payload,topic,region,spec.label,spec.disclaimer,source,period,
-   def.colors.map((color,i)=>({color,label:def.labels[i]})),points,
+   def.colors.map((color,i)=>({color,label:def.labels[i]})),
+   points.sort((a,b)=>b.value-a.value),
    {unit:def.unit,kind:"country-indicator",coloredBy:"national-annual-indicator",
     countryValues:Object.fromEntries(indicators)});
  }
