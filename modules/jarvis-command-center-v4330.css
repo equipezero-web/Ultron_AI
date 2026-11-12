@@ -1873,3 +1873,30 @@ body.jarvis-command-center .jarvis-cc-agenda-form button{
 @media(max-width:600px){
   body.jarvis-command-center .jarvis-cc-agenda-form{grid-template-columns:1fr}
 }
+
+/* v4.99.2 — Prevent the Computer ↔ Mobile connect control collapsing into
+   a 27px-tall vertical label when the dock is compressed in TV/desktop mode. */
+body.jarvis-command-center .jarvis-cc-dock-grid > #jarvis-cc-link-slot{
+  box-sizing:border-box!important;
+  min-width:0!important;width:100%!important;max-width:100%!important;
+  justify-self:stretch!important;align-self:stretch!important;
+}
+body.jarvis-command-center .jarvis-cc-dock-grid > #jarvis-cc-link-slot > .bridge-link-panel{
+  box-sizing:border-box!important;
+  width:100%!important;max-width:100%!important;min-width:0!important;
+  display:flex!important;flex-direction:column!important;
+  align-items:stretch!important;justify-content:flex-start!important;
+  flex-wrap:nowrap!important;gap:7px!important;
+}
+body.jarvis-command-center #jarvis-cc-link-slot #btn-pair-mobile{
+  box-sizing:border-box!important;
+  display:block!important;position:relative!important;
+  align-self:stretch!important;flex:0 0 auto!important;
+  min-width:0!important;width:100%!important;max-width:100%!important;
+  min-height:44px!important;height:auto!important;
+  padding:11px 7px!important;margin:0!important;
+  writing-mode:horizontal-tb!important;white-space:normal!important;
+  word-break:normal!important;overflow-wrap:break-word!important;
+  line-height:1.35!important;font-size:11px!important;
+  cursor:pointer;touch-action:manipulation!important;pointer-events:auto!important;
+}
