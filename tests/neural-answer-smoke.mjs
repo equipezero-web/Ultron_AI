@@ -444,6 +444,7 @@ try {
       const state={visible:false,layerCount:0,playing:false,focused:null};
       window.ULTRON_EARTH={
         state,async open(){state.visible=true;return {ok:true}},
+        close(){state.visible=false;state.layerCount=0;state.playing=false;return {ok:true}},
         setThematicLayer(points,{playing=false}={}){state.layerCount=points.length;state.playing=playing;return {ok:true,count:points.length};},
         setThematicGrid(cells){state.spatialCount=cells.length;return {ok:true,count:cells.length};},
         setThematicCountries(countries){state.countryCount=countries.length;return {ok:true,count:countries.length};},
