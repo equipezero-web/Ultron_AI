@@ -557,3 +557,12 @@ body.jarvis-command-center .jarvis-geo-global-event .jarvis-geo-country-bar{
 body.jarvis-command-center .jarvis-geo-global-event .jarvis-geo-country-bar b{
  display:block;height:100%;border-radius:4px;min-width:1px;
 }
+
+/* Tsunami demonstration wavefront: schematic, not an inundation layer. */
+body.jarvis-command-center .jarvis-tsunami-wave-front{
+ animation:jarvis-tsunami-dash 1.4s linear infinite;pointer-events:none;
+}
+@keyframes jarvis-tsunami-dash{to{stroke-dashoffset:-36}}
+@media(prefers-reduced-motion:reduce){
+ body.jarvis-command-center .jarvis-tsunami-wave-front{animation:none}
+}
