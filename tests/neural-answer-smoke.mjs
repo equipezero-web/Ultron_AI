@@ -1242,9 +1242,25 @@ try {
       button.scrollIntoView({block:'center',behavior:'instant'}));
     await page.click('[data-visual="globe"]');
     await page.waitForFunction(()=>window.__phase3MockState.visible===true);
+    await page.evaluate(()=>{
+      const ring=document.querySelector('[data-visual="ring"]');
+      window.__ccRingEvents=[];
+      for(const type of ['pointerdown','pointerup','click'])
+        ring.addEventListener(type,e=>window.__ccRingEvents.push(type+':'+e.target.tagName));
+    });
+    await page.$eval('[data-visual="ring"]',b=>b.scrollIntoView({behavior:'instant',block:'center'}));
     await page.click('[data-visual="ring"]');
-    await page.waitForFunction(()=>window.__phase3MockState.visible===false&&
-      document.querySelector('.jarvis-cc-visual')?.dataset.mode==='ring');
+    const ringDebug=await page.evaluate(()=>{
+      const button=document.querySelector('[data-visual="ring"]'),r=button.getBoundingClientRect();
+      const hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);
+      return {events:window.__ccRingEvents,earthVisible:window.__phase3MockState.visible,
+       mode:document.querySelector('.jarvis-cc-visual')?.dataset.mode,
+       buttonRect:{x:r.x,y:r.y,w:r.width,h:r.height},
+       hit:hit?.tagName,hitClass:hit?.className,hitTitle:hit?.getAttribute('title')};
+    });
+    console.log('NEURAL RING RETURN DEBUG',JSON.stringify(ringDebug));
+    assert.equal(ringDebug.earthVisible,false,JSON.stringify(ringDebug));
+    assert.equal(ringDebug.mode,'ring',JSON.stringify(ringDebug));
     await page.evaluate(()=>{
       const tv=document.getElementById('btn-pair-tv');
       const camera=document.getElementById('btn-camera');
