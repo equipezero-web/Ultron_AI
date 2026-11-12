@@ -466,3 +466,29 @@ jobs:
           console.log('REAL SPATIAL SOURCES VERIFIED:',successes,'of',layers.length);
           // Provider outage must be explicit and never turn into fake colors.
           NODE
+
+  live-world-geo-providers:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Probe actual worldwide official event and indicator APIs
+        run: |
+          node --input-type=module <<'NODE'
+          import {loadWorldGeo} from './modules/jarvis-world-geodata.js';
+          const topics=['earthquakes','wildfires','population'];
+          let ok=0;
+          for(const topic of topics){
+            const value=await loadWorldGeo({topic,region:'world'});
+            console.log('REAL WORLD GEODATA',topic,JSON.stringify({
+              ok:value.ok,count:value.recordCount,source:value.dataset?.source?.url,
+              period:value.dataset?.source?.basePeriod,error:value.error
+            }).slice(0,900));
+            if(value.ok&&value.recordCount>0&&value.dataset?.theme?.legend?.length)ok++;
+          }
+          console.log('REAL WORLD PROVIDERS:',ok,'of',topics.length);
+          if(ok<2)console.log('::warning::Official sources partially unavailable; unit and browser tests still enforce strictly no fabricated values.');
+          NODE
