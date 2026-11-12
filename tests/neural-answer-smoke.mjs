@@ -1333,6 +1333,16 @@ try {
       };
     });
     await page.click('#btn-pair-mobile');
+    const pairDebug=await page.evaluate(()=>({
+      version:window.ULTRON_MOBILE_LINK?.version,
+      current:window.ULTRON_MOBILE_LINK?.state,
+      callCount:window.__mobilePairShortcutCalls,
+      cameraCount:window.__cameraShortcutCalls,
+      session:document.getElementById('bridge-session-state')?.textContent,
+      link:document.getElementById('bridge-link-state')?.textContent,
+      terminal:document.getElementById('output-box')?.textContent.slice(-650)
+    }));
+    console.log('PHONE PAIRING DEBUG',JSON.stringify(pairDebug));
     await page.waitForFunction(()=>document.getElementById('bridge-session-state')
       ?.textContent==='CODE 654321',{timeout:6000});
     assert.equal(await page.evaluate(()=>window.__mobilePairShortcutCalls),1);
