@@ -1186,15 +1186,22 @@ try {
       });
       assert.equal(target.ok,true,action+' must accept an actual click: '+JSON.stringify(target));
     }
+    // Assert real module bootstrap BEFORE injecting any test substitutes:
+    // previously a syntax error left ULTRON_DEVICES undefined in production.
+    await page.waitForFunction(()=>Boolean(
+      window.ULTRON_DEVICES?.listDevices&&window.ULTRON_LOCAL_FILES?.health&&
+      window.ULTRON_VISION?.analyze),{timeout:18000});
     await page.evaluate(()=>{
       window.__ccAuditSavedDevices=window.ULTRON_DEVICES;
       window.__ccAuditSavedFiles=window.ULTRON_LOCAL_FILES;
+      window.__ccAuditSavedMemory=window.ULTRON_MEMORY;
+      window.__ccAuditSavedMobileCamera=window.ULTRON_MOBILE_CAMERA;
+      window.ULTRON_MEMORY={...window.ULTRON_MEMORY,getMemoryKey:()=> 'test-operator'};
       window.ULTRON_DEVICES={listDevices:async()=>[]};
-      window.ULTRON_LOCAL_FILES={files:async()=>['Relatorio.txt']};
+      window.ULTRON_LOCAL_FILES={health:async()=>({ok:true}),files:async()=>['Relatorio.txt']};
+      window.ULTRON_MOBILE_CAMERA={smartConnect:()=>{window.__ccAuditCamera=(window.__ccAuditCamera||0)+1;return Promise.resolve(true);}};
       const tv=document.getElementById('btn-pair-tv');
       tv.click=()=>{window.__ccAuditTv=(window.__ccAuditTv||0)+1};
-      const camera=document.getElementById('btn-camera');
-      camera.click=()=>{window.__ccAuditCamera=(window.__ccAuditCamera||0)+1};
     });
     await page.evaluate(()=>{
       const b=document.querySelector('[data-cc="status"]');
@@ -1226,7 +1233,11 @@ try {
     await page.click('[data-cc="devices"]');
     await page.waitForFunction(()=>[...document.querySelectorAll('.jarvis-cc-inline-result button')]
       .some(el=>el.textContent.includes('Configurar TV')));
-    await page.click('.jarvis-cc-inline-result:last-child button');
+    await page.$eval('.jarvis-cc-inline-result:last-child',el=>{
+      const tv=[...el.querySelectorAll('button')].find(b=>b.textContent.includes('Configurar TV'));
+      tv?.setAttribute('data-test-tv','true');
+    });
+    await page.click('[data-test-tv="true"]');
     await page.waitForFunction(()=>window.__ccAuditTv===1);
     await page.click('[data-cc="files"]');
     await page.waitForFunction(()=>[...document.querySelectorAll('.jarvis-cc-inline-result')]
@@ -1252,10 +1263,11 @@ try {
     assert.equal(await page.$eval('[data-visual="ring"]',button=>button.getAttribute('aria-pressed')),'true');
     await page.evaluate(()=>{
       const tv=document.getElementById('btn-pair-tv');
-      const camera=document.getElementById('btn-camera');
-      delete tv.click;delete camera.click;
+      delete tv.click;
       window.ULTRON_DEVICES=window.__ccAuditSavedDevices;
       window.ULTRON_LOCAL_FILES=window.__ccAuditSavedFiles;
+      window.ULTRON_MEMORY=window.__ccAuditSavedMemory;
+      window.ULTRON_MOBILE_CAMERA=window.__ccAuditSavedMobileCamera;
     });
     await page.evaluate(()=>window.__phase3EarthRestore());
     await page.close();
