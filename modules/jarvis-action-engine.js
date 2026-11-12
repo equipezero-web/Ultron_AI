@@ -13,7 +13,7 @@ import {insightSummary,insightScenario,monitorSummary} from "./jarvis-weather-in
 import {classifyOperatorTurn} from "./jarvis-intent-engine.js?v=4.69.0";
 import API_CONFIG from "../config.js";
 import {validatePlan,isActionRequest} from "../backend/action-catalog.js?v=4.75.0";
-import {normalizeCommand} from "./jarvis-local-commands.js?v=4.97.0";
+import {normalizeCommand} from "./jarvis-local-commands.js?v=5.10.0";
 const W=()=>window;
 const action=(action,args={})=>({action,args});
 export function directPlan(message){
