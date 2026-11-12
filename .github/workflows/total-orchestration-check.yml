@@ -24,6 +24,9 @@ on:
       - 'tests/jarvis-global-weather.mjs'
       - 'modules/jarvis-spatial-intensity.js'
       - 'tests/jarvis-spatial-intensity.mjs'
+      - 'modules/jarvis-world-geodata.js'
+      - 'modules/jarvis-world-intent.js'
+      - 'tests/jarvis-world-geodata.mjs'
       - 'tests/jarvis-weather-intelligence.mjs'
       - 'tests/jarvis-weather-monitor.mjs'
       - 'backend/weather-intelligence.js'
@@ -72,6 +75,9 @@ on:
       - 'tests/jarvis-global-weather.mjs'
       - 'modules/jarvis-spatial-intensity.js'
       - 'tests/jarvis-spatial-intensity.mjs'
+      - 'modules/jarvis-world-geodata.js'
+      - 'modules/jarvis-world-intent.js'
+      - 'tests/jarvis-world-geodata.mjs'
       - 'tests/jarvis-weather-intelligence.mjs'
       - 'tests/jarvis-weather-monitor.mjs'
       - 'backend/weather-intelligence.js'
@@ -140,6 +146,9 @@ jobs:
           node tests/jarvis-global-weather.mjs
           node --check modules/jarvis-spatial-intensity.js
           node tests/jarvis-spatial-intensity.mjs
+          node --check modules/jarvis-world-geodata.js
+          node --check modules/jarvis-world-intent.js
+          node tests/jarvis-world-geodata.mjs
           node --check backend/weather-watchlist.js
           node tests/jarvis-weather-watchlist.mjs
           node --check backend/weather-intelligence.js
