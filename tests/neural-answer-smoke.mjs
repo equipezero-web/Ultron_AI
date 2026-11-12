@@ -1312,17 +1312,58 @@ try {
       'LIMPAR TERMINAL should clear responses without deleting data');
     await page.click('#btn-pair-tv');
     assert.match(await page.$eval('#output-box',el=>el.textContent),/LG WEBOS/);
+    // Phone pairing must work without starting remote camera or asking for
+    // camera access. Repeated presses cannot create duplicate pairing codes.
     await page.evaluate(()=>{
+      window.__savedDeviceShortcut=window.ULTRON_DEVICES;
+      window.__savedCameraShortcut=window.ULTRON_MOBILE_CAMERA;
       window.__mobilePairShortcutCalls=0;
-      window.__savedMobileShortcut=window.ULTRON_MOBILE_CAMERA;
+      window.__cameraShortcutCalls=0;
+      window.ULTRON_DEVICES={
+        ...window.ULTRON_DEVICES,
+        listDevices:async()=>[],
+        startPairing:async()=>{
+          window.__mobilePairShortcutCalls++;
+          return {ok:true,code:'654321',expiresInSeconds:600};
+        }
+      };
       window.ULTRON_MOBILE_CAMERA={
         ...window.ULTRON_MOBILE_CAMERA,
-        smartConnect:()=>{window.__mobilePairShortcutCalls++;return Promise.resolve(false);}
+        smartConnect:()=>{window.__cameraShortcutCalls++;return Promise.resolve(false);}
       };
     });
     await page.click('#btn-pair-mobile');
-    await page.waitForFunction(()=>window.__mobilePairShortcutCalls>0,{timeout:6000});
-    await page.evaluate(()=>{window.ULTRON_MOBILE_CAMERA=window.__savedMobileShortcut;});
+    await page.waitForFunction(()=>document.getElementById('bridge-session-state')
+      ?.textContent==='CODE 654321',{timeout:6000});
+    assert.equal(await page.evaluate(()=>window.__mobilePairShortcutCalls),1);
+    assert.equal(await page.evaluate(()=>window.__cameraShortcutCalls),0,
+      'Connect phone must not activate remote camera');
+    await page.click('#btn-pair-mobile');
+    assert.equal(await page.evaluate(()=>window.__mobilePairShortcutCalls),1,
+      'Do not generate a second code while previous code is valid');
+    await page.evaluate(()=>{
+      window.ULTRON_DEVICES.listDevices=async()=>[{
+        id:'mock-mobile-bridge',deviceType:'mobile',deviceName:'Android de teste',
+        online:true,status:'active',lastSeenAt:new Date().toISOString()
+      }];
+      return window.ULTRON_MOBILE_LINK.refresh();
+    });
+    await page.waitForFunction(()=>document.getElementById('bridge-link-state')
+      ?.textContent==='ONLINE');
+    assert.equal(await page.evaluate(()=>window.__cameraShortcutCalls),0);
+    await page.evaluate(()=>{
+      window.ULTRON_DEVICES.listDevices=async()=>[{
+        id:'mock-mobile-bridge',deviceType:'mobile',deviceName:'Android de teste',
+        online:false,status:'active',lastSeenAt:'2020-01-01 00:00:00'
+      }];
+      return window.ULTRON_MOBILE_LINK.refresh();
+    });
+    await page.waitForFunction(()=>document.getElementById('bridge-link-state')
+      ?.textContent==='OFFLINE');
+    await page.evaluate(()=>{
+      window.ULTRON_DEVICES=window.__savedDeviceShortcut;
+      window.ULTRON_MOBILE_CAMERA=window.__savedCameraShortcut;
+    });
 
     // Offline local files remain safe, yet permit explicitly chosen files.
     await page.evaluate(()=>{
