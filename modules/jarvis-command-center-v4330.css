@@ -1813,3 +1813,44 @@ body.jarvis-command-center .jarvis-cc-center>.jarvis-geo-visual[data-mode="2d"]{
   padding-right:8px!important;
  }
 }
+
+
+/* v4.99.1 — Real command shortcuts, never clipped into a scrolling text ribbon.
+   Native buttons remain separate hit targets on desktop, mobile and TV. */
+body.jarvis-command-center #jarvis-cc-input-slot .quick-actions {
+  display:grid!important;
+  grid-template-columns:repeat(auto-fit,minmax(112px,1fr))!important;
+  justify-items:stretch;align-items:stretch;
+  gap:7px!important;
+  width:100%!important;max-width:100%!important;min-width:0!important;
+  overflow:visible!important;scroll-snap-type:none!important;
+  flex-wrap:wrap!important;padding:3px 0 8px!important;
+  touch-action:pan-y!important;position:relative;z-index:8;
+}
+body.jarvis-command-center #jarvis-cc-input-slot .quick-actions button {
+  display:flex!important;align-items:center;justify-content:center;
+  width:100%;min-width:0!important;min-height:44px!important;
+  max-width:none!important;white-space:normal!important;
+  overflow:visible!important;text-overflow:clip!important;
+  scroll-snap-align:none!important;overflow-wrap:anywhere!important;
+  line-height:1.3!important;font-size:10px!important;
+  padding:8px 7px!important;border-radius:7px;
+  cursor:pointer;touch-action:manipulation!important;
+  pointer-events:auto!important;position:relative;z-index:1;
+}
+body.jarvis-command-center #jarvis-cc-input-slot .quick-actions button:focus-visible {
+  outline:2px solid #94dafa;outline-offset:2px;
+}
+@media(max-width:650px) {
+  body.jarvis-command-center #jarvis-cc-input-slot .quick-actions {
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  body.jarvis-command-center #jarvis-cc-input-slot .quick-actions button {
+    font-size:10px!important;min-height:44px!important;
+  }
+}
+@media(min-width:651px) and (max-width:1100px) {
+  body.jarvis-command-center #jarvis-cc-input-slot .quick-actions {
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  }
+}
