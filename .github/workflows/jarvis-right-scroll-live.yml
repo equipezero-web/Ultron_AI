@@ -1,0 +1,82 @@
+name: JARVIS Ring Zoom & Right Scroll Rail Live Check
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/jarvis-right-scroll-live.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  ring-zoom-rail-public:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Chromium browser client
+        run: npm install --no-save --no-package-lock --ignore-scripts puppeteer-core@24.33.0
+      - name: Prove live Ring zoom and separate right-side page scroll
+        run: |
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict';
+          import puppeteer from 'puppeteer-core';
+          const root='https://equipezero-web.github.io/Ultron_AI/';
+          async function get(label,url,pattern){
+            for(let attempt=1;attempt<=15;attempt++){
+              try{
+                const response=await fetch(url,{cache:'no-store',signal:AbortSignal.timeout(13000)});
+                const content=await response.text();
+                console.log(label,'HTTP',response.status,'attempt',attempt,'updated',pattern.test(content));
+                if(response.status===200&&pattern.test(content))return content;
+              }catch(error){console.log(label,String(error));}
+              if(attempt<15)await new Promise(resolve=>setTimeout(resolve,5000));
+            }
+            throw Error(label+' not yet live at '+url);
+          }
+          await get('HTML',root,/jarvis-earth[.]js[?]v=4[.]92[.]0/);
+          await get('Right rail CSS',root+'modules/jarvis-command-center-v4330.css?v=4.92.0',/jarvis-page-scroll-rail/);
+          await get('Real globe wheel',root+'modules/jarvis-earth.js?v=4.92.0',/installJarvisPageScrollRail/);
+          await get('Direct Ring wheel',root+'modules/jarvis-neural-ring-3d.js?v=4.92.0',/const adjustZoom=event/);
+          const browser=await puppeteer.launch({
+            executablePath:process.env.CHROME_BIN||'/usr/bin/google-chrome',headless:true,
+            args:['--no-sandbox','--disable-dev-shm-usage','--enable-webgl','--enable-unsafe-swiftshader']
+          });
+          try{
+            const page=await browser.newPage();
+            await page.setViewport({width:1440,height:900,deviceScaleFactor:1});
+            await page.goto(root,{waitUntil:'domcontentloaded',timeout:45000});
+            await page.waitForFunction(()=>window.ULTRON_NEURAL_RING_3D?.active,{timeout:30000});
+            await page.evaluate(()=>{
+              const spacer=document.createElement('div');spacer.style.height='1400px';
+              document.body.append(spacer);window.scrollTo(0,35);
+            });
+            await page.waitForFunction(()=>{
+              const rail=document.querySelector('#jarvis-page-scroll-rail');
+              return rail&&!rail.hidden&&getComputedStyle(rail).display!=='none';
+            },{timeout:5000});
+            const r=await page.$eval('#jarvis-cc-canvas',el=>{const x=el.getBoundingClientRect();
+              return {x:x.x+x.width/2,y:x.y+x.height/2};});
+            await page.mouse.move(r.x,r.y);
+            const scrollBefore=await page.evaluate(()=>window.scrollY);
+            const zoomBefore=await page.evaluate(()=>window.ULTRON_NEURAL_RING_3D.state.zoom);
+            await page.mouse.wheel({deltaY:-240});
+            await new Promise(resolve=>setTimeout(resolve,320));
+            const zoomAfter=await page.evaluate(()=>window.ULTRON_NEURAL_RING_3D.state.zoom);
+            const scrollAfterZoom=await page.evaluate(()=>window.scrollY);
+            console.log('LIVE RING ZOOM',JSON.stringify({scrollBefore,scrollAfterZoom,zoomBefore,zoomAfter}));
+            assert.ok(zoomAfter>zoomBefore+.08,'Ring default wheel must zoom');
+            assert.ok(Math.abs(scrollAfterZoom-scrollBefore)<3,'Ring default wheel must NOT scroll page');
+            const rail=await page.$eval('#jarvis-page-scroll-rail',el=>{const x=el.getBoundingClientRect();
+              return {x:x.x+x.width/2,y:x.y+x.height/2};});
+            await page.mouse.move(rail.x,rail.y);
+            await page.mouse.wheel({deltaY:280});
+            await new Promise(resolve=>setTimeout(resolve,250));
+            const scrollAfterRail=await page.evaluate(()=>window.scrollY);
+            const zoomAfterRail=await page.evaluate(()=>window.ULTRON_NEURAL_RING_3D.state.zoom);
+            console.log('LIVE RIGHT RAIL SCROLL',JSON.stringify({scrollBefore,scrollAfterRail,zoomAfter,zoomAfterRail}));
+            assert.ok(scrollAfterRail>scrollBefore+75,'Rail must scroll the whole document');
+            assert.equal(zoomAfterRail,zoomAfter,'Right rail must not zoom ring');
+            console.log('JARVIS LIVE: WHEEL ZOOMS RING, RIGHT RAIL SCROLLS PAGE');
+          }finally{await browser.close();}
+          NODE
