@@ -437,9 +437,13 @@ public class MainActivity extends Activity {
                 if (!response.optBoolean("connected", false)) {
                     throw new IllegalStateException("Servidor respondeu sem confirmar conexão.");
                 }
-                report = "CLOUD ACESSÍVEL / credencial autenticada. O teste não consome comandos. "
-                        + "Para permanecer online, INICIAR BRIDGE deve estar ativo; "
-                        + "um teste isolado não é prova de conexão permanente.";
+                boolean serviceOnline = response.optBoolean("serviceOnline", false);
+                report = serviceOnline
+                        ? "CLOUD AUTENTICADO / BRIDGE ATIVO: o servidor registrou uma comunicação recente do serviço. "
+                          + "O teste não executou comandos nem alterou o horário de atividade."
+                        : "CLOUD AUTENTICADO / BRIDGE NÃO DETECTADO ATIVO: o servidor respondeu, "
+                          + "mas não recebeu atividade recente do serviço em segundo plano. "
+                          + "Toque em INICIAR BRIDGE e repita a verificação.";
             } catch (Exception error) {
                 report = "FALHA DE CONEXÃO CLOUD: " + String.valueOf(error.getMessage())
                         + ". Confira a internet e as credenciais; se o código foi revogado, refaça o pareamento.";
