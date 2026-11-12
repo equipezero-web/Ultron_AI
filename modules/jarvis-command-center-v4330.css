@@ -517,6 +517,32 @@ body.jarvis-command-center .jarvis-cc-dock-module .link-grid > div{
 }
 body.jarvis-command-center .jarvis-cc-dock-module .link-grid strong{font-size:9px}
 body.jarvis-command-center .jarvis-cc-panel{display:none!important}
+body.jarvis-command-center #jarvis-cc-input-slot .jarvis-cc-tool-actions{
+ display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr));
+ gap:6px;width:100%;min-width:0;max-width:100%;
+ box-sizing:border-box;overflow:visible!important;position:relative;z-index:6;
+}
+body.jarvis-command-center #jarvis-cc-input-slot .jarvis-cc-tool-actions button{
+ display:flex;align-items:center;justify-content:center;min-width:0;
+ min-height:42px;padding:7px 5px;white-space:normal;overflow-wrap:anywhere;
+ text-align:center;font:600 10px/1.3 ui-monospace,monospace;
+ background:#101c32;color:#e1d5e2;border:1px solid #79506a;
+ border-radius:6px;cursor:pointer;touch-action:manipulation;pointer-events:auto;
+}
+body.jarvis-command-center #jarvis-cc-input-slot .jarvis-cc-tool-actions button:hover{
+ border-color:#a8d9f4;background:#1b3951;
+}
+body.jarvis-command-center #jarvis-cc-input-slot .jarvis-cc-tool-actions button:focus-visible{
+ outline:2px solid #93dbf8;outline-offset:2px;
+}
+@media(max-width:600px){
+ body.jarvis-command-center #jarvis-cc-input-slot .jarvis-cc-tool-actions{
+  grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;
+ }
+ body.jarvis-command-center #jarvis-cc-input-slot .jarvis-cc-tool-actions button{
+  min-height:40px;font-size:10px;padding:6px 4px;
+ }
+}
 body.jarvis-command-center .jarvis-cc-inline-result{
   margin:6px 0;padding:6px 8px;border-left:2px solid #8e4d69;
   color:#c3d8e7;background:#081427;
