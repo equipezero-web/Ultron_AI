@@ -16,6 +16,7 @@ if (stage) {
     <div class="jarvis-cc-center"><div class="jarvis-cc-heading">J.A.R.V.I.S. <span>// HOLOGRAPHIC COMMAND</span></div><div class="jarvis-cc-visual"><canvas id="jarvis-cc-canvas" aria-label="Visualização holográfica do globo terrestre" role="img"></canvas><div class="jarvis-cc-orb-label" id="jarvis-cc-visual-label">NEURAL RING</div></div><div class="jarvis-cc-camera-slot" id="jarvis-cc-camera-slot"></div><div class="jarvis-cc-orb-controls"><button type="button" data-visual="ring" aria-pressed="true" title="Exibir anel holográfico">◎</button><button type="button" data-visual="globe" aria-pressed="false" title="Mostrar globo terrestre">◉</button></div></div>
     <aside class="jarvis-cc-right"><div id="jarvis-cc-voice-slot"></div><div id="jarvis-cc-infra-slot"></div></aside><div class="jarvis-cc-bottom"><div class="jarvis-cc-responses"><div class="jarvis-cc-responses-title">J.A.R.V.I.S // RESPOSTAS E EVENTOS</div><div id="jarvis-cc-response-slot"></div></div><div id="jarvis-cc-input-slot"></div><div class="jarvis-cc-actions">
       <button type="button" data-cc="earth">GLOBO 3D</button>
+      <button type="button" data-cc="ring">VOLTAR AO RING</button>
       <button type="button" data-cc="status">SISTEMA</button>
       <button type="button" data-cc="agenda">AGENDA</button>
       <button type="button" data-cc="camera">CÂMERA</button>
@@ -49,10 +50,23 @@ if (stage) {
     textComposer.setAttribute('autocapitalize','sentences');
     textComposer.setAttribute('spellcheck','true');
   }
-  // The legacy .jarvis-cc-actions container is intentionally hidden by CSS.
-  // Keep the Earth entry point alongside the visible quick actions instead.
-  const globeQuickButton = ui.querySelector('[data-cc="earth"]');
-  ui.querySelector('#jarvis-cc-input-slot .quick-actions')?.append(globeQuickButton);
+  // All six controls must be reachable without a horizontal swipe.
+  // The scrolling quick-actions strip can cancel a click during snap/scroll,
+  // so put SYSTEM, AGENDA, CAMERA, DEVICES and FILES into a stable tool grid
+  // within the SAME terminal. Earth remains a primary quick action.
+  const quickBar=ui.querySelector('#jarvis-cc-input-slot .quick-actions');
+  const globeQuickButton=ui.querySelector('[data-cc="earth"]');
+  if(quickBar){
+    const tools=document.createElement('div');tools.className='jarvis-cc-tool-actions';
+    tools.setAttribute('role','group');
+    tools.setAttribute('aria-label','Ferramentas do J.A.R.V.I.S.');
+    for(const button of [...ui.querySelectorAll('.jarvis-cc-actions [data-cc]')]){
+      button.setAttribute('aria-label',button.textContent.trim());
+      if(button.dataset.cc==='earth')quickBar.append(button);
+      else tools.append(button);
+    }
+    quickBar.after(tools);
+  }
   // A single 3D neural stage. All real sensor/gateway/bridge/infra panels
   // remain functional with their original IDs, moved beside the command composer.
   const bottom = ui.querySelector('.jarvis-cc-bottom');
@@ -164,7 +178,23 @@ if (stage) {
     if (visualMode === 'ring') void bootNeuralRing();
     window.dispatchEvent(new CustomEvent("ultron:visual-mode",{detail:{mode:visualMode}}));
   }
-  ui.querySelectorAll('[data-visual]').forEach(button => button.addEventListener('click',() => setVisualMode(button.dataset.visual)));
+  ui.querySelectorAll('[data-visual]').forEach(button=>{
+    let lastPointerAt=0;
+    const activate=()=>{
+      // Globe must actually start the 3D engine, not only change a label.
+      if(button.dataset.visual==='globe'){void actions.earth();return;}
+      if(window.ULTRON_EARTH?.state?.visible)window.ULTRON_EARTH.close();
+      setVisualMode('ring');
+    };
+    button.addEventListener('pointerdown',event=>{
+      if(event.button!==0)return;
+      lastPointerAt=Date.now();activate();
+    });
+    button.addEventListener('click',()=>{
+      if(Date.now()-lastPointerAt<850)return;
+      activate();
+    });
+  });
   // Wheel on the full neural stage controls the active 3D view, NEVER the page.
   // Native WebGL and Mapbox listeners handle gestures directly on their canvases.
   // This handler covers gaps, labels, and overlay controls without stealing
@@ -199,17 +229,51 @@ if (stage) {
     log.prepend(p);while(log.children.length>5)log.lastElementChild.remove();
   }
   const state = ui.querySelector('#jarvis-cc-state');
-  function show(title, content) {
-    // No popup and no new section: results go into the existing command terminal.
-    const output = document.getElementById('output-box');
-    if (!output) return;
-    const line = document.createElement('p');
-    line.className = 'jarvis-cc-inline-result';
-    line.textContent = '> [' + title + '] ' + String(content);
+  function show(title, content, action=null) {
+    // In-line actionable results are essential: previously "Configurar TV"
+    // and "Atualizar arquivos" were passed as a third argument but ignored.
+    const output=document.getElementById('output-box');
+    if(!output)return;
+    const line=document.createElement('div');
+    line.className='jarvis-cc-inline-result';
+    line.setAttribute('role','status');
+    const message=document.createElement('p');
+    message.textContent='> ['+title+'] '+String(content);
+    line.append(message);
+    if(action&&typeof action.run==='function'&&typeof action.label==='string'){
+      const button=document.createElement('button');button.type='button';
+      button.className='jarvis-cc-inline-action';
+      button.textContent=action.label.slice(0,65);
+      let lastActionPointerAt=0;
+      const activateAction=()=>{
+        if(button.disabled)return;
+        button.disabled=true;button.setAttribute('aria-busy','true');
+        // Execute synchronously on the initial press to preserve trusted
+        // user activation for TV pairing and camera permission.
+        let pending;
+        try{pending=action.run();}
+        catch(error){pending=Promise.reject(error);}
+        Promise.resolve(pending).catch(error=>{
+          show(title,'Não foi possível executar '+action.label+': '+
+            String(error?.message||error).slice(0,140));
+        }).finally(()=>{button.disabled=false;button.removeAttribute('aria-busy');});
+      };
+      button.addEventListener('pointerdown',event=>{
+        if(event.button!==0)return;
+        event.stopPropagation();
+        lastActionPointerAt=Date.now();activateAction();
+      });
+      button.addEventListener('click',event=>{
+        event.stopPropagation();
+        if(Date.now()-lastActionPointerAt<850)return;
+        activateAction();
+      });
+      line.append(button);
+    }
     output.append(line);
-    while (output.children.length > 90) output.firstElementChild.remove();
-    output.scrollTop = output.scrollHeight;
-    logEvent(title + ' // ATUALIZADO');
+    while(output.children.length>90)output.firstElementChild.remove();
+    output.scrollTop=output.scrollHeight;
+    logEvent(title+' // ATUALIZADO');
   }
   const scrollTo = (selector) => document.querySelector(selector)?.scrollIntoView({behavior:'smooth',block:'center'});
   let openingEarth = false;
@@ -231,16 +295,33 @@ if (stage) {
         logEvent('EARTH // ' + (error?.message || 'globo indisponível'));
       } finally { openingEarth = false; }
     },
+    ring(){
+      if(window.ULTRON_EARTH?.state?.visible)window.ULTRON_EARTH.close();
+      setVisualMode('ring');
+      logEvent('NEURAL RING // RESTAURADO');
+    },
     status() {
-      const voice = window.ULTRON_VOICE_MATCH?.state;
-      show('STATUS DO SISTEMA', 'Voice Match: ' + (voice?.monitorActive ? 'monitor ativo' : 'monitor inativo') + ' · Câmera: ' + (document.querySelector('#camera-state')?.textContent || 'não informada') + '. Consulte o terminal para diagnósticos detalhados.');
+      const voice=window.ULTRON_VOICE_MATCH?.state;
+      show('STATUS DO SISTEMA','Voice Match: '+
+        (voice?.monitorActive?'monitor ativo':'monitor inativo')+
+        ' · Câmera: '+(document.querySelector('#camera-state')?.textContent||'não informada')+
+        ' · Globo: '+(window.ULTRON_EARTH?.state?.visible?'ativo':'em espera')+
+        '. Consulte o terminal para diagnósticos detalhados.',
+        {label:'Atualizar status',run:()=>actions.status()});
     },
     agenda() {
       const now = new Date();
       show('AGENDA / VISÃO LOCAL', now.toLocaleString('pt-BR',{dateStyle:'full',timeStyle:'short'}) + '. Calendário externo ainda não conectado. Nenhum compromisso é presumido.');
     },
     camera() {
-      show('SENSOR ÓPTICO', 'Câmera disponível no módulo integrado ao lado dos comandos. Clique em ATIVAR SENSOR DO CELULAR para conectar sem abrir outra tela.');
+      const cameraButton=document.getElementById('btn-camera');
+      if(!cameraButton||cameraButton.disabled){
+        show('SENSOR ÓPTICO','O botão da câmera está indisponível ou a câmera já está ativa. Confira o painel Optical Sensor.');
+        return;
+      }
+      // User-initiated click: let the native camera module obtain permission.
+      cameraButton.click();
+      show('SENSOR ÓPTICO','Solicitação enviada ao módulo de câmera do próprio dispositivo. O acesso depende da permissão do navegador.');
     },
     async files() {
       const api = window.ULTRON_LOCAL_FILES;
@@ -290,10 +371,28 @@ if (stage) {
     quickEarthPointerAt = Date.now();
     void actions.earth();
   });
-  ui.querySelectorAll('[data-cc]').forEach((button) => button.addEventListener('click', () => {
-    if (button.dataset.cc === 'earth' && Date.now() - quickEarthPointerAt < 750) return;
-    actions[button.dataset.cc]?.();
-  }));
+  ui.querySelectorAll('[data-cc]').forEach(button=>{
+    // A responsive DOM change can cancel click between pointerdown and up.
+    // Handle the initial trusted press, dedupe the later click, and preserve
+    // Enter/Space for keyboard activation (which dispatches click only).
+    if(button.dataset.cc!=='earth'){
+      let lastPressAt=0;
+      const activate=()=>actions[button.dataset.cc]?.();
+      button.addEventListener('pointerdown',event=>{
+        if(event.button!==0)return;
+        lastPressAt=Date.now();activate();
+      });
+      button.addEventListener('click',()=>{
+        if(Date.now()-lastPressAt<850)return;
+        activate();
+      });
+    }else{
+      button.addEventListener('click',()=>{
+        if(Date.now()-quickEarthPointerAt<850)return;
+        actions.earth();
+      });
+    }
+  });
   window.addEventListener('ultron:processing-start',()=>{state.textContent='PROCESSANDO';logEvent('CORE // PROCESSING');});
   window.addEventListener('ultron:processing-end',()=>{state.textContent='STANDBY';});
   window.addEventListener('ultron:speech-start',()=>{state.textContent='FALANDO';logEvent('VOICE // OUTPUT');});

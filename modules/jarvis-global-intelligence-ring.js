@@ -288,7 +288,10 @@ if(stage){
     if(Date.now()-pointerOpenAt<800)return;
     void open({view:"3d"});
   });
-  quick.append(btn);
+  // World monitoring and radar are priority actions on narrow screens.
+  quick.prepend(btn);
+  const radar=document.getElementById("btn-meteo-center");
+  if(radar&&quick.contains(radar))btn.after(radar);
  }
  // Existing wake state already triggers a separate spoken news briefing.
  // Add nonintrusive sourced event status; DO NOT interrupt its narration.

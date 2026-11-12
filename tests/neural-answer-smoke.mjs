@@ -1160,6 +1160,103 @@ try {
     assert.equal(clearResult.outputCount,0,"No terminal logs should reappear after clear");
     assert.equal(clearResult.input,"");
 
+    // COMMAND CENTER BUTTON AUDIT — use actual pointer/click events.
+    // A previous layout hid 5/6 controls and the globe-mode button
+    // changed only its label instead of opening ULTRON_EARTH.
+    const ccButtons=await page.evaluate(()=>[...document.querySelectorAll(
+      '#jarvis-cc-input-slot [data-cc]')].map(button=>({
+      action:button.dataset.cc,visible:getComputedStyle(button).display!=='none',
+      width:Math.round(button.getBoundingClientRect().width)
+    })));
+    assert.deepEqual(ccButtons.map(x=>x.action).sort(),
+      ['agenda','camera','devices','earth','files','ring','status'].sort(),
+      'All seven command-center controls, including return to Ring, must be reachable');
+    assert.ok(ccButtons.every(x=>x.visible&&x.width>12),JSON.stringify(ccButtons));
+    for(const action of ['status','agenda','devices','files','camera','ring']){
+      const selector='[data-cc="'+action+'"]';
+      await page.$eval(selector,button=>button.scrollIntoView({
+        behavior:'instant',block:'center',inline:'center'
+      }));
+      const target=await page.$eval(selector,button=>{
+        const r=button.getBoundingClientRect();
+        const center=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);
+        return {ok:center===button||button.contains(center),
+          blocker:center?.tagName||null,blockerText:center?.textContent?.slice(0,32),
+          width:r.width,height:r.height};
+      });
+      assert.equal(target.ok,true,action+' must accept an actual click: '+JSON.stringify(target));
+    }
+    await page.evaluate(()=>{
+      window.__ccAuditSavedDevices=window.ULTRON_DEVICES;
+      window.__ccAuditSavedFiles=window.ULTRON_LOCAL_FILES;
+      window.ULTRON_DEVICES={listDevices:async()=>[]};
+      window.ULTRON_LOCAL_FILES={files:async()=>['Relatorio.txt']};
+      const tv=document.getElementById('btn-pair-tv');
+      tv.click=()=>{window.__ccAuditTv=(window.__ccAuditTv||0)+1};
+      const camera=document.getElementById('btn-camera');
+      camera.click=()=>{window.__ccAuditCamera=(window.__ccAuditCamera||0)+1};
+    });
+    await page.evaluate(()=>{
+      const b=document.querySelector('[data-cc="status"]');
+      window.__ccStatusEvents=[];
+      for(const type of ['pointerdown','pointerup','click']){
+        b.addEventListener(type,e=>window.__ccStatusEvents.push(type+':'+e.target.tagName));
+      }
+    });
+    await page.click('[data-cc="status"]');
+    const ccStatusDebug=await page.evaluate(()=>({
+      events:window.__ccStatusEvents,
+      center:window.JARVIS_COMMAND_CENTER?.version,
+      output:document.getElementById('output-box')?.textContent?.slice(-850),
+      actionButtons:document.querySelectorAll('[data-cc="status"]').length,
+      buttonParent:document.querySelector('[data-cc="status"]')?.parentElement?.className,
+      messageCount:document.querySelectorAll('.jarvis-cc-inline-result').length,
+      ccAlive:!!window.JARVIS_COMMAND_CENTER
+    }));
+    console.log('COMMAND CENTER STATUS DEBUG',JSON.stringify(ccStatusDebug));
+    assert.ok(ccStatusDebug.output?.includes('STATUS DO SISTEMA'),
+      'Real STATUS button must update terminal: '+JSON.stringify(ccStatusDebug));
+    assert.ok(await page.$eval('.jarvis-cc-inline-result:last-child',
+      el=>el.querySelector('button')?.textContent.includes('Atualizar status')));
+    await page.click('.jarvis-cc-inline-result:last-child button');
+    await page.waitForFunction(()=>[...document.querySelectorAll('.jarvis-cc-inline-result')]
+      .filter(el=>el.textContent.includes('STATUS DO SISTEMA')).length>=2);
+    await page.click('[data-cc="agenda"]');
+    assert.match(await page.$eval('.jarvis-cc-inline-result:last-child',el=>el.textContent),/AGENDA \/ VISÃO LOCAL/);
+    await page.click('[data-cc="devices"]');
+    await page.waitForFunction(()=>[...document.querySelectorAll('.jarvis-cc-inline-result button')]
+      .some(el=>el.textContent.includes('Configurar TV')));
+    await page.click('.jarvis-cc-inline-result:last-child button');
+    await page.waitForFunction(()=>window.__ccAuditTv===1);
+    await page.click('[data-cc="files"]');
+    await page.waitForFunction(()=>[...document.querySelectorAll('.jarvis-cc-inline-result')]
+      .some(el=>el.textContent.includes('ARQUIVOS LOCAIS (1)')));
+    assert.ok(await page.$eval('.jarvis-cc-inline-result:last-child',
+      el=>el.querySelector('button')?.textContent.includes('Atualizar arquivos')));
+    await page.click('.jarvis-cc-inline-result:last-child button');
+    await page.waitForFunction(()=>[...document.querySelectorAll('.jarvis-cc-inline-result')]
+      .filter(el=>el.textContent.includes('ARQUIVOS LOCAIS (1)')).length>=2);
+    await page.click('[data-cc="camera"]');
+    await page.waitForFunction(()=>window.__ccAuditCamera===1);
+    await page.$eval('[data-visual="globe"]',button=>
+      button.scrollIntoView({block:'center',behavior:'instant'}));
+    await page.click('[data-visual="globe"]');
+    await page.waitForFunction(()=>window.__phase3MockState.visible===true);
+    // The stable return-to-Ring tool must work even when a moving 3D
+    // visual prevents a click on the tiny sphere-mode toggle.
+    await page.$eval('[data-cc="ring"]',button=>
+      button.scrollIntoView({behavior:'instant',block:'center'}));
+    await page.click('[data-cc="ring"]');
+    await page.waitForFunction(()=>window.__phase3MockState.visible===false&&
+      document.querySelector('.jarvis-cc-visual')?.dataset.mode==='ring',{timeout:9000});
+    assert.equal(await page.$eval('[data-visual="ring"]',button=>button.getAttribute('aria-pressed')),'true');
+    await page.evaluate(()=>{
+      const tv=document.getElementById('btn-pair-tv');
+      const camera=document.getElementById('btn-camera');
+      delete tv.click;delete camera.click;
+      window.ULTRON_DEVICES=window.__ccAuditSavedDevices;
+      window.ULTRON_LOCAL_FILES=window.__ccAuditSavedFiles;
+    });
     await page.evaluate(()=>window.__phase3EarthRestore());
     await page.close();
   }
