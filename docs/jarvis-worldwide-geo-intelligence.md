@@ -59,3 +59,15 @@ O Neural Ring inclui agora **lista comparativa ordenada dos 25 maiores valores**
 **Limites:** não é um gerador de mapas sobre qualquer assunto por inferência. Apenas temas com fontes georreferenciadas, séries numéricas e adaptadores testados podem virar mapas de intensidade. Conflitos e migrações atuais, por exemplo, ainda precisam de adaptadores confiáveis específicos; solicitações sem fonte adequada devem gerar explicação/research, nunca regiões coloridas artificiais. Nenhuma série anual deve ser anunciada como ao vivo.
 
 **Verificação:** `node tests/jarvis-world-geodata.mjs`. Valida comandos, catálogo, valores por país, percentuais fora de faixa, temas não suportados e conversão de dados.
+
+## Simulação visual didática — tsunami hipotético no Japão (v4.96)
+
+**Comando:** `Jarvis, simule um tsunami no Japão`; alternativa `Jarvis, simule um tsunami no Japão no mapa 2D`.
+
+**Fluxo de verdade:** comando passa por `japanTsunamiIntent`, validação do catálogo `geo.show` e `geo.play`, `ULTRON_GEO_VISUAL.open`, e renderização no Neural Ring. Não depende de um LLM improvisar instruções sobre previsão do tempo.
+
+**Cenário:** origem arbitrária a leste do Japão e 12 quadros de onda geométrica expansiva, com 16 pontos por frente (mais a origem); globo 3D usa os pontos reais do desenho, enquanto o 2D mostra o contorno SVG e destaca a área. Os quadros percorrem a animação automaticamente, com pausa/retomada, scrub, troca 2D/3D e filtro de segurança. Tudo acontece dentro do Neural Ring, inclusive em celular.
+
+**Aviso obrigatório:** `SIMULAÇÃO DIDÁTICA — NÃO É PREVISÃO OU ALERTA`. Geometria, duração da animação e origem são hipóteses visuais sem medidas físicas. NÃO inferir altura da água, danos, inundações, tempo de chegada, probabilidade ou terremoto real. A NOAA (https://www.noaa.gov/education/resource-collections/ocean-coasts/tsunamis) embasa apenas o conceito, **não** a trajetória do desenho. Alertas verdadeiros devem ser obtidos de autoridades nacionais competentes.
+
+**Testes:** `node tests/jarvis-tsunami-simulation.mjs`; `tests/neural-answer-smoke.mjs` valida 2D, frames realmente em movimento e marcadores no globo 3D com comandos idênticos aos ditados, em diferentes viewports.
