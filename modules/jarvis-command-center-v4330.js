@@ -177,13 +177,23 @@ if (stage) {
     if (visualMode === 'ring') void bootNeuralRing();
     window.dispatchEvent(new CustomEvent("ultron:visual-mode",{detail:{mode:visualMode}}));
   }
-  ui.querySelectorAll('[data-visual]').forEach(button => button.addEventListener('click',()=>{
-    // "Globo" must actually initialize the 3D Earth engine; changing only a
-    // text label left an empty visual stage and appeared as a dead button.
-    if(button.dataset.visual==='globe'){void actions.earth();return;}
-    if(window.ULTRON_EARTH?.state?.visible)window.ULTRON_EARTH.close();
-    setVisualMode('ring');
-  }));
+  ui.querySelectorAll('[data-visual]').forEach(button=>{
+    let lastPointerAt=0;
+    const activate=()=>{
+      // Globe must actually start the 3D engine, not only change a label.
+      if(button.dataset.visual==='globe'){void actions.earth();return;}
+      if(window.ULTRON_EARTH?.state?.visible)window.ULTRON_EARTH.close();
+      setVisualMode('ring');
+    };
+    button.addEventListener('pointerdown',event=>{
+      if(event.button!==0)return;
+      lastPointerAt=Date.now();activate();
+    });
+    button.addEventListener('click',()=>{
+      if(Date.now()-lastPointerAt<850)return;
+      activate();
+    });
+  });
   // Wheel on the full neural stage controls the active 3D view, NEVER the page.
   // Native WebGL and Mapbox listeners handle gestures directly on their canvases.
   // This handler covers gaps, labels, and overlay controls without stealing
@@ -345,10 +355,28 @@ if (stage) {
     quickEarthPointerAt = Date.now();
     void actions.earth();
   });
-  ui.querySelectorAll('[data-cc]').forEach((button) => button.addEventListener('click', () => {
-    if (button.dataset.cc === 'earth' && Date.now() - quickEarthPointerAt < 750) return;
-    actions[button.dataset.cc]?.();
-  }));
+  ui.querySelectorAll('[data-cc]').forEach(button=>{
+    // A responsive DOM change can cancel click between pointerdown and up.
+    // Handle the initial trusted press, dedupe the later click, and preserve
+    // Enter/Space for keyboard activation (which dispatches click only).
+    if(button.dataset.cc!=='earth'){
+      let lastPressAt=0;
+      const activate=()=>actions[button.dataset.cc]?.();
+      button.addEventListener('pointerdown',event=>{
+        if(event.button!==0)return;
+        lastPressAt=Date.now();activate();
+      });
+      button.addEventListener('click',()=>{
+        if(Date.now()-lastPressAt<850)return;
+        activate();
+      });
+    }else{
+      button.addEventListener('click',()=>{
+        if(Date.now()-quickEarthPointerAt<850)return;
+        actions.earth();
+      });
+    }
+  });
   window.addEventListener('ultron:processing-start',()=>{state.textContent='PROCESSANDO';logEvent('CORE // PROCESSING');});
   window.addEventListener('ultron:processing-end',()=>{state.textContent='STANDBY';});
   window.addEventListener('ultron:speech-start',()=>{state.textContent='FALANDO';logEvent('VOICE // OUTPUT');});
