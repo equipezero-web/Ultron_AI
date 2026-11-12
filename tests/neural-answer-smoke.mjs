@@ -17,6 +17,7 @@ try {
     // depending on example.org or the external network.
     await page.setRequestInterception(true);
     let weatherProxyOffline=false;
+    let globalBackendOffline=false;
     let weatherCityBackendOffline=false;
     let watchSaved=false;
     page.on('request',req=>{
@@ -147,6 +148,37 @@ try {
          body:JSON.stringify({ok:true,cadenceHours:3,
            watches:watchSaved?[{location_id:1850147,name:'Tokyo',country:'Japan',last_checked_at:null}]:[],
            history:[]})});
+      }
+      if(req.url().includes('/api/intelligence/global')&&globalBackendOffline){
+        return req.respond({status:503,headers:{'access-control-allow-origin':'*'},
+          contentType:'application/json',body:JSON.stringify({
+            ok:false,error:'Primeira coleta D1 ainda não registrada'})});
+      }
+      if(globalBackendOffline&&req.url().startsWith(
+         'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_day.geojson')){
+        const at=Date.now()-15*60000;
+        return req.respond({status:200,headers:{'access-control-allow-origin':'*'},
+          contentType:'application/json',body:JSON.stringify({type:'FeatureCollection',features:[{
+            id:'us-test-fallback',type:'Feature',geometry:{type:'Point',coordinates:[-35,-8]},
+            properties:{time:at,updated:at,mag:5.6,title:'Terremoto publicado (teste)',
+            place:'Pernambuco',url:'https://earthquake.usgs.gov/earthquakes/eventpage/us-test-fallback'}
+          }]})});
+      }
+      if(globalBackendOffline&&req.url().startsWith(
+        'https://eonet.gsfc.nasa.gov/api/v3/events/geojson')){
+        return req.respond({status:200,headers:{'access-control-allow-origin':'*'},
+          contentType:'application/json',body:JSON.stringify({type:'FeatureCollection',features:[{
+            id:'EONET-test',type:'Feature',
+            geometry:{type:'Point',coordinates:[-38,-9]},
+            properties:{id:'EONET-test',title:'Incêndio natural catalogado (teste)',
+              date:new Date().toISOString(),categories:[{id:'wildfires'}],
+              link:'https://eonet.gsfc.nasa.gov/api/v3/events/EONET-test'}
+          }]})});
+      }
+      if(globalBackendOffline&&req.url().includes(
+          'https://www.gdacs.org/gdacsapi/api/events/geteventlist/SEARCH')){
+        return req.respond({status:503,headers:{'access-control-allow-origin':'*'},
+          contentType:'application/json',body:JSON.stringify({error:'Fonte indisponível'})});
       }
       if(req.url().includes('/api/intelligence/global')){
         const time=new Date().toISOString();
@@ -1046,8 +1078,67 @@ try {
     });
     await page.waitForFunction(()=>document.querySelectorAll(".jarvis-global-intel-item").length===1,{timeout:7000});
     assert.equal(globalBrazil.hasReport,true);
-    await page.evaluate(()=>window.ULTRON_GLOBAL_INTELLIGENCE.close());
+    // IMPORTANT: Real pointer clicks, not JS .click() or direct module methods.
+    // Check that the actual viewport hit-target reaches every active control.
+    await page.click('[data-intel-action="2d"]');
+    await page.waitForFunction(()=>window.ULTRON_GLOBAL_INTELLIGENCE.state.view==="2d",{timeout:7000});
+    assert.equal(await page.$eval('[data-intel-action="2d"]',el=>el.getAttribute("aria-pressed")),"true");
+    await page.click('[data-intel-action="3d"]');
+    await page.waitForFunction(()=>window.ULTRON_GLOBAL_INTELLIGENCE.state.view==="3d",{timeout:7000});
+    await page.click('[data-intel-action="close"]');
     assert.equal(await page.evaluate(()=>window.ULTRON_GLOBAL_INTELLIGENCE.state.visible),false);
+
+    // A frontend deploy may arrive before Worker D1's first hourly data.
+    // The GLOBAL INTEL button must still open the SAME Ring with verified
+    // direct GeoJSON (explicitly marked as NOT persisted/24-hour monitoring).
+    globalBackendOffline=true;
+    await page.$eval('#btn-global-intelligence',button=>
+      button.scrollIntoView({block:'center',inline:'nearest',behavior:'instant'}));
+    const quickHit=await page.$eval('#btn-global-intelligence',button=>{
+      const box=button.getBoundingClientRect();
+      const at=document.elementFromPoint(box.x+box.width/2,box.y+box.height/2);
+      return {hit:at===button||button.contains(at),element:at?.tagName,
+        text:at?.textContent?.slice(0,50),display:getComputedStyle(button).display};
+    });
+    assert.equal(quickHit.hit,true,'GLOBAL INTEL quick button must be reachable by pointer: '+JSON.stringify(quickHit));
+    await page.click('#btn-global-intelligence');
+    await page.waitForFunction(()=>window.ULTRON_GLOBAL_INTELLIGENCE.state.visible===true,{timeout:10000});
+    await page.waitForFunction(()=>document.querySelector(
+      '.jarvis-global-intel-panel')?.getAttribute('aria-busy')==="false",{timeout:15000});
+    // Quick open can legitimately reuse cached D1 data; explicit refresh
+    // must switch to genuine source fetch when Cloudflare returns 503.
+    await page.click('[data-intel-action="refresh"]');
+    await page.waitForFunction(()=>document.querySelector(
+      '.jarvis-global-intel-panel')?.getAttribute('aria-busy')==="false"&&
+      window.ULTRON_GLOBAL_INTELLIGENCE.state.lastFetchMode==="browser-direct",{timeout:20000});
+    const directFallback=await page.evaluate(()=>{
+      const root=document.querySelector('.jarvis-global-intel-panel');
+      const button=root.querySelector('[data-intel-action="refresh"]');
+      const rect=button.getBoundingClientRect();
+      const hit=document.elementFromPoint(rect.x+rect.width/2,rect.y+rect.height/2);
+      return {visible:!root.hidden,items:root.querySelectorAll('.jarvis-global-intel-item').length,
+        sources:root.querySelectorAll('.jarvis-global-source').length,
+        mode:window.ULTRON_GLOBAL_INTELLIGENCE.state.lastFetchMode,
+        status:root.querySelector('.jarvis-global-intel-status').textContent,
+        hit:hit===button||button.contains(hit),
+        geo:window.ULTRON_GEO_VISUAL.state};
+    });
+    assert.equal(directFallback.visible,true,JSON.stringify(directFallback));
+    assert.equal(directFallback.items,2,JSON.stringify(directFallback));
+    assert.equal(directFallback.sources,3);
+    assert.equal(directFallback.mode,'browser-direct');
+    assert.match(directFallback.status,/sem histórico D1|Dados consultados diretamente/i);
+    assert.equal(directFallback.hit,true,'Refresh button must receive real touches/clicks, not an overlapping overlay');
+    await page.click('[data-intel-action="refresh"]');
+    await page.waitForFunction(()=>document.querySelector(
+      '.jarvis-global-intel-panel')?.getAttribute('aria-busy')==="false",{timeout:20000});
+    assert.equal(await page.evaluate(()=>window.ULTRON_GLOBAL_INTELLIGENCE.state.lastFetchMode),'browser-direct');
+    await page.click('[data-intel-action="2d"]');
+    await page.waitForFunction(()=>window.ULTRON_GLOBAL_INTELLIGENCE.state.view==="2d",{timeout:7000});
+    assert.equal(await page.evaluate(()=>window.ULTRON_GEO_VISUAL.state.mode),'2d');
+    await page.click('[data-intel-action="close"]');
+    assert.equal(await page.evaluate(()=>window.ULTRON_GLOBAL_INTELLIGENCE.state.visible),false);
+    globalBackendOffline=false;
 
     // "LIMPAR TUDO" must reset the visible workspace, not search the web.
     const clearResult=await page.evaluate(async()=>{

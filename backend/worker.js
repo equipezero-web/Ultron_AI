@@ -5,7 +5,7 @@ import {loadWorldGeo} from "../modules/jarvis-world-geodata.js";
 import {searchGlobalLocations,loadGlobalWeather} from "./weather-global.js";
 import {loadWeatherInsight} from "./weather-intelligence.js";
 import {pollWeatherMonitor,latestWeatherMonitor} from "./weather-monitor.js";
-import {pollGlobalIntelligence,latestGlobalIntelligence} from "./global-intelligence-monitor.js";
+import {pollGlobalIntelligence,latestGlobalIntelligence,collectGlobalIntelligence} from "./global-intelligence-monitor.js";
 import {configureWeatherWatch,listWeatherWatches,pollPersonalWeatherWatches} from "./weather-watchlist.js";
 import {ACTIONS,parsePlanText,isActionRequest} from "./action-catalog.js";
 import {capabilityAnswer} from "./jarvis-capabilities.js";
@@ -1027,7 +1027,34 @@ export default {
       return json(result,result.ok?200:result.status||503);
     }
     if(path==="/api/intelligence/global"&&request.method==="GET"){
-      const result=await latestGlobalIntelligence(env);
+      // First boot may occur BEFORE the first hourly cron wrote a D1 bucket.
+      // Return real public-source data immediately, NEVER a fake empty map.
+      let result=await latestGlobalIntelligence(env);
+      if(!result.ok){
+        const cache=typeof caches!=="undefined"?caches.default:null;
+        const key=new Request(url.origin+"/api/intelligence/global?fallback=1",{method:"GET"});
+        try{
+          const hit=await cache?.match(key);
+          if(hit)return new Response(hit.body,{status:hit.status,headers:{
+            ...corsHeaders(),"Cache-Control":"public, max-age=180",
+            "X-Content-Type-Options":"nosniff"}});
+        }catch{}
+        const live=await collectGlobalIntelligence();
+        if(live.ok){
+          result={...live,persistence:"direct-live-fallback",cadenceHours:null,
+            stale:false,ageMinutes:0,
+            disclaimer:live.disclaimer+
+              " Consulta sob demanda: ainda não é uma coleta persistida do monitor horário."};
+        }else{
+          result={...live,error:"Sem coleta D1 e sem resposta válida das fontes públicas. "+
+            String(live.error||"").slice(0,150)};
+        }
+        if(result.ok&&cache&&ctx?.waitUntil){
+          const response=new Response(JSON.stringify(result),{status:200,
+            headers:{...corsHeaders(),"Cache-Control":"public, max-age=180"}});
+          ctx.waitUntil(cache.put(key,response).catch(()=>{}));
+        }
+      }
       return new Response(JSON.stringify(result),{
         status:result.ok?200:result.status||503,
         headers:{...corsHeaders(),
