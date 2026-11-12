@@ -1,3 +1,4 @@
+import { bridgeAgeMs, bridgeIsOnline, sortMobileBridges, BRIDGE_ONLINE_MAX_AGE_MS } from './bridge-status.js?v=5.15.0';
 import API_CONFIG from "../config.js";
 import "./camera-hardening-v422.js";
 
@@ -8,7 +9,7 @@ const API_BASE = String(API_CONFIG?.backendUrl || '').replace(/\/$/, '');
 
 if (opticalPanel && video) {
   const BRIDGE_AUTH_KEY = 'ultron_remote_camera_authorized_v1';
-  const BRIDGE_ONLINE_MAX_AGE_MS = 20000;
+  // Online threshold is shared with the Cloud gateway (45 seconds).
   const AUTO_CONNECT_SESSION_KEY = 'ultron_mobile_camera_auto_v4250';
 
   let mode = 'automatic';
@@ -72,24 +73,19 @@ if (opticalPanel && video) {
     return data;
   }
 
-  function deviceAgeMs(device) {
-    const lastSeen = Date.parse(device?.lastSeenAt || '') || 0;
-    return lastSeen ? Date.now() - lastSeen : Number.POSITIVE_INFINITY;
-  }
+  function deviceAgeMs(device) { return bridgeAgeMs(device); }
 
   async function listMobileDevices() {
     const key = memoryKey();
     if (!key) throw new Error('Identidade do Ultron ainda não carregada.');
     const result = await post('/api/devices/list', { memoryKey: key });
-    return (result.devices || [])
-      .filter((device) => device?.deviceType === 'mobile' && device?.status !== 'disabled')
-      .sort((a, b) => (Date.parse(b?.lastSeenAt || '') || 0) - (Date.parse(a?.lastSeenAt || '') || 0));
+    return sortMobileBridges(result.devices);
   }
 
   async function selectBridgeDevice() {
     const mobiles = await listMobileDevices();
     if (!mobiles.length) throw new Error('Nenhum celular pareado. Use CONECTAR CELULAR para gerar o código uma única vez.');
-    const online = mobiles.find((device) => deviceAgeMs(device) <= BRIDGE_ONLINE_MAX_AGE_MS) || null;
+    const online = mobiles.find((device) => bridgeIsOnline(device)) || null;
     if (!online) {
       const last = mobiles[0];
       setText('bridge-device-name', last?.deviceName || 'CELULAR PAREADO');

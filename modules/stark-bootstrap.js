@@ -57,7 +57,7 @@ if (!window[BOOT_KEY]) {
   await import('./stark-file-mesh.js?v=4.31.0');
   await import('./file-inspector-v420.js?v=4.20.0');
   await import('./remote-camera-webrtc-hotfix-v4221.js?v=4.24.2');
-  await import('./mobile-camera-source.js?v=4.25.0');
+  await import('./mobile-camera-source.js?v=4.25.1');
   await import('./stark-hand-gesture-v420.js?v=4.20.0');
   await import('./stark-camera-preview.js?v=4.23.2');
   await import('./visual-neural-stream-bridge-v4225.js?v=4.23.0');
@@ -72,7 +72,7 @@ if (!window[BOOT_KEY]) {
 
   loadStyle(NEURAL_FOCUS_STYLE_ID, 'modules/neural-focus-v4250.css?v=4.25.0');
   await import('./neural-spatial-control-v4250.js?v=4.25.0');
-  await import('./mobile-link-simple-v4250.js?v=4.25.1');
+  await import('./mobile-link-simple-v4250.js?v=4.25.2');
 
   window.addEventListener('ultron:processing-start', () => window.ULTRON_STARK_CORE?.processing?.(true));
   window.addEventListener('ultron:processing-end', () => window.ULTRON_STARK_CORE?.processing?.(false));

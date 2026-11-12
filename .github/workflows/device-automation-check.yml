@@ -8,6 +8,11 @@ on:
       - 'backend/worker.js'
       - 'backend/wrangler.jsonc'
       - 'modules/device-control-v4260.js'
+      - 'modules/bridge-status.js'
+      - 'modules/mobile-link-simple-v4250.js'
+      - 'modules/mobile-camera-source.js'
+      - 'modules/mobile-mic-client.js'
+      - 'tests/bridge-status.mjs'
       - 'local-core/desktop_bridge.py'
       - 'local-core/device_server.py'
       - 'local-core/start.bat'
@@ -21,6 +26,11 @@ on:
       - 'backend/worker.js'
       - 'backend/wrangler.jsonc'
       - 'modules/device-control-v4260.js'
+      - 'modules/bridge-status.js'
+      - 'modules/mobile-link-simple-v4250.js'
+      - 'modules/mobile-camera-source.js'
+      - 'modules/mobile-mic-client.js'
+      - 'tests/bridge-status.mjs'
       - 'local-core/desktop_bridge.py'
       - 'local-core/device_server.py'
       - 'local-core/start.bat'
@@ -48,6 +58,8 @@ jobs:
           node --check backend/worker.js
           node --check modules/device-control-v4260.js
           python -m py_compile local-core/desktop_bridge.py local-core/device_server.py local-core/server.py
+          TZ=America/Recife node tests/bridge-status.mjs
+          TZ=UTC node tests/bridge-status.mjs
 
       - name: Device command policy
         run: |

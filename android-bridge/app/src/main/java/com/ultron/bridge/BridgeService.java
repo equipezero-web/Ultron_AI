@@ -29,6 +29,7 @@ public class BridgeService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        BridgeHealthStore.markStarting(this);
         createNotificationChannels();
         startForeground(FOREGROUND_ID, buildForegroundNotification());
 
@@ -46,6 +47,7 @@ public class BridgeService extends Service {
         if (executor != null) {
             executor.shutdownNow();
         }
+        BridgeHealthStore.markStopped(this);
         super.onDestroy();
     }
 
@@ -61,6 +63,7 @@ public class BridgeService extends Service {
 
             String secret = SecureStore.getOrCreateDeviceSecret(this);
             JSONObject response = BridgeApi.poll(deviceId, secret);
+            BridgeHealthStore.recordSuccess(this);
             JSONArray commands = response.optJSONArray("commands");
             if (commands == null) return;
 
@@ -69,8 +72,10 @@ public class BridgeService extends Service {
                 if (item == null) continue;
                 executeCommand(deviceId, secret, item);
             }
-        } catch (Exception ignored) {
-            // Mantém o serviço resiliente a falhas temporárias de rede.
+        } catch (Exception error) {
+            // Retry without crashing; expose bounded, non-sensitive diagnostics
+            // so "Bridge iniciado" is never confused with Cloud online.
+            BridgeHealthStore.recordFailure(this, error.getMessage());
         }
     }
 
@@ -402,7 +407,7 @@ public class BridgeService extends Service {
 
         return builder
                 .setContentTitle("Ultron Bridge ativo")
-                .setContentText("Conectado ao Ultron Cloud para comandos autorizados.")
+                .setContentText("Verificando conexão com o J.A.R.V.I.S Cloud. Abra o app para diagnóstico.")
                 .setSmallIcon(android.R.drawable.stat_sys_data_bluetooth)
                 .setOngoing(true)
                 .setContentIntent(pendingIntent)
