@@ -123,8 +123,13 @@ for(const [phrase,topic] of expanded){
  assert.equal(intent?.action,"geo.global",phrase);
  assert.ok(validatePlan({steps:[intent]}),phrase);
  assert.ok(WORLD_GEO_TOPICS[topic],topic);
- const report=normalizeWorldGeo(topic,"world",{observations,locations},{now});
- // Normalization uses an annual, source-observed row per country.
+ const value=topic==="gdpPerCapita"?12000:topic==="lifeExpectancy"?75:64;
+ const metricRows=[{},[
+  {country:{id:"BR"},date:"2024",value},
+  {country:{id:"US"},date:"2023",value:value+1}
+ ]];
+ const report=normalizeWorldGeo(topic,"world",{observations:metricRows,locations},{now});
+ // Normalization uses annual, source-observed values appropriate for each indicator.
  assert.equal(report?.ok,true,topic);
  assert.equal(report.dataset.theme.kind,"country-indicator");
  assert.ok(validateGeoScenario(report.dataset));
