@@ -176,7 +176,7 @@ if (stage) {
     // text label left an empty visual stage and appeared as a dead button.
     if(button.dataset.visual==='globe'){void actions.earth();return;}
     if(window.ULTRON_EARTH?.state?.visible)window.ULTRON_EARTH.close();
-    else setVisualMode('ring');
+    setVisualMode('ring');
   }));
   // Wheel on the full neural stage controls the active 3D view, NEVER the page.
   // Native WebGL and Mapbox listeners handle gestures directly on their canvases.
@@ -231,8 +231,14 @@ if (stage) {
         event.stopPropagation();
         if(button.disabled)return;
         button.disabled=true;button.setAttribute('aria-busy','true');
-        Promise.resolve().then(()=>action.run()).catch(error=>{
-          show(title,'Não foi possível executar '+action.label+': '+String(error?.message||error).slice(0,140));
+        // Execute synchronously while the user's click is active. This
+        // matters for TV pairing, camera permission, and other user gestures.
+        let pending;
+        try{pending=action.run();}
+        catch(error){pending=Promise.reject(error);}
+        Promise.resolve(pending).catch(error=>{
+          show(title,'Não foi possível executar '+action.label+': '+
+            String(error?.message||error).slice(0,140));
         }).finally(()=>{button.disabled=false;button.removeAttribute('aria-busy');});
       });
       line.append(button);
