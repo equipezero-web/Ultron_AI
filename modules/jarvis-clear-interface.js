@@ -11,6 +11,7 @@ export function clearVisibleInterface({win=window,doc=document}={}){
   // Stop any active visual animation before closing Earth, then restore Ring.
   attempt("geo",()=>win.ULTRON_GEO_VISUAL?.close?.());
   attempt("meteorology",()=>win.ULTRON_METEO_CENTER?.close?.());
+  attempt("global-intelligence",()=>win.ULTRON_GLOBAL_INTELLIGENCE?.close?.());
   attempt("earth",()=>win.ULTRON_EARTH?.close?.());
   attempt("neural-answer",()=>win.ULTRON_NEURAL_ANSWER?.clear?.());
   attempt("legacy-images",()=>win.ULTRON_VISUAL_PANEL?.clearImages?.());
@@ -30,11 +31,12 @@ export function clearVisibleInterface({win=window,doc=document}={}){
   });
   const visibleGeo=win.ULTRON_GEO_VISUAL?.state?.visible===true;
   const visibleMeteo=win.ULTRON_METEO_CENTER?.state?.visible===true;
+  const visibleIntel=win.ULTRON_GLOBAL_INTELLIGENCE?.state?.visible===true;
   const visibleEarth=win.ULTRON_EARTH?.state?.visible===true;
   const visibleAnswer=win.ULTRON_NEURAL_ANSWER?.visible===true;
   const terminal=doc.getElementById("output-box");
   const field=doc.getElementById("command-input");
-  const ok=!errors.length&&!visibleGeo&&!visibleMeteo&&!visibleEarth&&!visibleAnswer&&
+  const ok=!errors.length&&!visibleGeo&&!visibleMeteo&&!visibleIntel&&!visibleEarth&&!visibleAnswer&&
     (!terminal||terminal.childNodes.length===0)&&(!field||field.value==="");
   return {ok,cleared:ok,scope:"visible-interface",errors};
 }
