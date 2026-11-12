@@ -1102,6 +1102,11 @@ try {
     await page.click('#btn-global-intelligence');
     await page.waitForFunction(()=>window.ULTRON_GLOBAL_INTELLIGENCE.state.visible===true,{timeout:10000});
     await page.waitForFunction(()=>document.querySelector(
+      '.jarvis-global-intel-panel')?.getAttribute('aria-busy')==="false",{timeout:15000});
+    // Quick open can legitimately reuse cached D1 data; explicit refresh
+    // must switch to genuine source fetch when Cloudflare returns 503.
+    await page.click('[data-intel-action="refresh"]');
+    await page.waitForFunction(()=>document.querySelector(
       '.jarvis-global-intel-panel')?.getAttribute('aria-busy')==="false"&&
       window.ULTRON_GLOBAL_INTELLIGENCE.state.lastFetchMode==="browser-direct",{timeout:20000});
     const directFallback=await page.evaluate(()=>{
