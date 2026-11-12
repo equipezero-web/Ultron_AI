@@ -1285,8 +1285,18 @@ try {
       const hit=await page.$eval(selector,button=>{
         const rect=button.getBoundingClientRect();
         const el=document.elementFromPoint(rect.x+rect.width/2,rect.y+rect.height/2);
+        const chain=[];
+        let current=button;
+        for(let level=0;level<8&&current;level++,current=current.parentElement){
+          const r=current.getBoundingClientRect(),css=getComputedStyle(current);
+          chain.push({tag:current.tagName,id:current.id,cls:current.className,
+            width:Math.round(r.width),height:Math.round(r.height),
+            display:css.display,flex:css.flex,grid:css.gridTemplateColumns,
+            inlineSize:css.inlineSize,minWidth:css.minWidth,writingMode:css.writingMode});
+        }
         return {hit:el===button||button.contains(el),
-          width:rect.width,height:rect.height,top:rect.top};
+          width:rect.width,height:rect.height,top:rect.top,
+          chain:button.id==='btn-pair-mobile'?chain:undefined};
       });
       assert.ok(hit.hit&&hit.width>60&&hit.height>=40,
         'Quick control should be tappable: '+selector+' '+JSON.stringify(hit));
