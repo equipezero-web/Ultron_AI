@@ -127,7 +127,7 @@ export function globalIntelWindow(now=Date.now()){
 }
 export function globalIntelFetchList(now=Date.now()){
  const gdacs=new URL(GLOBAL_INTEL_SOURCES.gdacs.url),dates=globalIntelWindow(now);
- for(const [k,v] of Object.entries({eventlist:"EQ;TC;FL;VO;WF",...dates,alertlevel:"red;orange;green"}))
+ for(const [k,v] of Object.entries({eventlist:"EQ;TC;FL",...dates,alertlevel:"red;orange;green"}))
   gdacs.searchParams.set(k,v);
  return [
   ["usgs",GLOBAL_INTEL_SOURCES.usgs.url,parseUsgsEvents],
