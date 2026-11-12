@@ -10,6 +10,16 @@ const intents=[
  ["floods",/\b(?:enchentes?|inundacoes?|alagamentos?|areas? alagadas?)\b/],
  ["landslides",/\b(?:deslizamentos?|escorregamentos? de terra)\b/],
  ["population",/\b(?:populacao|habitantes|pessoas por pais|populacoes)\b/],
+ ["gdpPerCapita",/\b(?:pib per capita|pib por habitante|renda per capita)\b/],
+ ["lifeExpectancy",/\b(?:expectativa de vida|esperanca de vida|longevidade)\b/],
+ ["healthSpending",/\b(?:gastos? (?:com|em) saude|despesas? (?:com|em) saude|investimento em saude|gasto em saude)\b/],
+ ["literacy",/\b(?:alfabetizacao|taxa de alfabetizacao|adultos alfabetizados)\b/],
+ ["internet",/\b(?:acesso a internet|uso da internet|usuarios? (?:da|de) internet|conectividade digital)\b/],
+ ["urban",/\b(?:urbanizacao|populacao urbana|populacoes urbanas|pessoas nas cidades)\b/],
+ ["forest",/\b(?:cobertura florestal|area florestal|florestas? por pais|porcentagem de florestas?)\b/],
+ ["renewable",/\b(?:energias? renovaveis?|consumo (?:de energia )?renovavel)\b/],
+ ["electricity",/\b(?:acesso a (?:energia eletrica|eletricidade)|eletrificacao)\b/],
+ ["unemployment",/\b(?:desemprego|taxa de desemprego|pessoas desempregadas)\b/],
  ["gdp",/\b(?:pib|produto interno bruto|economia por pais|riqueza dos paises)\b/],
  ["co2",/\b(?:co2|carbono|emissoes? de gases?|emissao de carbono)\b/]
 ];
