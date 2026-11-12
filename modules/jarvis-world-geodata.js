@@ -117,7 +117,7 @@ export function normalizeWorldGeo(topic,region,payload,{now=()=>new Date().toISO
    if(!Array.isArray(coords)||coords.length<2)continue;
    const [lng,lat]=coords;if(!within(lng,lat,region))continue;
    const name=clean(row?.properties?.title||"Evento natural reportado",100);
-   const time=dateText(row?.properties?.date||row?.properties?.geometryDates?.[0]||now());
+   const time=dateText(row?.properties?.date||row?.properties?.geometryDates?.[0]);
    if(!time||!name)continue;
    const link=https(row.properties.link,source.url);
    const magnitude=row.properties.magnitudeValue,unit=clean(row.properties.magnitudeUnit,18);
