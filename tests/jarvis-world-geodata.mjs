@@ -113,6 +113,7 @@ const expanded=[
  ["Mostre a urbanização mundial no mapa","urban"],
  ["Mostre a cobertura florestal mundial no mapa","forest"],
  ["Mostre o consumo de energia renovável mundial no globo","renewable"],
+ ["Mostre a energia renovável dos países no mapa","renewable"],
  ["Mostre o acesso à eletricidade mundial no globo","electricity"],
  ["Mostre o desemprego mundial no globo","unemployment"],
  ["Mostre os gastos com saúde dos países no mapa 2D","healthSpending"]
