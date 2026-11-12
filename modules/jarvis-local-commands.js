@@ -33,7 +33,7 @@ export async function runLocalCommand(command){
   }
   if(intent.type==="global-intelligence"){
     if(!window.ULTRON_GLOBAL_INTELLIGENCE?.open)
-      await import("./jarvis-global-intelligence-ring.js?v=5.10.0");
+      await import("./jarvis-global-intelligence-ring.js?v=5.13.0");
     const result=await window.ULTRON_GLOBAL_INTELLIGENCE?.open?.({
       view:intent.view,region:intent.region,category:intent.category
     });
