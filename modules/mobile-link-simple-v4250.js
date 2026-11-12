@@ -1,3 +1,4 @@
+import { mobileBridgeSummary } from './bridge-status.js?v=5.15.0';
 const button = document.getElementById('btn-pair-mobile');
 const output = document.getElementById('output-box');
 
@@ -15,33 +16,57 @@ function log(message, alert = false) {
   output.scrollTop = output.scrollHeight;
 }
 
-function ageMs(device) {
-  const value = Date.parse(device?.lastSeenAt || '') || 0;
-  return value ? Date.now() - value : Infinity;
-}
+let lastGatewayAlertAt = 0;
+let lastResult = { status: 'checking', online: false, paired: false };
+let pairingDeadlineAt = 0;
+let isRefreshing = false;
 
 async function refresh() {
+  if(isRefreshing) return lastResult;
+  isRefreshing = true;
   try {
-    const devices = await window.ULTRON_DEVICES?.listDevices?.();
-    const mobiles = (devices || [])
-      .filter((device) => device?.deviceType === 'mobile' && device?.status !== 'disabled')
-      .sort((a, b) => (Date.parse(b?.lastSeenAt || '') || 0) - (Date.parse(a?.lastSeenAt || '') || 0));
-    const online = mobiles.find((device) => ageMs(device) <= 20000) || null;
-    const selected = online || mobiles[0] || null;
-
-    if (!selected) {
-      setText('bridge-link-state', 'NOT PAIRED');
-      setText('bridge-device-name', 'NÃO CONECTADO');
-      setText('bridge-session-state', 'AGUARDANDO');
-      return { paired: false, online: false };
+    const api = window.ULTRON_DEVICES;
+    if (typeof api?.listDevices !== 'function') {
+      throw new Error('Módulo de dispositivos ainda não inicializado.');
     }
-
-    setText('bridge-device-name', selected.deviceName || 'ULTRON MOBILE BRIDGE');
-    setText('bridge-link-state', online ? 'ONLINE' : 'OFFLINE');
-    setText('bridge-session-state', online ? 'READY' : 'OPEN APP');
-    return { paired: true, online: Boolean(online), device: selected };
-  } catch {
-    return { paired: false, online: false };
+    // Never mistake network errors for "no paired devices".
+    const devices = await api.listDevices();
+    if (!Array.isArray(devices)) throw new Error('Gateway retornou uma lista inválida.');
+    const streaming = window.ULTRON_MOBILE_CAMERA?.state?.active === true;
+    const result = mobileBridgeSummary(devices, { streaming });
+    lastResult = result;
+    if (result.paired) pairingDeadlineAt = 0;
+    if (!result.paired) {
+      const code = String(document.getElementById('bridge-session-state')?.textContent || '');
+      const pairing = String(document.getElementById('bridge-link-state')?.textContent || '') === 'PAIRING';
+      if (pairing && /^CODE \\d{6}$/.test(code)) {
+        if (!pairingDeadlineAt) pairingDeadlineAt = Date.now() + 10 * 60_000;
+        if (Date.now() < pairingDeadlineAt) {
+          lastResult = { ...result, status: 'pairing', label: 'PAIRING', session: code };
+          return lastResult;
+        }
+      }
+      pairingDeadlineAt = 0;
+    }
+    setText('bridge-link-state', result.label);
+    setText('bridge-device-name', result.device?.deviceName || 'NÃO CONECTADO');
+    setText('bridge-session-state', result.session);
+    if (!result.online) setText('bridge-camera-state', 'STANDBY');
+    return result;
+  } catch(error) {
+    const message = String(error?.message || error || 'Falha desconhecida').slice(0,160);
+    lastResult = { status: 'gateway-error', online: false, paired: null, error: message };
+    setText('bridge-link-state', 'GATEWAY OFF');
+    setText('bridge-session-state', 'SEM RESPOSTA');
+    setText('bridge-device-name', 'NÃO VERIFICADO');
+    setText('bridge-camera-state', 'STANDBY');
+    if (Date.now() - lastGatewayAlertAt > 60_000) {
+      log('Não foi possível consultar dispositivos no backend: ' + message, true);
+      lastGatewayAlertAt = Date.now();
+    }
+    return lastResult;
+  } finally {
+    isRefreshing = false;
   }
 }
 
@@ -53,7 +78,8 @@ async function connect() {
   setText('bridge-session-state', 'CONNECTING');
   try {
     const result = await window.ULTRON_MOBILE_CAMERA.smartConnect();
-    await refresh();
+    if (result !== false) await refresh();
+    else if (String(document.getElementById('bridge-link-state')?.textContent) !== 'PAIRING') await refresh();
     return result;
   } catch (error) {
     log(error?.message || String(error), true);
@@ -91,4 +117,4 @@ window.addEventListener('ultron:remote-camera-ice-recovery', (event) => {
 setTimeout(refresh, 900);
 setInterval(refresh, 7000);
 
-window.ULTRON_MOBILE_LINK = { connect, refresh, version: '4.25.0' };
+window.ULTRON_MOBILE_LINK = { connect, refresh, version: '5.15.0', get state(){ return lastResult; } };
