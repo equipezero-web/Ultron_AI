@@ -1305,6 +1305,10 @@ export default {
         const body = await bodyOf(request);
         const operatorId = await operatorFrom(body);
         if (!operatorId) return missingOperator();
+        const bridgeState = await bridgeHealth(env);
+        if (!bridgeState.ready) {
+          return json({ ok: false, error: "Gateway de dispositivos indisponível. Verifique o banco D1 e a implantação do Worker." }, 503);
+        }
         return json({ ok: true, devices: await listDevices(env, operatorId) });
       } catch (error) { return json({ ok: false, error: error?.message || String(error) }, 500); }
     }
