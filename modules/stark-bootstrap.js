@@ -45,7 +45,7 @@ if (!window[BOOT_KEY]) {
   await import('./neural-input-bus.js?v=4.18.0');
   await import('./neural-command-router.js?v=4.20.0');
   await import('./stark-advanced.js?v=4.12.1');
-  await import('./vision-client.js?v=4.23.2');
+  await import('./vision-client.js?v=4.23.3');
   await import('./vision-remote-source-v4224.js?v=4.22.4');
   await import('./vision-command-router.js?v=4.17.0');
   await import('./camera-runtime.js?v=4.16.0');
@@ -72,7 +72,7 @@ if (!window[BOOT_KEY]) {
 
   loadStyle(NEURAL_FOCUS_STYLE_ID, 'modules/neural-focus-v4250.css?v=4.25.0');
   await import('./neural-spatial-control-v4250.js?v=4.25.0');
-  await import('./mobile-link-simple-v4250.js?v=4.25.0');
+  await import('./mobile-link-simple-v4250.js?v=4.25.1');
 
   window.addEventListener('ultron:processing-start', () => window.ULTRON_STARK_CORE?.processing?.(true));
   window.addEventListener('ultron:processing-end', () => window.ULTRON_STARK_CORE?.processing?.(false));
