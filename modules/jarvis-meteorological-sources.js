@@ -22,11 +22,12 @@ export function parseMeteoIntent(command){
   if(/^(?:nao|nunca|como |se |e se |por que|porque|o que|qual |quais )/.test(q))return null;
   const trigger=/^(?:por favor )?(?:me )?(?:mostre|mostra|mostrar|abra|abrir|ative|ativar|acesse|acessar|exiba|exibir|visualize|visualizar|acompanhe|acompanhar|compare|comparar|quero ver|quero acompanhar)\b/;
   if(!trigger.test(q))return null;
-  if(/\b(?:central meteorologica|centro meteorologico|painel meteorologico)\b/.test(q))return {tab:"radar",view:"2d"};
-  if(/\bapac\b/.test(q)||(/\bpernambuco\b/.test(q)&&/\b(?:chuvas?|precipitacao|monitoramento|estacoes|acumulado)\b/.test(q)))return {tab:"apac",view:/\b3d\b/.test(q)?"3d":"2d"};
+  const view=/\b(?:3d|globo)\b/.test(q)?"3d":"2d";
+  if(/\b(?:central meteorologica|centro meteorologico|painel meteorologico)\b/.test(q))return {tab:"radar",view};
+  if(/\bapac\b/.test(q)||(/\bpernambuco\b/.test(q)&&/\b(?:chuvas?|precipitacao|monitoramento|estacoes|acumulado)\b/.test(q)))return {tab:"apac",view};
   if(/\binmet\b/.test(q))return {tab:"inmet",view:"2d"};
   if(/\b(?:satelite|goes|nuvens)\b/.test(q))return {tab:"satellite",view:"2d"};
-  if(/\b(?:radar|chuvas? em tempo real|chuva observada)\b/.test(q))return {tab:"radar",view:"2d"};
+  if(/\b(?:radar|chuvas? em tempo real|chuva observada)\b/.test(q))return {tab:"radar",view};
   return null;
 }
 export function apacColor(mm){
