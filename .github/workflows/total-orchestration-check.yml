@@ -480,9 +480,22 @@ jobs:
           node --input-type=module <<'NODE'
           import {loadWorldGeo} from './modules/jarvis-world-geodata.js';
           const topics=['earthquakes','wildfires','population'];
+          const loggedFetch=async(url,options={})=>{
+            const start=Date.now();
+            try{
+              const res=await fetch(url,options);
+              console.log('WORLD GEO PROVIDER HTTP',new URL(url).hostname,new URL(url).pathname,
+                res.status,'elapsedMs',Date.now()-start);
+              return res;
+            }catch(error){
+              console.log('WORLD GEO PROVIDER ERROR',new URL(url).hostname,
+                error?.name,String(error?.message||error),'elapsedMs',Date.now()-start);
+              throw error;
+            }
+          };
           let ok=0;
           for(const topic of topics){
-            const value=await loadWorldGeo({topic,region:'world'});
+            const value=await loadWorldGeo({topic,region:'world'},{fetchImpl:loggedFetch});
             console.log('REAL WORLD GEODATA',topic,JSON.stringify({
               ok:value.ok,count:value.recordCount,source:value.dataset?.source?.url,
               period:value.dataset?.source?.basePeriod,error:value.error
