@@ -226,7 +226,18 @@ $("command-input")?.addEventListener("keydown", (event) => {
 });
 
 document.querySelectorAll("[data-command]").forEach((button) => {
-  button.addEventListener("click", () => handleQuick(button.dataset.command));
+  let lastPointerAt = 0;
+  button.addEventListener("pointerdown", (event) => {
+    if (event.button !== 0) return;
+    // The responsive command panel may move before pointerup, cancelling click.
+    lastPointerAt = Date.now();
+    handleQuick(button.dataset.command);
+  });
+  button.addEventListener("click", () => {
+    // Keyboard activation has no pointerdown and must still work.
+    if (Date.now() - lastPointerAt < 850) return;
+    handleQuick(button.dataset.command);
+  });
 });
 
 async function execute() {
