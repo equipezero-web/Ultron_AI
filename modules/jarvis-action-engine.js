@@ -3,6 +3,10 @@ import {WEATHER_CITIES,weatherCity,weatherGeoScenario,weatherSummary} from "./ja
 import {globalWeatherScenario,globalWeatherSummary} from "./jarvis-global-weather.js?v=4.82.0";
 import {loadGlobalWeather} from "../backend/weather-global.js?v=4.74.0";
 import {loadLiveWeather} from "../backend/weather-live.js?v=4.80.0";
+import {worldGeoIntent} from "./jarvis-world-intent.js?v=4.94.0";
+import {loadWorldGeo} from "./jarvis-world-geodata.js?v=4.94.0";
+import {loadSpatialIntensity,SPATIAL_LAYERS} from "./jarvis-spatial-intensity.js?v=4.90.0";
+import {validateGeoScenario} from "./jarvis-geospatial-model.js?v=4.82.0";
 import {loadWeatherInsight} from "../backend/weather-intelligence.js?v=4.75.0";
 import {insightSummary,insightScenario,monitorSummary} from "./jarvis-weather-insight-model.js?v=4.75.0";
 import {classifyOperatorTurn} from "./jarvis-intent-engine.js?v=4.69.0";
@@ -21,6 +25,8 @@ export function directPlan(message){
  // guesses must never become mapped "risk scores".
  const currentGeo=typeof window!=="undefined"?window.ULTRON_GEO_VISUAL?.state:null;
  const enso=/(?:el nino|elnino|enos|enso)/.test(q);
+ const worldwide=!enso?worldGeoIntent(q):null;
+ if(worldwide)return {steps:[action(worldwide.action,worldwide.args)]};
  const geoRequested=/\b(?:globo|mapa|visualizacao|visualize|visualizar|destaque|marque|pinte|mostre|mostra|simulacao|simule|simular|crie|gere)\b/.test(q);
  const actionPrefix=/^(?:por favor |pode |consegue |me |agora )*(?:mostre|mostra|mostrar|exiba|abra|abrir|crie|gere|gerar|simule|simular|visualize|visualizar|destaque|marque|analise|investigue|pesquise|apresente)\b/.test(q);
  if(enso&&geoRequested&&actionPrefix){
@@ -117,6 +123,71 @@ function publish(text,visual=null){
 async function executeStep(step,original){
  const w=W(),a=step.args,answer=w.ULTRON_NEURAL_ANSWER;
  switch(step.action){
+ case "geo.global":{
+   const endpoint=String(API_CONFIG.backendUrl||"").replace(/\/$/,"")+
+     "/api/geo/world?topic="+encodeURIComponent(a.topic)+"&region="+encodeURIComponent(a.region);
+   let report=null;
+   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),11500);
+   try{
+     const res=await fetch(endpoint,{headers:{Accept:"application/json"},signal:controller.signal,cache:"no-store"});
+     const body=await res.json();
+     if(res.ok&&body?.ok)report=body;
+   }catch{}finally{clearTimeout(timer);}
+   if(!report)report=await loadWorldGeo({topic:a.topic,region:a.region});
+   if(!report?.ok)throw Error(report?.error||"Não há dados geográficos confirmados para esse tema ou período.");
+   const data=validateGeoScenario(report.dataset);
+   if(!data?.theme||data.theme.topic!==a.topic||data.projection!==(a.region==="world"?"world":"brazil"))
+     throw Error("Fonte mundial não forneceu uma visualização geográfica validada");
+   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.94.0");
+   const geo=requireApi(w.ULTRON_GEO_VISUAL,"open");
+   const result=await geo.open({data,view:a.view});
+   if(!result?.ok||!geo.state.visible||geo.state.scenario!==data.id||geo.state.mode!==a.view)
+     throw Error(result?.error||"O mapa mundial não pôde ser confirmado");
+   const meaning=a.topic==="earthquakes"?"Cor = magnitude do sismo, não intensidade sentida.":
+     ["population","gdp","co2"].includes(a.topic)?"Cores = indicador anual por país, com ano e fonte.":"Cores = categoria de evento; a fonte não publicou intensidade comparável.";
+   return {text:data.title+" exibido em "+a.view.toUpperCase()+" · "+
+     report.recordCount+" localizações georreferenciadas · "+data.source.basePeriod+
+     ". Fonte: "+data.source.name+". "+meaning,verified:true};
+ }
+ case "geo.spatial":{
+   const endpoint=String(API_CONFIG.backendUrl||"").replace(/\/$/,"")+
+     "/api/geo/intensity?layer="+encodeURIComponent(a.layer)+
+     "&region="+encodeURIComponent(a.region)+"&day=0";
+   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),11500);
+   let report=null;
+   try{
+     const res=await fetch(endpoint,{headers:{Accept:"application/json"},signal:controller.signal,cache:"no-store"});
+     const body=await res.json();
+     if(res.ok&&body?.ok)report=body;
+   }catch{}finally{clearTimeout(timer);}
+   if(!report)report=await loadSpatialIntensity({layer:a.layer,region:a.region,day:0});
+   if(!report?.ok||report.layer!==a.layer||report.region!==a.region||
+     !Array.isArray(report.cells)||!report.cells.length)throw Error(report?.error||"Camada numérica indisponível");
+   const spec=SPATIAL_LAYERS[a.layer],first=report.cells[0];
+   const source={name:spec.source,url:spec.sourceUrl,
+     basePeriod:report.dataTime||"Período não informado",
+     disclaimer:report.disclaimer||"Amostras de modelos meteorológicos, não medição por bairro."};
+   // A single model cell is a grounded locator; the FULL colored grid comes
+   // from the separately validated report, not from a synthetic heat map.
+   const data={id:"spatial-"+a.layer+"-"+a.region,title:spec.label+" — "+(a.region==="world"?"Mundo":"Brasil"),
+    projection:a.region,source,
+    frames:[{id:"latest",name:report.dataTime||"Amostra",type:"grade numérica amostrada",
+      kind:"observed",description:source.disclaimer,
+      points:[{id:first.id,name:"Amostra geográfica",lat:first.lat,lng:first.lng,
+        kind:a.layer==="air"?"air":a.layer==="marine"?"marine":a.layer==="river"?"river":"weather",
+        detail:"Valor no centro amostrado: "+first.value+" "+report.unit+" · "+first.time,
+        source:spec.sourceUrl}]}]};
+   const validated=validateGeoScenario(data);
+   if(!validated)throw Error("Não foi possível validar as amostras geográficas.");
+   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.94.0");
+   const geo=requireApi(w.ULTRON_GEO_VISUAL,"open");
+   const result=await geo.open({data:validated,view:a.view,initialLayer:a.layer,initialIntensity:report});
+   if(!result?.ok||geo.state.gridCount<1||geo.state.mode!==a.view)
+     throw Error(result?.error||"Mapa colorido não foi confirmado.");
+   return {text:spec.label+" · "+(a.region==="world"?"Mundo":"Brasil")+
+    " · "+report.sampledCount+" células coloridas por valores do modelo, "+
+    report.dataTime+". "+report.disclaimer,verified:true};
+ }
  case "weather.monitor":{
    const endpoint=String(API_CONFIG.backendUrl||"").replace(/\/$/,"")+"/api/geo/monitor";
    const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),10000);
