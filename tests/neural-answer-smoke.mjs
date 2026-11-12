@@ -148,6 +148,31 @@ try {
            watches:watchSaved?[{location_id:1850147,name:'Tokyo',country:'Japan',last_checked_at:null}]:[],
            history:[]})});
       }
+      if(req.url().includes('/api/intelligence/global')){
+        const time=new Date().toISOString();
+        const events=[
+         {id:'usgs:smoke-1',source:'usgs',kind:'earthquake',
+          title:'Sismo registrado pelo USGS',description:'Magnitude 5.5 observada.',
+          lat:-8,lng:-35,nearBrazil:true,eventAt:time,
+          url:'https://earthquake.usgs.gov/earthquakes/eventpage/us123'},
+         {id:'nasa:smoke-2',source:'nasa',kind:'wildfires',
+          title:'Evento natural publicado NASA EONET',description:'Evento da NASA.',
+          lat:40,lng:-110,nearBrazil:false,eventAt:time,
+          url:'https://eonet.gsfc.nasa.gov/api/v3/events/EONET_100'},
+         {id:'gdacs:tc:smoke-3',source:'gdacs',kind:'severeStorms',
+          title:'Ciclone monitorado pelo GDACS',description:'Alerta oficial GDACS.',
+          lat:14,lng:140,nearBrazil:false,eventAt:time,gdacsAlert:'red',
+          url:'https://www.gdacs.org/report.aspx?eventid=100&eventtype=TC'}
+        ];
+        return req.respond({status:200,headers:{'access-control-allow-origin':'*'},
+          contentType:'application/json',body:JSON.stringify({ok:true,
+          checkedAt:time,partial:false,stale:false,eventCount:3,events,
+          sourceStatus:[
+           {source:'usgs',ok:true,count:1},
+           {source:'nasa',ok:true,count:1},
+           {source:'gdacs',ok:true,count:1}
+          ],disclaimer:'Publicações verificadas, não previsão de riscos.'})});
+      }
       if(req.url().includes('/api/geo/monitor')){
         return req.respond({status:200,headers:{'access-control-allow-origin':'*'},contentType:'application/json',
          body:JSON.stringify({ok:true,checkedAt:'2026-11-11T12:00:00Z',cadenceHours:3,
@@ -971,6 +996,58 @@ try {
     assert.equal(inmet.n,2);
     assert.match(inmet.body,/NÃO são valores de chuva|NÃO são dados de chuva/);
     await page.evaluate(()=>window.ULTRON_METEO_CENTER.close());
+
+    // Global Intelligence is powered by hourly verified D1 snapshots; the
+    // original Ring must display concrete source-linked events in 2D AND 3D.
+    const global2d=await page.evaluate(async()=>{
+      const result=await window.ULTRON_ORCHESTRATOR.execute(
+        "Jarvis, abra o monitoramento mundial no mapa 2D","global-intel-smoke");
+      const root=document.querySelector(".jarvis-global-intel-panel");
+      const geo=window.ULTRON_GEO_VISUAL;
+      return {result,
+        panelInside:document.querySelector(".jarvis-cc-center").contains(root),
+        visible:!root.hidden,items:root.querySelectorAll(".jarvis-global-intel-item").length,
+        sources:root.querySelectorAll(".jarvis-global-source").length,
+        route:result.results?.[0]?.route,
+        geo:geo.state,
+        sourceLink:root.querySelector(".jarvis-global-intel-item a")?.href,
+        room:root.getBoundingClientRect().right<=window.innerWidth+1};
+    });
+    assert.equal(global2d.result.ok,true,JSON.stringify(global2d));
+    assert.equal(global2d.route,"local-global-intelligence");
+    assert.equal(global2d.panelInside,true);
+    assert.equal(global2d.visible,true);
+    assert.equal(global2d.items,3);
+    assert.equal(global2d.sources,3);
+    assert.equal(global2d.geo.scenario,"global-intelligence-events-v1");
+    assert.equal(global2d.geo.mode,"2d");
+    assert.equal(global2d.geo.count,3);
+    assert.match(global2d.sourceLink,/gdacs\.org|earthquake\.usgs\.gov|eonet\.gsfc\.nasa\.gov/);
+    assert.equal(global2d.room,true,"Global Ring overlay must fit device viewport");
+    const global3d=await page.evaluate(async()=>{
+      const result=await window.ULTRON_ORCHESTRATOR.execute(
+        "Jarvis, mostre a inteligência global no globo 3D","global-intel-globe");
+      const before=window.__phase3MockState.layerCount;
+      document.querySelector(".jarvis-global-intel-item button").click();
+      return {result,geo:window.ULTRON_GEO_VISUAL.state,globe:
+       window.__phase3MockState,items:document.querySelectorAll(".jarvis-global-intel-item").length};
+    });
+    assert.equal(global3d.result.ok,true,JSON.stringify(global3d));
+    assert.equal(global3d.geo.mode,"3d");
+    assert.equal(global3d.geo.scenario,"global-intelligence-events-v1");
+    assert.ok(global3d.globe.layerCount>=3);
+    assert.ok(Array.isArray(global3d.globe.focused));
+    assert.equal(global3d.items,3);
+    const globalBrazil=await page.evaluate(async()=>{
+      document.querySelector(".jarvis-global-intel-actions select").value="brazil";
+      document.querySelector(".jarvis-global-intel-actions select").dispatchEvent(
+        new Event("change",{bubbles:true}));
+      return window.ULTRON_GLOBAL_INTELLIGENCE.state;
+    });
+    await page.waitForFunction(()=>document.querySelectorAll(".jarvis-global-intel-item").length===1,{timeout:7000});
+    assert.equal(globalBrazil.hasReport,true);
+    await page.evaluate(()=>window.ULTRON_GLOBAL_INTELLIGENCE.close());
+    assert.equal(await page.evaluate(()=>window.ULTRON_GLOBAL_INTELLIGENCE.state.visible),false);
 
     // "LIMPAR TUDO" must reset the visible workspace, not search the web.
     const clearResult=await page.evaluate(async()=>{
