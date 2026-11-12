@@ -8,6 +8,8 @@ on:
       - 'modules/jarvis-global-weather.js'
       - 'modules/jarvis-weather-model.js'
       - 'modules/jarvis-weather-insight-model.js'
+      - 'modules/jarvis-world-geodata.js'
+      - 'modules/jarvis-spatial-intensity.js'
       - '.github/workflows/cloudflare-backend-deploy.yml'
   workflow_dispatch:
 
@@ -34,6 +36,8 @@ jobs:
           node --check worker.js
           node --check weather-intelligence.js
           node --check weather-monitor.js
+          node --check ../modules/jarvis-world-geodata.js
+          node ../tests/jarvis-world-geodata.mjs
       - name: Validate Wrangler config
         run: |
           grep -q '"main": "worker.js"' wrangler.jsonc
