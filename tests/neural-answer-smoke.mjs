@@ -1092,9 +1092,18 @@ try {
     // The GLOBAL INTEL button must still open the SAME Ring with verified
     // direct GeoJSON (explicitly marked as NOT persisted/24-hour monitoring).
     globalBackendOffline=true;
+    const quickHit=await page.$eval('#btn-global-intelligence',button=>{
+      const box=button.getBoundingClientRect();
+      const at=document.elementFromPoint(box.x+box.width/2,box.y+box.height/2);
+      return {hit:at===button||button.contains(at),element:at?.tagName,
+        text:at?.textContent?.slice(0,50),display:getComputedStyle(button).display};
+    });
+    assert.equal(quickHit.hit,true,'GLOBAL INTEL quick button must be reachable by pointer: '+JSON.stringify(quickHit));
     await page.click('#btn-global-intelligence');
+    await page.waitForFunction(()=>window.ULTRON_GLOBAL_INTELLIGENCE.state.visible===true,{timeout:10000});
     await page.waitForFunction(()=>document.querySelector(
-      '.jarvis-global-intel-panel')?.getAttribute('aria-busy')==="false",{timeout:20000});
+      '.jarvis-global-intel-panel')?.getAttribute('aria-busy')==="false"&&
+      window.ULTRON_GLOBAL_INTELLIGENCE.state.lastFetchMode==="browser-direct",{timeout:20000});
     const directFallback=await page.evaluate(()=>{
       const root=document.querySelector('.jarvis-global-intel-panel');
       const button=root.querySelector('[data-intel-action="refresh"]');
