@@ -187,7 +187,8 @@ function install(){
    const tab=event.target.closest?.("[data-meteo-tab]");
    if(tab){event.preventDefault();event.stopPropagation();
       void open({tab:tab.dataset.meteoTab,view:"2d"});return;}
-   if(event.target.closest?.(".jarvis-meteo-close")){
+   if(panel.querySelector(".jarvis-meteo-head button")===event.target||
+      event.target.closest?.(".jarvis-meteo-head button")){
       event.preventDefault();event.stopPropagation();close();
    }
  },true);
@@ -195,7 +196,7 @@ function install(){
  quick?.addEventListener("click",event=>{
    event.preventDefault();event.stopImmediatePropagation();void open({tab:"radar",view:"2d"});
  },true);
- window.addEventListener("ultron:new-conversation",stop);
+ window.addEventListener("ultron:new-conversation",()=>{stop();++token;});
  window.ULTRON_METEO_CENTER={
    ...base,open,close,__nativeRing:true,
    get state(){return {...base.state,tab:activeTab,view:mode,
