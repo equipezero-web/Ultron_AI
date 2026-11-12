@@ -1,4 +1,6 @@
 import {weatherCity} from "../modules/jarvis-weather-model.js";
+import {WORLD_GEO_TOPICS} from "../modules/jarvis-world-geodata.js";
+import {SPATIAL_LAYERS} from "../modules/jarvis-spatial-intensity.js";
 // Shared allowlist: only these typed actions can be executed by the autonomy engine.
 export const ACTIONS={
  "text.set":"Exibir/ocultar textos do Neural Ring (enabled boolean)",
@@ -17,6 +19,8 @@ export const ACTIONS={
  "device.command":"Executar comando de dispositivo explicitamente pedido (command string; usa roteador existente)",
  "research":"Responder pergunta/pesquisar assunto (question string; usa core existente)",
  "geo.show":"Visualizar o dataset ENSO em 2D/3D (scenario='enso', view='2d' ou '3d')",
+ "geo.global":"Mapa mundial georreferenciado: terremotos USGS, eventos NASA e indicadores por país Banco Mundial (topic,region world/brazil,view 2d/3d)",
+ "geo.spatial":"Mapa de cores por amostras climáticas globais verificadas (layer rain/temp/soil/air/marine/river, region world/brazil,view 2d/3d)",
  "weather.show":"Buscar previsão numérica atual via Open-Meteo para cidade brasileira permitida e mostrar no mapa 2D ou globo 3D (city string, view 2d/3d)",
  "weather.global":"Buscar previsão mundial de 3, 7 ou 16 dias por cidade ou cidade/país e exibir no mapa 2D ou globo 3D (city string, view 2d/3d, days 3/7/16)",
  "weather.insight":"Mostrar histórico, ar, oceanos, vazão fluvial, incerteza ou avisos oficiais para localidade (type history/air/marine/flood/ensemble/alerts, city, view 2d/3d, year opcional, month opcional)",
@@ -41,6 +45,16 @@ export function validatePlan(value){
   if(action==="geo.show"){
    if(a.scenario!=="enso"||!["2d","3d"].includes(a.view))return null;
    args={scenario:a.scenario,view:a.view};
+  }
+  if(action==="geo.global"){
+    if(!Object.hasOwn(WORLD_GEO_TOPICS,a.topic)||!["world","brazil"].includes(a.region)||
+      !["2d","3d"].includes(a.view))return null;
+    args={topic:a.topic,region:a.region,view:a.view};
+  }
+  if(action==="geo.spatial"){
+    if(!Object.hasOwn(SPATIAL_LAYERS,a.layer)||["drought","alerts"].includes(a.layer)||
+      !["world","brazil"].includes(a.region)||!["2d","3d"].includes(a.view))return null;
+    args={layer:a.layer,region:a.region,view:a.view};
   }
   if(action==="weather.show"){
    const city=weatherCity(a.city);
