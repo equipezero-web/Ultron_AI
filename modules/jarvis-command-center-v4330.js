@@ -328,6 +328,14 @@ if (stage) {
         form.remove();actions.agenda();
       }catch(error){show('AGENDA','Não foi possível salvar no navegador: '+String(error?.message||error));}
     });
+    // A responsive terminal may shift the button before the browser
+    // dispatches click; requestSubmit on pointerdown retains validation.
+    save.addEventListener('pointerdown',event=>{
+      if(event.button===0)form.requestSubmit(save);
+    });
+    cancel.addEventListener('pointerdown',event=>{
+      if(event.button===0)form.remove();
+    });
     form.append(label,title,date,save,cancel);
     output.append(form);form.scrollIntoView({block:'nearest',behavior:'smooth'});
     title.focus({preventScroll:true});
