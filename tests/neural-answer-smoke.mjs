@@ -126,8 +126,62 @@ try {
       if(req.url().includes('raw.githubusercontent.com/nvkelso/natural-earth-vector')){
         return req.respond({status:200,headers:{'access-control-allow-origin':'*'},
          contentType:'application/geo+json',
-         body:JSON.stringify({type:'FeatureCollection',features:[{type:'Feature',
-           geometry:{type:'Polygon',coordinates:[[[-122,48],[-66,48],[-66,24],[-122,24],[-122,48]]]}}]})});
+         body:JSON.stringify({type:'FeatureCollection',features:[
+           {type:'Feature',properties:{ADM0_A3:'BRA',ADMIN:'Brazil'},
+             geometry:{type:'Polygon',coordinates:[[[-74,5],[-34,5],[-34,-34],[-74,-34],[-74,5]]]}},
+           {type:'Feature',properties:{ADM0_A3:'USA',ADMIN:'United States'},
+             geometry:{type:'Polygon',coordinates:[[[-122,48],[-66,48],[-66,24],[-122,24],[-122,48]]]}}
+         ]})});
+      }
+      if(req.url().includes('/api/geo/world')){
+        const u=new URL(req.url()),topic=u.searchParams.get('topic'),region=u.searchParams.get('region')||'world';
+        const index=['population','gdp','co2'].includes(topic);
+        const report={
+          ok:true,topic,region,recordCount:2,
+          dataset:{
+            id:'world-'+topic+'-'+region,
+            title:index?(topic==='population'?'População por país':'PIB nominal por país'):topic==='earthquakes'?'Terremotos mundiais':'Queimadas e incêndios observados',
+            projection:region,source:{
+              name:index?'Banco Mundial — World Development Indicators':topic==='earthquakes'?'USGS':'NASA EONET',
+              url:index?'https://data.worldbank.org/':topic==='earthquakes'?
+                'https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php':'https://eonet.gsfc.nasa.gov/',
+              basePeriod:index?'2024 a 2025':'Últimos 7 dias',
+              disclaimer:index?'Valores anuais, não medições em tempo real.':'Eventos geolocalizados, não mapa de riscos.'
+            },
+            theme:{
+              topic,
+              kind:index?'country-indicator':'events',
+              coloredBy:index?'national-annual-indicator':topic==='earthquakes'?
+                'earthquake-magnitude':'event-category',unit:index?'habitantes':'M',
+              legend:index?[{color:'#d05a67',label:'População alta'},{color:'#63a5bf',label:'População moderada'}]:
+                [{color:'#78b6dc',label:'M4,5–4,9'},{color:'#d94f63',label:'M6,5–6,9'}],
+              countryValues:index?{
+                BRA:{value:215000000,color:'#d05a67',year:'2025'},
+                USA:{value:330000000,color:'#63a5bf',year:'2024'}
+              }:null
+            },
+            frames:[{id:'observed',name:index?'2024–2025':'últimos dias',
+              type:index?'indicadores anuais':'registros oficiais',kind:'observed',
+              description:index?'Valores publicados por país.':'Epicentros e ocorrências catalogadas.',
+              points:index?[
+                {id:'country-BRA',name:'Brasil',lat:-15.8,lng:-47.8,kind:'indicator',color:'#d05a67',
+                  detail:'215 milhões em 2025',value:215000000,unit:'habitantes',
+                  source:'https://data.worldbank.org/indicator/SP.POP.TOTL'},
+                {id:'country-USA',name:'Estados Unidos',lat:38.9,lng:-77,kind:'indicator',color:'#63a5bf',
+                  detail:'330 milhões em 2024',value:330000000,unit:'habitantes',
+                  source:'https://data.worldbank.org/indicator/SP.POP.TOTL'}]:[
+                {id:'ev1',name:'Ocorrência A',lat:-8,lng:-48,kind:topic==='earthquakes'?'earthquake':'wildfires',
+                  color:'#78b6dc',detail:'Epicentro ou ocorrência observada',value:4.8,unit:'M',
+                  source:'https://earthquake.usgs.gov/'},
+                {id:'ev2',name:'Ocorrência B',lat:36,lng:139,kind:topic==='earthquakes'?'earthquake':'wildfires',
+                  color:'#d94f63',detail:'Epicentro ou ocorrência observada',value:6.7,unit:'M',
+                  source:'https://earthquake.usgs.gov/'}
+              ]
+            }]
+          }
+        };
+        return req.respond({status:200,headers:{'access-control-allow-origin':'*'},
+          contentType:'application/json',body:JSON.stringify(report)});
       }
       if(req.url().includes('/api/geo/intensity')){
         const u=new URL(req.url()),layer=u.searchParams.get('layer')||'rain';
@@ -392,6 +446,7 @@ try {
         state,async open(){state.visible=true;return {ok:true}},
         setThematicLayer(points,{playing=false}={}){state.layerCount=points.length;state.playing=playing;return {ok:true,count:points.length};},
         setThematicGrid(cells){state.spatialCount=cells.length;return {ok:true,count:cells.length};},
+        setThematicCountries(countries){state.countryCount=countries.length;return {ok:true,count:countries.length};},
         clearThematicLayer(){state.layerCount=0;return {ok:true}},focus(lat,lng){state.focused=[lat,lng];return {ok:true}}
       };
       const result=await window.ULTRON_ORCHESTRATOR.execute('JARVIS, crie uma simulação 2D do El Niño','phase3-test');
@@ -690,6 +745,67 @@ try {
     await page.waitForFunction(()=>document.querySelector('.jarvis-geo-place-results')?.textContent?.includes('atualizada'),{timeout:7000});
     await page.evaluate(()=>window.ULTRON_GEO_VISUAL.close());
     weatherProxyOffline=false;
+    // Worldwide geospatial subjects MUST open the actual 2D or 3D Ring map.
+    // Research prose alone is insufficient.
+    const earthquakes=await page.evaluate(async()=>{
+      const result=await window.ULTRON_ORCHESTRATOR.execute(
+        'Jarvis, mostre os terremotos do mundo no mapa 2D','world-geo-usgs-browser');
+      return {result,state:window.ULTRON_GEO_VISUAL.state,
+        legend:document.querySelector('.jarvis-geo-intensity-legend')?.textContent,
+        markers:[...document.querySelectorAll('.jarvis-geo-marker > circle:last-of-type')]
+          .map(n=>n.getAttribute('fill')),
+        weatherControlHidden:document.querySelector('.jarvis-geo-intensity-bar')?.hidden};
+    });
+    assert.equal(earthquakes.result.ok,true,JSON.stringify(earthquakes));
+    assert.equal(earthquakes.state.scenario,'world-earthquakes-world');
+    assert.equal(earthquakes.state.mode,'2d');
+    assert.equal(earthquakes.state.topic,'earthquakes');
+    assert.equal(earthquakes.state.count,2);
+    assert.match(earthquakes.legend,/M6,5/);
+    assert.equal(earthquakes.weatherControlHidden,true,'NASA/USGS must not automatically overlay unrelated rain forecasts');
+    assert.ok(earthquakes.markers.includes('#78b6dc')&&earthquakes.markers.includes('#d94f63'),
+      'Earthquake magnitude should paint different colored epicenters');
+
+    const wb=await page.evaluate(async()=>{
+      const result=await window.ULTRON_ORCHESTRATOR.execute(
+        'Jarvis, mostre a população dos países do mundo no mapa 2D','world-geo-worldbank-browser');
+      return {result,state:window.ULTRON_GEO_VISUAL.state,
+        countries:[...document.querySelectorAll('.jarvis-geo-world-country')].map(n=>n.getAttribute('data-iso3')),
+        meaning:document.querySelector('.jarvis-geo-metrics')?.textContent,
+        theme:document.querySelector('.jarvis-geo-intensity-legend')?.textContent};
+    });
+    assert.equal(wb.result.ok,true,JSON.stringify(wb));
+    assert.equal(wb.state.scenario,'world-population-world');
+    assert.equal(wb.state.countryCount,2);
+    assert.ok(wb.countries.includes('BRA')&&wb.countries.includes('USA'),
+      'World Bank metrics must actually color national country polygons in SVG');
+    assert.match(wb.meaning,/Indicador anual/);
+    assert.match(wb.theme,/População/);
+
+    const globeWorld=await page.evaluate(async()=>{
+      const result=await window.ULTRON_ORCHESTRATOR.execute(
+        'Jarvis, mostre o PIB dos países no globo 3D','world-geo-globe-browser');
+      return {result,state:window.ULTRON_GEO_VISUAL.state,
+        countryCount:window.__phase3MockState.countryCount};
+    });
+    // API mock returns two numeric countries for every World Bank indicator.
+    assert.equal(globeWorld.result.ok,true,JSON.stringify(globeWorld));
+    assert.equal(globeWorld.state.mode,'3d');
+    assert.ok(globeWorld.countryCount>=2,
+      '3D globe should receive the grounded country geometry, not only text');
+
+    const planetRain=await page.evaluate(async()=>{
+      const result=await window.ULTRON_ORCHESTRATOR.execute(
+        'Jarvis, mostre a intensidade de chuva no mundo no mapa 2D','world-geo-rain-browser');
+      return {result,state:window.ULTRON_GEO_VISUAL.state};
+    });
+    assert.equal(planetRain.result.ok,true,JSON.stringify(planetRain));
+    assert.equal(planetRain.state.scenario,'spatial-rain-world');
+    assert.equal(planetRain.state.gridCount,40);
+    await page.waitForFunction(()=>document.querySelectorAll('.jarvis-geo-intensity-cell').length===40,{timeout:7000});
+    assert.equal(await page.$eval('.jarvis-geo-intensity-bar',el=>el.hidden),false);
+    await page.evaluate(()=>window.ULTRON_GEO_VISUAL.close());
+
     await page.evaluate(()=>window.__phase3EarthRestore());
     await page.close();
   }

@@ -24,6 +24,9 @@ on:
       - 'tests/jarvis-global-weather.mjs'
       - 'modules/jarvis-spatial-intensity.js'
       - 'tests/jarvis-spatial-intensity.mjs'
+      - 'modules/jarvis-world-geodata.js'
+      - 'modules/jarvis-world-intent.js'
+      - 'tests/jarvis-world-geodata.mjs'
       - 'tests/jarvis-weather-intelligence.mjs'
       - 'tests/jarvis-weather-monitor.mjs'
       - 'backend/weather-intelligence.js'
@@ -72,6 +75,9 @@ on:
       - 'tests/jarvis-global-weather.mjs'
       - 'modules/jarvis-spatial-intensity.js'
       - 'tests/jarvis-spatial-intensity.mjs'
+      - 'modules/jarvis-world-geodata.js'
+      - 'modules/jarvis-world-intent.js'
+      - 'tests/jarvis-world-geodata.mjs'
       - 'tests/jarvis-weather-intelligence.mjs'
       - 'tests/jarvis-weather-monitor.mjs'
       - 'backend/weather-intelligence.js'
@@ -140,6 +146,9 @@ jobs:
           node tests/jarvis-global-weather.mjs
           node --check modules/jarvis-spatial-intensity.js
           node tests/jarvis-spatial-intensity.mjs
+          node --check modules/jarvis-world-geodata.js
+          node --check modules/jarvis-world-intent.js
+          node tests/jarvis-world-geodata.mjs
           node --check backend/weather-watchlist.js
           node tests/jarvis-weather-watchlist.mjs
           node --check backend/weather-intelligence.js
@@ -456,4 +465,70 @@ jobs:
           }
           console.log('REAL SPATIAL SOURCES VERIFIED:',successes,'of',layers.length);
           // Provider outage must be explicit and never turn into fake colors.
+          NODE
+
+  live-world-geo-providers:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Probe actual worldwide official event and indicator APIs
+        run: |
+          node --input-type=module <<'NODE'
+          import {loadWorldGeo} from './modules/jarvis-world-geodata.js';
+          const topics=['earthquakes','wildfires','population','gdp','co2'];
+          const loggedFetch=async(url,options={})=>{
+            const start=Date.now();
+            try{
+              const res=await fetch(url,options);
+              console.log('WORLD GEO PROVIDER HTTP',new URL(url).hostname,new URL(url).pathname,
+                res.status,'elapsedMs',Date.now()-start);
+              return res;
+            }catch(error){
+              console.log('WORLD GEO PROVIDER ERROR',new URL(url).hostname,
+                error?.name,String(error?.message||error),'elapsedMs',Date.now()-start);
+              throw error;
+            }
+          };
+          let ok=0;
+          for(const topic of topics){
+            const value=await loadWorldGeo({topic,region:'world'},{fetchImpl:loggedFetch});
+            console.log('REAL WORLD GEODATA',topic,JSON.stringify({
+              ok:value.ok,count:value.recordCount,source:value.dataset?.source?.url,
+              period:value.dataset?.source?.basePeriod,error:value.error
+            }).slice(0,900));
+            if(value.ok&&value.recordCount>0&&value.dataset?.theme?.legend?.length)ok++;
+          }
+          console.log('REAL WORLD PROVIDERS:',ok,'of',topics.length);
+          if(ok<2)console.log('::warning::Official sources partially unavailable; unit and browser tests still enforce strictly no fabricated values.');
+          NODE
+
+  worldbank-fast-endpoints:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Diagnose reduced World Bank query response times
+        run: |
+          node --input-type=module <<'NODE'
+          const paths=[
+            '/v2/country/all/indicator/SP.POP.TOTL?format=json&per_page=400&mrv=1',
+            '/v2/country/all/indicator/SP.POP.TOTL?format=json&per_page=500&date=2024',
+            '/v2/country/BRA;USA;IND;CHN;DEU/indicator/SP.POP.TOTL?format=json&per_page=40&mrv=1'
+          ];
+          for(const path of paths){
+            const start=Date.now();
+            try{
+              const r=await fetch('https://api.worldbank.org'+path,{signal:AbortSignal.timeout(9000)});
+              const data=await r.json();
+              console.log('WORLD BANK QUERY',path,'status',r.status,'elapsed',Date.now()-start,
+                'rows',Array.isArray(data?.[1])?data[1].length:null,
+                'pages',data?.[0]?.pages,'total',data?.[0]?.total);
+            }catch(e){console.log('WORLD BANK QUERY ERROR',path,String(e),'elapsed',Date.now()-start);}
+          }
           NODE

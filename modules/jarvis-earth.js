@@ -338,6 +338,7 @@ if (earthVisual) {
   let globe = null;
   let thematicPoints=[];
   let spatialPolygons=[];
+  let thematicCountries=[];
   let thematicPlaying=false;
   const themeSource='jarvis-thematic-geo';
   const themeHeat='jarvis-thematic-heat';
@@ -399,10 +400,12 @@ if (earthVisual) {
   // Real sampled geo-cell footprints. Do not extrapolate between cells:
   // each polygon displays the value at its own sampled model grid coordinate.
   const spatialSource="jarvis-sampled-intensity-geo",spatialFill="jarvis-sampled-intensity-fill";
-  const spatialFeatures=()=>({type:"FeatureCollection",features:spatialPolygons.map(cell=>({
-    type:"Feature",properties:{color:cell.color,id:cell.id},
-    geometry:{type:"Polygon",coordinates:[cell.ring]}
-  }))});
+  const spatialFeatures=()=>({type:"FeatureCollection",features:[
+    ...spatialPolygons.map(cell=>({type:"Feature",properties:{color:cell.color,id:cell.id},
+      geometry:{type:"Polygon",coordinates:[cell.ring]}})),
+    ...thematicCountries.map(p=>({type:"Feature",properties:{color:p.color,id:p.id},
+      geometry:p.geometry}))
+  ]});
   function applySpatialToMap(map){
     if(!map||!map.isStyleLoaded?.()||typeof map.getSource!=="function")return false;
     try{
@@ -413,14 +416,14 @@ if (earthVisual) {
         id:spatialFill,type:"fill",source:spatialSource,
         paint:{"fill-color":["get","color"],"fill-opacity":.4,"fill-outline-color":"#bce8f0"}
       });
-      map.setLayoutProperty(spatialFill,"visibility",spatialPolygons.length?"visible":"none");
+      map.setLayoutProperty(spatialFill,"visibility",spatialPolygons.length||thematicCountries.length?"visible":"none");
       return true;
     }catch(error){console.warn("[EARTH] Spatial map fill unavailable:",error);return false;}
   }
   function applySpatialToGlobe(){
     if(!globe||typeof globe.polygonsData!=="function")return false;
     try{
-      const geo=spatialPolygons.map(p=>({color:p.color,geometry:{type:"Polygon",coordinates:[p.ring]}}));
+      const geo=[...spatialPolygons.map(p=>({color:p.color,geometry:{type:"Polygon",coordinates:[p.ring]}})),...thematicCountries];
       globe.polygonsData(geo).polygonCapColor(p=>{
         const x=p.color;return "rgba("+parseInt(x.slice(1,3),16)+","+
           parseInt(x.slice(3,5),16)+","+parseInt(x.slice(5,7),16)+",0.52)";
@@ -447,7 +450,37 @@ if (earthVisual) {
     const globeOk=applySpatialToGlobe(),mapOk=applySpatialToMap(referenceMap)||applySpatialToMap(streetMap);
     return {ok:true,count:normalized.length,staged:!globeOk&&!mapOk};
   }
+  function setThematicCountries(countries){
+    if(!Array.isArray(countries)||countries.length>230)return {ok:false,error:"Limite de países excedido"};
+    const cleaned=[];
+    for(const item of countries){
+      if(!/^[A-Z]{3}$/.test(String(item?.id||""))||!/^#[\da-f]{6}$/i.test(String(item?.color||""))||
+        !["Polygon","MultiPolygon"].includes(item?.geometry?.type))return {ok:false,error:"País sem geometria validada"};
+      const polygons=item.geometry.type==="Polygon"?[item.geometry.coordinates]:item.geometry.coordinates;
+      if(!Array.isArray(polygons)||polygons.length>60)return {ok:false,error:"Geometria excessiva"};
+      let coordinateCount=0,valid=true;
+      for(const polygon of polygons){
+        if(!Array.isArray(polygon)||polygon.length>10){valid=false;break;}
+        for(const ring of polygon){
+          if(!Array.isArray(ring)||ring.length>10000){valid=false;break;}
+          coordinateCount+=ring.length;
+          for(const p of ring){
+            if(!Array.isArray(p)||p.length<2||!Number.isFinite(p[0])||!Number.isFinite(p[1])||
+              p[0]< -180||p[0]>180||p[1]< -90||p[1]>90){valid=false;break;}
+          }
+          if(!valid)break;
+        }
+        if(!valid)break;
+      }
+      if(!valid||coordinateCount>50000)return {ok:false,error:"Coordenadas dos países inválidas"};
+      cleaned.push({id:item.id,color:item.color,geometry:item.geometry});
+    }
+    thematicCountries=cleaned;
+    const globeOk=applySpatialToGlobe(),mapOk=applySpatialToMap(referenceMap)||applySpatialToMap(streetMap);
+    return {ok:true,count:cleaned.length,staged:!globeOk&&!mapOk};
+  }
   function clearThematicLayer(){
+    setThematicCountries([]);
     setThematicGrid([]);
     return setThematicLayer([],{playing:false});
   }
@@ -1094,7 +1127,7 @@ if (earthVisual) {
   }
   window.ULTRON_EARTH = {
     open, close, locate, navigate, focus, clearSelection, enterStreetDetails,
-    setThematicLayer, setThematicGrid, clearThematicLayer,
+    setThematicLayer, setThematicGrid, setThematicCountries, clearThematicLayer,
     resetReferenceMap, get referenceMap(){return referenceMap;},
     get state() {
       const tokenConfigured = hasMapboxToken();
