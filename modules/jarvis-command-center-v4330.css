@@ -1900,3 +1900,20 @@ body.jarvis-command-center #jarvis-cc-link-slot #btn-pair-mobile{
   line-height:1.35!important;font-size:11px!important;
   cursor:pointer;touch-action:manipulation!important;pointer-events:auto!important;
 }
+
+/* v4.99.3 — At desktop/TV widths the command console must span the full
+   outer dashboard grid. Previously grid-column:1 shrank the entire terminal
+   to the 18% sidebar (335px @ 1920), crushing mobile bridge to 27px. */
+@media(min-width:1100px){
+  body.jarvis-command-center .jarvis-command-center-ui > .jarvis-cc-bottom {
+    grid-column:1 / -1!important;
+    grid-row:3!important;
+    width:100%!important;max-width:100%!important;min-width:0!important;
+    box-sizing:border-box!important;
+  }
+  body.jarvis-command-center .jarvis-command-center-ui > .jarvis-cc-bottom
+    .jarvis-cc-console-layout{
+    width:100%!important;max-width:1700px!important;
+    grid-template-columns:minmax(0,1.15fr) minmax(0,1fr)!important;
+  }
+}
