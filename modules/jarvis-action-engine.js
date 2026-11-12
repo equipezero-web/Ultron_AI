@@ -172,7 +172,7 @@ async function executeStep(step,original){
    const data={id:"spatial-"+a.layer+"-"+a.region,title:spec.label+" — "+(a.region==="world"?"Mundo":"Brasil"),
     projection:a.region,source,
     frames:[{id:"latest",name:report.dataTime||"Amostra",type:"grade numérica amostrada",
-      kind:"observed",description:source.disclaimer,
+      kind:["rain","temp"].includes(a.layer)?"short-term-forecast":"current-estimate",description:source.disclaimer,
       points:[{id:first.id,name:"Amostra geográfica",lat:first.lat,lng:first.lng,
         kind:a.layer==="air"?"air":a.layer==="marine"?"marine":a.layer==="river"?"river":"weather",
         detail:"Valor no centro amostrado: "+first.value+" "+report.unit+" · "+first.time,
