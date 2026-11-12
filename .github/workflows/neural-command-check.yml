@@ -163,7 +163,7 @@ jobs:
           grep -q "stark-hand-gesture-v420.js?v=4.20.0" modules/stark-bootstrap.js
           grep -q "palm-matrix-v420.js?v=4.20.0" modules/stark-bootstrap.js
           grep -q "file-inspector-v420.js?v=4.20.0" modules/stark-bootstrap.js
-          grep -q "mobile-camera-source.js?v=4.25.0" modules/stark-bootstrap.js
+          grep -Eq "mobile-camera-source[.]js[?]v=4[.]25[.][0-9]+" modules/stark-bootstrap.js
           grep -q "neural-spatial-control-v4250.js?v=4.25.0" modules/stark-bootstrap.js
           grep -q "neural-focus-v4250.css?v=4.25.0" modules/stark-bootstrap.js
           grep -Eq "mobile-link-simple-v4250[.]js[?]v=4[.]25[.][0-9]+" modules/stark-bootstrap.js
