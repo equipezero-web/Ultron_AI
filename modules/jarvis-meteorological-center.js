@@ -60,8 +60,8 @@ if(stage){
          group.append(shape);
        }
      }
-     group.dataset.outline=group.childNodes.length?"official":"unavailable";
-   }).catch(()=>group.dataset.outline="unavailable");
+     group.setAttribute("data-meteo-state-outline",group.childNodes.length?"official":"unavailable");
+   }).catch(()=>group.setAttribute("data-meteo-state-outline","unavailable"));
  }
  function showApac2D(report){
    const analysis=analyzeApacRain(report,{search:citySearch,rainOnly:onlyWet});
