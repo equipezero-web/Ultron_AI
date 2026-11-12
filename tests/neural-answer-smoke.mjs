@@ -1249,7 +1249,14 @@ try {
         ring.addEventListener(type,e=>window.__ccRingEvents.push(type+':'+e.target.tagName));
     });
     await page.$eval('[data-visual="ring"]',b=>b.scrollIntoView({behavior:'instant',block:'center'}));
-    await page.click('[data-visual="ring"]');
+    const ringTarget=await page.$eval('[data-visual="ring"]',b=>{
+      const r=b.getBoundingClientRect();
+      return {x:r.x+r.width/2,y:r.y+r.height/2};
+    });
+    // Puppeteer page.click() may scroll the entire 3D stage again after the
+    // control has already been centered, moving the target mid-gesture.
+    // Click the current actual hit coordinates as a user would.
+    await page.mouse.click(ringTarget.x,ringTarget.y);
     const ringDebug=await page.evaluate(()=>{
       const button=document.querySelector('[data-visual="ring"]'),r=button.getBoundingClientRect();
       const hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);
