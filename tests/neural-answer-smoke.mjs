@@ -1196,9 +1196,26 @@ try {
       const camera=document.getElementById('btn-camera');
       camera.click=()=>{window.__ccAuditCamera=(window.__ccAuditCamera||0)+1};
     });
+    await page.evaluate(()=>{
+      const b=document.querySelector('[data-cc="status"]');
+      window.__ccStatusEvents=[];
+      for(const type of ['pointerdown','pointerup','click']){
+        b.addEventListener(type,e=>window.__ccStatusEvents.push(type+':'+e.target.tagName));
+      }
+    });
     await page.click('[data-cc="status"]');
-    await page.waitForFunction(()=>[...document.querySelectorAll('.jarvis-cc-inline-result')]
-      .some(el=>el.textContent.includes('STATUS DO SISTEMA')));
+    const ccStatusDebug=await page.evaluate(()=>({
+      events:window.__ccStatusEvents,
+      center:window.JARVIS_COMMAND_CENTER?.version,
+      output:document.getElementById('output-box')?.textContent?.slice(-850),
+      actionButtons:document.querySelectorAll('[data-cc="status"]').length,
+      buttonParent:document.querySelector('[data-cc="status"]')?.parentElement?.className,
+      messageCount:document.querySelectorAll('.jarvis-cc-inline-result').length,
+      ccAlive:!!window.JARVIS_COMMAND_CENTER
+    }));
+    console.log('COMMAND CENTER STATUS DEBUG',JSON.stringify(ccStatusDebug));
+    assert.ok(ccStatusDebug.output?.includes('STATUS DO SISTEMA'),
+      'Real STATUS button must update terminal: '+JSON.stringify(ccStatusDebug));
     assert.ok(await page.$eval('.jarvis-cc-inline-result:last-child',
       el=>el.querySelector('button')?.textContent.includes('Atualizar status')));
     await page.click('.jarvis-cc-inline-result:last-child button');
