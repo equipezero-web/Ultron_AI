@@ -176,7 +176,7 @@ try {
                 {id:'ev2',name:'Ocorrência B',lat:36,lng:139,kind:topic==='earthquakes'?'earthquake':'wildfires',
                   color:'#d94f63',detail:'Epicentro ou ocorrência observada',value:6.7,unit:'M',
                   source:'https://earthquake.usgs.gov/'}
-              ]}
+              ]
             }]
           }
         };
