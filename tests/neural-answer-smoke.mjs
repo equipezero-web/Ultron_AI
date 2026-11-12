@@ -1164,7 +1164,7 @@ try {
     // A previous layout hid 5/6 data-cc controls, and the globe-mode button
     // changed only its label instead of opening ULTRON_EARTH.
     const ccButtons=await page.evaluate(()=>[...document.querySelectorAll(
-      '#jarvis-cc-input-slot .quick-actions [data-cc]')].map(button=>({
+      '#jarvis-cc-input-slot [data-cc]')].map(button=>({
       action:button.dataset.cc,visible:getComputedStyle(button).display!=='none',
       width:Math.round(button.getBoundingClientRect().width)
     })));
