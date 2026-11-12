@@ -275,7 +275,20 @@ if(stage){
  if(quick&&!document.getElementById("btn-global-intelligence")){
   const btn=elt("button","","GLOBAL INTEL");btn.id="btn-global-intelligence";btn.type="button";
   btn.dataset.intelAction="open";
-  btn.addEventListener("click",()=>void open({view:"3d"}));quick.append(btn);
+  // A pointerdown may cause the Ring to change visual layout before click
+  // is dispatched. Act on pointerdown like the existing quick Earth button,
+  // while retaining keyboard accessibility through click.
+  let pointerOpenAt=0;
+  btn.addEventListener("pointerdown",event=>{
+    if(event.button!==0)return;
+    pointerOpenAt=Date.now();
+    void open({view:"3d"});
+  });
+  btn.addEventListener("click",()=>{
+    if(Date.now()-pointerOpenAt<800)return;
+    void open({view:"3d"});
+  });
+  quick.append(btn);
  }
  // Existing wake state already triggers a separate spoken news briefing.
  // Add nonintrusive sourced event status; DO NOT interrupt its narration.
