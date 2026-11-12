@@ -32,7 +32,7 @@ assert.equal(validatePlan({steps:[{action:"geo.spatial",args:{layer:"air",region
 assert.equal(validatePlan({steps:[{action:"geo.spatial",args:{layer:"drought",region:"world",view:"3d"}}]}),null);
 
 const earthquakeFeed={type:"FeatureCollection",features:[
- {id:"eq1",geometry:{type:"Point",coordinates:[-70,-12,14]},
+ {id:"eq1",geometry:{type:"Point",coordinates:[-76,-12,14]},
   properties:{mag:4.8,place:"Peru",time:Date.parse("2026-11-11T08:00:00Z"),url:"https://earthquake.usgs.gov/earthquakes/eventpage/eq1"}},
  {id:"eq2",geometry:{type:"Point",coordinates:[-40,-18,19]},
   properties:{mag:6.2,place:"Atlântico do Brasil",time:Date.parse("2026-11-11T10:00:00Z")}},
