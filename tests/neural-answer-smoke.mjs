@@ -81,6 +81,33 @@ try {
       }
       if(/^(?:https:\/\/sigma\.cptec\.inpe\.br\/radar\/|https:\/\/www\.cptec\.inpe\.br\/dsat\/|https:\/\/mapas\.inmet\.gov\.br\/)/.test(req.url()))
         return req.respond({status:200,contentType:'text/html',body:'<!doctype html><title>Official viewer mock</title>'});
+      if(req.url().startsWith('https://api.rainviewer.com/public/weather-maps.json')){
+        const now=Math.floor(Date.now()/1000);
+        const times=Array.from({length:6},(_,i)=>({
+          time:now-(6-i)*600,path:'/v2/radar/abc'+String(i).padStart(6,'0')
+        }));
+        return req.respond({status:200,headers:{'access-control-allow-origin':'*'},
+          contentType:'application/json',body:JSON.stringify({
+            version:'2.0',host:'https://tilecache.rainviewer.com',
+            radar:{past:times,nowcast:[]},satellite:{infrared:[]}
+          })});
+      }
+      if(req.url().startsWith('https://tilecache.rainviewer.com/v2/radar/')||
+         req.url().startsWith('https://cdn.star.nesdis.noaa.gov/GOES19/ABI/FD/GEOCOLOR/')){
+        const png=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGNgYGBgAAAABQABpfZFQAAAAABJRU5ErkJggg==','base64');
+        return req.respond({status:200,headers:{'access-control-allow-origin':'*'},
+          contentType:'image/png',body:png});
+      }
+      if(req.url().startsWith('https://apitempo.inmet.gov.br/estacoes/T')){
+        const payload=[
+          {CD_ESTACAO:'A001',DC_NOME:'Recife',SG_ESTADO:'PE',
+            VL_LATITUDE:'-8.05',VL_LONGITUDE:'-34.88',CD_SITUACAO:'Operante'},
+          {CD_ESTACAO:'A002',DC_NOME:'Olinda',SG_ESTADO:'PE',
+            VL_LATITUDE:'-8.0',VL_LONGITUDE:'-34.85',CD_SITUACAO:'Pane'}
+        ];
+        return req.respond({status:200,headers:{'access-control-allow-origin':'*'},
+          contentType:'application/json',body:JSON.stringify(payload)});
+      }
       if(req.url().includes('youtube-nocookie.com/embed/'))return req.respond({status:200,contentType:'text/html',body:'<html><body>Test video player</body></html>'});
       if(req.url().includes('/api/orchestrator/')){
         const headers={'access-control-allow-origin':'*','access-control-allow-methods':'POST, OPTIONS','access-control-allow-headers':'content-type, authorization'};
@@ -877,15 +904,22 @@ try {
       const panel=document.querySelector(".jarvis-meteo-center");
       return {result,inside:document.querySelector(".jarvis-cc-center").contains(panel),
         iframes:panel.querySelectorAll("iframe").length,
-        source:panel.querySelector(".jarvis-meteo-external-main")?.href,
-        message:panel.textContent};
+        stageTiles:panel.querySelectorAll(".jarvis-meteo-radar-map image").length,
+        source:panel.querySelector(".jarvis-meteo-credit")?.href,
+        state:window.ULTRON_METEO_CENTER.state,
+        message:panel.textContent,
+        fullScreen:panel.getBoundingClientRect().width/
+         document.querySelector(".jarvis-cc-center").getBoundingClientRect().width};
     });
     assert.equal(radar.result.ok,true,JSON.stringify(radar));
     assert.equal(radar.result.results[0].route,"local-meteorological-center");
     assert.equal(radar.inside,true);
-    assert.equal(radar.iframes,0,"External radar must never show a blocked/410 iframe");
-    assert.match(radar.source,/sigma\.cptec\.inpe\.br\/radar/);
-    assert.match(radar.message,/indisponíveis|indisponiveis|sem acesso/i);
+    assert.equal(radar.iframes,0,"No external iframe or separate weather page");
+    assert.ok(radar.stageTiles>=4,"Actual radar PNG tiles must be mounted in Neural Ring");
+    assert.ok(radar.fullScreen>.85,"2D radar must occupy the Neural Ring stage");
+    assert.equal(radar.state.radarFrames,6);
+    assert.match(radar.source,/rainviewer.com/);
+    assert.match(radar.message,/Radar|RADAR/);
     const apac=await page.evaluate(async()=>{
       const result=await window.ULTRON_ORCHESTRATOR.execute(
         "Jarvis, mostre as chuvas registradas em Pernambuco","meteo-apac-test");
@@ -915,12 +949,27 @@ try {
         "Jarvis, ative o satélite e acompanhe as nuvens","meteo-satellite-test");
       return {result,state:window.ULTRON_METEO_CENTER.state,
         iframeCount:document.querySelectorAll(".jarvis-meteo-center iframe").length,
-        source:document.querySelector(".jarvis-meteo-external-main")?.href};
+        image:document.querySelector(".jarvis-meteo-satellite-image")?.src,
+        imageStatus:document.querySelector(".jarvis-meteo-satellite-view")?.dataset.imageStatus};
     });
     assert.equal(satellite.result.ok,true);
     assert.equal(satellite.state.tab,"satellite");
-    assert.equal(satellite.iframeCount,0,"Satellite may not be embedded when cross-site policy denies it");
-    assert.match(satellite.source,/cptec\.inpe\.br\/dsat/);
+    assert.equal(satellite.iframeCount,0,"Direct NOAA image, never a remote webpage");
+    assert.match(satellite.image,/cdn\.star\.nesdis\.noaa\.gov\/GOES19/);
+    await page.waitForFunction(()=>document.querySelector(".jarvis-meteo-satellite-view")?.dataset.imageStatus==="loaded",{timeout:7000});
+    const inmet=await page.evaluate(async()=>{
+      const result=await window.ULTRON_ORCHESTRATOR.execute(
+        "Jarvis, abra o mapa do INMET","meteo-inmet-test");
+      return {result,state:window.ULTRON_METEO_CENTER.state,
+        svg:!!document.querySelector(".jarvis-meteo-inmet-map"),
+        n:document.querySelectorAll(".jarvis-meteo-inmet-map circle").length,
+        body:document.querySelector(".jarvis-meteo-center")?.textContent};
+    });
+    assert.equal(inmet.result.ok,true,JSON.stringify(inmet));
+    assert.equal(inmet.state.tab,"inmet");
+    assert.equal(inmet.svg,true);
+    assert.equal(inmet.n,2);
+    assert.match(inmet.body,/NÃO são valores de chuva|NÃO são dados de chuva/);
     await page.evaluate(()=>window.ULTRON_METEO_CENTER.close());
 
     // "LIMPAR TUDO" must reset the visible workspace, not search the web.

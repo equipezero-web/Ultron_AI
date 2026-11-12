@@ -24,6 +24,14 @@ on:
       - 'modules/jarvis-rain-understanding.js'
       - 'tests/jarvis-rain-understanding.mjs'
       - 'modules/jarvis-meteorological-center.js'
+      - 'modules/jarvis-meteorological-live.js'
+      - 'modules/jarvis-meteorological-ring-layer.js'
+      - 'modules/jarvis-meteo-ring-bridge.js'
+      - 'modules/jarvis-meteo-ring-bridge.css'
+      - 'modules/jarvis-inmet-stations.js'
+      - 'tests/jarvis-meteorological-live.mjs'
+      - 'tests/jarvis-meteorological-ring-layer.mjs'
+      - 'tests/jarvis-inmet-stations.mjs'
       - 'tests/jarvis-clear-interface.mjs'
       - 'tests/jarvis-autonomy.mjs'
       - 'tests/jarvis-phase1.mjs'
@@ -86,6 +94,14 @@ on:
       - 'modules/jarvis-rain-understanding.js'
       - 'tests/jarvis-rain-understanding.mjs'
       - 'modules/jarvis-meteorological-center.js'
+      - 'modules/jarvis-meteorological-live.js'
+      - 'modules/jarvis-meteorological-ring-layer.js'
+      - 'modules/jarvis-meteo-ring-bridge.js'
+      - 'modules/jarvis-meteo-ring-bridge.css'
+      - 'modules/jarvis-inmet-stations.js'
+      - 'tests/jarvis-meteorological-live.mjs'
+      - 'tests/jarvis-meteorological-ring-layer.mjs'
+      - 'tests/jarvis-inmet-stations.mjs'
       - 'tests/jarvis-clear-interface.mjs'
       - 'tests/jarvis-autonomy.mjs'
       - 'tests/jarvis-phase1.mjs'
@@ -157,6 +173,10 @@ jobs:
           node --check modules/jarvis-clear-interface.js
           node tests/jarvis-clear-interface.mjs
           node tests/jarvis-meteorological-sources.mjs
+          node tests/jarvis-meteorological-live.mjs
+          node tests/jarvis-meteorological-ring-layer.mjs
+          node tests/jarvis-inmet-stations.mjs
+          node --check modules/jarvis-meteo-ring-bridge.js
           node tests/jarvis-rain-understanding.mjs
           node --check modules/jarvis-meteorological-center.js
           node tests/jarvis-phase1.mjs

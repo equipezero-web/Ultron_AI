@@ -21,7 +21,8 @@ assert.equal(normalized.count,2);assert.equal(normalized.stations[0].value,32);
 assert.equal(normalized.stations[0].lastReading,"2026-11-12 10:00");
 assert.equal(normalized.type,"observed-rain-gauges");
 assert.equal(normalizeApacResponse(raw,{hours:4}),null);
-assert.ok(METEO_VIEWERS.radar.url.startsWith("https://sigma.cptec.inpe.br"));
+assert.ok(METEO_VIEWERS.radar.url.startsWith("https://www.rainviewer.com/"));
+assert.match(METEO_VIEWERS.satellite.url,/star.nesdis.noaa.gov/);
 assert.equal(parseMeteoIntent("Jarvis, mostre o radar em Pernambuco").tab,"radar",
   "A radar request must never silently become pluviometers");
 assert.equal(normalized.stations[1].color,"#73899a","0 mm must be visibly distinct from small rain");
