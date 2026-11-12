@@ -1,7 +1,7 @@
 import {TASK_CONTEXT} from "./jarvis-task-context.js?v=4.69.0";
 import {classifyOperatorTurn,splitOperatorSteps} from "./jarvis-intent-engine.js?v=4.69.0";
 import {directPlan,resolveActionPlan,runActionPlan} from "./jarvis-action-engine.js?v=4.96.0";
-import {parseLocalCommand,runLocalCommand} from "./jarvis-local-commands.js?v=4.97.0";
+import {parseLocalCommand,runLocalCommand} from "./jarvis-local-commands.js?v=4.98.0";
 import API_CONFIG from "../config.js";
 
 const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
