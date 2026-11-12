@@ -373,4 +373,5 @@ window.ULTRON_DEVICES = {
 bindNaturalLanguageInterception();
 injectControls();
 refreshBridgeState();
-setInterval(() => { if (!document.hidden && navigator.onLine) refreshBridgeState(); }, 45000);\nwindow.addEventListener("online", refreshBridgeState);
+setInterval(() => { if (!document.hidden && navigator.onLine) refreshBridgeState(); }, 45000);
+window.addEventListener("online", refreshBridgeState);
