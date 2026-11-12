@@ -26,6 +26,8 @@ on:
       - 'tests/jarvis-spatial-intensity.mjs'
       - 'modules/jarvis-world-geodata.js'
       - 'modules/jarvis-world-intent.js'
+      - 'modules/jarvis-tsunami-simulation.js'
+      - 'tests/jarvis-tsunami-simulation.mjs'
       - 'tests/jarvis-world-geodata.mjs'
       - 'tests/jarvis-weather-intelligence.mjs'
       - 'tests/jarvis-weather-monitor.mjs'
@@ -77,6 +79,8 @@ on:
       - 'tests/jarvis-spatial-intensity.mjs'
       - 'modules/jarvis-world-geodata.js'
       - 'modules/jarvis-world-intent.js'
+      - 'modules/jarvis-tsunami-simulation.js'
+      - 'tests/jarvis-tsunami-simulation.mjs'
       - 'tests/jarvis-world-geodata.mjs'
       - 'tests/jarvis-weather-intelligence.mjs'
       - 'tests/jarvis-weather-monitor.mjs'
@@ -149,6 +153,8 @@ jobs:
           node --check modules/jarvis-world-geodata.js
           node --check modules/jarvis-world-intent.js
           node tests/jarvis-world-geodata.mjs
+          node --check modules/jarvis-tsunami-simulation.js
+          node tests/jarvis-tsunami-simulation.mjs
           node --check backend/weather-watchlist.js
           node tests/jarvis-weather-watchlist.mjs
           node --check backend/weather-intelligence.js
