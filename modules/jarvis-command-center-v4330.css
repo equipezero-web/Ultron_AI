@@ -1854,3 +1854,22 @@ body.jarvis-command-center #jarvis-cc-input-slot .quick-actions button:focus-vis
     grid-template-columns:repeat(3,minmax(0,1fr))!important;
   }
 }
+
+body.jarvis-command-center .jarvis-cc-agenda-form{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:8px;margin:9px 0;padding:12px;
+  border:1px solid #4e7c95;background:#0a2137;border-radius:9px;
+}
+body.jarvis-command-center .jarvis-cc-agenda-form strong{grid-column:1/-1;color:#a8e4ff}
+body.jarvis-command-center .jarvis-cc-agenda-form input{
+  min-width:0;max-width:100%;min-height:44px;box-sizing:border-box;
+  background:#071729;color:#edf7ff;border:1px solid #638aa3;
+  border-radius:6px;padding:7px 9px;font-size:13px;
+}
+body.jarvis-command-center .jarvis-cc-agenda-form button{
+  min-height:44px;background:#143d56;border:1px solid #75a9c7;
+  border-radius:6px;color:#e1f5ff;cursor:pointer;font-size:12px;
+}
+@media(max-width:600px){
+  body.jarvis-command-center .jarvis-cc-agenda-form{grid-template-columns:1fr}
+}
