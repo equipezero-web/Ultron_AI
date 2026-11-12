@@ -4,10 +4,118 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-12T03:14:31.320Z",
-  "oldestEventAt": "2026-11-11T03:27:46.000Z",
-  "windowStartAt": "2026-11-11T03:14:31.320Z",
+  "updatedAt": "2026-11-12T11:21:17.063Z",
+  "oldestEventAt": "2026-11-11T12:58:23.000Z",
+  "windowStartAt": "2026-11-11T11:21:17.063Z",
   "events": [
+    {
+      "id": "event-ec4c91c5",
+      "category": "santa-catarina",
+      "title": "Inmet emite alertas de tempestade para várias regiões do Brasil; veja a previsão",
+      "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxNcUFha19HanVhVE16RWhGTkFMbmlqQTZBVnByNFhiZm9MRWNvVng5VXc1Y2xVRzRKMTk1VTZCTGNPbms0SXFHZDdrWFBPalBZSU1oajFZWUdTazJzdHZhOFBqTmxONm9aYzloZjZxN0dZTVBPZERXYXBySFUtR1ZQc2tyOFY2MDRObXMwUnZOalV6M1VTQWltbTZLUElKTGxKR2pzbmxCS1VfZ3dSNkdMSVljU2w",
+      "description": "Inmet emite alertas de tempestade para várias regiões do Brasil; veja a previsão &nbsp;&nbsp; www.portalviu.com.br",
+      "imageUrl": null,
+      "source": "www.portalviu.com.br",
+      "publishedAt": "2026-11-12T11:13:08.000Z",
+      "firstSeenAt": "2026-11-12T11:21:17.063Z",
+      "lastSeenAt": "2026-11-12T11:21:17.063Z"
+    },
+    {
+      "id": "event-d0da876f",
+      "category": "brasil",
+      "title": "Praias do Rio vão ter boletins de balneabilidade duas vezes por semana",
+      "url": "https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-11/praias-do-rio-vao-ter-boletins-de-balneabilidade-duas-vezes-por-semana",
+      "description": "O Instituto Estadual do Ambiente (Inea), passa, a partir de agora, a divulgar duas vezes por semana os boletins de balneabilidade das praias das zonas sul e sudoeste da capital. A partir desta semana, as atualizações, que antes eram realizadas semanalmente, serão publicadas às terças e sextas-feiras. A mudança reforça o monitoramento da qualidade da água e amplia o acesso dos banhistas a informações atualizadas, especialmente durante a alta temporada e os períodos de chuvas intensas. Notícias relacionadas: Municípios terão que prestar contas sobre gestão de praias. Pesquisadores alertam para impacto da poluição do oceano por mercúrio. A medida considera os impactos das chuvas sobre a qualidade da água do mar. Em outubro, a cidade do Rio de Janeiro registrou o mês mais chuvoso desde o início da série histórica do Alerta Rio, em 1997. Durante os temporais, o escoamento da água pelas ruas e sistemas de drenagem pode levar lixo, esgoto e outros resíduos até o mar, provocando alterações na balneabilidade. Em trechos próximos à foz de rios e à saída de galerias de águas pluviais, a qualida",
+      "imageUrl": "https://imagens.ebc.com.br/PAaUSniWQJZ7RFVSi7vuLrgR4mA=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/atoms/image/925137-ba%C3%ADa%20de%20guanabara_rj_7345.jpg?itok=HlDutu7s",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-12T10:32:00.000Z",
+      "firstSeenAt": "2026-11-12T11:21:17.063Z",
+      "lastSeenAt": "2026-11-12T11:21:17.063Z"
+    },
+    {
+      "id": "event-a62793fc",
+      "category": "brasil",
+      "title": "“Há mais memória no celular do que na relação”, diz escritor",
+      "url": "https://agenciabrasil.ebc.com.br/cultura/noticia/2026-11/ha-mais-memoria-no-celular-do-que-na-relacao-diz-escritor",
+      "description": "Foi na Rua da Moeda, em pleno Recife Antigo, que se ouviu uma multidão aos gritos. Foi um pedido do escritor e poeta Fabrício Carpinejar, ao encerrar uma mesa dentro do Rec’n’Play , maior festival de inovação, empreendedorismo e tecnologia do país “Vamos soltar um grito. Eu vou contar 1,2, 3 e vocês vão soltar um grito libertador. Isso aqui não é autoajuda, isso aqui é um exorcismo. Vamos soltar um grito libertador para deixar o ressentimento e a culpa para trás, deixar as marcas para trás. Vamos sair desse festival literalmente com a alma lavada”, convidou o escritor. Notícias relacionadas: Enap promove evento para discutir inovação na gestão pública . Empresas de três regiões terão aporte de R$ 450 milhões para inovação. Na mesa Inovação pelo Afeto: que ninguém seja invisível ao seu lado , Carpinejar provocou o público presente, mesmo sob uma fina garoa, a refletir sobre o afeto, a memória e a convivência na era da hiperconectividade, temas que ele vem trabalhando em seu mais recente livro, No Meu Tempo eu Era Melhor . Poeta Fabrício Carpinejar diz que pessoas têm dedicado muito es",
+      "imageUrl": "https://imagens.ebc.com.br/PgT233iaLwU18XYeyyaoDqt4WqM=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/12/ha_mais_memoria_no_celular_do_que_na_relacao_diz_carpinejar_durante_recnplay01.jpg?itok=8-4flqxN",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-12T10:14:00.000Z",
+      "firstSeenAt": "2026-11-12T11:21:17.063Z",
+      "lastSeenAt": "2026-11-12T11:21:17.063Z"
+    },
+    {
+      "id": "event-2f8eb6bb",
+      "category": "brasil",
+      "title": "Mega-Sena sorteia prêmio de R$ 20 milhões nesta quinta-feira",
+      "url": "https://agenciabrasil.ebc.com.br/geral/noticia/2026-11/mega-sena-sorteia-premio-de-r-20-milhoes-nesta-quinta-feira",
+      "description": "A Mega-Sena sorteia nesta quinta-feira (12) prêmio estimado em R$ 20 milhões . As seis dezenas do concurso 3.085 serão sorteadas a partir das 21h (horário de Brasília) no Espaço da Sorte, em São Paulo. As apostas podem ser feitas até às 20h (horário de Brasília) de hoje em casas lotéricas credenciadas pela Caixa em todo o país ou pela internet, no site ou aplicativo da Caixa. A aposta simples, com seis dezenas, custa R$ 6. Notícias relacionadas: Mega da Virada: Caixa anuncia que prêmio deve superar R$ 1 bilhão. No último concurso, foram sorteados os números 06 - 14 - 22 - 30 - 31 - 37 e uma aposta de Iturama (MG) acertou as seis dezenas .",
+      "imageUrl": "https://imagens.ebc.com.br/MfZHMDabCaFkb7-AEj5r_dejyjM=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/mega_sena_mcajr_abr_2904223680.jpg?itok=5iwnRMLK",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-12T10:02:00.000Z",
+      "firstSeenAt": "2026-11-12T11:21:17.063Z",
+      "lastSeenAt": "2026-11-12T11:21:17.063Z"
+    },
+    {
+      "id": "event-e35baa46",
+      "category": "santa-catarina",
+      "title": "Santa Catarina terá quinta-feira com risco de temporais isolados e chuva intensa",
+      "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxNSXRrYUd2am1XZHpzUUlJZWRzdHIzMEI4WHlPQXh2MjNHVXhMeFNxbXg5NDRuNjlWYTRrWWlaeTFZLWN0Vlo0UVFOcnlqRnBhOU14WkNlOEtyUTFfZy1NWWpuejNydnZidzNIVjFXUDBpREloZVVCTWwxeVdNcHpFY0xYSmd3aktiekJrUTNWT2I0Y3g4QUdnQVFIYlB0Q0FIVzVIQ1Mta3FSZ0dhVVNESnhSaFY2QVo0",
+      "description": "Santa Catarina terá quinta-feira com risco de temporais isolados e chuva intensa &nbsp;&nbsp; No Ponto SC",
+      "imageUrl": null,
+      "source": "No Ponto SC",
+      "publishedAt": "2026-11-12T09:28:11.000Z",
+      "firstSeenAt": "2026-11-12T11:21:17.063Z",
+      "lastSeenAt": "2026-11-12T11:21:17.063Z"
+    },
+    {
+      "id": "event-8fbab6b",
+      "category": "brasil",
+      "title": "O que você precisa saber para começar o dia",
+      "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxOd0Z1c09IVjQxT2Uza0dqM0xVZGYtS0lhYmVkQkxhNk5CcExib2VqRWNHdHZJZU5ZQkVvSUg4RE5BODNvOTRxN1c4S3JKYjN4cnpuS2pYd3prSlJXWW5RNlhpdXZKRVowRXZjTXp3SnBVUVlNT3J1OTZPRGx0LW1ZcU1zRHFJYWpDTVF4ZXlPc2JiT0Z3ZXMw",
+      "description": "O que você precisa saber para começar o dia &nbsp;&nbsp; Rádio Metrópole",
+      "imageUrl": null,
+      "source": "Rádio Metrópole",
+      "publishedAt": "2026-11-12T09:00:00.000Z",
+      "firstSeenAt": "2026-11-12T11:21:17.063Z",
+      "lastSeenAt": "2026-11-12T11:21:17.063Z"
+    },
+    {
+      "id": "event-1c4137a9",
+      "category": "santa-catarina",
+      "title": "Temporais com vento forte, granizo e chuva intensa avançam por SC nesta quinta-feira (12)",
+      "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQenRvY2owQkpReUpSNG12ZlRQdnBBNzJQVTNOcGdBSzZweENJZmYteFNXZHpjUlhRcnc3c1BwcXh6RVl6b2xPMEE2eWpMTUdoRmxibmxBN2lzb3VWSFZRTVFLZVZnak5sZ2ZUOFdiVUtNQmtJUFpLUTNKRnFNWnpyQVNhYTUzZElzN3RSY2E1X09ZdExjdUtnb0hxczF0SXJrODdLQ3BYSURTbzZpTW9OQ0E0enlLdw",
+      "description": "Temporais com vento forte, granizo e chuva intensa avançam por SC nesta quinta-feira (12) &nbsp;&nbsp; SCC10",
+      "imageUrl": null,
+      "source": "SCC10",
+      "publishedAt": "2026-11-12T08:00:00.000Z",
+      "firstSeenAt": "2026-11-12T11:21:17.063Z",
+      "lastSeenAt": "2026-11-12T11:21:17.063Z"
+    },
+    {
+      "id": "event-c68ec23",
+      "category": "mundo",
+      "title": "Jogos de hoje: quem joga no futebol e onde assistir ao vivo – quinta-feira (12/11/2026)",
+      "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxPY1ZuOGR3UFNta1BkN21jOWZ4SlhRaFhDcTRENXVsZ1BkalZ6VWFlaGVoRHdfVERvdHM1UV9nbGk4aUZ4dFNGcTM4a1NQeTQ4X0RzRjI5WXI2SWhKN041eXpCU1JmRk5EalNQUWVjR0IyV2tCbEZfLXdWZ21UcnVwR01ZeGE0Tk1CMEdtQlZVUTVmenVFcVcybXptWTdlRDJRRXNfeTFnYlU4cjVEb05pSWlYRGF1WUVHQnhYWjU5T1pvVk0z",
+      "description": "Jogos de hoje: quem joga no futebol e onde assistir ao vivo – quinta-feira (12/11/2026) &nbsp;&nbsp; LANCE!",
+      "imageUrl": null,
+      "source": "LANCE!",
+      "publishedAt": "2026-11-12T08:00:00.000Z",
+      "firstSeenAt": "2026-11-12T11:21:17.063Z",
+      "lastSeenAt": "2026-11-12T11:21:17.063Z"
+    },
+    {
+      "id": "event-9ad10ea0",
+      "category": "mundo",
+      "title": "SS United States: navio mais rápido do mundo é afundado para virar recife",
+      "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxNeEhCdndNUGZhRUgyRXlPRWpLc0VRYmRoNm45QWtwOVBaTGp1bXNpbEJ0VFRSXzRtQ0JDR3lIX3VEaGtfMmduSVFvOGpxenZNTEduSzFkQ29XWFM5WllSQ0wtM3VSLWxjeTdOSzBENzBtd2NaMThPQm5UdzZkbDdGRTVENVhEUWU4ZUpacGNEb3V3V2VQNjJ3cGZTUXhZb0trbW12UHJJRk01WHpLTWZ2SzNHd1JjN1BGSXdaeTN4VUdhTE1jdzR5ZjBn",
+      "description": "SS United States: navio mais rápido do mundo é afundado para virar recife &nbsp;&nbsp; UOL Notícias",
+      "imageUrl": null,
+      "source": "UOL Notícias",
+      "publishedAt": "2026-11-12T04:57:24.000Z",
+      "firstSeenAt": "2026-11-12T11:21:17.063Z",
+      "lastSeenAt": "2026-11-12T11:21:17.063Z"
+    },
     {
       "id": "event-b09000ec",
       "category": "clima",
@@ -18,7 +126,7 @@
       "source": "Mídia Bahia",
       "publishedAt": "2026-11-12T01:23:48.000Z",
       "firstSeenAt": "2026-11-12T03:14:31.320Z",
-      "lastSeenAt": "2026-11-12T03:14:31.320Z"
+      "lastSeenAt": "2026-11-12T11:21:17.063Z"
     },
     {
       "id": "event-2b1ff8a9",
@@ -78,7 +186,7 @@
       "source": "Tribuna do Sertão",
       "publishedAt": "2026-11-11T23:31:00.000Z",
       "firstSeenAt": "2026-11-12T03:14:31.320Z",
-      "lastSeenAt": "2026-11-12T03:14:31.320Z"
+      "lastSeenAt": "2026-11-12T11:21:17.063Z"
     },
     {
       "id": "event-6f3cf13f",
@@ -126,7 +234,7 @@
       "source": "CompreRural",
       "publishedAt": "2026-11-11T21:53:46.000Z",
       "firstSeenAt": "2026-11-11T22:26:57.531Z",
-      "lastSeenAt": "2026-11-12T03:14:31.320Z"
+      "lastSeenAt": "2026-11-12T11:21:17.063Z"
     },
     {
       "id": "event-fb8c75f2",
@@ -210,7 +318,7 @@
       "source": "Revista Ana Maria",
       "publishedAt": "2026-11-11T19:30:14.000Z",
       "firstSeenAt": "2026-11-12T03:14:31.320Z",
-      "lastSeenAt": "2026-11-12T03:14:31.320Z"
+      "lastSeenAt": "2026-11-12T11:21:17.063Z"
     },
     {
       "id": "event-4b27b6a2",
@@ -222,7 +330,7 @@
       "source": "Terra",
       "publishedAt": "2026-11-11T19:01:00.000Z",
       "firstSeenAt": "2026-11-11T22:26:57.531Z",
-      "lastSeenAt": "2026-11-12T03:14:31.320Z"
+      "lastSeenAt": "2026-11-12T11:21:17.063Z"
     },
     {
       "id": "event-8355439c",
@@ -367,97 +475,9 @@
       "publishedAt": "2026-11-11T12:58:23.000Z",
       "firstSeenAt": "2026-11-11T22:26:57.531Z",
       "lastSeenAt": "2026-11-11T22:26:57.531Z"
-    },
-    {
-      "id": "event-5679c0ab",
-      "category": "santa-catarina",
-      "title": "Após três tornados, mais de 40 cidades de SC entram de novo em alerta para temporais com ventos intensos",
-      "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxQNDBmMUM0VzF3WFhEcnlnaFJQd3FaVnk2RHZSLVdwdUhHNzRzLVZmTGtkcEVJN3lobW4zdk1nUUNRWENZSGZnckhQR0NHYUtsWk5OZWRPRmJUeVBUSG10YWVqS1VKeHV3VDFrWFNrWmJPcjVyQjVZd3VJX3EwQVhHMjhsMHFwYzhjbGNxRlJ1UVZISjV2QlR0VFlJTGtjdVNJdnlVUUdOVnpNQzNwRnZuOEJfQ1BnUmNQTlpBdXlTSFZOcmVXZzVQTVZuOU9JX1VCX0Rn",
-      "description": "Após três tornados, mais de 40 cidades de SC entram de novo em alerta para temporais com ventos intensos &nbsp;&nbsp; NSC Total",
-      "imageUrl": null,
-      "source": "NSC Total",
-      "publishedAt": "2026-11-11T11:17:19.000Z",
-      "firstSeenAt": "2026-11-11T15:55:43.486Z",
-      "lastSeenAt": "2026-11-11T15:55:43.486Z"
-    },
-    {
-      "id": "event-9967ba07",
-      "category": "clima",
-      "title": "El Niño só deve perder força a partir de março de 2027",
-      "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxOd2oxbndMcHlTTnR4Z2hKOVJ5UFZ4MkVsb3YzSmx4bXpEa0pHUzE2eENzTXJuWjJOcHZDSzlEV1RSdk5YZWRHLW04MTA2WGo1R3gxTHNMVUZaamtnV2dlUElfbFN2bHZ4eEx5SjV1MThmc3ROSUNlSnQzbWZ3XzNqbXNfczk4ZFBWUHJzbWRmclRmdkZGbEdxZ1A1MUNJS2RpaWV0SmxxMGhGZw",
-      "description": "El Niño só deve perder força a partir de março de 2027 &nbsp;&nbsp; TV Sim Brasil",
-      "imageUrl": null,
-      "source": "TV Sim Brasil",
-      "publishedAt": "2026-11-11T11:16:30.000Z",
-      "firstSeenAt": "2026-11-11T15:55:43.486Z",
-      "lastSeenAt": "2026-11-11T22:26:57.531Z"
-    },
-    {
-      "id": "event-ecf709a8",
-      "category": "santa-catarina",
-      "title": "Defesa Civil alerta para temporais isolados nesta quarta-feira e intensificação das instabilidades na quinta em SC",
-      "url": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxOdlJMMk9kbE85b0dlTUpGaFNRWng4d00yNjR3ekUwb3d2X29OVXdxbEs0Z3RMb2tNZlEyNkx4T1Z0SWVrWWdiUC1QZ0tZTG9TMWYycnFkTm0tWmlzSUhIZWNVdDZyUXdNVWxLUF95enRUMFB2RUxsd1VVeHN0blQyaDZlUndXWEtoTHFIbzZ2TE5MZGZwaDRtYy1zallpRmpTSFNvQ1BXU3ZrREppLTZ6QXZSRXlBTzVuaE5lYUZrYV95d0xaNnE4TGdBY01jc2RMU3B2dVBmRHFZOVdKWWxtMUJTamFUQQ",
-      "description": "Defesa Civil alerta para temporais isolados nesta quarta-feira e intensificação das instabilidades na quinta em SC &nbsp;&nbsp; No Ponto SC",
-      "imageUrl": null,
-      "source": "No Ponto SC",
-      "publishedAt": "2026-11-11T09:32:18.000Z",
-      "firstSeenAt": "2026-11-11T15:55:43.486Z",
-      "lastSeenAt": "2026-11-11T15:55:43.486Z"
-    },
-    {
-      "id": "event-944a7c07",
-      "category": "clima",
-      "title": "Bruno Blecher | O El Niño chegou e pode ficar até fevereiro",
-      "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxQOWRBbVpEQV81a1M1dUpaaGxkamduV0UzeFctRWpNREE0UDRaR2k1dUdFTUN1OFpNY20wNjdiZFdYa1JvanBoSHRtMXRPZ2Yzekl2UHk5N1FwWHBsal9Qd0RVYWM2TDE2WHVDdjRFdE9FVTg4VWhnR1RiRlVVMk51QmxXYUt1SUU",
-      "description": "Bruno Blecher | O El Niño chegou e pode ficar até fevereiro &nbsp;&nbsp; Poder360",
-      "imageUrl": null,
-      "source": "Poder360",
-      "publishedAt": "2026-11-11T09:02:34.000Z",
-      "firstSeenAt": "2026-11-11T15:55:43.486Z",
-      "lastSeenAt": "2026-11-11T15:55:43.486Z"
-    },
-    {
-      "id": "event-ae3c1f1c",
-      "category": "santa-catarina",
-      "title": "Tempo começa a mudar em SC nesta quarta-feira; veja onde pode chover e ter temporais",
-      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxQQ0hielZfdmlvTkNEcVRzc2JWcVk2QWsyZVpNd2hIUDlNN3Y0eWxta0RQb0FNdlpzdXFhanJldUt1TzFyNWRldDJiMjlLQTlqYWd3c0hXT0MxeEU5TlVHcGJBMTF3Z0pfQnQwdDAzbnJndXg0QW15dHM1M1phNHNsUmxCRTRING1odDhFU1hpTkVvTzBoNWhaZ3c4WnQ1alFjakNSSHJ3dFFwVnZoejV6LS1PY2hxdHJQSzBMbHRn",
-      "description": "Tempo começa a mudar em SC nesta quarta-feira; veja onde pode chover e ter temporais &nbsp;&nbsp; SCC10",
-      "imageUrl": null,
-      "source": "SCC10",
-      "publishedAt": "2026-11-11T08:00:00.000Z",
-      "firstSeenAt": "2026-11-11T15:55:43.486Z",
-      "lastSeenAt": "2026-11-11T15:55:43.486Z"
-    },
-    {
-      "id": "event-fe11c1ed",
-      "category": "santa-catarina",
-      "title": "Defesa Civil emite alerta para chuva intensa em Belém nesta terça (10)",
-      "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxON3ZXdU9xUUM3WERxT2kycm8tQmIya0xwdHhGdW8xZFA0UXR2eFNIeFpXaWVWZDlmM01URjZuNDFxQk5DZVhjQlBleks4aE05aDQ0UXpHNmFWZnVXUGwtTFpERDRWUE95djNFYzJJcWRvZHN6NmZETS15ZFY2aS15VTFYM3pyWkJkY2pjRzB2aVhnbl9ELTJtMDBwS2ZHMVQ3Nm9jc2QtczZNMTFZeER0VTdQdTbSAbQBQVVfeXFMTjd2V3VPcVFDN1hEcU9pMnJvLUJiMmtMcHR4RnVvMWRQNFF0dnhTSHhaV2llVmQ5ZjNNVEY2bjQxcUJOQ2VYY0JQZXpLOGhNOWg0NFF6RzZhVmZ1V1BsLUxaREQ0VlBPeXYzRWMySXFkb2RzejZmRE0teWRWNmkteVUxWDN6clpCZGNqY0cwdmlYZ25fRC0ybTAwcEtmRzFUNzZvY3NkLXM2TTExWXhEdFU3UHU2",
-      "description": "Defesa Civil emite alerta para chuva intensa em Belém nesta terça (10) &nbsp;&nbsp; DOL",
-      "imageUrl": null,
-      "source": "DOL",
-      "publishedAt": "2026-11-11T03:27:46.000Z",
-      "firstSeenAt": "2026-11-11T07:57:54.640Z",
-      "lastSeenAt": "2026-11-11T07:57:54.640Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-11T07:57:54.640Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 14,
-      "newArticles": 9,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "asia"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-11T15:55:43.486Z",
       "ok": true,
@@ -507,14 +527,30 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-12T11:21:17.063Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 14,
+      "newArticles": 9,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "europa"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 4,
-  "lastSuccessfulAt": "2026-11-12T03:14:31.320Z",
+  "lastSuccessfulAt": "2026-11-12T11:21:17.063Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-12T03:14:31.320Z",
+      "checkedAt": "2026-11-12T11:21:17.063Z",
       "warnings": [
         {
           "id": "56356",
@@ -545,7 +581,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-12T03:14:31.320Z",
+      "checkedAt": "2026-11-12T11:21:17.063Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "8 October 2026",
