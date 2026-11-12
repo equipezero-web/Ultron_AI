@@ -18,19 +18,35 @@ PORT = int(os.getenv("ULTRON_LOCAL_PORT", "8765"))
 WATCH_INTERVAL = float(os.getenv("ULTRON_LOCAL_WATCH_SECONDS", "8"))
 
 app = FastAPI(title="Ultron Local Core", version="2.1.0")
+ALLOWED_APP_ORIGINS = frozenset({
+    "https://equipezero-web.github.io",
+    "http://localhost",
+    "http://127.0.0.1",
+    "http://localhost:5500",
+    "http://127.0.0.1:5500",
+})
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "https://equipezero-web.github.io",
-        "http://localhost",
-        "http://127.0.0.1",
-        "http://localhost:5500",
-        "http://127.0.0.1:5500",
-    ],
+    allow_origins=list(ALLOWED_APP_ORIGINS),
     allow_credentials=False,
     allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["Content-Type"],
 )
+
+@app.middleware("http")
+async def allowed_private_network_preflight(request, call_next):
+    """Permit Chrome's loopback-network preflight only for the known JARVIS UI.
+
+    This does not grant browser permission: the operator still has to allow
+    local-network access. Unlisted website origins receive no privilege.
+    """
+    response = await call_next(request)
+    if (request.method == "OPTIONS" and
+            request.headers.get("origin", "") in ALLOWED_APP_ORIGINS and
+            request.headers.get("access-control-request-private-network", "").lower() == "true" and
+            response.status_code < 400):
+        response.headers["Access-Control-Allow-Private-Network"] = "true"
+    return response
 
 index = UltronLocalIndex(DATA_ROOT)
 watch_stop = threading.Event()
