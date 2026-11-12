@@ -1,7 +1,7 @@
 import {TASK_CONTEXT} from "./jarvis-task-context.js?v=4.69.0";
 import {classifyOperatorTurn,splitOperatorSteps} from "./jarvis-intent-engine.js?v=4.69.0";
 import {directPlan,resolveActionPlan,runActionPlan} from "./jarvis-action-engine.js?v=4.96.0";
-import {parseLocalCommand,runLocalCommand} from "./jarvis-local-commands.js?v=4.67.0";
+import {parseLocalCommand,runLocalCommand} from "./jarvis-local-commands.js?v=4.97.0";
 import API_CONFIG from "../config.js";
 
 const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
@@ -225,7 +225,7 @@ function lastAssistantEarthOffer() {
 async function routeSingle(command, run, index = 0) {
   const prefix = `step-${index + 1}`;
   const local=await runLocalCommand(command);
-  if(local){log(local.text,!local.ok);return {route:local.route,ok:local.ok,result:local};}
+  if(local){if(!local.quiet)log(local.text,!local.ok);return {route:local.route,ok:local.ok,result:local};}
   const plan=directPlan(command);
   if(plan){const result=await runActionPlan(plan,command);log(result.text,!result.ok);return {route:result.route,ok:result.ok,result};}
   if (isEarthStatusIntent(command)) {
@@ -354,7 +354,7 @@ async function executeMessage(message, source = "terminal") {
     const local=await runLocalCommand(clean);
     state.processed++;if(!local.ok)state.failed++;
     state.lastRoute=local.route;state.lastResult={route:local.route,ok:local.ok,result:local};
-    log(local.text,!local.ok);
+    if(!local.quiet)log(local.text,!local.ok);
     return {ok:local.ok,status:local.ok?"completed":"failed",results:[state.lastResult]};
   }
   state.busy = true;
