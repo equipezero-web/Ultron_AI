@@ -204,6 +204,8 @@ try {
       responses:document.querySelector('#output-box').getBoundingClientRect().height,
       globe:document.querySelector('.jarvis-cc-center').getBoundingClientRect().height,
       quickRail:getComputedStyle(document.querySelector('#jarvis-cc-input-slot .quick-actions')).overflowX,
+      quickLayout:getComputedStyle(document.querySelector('#jarvis-cc-input-slot .quick-actions')).display,
+      quickColumns:getComputedStyle(document.querySelector('#jarvis-cc-input-slot .quick-actions')).gridTemplateColumns.split(' ').length,
       quickHeight:document.querySelector('#jarvis-cc-input-slot .quick-actions button').getBoundingClientRect().height,
       inputHint:document.querySelector('#command-input').getAttribute('enterkeyhint'),
       statusOverflow:document.querySelector('.jarvis-cc-top').scrollWidth-document.querySelector('.jarvis-cc-top').clientWidth
@@ -216,7 +218,9 @@ try {
     assert.ok(layout.cards.every(w=>w>=120),'Mobile '+width+': system card text space');
     assert.ok(layout.responses<=120,'Mobile '+width+': output log scrolls internally');
     assert.ok(layout.globe>=380,'Mobile '+width+': keep the original 3D stage large');
-    assert.equal(layout.quickRail,'auto','Mobile '+width+': shortcuts must scroll sideways inside their own row');
+    assert.equal(layout.quickRail,'visible','Mobile '+width+': shortcuts must not be clipped by scroll rail');
+    assert.equal(layout.quickLayout,'grid','Mobile '+width+': independent grid buttons prevent click swallowing');
+    assert.equal(layout.quickColumns,2,'Mobile '+width+': shortcuts must occupy two readable columns');
     assert.ok(layout.quickHeight>=40,'Mobile '+width+': shortcut touch targets remain usable');
     assert.equal(layout.inputHint,'send','Mobile '+width+': keyboard should show the Send action');
     assert.ok(layout.statusOverflow<=3,'Mobile '+width+': status bar text must not clip');
