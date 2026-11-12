@@ -129,7 +129,7 @@ if (stage) {
   async function bootNeuralRing() {
     if (ringEngine) return ringEngine;
     if (ringPromise) return ringPromise;
-    ringPromise = import('./jarvis-neural-ring-3d.js?v=4.91.0')
+    ringPromise = import('./jarvis-neural-ring-3d.js?v=4.92.0')
       .then(module => module.createNeuralRing3D(canvas,{onError:report3D}))
       .then(engine => {
         ringEngine = engine;
@@ -171,8 +171,9 @@ if (stage) {
   // scrolling from the Mapbox details sidebar or from the terminal below.
   const neuralStage=ui.querySelector('.jarvis-cc-center');
   neuralStage?.addEventListener('wheel',event=>{
-    // Normal wheel is reserved for page scrolling by the global stage router.
-    if(!event.ctrlKey || !document.body.classList.contains('jarvis-command-center'))return;
+    // Over the active Ring / globe, wheel zooms. Use the independent
+    // right-hand page scroll rail (or the native scrollbar) to navigate.
+    if(!document.body.classList.contains('jarvis-command-center'))return;
     if(event.target.closest?.('.jarvis-earth-reference-side,.jarvis-geo-visual,.jarvis-neural-news,textarea,input,select,[contenteditable="true"]'))return;
     event.preventDefault();
     event.stopPropagation();
@@ -219,7 +220,7 @@ if (stage) {
       try {
         let earth = window.ULTRON_EARTH;
         if (!earth?.open) {
-          await import('./jarvis-earth.js?v=4.91.0');
+          await import('./jarvis-earth.js?v=4.92.0');
           earth = window.ULTRON_EARTH;
         }
         if (!earth?.open) throw new Error('Motor terrestre não inicializado');

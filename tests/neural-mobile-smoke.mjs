@@ -179,8 +179,8 @@ try {
   assert.equal(proof.pan,true);
   assert.equal(proof.mapboxTouch,'none');
   assert.equal(proof.option,true);
-  assert.equal(await page.evaluate(()=>window.__mobileMap.options.cooperativeGestures),true,
-    'Mapbox must respect page scroll and require explicit map gestures');
+  assert.equal(await page.evaluate(()=>window.__mobileMap.options.cooperativeGestures),false,
+    'Mapbox should zoom directly with the mouse wheel while the right rail owns page scrolling');
   await page.evaluate(()=>window.scrollTo(0,0));
   const mapboxScroll=await scrollTouch('.jarvis-earth-reference-map .mapboxgl-canvas',ringClient,72);
   assert.ok(mapboxScroll>30,'Vertical touch swipe over Mapbox must scroll page: '+mapboxScroll);

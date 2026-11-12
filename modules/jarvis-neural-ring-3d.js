@@ -197,7 +197,7 @@ export function createNeuralRing3D(canvas,{onError}={}) {
     return true;
   }
   const adjustZoom=event=>{
-    if(!visible || disposed || !event.ctrlKey) return;
+    if(!visible || disposed) return;
     event.preventDefault();
     event.stopPropagation();
     zoomBy(event.deltaY);

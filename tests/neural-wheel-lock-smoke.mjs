@@ -1,142 +1,181 @@
-import assert from "node:assert/strict";
-import puppeteer from "puppeteer-core";
+import assert from 'node:assert/strict';
+import puppeteer from 'puppeteer-core';
 
-// Regression for page scrolling INSIDE the Neural Ring, 2D map and 3D globe.
-// A normal mouse wheel must navigate the page; Ctrl+wheel deliberately zooms
-// the active visualization and must not move the page.
+// Actual contract: wheel above the visualization ZOOMS. The independent
+// right-hand rail (also draggable/keyboard accessible) scrolls the page.
 const browser=await puppeteer.launch({
- executablePath:process.env.CHROME_BIN||"/usr/bin/google-chrome",headless:true,
- args:["--no-sandbox","--disable-dev-shm-usage","--enable-webgl","--enable-unsafe-swiftshader"]
+ executablePath:process.env.CHROME_BIN||'/usr/bin/google-chrome',headless:true,
+ args:['--no-sandbox','--disable-dev-shm-usage','--enable-webgl','--enable-unsafe-swiftshader']
 });
 const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 let page;
-async function wheelOver(selector,deltaY,{ctrl=false}={}){
- const rect=await page.$eval(selector,el=>{
-   const r=el.getBoundingClientRect();
-   return {x:r.x,y:r.y,width:r.width,height:r.height};
+async function wheelOver(selector,deltaY){
+ const r=await page.$eval(selector,el=>{
+   const rect=el.getBoundingClientRect();
+   return {x:rect.x+rect.width*.5,y:rect.y+rect.height*.45};
  });
- const x=Math.max(6,Math.min(1420,rect.x+rect.width*.52));
- const y=Math.max(8,Math.min(855,rect.y+rect.height*.48));
- await page.mouse.move(x,y);
- if(ctrl)await page.keyboard.down("Control");
- try{await page.mouse.wheel({deltaY});}
- finally{if(ctrl)await page.keyboard.up("Control");}
- await sleep(280);
- return await page.evaluate(()=>window.scrollY);
+ await page.mouse.move(Math.max(6,Math.min(1432,r.x)),Math.max(8,Math.min(870,r.y)));
+ await page.mouse.wheel({deltaY});
+ await sleep(230);
+ return page.evaluate(()=>window.scrollY);
 }
-async function resetScroll(){
+async function reset(){
  await page.evaluate(()=>window.scrollTo(0,35));await sleep(100);
  return page.evaluate(()=>window.scrollY);
 }
 try{
  page=await browser.newPage();
  await page.setViewport({width:1440,height:900,deviceScaleFactor:1});
- await page.goto(process.env.JARVIS_TEST_URL||"http://127.0.0.1:8766/",{
-   waitUntil:"domcontentloaded",timeout:35000});
- await page.waitForFunction(()=>
-   window.ULTRON_NEURAL_RING_3D?.active===true&&window.JARVIS_COMMAND_CENTER?.active===true,
-   {timeout:19000});
- await page.evaluate(()=>{
-   const spacer=document.createElement("div");
-   spacer.id="scroll-test-spacer";spacer.style.cssText="height:1600px;pointer-events:none";
-   document.body.append(spacer);
+ await page.goto(process.env.JARVIS_TEST_URL||'http://127.0.0.1:8766/',{
+   waitUntil:'domcontentloaded',timeout:35000
  });
- assert.ok(await page.evaluate(()=>document.scrollingElement.scrollHeight-innerHeight)>300);
- // 1. Ring: scroll works underneath the WebGL canvas, Ctrl+wheel still zooms.
- let before=await resetScroll();
- let zoom=await page.evaluate(()=>window.ULTRON_NEURAL_RING_3D.state.zoom);
- let after=await wheelOver("#jarvis-cc-canvas",280);
- assert.ok(after>before+30,"Normal wheel over Neural Ring must scroll document: "+JSON.stringify({before,after}));
- assert.equal(await page.evaluate(()=>window.ULTRON_NEURAL_RING_3D.state.zoom),zoom);
- before=await resetScroll();
- await wheelOver("#jarvis-cc-canvas",-280,{ctrl:true});
- assert.ok((await page.evaluate(()=>window.ULTRON_NEURAL_RING_3D.state.zoom))>zoom+.05,
-   "Ctrl+wheel should still zoom Ring");
- assert.ok(Math.abs((await page.evaluate(()=>window.scrollY))-before)<3,
-   "Ctrl+wheel must not scroll document");
-
- // 2. Blank stage and floating news no longer trap page scroll.
- before=await resetScroll();
- const stage=await page.$eval(".jarvis-cc-center",el=>el.getBoundingClientRect().toJSON());
- await page.mouse.move(stage.x+14,Math.max(12,stage.y+80));
- await page.mouse.wheel({deltaY:200});await sleep(180);
- after=await page.evaluate(()=>window.scrollY);
- assert.ok(after>before+30,"Wheel over Neural Ring stage background must scroll document");
-
- // 3. Fallback globe: normal wheel scrolls; Ctrl+wheel adjusts altitude.
- await page.evaluate(()=>document.querySelector('[data-visual="globe"]').click());
- await page.waitForFunction(()=>window.ULTRON_EARTH?.state?.ready&&window.ULTRON_EARTH?.state?.visible,
-   {timeout:18000});
- before=await resetScroll();
- const earthBefore=await page.evaluate(()=>window.ULTRON_EARTH.state.view.altitude);
- after=await wheelOver(".jarvis-earth-renderer canvas",240);
- assert.ok(after>before+30,"Normal wheel over 3D globe must scroll document");
- const earthAfter=await page.evaluate(()=>window.ULTRON_EARTH.state.view.altitude);
- assert.ok(Math.abs(earthAfter-earthBefore)<.02,"Normal page scrolling must not zoom globe");
- before=await resetScroll();
- await wheelOver(".jarvis-earth-renderer canvas",-260,{ctrl:true});
- await page.waitForFunction(alt=>window.ULTRON_EARTH.state.view.altitude<alt-.02,{timeout:3500},earthBefore);
- assert.ok(Math.abs((await page.evaluate(()=>window.scrollY))-before)<3,"Ctrl+wheel globe must not scroll page");
-
- // 4. Mapbox cooperative gestures: Ctrl+wheel map zoom, regular wheel document scroll.
+ await page.waitForFunction(()=>window.ULTRON_NEURAL_RING_3D?.active&&
+   window.JARVIS_COMMAND_CENTER?.active,{timeout:19000});
  await page.evaluate(()=>{
-   localStorage.setItem("jarvis_mapbox_pk_v1","pk."+"a".repeat(50));
+   const spacer=document.createElement('div');spacer.id='rail-test-spacer';
+   spacer.style.height='1300px';spacer.style.pointerEvents='none';document.body.append(spacer);
+ });
+ await page.waitForFunction(()=>{
+   const rail=document.querySelector('#jarvis-page-scroll-rail');
+   return rail&&!rail.hidden&&rail.getBoundingClientRect().height>250;
+ },{timeout:5000});
+ const rail=await page.$eval('#jarvis-page-scroll-rail',el=>({
+   pos:getComputedStyle(el).position,width:el.getBoundingClientRect().width,
+   right:innerWidth-el.getBoundingClientRect().right,
+   role:el.getAttribute('role'),name:el.getAttribute('aria-label')
+ }));
+ assert.equal(rail.pos,'fixed');assert.ok(rail.width>=20);
+ assert.ok(rail.right<=55);assert.equal(rail.role,'scrollbar');
+ assert.match(rail.name,/página/i);
+
+ // 1: Ring default wheel is direct ZOOM, and does not move the document.
+ let before=await reset();
+ const zoomBefore=await page.evaluate(()=>window.ULTRON_NEURAL_RING_3D.state.zoom);
+ let after=await wheelOver('#jarvis-cc-canvas',-270);
+ const zoomAfter=await page.evaluate(()=>window.ULTRON_NEURAL_RING_3D.state.zoom);
+ assert.ok(zoomAfter>zoomBefore+.1,'Wheel ABOVE ring must zoom without Ctrl');
+ assert.ok(Math.abs(after-before)<=3,'Ring wheel must not scroll PAGE');
+
+ // 2: Wheel and click-drag on the fixed right rail do scroll the document.
+ before=await reset();
+ const beforeZoom=await page.evaluate(()=>window.ULTRON_NEURAL_RING_3D.state.zoom);
+ after=await wheelOver('#jarvis-page-scroll-rail',310);
+ assert.ok(after>before+80,'Right rail must scroll entire page with wheel: '+JSON.stringify({before,after}));
+ assert.equal(await page.evaluate(()=>window.ULTRON_NEURAL_RING_3D.state.zoom),beforeZoom,
+   'Right rail must not zoom the Ring');
+ assert.ok(Number(await page.$eval('#jarvis-page-scroll-rail',el=>el.getAttribute('aria-valuenow')))>0);
+ await page.evaluate(()=>window.scrollTo(0,40));await sleep(150);
+ const dragAt=await page.$eval('#jarvis-page-scroll-rail .jarvis-page-scroll-thumb',el=>{
+   const r=el.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height*.5};
+ });
+ await page.mouse.move(dragAt.x,dragAt.y);await page.mouse.down();
+ await page.mouse.move(dragAt.x,Math.min(845,dragAt.y+145),{steps:9});
+ await page.mouse.up();await sleep(150);
+ assert.ok((await page.evaluate(()=>window.scrollY))>100,'Dragging scroll thumb must scroll the document');
+
+ // 3: Visual stage gaps should also zoom the active Ring, not move the page.
+ before=await reset();
+ const stage=await page.$eval('.jarvis-cc-center',el=>{
+   const r=el.getBoundingClientRect();return {x:r.x,y:r.y};
+ });
+ await page.mouse.move(stage.x+14,Math.max(12,stage.y+90));
+ const gapZoom=await page.evaluate(()=>window.ULTRON_NEURAL_RING_3D.state.zoom);
+ await page.mouse.wheel({deltaY:180});await sleep(180);
+ after=await page.evaluate(()=>window.scrollY);
+ assert.ok(Math.abs(after-before)<=3,'Hovering neural stage must not scroll page');
+ assert.ok((await page.evaluate(()=>window.ULTRON_NEURAL_RING_3D.state.zoom))<gapZoom-.01,
+   'Stage wheel should zoom Ring when not directly above canvas');
+
+ // 4: Globe.gl fallback zoom on the wheel and page navigation only on rail.
+ await page.evaluate(()=>document.querySelector('[data-visual="globe"]').click());
+ await page.waitForFunction(()=>window.ULTRON_EARTH?.state?.ready&&
+   window.ULTRON_EARTH?.state?.visible,{timeout:18000});
+ before=await reset();
+ const earthBefore=await page.evaluate(()=>window.ULTRON_EARTH.state.view.altitude);
+ after=await wheelOver('.jarvis-earth-renderer canvas',-300);
+ await page.waitForFunction(alt=>window.ULTRON_EARTH.state.view.altitude<alt-.02,
+   {timeout:3500},earthBefore);
+ assert.ok(Math.abs(after-before)<=3,'Globe wheel zoom must not scroll the page');
+ before=await reset();
+ const altitude=await page.evaluate(()=>window.ULTRON_EARTH.state.view.altitude);
+ after=await wheelOver('#jarvis-page-scroll-rail',280);
+ assert.ok(after>before+80,'Rail wheel must scroll page while 3D globe is visible');
+ assert.ok(Math.abs((await page.evaluate(()=>window.ULTRON_EARTH.state.view.altitude))-altitude)<.04,
+   'Rail page scrolling must not zoom globe');
+
+ // 5: Mapbox native wheel zoom is enabled (no cooperative modifier).
+ await page.evaluate(()=>{
+   localStorage.setItem('jarvis_mapbox_pk_v1','pk.'+'a'.repeat(50));
    class StubMap{
      constructor(options){
-       this.options=options;this.zoom=options.zoom;
-       this.center={lat:options.center[1],lng:options.center[0]};
-       const root=document.createElement("div");
-       root.className="mapboxgl-map";
-       root.style.cssText="position:absolute;inset:0;width:100%;height:100%";
-       root.append(document.createElement("canvas"));options.container.append(root);
-       root.addEventListener("wheel",ev=>{
+       this.options=options;this.zoom=options.zoom;this.center={lat:options.center[1],lng:options.center[0]};
+       const root=document.createElement('div');root.className='mapboxgl-map';
+       root.style.cssText='position:absolute;inset:0;width:100%;height:100%';
+       root.append(document.createElement('canvas'));options.container.append(root);
+       root.addEventListener('wheel',ev=>{
          if(!this.options.cooperativeGestures||ev.ctrlKey){
-           ev.preventDefault();this.zoom=Math.max(0,Math.min(20,this.zoom-ev.deltaY*.002));
+           ev.preventDefault();
+           this.zoom=Math.max(0,Math.min(20,this.zoom-ev.deltaY*.002));
          }
        },{passive:false});
-       window.__scrollTestMapbox=this;
+       window.__railMapbox=this;
      }
-     on(name,fn){if(name==="style.load")setTimeout(fn,0);return this;}
-     once(name,fn){if(name==="load")setTimeout(fn,0);return this;}
+     on(name,fn){if(name==='style.load')setTimeout(fn,0);return this;}
+     once(name,fn){if(name==='load')setTimeout(fn,0);return this;}
      supported(){return true;}loaded(){return true;}setFog(){}setLight(){}resize(){}remove(){}stop(){}
      getZoom(){return this.zoom;}getCenter(){return this.center;}
      zoomTo(z){this.zoom=z;}flyTo(opts){if(opts.zoom!=null)this.zoom=opts.zoom;}
    }
-   window.mapboxgl={Map:StubMap,supported:()=>true,accessToken:""};
+   window.mapboxgl={Map:StubMap,supported:()=>true,accessToken:''};
    window.ULTRON_EARTH.close();
  });
  await page.evaluate(()=>window.ULTRON_EARTH.open());
  await page.waitForFunction(()=>window.ULTRON_EARTH?.state?.referenceMode,{timeout:12000});
- assert.equal(await page.evaluate(()=>window.__scrollTestMapbox.options.cooperativeGestures),true);
- before=await resetScroll();
- const mapZoom=await page.evaluate(()=>window.__scrollTestMapbox.getZoom());
- after=await wheelOver(".jarvis-earth-reference-map .mapboxgl-map canvas",220);
- assert.ok(after>before+30,"Normal wheel over Mapbox must scroll document");
- assert.equal(await page.evaluate(()=>window.__scrollTestMapbox.getZoom()),mapZoom);
- before=await resetScroll();
- await wheelOver(".jarvis-earth-reference-map .mapboxgl-map canvas",-240,{ctrl:true});
- assert.ok((await page.evaluate(()=>window.__scrollTestMapbox.getZoom()))>mapZoom+.3);
- assert.ok(Math.abs((await page.evaluate(()=>window.scrollY))-before)<3);
+ assert.equal(await page.evaluate(()=>window.__railMapbox.options.cooperativeGestures),false);
+ before=await reset();
+ const mbBefore=await page.evaluate(()=>window.__railMapbox.getZoom());
+ after=await wheelOver('.jarvis-earth-reference-map .mapboxgl-map canvas',-270);
+ assert.ok((await page.evaluate(()=>window.__railMapbox.getZoom()))>mbBefore+.3,
+   'Mapbox must directly zoom with wheel without Ctrl');
+ assert.ok(Math.abs(after-before)<=3,'Mapbox wheel must not scroll page');
+ before=await reset();
+ const mbZoom=await page.evaluate(()=>window.__railMapbox.getZoom());
+ after=await wheelOver('#jarvis-page-scroll-rail',260);
+ assert.ok(after>before+70,'Page rail must work over Mapbox');
+ assert.equal(await page.evaluate(()=>window.__railMapbox.getZoom()),mbZoom);
 
- // 5. Map 2D's SVG: page scroll with regular wheel, visible zoom on Ctrl+wheel.
- const open=await page.evaluate(async()=>{
+ // 6: SVG weather map wheel zoom, while side rail scrolls the whole page.
+ const opened=await page.evaluate(async()=>{
    window.ULTRON_EARTH.close();
-   return window.ULTRON_GEO_VISUAL.open({scenario:"enso",view:"2d"});
+   return window.ULTRON_GEO_VISUAL.open({scenario:'enso',view:'2d'});
  });
- assert.equal(open.ok,true,JSON.stringify(open));
- before=await resetScroll();
- const viewBefore=await page.$eval(".jarvis-geo-2d svg",svg=>svg.getAttribute("viewBox"));
- after=await wheelOver(".jarvis-geo-2d svg",210);
- assert.ok(after>before+30,"Normal wheel over weather/ENSO map must scroll page");
- assert.equal(await page.$eval(".jarvis-geo-2d svg",svg=>svg.getAttribute("viewBox")),viewBefore);
- before=await resetScroll();
- await wheelOver(".jarvis-geo-2d svg",-240,{ctrl:true});
- assert.notEqual(await page.$eval(".jarvis-geo-2d svg",svg=>svg.getAttribute("viewBox")),viewBefore);
- assert.ok(Math.abs((await page.evaluate(()=>window.scrollY))-before)<3);
+ assert.equal(opened.ok,true,JSON.stringify(opened));
+ before=await reset();
+ const viewBefore=await page.$eval('.jarvis-geo-2d svg',el=>el.getAttribute('viewBox'));
+ after=await wheelOver('.jarvis-geo-2d svg',-220);
+ assert.notEqual(await page.$eval('.jarvis-geo-2d svg',el=>el.getAttribute('viewBox')),viewBefore,
+   'Wheel over the 2D weather map must change map viewBox');
+ assert.ok(Math.abs(after-before)<=3,'2D map zoom must not scroll page');
+ before=await reset();
+ after=await wheelOver('#jarvis-page-scroll-rail',260);
+ assert.ok(after>before+60,'Right rail must scroll page even when weather overlay fills the stage');
 
- console.log("PAGE SCROLL PASS: Ring, globe, Mapbox and 2D map scroll normally; Ctrl+wheel zooms without moving document");
+ // 7: Native page content outside the visual surface is unaffected.
+ await page.evaluate(()=>{
+   window.ULTRON_GEO_VISUAL.close();
+   const target=document.createElement('div');target.id='scroll-test-regular-page';
+   target.style.cssText='height:160px;padding:10px';
+   document.getElementById('rail-test-spacer').before(target);
+   target.scrollIntoView({block:'start',behavior:'instant'});
+ });
+ await sleep(140);
+ before=await page.evaluate(()=>window.scrollY);
+ after=await wheelOver('#scroll-test-regular-page',250);
+ assert.ok(after>before+30,'Ordinary page regions must still scroll naturally');
+
+ console.log('RIGHT SCROLL RAIL PASS: Ring, globe, Mapbox, 2D wheel zoom; right-hand wheel/drag scrolls PAGE; ordinary page scroll preserved');
 }catch(error){
- console.error("PAGE SCROLL REGRESSION FAILED",error);
- await page?.screenshot({path:"neural-wheel-lock-failure.png",fullPage:false}).catch(()=>{});
+ console.error('RIGHT SCROLL RAIL FAILED',error);
+ await page?.screenshot({path:'neural-wheel-lock-failure.png',fullPage:false}).catch(()=>{});
  throw error;
 }finally{await browser.close();}
