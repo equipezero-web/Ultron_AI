@@ -353,19 +353,26 @@ async function refreshBridgeState() {
     const response = await fetch(`${API_BASE}/api/health`, { cache: "no-store", signal: AbortSignal.timeout(6500) });
     const data = await response.json();
     if (data?.deviceControl?.ready && data?.automations?.ready) {
-      indicator.textContent = "100% READY";
+      indicator.textContent = "GATEWAY READY";
       indicator.className = "green";
     } else if (data?.bridge?.ready) {
       indicator.textContent = "READY";
       indicator.className = "green";
     }
-  } catch {}
+  } catch (error) {
+    indicator.textContent = "GATEWAY OFF";
+    indicator.className = "";
+  }
 }
 
 async function pairMobileDirect(){
   try{
     const result=await startPairing("mobile","Ultron Mobile Bridge");
     outputLine(`CELULAR // CÓDIGO ${result.code} // válido por ${Math.round((result.expiresInSeconds||600)/60)} min.`);
+    const bridgeLabel=document.getElementById("bridge-link-state");
+    const bridgeSession=document.getElementById("bridge-session-state");
+    if(bridgeLabel)bridgeLabel.textContent="PAIRING";
+    if(bridgeSession)bridgeSession.textContent="CODE "+result.code;
     outputLine("Abra o Ultron Bridge no celular, digite o código e toque em INICIAR BRIDGE.");
   }catch(error){outputLine("Falha ao gerar código do celular: "+String(error?.message||error),true);}
 }
