@@ -5,6 +5,7 @@ import {loadWorldGeo} from "../modules/jarvis-world-geodata.js";
 import {searchGlobalLocations,loadGlobalWeather} from "./weather-global.js";
 import {loadWeatherInsight} from "./weather-intelligence.js";
 import {pollWeatherMonitor,latestWeatherMonitor} from "./weather-monitor.js";
+import {pollGlobalIntelligence,latestGlobalIntelligence} from "./global-intelligence-monitor.js";
 import {configureWeatherWatch,listWeatherWatches,pollPersonalWeatherWatches} from "./weather-watchlist.js";
 import {ACTIONS,parsePlanText,isActionRequest} from "./action-catalog.js";
 import {capabilityAnswer} from "./jarvis-capabilities.js";
@@ -1025,6 +1026,15 @@ export default {
       const result=await configureWeatherWatch(env,operatorId,{action:body.action,id:body.id});
       return json(result,result.ok?200:result.status||503);
     }
+    if(path==="/api/intelligence/global"&&request.method==="GET"){
+      const result=await latestGlobalIntelligence(env);
+      return new Response(JSON.stringify(result),{
+        status:result.ok?200:result.status||503,
+        headers:{...corsHeaders(),
+          "Cache-Control":result.ok?"public, max-age=60":"no-store",
+          "X-Content-Type-Options":"nosniff"}
+      });
+    }
     if(path==="/api/geo/monitor"&&request.method==="GET"){
       const result=await latestWeatherMonitor(env);
       return new Response(JSON.stringify(result),{status:result.ok?200:result.status||503,
@@ -1456,6 +1466,8 @@ export default {
   async scheduled(controller, env, ctx) {
     ctx.waitUntil(processDueAutomations(env, { limit: 50 }));
     ctx.waitUntil(pollWeatherMonitor(env).catch(error=>console.warn("JARVIS weather monitor unavailable",String(error?.message||error))));
+    ctx.waitUntil(pollGlobalIntelligence(env).catch(error=>
+      console.warn("JARVIS global intelligence collection failed",String(error?.message||error))));
     ctx.waitUntil(pollPersonalWeatherWatches(env).catch(error=>console.warn("JARVIS personal weather watch failed",String(error?.message||error))));
   }
 };
