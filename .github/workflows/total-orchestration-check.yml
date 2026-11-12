@@ -16,6 +16,9 @@ on:
       - 'backend/orchestration-engine.js'
       - 'backend/action-catalog.js'
       - 'modules/jarvis-action-engine.js'
+      - 'modules/jarvis-local-commands.js'
+      - 'modules/jarvis-clear-interface.js'
+      - 'tests/jarvis-clear-interface.mjs'
       - 'tests/jarvis-autonomy.mjs'
       - 'tests/jarvis-phase1.mjs'
       - 'tests/jarvis-phase3.mjs'
@@ -69,6 +72,9 @@ on:
       - 'backend/orchestration-engine.js'
       - 'backend/action-catalog.js'
       - 'modules/jarvis-action-engine.js'
+      - 'modules/jarvis-local-commands.js'
+      - 'modules/jarvis-clear-interface.js'
+      - 'tests/jarvis-clear-interface.mjs'
       - 'tests/jarvis-autonomy.mjs'
       - 'tests/jarvis-phase1.mjs'
       - 'tests/jarvis-phase3.mjs'
@@ -136,6 +142,8 @@ jobs:
           node --check modules/jarvis-task-context.js
           node --check backend/task-context.js
           node tests/jarvis-autonomy.mjs
+          node --check modules/jarvis-clear-interface.js
+          node tests/jarvis-clear-interface.mjs
           node tests/jarvis-phase1.mjs
           node --check modules/jarvis-geospatial-model.js
           node --check modules/jarvis-geospatial-visual.js

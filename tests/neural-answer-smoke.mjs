@@ -444,6 +444,7 @@ try {
       const state={visible:false,layerCount:0,playing:false,focused:null};
       window.ULTRON_EARTH={
         state,async open(){state.visible=true;return {ok:true}},
+        close(){state.visible=false;state.layerCount=0;state.playing=false;return {ok:true}},
         setThematicLayer(points,{playing=false}={}){state.layerCount=points.length;state.playing=playing;return {ok:true,count:points.length};},
         setThematicGrid(cells){state.spatialCount=cells.length;return {ok:true,count:cells.length};},
         setThematicCountries(countries){state.countryCount=countries.length;return {ok:true,count:countries.length};},
@@ -842,6 +843,27 @@ try {
     await page.waitForFunction(()=>document.querySelectorAll('.jarvis-geo-intensity-cell').length===40,{timeout:7000});
     assert.equal(await page.$eval('.jarvis-geo-intensity-bar',el=>el.hidden),false);
     await page.evaluate(()=>window.ULTRON_GEO_VISUAL.close());
+
+
+    // "LIMPAR TUDO" must reset the visible workspace, not search the web.
+    const clearResult=await page.evaluate(async()=>{
+      await window.ULTRON_GEO_VISUAL.open({scenario:"enso",view:"2d"});
+      window.ULTRON_NEURAL_ANSWER.show("Resposta antiga para limpar");
+      const output=document.getElementById("output-box");
+      const previous=document.createElement("p");previous.textContent="CONTEÚDO ANTIGO";output.append(previous);
+      document.getElementById("command-input").value="LIMPAR TUDO";
+      const result=await window.ULTRON_ORCHESTRATOR.execute("LIMPAR TUDO","test-local-clear");
+      return {result,geo:window.ULTRON_GEO_VISUAL.state,
+        answerVisible:window.ULTRON_NEURAL_ANSWER.visible,
+        outputCount:output.childNodes.length,
+        input:document.getElementById("command-input").value};
+    });
+    assert.equal(clearResult.result.ok,true,JSON.stringify(clearResult));
+    assert.equal(clearResult.result.results[0].route,"local-clear-interface");
+    assert.equal(clearResult.geo.visible,false);
+    assert.equal(clearResult.answerVisible,false);
+    assert.equal(clearResult.outputCount,0,"No terminal logs should reappear after clear");
+    assert.equal(clearResult.input,"");
 
     await page.evaluate(()=>window.__phase3EarthRestore());
     await page.close();
