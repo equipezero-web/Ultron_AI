@@ -1,6 +1,6 @@
 import {TASK_CONTEXT} from "./modules/jarvis-task-context.js?v=4.69.0";
 import {directPlan,runActionPlan} from "./modules/jarvis-action-engine.js?v=4.71.0";
-import {runLocalCommand} from "./modules/jarvis-local-commands.js?v=4.67.0";
+import {runLocalCommand} from "./modules/jarvis-local-commands.js?v=4.97.0";
 import { CameraController } from "./modules/camera.js";
 import { loadPreferences } from "./modules/storage.js";
 import { addLog, clock } from "./modules/system.js";
@@ -233,7 +233,7 @@ async function execute() {
   const input = $("command-input");
   const command = input?.value.trim() || "";
   if (!command) return;
-  const local=await runLocalCommand(command);if(local){input.value="";addLog(output,local.text);return;}
+  const local=await runLocalCommand(command);if(local){input.value="";if(!local.quiet)addLog(output,local.text);return;}
   const plan=directPlan(command);if(plan){input.value="";const result=await runActionPlan(plan,command);addLog(output,result.text);return;}
 
   addLog(output, `OPERATOR: ${command}`);
