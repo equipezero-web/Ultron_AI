@@ -87,3 +87,29 @@ jobs:
           done
           echo "Production backend health check failed."
           exit 1
+      - name: Verify authenticated Bridge endpoint is deployed
+        env:
+          BACKEND_BRIDGE_URL: https://ultron-backend.lucaalves17-20.workers.dev/api/bridge/heartbeat
+        run: |
+          # A deliberately invalid credential must reach our new Cloudflare
+          # route and return 401 JSON. This request cannot pair a device,
+          # claim a queued command, or mark an offline Bridge as online.
+          for attempt in 1 2 3 4 5; do
+            response_file=$(mktemp)
+            status=$(curl --silent --show-error --max-time 15 \
+              --request POST \
+              --header 'Content-Type: application/json' \
+              --data '{"deviceId":"deployment-probe","deviceSecret":"invalid"}' \
+              --output "$response_file" --write-out '%{http_code}' \
+              "$BACKEND_BRIDGE_URL" || true)
+            if [ "$status" = "401" ] && grep -q 'Credencial do dispositivo inválida' "$response_file"; then
+              echo "Bridge endpoint deployed and rejecting invalid credentials."
+              rm -f "$response_file"
+              exit 0
+            fi
+            echo "Bridge route probe attempt $attempt returned HTTP $status."
+            rm -f "$response_file"
+            sleep 5
+          done
+          echo "::error::Production Bridge route was not verified as deployed."
+          exit 1

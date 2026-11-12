@@ -72,7 +72,7 @@ if (!window[BOOT_KEY]) {
 
   loadStyle(NEURAL_FOCUS_STYLE_ID, 'modules/neural-focus-v4250.css?v=4.25.0');
   await import('./neural-spatial-control-v4250.js?v=4.25.0');
-  await import('./mobile-link-simple-v4250.js?v=4.25.2');
+  await import('./mobile-link-simple-v4250.js?v=4.25.3');
 
   window.addEventListener('ultron:processing-start', () => window.ULTRON_STARK_CORE?.processing?.(true));
   window.addEventListener('ultron:processing-end', () => window.ULTRON_STARK_CORE?.processing?.(false));

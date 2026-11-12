@@ -105,7 +105,7 @@ public class MainActivity extends Activity {
 
         Button testBridge = new Button(this);
         testBridge.setText("VERIFICAR CONEXÃO CLOUD");
-        testBridge.setOnClickListener(v -> refreshStatus());
+        testBridge.setOnClickListener(v -> checkCloudConnection());
         root.addView(testBridge, fullWidth());
 
         Button remoteMic = new Button(this);
@@ -416,6 +416,45 @@ public class MainActivity extends Activity {
             BridgeHealthStore.markStopped(this);
             statusView.setText("Não foi possível iniciar o serviço Android: " + error.getMessage());
         }
+    }
+
+    private volatile boolean cloudCheckRunning = false;
+
+    private void checkCloudConnection() {
+        String deviceId = SecureStore.getDeviceId(this);
+        if (deviceId == null || deviceId.isEmpty()) {
+            statusView.setText("Este celular ainda não foi pareado. Gere um código no painel J.A.R.V.I.S. e digite-o no aplicativo.");
+            return;
+        }
+        if (cloudCheckRunning) return;
+        cloudCheckRunning = true;
+        statusView.setText("Verificando a conexão autenticada com o Cloud, sem consumir comandos pendentes...");
+        new Thread(() -> {
+            String report;
+            try {
+                String secret = SecureStore.getOrCreateDeviceSecret(this);
+                JSONObject response = BridgeApi.heartbeat(deviceId, secret);
+                if (!response.optBoolean("connected", false)) {
+                    throw new IllegalStateException("Servidor respondeu sem confirmar conexão.");
+                }
+                boolean serviceOnline = response.optBoolean("serviceOnline", false);
+                report = serviceOnline
+                        ? "CLOUD AUTENTICADO / BRIDGE ATIVO: o servidor registrou uma comunicação recente do serviço. "
+                          + "O teste não executou comandos nem alterou o horário de atividade."
+                        : "CLOUD AUTENTICADO / BRIDGE NÃO DETECTADO ATIVO: o servidor respondeu, "
+                          + "mas não recebeu atividade recente do serviço em segundo plano. "
+                          + "Toque em INICIAR BRIDGE e repita a verificação.";
+            } catch (Exception error) {
+                report = "FALHA DE CONEXÃO CLOUD: " + String.valueOf(error.getMessage())
+                        + ". Confira a internet e as credenciais; se o código foi revogado, refaça o pareamento.";
+            }
+            final String message = report;
+            runOnUiThread(() -> {
+                cloudCheckRunning = false;
+                refreshStatus();
+                statusView.append("\n\n" + message);
+            });
+        }).start();
     }
 
     private void refreshStatus() {

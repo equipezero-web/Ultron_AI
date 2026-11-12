@@ -359,7 +359,8 @@ async function authenticateDevice(env, deviceId, deviceSecret) {
 
   const row = await env.ULTRON_DB.prepare(
     `SELECT d.id, d.operator_id AS operatorId, d.device_type AS deviceType,
-            d.device_name AS deviceName, d.status, c.auth_hash AS authHash
+            d.device_name AS deviceName, d.status, d.last_seen_at AS lastSeenAt,
+            c.auth_hash AS authHash
        FROM devices d
        JOIN device_credentials c ON c.device_id = d.id
       WHERE d.id = ? AND d.status = 'active'
@@ -371,6 +372,25 @@ async function authenticateDevice(env, deviceId, deviceSecret) {
   if (!row) return null;
   const suppliedHash = await sha256Hex(secret);
   return suppliedHash === row.authHash ? row : null;
+}
+
+// Read-only authenticated probe: verifies that this app still holds a valid
+// credential, but does NOT refresh the background-service heartbeat or claim
+// pending commands. The Cloud status and background Bridge status are separate.
+export async function heartbeatDevice(env, { deviceId, deviceSecret } = {}) {
+  const device = await authenticateDevice(env, deviceId, deviceSecret);
+  if (!device) return { ok: false, error: "Credencial do dispositivo inválida." };
+  const stamp = String(device.lastSeenAt || "").trim().replace(" ", "T");
+  const utc = stamp ? Date.parse(/(?:Z|[+-]\d{2}:?\d{2})$/i.test(stamp) ? stamp : stamp + "Z") : NaN;
+  const ageMs = Number.isFinite(utc) ? Math.max(0, Date.now() - utc) : Infinity;
+  return {
+    ok: true, connected: true,
+    deviceType: device.deviceType,
+    deviceName: device.deviceName,
+    serviceOnline: ageMs <= 45_000,
+    lastSeenAt: device.lastSeenAt || null,
+    serverTime: new Date().toISOString()
+  };
 }
 
 export async function pollCommands(env, { deviceId, deviceSecret } = {}) {

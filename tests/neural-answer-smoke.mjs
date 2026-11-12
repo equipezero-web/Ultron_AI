@@ -1310,19 +1310,58 @@ try {
     await page.click('[data-command="clear"]');
     assert.equal(await page.$eval('#output-box',el=>el.children.length),0,
       'LIMPAR TERMINAL should clear responses without deleting data');
-    await page.click('#btn-pair-tv');
-    assert.match(await page.$eval('#output-box',el=>el.textContent),/LG WEBOS/);
+    // Phone pairing must work without starting remote camera or asking for
+    // camera access. Repeated presses cannot create duplicate pairing codes.
     await page.evaluate(()=>{
+      window.__savedDeviceShortcut=window.ULTRON_DEVICES;
+      window.__savedCameraShortcut=window.ULTRON_MOBILE_CAMERA;
       window.__mobilePairShortcutCalls=0;
-      window.__savedMobileShortcut=window.ULTRON_MOBILE_CAMERA;
+      window.__cameraShortcutCalls=0;
+      window.ULTRON_DEVICES={
+        ...window.ULTRON_DEVICES,
+        listDevices:async()=>[],
+        startPairing:async()=>{
+          window.__mobilePairShortcutCalls++;
+          return {ok:true,code:'654321',expiresInSeconds:600};
+        }
+      };
       window.ULTRON_MOBILE_CAMERA={
         ...window.ULTRON_MOBILE_CAMERA,
-        smartConnect:()=>{window.__mobilePairShortcutCalls++;return Promise.resolve(false);}
+        smartConnect:()=>{window.__cameraShortcutCalls++;return Promise.resolve(false);}
       };
     });
     await page.click('#btn-pair-mobile');
-    await page.waitForFunction(()=>window.__mobilePairShortcutCalls>0,{timeout:6000});
-    await page.evaluate(()=>{window.ULTRON_MOBILE_CAMERA=window.__savedMobileShortcut;});
+    await page.waitForFunction(()=>document.getElementById('bridge-session-state')
+      ?.textContent==='CODE 654321',{timeout:6000});
+    assert.equal(await page.evaluate(()=>window.__mobilePairShortcutCalls),1);
+    assert.equal(await page.evaluate(()=>window.__cameraShortcutCalls),0,
+      'Connect phone must not activate remote camera');
+    await page.click('#btn-pair-mobile');
+    assert.equal(await page.evaluate(()=>window.__mobilePairShortcutCalls),1,
+      'Do not generate a second code while previous code is valid');
+    await page.evaluate(()=>{
+      window.ULTRON_DEVICES.listDevices=async()=>[{
+        id:'mock-mobile-bridge',deviceType:'mobile',deviceName:'Android de teste',
+        online:true,status:'active',lastSeenAt:new Date().toISOString()
+      }];
+      return window.ULTRON_MOBILE_LINK.refresh();
+    });
+    await page.waitForFunction(()=>document.getElementById('bridge-link-state')
+      ?.textContent==='ONLINE');
+    assert.equal(await page.evaluate(()=>window.__cameraShortcutCalls),0);
+    await page.evaluate(()=>{
+      window.ULTRON_DEVICES.listDevices=async()=>[{
+        id:'mock-mobile-bridge',deviceType:'mobile',deviceName:'Android de teste',
+        online:false,status:'active',lastSeenAt:'2020-01-01 00:00:00'
+      }];
+      return window.ULTRON_MOBILE_LINK.refresh();
+    });
+    await page.waitForFunction(()=>document.getElementById('bridge-link-state')
+      ?.textContent==='OFFLINE');
+    await page.evaluate(()=>{
+      window.ULTRON_DEVICES=window.__savedDeviceShortcut;
+      window.ULTRON_MOBILE_CAMERA=window.__savedCameraShortcut;
+    });
 
     // Offline local files remain safe, yet permit explicitly chosen files.
     await page.evaluate(()=>{
@@ -1335,9 +1374,11 @@ try {
     await page.click('[data-cc="files"]');
     await page.waitForFunction(()=>document.getElementById('output-box')
       .textContent.includes('LOCAL CORE OFFLINE'),{timeout:5000});
-    await page.$eval('.jarvis-cc-inline-result:last-child',el=>{
-      const b=[...el.querySelectorAll('button')].find(
-        b=>b.textContent.includes('Selecionar arquivos manualmente'));
+    await page.waitForFunction(()=>[...document.querySelectorAll('.jarvis-cc-inline-result button')]
+      .some(b=>b.textContent.includes('Selecionar arquivos manualmente')),{timeout:7000});
+    await page.evaluate(()=>{
+      const all=[...document.querySelectorAll('.jarvis-cc-inline-result button')];
+      const b=all.filter(b=>b.textContent.includes('Selecionar arquivos manualmente')).at(-1);
       b?.setAttribute('data-test-file-picker','true');
     });
     const chooserPromise=page.waitForFileChooser({timeout:8000});
@@ -1349,8 +1390,11 @@ try {
 
     // Agenda is a working, explicitly LOCAL scheduler (no invented Google sync).
     await page.click('[data-cc="agenda"]');
-    await page.$eval('.jarvis-cc-inline-result:last-child',el=>{
-      const b=[...el.querySelectorAll('button')].find(b=>b.textContent.includes('Adicionar compromisso'));
+    await page.waitForFunction(()=>[...document.querySelectorAll('.jarvis-cc-inline-result button')]
+      .some(b=>b.textContent.includes('Adicionar compromisso')),{timeout:7000});
+    await page.evaluate(()=>{
+      const all=[...document.querySelectorAll('.jarvis-cc-inline-result button')];
+      const b=all.filter(b=>b.textContent.includes('Adicionar compromisso')).at(-1);
       b?.setAttribute('data-test-agenda-add','true');
     });
     await page.click('[data-test-agenda-add="true"]');
@@ -1368,6 +1412,11 @@ try {
       localStorage.setItem('jarvis_local_agenda_v1',JSON.stringify(
         all.filter(x=>x.title!=='Teste de agenda local')));
     });
+    // Test TV last: its async Bridge diagnostic can append terminal lines.
+    // It must not interfere with other contextual action buttons.
+    await page.click('#btn-pair-tv');
+    await page.waitForFunction(()=>document.getElementById('output-box')
+      ?.textContent.includes('LG WEBOS'),{timeout:5000});
     await page.close();
   }
   console.log('NEURAL ANSWER PASS: ring-only boot; responsive stacked/split layout; compact square image cards; distinct inline video lane; mobile/laptop/TV');

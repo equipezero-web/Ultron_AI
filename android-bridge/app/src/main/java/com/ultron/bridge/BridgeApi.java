@@ -101,6 +101,13 @@ public final class BridgeApi {
         return post("/api/devices/pair/claim", body);
     }
 
+    public static JSONObject heartbeat(String deviceId, String deviceSecret) throws Exception {
+        JSONObject body = new JSONObject();
+        body.put("deviceId", deviceId);
+        body.put("deviceSecret", deviceSecret);
+        return post("/api/bridge/heartbeat", body);
+    }
+
     public static JSONObject poll(String deviceId, String deviceSecret) throws Exception {
         JSONObject body = new JSONObject();
         body.put("deviceId", deviceId);

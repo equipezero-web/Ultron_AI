@@ -27,6 +27,7 @@ import {
   bridgeHealth,
   claimPairing,
   completeCommand,
+  heartbeatDevice,
   enqueueCommand,
   listDevices,
   pollCommands,
@@ -1323,6 +1324,17 @@ export default {
           payload: body?.payload || {}
         }));
       } catch (error) { return json({ ok: false, error: error?.message || String(error) }, 500); }
+    }
+
+    if (path === "/api/bridge/heartbeat" && request.method === "POST") {
+      try {
+        const body = await bodyOf(request);
+        return jsonResult(await heartbeatDevice(env, {
+          deviceId: body?.deviceId, deviceSecret: body?.deviceSecret
+        }), 401);
+      } catch (error) {
+        return json({ ok: false, error: "Falha ao verificar conexão do Bridge." }, 503);
+      }
     }
 
     if (path === "/api/bridge/poll" && request.method === "POST") {
