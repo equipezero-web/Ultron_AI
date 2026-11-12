@@ -103,6 +103,11 @@ public class MainActivity extends Activity {
         start.setOnClickListener(v -> startBridge());
         root.addView(start, fullWidth());
 
+        Button testBridge = new Button(this);
+        testBridge.setText("VERIFICAR CONEXÃO CLOUD");
+        testBridge.setOnClickListener(v -> refreshStatus());
+        root.addView(testBridge, fullWidth());
+
         Button remoteMic = new Button(this);
         remoteMic.setText("USAR ESTE CELULAR COMO MICROFONE");
         remoteMic.setOnClickListener(v -> openRemoteMicrophone());
@@ -117,7 +122,8 @@ public class MainActivity extends Activity {
         stop.setText("PARAR BRIDGE");
         stop.setOnClickListener(v -> {
             stopService(new Intent(this, BridgeService.class));
-            statusView.setText("Bridge parado neste celular.");
+            BridgeHealthStore.markStopped(this);
+            refreshStatus();
         });
         root.addView(stop, fullWidth());
 
@@ -397,13 +403,19 @@ public class MainActivity extends Activity {
             return;
         }
 
-        Intent intent = new Intent(this, BridgeService.class);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(intent);
-        } else {
-            startService(intent);
+        try {
+            BridgeHealthStore.markStarting(this);
+            Intent intent = new Intent(this, BridgeService.class);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(intent);
+            } else {
+                startService(intent);
+            }
+            statusView.setText("Bridge solicitado. Aguardando a primeira resposta autenticada do Cloud. Toque em VERIFICAR CONEXÃO CLOUD para conferir.");
+        } catch (RuntimeException error) {
+            BridgeHealthStore.markStopped(this);
+            statusView.setText("Não foi possível iniciar o serviço Android: " + error.getMessage());
         }
-        statusView.setText("Bridge iniciado. O Android exibirá uma notificação enquanto estiver ativo.");
     }
 
     private void refreshStatus() {
@@ -411,7 +423,8 @@ public class MainActivity extends Activity {
         String tvHost = SecureStore.getLgTvHost(this);
         String tvMac = SecureStore.getLgTvMac(this);
         StringBuilder status = new StringBuilder();
-        status.append(deviceId == null ? "Status Cloud: NÃO PAREADO" : "Status Cloud: PAREADO\nDevice ID: " + deviceId);
+        status.append(deviceId == null ? "Pareamento: NÃO PAREADO" : "Pareamento: REGISTRADO\nDevice ID: " + deviceId);
+        status.append("\nConexão Cloud: ").append(BridgeHealthStore.readableStatus(this));
 
         if (Build.VERSION.SDK_INT >= 33) {
             status.append("\nNotificações: ")
