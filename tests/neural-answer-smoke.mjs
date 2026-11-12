@@ -843,6 +843,27 @@ try {
     assert.equal(await page.$eval('.jarvis-geo-intensity-bar',el=>el.hidden),false);
     await page.evaluate(()=>window.ULTRON_GEO_VISUAL.close());
 
+
+    // "LIMPAR TUDO" must reset the visible workspace, not search the web.
+    const clearResult=await page.evaluate(async()=>{
+      await window.ULTRON_GEO_VISUAL.open({scenario:"enso",view:"2d"});
+      window.ULTRON_NEURAL_ANSWER.show("Resposta antiga para limpar");
+      const output=document.getElementById("output-box");
+      const previous=document.createElement("p");previous.textContent="CONTEÚDO ANTIGO";output.append(previous);
+      document.getElementById("command-input").value="LIMPAR TUDO";
+      const result=await window.ULTRON_ORCHESTRATOR.execute("LIMPAR TUDO","test-local-clear");
+      return {result,geo:window.ULTRON_GEO_VISUAL.state,
+        answerVisible:window.ULTRON_NEURAL_ANSWER.visible,
+        outputCount:output.childNodes.length,
+        input:document.getElementById("command-input").value};
+    });
+    assert.equal(clearResult.result.ok,true,JSON.stringify(clearResult));
+    assert.equal(clearResult.result.results[0].route,"local-clear-interface");
+    assert.equal(clearResult.geo.visible,false);
+    assert.equal(clearResult.answerVisible,false);
+    assert.equal(clearResult.outputCount,0,"No terminal logs should reappear after clear");
+    assert.equal(clearResult.input,"");
+
     await page.evaluate(()=>window.__phase3EarthRestore());
     await page.close();
   }
