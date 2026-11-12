@@ -6,8 +6,8 @@ if (!globalThis.crypto) globalThis.crypto = webcrypto;
 const secret = 'secure-bridge-secret-example-0123456789abcdef';
 const credentialHash = createHash('sha256').update(secret).digest('hex');
 const statements = [];
-let refreshed=0;
 let active=true;
+let lastSeenAt=new Date(Date.now()-10_000).toISOString().slice(0,19).replace('T',' ');
 const env={ULTRON_DB:{
   prepare(sql) {
     statements.push(sql);
@@ -15,10 +15,8 @@ const env={ULTRON_DB:{
     return {
       bind(...values){params=values;return this;},
       async run() {
-        if (sql.includes('UPDATE devices SET last_seen_at')) {
-          assert.equal(params[0],'real-device-01');
-          refreshed++;
-        }
+        assert.ok(!sql.includes('UPDATE devices SET last_seen_at'),
+          'Diagnostic cannot update persistent background heartbeat');
         return {meta:{changes:1}};
       },
       async first(){
@@ -29,7 +27,7 @@ const env={ULTRON_DB:{
         return active ? {
           id:'real-device-01',operatorId:'operator-01',
           deviceType:'mobile',deviceName:'Test Android',
-          status:'active',authHash:credentialHash
+          status:'active',lastSeenAt,authHash:credentialHash
         } : null;
       }
     };
@@ -41,17 +39,22 @@ const ok=await heartbeatDevice(env,{
 assert.deepEqual({ok:ok.ok,connected:ok.connected,deviceType:ok.deviceType},
   {ok:true,connected:true,deviceType:'mobile'});
 assert.equal(ok.deviceName,'Test Android');
+assert.equal(ok.serviceOnline,true);
+assert.equal(ok.lastSeenAt,lastSeenAt);
 assert.ok(!Number.isNaN(Date.parse(ok.serverTime)));
-assert.equal(refreshed,1);
+lastSeenAt='2020-01-01 00:00:00';
+const stale=await heartbeatDevice(env,{deviceId:'real-device-01',deviceSecret:secret});
+assert.equal(stale.ok,true,'Valid authentication is independent of background service availability');
+assert.equal(stale.serviceOnline,false,'Stale service heartbeat must stay offline after manual check');
 const bad=await heartbeatDevice(env,{
   deviceId:'real-device-01',deviceSecret:'X'.repeat(48)
 });
 assert.equal(bad.ok,false,'Wrong secret must be rejected');
-assert.equal(refreshed,1,'Bad credentials must not refresh device heartbeat');
+
 active=false;
 const disabled=await heartbeatDevice(env,{deviceId:'real-device-01',deviceSecret:secret});
 assert.equal(disabled.ok,false,'Inactive/revoked device must be rejected');
-assert.equal(refreshed,1);
-assert.equal(statements.some(q=>/UPDATE device_commands|SET status\s*=\s*'claimed'/i.test(q)),false,
-  'A heartbeat must never lease, alter or consume pending commands');
-console.log('BRIDGE AUTH HEARTBEAT PASS: valid device, invalid/revoked device, no queue consumption');
+
+assert.equal(statements.some(q=>/UPDATE devices|UPDATE device_commands|SET status\s*=\s*'claimed'/i.test(q)),false,
+  'A diagnostic must be read-only: cannot update last_seen or touch pending commands');
+console.log('BRIDGE AUTH HEARTBEAT PASS: valid/revoked credentials, stale service stays OFFLINE, no DB writes');
