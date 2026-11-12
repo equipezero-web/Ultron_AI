@@ -126,8 +126,62 @@ try {
       if(req.url().includes('raw.githubusercontent.com/nvkelso/natural-earth-vector')){
         return req.respond({status:200,headers:{'access-control-allow-origin':'*'},
          contentType:'application/geo+json',
-         body:JSON.stringify({type:'FeatureCollection',features:[{type:'Feature',
-           geometry:{type:'Polygon',coordinates:[[[-122,48],[-66,48],[-66,24],[-122,24],[-122,48]]]}}]})});
+         body:JSON.stringify({type:'FeatureCollection',features:[
+           {type:'Feature',properties:{ADM0_A3:'BRA',ADMIN:'Brazil'},
+             geometry:{type:'Polygon',coordinates:[[[-74,5],[-34,5],[-34,-34],[-74,-34],[-74,5]]]}},
+           {type:'Feature',properties:{ADM0_A3:'USA',ADMIN:'United States'},
+             geometry:{type:'Polygon',coordinates:[[[-122,48],[-66,48],[-66,24],[-122,24],[-122,48]]]}}
+         ]})});
+      }
+      if(req.url().includes('/api/geo/world')){
+        const u=new URL(req.url()),topic=u.searchParams.get('topic'),region=u.searchParams.get('region')||'world';
+        const index=topic==='population';
+        const report={
+          ok:true,topic,region,recordCount:2,
+          dataset:{
+            id:'world-'+topic+'-'+region,
+            title:index?'População por país':topic==='earthquakes'?'Terremotos mundiais':'Queimadas e incêndios observados',
+            projection:region,source:{
+              name:index?'Banco Mundial — World Development Indicators':topic==='earthquakes'?'USGS':'NASA EONET',
+              url:index?'https://data.worldbank.org/':topic==='earthquakes'?
+                'https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php':'https://eonet.gsfc.nasa.gov/',
+              basePeriod:index?'2024 a 2025':'Últimos 7 dias',
+              disclaimer:index?'Valores anuais, não medições em tempo real.':'Eventos geolocalizados, não mapa de riscos.'
+            },
+            theme:{
+              topic,
+              kind:index?'country-indicator':'events',
+              coloredBy:index?'national-annual-indicator':topic==='earthquakes'?
+                'earthquake-magnitude':'event-category',unit:index?'habitantes':'M',
+              legend:index?[{color:'#d05a67',label:'População alta'},{color:'#63a5bf',label:'População moderada'}]:
+                [{color:'#78b6dc',label:'M4,5–4,9'},{color:'#d94f63',label:'M6,5–6,9'}],
+              countryValues:index?{
+                BRA:{value:215000000,color:'#d05a67',year:'2025'},
+                USA:{value:330000000,color:'#63a5bf',year:'2024'}
+              }:null
+            },
+            frames:[{id:'observed',name:index?'2024–2025':'últimos dias',
+              type:index?'indicadores anuais':'registros oficiais',kind:'observed',
+              description:index?'Valores publicados por país.':'Epicentros e ocorrências catalogadas.',
+              points:index?[
+                {id:'country-BRA',name:'Brasil',lat:-15.8,lng:-47.8,kind:'indicator',color:'#d05a67',
+                  detail:'215 milhões em 2025',value:215000000,unit:'habitantes',
+                  source:'https://data.worldbank.org/indicator/SP.POP.TOTL'},
+                {id:'country-USA',name:'Estados Unidos',lat:38.9,lng:-77,kind:'indicator',color:'#63a5bf',
+                  detail:'330 milhões em 2024',value:330000000,unit:'habitantes',
+                  source:'https://data.worldbank.org/indicator/SP.POP.TOTL'}]:[
+                {id:'ev1',name:'Ocorrência A',lat:-8,lng:-48,kind:topic==='earthquakes'?'earthquake':'wildfires',
+                  color:'#78b6dc',detail:'Epicentro ou ocorrência observada',value:4.8,unit:'M',
+                  source:'https://earthquake.usgs.gov/'},
+                {id:'ev2',name:'Ocorrência B',lat:36,lng:139,kind:topic==='earthquakes'?'earthquake':'wildfires',
+                  color:'#d94f63',detail:'Epicentro ou ocorrência observada',value:6.7,unit:'M',
+                  source:'https://earthquake.usgs.gov/'}
+              ]}
+            }]
+          }
+        };
+        return req.respond({status:200,headers:{'access-control-allow-origin':'*'},
+          contentType:'application/json',body:JSON.stringify(report)});
       }
       if(req.url().includes('/api/geo/intensity')){
         const u=new URL(req.url()),layer=u.searchParams.get('layer')||'rain';
@@ -392,6 +446,7 @@ try {
         state,async open(){state.visible=true;return {ok:true}},
         setThematicLayer(points,{playing=false}={}){state.layerCount=points.length;state.playing=playing;return {ok:true,count:points.length};},
         setThematicGrid(cells){state.spatialCount=cells.length;return {ok:true,count:cells.length};},
+        setThematicCountries(countries){state.countryCount=countries.length;return {ok:true,count:countries.length};},
         clearThematicLayer(){state.layerCount=0;return {ok:true}},focus(lat,lng){state.focused=[lat,lng];return {ok:true}}
       };
       const result=await window.ULTRON_ORCHESTRATOR.execute('JARVIS, crie uma simulação 2D do El Niño','phase3-test');
