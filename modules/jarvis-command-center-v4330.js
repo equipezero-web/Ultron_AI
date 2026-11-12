@@ -243,12 +243,12 @@ if (stage) {
       const button=document.createElement('button');button.type='button';
       button.className='jarvis-cc-inline-action';
       button.textContent=action.label.slice(0,65);
-      button.addEventListener('click',event=>{
-        event.stopPropagation();
+      let lastActionPointerAt=0;
+      const activateAction=()=>{
         if(button.disabled)return;
         button.disabled=true;button.setAttribute('aria-busy','true');
-        // Execute synchronously while the user's click is active. This
-        // matters for TV pairing, camera permission, and other user gestures.
+        // Execute synchronously on the initial press to preserve trusted
+        // user activation for TV pairing and camera permission.
         let pending;
         try{pending=action.run();}
         catch(error){pending=Promise.reject(error);}
@@ -256,6 +256,16 @@ if (stage) {
           show(title,'Não foi possível executar '+action.label+': '+
             String(error?.message||error).slice(0,140));
         }).finally(()=>{button.disabled=false;button.removeAttribute('aria-busy');});
+      };
+      button.addEventListener('pointerdown',event=>{
+        if(event.button!==0)return;
+        event.stopPropagation();
+        lastActionPointerAt=Date.now();activateAction();
+      });
+      button.addEventListener('click',event=>{
+        event.stopPropagation();
+        if(Date.now()-lastActionPointerAt<850)return;
+        activateAction();
       });
       line.append(button);
     }
