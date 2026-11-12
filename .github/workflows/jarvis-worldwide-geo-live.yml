@@ -1,0 +1,70 @@
+name: JARVIS Worldwide Geo Live Verification
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/jarvis-worldwide-geo-live.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  worldwide-public:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify Pages content and Cloudflare worldwide thematic datasets
+        run: |
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict';
+          const site='https://equipezero-web.github.io/Ultron_AI/';
+          const backend='https://ultron-backend.lucaalves17-20.workers.dev';
+          const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+          async function verify(label,url,test){
+            let failure;
+            for(let attempt=1;attempt<=12;attempt++){
+              try{
+                const response=await fetch(url,{cache:'no-store',signal:AbortSignal.timeout(16000)});
+                const body=await response.text();
+                if(response.status===200&&test(body,response)){
+                  console.log('PASS',label,'HTTP',response.status,'attempt',attempt,'bytes',body.length);
+                  return JSON.parse(label.startsWith('world-api')?body:'null');
+                }
+                console.log('RETRY',label,'status',response.status,'sample',body.slice(0,280));
+                failure=Error(label+' status '+response.status+' or invalid body');
+              }catch(error){failure=error;console.log('RETRY',label,String(error));}
+              if(attempt<12)await pause(7000);
+            }
+            throw failure;
+          }
+          await verify('Pages HTML',site,s=>s.includes('jarvis-geospatial-visual.js?v=4.94.0'));
+          await verify('Worldwide intent module',site+'modules/jarvis-world-intent.js?v=4.94.0',s=>s.includes('worldGeoIntent'));
+          await verify('Worldwide data module',site+'modules/jarvis-world-geodata.js?v=4.94.0',s=>s.includes('EN.GHG.CO2.PC.CE.AR5'));
+          await verify('Worldwide 2D/3D visualizer',site+'modules/jarvis-geospatial-visual.js?v=4.94.0',s=>s.includes('renderGlobalTheme')&&s.includes('jarvis-geo-world-country'));
+          const layers=['earthquakes','wildfires','population','gdp','co2'];
+          for(const topic of layers){
+            const url=backend+'/api/geo/world?topic='+topic+'&region=world';
+            const data=await verify('world-api-'+topic,url,body=>{
+              try{
+                const d=JSON.parse(body);
+                return d.ok===true&&d.topic===topic&&d.region==='world'&&d.recordCount>0&&
+                  d.dataset?.projection==='world'&&d.dataset?.theme?.topic===topic&&
+                  d.dataset?.theme?.legend?.length>0;
+              }catch{return false;}
+            });
+            console.log('WORLD GEO LIVE',topic,'points',data.recordCount,'period',data.period,
+              'source',data.dataset.source.name);
+          }
+          const unsupported=await fetch(backend+'/api/geo/world?topic=invented&region=world',
+            {signal:AbortSignal.timeout(12000)});
+          const bad=await unsupported.json();
+          assert.equal(unsupported.status,400);assert.equal(bad.ok,false);
+          console.log('WORLDWIDE GEO INTELLIGENCE VERIFIED IN PRODUCTION');
+          NODE
+      - name: Inspect latest canonical Cloudflare deploy workflow
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api 'repos/equipezero-web/Ultron_AI/actions/workflows/cloudflare-backend-deploy.yml/runs?branch=main&per_page=3' --jq '.workflow_runs[] | [.id,.status,.conclusion,.created_at,.html_url] | @tsv'
