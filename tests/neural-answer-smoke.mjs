@@ -1160,6 +1160,81 @@ try {
     assert.equal(clearResult.outputCount,0,"No terminal logs should reappear after clear");
     assert.equal(clearResult.input,"");
 
+    // COMMAND CENTER BUTTON AUDIT — use actual pointer/click events.
+    // A previous layout hid 5/6 data-cc controls, and the globe-mode button
+    // changed only its label instead of opening ULTRON_EARTH.
+    const ccButtons=await page.evaluate(()=>[...document.querySelectorAll(
+      '#jarvis-cc-input-slot .quick-actions [data-cc]')].map(button=>({
+      action:button.dataset.cc,visible:getComputedStyle(button).display!=='none',
+      width:Math.round(button.getBoundingClientRect().width)
+    })));
+    assert.deepEqual(ccButtons.map(x=>x.action).sort(),
+      ['agenda','camera','devices','earth','files','status'].sort(),
+      'Six original command-center controls must be in the visible toolbar');
+    assert.ok(ccButtons.every(x=>x.visible&&x.width>12),JSON.stringify(ccButtons));
+    for(const action of ['status','agenda','devices','files','camera']){
+      const selector='[data-cc="'+action+'"]';
+      await page.$eval(selector,button=>button.scrollIntoView({
+        behavior:'instant',block:'center',inline:'center'
+      }));
+      const target=await page.$eval(selector,button=>{
+        const r=button.getBoundingClientRect();
+        const center=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);
+        return {ok:center===button||button.contains(center),
+          blocker:center?.tagName||null,blockerText:center?.textContent?.slice(0,32),
+          width:r.width,height:r.height};
+      });
+      assert.equal(target.ok,true,action+' must accept an actual click: '+JSON.stringify(target));
+    }
+    await page.evaluate(()=>{
+      window.__ccAuditSavedDevices=window.ULTRON_DEVICES;
+      window.__ccAuditSavedFiles=window.ULTRON_LOCAL_FILES;
+      window.ULTRON_DEVICES={listDevices:async()=>[]};
+      window.ULTRON_LOCAL_FILES={files:async()=>['Relatorio.txt']};
+      const tv=document.getElementById('btn-pair-tv');
+      tv.click=()=>{window.__ccAuditTv=(window.__ccAuditTv||0)+1};
+      const camera=document.getElementById('btn-camera');
+      camera.click=()=>{window.__ccAuditCamera=(window.__ccAuditCamera||0)+1};
+    });
+    await page.click('[data-cc="status"]');
+    await page.waitForFunction(()=>[...document.querySelectorAll('.jarvis-cc-inline-result')]
+      .some(el=>el.textContent.includes('STATUS DO SISTEMA')));
+    assert.ok(await page.$eval('.jarvis-cc-inline-result:last-child',
+      el=>el.querySelector('button')?.textContent.includes('Atualizar status')));
+    await page.click('.jarvis-cc-inline-result:last-child button');
+    await page.waitForFunction(()=>[...document.querySelectorAll('.jarvis-cc-inline-result')]
+      .filter(el=>el.textContent.includes('STATUS DO SISTEMA')).length>=2);
+    await page.click('[data-cc="agenda"]');
+    assert.match(await page.$eval('.jarvis-cc-inline-result:last-child',el=>el.textContent),/AGENDA \/ VISÃO LOCAL/);
+    await page.click('[data-cc="devices"]');
+    await page.waitForFunction(()=>[...document.querySelectorAll('.jarvis-cc-inline-result button')]
+      .some(el=>el.textContent.includes('Configurar TV')));
+    await page.click('.jarvis-cc-inline-result:last-child button');
+    await page.waitForFunction(()=>window.__ccAuditTv===1);
+    await page.click('[data-cc="files"]');
+    await page.waitForFunction(()=>[...document.querySelectorAll('.jarvis-cc-inline-result')]
+      .some(el=>el.textContent.includes('ARQUIVOS LOCAIS (1)')));
+    assert.ok(await page.$eval('.jarvis-cc-inline-result:last-child',
+      el=>el.querySelector('button')?.textContent.includes('Atualizar arquivos')));
+    await page.click('.jarvis-cc-inline-result:last-child button');
+    await page.waitForFunction(()=>[...document.querySelectorAll('.jarvis-cc-inline-result')]
+      .filter(el=>el.textContent.includes('ARQUIVOS LOCAIS (1)')).length>=2);
+    await page.click('[data-cc="camera"]');
+    await page.waitForFunction(()=>window.__ccAuditCamera===1);
+    await page.$eval('[data-visual="globe"]',button=>
+      button.scrollIntoView({block:'center',behavior:'instant'}));
+    await page.click('[data-visual="globe"]');
+    await page.waitForFunction(()=>window.__phase3MockState.visible===true);
+    await page.click('[data-visual="ring"]');
+    await page.waitForFunction(()=>window.__phase3MockState.visible===false&&
+      document.querySelector('.jarvis-cc-visual')?.dataset.mode==='ring');
+    await page.evaluate(()=>{
+      const tv=document.getElementById('btn-pair-tv');
+      const camera=document.getElementById('btn-camera');
+      delete tv.click;delete camera.click;
+      window.ULTRON_DEVICES=window.__ccAuditSavedDevices;
+      window.ULTRON_LOCAL_FILES=window.__ccAuditSavedFiles;
+    });
     await page.evaluate(()=>window.__phase3EarthRestore());
     await page.close();
   }
