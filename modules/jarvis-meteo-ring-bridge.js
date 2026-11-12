@@ -132,7 +132,7 @@ function install(){
    svg.setAttribute("viewBox","0 0 900 550");svg.setAttribute("role","img");
    svg.classList.add("jarvis-meteo-inmet-map");
    const ns="http://www.w3.org/2000/svg";
-   const make=(name,attrs)=>{const el=document.createElementNS(ns,name);
+   const make=(name,attrs={})=>{const el=document.createElementNS(ns,name);
      for(const [key,val] of Object.entries(attrs))el.setAttribute(key,String(val));return el;};
    svg.append(make("rect",{width:900,height:550,fill:"#092238"}));
    // Same IBGE geographic outline used in the existing world map.
