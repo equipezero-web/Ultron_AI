@@ -37,3 +37,25 @@ Os dados USGS e NASA EONET incluem atribuição, e para Banco Mundial e Natural 
 - `node tests/neural-answer-smoke.mjs`: executa comandos no navegador em mobile, notebook e TV; verifica mapa 2D, país colorido, globo 3D e grade mundial.
 - `Total Orchestration Check`: testes e sondagem externa dos provedores; `Cloudflare Backend Deploy` após merge na main.
 - Para declarar ativo em produção, comprovar via HTTP o endpoint, os módulos no GitHub Pages e navegador público separadamente.
+## Ampliação temática mundial — v4.95
+
+O motor foi ampliado com **10 indicadores internacionais adicionais** do catálogo de séries anuais do Banco Mundial, sem introduzir URLs arbitrárias ou geração de mapas baseada em palpites.
+
+| Área | Comando de exemplo | Indicador World Bank |
+|---|---|---|
+| Economia | `Mostre o PIB per capita mundial no globo 3D` | NY.GDP.PCAP.CD |
+| Saúde | `Mostre a expectativa de vida dos países no mapa 2D` | SP.DYN.LE00.IN |
+| Saúde pública | `Mostre os gastos com saúde dos países no mapa 2D` | SH.XPD.CHEX.GD.ZS |
+| Educação | `Mostre a alfabetização mundial no mapa 2D` | SE.ADT.LITR.ZS |
+| Tecnologia | `Mostre o acesso à internet mundial no globo 3D` | IT.NET.USER.ZS |
+| Demografia | `Mostre a urbanização mundial no mapa 2D` | SP.URB.TOTL.IN.ZS |
+| Meio ambiente | `Mostre a cobertura florestal mundial no mapa 2D` | AG.LND.FRST.ZS |
+| Energia | `Mostre o consumo de energia renovável mundial no globo` | EG.FEC.RNEW.ZS |
+| Infraestrutura | `Mostre o acesso à eletricidade mundial no mapa 2D` | EG.ELC.ACCS.ZS |
+| Trabalho | `Mostre o desemprego mundial no globo 3D` | SL.UEM.TOTL.ZS |
+
+O Neural Ring inclui agora **lista comparativa ordenada dos 25 maiores valores** para temas por país, cada um com barra proporcional, dado numérico, unidade, ano da observação e interação para localizar o país. A coloração do mapa continua agregada ao nível nacional; valores mais altos não significam necessariamente resultados melhores (ex.: desemprego). As escalas possuem faixas explícitas e os dados ausentes continuam vazios. As cores refletem faixas dos indicadores, não perigo ou probabilidade.
+
+**Limites:** não é um gerador de mapas sobre qualquer assunto por inferência. Apenas temas com fontes georreferenciadas, séries numéricas e adaptadores testados podem virar mapas de intensidade. Conflitos e migrações atuais, por exemplo, ainda precisam de adaptadores confiáveis específicos; solicitações sem fonte adequada devem gerar explicação/research, nunca regiões coloridas artificiais. Nenhuma série anual deve ser anunciada como ao vivo.
+
+**Verificação:** `node tests/jarvis-world-geodata.mjs`. Valida comandos, catálogo, valores por país, percentuais fora de faixa, temas não suportados e conversão de dados.

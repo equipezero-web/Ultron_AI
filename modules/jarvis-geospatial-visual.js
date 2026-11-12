@@ -350,13 +350,22 @@ if(stage){
      dataset.theme.kind==="country-indicator"?"Indicador anual":"Categoria de evento";
    meaning.append(type,detailText);stat.append(meaning);metricPanel.append(stat);
    const infos=document.createElement("div");infos.className="jarvis-geo-global-event-list";
-   for(const p of frame.points.slice(0,25)){
+   const isCountry=dataset.theme.kind==="country-indicator";
+   const ranked=isCountry?[...frame.points].sort((a,b)=>b.value-a.value):frame.points;
+   const peak=isCountry?Math.max(1,...ranked.map(p=>Number(p.value)||0)):1;
+   for(const [index,p] of ranked.slice(0,25).entries()){
      const row=document.createElement("button");row.type="button";row.className="jarvis-geo-global-event";
      const mark=document.createElement("i");mark.style.background=p.color||GEO_PALETTE[p.kind]?.color||"#90d4f7";
-     const text=document.createElement("span");text.textContent=p.name+
+     const text=document.createElement("span");text.textContent=(isCountry?(index+1)+". ":"")+p.name+
        (p.value!=null?" · "+p.value.toLocaleString("pt-BR",{maximumFractionDigits:2})+
-        (p.unit?" "+p.unit:""):"");
-     row.append(mark,text);
+        (p.unit?" "+p.unit:""):"")+(isCountry&&p.observedAt?" · "+p.observedAt:"");
+     if(isCountry){
+       const wrap=document.createElement("span");wrap.className="jarvis-geo-country-entry";
+       const track=document.createElement("span");track.className="jarvis-geo-country-bar";
+       const bar=document.createElement("b");bar.style.width=(Math.min(100,100*p.value/peak)).toFixed(1)+"%";
+       bar.style.background=p.color||"#79b1d8";track.append(bar);wrap.append(text,track);
+       row.append(mark,wrap);
+     }else row.append(mark,text);
      row.addEventListener("click",()=>selectRegion(p));
      infos.append(row);
    }

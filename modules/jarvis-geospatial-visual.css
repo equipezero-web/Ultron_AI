@@ -545,3 +545,15 @@ body.jarvis-command-center .jarvis-geo-visual[data-global-topic] .jarvis-geo-2d 
  body.jarvis-command-center .jarvis-geo-global-event-list{max-height:160px}
  body.jarvis-command-center .jarvis-geo-global-event{min-height:44px}
 }
+
+/* Source-backed, sorted country comparison beneath the geographic choropleth. */
+body.jarvis-command-center .jarvis-geo-global-event .jarvis-geo-country-entry{
+ display:flex;flex-direction:column;gap:5px;flex:1;min-width:0;
+}
+body.jarvis-command-center .jarvis-geo-global-event .jarvis-geo-country-bar{
+ display:block;width:100%;height:5px;border-radius:4px;overflow:hidden;
+ background:rgba(139,181,207,.18);flex:none;
+}
+body.jarvis-command-center .jarvis-geo-global-event .jarvis-geo-country-bar b{
+ display:block;height:100%;border-radius:4px;min-width:1px;
+}

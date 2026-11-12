@@ -104,4 +104,42 @@ assert.equal((await loadWorldGeo({topic:"unbounded",region:"world"},{fetchImpl:m
 assert.equal((await loadWorldGeo({topic:"wildfires",region:"unknown"},{fetchImpl:mockFetch})).status,400);
 assert.ok(requests.every(u=>["earthquake.usgs.gov","eonet.gsfc.nasa.gov","api.worldbank.org"].includes(u.hostname)));
 assert.ok(Object.keys(WORLD_GEO_TOPICS).length>=9);
-console.log("WORLDWIDE GEO PASS: USGS NASA World Bank, live-theme intent, worldwide/brazil scopes, numeric colors, provenance and unsupported refusal");
+
+const expanded=[
+ ["Mostre a expectativa de vida dos países no mapa 2D","lifeExpectancy"],
+ ["Mostre o PIB per capita mundial no globo 3D","gdpPerCapita"],
+ ["Exiba a alfabetização dos países no mapa 2D","literacy"],
+ ["Mostre o acesso à internet mundial no globo 3D","internet"],
+ ["Mostre a urbanização mundial no mapa","urban"],
+ ["Mostre a cobertura florestal mundial no mapa","forest"],
+ ["Mostre o consumo de energia renovável mundial no globo","renewable"],
+ ["Mostre a energia renovável dos países no mapa","renewable"],
+ ["Mostre o acesso à eletricidade mundial no globo","electricity"],
+ ["Mostre o desemprego mundial no globo","unemployment"],
+ ["Mostre os gastos com saúde dos países no mapa 2D","healthSpending"]
+];
+for(const [phrase,topic] of expanded){
+ const intent=worldGeoIntent(phrase);
+ assert.equal(intent?.args?.topic,topic,phrase);
+ assert.equal(intent?.action,"geo.global",phrase);
+ assert.ok(validatePlan({steps:[intent]}),phrase);
+ assert.ok(WORLD_GEO_TOPICS[topic],topic);
+ const value=topic==="gdpPerCapita"?12000:topic==="lifeExpectancy"?75:64;
+ const metricRows=[{},[
+  {country:{id:"BR"},date:"2024",value},
+  {country:{id:"US"},date:"2023",value:value+1}
+ ]];
+ const report=normalizeWorldGeo(topic,"world",{observations:metricRows,locations},{now});
+ // Normalization uses annual, source-observed values appropriate for each indicator.
+ assert.equal(report?.ok,true,topic);
+ assert.equal(report.dataset.theme.kind,"country-indicator");
+ assert.ok(validateGeoScenario(report.dataset));
+}
+const invalidPercent=normalizeWorldGeo("internet","world",{
+ observations:[{},[{country:{id:"BR"},date:"2024",value:150}]],locations
+},{now});
+assert.equal(invalidPercent?.status,404,"Impossible percentage values must not color countries");
+assert.equal(worldGeoIntent("Mostre no mapa mundial as áreas de guerra"),null);
+assert.equal(worldGeoIntent("Não mostre o desemprego no mapa mundial"),null);
+assert.ok(Object.keys(WORLD_GEO_TOPICS).length>=19);
+console.log("WORLDWIDE GEO PASS: 19 vetted global themes, indicators, spatial colors, ranked charts, safe validation and sources");

@@ -3,8 +3,8 @@ import {WEATHER_CITIES,weatherCity,weatherGeoScenario,weatherSummary} from "./ja
 import {globalWeatherScenario,globalWeatherSummary} from "./jarvis-global-weather.js?v=4.82.0";
 import {loadGlobalWeather} from "../backend/weather-global.js?v=4.74.0";
 import {loadLiveWeather} from "../backend/weather-live.js?v=4.80.0";
-import {worldGeoIntent} from "./jarvis-world-intent.js?v=4.94.0";
-import {loadWorldGeo} from "./jarvis-world-geodata.js?v=4.94.0";
+import {worldGeoIntent} from "./jarvis-world-intent.js?v=4.95.0";
+import {loadWorldGeo} from "./jarvis-world-geodata.js?v=4.95.0";
 import {loadSpatialIntensity,SPATIAL_LAYERS} from "./jarvis-spatial-intensity.js?v=4.90.0";
 import {validateGeoScenario} from "./jarvis-geospatial-model.js?v=4.94.0";
 import {loadWeatherInsight} from "../backend/weather-intelligence.js?v=4.75.0";

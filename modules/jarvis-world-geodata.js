@@ -12,6 +12,11 @@ const EVENT_COLOR={
  wildfires:"#ef7848",volcanoes:"#b879df",severeStorms:"#e4a64e",
  floods:"#499ddf",landslides:"#bf8d6d"
 };
+
+const percentMetric=(codes,label,limits,labels)=>({
+ codes,label,unit:"%",max:100,limits,labels,
+ colors:["#497e9f","#70b4c5","#83d8b1","#d9cb7e","#e7a765","#cb5978"]
+});
 const wbBands={
  population:{codes:"SP.POP.TOTL",label:"População por país",unit:"habitantes",
   limits:[1e6,1e7,5e7,1e8,5e8],
@@ -23,7 +28,30 @@ const wbBands={
   colors:["#497e9f","#70b4c5","#83d8b1","#d9cb7e","#e7a765","#cb5978"]},
  co2:{codes:"EN.GHG.CO2.PC.CE.AR5",label:"Emissões de CO₂ equivalente por habitante",unit:"t CO₂e/pessoa",
   limits:[1,3,6,10,20],labels:["até 1 t","1–3 t","3–6 t","6–10 t","10–20 t","mais de 20 t"],
-  colors:["#79b1d8","#92ccaf","#e3ce82","#ed9c62","#df7257","#b34562"]}
+  colors:["#79b1d8","#92ccaf","#e3ce82","#ed9c62","#df7257","#b34562"]},
+ gdpPerCapita:{codes:"NY.GDP.PCAP.CD",label:"PIB por habitante",unit:"US$/habitante",max:1e7,
+  limits:[1000,5000,15000,30000,60000],
+  labels:["até US$ 1 mil","1–5 mil","5–15 mil","15–30 mil","30–60 mil","mais de US$ 60 mil"],
+  colors:["#497e9f","#70b4c5","#83d8b1","#d9cb7e","#e7a765","#cb5978"]},
+ lifeExpectancy:{codes:"SP.DYN.LE00.IN",label:"Expectativa de vida ao nascer",unit:"anos",max:130,
+  limits:[55,65,72,78,83],labels:["até 55 anos","55–65 anos","65–72 anos","72–78 anos","78–83 anos","mais de 83 anos"],
+  colors:["#497e9f","#70b4c5","#83d8b1","#d9cb7e","#e7a765","#cb5978"]},
+ internet:percentMetric("IT.NET.USER.ZS","Pessoas que usam a internet",[10,25,50,75,90],
+  ["até 10%","10–25%","25–50%","50–75%","75–90%","mais de 90%"]),
+ urban:percentMetric("SP.URB.TOTL.IN.ZS","População urbana",[15,30,50,70,85],
+  ["até 15%","15–30%","30–50%","50–70%","70–85%","mais de 85%"]),
+ forest:percentMetric("AG.LND.FRST.ZS","Cobertura florestal",[5,15,30,50,70],
+  ["até 5%","5–15%","15–30%","30–50%","50–70%","mais de 70%"]),
+ renewable:percentMetric("EG.FEC.RNEW.ZS","Consumo de energia renovável",[5,15,30,50,75],
+  ["até 5%","5–15%","15–30%","30–50%","50–75%","mais de 75%"]),
+ electricity:percentMetric("EG.ELC.ACCS.ZS","Acesso à eletricidade",[20,40,60,80,95],
+  ["até 20%","20–40%","40–60%","60–80%","80–95%","mais de 95%"]),
+ unemployment:percentMetric("SL.UEM.TOTL.ZS","Desemprego",[2,5,8,12,20],
+  ["até 2%","2–5%","5–8%","8–12%","12–20%","mais de 20%"]),
+ literacy:percentMetric("SE.ADT.LITR.ZS","Alfabetização de adultos",[50,65,80,90,97],
+  ["até 50%","50–65%","65–80%","80–90%","90–97%","mais de 97%"]),
+ healthSpending:percentMetric("SH.XPD.CHEX.GD.ZS","Despesa corrente com saúde (% PIB)",[3,5,7,10,15],
+  ["até 3%","3–5%","5–7%","7–10%","10–15%","mais de 15%"])
 };
 // Current World Bank series excludes land-use change and forestry (LULUCF).
 export const WORLD_GEO_TOPICS=Object.freeze({
@@ -149,7 +177,7 @@ export function normalizeWorldGeo(topic,region,payload,{now=()=>new Date().toISO
    const iso2=clean(row.country?.id,3),country=countries.get(iso2);
    if(!country||indicators.has(country.id))continue;
    const value=row.value;
-   if(!validNumber(value,0,5e15))continue;
+   if(!validNumber(value,0,def.max??5e15))continue;
    const year=String(row.date||"");
    if(!/^20\d{2}$/.test(year)&&!/^19\d{2}$/.test(year))continue;
    const c=cls(value,def.limits,def.colors,def.labels);
@@ -169,7 +197,8 @@ export function normalizeWorldGeo(topic,region,payload,{now=()=>new Date().toISO
   const sortedYears=[...yearByCountry.values()].sort();
   const period=sortedYears.length?"Dados anuais disponíveis · "+sortedYears[0]+" a "+sortedYears.at(-1):"Dados anuais";
   return shortPoints(payload,topic,region,spec.label,spec.disclaimer,source,period,
-   def.colors.map((color,i)=>({color,label:def.labels[i]})),points,
+   def.colors.map((color,i)=>({color,label:def.labels[i]})),
+   points.sort((a,b)=>b.value-a.value),
    {unit:def.unit,kind:"country-indicator",coloredBy:"national-annual-indicator",
     countryValues:Object.fromEntries(indicators)});
  }
