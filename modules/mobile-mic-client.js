@@ -1,3 +1,4 @@
+import { bridgeAgeMs, bridgeIsOnline, sortMobileBridges, BRIDGE_ONLINE_MAX_AGE_MS } from './bridge-status.js?v=5.15.0';
 import "./neural-live.js";
 import "./voice-fallback.js";
 import API_CONFIG from "../config.js";
@@ -9,7 +10,7 @@ const requestButton = $("btn-mobile-mic");
 const output = $("output-box");
 const audio = $("voice-audio");
 
-const BRIDGE_ONLINE_MAX_AGE_MS = 15000;
+// Respect the Cloud gateway's 45-second heartbeat freshness window.
 const REQUEST_CONFIRM_TIMEOUT_MS = 12000;
 const REMOTE_MIC_AUTH_STORAGE = "ultron_remote_mic_authorized_v1";
 
@@ -69,14 +70,9 @@ async function post(path, payload = {}) {
   return data;
 }
 
-function deviceAgeMs(device) {
-  const lastSeen = Date.parse(device?.lastSeenAt || "") || 0;
-  return lastSeen ? Date.now() - lastSeen : Number.POSITIVE_INFINITY;
-}
+function deviceAgeMs(device) { return bridgeAgeMs(device); }
 
-function deviceLooksOnline(device) {
-  return deviceAgeMs(device) <= BRIDGE_ONLINE_MAX_AGE_MS;
-}
+function deviceLooksOnline(device) { return bridgeIsOnline(device); }
 
 async function listMobileDevices() {
   const key = memoryKey();
@@ -84,13 +80,7 @@ async function listMobileDevices() {
 
   const result = await post("/api/devices/list", { memoryKey: key });
 
-  return (result.devices || [])
-    .filter((device) => device?.deviceType === "mobile" && device?.status !== "disabled")
-    .sort((a, b) => {
-      const aa = Date.parse(a?.lastSeenAt || "") || 0;
-      const bb = Date.parse(b?.lastSeenAt || "") || 0;
-      return bb - aa;
-    });
+  return sortMobileBridges(result.devices);
 }
 
 async function selectMobileDevice({ requireOnline = true } = {}) {
