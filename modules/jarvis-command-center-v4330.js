@@ -49,16 +49,22 @@ if (stage) {
     textComposer.setAttribute('autocapitalize','sentences');
     textComposer.setAttribute('spellcheck','true');
   }
-  // All the command-center buttons must remain accessible after reparenting.
-  // The legacy .jarvis-cc-actions wrapper is hidden, so move its real buttons
-  // (with their existing event handlers) to the visible quick-action toolbar.
+  // All six controls must be reachable without a horizontal swipe.
+  // The scrolling quick-actions strip can cancel a click during snap/scroll,
+  // so put SYSTEM, AGENDA, CAMERA, DEVICES and FILES into a stable tool grid
+  // within the SAME terminal. Earth remains a primary quick action.
   const quickBar=ui.querySelector('#jarvis-cc-input-slot .quick-actions');
   const globeQuickButton=ui.querySelector('[data-cc="earth"]');
   if(quickBar){
+    const tools=document.createElement('div');tools.className='jarvis-cc-tool-actions';
+    tools.setAttribute('role','group');
+    tools.setAttribute('aria-label','Ferramentas do J.A.R.V.I.S.');
     for(const button of [...ui.querySelectorAll('.jarvis-cc-actions [data-cc]')]){
       button.setAttribute('aria-label',button.textContent.trim());
-      quickBar.append(button);
+      if(button.dataset.cc==='earth')quickBar.append(button);
+      else tools.append(button);
     }
+    quickBar.after(tools);
   }
   // A single 3D neural stage. All real sensor/gateway/bridge/infra panels
   // remain functional with their original IDs, moved beside the command composer.
