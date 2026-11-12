@@ -373,6 +373,23 @@ async function authenticateDevice(env, deviceId, deviceSecret) {
   return suppliedHash === row.authHash ? row : null;
 }
 
+// Explicit connection check for an already paired device. Unlike /poll,
+// this never claims queued commands, so diagnostic taps cannot interfere with
+// command execution. Only a valid deviceId + secret can refresh its heartbeat.
+export async function heartbeatDevice(env, { deviceId, deviceSecret } = {}) {
+  const device = await authenticateDevice(env, deviceId, deviceSecret);
+  if (!device) return { ok: false, error: "Credencial do dispositivo inválida." };
+  await env.ULTRON_DB.prepare(
+    "UPDATE devices SET last_seen_at = CURRENT_TIMESTAMP WHERE id = ? AND status = 'active'"
+  ).bind(device.id).run();
+  return {
+    ok: true, connected: true,
+    deviceType: device.deviceType,
+    deviceName: device.deviceName,
+    serverTime: new Date().toISOString()
+  };
+}
+
 export async function pollCommands(env, { deviceId, deviceSecret } = {}) {
   const device = await authenticateDevice(env, deviceId, deviceSecret);
   if (!device) return { ok: false, error: "Credencial do dispositivo inválida." };
