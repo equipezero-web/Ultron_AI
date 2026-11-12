@@ -135,12 +135,12 @@ try {
       }
       if(req.url().includes('/api/geo/world')){
         const u=new URL(req.url()),topic=u.searchParams.get('topic'),region=u.searchParams.get('region')||'world';
-        const index=topic==='population';
+        const index=['population','gdp','co2'].includes(topic);
         const report={
           ok:true,topic,region,recordCount:2,
           dataset:{
             id:'world-'+topic+'-'+region,
-            title:index?'População por país':topic==='earthquakes'?'Terremotos mundiais':'Queimadas e incêndios observados',
+            title:index?(topic==='population'?'População por país':'PIB nominal por país'):topic==='earthquakes'?'Terremotos mundiais':'Queimadas e incêndios observados',
             projection:region,source:{
               name:index?'Banco Mundial — World Development Indicators':topic==='earthquakes'?'USGS':'NASA EONET',
               url:index?'https://data.worldbank.org/':topic==='earthquakes'?
