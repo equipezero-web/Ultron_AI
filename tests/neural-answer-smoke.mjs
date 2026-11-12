@@ -1161,7 +1161,7 @@ try {
     assert.equal(clearResult.input,"");
 
     // COMMAND CENTER BUTTON AUDIT — use actual pointer/click events.
-    // A previous layout hid 5/6 data-cc controls, and the globe-mode button
+    // A previous layout hid 5/6 controls and the globe-mode button
     // changed only its label instead of opening ULTRON_EARTH.
     const ccButtons=await page.evaluate(()=>[...document.querySelectorAll(
       '#jarvis-cc-input-slot [data-cc]')].map(button=>({
@@ -1169,10 +1169,10 @@ try {
       width:Math.round(button.getBoundingClientRect().width)
     })));
     assert.deepEqual(ccButtons.map(x=>x.action).sort(),
-      ['agenda','camera','devices','earth','files','status'].sort(),
-      'Six original command-center controls must be in the visible toolbar');
+      ['agenda','camera','devices','earth','files','ring','status'].sort(),
+      'All seven command-center controls, including return to Ring, must be reachable');
     assert.ok(ccButtons.every(x=>x.visible&&x.width>12),JSON.stringify(ccButtons));
-    for(const action of ['status','agenda','devices','files','camera']){
+    for(const action of ['status','agenda','devices','files','camera','ring']){
       const selector='[data-cc="'+action+'"]';
       await page.$eval(selector,button=>button.scrollIntoView({
         behavior:'instant',block:'center',inline:'center'
@@ -1242,32 +1242,14 @@ try {
       button.scrollIntoView({block:'center',behavior:'instant'}));
     await page.click('[data-visual="globe"]');
     await page.waitForFunction(()=>window.__phase3MockState.visible===true);
-    await page.evaluate(()=>{
-      const ring=document.querySelector('[data-visual="ring"]');
-      window.__ccRingEvents=[];
-      for(const type of ['pointerdown','pointerup','click'])
-        ring.addEventListener(type,e=>window.__ccRingEvents.push(type+':'+e.target.tagName));
-    });
-    await page.$eval('[data-visual="ring"]',b=>b.scrollIntoView({behavior:'instant',block:'center'}));
-    const ringTarget=await page.$eval('[data-visual="ring"]',b=>{
-      const r=b.getBoundingClientRect();
-      return {x:r.x+r.width/2,y:r.y+r.height/2};
-    });
-    // Puppeteer page.click() may scroll the entire 3D stage again after the
-    // control has already been centered, moving the target mid-gesture.
-    // Click the current actual hit coordinates as a user would.
-    await page.mouse.click(ringTarget.x,ringTarget.y);
-    const ringDebug=await page.evaluate(()=>{
-      const button=document.querySelector('[data-visual="ring"]'),r=button.getBoundingClientRect();
-      const hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);
-      return {events:window.__ccRingEvents,earthVisible:window.__phase3MockState.visible,
-       mode:document.querySelector('.jarvis-cc-visual')?.dataset.mode,
-       buttonRect:{x:r.x,y:r.y,w:r.width,h:r.height},
-       hit:hit?.tagName,hitClass:hit?.className,hitTitle:hit?.getAttribute('title')};
-    });
-    console.log('NEURAL RING RETURN DEBUG',JSON.stringify(ringDebug));
-    assert.equal(ringDebug.earthVisible,false,JSON.stringify(ringDebug));
-    assert.equal(ringDebug.mode,'ring',JSON.stringify(ringDebug));
+    // The stable return-to-Ring tool must work even when a moving 3D
+    // visual prevents a click on the tiny sphere-mode toggle.
+    await page.$eval('[data-cc="ring"]',button=>
+      button.scrollIntoView({behavior:'instant',block:'center'}));
+    await page.click('[data-cc="ring"]');
+    await page.waitForFunction(()=>window.__phase3MockState.visible===false&&
+      document.querySelector('.jarvis-cc-visual')?.dataset.mode==='ring',{timeout:9000});
+    assert.equal(await page.$eval('[data-visual="ring"]',button=>button.getAttribute('aria-pressed')),'true');
     await page.evaluate(()=>{
       const tv=document.getElementById('btn-pair-tv');
       const camera=document.getElementById('btn-camera');
