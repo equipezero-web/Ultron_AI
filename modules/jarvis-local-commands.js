@@ -1,6 +1,7 @@
 import { JARVIS_CAPABILITIES } from "../backend/jarvis-capabilities.js?v=4.67.0";
 import {clearVisibleInterface} from "./jarvis-clear-interface.js?v=4.98.0";
 import {parseMeteoIntent} from "./jarvis-meteorological-sources.js?v=4.98.0";
+import {parseGlobalIntelligenceIntent} from "./jarvis-global-intelligence-intent.js?v=5.10.0";
 
 export const normalizeCommand=value=>String(value||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim().replace(/^(?:(?:ei|ola|hey)\s+)?(?:jarvis|j\.a\.r\.v\.i\.s\.?|ultron)[, :!?\s]+/,"").replace(/^(?:por favor[, ]+|me diga[, ]+|me fale[, ]+|eu quero que voce\s+|quero que voce\s+)+/,"").replace(/\s+/g," ").trim();
 
@@ -12,6 +13,8 @@ export function parseLocalCommand(value){
   if(/^(?:(?:o que|que) (?:voce|tu|o jarvis|o ultron) (?:pode|consegue|sabe) fazer|(?:o que|que) (?:voce|tu) faz|quais (?:sao )?(?:as )?(?:suas|tuas) (?:capacidades|habilidades|funcoes|funcionalidades|ferramentas)|quais (?:sao )?(?:as )?funcionalidades (?:do|de) (?:jarvis|ultron)|quem e voce|o que mais voce pode fazer|quais recursos voce tem|me mostre suas funcionalidades)$/.test(plain))return {type:"capabilities"};
   // "Limpar tudo" means the visible command surface, NEVER stored history/data.
   if(/^(?:por favor )?(?:(?:pode|consegue) )?(?:limpar|limpe|limpa|apagar|apague|apaga)\s+(?:tudo|(?:a |o )?(?:tela|painel(?: neural)?|interface(?: do jarvis)?))(?:\s+(?:agora|por favor))?$/.test(plain))return {type:"clear-interface"};
+  const globalIntent=parseGlobalIntelligenceIntent(plain);
+  if(globalIntent)return globalIntent;
   const meteo=parseMeteoIntent(plain);
   if(meteo)return {type:"meteorological-center",...meteo};
   const match=plain.match(/^(?:por favor )?(?:pode |consegue |quero )?(desative|desativar|desativa|oculte|ocultar|esconda|esconder|remova|remover|retire|retirar|tire|tirar|ative|ativar|ativa|habilite|habilitar|ligue|ligar|mostre|mostrar|exiba|exibir|restaure|restaurar|volte a mostrar|pare de mostrar)\s+(?:o |os |a |as )?(?:textos?|respostas? em texto|legendas?)(?:\s+(?:(?:do|no|da|na)\s+(?:painel\s+)?(?:neural ring|neural|anel neural|painel de respostas|jarvis)|(?:agora|por favor)))*$/);
@@ -27,6 +30,21 @@ export async function runLocalCommand(command){
       route:"local-clear-interface",provider:"jarvis-local",text:result.ok?
       "Painel visual limpo. Dados armazenados preservados.":
       "Não consegui limpar completamente o painel visual. "+result.errors.join("; ").slice(0,180)};
+  }
+  if(intent.type==="global-intelligence"){
+    if(!window.ULTRON_GLOBAL_INTELLIGENCE?.open)
+      await import("./jarvis-global-intelligence-ring.js?v=5.10.0");
+    const result=await window.ULTRON_GLOBAL_INTELLIGENCE?.open?.({
+      view:intent.view,region:intent.region,category:intent.category
+    });
+    const ok=result?.ok===true&&result.visible===true;
+    return {ok,handled:true,route:"local-global-intelligence",
+      provider:"jarvis-local",text:ok?
+      "Inteligência global exibida no Neural Ring. "+
+      result.eventCount+" registros publicados no filtro; até "+result.plotted+
+      " locais representados no mapa. Fontes e horários indicados.":
+      "Não foi possível confirmar o monitoramento mundial no Neural Ring: "+
+      String(result?.error||"sem coleta válida").slice(0,150)};
   }
   if(intent.type==="meteorological-center"){
     if(!window.ULTRON_METEO_CENTER?.open)await import("./jarvis-meteorological-center.js?v=4.98.0");
