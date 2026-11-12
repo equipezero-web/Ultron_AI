@@ -18,6 +18,10 @@ on:
       - 'modules/jarvis-action-engine.js'
       - 'modules/jarvis-local-commands.js'
       - 'modules/jarvis-clear-interface.js'
+      - 'tests/jarvis-meteorological-sources.mjs'
+      - 'modules/jarvis-meteorological-center.css'
+      - 'modules/jarvis-meteorological-sources.js'
+      - 'modules/jarvis-meteorological-center.js'
       - 'tests/jarvis-clear-interface.mjs'
       - 'tests/jarvis-autonomy.mjs'
       - 'tests/jarvis-phase1.mjs'
@@ -74,6 +78,10 @@ on:
       - 'modules/jarvis-action-engine.js'
       - 'modules/jarvis-local-commands.js'
       - 'modules/jarvis-clear-interface.js'
+      - 'tests/jarvis-meteorological-sources.mjs'
+      - 'modules/jarvis-meteorological-center.css'
+      - 'modules/jarvis-meteorological-sources.js'
+      - 'modules/jarvis-meteorological-center.js'
       - 'tests/jarvis-clear-interface.mjs'
       - 'tests/jarvis-autonomy.mjs'
       - 'tests/jarvis-phase1.mjs'
@@ -144,6 +152,8 @@ jobs:
           node tests/jarvis-autonomy.mjs
           node --check modules/jarvis-clear-interface.js
           node tests/jarvis-clear-interface.mjs
+          node tests/jarvis-meteorological-sources.mjs
+          node --check modules/jarvis-meteorological-center.js
           node tests/jarvis-phase1.mjs
           node --check modules/jarvis-geospatial-model.js
           node --check modules/jarvis-geospatial-visual.js
