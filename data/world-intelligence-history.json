@@ -4,10 +4,106 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-11T22:26:57.531Z",
-  "oldestEventAt": "2026-11-10T22:28:00.000Z",
-  "windowStartAt": "2026-11-10T22:26:57.531Z",
+  "updatedAt": "2026-11-12T03:14:31.320Z",
+  "oldestEventAt": "2026-11-11T03:27:46.000Z",
+  "windowStartAt": "2026-11-11T03:14:31.320Z",
   "events": [
+    {
+      "id": "event-b09000ec",
+      "category": "clima",
+      "title": "Estiagem preocupa moradores e produtores rurais do Vale do Jiquiriçá; entenda por que não chove forte na região",
+      "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxPYUNGdkh6N2VrX0h5Q2kyN3YtbnpqRGxHMmNiT0FBdnA4SXdoMHR5SUlUSVduY3VBcU1hbUxPS0RTa1dLMXh2eEoxOHFPblM1TEpxNU5RRWdaRVlCMGdSRDhyQ01mUTd0RHEtMHkwd1FEN3ZVNmp4VHZDUUZ3eHRxZg",
+      "description": "Estiagem preocupa moradores e produtores rurais do Vale do Jiquiriçá; entenda por que não chove forte na região &nbsp;&nbsp; Mídia Bahia",
+      "imageUrl": null,
+      "source": "Mídia Bahia",
+      "publishedAt": "2026-11-12T01:23:48.000Z",
+      "firstSeenAt": "2026-11-12T03:14:31.320Z",
+      "lastSeenAt": "2026-11-12T03:14:31.320Z"
+    },
+    {
+      "id": "event-2b1ff8a9",
+      "category": "brasil",
+      "title": "Lucro do BB cai 66,5% no 3º trimestre com inadimplência do agro",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/lucro-do-bb-cai-665-no-3o-trimestre-com-inadimplencia-do-agro",
+      "description": "Pressionado pelo aumento da inadimplência, principalmente do agronegócio, o Banco do Brasil (BB) registrou lucro líquido ajustado de R$ 1,27 bilhão no terceiro trimestre de 2026, queda de 66,5% em relação ao mesmo período do ano passado. Com esse cenário, a instituição reduziu pela metade a projeção de lucro para o ano e elevou a estimativa de despesas com perdas em operações de crédito. Notícias relacionadas: Governo anuncia medidas de ajuste para economia de até R$ 60 bilhões . Proposta que facilita transição tributária será enviada ao Congresso. \"O aumento reflete principalmente a continuidade da elevação da inadimplência em parte da carteira de agronegócios e reforços pontuais em empresas do segmento atacado\", afirmou o banco. Inadimplência O principal fator por trás da queda do lucro foi o aumento do custo do crédito, indicador que reúne provisões para possíveis calotes, descontos concedidos em renegociações e valores recuperados de dívidas antigas. No terceiro trimestre, essa despesa somou R$ 21,2 bilhões, alta de 18,4% em relação ao mesmo período de 2025 . Segundo o banco, a i",
+      "imageUrl": "https://imagens.ebc.com.br/1nlNn9uOdRUU_Ly1nLdbpUK3Tg4=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/banco-do-brasil_mcamgo_abr_280620211818-3.jpg?itok=2wwStPuz",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-12T01:20:00.000Z",
+      "firstSeenAt": "2026-11-12T03:14:31.320Z",
+      "lastSeenAt": "2026-11-12T03:14:31.320Z"
+    },
+    {
+      "id": "event-6f86c85f",
+      "category": "brasil",
+      "title": "BNDES recebe selo Diamante de transparência pública pela quarta vez",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/bndes-recebe-selo-diamante-de-transparencia-publica-pela-quarta-vez",
+      "description": "O Banco Nacional de Desenvolvimento Econômico e Social (BNDES) recebeu, pela quarta vez consecutiva, o selo Diamante do Radar Nacional da Transparência Pública. Neste ano, a instituição alcançou 100% de pontuação na avaliação, resultado inédito entre os órgãos federais. Além do BNDES, apenas a Amazônia Azul Tecnologias de Defesa (Amazul), empresa pública vinculada ao Ministério da Defesa, obteve nota máxima entre os 53 órgãos federais avaliados em 2026. O questionário da avaliação continha 101 perguntas, que correspondiam a 266 critérios de avaliação da transparência. A certificação foi entregue na terça-feira (10), no Museu do Amanhã, no Rio de Janeiro. O Programa Nacional de Transparência Pública (PNTP), responsável pela avaliação, busca estimular a transparência ativa nos órgãos públicos. A iniciativa é coordenada pela Associação dos Membros dos Tribunais de Contas do Brasil (Atricon), em parceria com os 33 tribunais de contas do país. O selo Diamante é concedido às instituições que atingem pelo menos 95% de conformidade nos critérios de transparência. O BNDES participa da avaliaç",
+      "imageUrl": "https://imagens.ebc.com.br/oK8SbsgegM-UYxYoi6H0l-_-FK4=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/06/12/20241112_122546.jpg?itok=-W5Is57G",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-12T00:06:00.000Z",
+      "firstSeenAt": "2026-11-12T03:14:31.320Z",
+      "lastSeenAt": "2026-11-12T03:14:31.320Z"
+    },
+    {
+      "id": "event-dd06a218",
+      "category": "brasil",
+      "title": "Letramento digital precisa vir antes de uso da IA, diz Unesco",
+      "url": "https://agenciabrasil.ebc.com.br/educacao/noticia/2026-11/letramento-digital-precisa-vir-antes-de-uso-da-ia-diz-unesco",
+      "description": "A aprovação pelo Ministério da Educação (MEC) de diretrizes para a utilização da inteligência artificial (AI) na educação foi bem recebida por especialistas e instituições que trabalham com o tema. A norma proíbe o uso de IA para estudantes dos primeiros anos da educação básica e orienta sobre o uso da ferramenta por alunos do ensino médio e superior e a utilização ética e adequada pelos professores. Notícias relacionadas: MEC fixa novas normas para educação de alunos com altas habilidades. MEC aprova diretrizes para uso de IA em cada etapa da educação. Uma das organizações que ajudaram na elaboração do documento foi a Organização das Nações Unidas para a Educação, a Ciência e a Cultura (Unesco). A coordenadora do setor de Educação da instituição no Brasil, Rebeca Otero, ressalta que um dos pontos principais da diretriz, que precisa ser observada pelas escolas, é o letramento digital dos estudantes. “Antes de usar a IA, o estudante precisa desenvolver o pensamento crítico sobre a ferramenta. Entender como a IA funciona, como ela busca as informações, a confiabilidade das respostas, p",
+      "imageUrl": "https://imagens.ebc.com.br/znr6hRwUId44Ct6U33HeAxR8ooo=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/10/15/2026-07-14t114051z_1313620900_mt1zuma000k094kv_rtrmadp_3_zuma.jpg?itok=9PvFIWQy",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-11T23:46:00.000Z",
+      "firstSeenAt": "2026-11-12T03:14:31.320Z",
+      "lastSeenAt": "2026-11-12T03:14:31.320Z"
+    },
+    {
+      "id": "event-77c6d9d7",
+      "category": "brasil",
+      "title": "Precariedade do sistema prisional entra no debate da maioridade penal",
+      "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2026-11/precariedade-do-sistema-prisional-entra-no-debate-da-maioridade-penal",
+      "description": "Duas comissões parlamentares da Câmara dos Deputados dedicaram, nesta quarta-feira (11), audiências públicas simultâneas para discutir a Proposta de Emenda à Constituição (PEC) 32/2015, que trata da redução da maioridade penal. Uma delas é uma comissão especial sobre o tema iniciada na terça-feira (10). O outro colegiado que se debruçou sobre o assunto foi a Comissão de Segurança Pública e Combate ao Crime Organizado da Câmara. Ambas as audiências receberam juristas, advogados, trabalhadores da segurança pública e representantes do governo federal e do Ministério Público. Notícias relacionadas: Projetos de lei que envolvem saúde feminina avançam na Câmara. Congresso prorroga por 60 dias MP que proíbe bets no país. CLDF aprova reeleição de membros da Mesa Diretora. Entre as falas de muitos convidados, contrários e favoráveis à medida, havia ao menos um discurso em comum: colocar um adolescente de 16 anos em um presídio de adultos não resolve o problema da segurança pública, e poderia criar outros. Entre eles, entregar mais mão de obra para facções criminosas. Chico Lucas, Secretário N",
+      "imageUrl": "https://imagens.ebc.com.br/RwkCxg5kyPyd4TJfvhzPlnjqIgE=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/palacio_do_congresso_nacional_250620213592.jpg?itok=cKlnSdt5",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-11T23:46:00.000Z",
+      "firstSeenAt": "2026-11-12T03:14:31.320Z",
+      "lastSeenAt": "2026-11-12T03:14:31.320Z"
+    },
+    {
+      "id": "event-a1065358",
+      "category": "mundo",
+      "title": "Principais notícias do mundo na noite de hoje (11)",
+      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxNdS1PSWFfNWJrendxR2l2djZYX2l5cDE3bEttT0JidjctX0lHTDhaNy1MdWV5RXNQaGVFaEdQRFhfczFsdGQtNVBmUU1YRk4ydXRBRUVaWGVjTTJlQ2FoZnNneUFGR1VxUFByZ0ZuaUZibVRPTFFqZzlJNFJuak01cWVHNmRlbERuMUZtTC0zU182QkNKQUpCcjFrRDNmejlCNGlIdDZqeHBINHJX",
+      "description": "Principais notícias do mundo na noite de hoje (11) &nbsp;&nbsp; Tribuna do Sertão",
+      "imageUrl": null,
+      "source": "Tribuna do Sertão",
+      "publishedAt": "2026-11-11T23:31:00.000Z",
+      "firstSeenAt": "2026-11-12T03:14:31.320Z",
+      "lastSeenAt": "2026-11-12T03:14:31.320Z"
+    },
+    {
+      "id": "event-6f3cf13f",
+      "category": "mundo",
+      "title": "Maioria dos brasileiros acredita que o mundo vai acabar — e aponta quem seria o responsável",
+      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxQZU5wbjRvZl9wWXgwM2FnamJYVm1DQ01LOGxPMDJGR0hBWFhnMi1LUFNaYWM5WlFKenhUQUl0bjVSZExINUtSOHlKX2xmOUxjVWJrTE1xTkNIcG94YmhrcXpCSWdzTWR2T1RtSXFTQ19PS2dtZ05BMG1aS3I0UURBWnFVUzRhYmhEa0xRUG02R1ctN1NQNTQ2OEpRQ1lBektOOE1PeUlxemdXR2IyWHJYZzNRWmxXRVk",
+      "description": "Maioria dos brasileiros acredita que o mundo vai acabar — e aponta quem seria o responsável &nbsp;&nbsp; Exame",
+      "imageUrl": null,
+      "source": "Exame",
+      "publishedAt": "2026-11-11T23:19:45.000Z",
+      "firstSeenAt": "2026-11-12T03:14:31.320Z",
+      "lastSeenAt": "2026-11-12T03:14:31.320Z"
+    },
+    {
+      "id": "event-5b6055ee",
+      "category": "santa-catarina",
+      "title": "Calor e risco de temporais marcam a quinta-feira em Pomerode",
+      "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE8yTWxDcE5TdnlEUUJ0aDJrY1lxdWptQzNONFRQMHVFeW9YS3djQzhyWlVOZXRURUo2RUQ0TGQ1WExSNFE3M25wbFREb0t4ZGFKZUN1bHZPeWVaa1VmdDlnVDJ6QTVady1meGZIakRmb3ZGOFVxTC1ZTw",
+      "description": "Calor e risco de temporais marcam a quinta-feira em Pomerode &nbsp;&nbsp; Testo Notícias",
+      "imageUrl": null,
+      "source": "Testo Notícias",
+      "publishedAt": "2026-11-11T22:37:18.000Z",
+      "firstSeenAt": "2026-11-12T03:14:31.320Z",
+      "lastSeenAt": "2026-11-12T03:14:31.320Z"
+    },
     {
       "id": "event-63f46f3",
       "category": "mundo",
@@ -18,7 +114,7 @@
       "source": "SBT News",
       "publishedAt": "2026-11-11T22:17:50.000Z",
       "firstSeenAt": "2026-11-11T22:26:57.531Z",
-      "lastSeenAt": "2026-11-11T22:26:57.531Z"
+      "lastSeenAt": "2026-11-12T03:14:31.320Z"
     },
     {
       "id": "event-abda1360",
@@ -30,7 +126,7 @@
       "source": "CompreRural",
       "publishedAt": "2026-11-11T21:53:46.000Z",
       "firstSeenAt": "2026-11-11T22:26:57.531Z",
-      "lastSeenAt": "2026-11-11T22:26:57.531Z"
+      "lastSeenAt": "2026-11-12T03:14:31.320Z"
     },
     {
       "id": "event-fb8c75f2",
@@ -105,6 +201,18 @@
       "lastSeenAt": "2026-11-11T22:26:57.531Z"
     },
     {
+      "id": "event-8fc9cba4",
+      "category": "clima",
+      "title": "Calor, chuva e frio em poucos dias: como proteger seu cão e seu gato do tempo instável",
+      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxNaXp0RWZXSmh0LWZNdjNDZjRrNlNfeER6TU5id1haZnVCcG5LZ0V5eGFkTFAwSDdTTmRzMzEwNTIxWUdtSDRKM3F6ZzFWbW83LUZ1SEJxSy1JSlZrckk2RGdBRnZxXzZRQ3FtT3hNNWhxN2E4ejFLSks1bWxBNmVqNEVkU0VoUHVMVjdLdWFHYlNwS0NpYmRQSVdGbDBGZXhMc29BTlNGcUVoZWdNb180WHdISkY3OTRneWtFeG1R",
+      "description": "Calor, chuva e frio em poucos dias: como proteger seu cão e seu gato do tempo instável &nbsp;&nbsp; Revista Ana Maria",
+      "imageUrl": null,
+      "source": "Revista Ana Maria",
+      "publishedAt": "2026-11-11T19:30:14.000Z",
+      "firstSeenAt": "2026-11-12T03:14:31.320Z",
+      "lastSeenAt": "2026-11-12T03:14:31.320Z"
+    },
+    {
       "id": "event-4b27b6a2",
       "category": "europa",
       "title": "Zagueiro de R$ 618 milhões, Arroyo entra na mira da Europa e Gabigol pode ser negociado: as últimas notícias do Cruzeiro - Terra",
@@ -114,7 +222,7 @@
       "source": "Terra",
       "publishedAt": "2026-11-11T19:01:00.000Z",
       "firstSeenAt": "2026-11-11T22:26:57.531Z",
-      "lastSeenAt": "2026-11-11T22:26:57.531Z"
+      "lastSeenAt": "2026-11-12T03:14:31.320Z"
     },
     {
       "id": "event-8355439c",
@@ -126,7 +234,7 @@
       "source": "Oeste Mais",
       "publishedAt": "2026-11-11T18:37:55.000Z",
       "firstSeenAt": "2026-11-11T22:26:57.531Z",
-      "lastSeenAt": "2026-11-11T22:26:57.531Z"
+      "lastSeenAt": "2026-11-12T03:14:31.320Z"
     },
     {
       "id": "event-eae3cc65",
@@ -138,7 +246,7 @@
       "source": "TopElegance",
       "publishedAt": "2026-11-11T15:58:56.000Z",
       "firstSeenAt": "2026-11-11T22:26:57.531Z",
-      "lastSeenAt": "2026-11-11T22:26:57.531Z"
+      "lastSeenAt": "2026-11-12T03:14:31.320Z"
     },
     {
       "id": "event-f6ce2c87",
@@ -331,205 +439,9 @@
       "publishedAt": "2026-11-11T03:27:46.000Z",
       "firstSeenAt": "2026-11-11T07:57:54.640Z",
       "lastSeenAt": "2026-11-11T07:57:54.640Z"
-    },
-    {
-      "id": "event-fe833a7",
-      "category": "brasil",
-      "title": "Bora Brasil: Assista às principais notícias e análises do dia - 11-11-2026",
-      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxPQ0hjTUVBY3R1UFBxNkVyY2J6SGdQMDlnV0xDdFBSSEtQRzZyWl93am54UHFtdFNjVHNNbFh5LTYtR2tLb3VPbWNSQTZna0FvQTVYRmJhSHpoUElxdEFMeVRlekpkdmhjZFZMbE10QkFlR3FOVG5XUFpmYTk1ckU0T2lDcFVIVkdsRUVlQjVvc2kxWXZXV19JdjJsMElCeTdqZ2YzRHYwRHhQX1RkdDV2dQ",
-      "description": "Bora Brasil: Assista às principais notícias e análises do dia - 11-11-2026 &nbsp;&nbsp; Band",
-      "imageUrl": null,
-      "source": "Band",
-      "publishedAt": "2026-11-11T03:01:00.000Z",
-      "firstSeenAt": "2026-11-11T07:57:54.640Z",
-      "lastSeenAt": "2026-11-11T07:57:54.640Z"
-    },
-    {
-      "id": "event-b27de7df",
-      "category": "mundo",
-      "title": "Jornal da Band ao vivo: Assista às principais notícias do Brasil e do mundo - 11-11-2026",
-      "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxNV1hLcGdzUkJiMEpyLXU2TEcwT1VTcGhnUHBmRnZWQ3NjNm11amZRbldXYnl4Yzk1d3M2ZDdYM1huelNHbjJOWXdUM1otS2lfS3lrckJxR2d2SmQ5UTBTTzVWX21ERFpjNUhhcnRDZzVjaHh2ZW5PUHJSZVItOENyZE5acEtkZGZrUVVYZVlyYkxubVBwd1Y4QXFCLVlFSlR2SFBHQS1LN3RpVENJWWtlRG1QZjZqeXdZQ0NXMFdqcnlJSVk",
-      "description": "Jornal da Band ao vivo: Assista às principais notícias do Brasil e do mundo - 11-11-2026 &nbsp;&nbsp; Band",
-      "imageUrl": null,
-      "source": "Band",
-      "publishedAt": "2026-11-11T03:01:00.000Z",
-      "firstSeenAt": "2026-11-11T07:57:54.640Z",
-      "lastSeenAt": "2026-11-11T07:57:54.640Z"
-    },
-    {
-      "id": "event-d9474f5b",
-      "category": "brasil",
-      "title": "TSE multa Meta em R$ 7,5 milhões por descumprir decisão nas eleições",
-      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/tse-multa-meta-em-r-75-milhoes-por-descumprir-decisao-nas-eleicoes",
-      "description": "Por unanimidade, o Tribunal Superior Eleitoral (TSE) decidiu nesta terça-feira (10) multar a Meta em R$ 7,5 milhões por entregar informações incompletas sobre as acusações de distribuir conteúdo político enviesado na campanha eleitoral deste ano. A decisão foi motivada por uma representação protocolada pela coligação Brasil Pronto Pra Mais, que apoiou a reeleição do presidente Luiz Inácio Lula da Silva. O jurídico da campanha acusou a Meta, que opera as redes sociais Facebook, Instagram e WhatsApp, de dar tratamento diferenciado para restringir o alcance de conteúdos de Lula e favorecer a campanha de Flávio Bolsonaro (PL). O advogado Angelo Longo Ferraro citou diversas irregularidades que teriam sido cometidas pela Meta, como anúncios pagos com recursos do exterior, publicação de publicidade negativa com uso de inteligência artificial e retirada de recomendações de postagens favoráveis a Lula . \"Para a Meta, tudo isso foi um erro. Mas, ela não explica que o erro foi só para um lado. O erro em continuidade é um padrão\", afirmou. Votos Durante o julgamento, prevaleceu o voto do relator",
-      "imageUrl": "https://cdn.jsdelivr.net/gh/sergiosdlima/assets-ebc@1.0.0/public/thumbs/thumb_1200x600_agbrasil.png",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-11T01:56:00.000Z",
-      "firstSeenAt": "2026-11-11T07:57:54.640Z",
-      "lastSeenAt": "2026-11-11T07:57:54.640Z"
-    },
-    {
-      "id": "event-627ec65d",
-      "category": "santa-catarina",
-      "title": "SC terá calor de até 30°C e risco de temporais nesta quarta",
-      "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxPY0xmSkZFMFQ4VTFzbTZKc0J3T1E0ckljOElacGZtUG80U3NvejdvRmY4Skp0MlJlZlpBWnktYzd4X2xHRmpUSnlrY0UtQUFURUFuTE04MHdrLTJQdGtpTjhLSlNwN3Itb2xDekU5MjJyT0ZFVm5ORG01bzJHR3BJLW9TeXgxOURuMGlVT2s4ZElGUQ",
-      "description": "SC terá calor de até 30°C e risco de temporais nesta quarta &nbsp;&nbsp; Visor Notícias",
-      "imageUrl": null,
-      "source": "Visor Notícias",
-      "publishedAt": "2026-11-11T00:53:33.000Z",
-      "firstSeenAt": "2026-11-11T01:22:20.785Z",
-      "lastSeenAt": "2026-11-11T07:57:54.640Z"
-    },
-    {
-      "id": "event-9adb0e7f",
-      "category": "brasil",
-      "title": "Petrobras tem lucro de R$ 39,8 bilhões no 3º trimestre, alta de 21,5%",
-      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/petrobras-tem-lucro-de-r-398-bilhoes-alta-de-215",
-      "description": "A Petrobras atingiu lucro líquido de R$ 39,8 bilhões no 3º trimestre de 2026, que corresponde a alta de 21,5% na comparação com o mesmo período do ano passado. O balanço divulgado pela companhia nesta terça-feira (10) informa que o fluxo de caixa operacional (FCO) alcançou R$ 61,8 bilhões (US$ 12 bilhões), um crescimento de 15% em doze meses. \"Nossa projeção era encerrar o ano com produção média de 3,1 milhões de barris de óleo equivalente por dia, mas nossas estimativas agora apontam para uma média entre 3,3 e 3,4 milhões de barris por dia”, afirmou a presidente da companhia, Magda Chambriard. Em 2026, a Petrobras bateu recorde trimestral na produção de óleo por três vezes, de forma sequencial. Além disso,11 plataformas foram autorizadas a produzir, com segurança, acima da capacidade original sem investimento extra nas unidades de produção. As vendas de derivados no mercado interno alcançaram 1.854 milhões de barris de petróleo por dia (mbpd) no trimestre, o maior volume desde o terceiro trimestre de 2021 e o melhor resultado com o atual parque de refino. Foi registrado também recor",
-      "imageUrl": "https://imagens.ebc.com.br/3sJkiLjFKzGQFgMT1KtXSxBUEO0=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2025/07/14/plataforma_da_petrobras_que_reforcara_o_pre-sal_deixa_singapura04.jpg?itok=REKY4EJ1",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-11T00:37:00.000Z",
-      "firstSeenAt": "2026-11-11T07:57:54.640Z",
-      "lastSeenAt": "2026-11-11T07:57:54.640Z"
-    },
-    {
-      "id": "event-77ce0dee",
-      "category": "brasil",
-      "title": "Bolão de Iturama (MG) leva R$ 3,2 milhões na Mega-Sena",
-      "url": "https://agenciabrasil.ebc.com.br/geral/noticia/2026-11/bolao-de-iturama-mg-leva-r-32-milhoes-na-mega-sena",
-      "description": "Uma aposta de Iturama (MG) acertou as seis dezenas do Concurso 3.084 da Mega-Sena, realizado nesta terça-feira (10). O bolão, de 15 cotas apostou sete dezenas e receberá o total de R$ 3.287.949,90. Os números sorteados são: 06 - 14 - 22 - 30 - 31 - 37 29 apostas acertaram cinco dezenas e irão receber R$ 28.344,40 cada 2.264 apostas acertaram quatro dezenas e irão receber R$ 518,66 cada Apostas Notícias relacionadas: Mega da Virada: Caixa anuncia que prêmio deve superar R$ 1 bilhão. Para o próximo concurso, a estimativa de prêmio é de R$ 20 milhões. As apostas podem ser feitas até as 20h (horário de Brasília) de quinta-feira (12), em qualquer lotérica do país ou pela internet, no site ou aplicativo da Caixa. A aposta simples, com seis dezenas, custa R$ 6.",
-      "imageUrl": "https://imagens.ebc.com.br/P-lgw68pbL2zbssKnwXMui0xoVI=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/megasenadsc_5279.jpg?itok=cbfekMwn",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-11T00:36:00.000Z",
-      "firstSeenAt": "2026-11-11T07:57:54.640Z",
-      "lastSeenAt": "2026-11-11T07:57:54.640Z"
-    },
-    {
-      "id": "event-6c1adf28",
-      "category": "clima",
-      "title": "Calor e chuva irregular pressionam início da safra de soja no Matopiba em ano de El Niño forte",
-      "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxPUUhOWEF4U0t1c3RJNkVkQTRNQ0JBWFZJUnRCY0lFUHhnNExtVkJuVTE1WHlQRW1IeldlSG9pMURwZm9ocTJNaElva3dWRE53UEpxdEc4NHVQQkFCWkQ5dktXMUxSZDlxT2pRTGVoRzFnNlo3NXJLQ1VxMlRKZ2d2Q21zNUhHYk5VR1I2UzNSUnV3MXI4d1lSQzNYek9uNVo5Rmp3Wkk3eTFBUzA2NzE1LUVnRVp2UmJPUTZrbEhsNFZUQmdB",
-      "description": "Calor e chuva irregular pressionam início da safra de soja no Matopiba em ano de El Niño forte &nbsp;&nbsp; Região em Destake",
-      "imageUrl": null,
-      "source": "Região em Destake",
-      "publishedAt": "2026-11-11T00:31:11.000Z",
-      "firstSeenAt": "2026-11-11T07:57:54.640Z",
-      "lastSeenAt": "2026-11-11T07:57:54.640Z"
-    },
-    {
-      "id": "event-1b1f6535",
-      "category": "mundo",
-      "title": "Pânico mundial? Especialistas analisam até que ponto estamos em perigo",
-      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPdnM4dTFiR1U0OERQZ1ExR0ZPY2p4eEVYZUZTUDg1ZXpEUm85bHZlalplS3d1c2pvVURtZjAyUjFaX2kwQmJpMXpTanRjc3U2ZnRwdTFqeUZiSFJVekgyS0tGMUprVTNfd0xMSjVtQkdLV0hPTDJTUWxSRGk0em1ORGxycW9mVkxhaVZSRWVuNGNTdElqdW5STllSUmZDNklYOHlqOVJWcDlnX0FUQWc",
-      "description": "Pânico mundial? Especialistas analisam até que ponto estamos em perigo &nbsp;&nbsp; Paranaíba Mais",
-      "imageUrl": null,
-      "source": "Paranaíba Mais",
-      "publishedAt": "2026-11-10T23:49:01.000Z",
-      "firstSeenAt": "2026-11-11T01:22:20.785Z",
-      "lastSeenAt": "2026-11-11T01:22:20.785Z"
-    },
-    {
-      "id": "event-6779c18",
-      "category": "brasil",
-      "title": "Relator defende redução da maioridade penal com prisões separadas",
-      "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2026-11/relator-defende-reducao-da-maioridade-penal-com-prisoes-separadas",
-      "description": "O deputado federal Mendonça Filho (PL-PE), relator da Proposta de Emenda Constitucional (PEC) sobre a redução da maioridade penal, afirmou nesta terça-feira (10) que defende a punição criminal a partir dos 16 anos, mas que os adolescentes deverão cumprir pena em instituições separadas dos adultos. \"Nós não vamos fazer constar o cumprimento de pena, se porventura for reduzida a maioridade penal para 16 anos, ou qualquer que seja a idade fixada, algo que faça com que jovens cumpram pena no mesmo estabelecimento penal de maiores de 18 anos. Isso é uma coisa pacífica\", assegurou o parlamentar durante audiência pública da comissão especial que debate a PEC na Câmara dos Deputados. Notícias relacionadas: Número de jovens privados de liberdade caiu pela metade em dez anos. Unicef: nenhum país do G20 tem maioridade penal abaixo dos 18 anos. Ele também anunciou que apresentará relatório favorável à redução da maioridade. \"O que existe, na prática, é que a sociedade está cansada desse discurso de vitimismo, quando jovens de 17 e de 16 anos cometem estupros, assassinatos e ficam literalmente im",
-      "imageUrl": "https://imagens.ebc.com.br/MmQv9XZre1Fw4NlMtuDRCumCYvw=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/10/sem_titulo-6.jpg?itok=tSmmkWld",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-10T23:46:00.000Z",
-      "firstSeenAt": "2026-11-11T01:22:20.785Z",
-      "lastSeenAt": "2026-11-11T01:22:20.785Z"
-    },
-    {
-      "id": "event-92a4ae33",
-      "category": "mundo",
-      "title": "Principais notícias do mundo na noite de hoje (10)",
-      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxNelFNOVVjaFpGUTVnZzVod2phTWFsWW1faERuZ1JGTkdiMDFCeEIxdmJDbWl2YkdEazU2RzFjeWQwazRLRHFOa2lvemRzNDJZM0lwWmppbl9XdVEtNXVMMkhDTWZoRzl2akZkNDBORFRkLVpIc0k3UXVGWEFGQndCa0lKV2k3UnJ5YXdTc0J1N2xIZk40TXAyclpyaUFnQ2s5ZVFXSlZuUE9TaTdf",
-      "description": "Principais notícias do mundo na noite de hoje (10) &nbsp;&nbsp; Tribuna do Sertão",
-      "imageUrl": null,
-      "source": "Tribuna do Sertão",
-      "publishedAt": "2026-11-10T23:33:25.000Z",
-      "firstSeenAt": "2026-11-11T01:22:20.785Z",
-      "lastSeenAt": "2026-11-11T07:57:54.640Z"
-    },
-    {
-      "id": "event-d06e0467",
-      "category": "brasil",
-      "title": "Dólar sobe 1,46% e fecha no maior valor em 15 meses",
-      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/dolar-sobe-146-e-fecha-no-maior-valor-em-15-meses",
-      "description": "O dólar disparou nesta terça-feira (10), avançou para perto de R$ 5,60 e fechou no maior valor em mais de 15 meses. A moeda estadunidense subiu 1,46%, pressionada pela inflação acima do esperado nos Estados Unidos, que reforçou a perspectiva de juros mais altos na maior economia do planeta. No mercado acionário, o Ibovespa caiu 0,52%, acompanhando o movimento negativo das bolsas internacionais . O petróleo recuou mais de 1%, ainda refletindo uma possível moderação dos Estados Unidos em relação ao Irã. Notícias relacionadas: Nova plataforma do MDIC identificará oportunidades de comércio com UE. Deputados admitem rever isenções se IVA superar 26,5%. Trabalhador poderá autorizar bancos a consultar extrato do FGTS. Números do dia Dólar comercial: R$ 5,586 (+1,46%) Ibovespa: 171.336,99 pontos (-0,52%) Volume financeiro na B3: R$ 30,16 bilhões S&amp;P 500 (índice das 500 maiores empresas estadunidenses): queda de 0,38% Petróleo tipo Brent para janeiro: US$ 91,49 (-1,17%) Petróleo WTI para dezembro: US$ 86,04 (-0,93%). Câmbio O dólar comercial encerrou o pregão cotado a R$ 5,5860, maior val",
-      "imageUrl": "https://imagens.ebc.com.br/qgr1uCa7n_TP2WKn5oQPmLd6V2M=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/07/23/2026-07-23t123806z_1_lynxmpem6m19r_rtroptp_4_usa-trump-tariffs-indonesia.jpg?itok=6u1xpzSK",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-10T23:25:00.000Z",
-      "firstSeenAt": "2026-11-11T01:22:20.785Z",
-      "lastSeenAt": "2026-11-11T01:22:20.785Z"
-    },
-    {
-      "id": "event-726bcabe",
-      "category": "brasil",
-      "title": "Lula e presidente da Turquia se reúnem e falam de comércio bilateral",
-      "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2026-11/lula-e-presidente-da-turquia-se-reunem-e-falam-de-comercio-bilateral",
-      "description": "Em visita à Turquia para participar da 31ª Conferência sobre Mudança do Clima (COP31) a partir de amanhã (11), o presidente Luiz Inácio Lula da Silva, se encontrou com o presidente Recep Tayyip Erdogan. Na reunião, os dois líderes demonstraram interesse em fortalecer as relações e o comércio entre Brasil e Turquia. Notícias relacionadas: Lula está na Turquia e se prepara para discurso na COP31. COP31: Brasil transmite presidência da COP à Turquia. “Conversamos sobre o avanço do nosso comércio bilateral, que já chegou a 5,9 bilhões de dólares, e observamos que é possível ampliar esse valor rapidamente. Destaquei o interesse de estabelecer parceria mais robusta na área de defesa com a Turquia”, disse Lula em postagem na rede social X. Lula também relatou os cumprimentos dados por Erdogan pela vitória nas eleições presidenciais de outubro . Segundo o presidente brasileiro, seu homólogo destacou “a expressiva mobilização que tomou conta das ruas no Brasil” por conta da disputa eleitoral. COP 31 Lula e Erdogan também conversaram sobre o evento global de mudanças climáticas. O presidente b",
-      "imageUrl": "https://imagens.ebc.com.br/StPyfDFXYfe7pg7sFadSg47xZGw=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/10/55645049863_51e977c6a5_o.jpg?itok=NqS0NFwk",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-10T23:24:00.000Z",
-      "firstSeenAt": "2026-11-11T01:22:20.785Z",
-      "lastSeenAt": "2026-11-11T01:22:20.785Z"
-    },
-    {
-      "id": "event-633f7ab2",
-      "category": "brasil",
-      "title": "O primeiro Papa Leão da história da Igreja Católica defendeu a pena de morte para heréticos e salvou Roma sem armas",
-      "url": "https://news.google.com/rss/articles/CBMi7wFBVV95cUxPRmdUVFMxT25HNTVGbUVYNThzVVU1SUtHYUJFWnYyTG4xaktFZm1pM3hyX3ZzUzF1YTd4VnhfYVNaY2FaZ3JkZUdBWEM1NHlrU3NmVS1GdjFPM0QxNzloY0N6SmJNekZabW96VmNmSW9HdFJIM1JwT3JxSy1ZVkxKZEhwbzNwM3VKMGhRNjIxVFMyZUU4eTg5c0xIdGVibWVHMHFuWVBocy1BVHlUWTdEcHJYeUEyU3daa0pocWVNUV9FWUN5UGdpVGszaDhZRnBZdUdVSVJYVkViU2paSzZuNjF0TmJZUkpiVE9aSFVLSQ",
-      "description": "O primeiro Papa Leão da história da Igreja Católica defendeu a pena de morte para heréticos e salvou Roma sem armas &nbsp;&nbsp; CNN Brasil",
-      "imageUrl": null,
-      "source": "CNN Brasil",
-      "publishedAt": "2026-11-10T23:08:08.000Z",
-      "firstSeenAt": "2026-11-11T01:22:20.785Z",
-      "lastSeenAt": "2026-11-11T01:22:20.785Z"
-    },
-    {
-      "id": "event-7d6b0bec",
-      "category": "mundo",
-      "title": "⚠️ É falso: postagens dizem que o mundo terá apagão na próxima semana | #CidadeAL",
-      "url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxNakRlZWRtQzJNaEExX2MtXzNzU2lrZXBjZTdxSU5haVIta3hUQWQ1RlNEaHl4MTRWN0NZU2Nwa1d5WXN6ZEJiNjc1QVd1R0p2QThjZUhmUHhRcjhZNVB0VTU2LXRzU18xb2l5NEluNWt2YV9TN1FfS2FaN0ZEWXU2UEhRaWk1Y0JXOTRvN29IaHIxams0MUtZSjd0U2lfQzkzSXl2d0g2U1JZQWpibXN1SmhoUEdGQXUtdzk0QXNaNlhDa0ZGUVctbGY1cmFBaEF2Y0o0cA",
-      "description": "⚠️ É falso: postagens dizem que o mundo terá apagão na próxima semana | #CidadeAL &nbsp;&nbsp; TNH1",
-      "imageUrl": null,
-      "source": "TNH1",
-      "publishedAt": "2026-11-10T22:45:36.000Z",
-      "firstSeenAt": "2026-11-11T01:22:20.785Z",
-      "lastSeenAt": "2026-11-11T01:22:20.785Z"
-    },
-    {
-      "id": "event-2d55a3d",
-      "category": "clima",
-      "title": "Calor fora do normal toma conta de Pernambuco e do Nordeste? El Niño pode agravar situação nos próximos meses",
-      "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxON3hpVVZNdG1YR2ZmMEJsWkVhMjg3RFFMeTFRMVFkWERldlpzc2JiYnpHN093V3hZek9qT3hwMnM1VmtQNlV0Qy1aeG9HUVdKNG10N21ialhUclB0dXJ1UXc1WTk0RG9qbklXZFFBam0tQ01oS2dlcW9vVWZNV0RpaHpHRTdBSm5LV1ZSbExqajEydw",
-      "description": "Calor fora do normal toma conta de Pernambuco e do Nordeste? El Niño pode agravar situação nos próximos meses &nbsp;&nbsp; Portal Fala News",
-      "imageUrl": null,
-      "source": "Portal Fala News",
-      "publishedAt": "2026-11-10T22:28:00.000Z",
-      "firstSeenAt": "2026-11-11T07:57:54.640Z",
-      "lastSeenAt": "2026-11-11T07:57:54.640Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-11T01:22:20.785Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 14,
-      "newArticles": 9,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "asia"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-11T07:57:54.640Z",
       "ok": true,
@@ -578,14 +490,31 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-12T03:14:31.320Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 14,
+      "newArticles": 9,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "europa",
+        "asia"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 4,
-  "lastSuccessfulAt": "2026-11-11T22:26:57.531Z",
+  "lastSuccessfulAt": "2026-11-12T03:14:31.320Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-11T22:26:57.531Z",
+      "checkedAt": "2026-11-12T03:14:31.320Z",
       "warnings": [
         {
           "id": "56356",
@@ -595,34 +524,6 @@
           "regions": [],
           "startsAt": "2026-11-10T00:00:00.000Z",
           "endsAt": "2026-11-13T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
-        },
-        {
-          "id": "56378",
-          "title": "Tempestade",
-          "severity": "Perigo Potencial",
-          "phase": "vigente",
-          "regions": [
-            "DO",
-            "DO"
-          ],
-          "startsAt": "2026-11-11T00:00:00.000Z",
-          "endsAt": "2026-11-12T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
-        },
-        {
-          "id": "56381",
-          "title": "Tempestade",
-          "severity": "Perigo Potencial",
-          "phase": "previsto",
-          "regions": [
-            "DO",
-            "DE"
-          ],
-          "startsAt": "2026-11-12T00:00:00.000Z",
-          "endsAt": "2026-11-12T00:00:00.000Z",
           "source": "INMET",
           "url": "https://avisos.inmet.gov.br/"
         },
@@ -644,7 +545,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-11T22:26:57.531Z",
+      "checkedAt": "2026-11-12T03:14:31.320Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "8 October 2026",
