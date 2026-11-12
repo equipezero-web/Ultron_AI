@@ -1310,8 +1310,6 @@ try {
     await page.click('[data-command="clear"]');
     assert.equal(await page.$eval('#output-box',el=>el.children.length),0,
       'LIMPAR TERMINAL should clear responses without deleting data');
-    await page.click('#btn-pair-tv');
-    assert.match(await page.$eval('#output-box',el=>el.textContent),/LG WEBOS/);
     // Phone pairing must work without starting remote camera or asking for
     // camera access. Repeated presses cannot create duplicate pairing codes.
     await page.evaluate(()=>{
@@ -1333,16 +1331,6 @@ try {
       };
     });
     await page.click('#btn-pair-mobile');
-    const pairDebug=await page.evaluate(()=>({
-      version:window.ULTRON_MOBILE_LINK?.version,
-      current:window.ULTRON_MOBILE_LINK?.state,
-      callCount:window.__mobilePairShortcutCalls,
-      cameraCount:window.__cameraShortcutCalls,
-      session:document.getElementById('bridge-session-state')?.textContent,
-      link:document.getElementById('bridge-link-state')?.textContent,
-      terminal:document.getElementById('output-box')?.textContent.slice(-650)
-    }));
-    console.log('PHONE PAIRING DEBUG',JSON.stringify(pairDebug));
     await page.waitForFunction(()=>document.getElementById('bridge-session-state')
       ?.textContent==='CODE 654321',{timeout:6000});
     assert.equal(await page.evaluate(()=>window.__mobilePairShortcutCalls),1);
@@ -1374,6 +1362,11 @@ try {
       window.ULTRON_DEVICES=window.__savedDeviceShortcut;
       window.ULTRON_MOBILE_CAMERA=window.__savedCameraShortcut;
     });
+    // Check TV AFTER the fresh phone pairing scenario, otherwise the TV
+    // shortcut itself creates a valid pairing code that is correctly reused.
+    await page.click('#btn-pair-tv');
+    assert.match(await page.$eval('#output-box',el=>el.textContent),/LG WEBOS/);
+
 
     // Offline local files remain safe, yet permit explicitly chosen files.
     await page.evaluate(()=>{
