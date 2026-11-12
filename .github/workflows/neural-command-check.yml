@@ -166,7 +166,7 @@ jobs:
           grep -q "mobile-camera-source.js?v=4.25.0" modules/stark-bootstrap.js
           grep -q "neural-spatial-control-v4250.js?v=4.25.0" modules/stark-bootstrap.js
           grep -q "neural-focus-v4250.css?v=4.25.0" modules/stark-bootstrap.js
-          grep -q "mobile-link-simple-v4250.js?v=4.25.0" modules/stark-bootstrap.js
+          grep -Eq "mobile-link-simple-v4250[.]js[?]v=4[.]25[.][0-9]+" modules/stark-bootstrap.js
           grep -q "camera-external-stream-v4223.js?v=4.22.3" modules/stark-bootstrap.js
           grep -Eq "remote-camera-frame-gate-v4230.js\?v=4\.23\.[0-9]+" modules/stark-bootstrap.js
           grep -q "mobile-performance.js?v=4.24.0" modules/stark-bootstrap.js
