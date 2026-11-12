@@ -22,6 +22,9 @@ assert.equal(normalized.stations[0].lastReading,"2026-11-12 10:00");
 assert.equal(normalized.type,"observed-rain-gauges");
 assert.equal(normalizeApacResponse(raw,{hours:4}),null);
 assert.ok(METEO_VIEWERS.radar.url.startsWith("https://sigma.cptec.inpe.br"));
+assert.equal(parseMeteoIntent("Jarvis, mostre o radar em Pernambuco").tab,"radar",
+  "A radar request must never silently become pluviometers");
+assert.equal(normalized.stations[1].color,"#73899a","0 mm must be visibly distinct from small rain");
 let checkedUrl="";
 const report=await loadApacObservations({hours:24,fetchImpl:async url=>{
   checkedUrl=url;return {ok:true,json:async()=>raw};

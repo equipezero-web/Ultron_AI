@@ -59,12 +59,22 @@ try {
 
       // Official meteorological center: deterministic station measurements and
       // remote viewers, without depending on third-party network during tests.
+      if(req.url().includes('geoportal.apac.pe.gov.br/server/rest/services/met_monitoramento_chuvas_pe/MapServer/8/query')){
+        return req.respond({status:200,headers:{'access-control-allow-origin':'*'},
+          contentType:'application/json',body:JSON.stringify({type:'FeatureCollection',features:[{
+            type:'Feature',geometry:{type:'Polygon',coordinates:[
+              [[-41,-9.5],[-35.1,-9.1],[-34.8,-8],[-37.5,-7.2],[-41,-9.5]]
+            ]}
+          }]})});
+      }
       if(req.url().startsWith('https://geoportal.apac.pe.gov.br/server/rest/services/met_monitoramento_chuvas_pe/MapServer/')){
         const payload={features:[
           {attributes:{objectid:1,nome:"Recife",municipio:"Recife",latitude:-8.0476,
             longitude:-34.877,horas_24:31,ultima_leitura_data_hora:"2026-11-12 10:00"}},
           {attributes:{objectid:2,nome:"Olinda",municipio:"Olinda",latitude:-7.99,
-            longitude:-34.85,horas_24:3,ultima_leitura_data_hora:"2026-11-12 10:00"}}
+            longitude:-34.85,horas_24:3,ultima_leitura_data_hora:"2026-11-12 10:00"}},
+          {attributes:{objectid:3,nome:"Petrolina",municipio:"Petrolina",latitude:-9.4,
+            longitude:-40.5,horas_24:0,ultima_leitura_data_hora:"2026-11-12 10:00"}}
         ]};
         return req.respond({status:200,headers:{'access-control-allow-origin':'*'},
           contentType:'application/json',body:JSON.stringify(payload)});
@@ -866,14 +876,16 @@ try {
         "Jarvis, mostre as chuvas em tempo real no Brasil","meteo-smoke");
       const panel=document.querySelector(".jarvis-meteo-center");
       return {result,inside:document.querySelector(".jarvis-cc-center").contains(panel),
-        frame:panel.querySelector("iframe")?.src,
-        source:panel.querySelector(".jarvis-meteo-reference a")?.href};
+        iframes:panel.querySelectorAll("iframe").length,
+        source:panel.querySelector(".jarvis-meteo-external-main")?.href,
+        message:panel.textContent};
     });
     assert.equal(radar.result.ok,true,JSON.stringify(radar));
     assert.equal(radar.result.results[0].route,"local-meteorological-center");
     assert.equal(radar.inside,true);
-    assert.match(radar.frame,/sigma\.cptec\.inpe\.br\/radar/);
+    assert.equal(radar.iframes,0,"External radar must never show a blocked/410 iframe");
     assert.match(radar.source,/sigma\.cptec\.inpe\.br\/radar/);
+    assert.match(radar.message,/indisponíveis|indisponiveis|sem acesso/i);
     const apac=await page.evaluate(async()=>{
       const result=await window.ULTRON_ORCHESTRATOR.execute(
         "Jarvis, mostre as chuvas registradas em Pernambuco","meteo-apac-test");
@@ -884,18 +896,31 @@ try {
     });
     assert.equal(apac.result.ok,true,JSON.stringify(apac));
     assert.equal(apac.state.tab,"apac");
-    assert.equal(apac.state.stationCount,2);
-    assert.equal(apac.gauges,2);
-    assert.match(apac.text,/pluviômetros|pluviometros|pluviométrico/i);
+    assert.equal(apac.state.stationCount,3);
+    assert.equal(apac.gauges,2,"By default 0 mm stations do not crowd the map");
+    assert.match(apac.text,/3 estações com dados/);
+    assert.match(apac.text,/2 registraram chuva/);
+    assert.match(apac.text,/1 registraram 0 mm/);
+    assert.match(apac.text,/31 mm|31,0 mm/);
+    assert.match(apac.text,/LEGENDA/);
+    assert.match(apac.text,/ONDE MAIS CHOVEU/);
+    await page.waitForFunction(()=>document.querySelector('[data-meteo-state-outline="official"]'),{timeout:7000});
+    await page.evaluate(()=>{
+       const toggle=document.querySelector('.jarvis-meteo-only-wet input');
+       toggle.checked=false;toggle.dispatchEvent(new Event('change',{bubbles:true}));
+    });
+    await page.waitForFunction(()=>document.querySelectorAll('.jarvis-meteo-gauge').length===3,{timeout:7000});
     const satellite=await page.evaluate(async()=>{
       const result=await window.ULTRON_ORCHESTRATOR.execute(
         "Jarvis, ative o satélite e acompanhe as nuvens","meteo-satellite-test");
       return {result,state:window.ULTRON_METEO_CENTER.state,
-        frame:document.querySelector(".jarvis-meteo-center iframe")?.src};
+        iframeCount:document.querySelectorAll(".jarvis-meteo-center iframe").length,
+        source:document.querySelector(".jarvis-meteo-external-main")?.href};
     });
     assert.equal(satellite.result.ok,true);
     assert.equal(satellite.state.tab,"satellite");
-    assert.match(satellite.frame,/cptec\.inpe\.br\/dsat/);
+    assert.equal(satellite.iframeCount,0,"Satellite may not be embedded when cross-site policy denies it");
+    assert.match(satellite.source,/cptec\.inpe\.br\/dsat/);
     await page.evaluate(()=>window.ULTRON_METEO_CENTER.close());
 
     // "LIMPAR TUDO" must reset the visible workspace, not search the web.
