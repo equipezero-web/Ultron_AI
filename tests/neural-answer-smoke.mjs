@@ -57,6 +57,20 @@ try {
           body:JSON.stringify(payload)});
       }
 
+      // Official meteorological center: deterministic station measurements and
+      // remote viewers, without depending on third-party network during tests.
+      if(req.url().startsWith('https://geoportal.apac.pe.gov.br/server/rest/services/met_monitoramento_chuvas_pe/MapServer/')){
+        const payload={features:[
+          {attributes:{objectid:1,nome:"Recife",municipio:"Recife",latitude:-8.0476,
+            longitude:-34.877,horas_24:31,ultima_leitura_data_hora:"2026-11-12 10:00"}},
+          {attributes:{objectid:2,nome:"Olinda",municipio:"Olinda",latitude:-7.99,
+            longitude:-34.85,horas_24:3,ultima_leitura_data_hora:"2026-11-12 10:00"}}
+        ]};
+        return req.respond({status:200,headers:{'access-control-allow-origin':'*'},
+          contentType:'application/json',body:JSON.stringify(payload)});
+      }
+      if(/^(?:https:\/\/sigma\.cptec\.inpe\.br\/radar\/|https:\/\/www\.cptec\.inpe\.br\/dsat\/|https:\/\/mapas\.inmet\.gov\.br\/)/.test(req.url()))
+        return req.respond({status:200,contentType:'text/html',body:'<!doctype html><title>Official viewer mock</title>'});
       if(req.url().includes('youtube-nocookie.com/embed/'))return req.respond({status:200,contentType:'text/html',body:'<html><body>Test video player</body></html>'});
       if(req.url().includes('/api/orchestrator/')){
         const headers={'access-control-allow-origin':'*','access-control-allow-methods':'POST, OPTIONS','access-control-allow-headers':'content-type, authorization'};
@@ -844,6 +858,45 @@ try {
     assert.equal(await page.$eval('.jarvis-geo-intensity-bar',el=>el.hidden),false);
     await page.evaluate(()=>window.ULTRON_GEO_VISUAL.close());
 
+
+    // Official sources stay distinct: a real APAC ArcGIS response produces
+    // observable gauges in the Neural Ring, not a fictional radar raster.
+    const radar=await page.evaluate(async()=>{
+      const result=await window.ULTRON_ORCHESTRATOR.execute(
+        "Jarvis, mostre as chuvas em tempo real no Brasil","meteo-smoke");
+      const panel=document.querySelector(".jarvis-meteo-center");
+      return {result,inside:document.querySelector(".jarvis-cc-center").contains(panel),
+        frame:panel.querySelector("iframe")?.src,
+        source:panel.querySelector(".jarvis-meteo-reference a")?.href};
+    });
+    assert.equal(radar.result.ok,true,JSON.stringify(radar));
+    assert.equal(radar.result.results[0].route,"local-meteorological-center");
+    assert.equal(radar.inside,true);
+    assert.match(radar.frame,/sigma\.cptec\.inpe\.br\/radar/);
+    assert.match(radar.source,/sigma\.cptec\.inpe\.br\/radar/);
+    const apac=await page.evaluate(async()=>{
+      const result=await window.ULTRON_ORCHESTRATOR.execute(
+        "Jarvis, mostre as chuvas registradas em Pernambuco","meteo-apac-test");
+      const panel=document.querySelector(".jarvis-meteo-center");
+      return {result,state:window.ULTRON_METEO_CENTER.state,
+        gauges:panel.querySelectorAll(".jarvis-meteo-gauge").length,
+        text:panel.textContent};
+    });
+    assert.equal(apac.result.ok,true,JSON.stringify(apac));
+    assert.equal(apac.state.tab,"apac");
+    assert.equal(apac.state.stationCount,2);
+    assert.equal(apac.gauges,2);
+    assert.match(apac.text,/pluviômetros|pluviometros|pluviométrico/i);
+    const satellite=await page.evaluate(async()=>{
+      const result=await window.ULTRON_ORCHESTRATOR.execute(
+        "Jarvis, ative o satélite e acompanhe as nuvens","meteo-satellite-test");
+      return {result,state:window.ULTRON_METEO_CENTER.state,
+        frame:document.querySelector(".jarvis-meteo-center iframe")?.src};
+    });
+    assert.equal(satellite.result.ok,true);
+    assert.equal(satellite.state.tab,"satellite");
+    assert.match(satellite.frame,/cptec\.inpe\.br\/dsat/);
+    await page.evaluate(()=>window.ULTRON_METEO_CENTER.close());
 
     // "LIMPAR TUDO" must reset the visible workspace, not search the web.
     const clearResult=await page.evaluate(async()=>{
