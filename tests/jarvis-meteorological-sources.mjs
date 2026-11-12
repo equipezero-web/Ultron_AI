@@ -8,6 +8,11 @@ for(const [q,tab] of [
  ["Jarvis, abra o mapa do INMET","inmet"],
  ["Jarvis, abra o centro meteorológico","radar"]
 ])assert.equal(parseMeteoIntent(q)?.tab,tab,q);
+for(const [q,view] of [
+ ["Jarvis, mostre o radar no globo 3D","3d"],
+ ["Jarvis, abra o radar em 2D","2d"],
+ ["Jarvis, mostre a APAC no globo","3d"]
+])assert.equal(parseMeteoIntent(q)?.view,view,q);
 for(const q of ["Como funciona um radar?","Não ative o radar","O que é El Niño?","Se mostrar o satélite?","Me conte a previsão do tempo"])
  assert.equal(parseMeteoIntent(q),null,q);
 const raw={features:[
