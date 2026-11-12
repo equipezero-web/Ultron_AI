@@ -479,7 +479,7 @@ jobs:
         run: |
           node --input-type=module <<'NODE'
           import {loadWorldGeo} from './modules/jarvis-world-geodata.js';
-          const topics=['earthquakes','wildfires','population'];
+          const topics=['earthquakes','wildfires','population','gdp','co2'];
           const loggedFetch=async(url,options={})=>{
             const start=Date.now();
             try{
