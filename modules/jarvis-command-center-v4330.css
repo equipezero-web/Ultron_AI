@@ -1720,3 +1720,46 @@ body.jarvis-command-center .jarvis-neural-news[data-visual-mode="globe"]{
 @media(max-width:820px){
   body.jarvis-command-center .jarvis-neural-news-status{display:none!important}
 }
+
+
+/* v4.92: RIGHT PAGE SCROLL. Map and Neural Ring surfaces deliberately own
+   the wheel for zoom; this independently draggable rail scrolls the document. */
+body.jarvis-command-center #jarvis-page-scroll-rail{
+ position:fixed;z-index:310;right:18px;top:76px;bottom:12px;
+ width:25px;border:1px solid rgba(115,173,205,.53);
+ border-radius:20px;background:linear-gradient(90deg,rgba(5,19,33,.9),rgba(14,43,62,.83));
+ box-shadow:0 0 10px #0006;box-sizing:border-box;
+ cursor:ns-resize;opacity:.78;transition:opacity .14s ease;
+ touch-action:none;user-select:none;
+}
+body.jarvis-command-center #jarvis-page-scroll-rail:hover,
+body.jarvis-command-center #jarvis-page-scroll-rail:focus-visible{
+ opacity:1;outline:1px solid #73c6ee;outline-offset:2px;
+}
+body.jarvis-command-center #jarvis-page-scroll-rail[hidden]{display:none!important}
+body.jarvis-command-center #jarvis-page-scroll-rail .jarvis-page-scroll-thumb{
+ position:absolute;top:0;left:3px;right:3px;
+ min-height:38px;border-radius:15px;
+ background:linear-gradient(180deg,#8ad8f2,#2e88ae);
+ border:1px solid #e0f6ff73;box-shadow:0 0 11px #388cbb70;
+ pointer-events:none;will-change:transform;
+}
+body.jarvis-command-center #jarvis-page-scroll-rail::before{
+ content:"PÁGINA";position:absolute;left:-9px;top:-54px;
+ writing-mode:vertical-rl;transform:rotate(180deg);
+ color:#97c9dd;font:700 8px/1 ui-monospace,monospace;letter-spacing:.12em;
+ pointer-events:none;
+}
+/* Keep the existing Mapbox +/- buttons and 2D close control available. */
+body.jarvis-command-center .jarvis-earth-reference-zoom{right:57px!important;}
+body.jarvis-command-center .jarvis-cc-center>.jarvis-geo-visual[data-mode="2d"]{
+ padding-right:53px!important;
+}
+/* Desktop mouse users have the rail. Mobile keeps native touch/page scroll. */
+@media (max-width:820px),(pointer:coarse){
+ body.jarvis-command-center #jarvis-page-scroll-rail{display:none!important}
+ body.jarvis-command-center .jarvis-earth-reference-zoom{right:8px!important}
+ body.jarvis-command-center .jarvis-cc-center>.jarvis-geo-visual[data-mode="2d"]{
+  padding-right:8px!important;
+ }
+}
