@@ -4,7 +4,7 @@ import {globalWeatherScenario} from "./jarvis-global-weather.js?v=4.82.0";
 import {searchGlobalLocations,loadGlobalWeather} from "../backend/weather-global.js?v=4.74.0";
 import {loadWeatherInsight} from "../backend/weather-intelligence.js?v=4.75.0";
 import {insightScenario,insightSummary,monitorSummary,WEATHER_INSIGHT_LABELS} from "./jarvis-weather-insight-model.js?v=4.75.0";
-import {GEO_SCENARIOS,GEO_PALETTE,geoFrame,validateGeoScenario,BRAZIL_OUTLINE_URL,WORLD_OUTLINE_URL,brazilXY,worldXY,geoJSONPaths} from "./jarvis-geospatial-model.js?v=4.94.0";
+import {GEO_SCENARIOS,GEO_PALETTE,geoFrame,validateGeoScenario,BRAZIL_OUTLINE_URL,WORLD_OUTLINE_URL,brazilXY,worldXY,geoJSONPaths} from "./jarvis-geospatial-model.js?v=4.96.0";
 
 // The visualization remains INSIDE the Neural Ring stage, no new page or pop-up.
 const stage=document.querySelector(".jarvis-cc-center");
@@ -314,7 +314,7 @@ if(stage){
    if(!dataset?.theme)return;
    intensityLegend.replaceChildren();intensityMessage.replaceChildren();
    const caption=document.createElement("strong");
-   caption.textContent="CAMADA MUNDIAL · "+dataset.title;
+   caption.textContent=(dataset.theme.kind==="educational-wave"?"SIMULAÇÃO DIDÁTICA · ":"CAMADA MUNDIAL · ")+dataset.title;
    intensityLegend.append(caption);
    const scale=document.createElement("div");scale.className="jarvis-geo-intensity-scale";
    for(const b of dataset.theme.legend){
@@ -340,15 +340,22 @@ if(stage){
    heading.append(title,period);metricPanel.append(heading);
    const stat=document.createElement("div");stat.className="jarvis-geo-metric-grid";
    const count=document.createElement("div");count.className="jarvis-geo-metric-card";
-   const caption=document.createElement("small");caption.textContent="REGISTROS GEOLOCALIZADOS";
+   const caption=document.createElement("small");caption.textContent=dataset.theme.kind==="educational-wave"?"PONTOS ILUSTRATIVOS":"REGISTROS GEOLOCALIZADOS";
    const value=document.createElement("strong");value.textContent=frame.points.length.toLocaleString("pt-BR");
    count.append(caption,value);stat.append(count);
    const meaning=document.createElement("div");meaning.className="jarvis-geo-metric-card";
    const type=document.createElement("small");type.textContent="COLORAÇÃO";
    const detailText=document.createElement("strong");detailText.textContent=
      dataset.theme.coloredBy==="earthquake-magnitude"?"Magnitude USGS":
-     dataset.theme.kind==="country-indicator"?"Indicador anual":"Categoria de evento";
+     dataset.theme.kind==="country-indicator"?"Indicador anual":
+     dataset.theme.kind==="educational-wave"?"Trajetória hipotética":"Categoria de evento";
    meaning.append(type,detailText);stat.append(meaning);metricPanel.append(stat);
+   if(dataset.theme.kind==="educational-wave"){
+     const note=document.createElement("p");note.className="jarvis-geo-metric-disclaimer";
+     note.textContent="Etapa "+(frame.index+1)+"/"+dataset.frames.length+
+       ". Frente geométrica hipotética. Sem altura, velocidade, horário de chegada ou área de inundação calculados.";
+     metricPanel.append(note);return;
+   }
    const infos=document.createElement("div");infos.className="jarvis-geo-global-event-list";
    const isCountry=dataset.theme.kind==="country-indicator";
    const ranked=isCountry?[...frame.points].sort((a,b)=>b.value-a.value):frame.points;
@@ -559,6 +566,22 @@ if(stage){
      patches.append(shape);
    }
    svg.append(patches);
+   if(dataset?.id==="tsunami-japan"){
+     const front=frame.points.filter(p=>p.kind==="tsunamiWave").map(p=>worldXY(p.lng,p.lat));
+     if(front.length>=8){
+       const path="M"+front.map(p=>p.x.toFixed(2)+","+p.y.toFixed(2)).join("L")+"Z";
+       svg.append(e("path",{d:path,fill:"none",stroke:"#53c7f2","stroke-width":11,
+         "stroke-opacity":".15","stroke-linejoin":"round"}));
+       const wave=e("path",{d:path,fill:"none",stroke:"#53c7f2","stroke-width":3,
+         "stroke-opacity":".92","stroke-linejoin":"round","stroke-dasharray":"12 6"});
+       wave.classList.add("jarvis-tsunami-wave-front");
+       wave.setAttribute("data-tsunami-front",frame.id);svg.append(wave);
+     }
+     const label=e("text",{x:50,y:30,fill:"#f5d5a2","font-size":15,
+       "font-weight":"700","data-tsunami-warning":"true"});
+     label.textContent="DEMONSTRAÇÃO HIPOTÉTICA · NÃO É ALERTA";
+     svg.append(label);
+   }
    for(const p of frame.points){
      const {x,y}=(projection==="world"?worldXY(p.lng,p.lat):brazilXY(p.lng,p.lat)),color=p.color||GEO_PALETTE[p.kind]?.color||"#91d7f0";
      if(!Number.isFinite(x)||!Number.isFinite(y))continue;
@@ -632,7 +655,7 @@ if(stage){
    workspace.hidden=mode!=="2d";
    canvas.hidden=mode!=="2d";
    list.replaceChildren();
-   for(const p of frame.points){
+   for(const p of (dataset.id==="tsunami-japan"?frame.points.slice(0,1):frame.points)){
      const b=document.createElement("button");b.type="button";b.className="jarvis-geo-region";
      b.dataset.id=p.id;b.setAttribute("aria-pressed",String(p.id===selected));
      const dot=document.createElement("span");dot.style.background=p.color||GEO_PALETTE[p.kind]?.color||"#91d7f0";dot.className="jarvis-geo-dot";
@@ -689,7 +712,8 @@ if(stage){
    else{intensityLegend.replaceChildren();intensityMessage.replaceChildren();}
    window.ULTRON_EARTH?.setThematicCountries?.([]);
    mapReset.textContent=dataset.projection==="world"?"Mundo":"Brasil";
-   frameIndex=Math.min(1,dataset.frames.length-1);range.max=String(dataset.frames.length-1);
+   frameIndex=dataset.id==="tsunami-japan"?0:Math.min(1,dataset.frames.length-1);
+   range.max=String(dataset.frames.length-1);
    heading.textContent=dataset.title.toUpperCase();
    source.href=dataset.source.url;source.textContent=dataset.source.name;
    caveat.textContent=dataset.source.disclaimer;
@@ -711,6 +735,9 @@ if(stage){
    if(dataset.theme?.kind==="country-indicator")await loadOutline("world");
    const result=await setMode(view);
    if(!result.ok){panel.hidden=true;return result;}
+   if(dataset.id==="tsunami-japan"&&view==="2d"){
+     mapCenter=worldXY(143.4,38.1);setMapZoom(4.6);
+   }
    if(view==="3d"&&dataset.projection==="world"&&dataset.frames[frameIndex]?.points?.[0]){
      selectRegion(dataset.frames[frameIndex].points[0]);
    }
@@ -908,7 +935,7 @@ if(stage){
    clock=setInterval(()=>{
      if(document.hidden||panel.hidden){stop();draw();return;}
      frameIndex=(frameIndex+1)%dataset.frames.length;selected=null;draw();
-   },6500);
+   },dataset.id==="tsunami-japan"?950:6500);
    return {ok:true,playing:true};
  }
  close.addEventListener("click",closePanel);

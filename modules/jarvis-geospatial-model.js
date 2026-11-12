@@ -1,3 +1,4 @@
+import {JAPAN_TSUNAMI_DEMO} from "./jarvis-tsunami-simulation.js";
 // Climatic tendencies are geography and evidence, never a deterministic forecast
 // from a UI animation. Coordinates mark representative REGIONS, not impact limits.
 export const GEO_SOURCE={
@@ -23,10 +24,13 @@ export const GEO_PALETTE={
   severeStorms:{color:"#e4a64e",title:"Tempestade reportada",short:"Tempestade"},
   floods:{color:"#499ddf",title:"Inundação catalogada",short:"Inundação"},
   landslides:{color:"#bf8d6d",title:"Deslizamento catalogado",short:"Deslizamento"},
-  indicator:{color:"#9bc8e1",title:"Indicador por país",short:"Indicador"}
+  indicator:{color:"#9bc8e1",title:"Indicador por país",short:"Indicador"},
+  tsunamiOrigin:{color:"#f5b96b",title:"Origem hipotética de tsunami",short:"Origem fictícia"},
+  tsunamiWave:{color:"#53c7f2",title:"Propagação hipotética",short:"Onda didática"}
 };
 const spot=(id,name,lat,lng,kind,detail,source=GEO_SOURCE.url)=>({id,name,lat,lng,kind,detail,source,region:true});
 export const GEO_SCENARIOS={
+  "tsunami-japan":JAPAN_TSUNAMI_DEMO,
   enso:{
     id:"enso",
     title:"El Niño — Brasil",

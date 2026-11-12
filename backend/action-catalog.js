@@ -18,7 +18,7 @@ export const ACTIONS={
  "parity.check":"Verificar integração neural",
  "device.command":"Executar comando de dispositivo explicitamente pedido (command string; usa roteador existente)",
  "research":"Responder pergunta/pesquisar assunto (question string; usa core existente)",
- "geo.show":"Visualizar o dataset ENSO em 2D/3D (scenario='enso', view='2d' ou '3d')",
+ "geo.show":"Visualizar ENSO ou simulação didática de tsunami no Japão em 2D/3D (scenario enso/tsunami-japan, view 2d/3d)",
  "geo.global":"Mapa mundial georreferenciado: terremotos USGS, eventos NASA e indicadores por país Banco Mundial (topic,region world/brazil,view 2d/3d)",
  "geo.spatial":"Mapa de cores por amostras climáticas globais verificadas (layer rain/temp/soil/air/marine/river, region world/brazil,view 2d/3d)",
  "weather.show":"Buscar previsão numérica atual via Open-Meteo para cidade brasileira permitida e mostrar no mapa 2D ou globo 3D (city string, view 2d/3d)",
@@ -43,7 +43,7 @@ export function validatePlan(value){
   let args={};
   if(action==="text.set"){if(typeof a.enabled!=="boolean")return null;args={enabled:a.enabled};}
   if(action==="geo.show"){
-   if(a.scenario!=="enso"||!["2d","3d"].includes(a.view))return null;
+   if(!["enso","tsunami-japan"].includes(a.scenario)||!["2d","3d"].includes(a.view))return null;
    args={scenario:a.scenario,view:a.view};
   }
   if(action==="geo.global"){

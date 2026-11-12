@@ -504,6 +504,43 @@ try {
     await page.click('.jarvis-geo-close');
     assert.equal(await page.evaluate(()=>window.ULTRON_GEO_VISUAL.state.visible),false);
     assert.equal(await page.evaluate(()=>window.__phase3MockState.layerCount),0);
+
+    // Educational tsunami commands must create an actual moving wave visual,
+    // not fall through to the text AI's weather recommendation.
+    const tsunami2d=await page.evaluate(async()=>{
+      const result=await window.ULTRON_ORCHESTRATOR.execute(
+        "Jarvis, simule um tsunami no Japão no mapa 2D","tsunami-demo-2d");
+      const state=window.ULTRON_GEO_VISUAL.state;
+      return {result,state,wave:document.querySelector(".jarvis-tsunami-wave-front")?.getAttribute("d"),
+        warning:document.querySelector("[data-tsunami-warning]")?.textContent,
+        source:document.querySelector(".jarvis-geo-footer a")?.href};
+    });
+    assert.equal(tsunami2d.result.ok,true,JSON.stringify(tsunami2d));
+    assert.equal(tsunami2d.state.scenario,"tsunami-japan");
+    assert.equal(tsunami2d.state.mode,"2d");
+    assert.equal(tsunami2d.state.playing,true);
+    assert.ok(tsunami2d.wave?.startsWith("M"),"Animated SVG wavefront must exist");
+    assert.match(tsunami2d.warning,/NÃO É ALERTA/);
+    assert.ok(tsunami2d.source?.includes("noaa.gov"));
+    const d0=tsunami2d.wave;
+    await page.waitForFunction(()=>window.ULTRON_GEO_VISUAL?.state?.frame>0,{timeout:5000});
+    const d1=await page.$eval(".jarvis-tsunami-wave-front",el=>el.getAttribute("d"));
+    assert.notEqual(d0,d1,"Wavefront must actually move across animation frames");
+    await page.evaluate(()=>window.ULTRON_GEO_VISUAL.close());
+    const tsunami3d=await page.evaluate(async()=>{
+      const result=await window.ULTRON_ORCHESTRATOR.execute(
+        "Jarvis, simule um tsunami no Japão","tsunami-demo-3d");
+      return {result,state:window.ULTRON_GEO_VISUAL.state,
+        thematicCount:window.__phase3MockState.layerCount,
+        thematicPlaying:window.__phase3MockState.playing};
+    });
+    assert.equal(tsunami3d.result.ok,true,JSON.stringify(tsunami3d));
+    assert.equal(tsunami3d.state.mode,"3d");
+    assert.equal(tsunami3d.state.frameCount,12);
+    assert.equal(tsunami3d.thematicCount,17,"3D globe needs actual wavefront coordinates");
+    assert.equal(tsunami3d.thematicPlaying,true);
+    await page.evaluate(()=>window.ULTRON_GEO_VISUAL.close());
+
     // Phase 4: a real action chain must fetch a weather payload and render
     // distinct numeric forecast days inside the same Neural Ring (all viewports).
     const weather=await page.evaluate(async()=>{
