@@ -266,7 +266,7 @@ async function executeStep(step,original){
  case "text.set":requireApi(answer,"setTextEnabled").setTextEnabled(a.enabled);if(answer.textEnabled!==a.enabled)throw Error("Estado não confirmado");return a.enabled?"Textos ativados.":"Textos desativados.";
  case "answer.close":requireApi(answer,"clear").clear();if(answer.visible)throw Error("Painel ainda aberto");return "Resposta fechada.";
  case "earth.open":case "earth.locate":{
-  if(!w.ULTRON_EARTH?.open)await import("./jarvis-earth.js?v=4.91.0");
+  if(!w.ULTRON_EARTH?.open)await import("./jarvis-earth.js?v=4.92.0");
   const e=requireApi(w.ULTRON_EARTH,step.action==="earth.locate"?"locate":"open");
   const result=step.action==="earth.locate"?await e.locate(a.place):await e.open();
   if(!result?.ok||!e.state?.visible)throw Error(result?.error||"Globo não confirmado");
