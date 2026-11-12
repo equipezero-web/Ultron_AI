@@ -521,6 +521,30 @@ body.jarvis-command-center .jarvis-cc-inline-result{
   margin:6px 0;padding:6px 8px;border-left:2px solid #8e4d69;
   color:#c3d8e7;background:#081427;
 }
+body.jarvis-command-center .jarvis-cc-inline-result{
+ display:flex;flex-direction:column;align-items:flex-start;gap:6px;
+}
+body.jarvis-command-center .jarvis-cc-inline-result p{
+ margin:0;max-width:100%;overflow-wrap:anywhere;
+}
+body.jarvis-command-center .jarvis-cc-inline-action{
+ display:inline-flex;align-items:center;justify-content:center;
+ min-height:40px;padding:8px 12px;border-radius:7px;
+ border:1px solid #7bacc4;background:#123952;color:#ddf4ff;
+ cursor:pointer;font:600 12px/1.25 system-ui,sans-serif;letter-spacing:0;
+ pointer-events:auto;touch-action:manipulation;
+}
+body.jarvis-command-center .jarvis-cc-inline-action:hover,
+body.jarvis-command-center .jarvis-cc-inline-action:focus-visible{
+ background:#1b5872;border-color:#b5eaff;outline:2px solid #77b8df;
+}
+body.jarvis-command-center .jarvis-cc-inline-action[disabled]{opacity:.55;cursor:wait}
+body.jarvis-command-center #jarvis-cc-input-slot .quick-actions [data-cc]{
+ min-height:40px;touch-action:manipulation;cursor:pointer;
+}
+body.jarvis-command-center #jarvis-cc-input-slot .quick-actions [data-cc]:focus-visible{
+ outline:2px solid #a6e5f7;outline-offset:2px;
+}
 body.jarvis-command-center .jarvis-cc-visual.jarvis-ring-fallback:not(.jarvis-earth-active)::before{
   content:"";display:block!important;position:absolute;inset:17%;border-radius:50%;
   border:12px ridge #b9566b;transform:rotateX(58deg) rotateZ(-16deg);
