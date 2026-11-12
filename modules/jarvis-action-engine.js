@@ -4,9 +4,10 @@ import {globalWeatherScenario,globalWeatherSummary} from "./jarvis-global-weathe
 import {loadGlobalWeather} from "../backend/weather-global.js?v=4.74.0";
 import {loadLiveWeather} from "../backend/weather-live.js?v=4.80.0";
 import {worldGeoIntent} from "./jarvis-world-intent.js?v=4.95.0";
+import {japanTsunamiIntent} from "./jarvis-tsunami-simulation.js?v=4.96.0";
 import {loadWorldGeo} from "./jarvis-world-geodata.js?v=4.95.0";
 import {loadSpatialIntensity,SPATIAL_LAYERS} from "./jarvis-spatial-intensity.js?v=4.90.0";
-import {validateGeoScenario} from "./jarvis-geospatial-model.js?v=4.94.0";
+import {validateGeoScenario} from "./jarvis-geospatial-model.js?v=4.96.0";
 import {loadWeatherInsight} from "../backend/weather-intelligence.js?v=4.75.0";
 import {insightSummary,insightScenario,monitorSummary} from "./jarvis-weather-insight-model.js?v=4.75.0";
 import {classifyOperatorTurn} from "./jarvis-intent-engine.js?v=4.69.0";
@@ -24,6 +25,8 @@ export function directPlan(message){
  // Scientific visualizations require a known, cited dataset. Bare model
  // guesses must never become mapped "risk scores".
  const currentGeo=typeof window!=="undefined"?window.ULTRON_GEO_VISUAL?.state:null;
+ const tsunami=japanTsunamiIntent(q);
+ if(tsunami)return {steps:[action(tsunami.action,tsunami.args),action("geo.play")]};
  const enso=/(?:el nino|elnino|enos|enso)/.test(q);
  const worldwide=!enso?worldGeoIntent(q):null;
  if(worldwide)return {steps:[action(worldwide.action,worldwide.args)]};
@@ -138,7 +141,7 @@ async function executeStep(step,original){
    const data=validateGeoScenario(report.dataset);
    if(!data?.theme||data.theme.topic!==a.topic||data.projection!==(a.region==="world"?"world":"brazil"))
      throw Error("Fonte mundial não forneceu uma visualização geográfica validada");
-   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.94.0");
+   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.96.0");
    const geo=requireApi(w.ULTRON_GEO_VISUAL,"open");
    const result=await geo.open({data,view:a.view});
    if(!result?.ok||!geo.state.visible||geo.state.scenario!==data.id||geo.state.mode!==a.view)
@@ -179,7 +182,7 @@ async function executeStep(step,original){
         source:spec.sourceUrl}]}]};
    const validated=validateGeoScenario(data);
    if(!validated)throw Error("Não foi possível validar as amostras geográficas.");
-   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.94.0");
+   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.96.0");
    const geo=requireApi(w.ULTRON_GEO_VISUAL,"open");
    const result=await geo.open({data:validated,view:a.view,initialLayer:a.layer,initialIntensity:report});
    if(!result?.ok||geo.state.gridCount<1||geo.state.mode!==a.view)
@@ -231,7 +234,7 @@ async function executeStep(step,original){
    }
    const data=insightScenario(report);
    if(!data)throw Error("A fonte não forneceu séries geográficas utilizáveis");
-   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.94.0");
+   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.96.0");
    const geo=requireApi(w.ULTRON_GEO_VISUAL,"open");
    const result=await geo.open({data,view:a.view});
    if(!result?.ok||geo.state?.scenario!==data.id||geo.state?.mode!==a.view)
@@ -261,7 +264,7 @@ async function executeStep(step,original){
       throw Error("A previsão mundial retornada não foi validada");
    const data=globalWeatherScenario(report),summary=globalWeatherSummary(report);
    if(!data||!summary)throw Error("Não foi possível construir a visualização mundial");
-   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.94.0");
+   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.96.0");
    const geo=requireApi(w.ULTRON_GEO_VISUAL,"open");
    const result=await geo.open({data,view:a.view});
    if(!result?.ok||!geo.state.visible||geo.state.scenario!==data.id||geo.state.mode!==a.view)
@@ -294,7 +297,7 @@ async function executeStep(step,original){
      throw Error("Dados meteorológicos inconsistentes");
    const dataset=weatherGeoScenario(payload),summary=weatherSummary(payload);
    if(!dataset||!summary)throw Error("Previsão inválida; nenhuma simulação será apresentada");
-   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.94.0");
+   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.96.0");
    const geo=requireApi(w.ULTRON_GEO_VISUAL,"open");
    const result=await geo.open({data:dataset,view:a.view});
    if(!result?.ok||!geo.state.visible||geo.state.scenario!==dataset.id||geo.state.mode!==a.view)
@@ -302,7 +305,7 @@ async function executeStep(step,original){
    return {text:summary,verified:true};
  }
  case "geo.show":case "geo.view2d":case "geo.view3d":case "geo.play":case "geo.pause":case "geo.next":case "geo.previous":case "geo.filter":case "geo.close":{
-   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.94.0");
+   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.96.0");
    const geo=w.ULTRON_GEO_VISUAL;
    if(!geo)throw Error("Motor de visualização geográfica indisponível");
    let result;
@@ -328,7 +331,9 @@ async function executeStep(step,original){
      step.action==="geo.show"?state.visible&&state.scenario===a.scenario&&state.mode===a.view:
      Number.isInteger(state.frame);
    if(!verified)throw Error("Não foi possível verificar estado da visualização");
-   return {text:step.action==="geo.show"?"Exibindo El Niño em "+a.view.toUpperCase()+". Dados sazonais e simulação identificada como ilustrativa.":
+   return {text:step.action==="geo.show"?(a.scenario==="tsunami-japan"?
+      "Simulação DIDÁTICA de tsunami no Japão aberta no Neural Ring em "+a.view.toUpperCase()+". Origem e propagação hipotéticas; não é previsão nem alerta.":
+      "Exibindo El Niño em "+a.view.toUpperCase()+". Dados sazonais e simulação identificada como ilustrativa."):
     step.action==="geo.close"?"Visualização geográfica fechada.":
     step.action==="geo.play"?"Animação ilustrativa iniciada.":
     step.action==="geo.pause"?"Animação pausada.":
