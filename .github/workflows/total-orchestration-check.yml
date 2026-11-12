@@ -505,3 +505,30 @@ jobs:
           console.log('REAL WORLD PROVIDERS:',ok,'of',topics.length);
           if(ok<2)console.log('::warning::Official sources partially unavailable; unit and browser tests still enforce strictly no fabricated values.');
           NODE
+
+  worldbank-fast-endpoints:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Diagnose reduced World Bank query response times
+        run: |
+          node --input-type=module <<'NODE'
+          const paths=[
+            '/v2/country/all/indicator/SP.POP.TOTL?format=json&per_page=400&mrv=1',
+            '/v2/country/all/indicator/SP.POP.TOTL?format=json&per_page=500&date=2024',
+            '/v2/country/BRA;USA;IND;CHN;DEU/indicator/SP.POP.TOTL?format=json&per_page=40&mrv=1'
+          ];
+          for(const path of paths){
+            const start=Date.now();
+            try{
+              const r=await fetch('https://api.worldbank.org'+path,{signal:AbortSignal.timeout(9000)});
+              const data=await r.json();
+              console.log('WORLD BANK QUERY',path,'status',r.status,'elapsed',Date.now()-start,
+                'rows',Array.isArray(data?.[1])?data[1].length:null,
+                'pages',data?.[0]?.pages,'total',data?.[0]?.total);
+            }catch(e){console.log('WORLD BANK QUERY ERROR',path,String(e),'elapsed',Date.now()-start);}
+          }
+          NODE
