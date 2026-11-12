@@ -36,7 +36,7 @@ export function worldGeoIntent(command){
  }
  // Global numeric climate layers are geographic model samples. No polygon
  // receives an unsupported, guessed environmental impact severity.
- if(/\b(?:mundo|mundial|global|planeta|brasil|brasileiro|continentes?|regioes?|paises?|mapa)\b/.test(q))
+ if(/\b(?:mundo|mundial|global|planeta|brasil|brasileiro|continentes?|paises?|pais|territorio brasileiro)\b/.test(q))
  for(const [layer,test] of climates){
   if(test.test(q))return {action:"geo.spatial",args:{layer,region,view}};
  }
