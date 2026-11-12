@@ -62,11 +62,18 @@ async function connect() {
   }
 }
 
-button?.addEventListener('click', (event) => {
+let lastMobilePointerAt=0;
+button?.addEventListener('pointerdown',event=>{
+  if(event.button!==0)return;
+  lastMobilePointerAt=Date.now();
+  void connect();
+},true);
+button?.addEventListener('click',event=>{
   event.preventDefault();
   event.stopImmediatePropagation();
-  connect();
-}, true);
+  if(Date.now()-lastMobilePointerAt<850)return;
+  void connect();
+},true);
 
 window.addEventListener('ultron:mobile-camera-source', (event) => {
   if (!event?.detail?.active) return;
