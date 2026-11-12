@@ -1813,3 +1813,107 @@ body.jarvis-command-center .jarvis-cc-center>.jarvis-geo-visual[data-mode="2d"]{
   padding-right:8px!important;
  }
 }
+
+
+/* v4.99.1 — Real command shortcuts, never clipped into a scrolling text ribbon.
+   Native buttons remain separate hit targets on desktop, mobile and TV. */
+body.jarvis-command-center #jarvis-cc-input-slot .quick-actions {
+  display:grid!important;
+  grid-template-columns:repeat(auto-fit,minmax(112px,1fr))!important;
+  justify-items:stretch;align-items:stretch;
+  gap:7px!important;
+  width:100%!important;max-width:100%!important;min-width:0!important;
+  overflow:visible!important;scroll-snap-type:none!important;
+  flex-wrap:wrap!important;padding:3px 0 8px!important;
+  touch-action:pan-y!important;position:relative;z-index:8;
+}
+body.jarvis-command-center #jarvis-cc-input-slot .quick-actions button {
+  display:flex!important;align-items:center;justify-content:center;
+  width:100%;min-width:0!important;min-height:44px!important;
+  max-width:none!important;white-space:normal!important;
+  overflow:visible!important;text-overflow:clip!important;
+  scroll-snap-align:none!important;overflow-wrap:anywhere!important;
+  line-height:1.3!important;font-size:10px!important;
+  padding:8px 7px!important;border-radius:7px;
+  cursor:pointer;touch-action:manipulation!important;
+  pointer-events:auto!important;position:relative;z-index:1;
+}
+body.jarvis-command-center #jarvis-cc-input-slot .quick-actions button:focus-visible {
+  outline:2px solid #94dafa;outline-offset:2px;
+}
+@media(max-width:650px) {
+  body.jarvis-command-center #jarvis-cc-input-slot .quick-actions {
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  }
+  body.jarvis-command-center #jarvis-cc-input-slot .quick-actions button {
+    font-size:10px!important;min-height:44px!important;
+  }
+}
+@media(min-width:651px) and (max-width:1100px) {
+  body.jarvis-command-center #jarvis-cc-input-slot .quick-actions {
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  }
+}
+
+body.jarvis-command-center .jarvis-cc-agenda-form{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:8px;margin:9px 0;padding:12px;
+  border:1px solid #4e7c95;background:#0a2137;border-radius:9px;
+}
+body.jarvis-command-center .jarvis-cc-agenda-form strong{grid-column:1/-1;color:#a8e4ff}
+body.jarvis-command-center .jarvis-cc-agenda-form input{
+  min-width:0;max-width:100%;min-height:44px;box-sizing:border-box;
+  background:#071729;color:#edf7ff;border:1px solid #638aa3;
+  border-radius:6px;padding:7px 9px;font-size:13px;
+}
+body.jarvis-command-center .jarvis-cc-agenda-form button{
+  min-height:44px;background:#143d56;border:1px solid #75a9c7;
+  border-radius:6px;color:#e1f5ff;cursor:pointer;font-size:12px;
+}
+@media(max-width:600px){
+  body.jarvis-command-center .jarvis-cc-agenda-form{grid-template-columns:1fr}
+}
+
+/* v4.99.2 — Prevent the Computer ↔ Mobile connect control collapsing into
+   a 27px-tall vertical label when the dock is compressed in TV/desktop mode. */
+body.jarvis-command-center .jarvis-cc-dock-grid > #jarvis-cc-link-slot{
+  box-sizing:border-box!important;
+  min-width:0!important;width:100%!important;max-width:100%!important;
+  justify-self:stretch!important;align-self:stretch!important;
+}
+body.jarvis-command-center .jarvis-cc-dock-grid > #jarvis-cc-link-slot > .bridge-link-panel{
+  box-sizing:border-box!important;
+  width:100%!important;max-width:100%!important;min-width:0!important;
+  display:flex!important;flex-direction:column!important;
+  align-items:stretch!important;justify-content:flex-start!important;
+  flex-wrap:nowrap!important;gap:7px!important;
+}
+body.jarvis-command-center #jarvis-cc-link-slot #btn-pair-mobile{
+  box-sizing:border-box!important;
+  display:block!important;position:relative!important;
+  align-self:stretch!important;flex:0 0 auto!important;
+  min-width:0!important;width:100%!important;max-width:100%!important;
+  min-height:44px!important;height:auto!important;
+  padding:11px 7px!important;margin:0!important;
+  writing-mode:horizontal-tb!important;white-space:normal!important;
+  word-break:normal!important;overflow-wrap:break-word!important;
+  line-height:1.35!important;font-size:11px!important;
+  cursor:pointer;touch-action:manipulation!important;pointer-events:auto!important;
+}
+
+/* v4.99.3 — At desktop/TV widths the command console must span the full
+   outer dashboard grid. Previously grid-column:1 shrank the entire terminal
+   to the 18% sidebar (335px @ 1920), crushing mobile bridge to 27px. */
+@media(min-width:1100px){
+  body.jarvis-command-center .jarvis-command-center-ui > .jarvis-cc-bottom {
+    grid-column:1 / -1!important;
+    grid-row:3!important;
+    width:100%!important;max-width:100%!important;min-width:0!important;
+    box-sizing:border-box!important;
+  }
+  body.jarvis-command-center .jarvis-command-center-ui > .jarvis-cc-bottom
+    .jarvis-cc-console-layout{
+    width:100%!important;max-width:1700px!important;
+    grid-template-columns:minmax(0,1.15fr) minmax(0,1fr)!important;
+  }
+}

@@ -305,7 +305,15 @@ function installButtons() {
     const button = document.createElement("button");
     button.id = "btn-analyze-vision";
     button.textContent = "ANALISAR VISÃO";
-    button.addEventListener("click", () => analyzeCurrentVision());
+    let lastPointerAt=0;
+    button.addEventListener("pointerdown",event=>{
+      if(event.button!==0)return;
+      lastPointerAt=Date.now();void analyzeCurrentVision();
+    });
+    button.addEventListener("click",()=>{
+      if(Date.now()-lastPointerAt<850)return;
+      void analyzeCurrentVision();
+    });
     actions.appendChild(button);
   }
 
@@ -313,7 +321,15 @@ function installButtons() {
     const button = document.createElement("button");
     button.id = "btn-analyze-image";
     button.textContent = "IMAGEM LOCAL";
-    button.addEventListener("click", pickImage);
+    let lastPointerAt=0;
+    button.addEventListener("pointerdown",event=>{
+      if(event.button!==0)return;
+      lastPointerAt=Date.now();pickImage();
+    });
+    button.addEventListener("click",()=>{
+      if(Date.now()-lastPointerAt<850)return;
+      pickImage();
+    });
     actions.appendChild(button);
   }
 }

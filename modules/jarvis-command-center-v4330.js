@@ -240,7 +240,9 @@ if (stage) {
     const message=document.createElement('p');
     message.textContent='> ['+title+'] '+String(content);
     line.append(message);
-    if(action&&typeof action.run==='function'&&typeof action.label==='string'){
+    for(const item of (Array.isArray(action)?action:[action])){
+      if(!item||typeof item.run!=='function'||typeof item.label!=='string')continue;
+      const action=item;
       const button=document.createElement('button');button.type='button';
       button.className='jarvis-cc-inline-action';
       button.textContent=action.label.slice(0,65);
@@ -274,6 +276,69 @@ if (stage) {
     while(output.children.length>90)output.firstElementChild.remove();
     output.scrollTop=output.scrollHeight;
     logEvent(title+' // ATUALIZADO');
+  }
+  // Device-local browsing never scans the filesystem or uploads files
+  // silently: the operator must explicitly select each batch in the browser.
+  let selectedLocalFiles=[];
+  const agendaKey='jarvis_local_agenda_v1';
+  const readAgenda=()=>{
+    try{
+      const raw=JSON.parse(localStorage.getItem(agendaKey)||'[]');
+      return Array.isArray(raw)?raw.filter(item=>item&&typeof item.title==='string'&&
+        typeof item.at==='string'&&Number.isFinite(Date.parse(item.at))).slice(0,100):[];
+    }catch{return [];}
+  };
+  function chooseLocalFiles(){
+    const input=document.createElement('input');
+    input.type='file';input.multiple=true;input.style.display='none';
+    input.setAttribute('aria-label','Selecionar arquivos do dispositivo');
+    input.addEventListener('change',()=>{
+      selectedLocalFiles=Array.from(input.files||[]);
+      show('ARQUIVOS SELECIONADOS ('+selectedLocalFiles.length+')',
+        selectedLocalFiles.length?selectedLocalFiles.slice(0,25).map(f=>f.name).join(' · ')+
+        '. Seleção privada nesta página: arquivos NÃO enviados nem indexados automaticamente.':
+        'Nenhum arquivo selecionado.',
+        [{label:'Escolher outros arquivos',run:chooseLocalFiles},
+         {label:'Consultar Local Core',run:()=>actions.files()}]);
+      input.remove();
+    },{once:true});
+    input.addEventListener('cancel',()=>input.remove(),{once:true});
+    document.body.append(input);input.click();
+  }
+  function composeAgenda(){
+    const output=document.getElementById('output-box');if(!output)return;
+    output.querySelector('.jarvis-cc-agenda-form')?.remove();
+    const form=document.createElement('form');form.className='jarvis-cc-agenda-form';
+    const label=document.createElement('strong');label.textContent='NOVO COMPROMISSO LOCAL';
+    const title=document.createElement('input');title.type='text';title.placeholder='Nome do compromisso';
+    title.maxLength=110;title.required=true;title.setAttribute('aria-label','Compromisso');
+    const date=document.createElement('input');date.type='datetime-local';
+    date.required=true;date.setAttribute('aria-label','Data e hora do compromisso');
+    const save=document.createElement('button');save.type='submit';save.textContent='SALVAR NA AGENDA';
+    const cancel=document.createElement('button');cancel.type='button';cancel.textContent='CANCELAR';
+    cancel.addEventListener('click',()=>form.remove());
+    form.addEventListener('submit',event=>{
+      event.preventDefault();
+      const at=new Date(date.value),name=title.value.trim();
+      if(!name||!Number.isFinite(at.getTime()))return;
+      try{
+        const next=readAgenda().concat({id:String(Date.now()),title:name,at:at.toISOString()})
+          .sort((a,b)=>Date.parse(a.at)-Date.parse(b.at)).slice(-100);
+        localStorage.setItem(agendaKey,JSON.stringify(next));
+        form.remove();actions.agenda();
+      }catch(error){show('AGENDA','Não foi possível salvar no navegador: '+String(error?.message||error));}
+    });
+    // A responsive terminal may shift the button before the browser
+    // dispatches click; requestSubmit on pointerdown retains validation.
+    save.addEventListener('pointerdown',event=>{
+      if(event.button===0)form.requestSubmit(save);
+    });
+    cancel.addEventListener('pointerdown',event=>{
+      if(event.button===0)form.remove();
+    });
+    form.append(label,title,date,save,cancel);
+    output.append(form);form.scrollIntoView({block:'nearest',behavior:'smooth'});
+    title.focus({preventScroll:true});
   }
   const scrollTo = (selector) => document.querySelector(selector)?.scrollIntoView({behavior:'smooth',block:'center'});
   let openingEarth = false;
@@ -310,47 +375,93 @@ if (stage) {
         {label:'Atualizar status',run:()=>actions.status()});
     },
     agenda() {
-      const now = new Date();
-      show('AGENDA / VISÃO LOCAL', now.toLocaleString('pt-BR',{dateStyle:'full',timeStyle:'short'}) + '. Calendário externo ainda não conectado. Nenhum compromisso é presumido.');
+      const now=new Date(),all=readAgenda(),upcoming=all.filter(item=>Date.parse(item.at)>=Date.now());
+      const next=upcoming.slice(0,6).map(item=>new Date(item.at).toLocaleString(
+        'pt-BR',{dateStyle:'short',timeStyle:'short'})+' — '+item.title).join(' · ');
+      show('AGENDA / VISÃO LOCAL',upcoming.length?
+        upcoming.length+' compromisso(s) local(is). '+next+
+        '. Não sincronizado com Google/Outlook.':
+        now.toLocaleString('pt-BR',{dateStyle:'full',timeStyle:'short'})+
+        '. Nenhum compromisso local cadastrado. Google/Outlook ainda não estão conectados.',
+        [{label:'Adicionar compromisso',run:composeAgenda},
+         {label:'Atualizar agenda',run:()=>actions.agenda()}]);
     },
     camera() {
-      const cameraButton=document.getElementById('btn-camera');
-      if(!cameraButton||cameraButton.disabled){
-        show('SENSOR ÓPTICO','O botão da câmera está indisponível ou a câmera já está ativa. Confira o painel Optical Sensor.');
+      const video=document.getElementById('webcam');
+      const active=Boolean(video?.srcObject&&video.readyState>=2&&video.videoWidth>0);
+      if(active){
+        show('SENSOR ÓPTICO','Fluxo de vídeo disponível. É possível analisar o quadro atual, mediante comando do operador.',
+          {label:'Analisar quadro',run:()=>window.ULTRON_VISION?.analyze?.()});
         return;
       }
-      // User-initiated click: let the native camera module obtain permission.
-      cameraButton.click();
-      show('SENSOR ÓPTICO','Solicitação enviada ao módulo de câmera do próprio dispositivo. O acesso depende da permissão do navegador.');
+      if(window.ULTRON_MOBILE_CAMERA?.smartConnect){
+        const request=window.ULTRON_MOBILE_CAMERA.smartConnect();
+        show('SENSOR ÓPTICO','Conexão com câmera do celular solicitada. STUN disponível não significa câmera transmitindo; confirme STREAMING e quadro visível.');
+        Promise.resolve(request).catch(error=>show('SENSOR ÓPTICO',
+          'Não foi possível conectar a câmera: '+String(error?.message||error)));
+        return;
+      }
+      show('SENSOR ÓPTICO','Conector de câmera não inicializado. Verifique se o dispositivo foi pareado.',
+        {label:'Conectar celular',run:()=>document.getElementById('btn-pair-mobile')?.click()});
     },
     async files() {
-      const api = window.ULTRON_LOCAL_FILES;
-      if (!api?.files) {
-        show('ARQUIVOS', 'O serviço de arquivos locais ainda não está conectado. Inicie o Local Core para consultar seus arquivos.');
+      const api=window.ULTRON_LOCAL_FILES;
+      const choices=[
+        {label:'Selecionar arquivos manualmente',run:chooseLocalFiles},
+        {label:'Testar Local Core novamente',run:()=>actions.files()}
+      ];
+      if(!api?.health||!api?.files){
+        show('ARQUIVOS','Módulo de arquivos não inicializado. Os arquivos do computador não são automaticamente acessíveis pela página.',choices);
         return;
       }
-      try {
-        const entries = await api.files();
-        const files = Array.isArray(entries) ? entries : Array.isArray(entries?.files) ? entries.files : [];
-        const names = files.slice(0, 25).map(item => typeof item === 'string' ? item : item?.path || item?.name || 'Arquivo sem nome');
-        show('ARQUIVOS LOCAIS (' + files.length + ')',
-          names.length ? names.join(' · ') : 'Nenhum arquivo disponível no Local Core.',
-          {label:'Atualizar arquivos',run:()=>actions.files()});
-      } catch (error) {
-        show('ARQUIVOS', 'Falha ao consultar arquivos locais: ' + (error?.message || 'serviço indisponível'));
+      try{
+        const status=await api.health({allowPrompt:true});
+        if(!status?.ok){
+          const permission=status?.permission;
+          const note=permission==='denied'?
+            'O navegador bloqueou acesso à rede local. Revise a permissão de dispositivos/rede local no Chrome.':
+            'O serviço local não respondeu. No Windows, execute local-core/start.bat e mantenha o terminal aberto. Se estiver no celular, 127.0.0.1 refere-se ao próprio celular, não ao computador.';
+          show('ARQUIVOS / LOCAL CORE OFFLINE',note+
+            (status?.error?' Diagnóstico: '+String(status.error).slice(0,125):'')+
+            (selectedLocalFiles.length?' · '+selectedLocalFiles.length+' arquivo(s) selecionado(s) manualmente.':''),
+            choices);
+          return;
+        }
+        const files=await api.files();
+        const items=Array.isArray(files)?files:Array.isArray(files?.files)?files.files:[];
+        const names=items.slice(0,25).map(item=>typeof item==='string'?item:
+          item?.path||item?.name||'Arquivo sem nome');
+        show('ARQUIVOS LOCAIS ('+items.length+')',
+          names.length?names.join(' · '):'Local Core conectado; a pasta Ultron_Data não contém arquivos indexados.',
+          [{label:'Atualizar arquivos',run:()=>actions.files()},
+           {label:'Selecionar arquivos manualmente',run:chooseLocalFiles}]);
+      }catch(error){
+        show('ARQUIVOS / LOCAL CORE','Não foi possível consultar a pasta Ultron_Data. Verifique se local-core/start.bat está em execução e se o navegador autorizou a rede local. '+String(error?.message||error).slice(0,125),choices);
       }
     },
     async devices() {
       show('CENTRAL DE DISPOSITIVOS', 'Consultando dispositivos pareados no gateway remoto...');
       try {
         const api = window.ULTRON_DEVICES;
-        if (!api?.listDevices) {
-          show('CENTRAL DE DISPOSITIVOS', 'Módulo de dispositivos ainda não disponível. Aguarde a inicialização do sistema.');
+        const pairingActions=[
+          {label:'Conectar celular',run:()=>document.getElementById('btn-pair-mobile')?.click()},
+          {label:'Conectar computador',run:()=>document.getElementById('btn-pair-desktop')?.click()},
+          {label:'Configurar TV',run:()=>document.getElementById('btn-pair-tv')?.click()}
+        ];
+        if(!api?.listDevices){
+          show('CENTRAL DE DISPOSITIVOS','Módulo de dispositivos não carregou. Atualize a página para carregar o controlador corrigido; nenhum pareamento foi presumido.',
+            [{label:'Reverificar módulo',run:()=>actions.devices()}]);
           return;
         }
-        const devices = await api.listDevices();
-        if (!Array.isArray(devices) || !devices.length) {
-          show('CENTRAL DE DISPOSITIVOS', 'Nenhum dispositivo pareado foi encontrado para este operador.', {label:'Configurar TV',run:()=>document.getElementById('btn-pair-tv')?.click()});
+        if(!window.ULTRON_MEMORY?.getMemoryKey?.()){
+          show('CENTRAL DE DISPOSITIVOS','A identidade de memória da sessão ainda não está pronta. Pareamento e consulta exigem essa identidade.',
+            [{label:'Verificar novamente',run:()=>actions.devices()}]);
+          return;
+        }
+        const devices=await api.listDevices();
+        if(!Array.isArray(devices)||!devices.length){
+          show('CENTRAL DE DISPOSITIVOS','Nenhum dispositivo pareado foi encontrado. Para a TV LG, pareie primeiro o celular com o Ultron Bridge.',
+            pairingActions);
           return;
         }
         const summary = devices.slice(0, 12).map((device) => {

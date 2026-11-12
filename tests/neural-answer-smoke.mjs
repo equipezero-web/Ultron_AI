@@ -1186,15 +1186,22 @@ try {
       });
       assert.equal(target.ok,true,action+' must accept an actual click: '+JSON.stringify(target));
     }
+    // Assert real module bootstrap BEFORE injecting any test substitutes:
+    // previously a syntax error left ULTRON_DEVICES undefined in production.
+    await page.waitForFunction(()=>Boolean(
+      window.ULTRON_DEVICES?.listDevices&&window.ULTRON_LOCAL_FILES?.health&&
+      window.ULTRON_VISION?.analyze),{timeout:18000});
     await page.evaluate(()=>{
       window.__ccAuditSavedDevices=window.ULTRON_DEVICES;
       window.__ccAuditSavedFiles=window.ULTRON_LOCAL_FILES;
+      window.__ccAuditSavedMemory=window.ULTRON_MEMORY;
+      window.__ccAuditSavedMobileCamera=window.ULTRON_MOBILE_CAMERA;
+      window.ULTRON_MEMORY={...window.ULTRON_MEMORY,getMemoryKey:()=> 'test-operator'};
       window.ULTRON_DEVICES={listDevices:async()=>[]};
-      window.ULTRON_LOCAL_FILES={files:async()=>['Relatorio.txt']};
+      window.ULTRON_LOCAL_FILES={health:async()=>({ok:true}),files:async()=>['Relatorio.txt']};
+      window.ULTRON_MOBILE_CAMERA={smartConnect:()=>{window.__ccAuditCamera=(window.__ccAuditCamera||0)+1;return Promise.resolve(true);}};
       const tv=document.getElementById('btn-pair-tv');
       tv.click=()=>{window.__ccAuditTv=(window.__ccAuditTv||0)+1};
-      const camera=document.getElementById('btn-camera');
-      camera.click=()=>{window.__ccAuditCamera=(window.__ccAuditCamera||0)+1};
     });
     await page.evaluate(()=>{
       const b=document.querySelector('[data-cc="status"]');
@@ -1226,7 +1233,11 @@ try {
     await page.click('[data-cc="devices"]');
     await page.waitForFunction(()=>[...document.querySelectorAll('.jarvis-cc-inline-result button')]
       .some(el=>el.textContent.includes('Configurar TV')));
-    await page.click('.jarvis-cc-inline-result:last-child button');
+    await page.$eval('.jarvis-cc-inline-result:last-child',el=>{
+      const tv=[...el.querySelectorAll('button')].find(b=>b.textContent.includes('Configurar TV'));
+      tv?.setAttribute('data-test-tv','true');
+    });
+    await page.click('[data-test-tv="true"]');
     await page.waitForFunction(()=>window.__ccAuditTv===1);
     await page.click('[data-cc="files"]');
     await page.waitForFunction(()=>[...document.querySelectorAll('.jarvis-cc-inline-result')]
@@ -1252,12 +1263,111 @@ try {
     assert.equal(await page.$eval('[data-visual="ring"]',button=>button.getAttribute('aria-pressed')),'true');
     await page.evaluate(()=>{
       const tv=document.getElementById('btn-pair-tv');
-      const camera=document.getElementById('btn-camera');
-      delete tv.click;delete camera.click;
+      delete tv.click;
       window.ULTRON_DEVICES=window.__ccAuditSavedDevices;
       window.ULTRON_LOCAL_FILES=window.__ccAuditSavedFiles;
+      window.ULTRON_MEMORY=window.__ccAuditSavedMemory;
+      window.ULTRON_MOBILE_CAMERA=window.__ccAuditSavedMobileCamera;
     });
     await page.evaluate(()=>window.__phase3EarthRestore());
+
+    // Production shortcuts MUST be independently clickable (no overlapping
+    // scroll-snap ribbon) across phone/laptop/TV. Never fake their DOM nodes.
+    const productionShortcuts=[
+      '[data-command="status"]','[data-command="camera"]',
+      '[data-command="center"]','[data-command="clear"]',
+      '#btn-pair-tv','#btn-pair-mobile','#btn-analyze-vision','#btn-analyze-image'
+    ];
+    for(const selector of productionShortcuts){
+      await page.$eval(selector,button=>button.scrollIntoView({
+        block:'center',inline:'center',behavior:'instant'
+      }));
+      const hit=await page.$eval(selector,button=>{
+        const rect=button.getBoundingClientRect();
+        const el=document.elementFromPoint(rect.x+rect.width/2,rect.y+rect.height/2);
+        const chain=[];
+        let current=button;
+        for(let level=0;level<8&&current;level++,current=current.parentElement){
+          const r=current.getBoundingClientRect(),css=getComputedStyle(current);
+          chain.push({tag:current.tagName,id:current.id,cls:current.className,
+            width:Math.round(r.width),height:Math.round(r.height),
+            display:css.display,flex:css.flex,grid:css.gridTemplateColumns,
+            inlineSize:css.inlineSize,minWidth:css.minWidth,writingMode:css.writingMode});
+        }
+        return {hit:el===button||button.contains(el),
+          width:rect.width,height:rect.height,top:rect.top,
+          chain:button.id==='btn-pair-mobile'?chain:undefined};
+      });
+      assert.ok(hit.hit&&hit.width>60&&hit.height>=40,
+        'Quick control should be tappable: '+selector+' '+JSON.stringify(hit));
+    }
+    await page.click('[data-command="status"]');
+    await page.waitForFunction(()=>document.getElementById('output-box')
+      .textContent.includes('Sistema ONLINE'),{timeout:5000});
+    await page.click('[data-command="center"]');
+    assert.match(await page.$eval('#output-box',el=>el.textContent),
+      /Esfera holográfica centralizada/);
+    await page.click('[data-command="clear"]');
+    assert.equal(await page.$eval('#output-box',el=>el.children.length),0,
+      'LIMPAR TERMINAL should clear responses without deleting data');
+    await page.click('#btn-pair-tv');
+    assert.match(await page.$eval('#output-box',el=>el.textContent),/LG WEBOS/);
+    await page.evaluate(()=>{
+      window.__mobilePairShortcutCalls=0;
+      window.__savedMobileShortcut=window.ULTRON_MOBILE_CAMERA;
+      window.ULTRON_MOBILE_CAMERA={
+        ...window.ULTRON_MOBILE_CAMERA,
+        smartConnect:()=>{window.__mobilePairShortcutCalls++;return Promise.resolve(false);}
+      };
+    });
+    await page.click('#btn-pair-mobile');
+    await page.waitForFunction(()=>window.__mobilePairShortcutCalls>0,{timeout:6000});
+    await page.evaluate(()=>{window.ULTRON_MOBILE_CAMERA=window.__savedMobileShortcut;});
+
+    // Offline local files remain safe, yet permit explicitly chosen files.
+    await page.evaluate(()=>{
+      window.__savedFilesUi=window.ULTRON_LOCAL_FILES;
+      window.ULTRON_LOCAL_FILES={
+        health:async()=>({ok:false,permission:'prompt',error:'Failed to fetch'}),
+        files:async()=>{throw Error('Unexpected local access');}
+      };
+    });
+    await page.click('[data-cc="files"]');
+    await page.waitForFunction(()=>document.getElementById('output-box')
+      .textContent.includes('LOCAL CORE OFFLINE'),{timeout:5000});
+    await page.$eval('.jarvis-cc-inline-result:last-child',el=>{
+      const b=[...el.querySelectorAll('button')].find(
+        b=>b.textContent.includes('Selecionar arquivos manualmente'));
+      b?.setAttribute('data-test-file-picker','true');
+    });
+    const chooserPromise=page.waitForFileChooser({timeout:8000});
+    await page.click('[data-test-file-picker="true"]');
+    const chooser=await chooserPromise;
+    assert.ok(chooser,'Manual files action must open OS file chooser on user gesture');
+    await chooser.cancel();
+    await page.evaluate(()=>{window.ULTRON_LOCAL_FILES=window.__savedFilesUi;});
+
+    // Agenda is a working, explicitly LOCAL scheduler (no invented Google sync).
+    await page.click('[data-cc="agenda"]');
+    await page.$eval('.jarvis-cc-inline-result:last-child',el=>{
+      const b=[...el.querySelectorAll('button')].find(b=>b.textContent.includes('Adicionar compromisso'));
+      b?.setAttribute('data-test-agenda-add','true');
+    });
+    await page.click('[data-test-agenda-add="true"]');
+    await page.waitForSelector('.jarvis-cc-agenda-form input[type="datetime-local"]');
+    await page.type('.jarvis-cc-agenda-form input[type="text"]','Teste de agenda local');
+    await page.$eval('.jarvis-cc-agenda-form input[type="datetime-local"]',
+      input=>{input.value='2099-01-01T10:00';input.dispatchEvent(new Event('input',{bubbles:true}));});
+    await page.click('.jarvis-cc-agenda-form button[type="submit"]');
+    await page.waitForFunction(()=>document.getElementById('output-box')
+      .textContent.includes('Teste de agenda local'),{timeout:5000});
+    assert.ok(await page.evaluate(()=>JSON.parse(localStorage.getItem('jarvis_local_agenda_v1')||'[]')
+      .some(x=>x.title==='Teste de agenda local')));
+    await page.evaluate(()=>{
+      const all=JSON.parse(localStorage.getItem('jarvis_local_agenda_v1')||'[]');
+      localStorage.setItem('jarvis_local_agenda_v1',JSON.stringify(
+        all.filter(x=>x.title!=='Teste de agenda local')));
+    });
     await page.close();
   }
   console.log('NEURAL ANSWER PASS: ring-only boot; responsive stacked/split layout; compact square image cards; distinct inline video lane; mobile/laptop/TV');

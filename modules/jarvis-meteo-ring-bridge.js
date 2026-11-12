@@ -208,8 +208,15 @@ function install(){
    }
  },true);
  const quick=document.getElementById("btn-meteo-center");
+ let lastQuickPointerAt=0;
+ quick?.addEventListener("pointerdown",event=>{
+   if(event.button!==0)return;
+   lastQuickPointerAt=Date.now();void open({tab:"radar",view:"2d"});
+ },true);
  quick?.addEventListener("click",event=>{
-   event.preventDefault();event.stopImmediatePropagation();void open({tab:"radar",view:"2d"});
+   event.preventDefault();event.stopImmediatePropagation();
+   if(Date.now()-lastQuickPointerAt<850)return;
+   void open({tab:"radar",view:"2d"});
  },true);
  window.addEventListener("ultron:new-conversation",()=>{stop();++token;});
  window.ULTRON_METEO_CENTER={

@@ -11,6 +11,7 @@ on:
       - 'local-core/desktop_bridge.py'
       - 'local-core/device_server.py'
       - 'local-core/start.bat'
+      - 'local-core/server.py'
       - 'index.html'
       - '.github/workflows/device-automation-check.yml'
   pull_request:
@@ -23,6 +24,7 @@ on:
       - 'local-core/desktop_bridge.py'
       - 'local-core/device_server.py'
       - 'local-core/start.bat'
+      - 'local-core/server.py'
       - 'index.html'
       - '.github/workflows/device-automation-check.yml'
   workflow_dispatch:
@@ -45,7 +47,7 @@ jobs:
           node --check backend/automation-engine.js
           node --check backend/worker.js
           node --check modules/device-control-v4260.js
-          python -m py_compile local-core/desktop_bridge.py local-core/device_server.py
+          python -m py_compile local-core/desktop_bridge.py local-core/device_server.py local-core/server.py
 
       - name: Device command policy
         run: |

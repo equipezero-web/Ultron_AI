@@ -185,7 +185,7 @@ jobs:
           grep -q "opticalAutoActivation" modules/neural-spatial-control-v4250.js
           grep -q "neural-spatial-control-v4250.js?v=4.25.0" modules/stark-bootstrap.js
           grep -q "neural-focus-v4250.css?v=4.25.0" modules/stark-bootstrap.js
-          grep -q "mobile-link-simple-v4250.js?v=4.25.0" modules/stark-bootstrap.js
+          grep -Eq "mobile-link-simple-v4250[.]js[?]v=4[.]25[.][0-9]+" modules/stark-bootstrap.js
           grep -q 'path === "/api/webrtc/ice"' backend/worker.js
           grep -q 'path === "/api/vision/analyze"' backend/worker.js
           grep -q "generate-ice-servers" backend/webrtc-ice.js

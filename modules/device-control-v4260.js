@@ -13,6 +13,21 @@ function outputLine(message, alert = false) {
   output.scrollTop = output.scrollHeight;
 }
 
+// Preserve activation when a responsive layout moves between pointerdown
+// and click. Each actual pointer gesture executes ONCE; Enter/Space still work.
+function bindDevicePress(button,perform){
+  if(!button)return;
+  let lastPointerAt=0;
+  button.addEventListener("pointerdown",event=>{
+    if(event.button!==0)return;
+    lastPointerAt=Date.now();perform();
+  });
+  button.addEventListener("click",()=>{
+    if(Date.now()-lastPointerAt<850)return;
+    perform();
+  });
+}
+
 function memoryKey() {
   return window.ULTRON_MEMORY?.getMemoryKey?.() || null;
 }
@@ -318,14 +333,15 @@ function injectControls() {
     const desktop = document.createElement("button");
     desktop.id = "btn-pair-desktop";
     desktop.textContent = "CONECTAR PC";
-    desktop.addEventListener("click", () => pairDesktop().catch((error) => outputLine(error.message, true)));
+    bindDevicePress(desktop,()=>pairDesktop().catch(error=>outputLine(error.message,true)));
     actions.appendChild(desktop);
   }
   if (!document.getElementById("btn-automations")) {
     const button = document.createElement("button");
     button.id = "btn-automations";
     button.textContent = "AUTOMAÇÕES";
-    button.addEventListener("click", () => routeNaturalLanguage("listar automações"));
+    bindDevicePress(button,()=>routeNaturalLanguage("listar automações").catch(
+      error=>outputLine(error?.message||"Não foi possível consultar as automações.",true)));
     actions.appendChild(button);
   }
 }
@@ -346,19 +362,42 @@ async function refreshBridgeState() {
   } catch {}
 }
 
-document.getElementById("btn-pair-mobile")?.addEventListener("click", async () => {
-  try {
-    const result = await startPairing("mobile", "Ultron Mobile Bridge");
-    outputLine(`CELULAR // CÓDIGO ${result.code} // válido por ${Math.round((result.expiresInSeconds || 600) / 60)} min.`);
-    outputLine("Abra o Ultron Bridge no celular e digite este código no campo de pareamento.");
-  } catch (error) {
-    outputLine(`ERRO: ${error.message}`, true);
+async function pairMobileDirect(){
+  try{
+    const result=await startPairing("mobile","Ultron Mobile Bridge");
+    outputLine(`CELULAR // CÓDIGO ${result.code} // válido por ${Math.round((result.expiresInSeconds||600)/60)} min.`);
+    outputLine("Abra o Ultron Bridge no celular, digite o código e toque em INICIAR BRIDGE.");
+  }catch(error){outputLine("Falha ao gerar código do celular: "+String(error?.message||error),true);}
+}
+const mobilePairButton=document.getElementById("btn-pair-mobile");
+let lastDirectMobilePointerAt=0;
+mobilePairButton?.addEventListener("pointerdown",event=>{
+  if(event.button!==0||window.ULTRON_MOBILE_LINK?.connect)return;
+  lastDirectMobilePointerAt=Date.now();
+  void pairMobileDirect();
+});
+mobilePairButton?.addEventListener("click",()=>{
+  if(Date.now()-lastDirectMobilePointerAt<850)return;
+  if(!window.ULTRON_MOBILE_LINK?.connect)void pairMobileDirect();
+});
+async function setupTv(){
+  outputLine("LG WEBOS: verificando o pareamento do celular. A TV não aceita o código de seis dígitos do J.A.R.V.I.S.");
+  try{
+    const devices=await listDevices();
+    const mobiles=devices.filter(d=>d.deviceType==="mobile"&&d.status!=="disabled");
+    if(!mobiles.length){
+      outputLine("Nenhum celular pareado. Gerando um código para o aplicativo Ultron Bridge...");
+      await pairMobileDirect();
+      return;
+    }
+    outputLine("Celular registrado: "+(mobiles[0]?.deviceName||"Ultron Bridge")+
+      ". Abra o app Ultron Bridge nesse celular, toque em PAREAR LG WEBOS e aceite a autorização usando o controle remoto da TV.");
+  }catch(error){
+    outputLine("Não foi possível verificar o gateway: "+String(error?.message||error)+
+      ". Confirme que o backend e o celular estão conectados.",true);
   }
-});
-
-document.getElementById("btn-pair-tv")?.addEventListener("click", () => {
-  outputLine("LG WEBOS: use o Mobile Bridge já pareado e toque em PAREAR LG WEBOS. Aceite a autorização na TV uma única vez.");
-});
+}
+bindDevicePress(document.getElementById("btn-pair-tv"),()=>{void setupTv();});
 
 window.ULTRON_DEVICES = {
   startPairing,
@@ -373,4 +412,5 @@ window.ULTRON_DEVICES = {
 bindNaturalLanguageInterception();
 injectControls();
 refreshBridgeState();
-setInterval(() => { if (!document.hidden && navigator.onLine) refreshBridgeState(); }, 45000);\nwindow.addEventListener("online", refreshBridgeState);
+setInterval(() => { if (!document.hidden && navigator.onLine) refreshBridgeState(); }, 45000);
+window.addEventListener("online", refreshBridgeState);
