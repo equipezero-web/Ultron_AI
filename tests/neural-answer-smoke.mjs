@@ -1092,6 +1092,8 @@ try {
     // The GLOBAL INTEL button must still open the SAME Ring with verified
     // direct GeoJSON (explicitly marked as NOT persisted/24-hour monitoring).
     globalBackendOffline=true;
+    await page.$eval('#btn-global-intelligence',button=>
+      button.scrollIntoView({block:'center',inline:'nearest',behavior:'instant'}));
     const quickHit=await page.$eval('#btn-global-intelligence',button=>{
       const box=button.getBoundingClientRect();
       const at=document.elementFromPoint(box.x+box.width/2,box.y+box.height/2);
