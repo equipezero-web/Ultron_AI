@@ -16,7 +16,14 @@ export const GEO_PALETTE={
   air:{color:"#d4e8a5",title:"Qualidade do ar modelada",short:"Qualidade do ar"},
   marine:{color:"#74c6d0",title:"Oceanografia modelada",short:"Mar e ondas"},
   river:{color:"#6cb6e2",title:"Vazão fluvial simulada",short:"Vazão em rios"},
-  uncertainty:{color:"#e7c0ec",title:"Faixa dos membros de ensemble",short:"Incerteza"}
+  uncertainty:{color:"#e7c0ec",title:"Faixa dos membros de ensemble",short:"Incerteza"},
+  earthquake:{color:"#ed965c",title:"Epicentro e magnitude",short:"Sismo"},
+  wildfires:{color:"#ef7848",title:"Incêndio catalogado",short:"Queimada"},
+  volcanoes:{color:"#b879df",title:"Atividade vulcânica reportada",short:"Vulcão"},
+  severeStorms:{color:"#e4a64e",title:"Tempestade reportada",short:"Tempestade"},
+  floods:{color:"#499ddf",title:"Inundação catalogada",short:"Inundação"},
+  landslides:{color:"#bf8d6d",title:"Deslizamento catalogado",short:"Deslizamento"},
+  indicator:{color:"#9bc8e1",title:"Indicador por país",short:"Indicador"}
 };
 const spot=(id,name,lat,lng,kind,detail,source=GEO_SOURCE.url)=>({id,name,lat,lng,kind,detail,source,region:true});
 export const GEO_SCENARIOS={
@@ -82,7 +89,8 @@ export function validateGeoScenario(input){
  if(!input.source||!validURL(input.source.url)||!clean(input.source.disclaimer,350))return null;
  const frames=[];
  for(const frame of input.frames){
-  if(!Array.isArray(frame.points)||frame.points.length>20||!frame.points.length)return null;
+  const themed=String(input.id||"").startsWith("world-")&&input.theme?.topic;
+  if(!Array.isArray(frame.points)||!frame.points.length||frame.points.length>(themed?160:20))return null;
   const points=[];
   for(const item of frame.points){
    if(item?.lat===null||item?.lat===undefined||item?.lng===null||item?.lng===undefined||
@@ -95,7 +103,14 @@ export function validateGeoScenario(input){
    if(!name||!detail||!source)return null;
    const id=clean(item.id||name,65);
    if(points.some(previous=>previous.id===id))return null;
-   points.push({id,name,lat,lng,kind:item.kind,detail,source});
+   const color=item.color==null?null:(/^#[0-9a-f]{6}$/i.test(String(item.color))?String(item.color):false);
+   if(color===false)return null;
+   const metric=item.value===undefined?null:item.value;
+   if(metric!==null&&(typeof metric!=="number"||!Number.isFinite(metric)||metric<0||metric>5e15))return null;
+   points.push({id,name,lat,lng,kind:item.kind,detail,source,
+     ...(color?{color}:{}),
+     ...(metric!==null?{value:metric,unit:clean(item.unit,30)}:{}),
+     ...(item.observedAt?{observedAt:clean(item.observedAt,36)}:{})});
   }
   const metrics=validateMetrics(frame.metrics);
   if(metrics===false)return null;
@@ -103,9 +118,29 @@ export function validateGeoScenario(input){
     kind:["observed","forecast","illustrative","current-estimate","short-term-forecast"].includes(frame.kind)?frame.kind:"illustrative",
     description:clean(frame.description,350),metrics,points});
  }
+ const theme=input.theme?.topic&&/^[a-zA-Z0-9_-]{2,40}$/.test(input.theme.topic)?{
+   topic:input.theme.topic,
+   unit:clean(input.theme.unit,45),
+   kind:clean(input.theme.kind,55),
+   coloredBy:clean(input.theme.coloredBy,70),
+   legend:(Array.isArray(input.theme.legend)?input.theme.legend:[]).slice(0,10).map(l=>({
+     color:String(l.color||""),label:clean(l.label,110)})).filter(l=>/^#[0-9a-f]{6}$/i.test(l.color)&&l.label),
+   countryValues:null
+ }:null;
+ if(theme&&input.theme?.countryValues&&typeof input.theme.countryValues==="object"){
+   const values={};
+   for(const [code,item] of Object.entries(input.theme.countryValues).slice(0,230)){
+     if(!/^[A-Z]{3}$/.test(code)||!item||typeof item!=="object")continue;
+     if(typeof item.value!=="number"||!Number.isFinite(item.value)||item.value<0||item.value>5e15||
+        !/^#[0-9a-f]{6}$/i.test(item.color)||!/^(19|20)\d{2}$/.test(String(item.year)))continue;
+     values[code]={value:item.value,color:item.color,year:String(item.year)};
+   }
+   theme.countryValues=values;
+ }
  return {id:clean(input.id,55),title:clean(input.title,110),projection:input.projection==="world"?"world":"brazil",
    source:{name:clean(input.source.name,150),url:validURL(input.source.url),
-     basePeriod:clean(input.source.basePeriod,180),disclaimer:clean(input.source.disclaimer,350)},frames};
+     basePeriod:clean(input.source.basePeriod,180),disclaimer:clean(input.source.disclaimer,350)},frames,
+   ...(theme?{theme}:{})};
 }
 export function geoFrame(dataset,index=0,category="all"){
  const data=validateGeoScenario(dataset);
