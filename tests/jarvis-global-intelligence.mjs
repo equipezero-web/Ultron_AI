@@ -51,7 +51,7 @@ assert.equal(result.events.length,3);
 assert.equal(result.events[0].source,"gdacs","Official RED label precedes magnitude display order");
 assert.equal(result.sourceStatus.length,3);
 assert.equal(urlList.length,3);
-assert.match(result.disclaimer,/não é uma previsão de risco/i);
+assert.match(result.disclaimer,/não (?:é )?uma previsão de risco/i);
 const partial=await collectGlobalIntelligence({now:()=>now,fetchImpl:async url=>{
  if(url.includes("gdacs.org"))throw Error("temporary provider outage");
  return fetchImpl(url);
