@@ -346,6 +346,15 @@ async function executeMessage(message, source = "terminal") {
   const clean = String(message || "").trim();
   if (!clean) return null;
 
+  // Explicit worldwide intelligence commands must reach the real D1/map module
+  // BEFORE generic autonomy or atmospheric mapping plans consume "monitoramento mundial".
+  if(parseLocalCommand(clean)?.type==="global-intelligence"){
+    const local=await runLocalCommand(clean);
+    state.processed++;if(!local.ok)state.failed++;
+    state.lastRoute=local.route;state.lastResult={route:local.route,ok:local.ok,result:local};
+    if(!local.quiet)log(local.text,!local.ok);
+    return {ok:local.ok,status:local.ok?"completed":"failed",results:[state.lastResult]};
+  }
   const singlePlan=splitCompound(clean).length===1?directPlan(clean):null;
   if(singlePlan){
     const result=await runActionPlan(singlePlan,clean);state.processed++;if(!result.ok)state.failed++;state.lastRoute=result.route;state.lastResult={route:result.route,ok:result.ok,result};log(result.text,!result.ok);return {ok:result.ok,status:result.ok?"completed":"failed",results:[state.lastResult]};
