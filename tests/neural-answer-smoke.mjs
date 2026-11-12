@@ -745,6 +745,67 @@ try {
     await page.waitForFunction(()=>document.querySelector('.jarvis-geo-place-results')?.textContent?.includes('atualizada'),{timeout:7000});
     await page.evaluate(()=>window.ULTRON_GEO_VISUAL.close());
     weatherProxyOffline=false;
+    // Worldwide geospatial subjects MUST open the actual 2D or 3D Ring map.
+    // Research prose alone is insufficient.
+    const earthquakes=await page.evaluate(async()=>{
+      const result=await window.ULTRON_ORCHESTRATOR.execute(
+        'Jarvis, mostre os terremotos do mundo no mapa 2D','world-geo-usgs-browser');
+      return {result,state:window.ULTRON_GEO_VISUAL.state,
+        legend:document.querySelector('.jarvis-geo-intensity-legend')?.textContent,
+        markers:[...document.querySelectorAll('.jarvis-geo-marker > circle:last-of-type')]
+          .map(n=>n.getAttribute('fill')),
+        weatherControlHidden:document.querySelector('.jarvis-geo-intensity-bar')?.hidden};
+    });
+    assert.equal(earthquakes.result.ok,true,JSON.stringify(earthquakes));
+    assert.equal(earthquakes.state.scenario,'world-earthquakes-world');
+    assert.equal(earthquakes.state.mode,'2d');
+    assert.equal(earthquakes.state.topic,'earthquakes');
+    assert.equal(earthquakes.state.count,2);
+    assert.match(earthquakes.legend,/M6,5/);
+    assert.equal(earthquakes.weatherControlHidden,true,'NASA/USGS must not automatically overlay unrelated rain forecasts');
+    assert.ok(earthquakes.markers.includes('#78b6dc')&&earthquakes.markers.includes('#d94f63'),
+      'Earthquake magnitude should paint different colored epicenters');
+
+    const wb=await page.evaluate(async()=>{
+      const result=await window.ULTRON_ORCHESTRATOR.execute(
+        'Jarvis, mostre a população dos países do mundo no mapa 2D','world-geo-worldbank-browser');
+      return {result,state:window.ULTRON_GEO_VISUAL.state,
+        countries:[...document.querySelectorAll('.jarvis-geo-world-country')].map(n=>n.getAttribute('data-iso3')),
+        meaning:document.querySelector('.jarvis-geo-metrics')?.textContent,
+        theme:document.querySelector('.jarvis-geo-intensity-legend')?.textContent};
+    });
+    assert.equal(wb.result.ok,true,JSON.stringify(wb));
+    assert.equal(wb.state.scenario,'world-population-world');
+    assert.equal(wb.state.countryCount,2);
+    assert.ok(wb.countries.includes('BRA')&&wb.countries.includes('USA'),
+      'World Bank metrics must actually color national country polygons in SVG');
+    assert.match(wb.meaning,/Indicador anual/);
+    assert.match(wb.theme,/População/);
+
+    const globeWorld=await page.evaluate(async()=>{
+      const result=await window.ULTRON_ORCHESTRATOR.execute(
+        'Jarvis, mostre o PIB dos países no globo 3D','world-geo-globe-browser');
+      return {result,state:window.ULTRON_GEO_VISUAL.state,
+        countryCount:window.__phase3MockState.countryCount};
+    });
+    // API mock returns two numeric countries for every World Bank indicator.
+    assert.equal(globeWorld.result.ok,true,JSON.stringify(globeWorld));
+    assert.equal(globeWorld.state.mode,'3d');
+    assert.ok(globeWorld.countryCount>=2,
+      '3D globe should receive the grounded country geometry, not only text');
+
+    const planetRain=await page.evaluate(async()=>{
+      const result=await window.ULTRON_ORCHESTRATOR.execute(
+        'Jarvis, mostre a intensidade de chuva no mundo no mapa 2D','world-geo-rain-browser');
+      return {result,state:window.ULTRON_GEO_VISUAL.state};
+    });
+    assert.equal(planetRain.result.ok,true,JSON.stringify(planetRain));
+    assert.equal(planetRain.state.scenario,'spatial-rain-world');
+    assert.equal(planetRain.state.gridCount,40);
+    await page.waitForFunction(()=>document.querySelectorAll('.jarvis-geo-intensity-cell').length===40,{timeout:7000});
+    assert.equal(await page.$eval('.jarvis-geo-intensity-bar',el=>el.hidden),false);
+    await page.evaluate(()=>window.ULTRON_GEO_VISUAL.close());
+
     await page.evaluate(()=>window.__phase3EarthRestore());
     await page.close();
   }
