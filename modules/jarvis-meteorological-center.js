@@ -119,13 +119,17 @@ if(stage){
    if(!earth?.open||!earth?.setThematicLayer){note("Globo 3D indisponível. As observações permanecem consultáveis em 2D.");view="2d";showApac2D(report);return;}
    const result=await earth.open();if(result?.ok===false){note("Não foi possível abrir o globo 3D; mostrando pluviômetros em 2D.");
      view="2d";showApac2D(report);return;}
-   const points=report.stations.slice(0,120).map(p=>({
+   const points=report.stations.slice(0,25).map(p=>({
      id:"apac-"+p.id,name:p.name,lat:p.lat,lng:p.lng,color:p.color,kind:"weather",
      detail:p.value+" mm em "+report.hours+" horas; leitura: "+p.lastReading
    }));
-   earth.setThematicLayer(points,{playing:false});
+   const plotted=earth.setThematicLayer(points,{playing:false});
+   if(plotted?.ok===false){
+     note("A camada 3D não aceitou as estações; utilize o mapa 2D para consultar todas as medições.");
+     return;
+   }
    if(points.length)earth.focus?.(-8.4,-36.9,4,false,"Pernambuco · APAC");
-   note("Globo 3D exibindo "+points.length+" estações APAC georreferenciadas. Não são células de radar.");
+   note("Globo 3D exibindo até 25 estações APAC com maiores acumulados, entre as selecionadas. Consulte as demais pelo mapa 2D. Não são células de radar.");
  }
  function renderApacUnderstanding(report){
    const analysis=analyzeApacRain(report,{search:citySearch,rainOnly:onlyWet});
