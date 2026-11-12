@@ -4,10 +4,154 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-12T11:21:17.063Z",
-  "oldestEventAt": "2026-11-11T12:58:23.000Z",
-  "windowStartAt": "2026-11-11T11:21:17.063Z",
+  "updatedAt": "2026-11-12T19:00:36.425Z",
+  "oldestEventAt": "2026-11-11T19:01:00.000Z",
+  "windowStartAt": "2026-11-11T19:00:36.425Z",
   "events": [
+    {
+      "id": "event-83029234",
+      "category": "mundo",
+      "title": "Resumão: Nvidia, tiroteio em Washington e notícias do dia",
+      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxQbDFNX19LZ3AxTTJZQ1ByLVdPeEJubGoxVWJCRFdMc2hFQTRiM0JqSjh1MDVKVlNWaUtBLU9fQWJSa0ptaVVpeDhpMjJIdnN3ZTlQeUFySW94NmV0ektEa0M2c016TjB6bFlGWkp4YTk1ZDBhaGFPZlkteFB0VFAwSlVtUWhVV2drTEUyaFE5VGxzajVFcXZYWDR1WFV0QmstSzFENENBVEVNNTZVS0E",
+      "description": "Resumão: Nvidia, tiroteio em Washington e notícias do dia &nbsp;&nbsp; Correio do Povo Penedo",
+      "imageUrl": null,
+      "source": "Correio do Povo Penedo",
+      "publishedAt": "2026-11-12T18:35:06.000Z",
+      "firstSeenAt": "2026-11-12T19:00:36.425Z",
+      "lastSeenAt": "2026-11-12T19:00:36.425Z"
+    },
+    {
+      "id": "event-cde9df6b",
+      "category": "clima",
+      "title": "El Niño deve permanecer muito forte até março de 2027, aponta agência climática dos EUA",
+      "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxOSjREQm56cTRUbllnMUhGTk5ISmdzd1VJZ0FGeEppMjdVUzNfYWJKZ25aOE12MU9xeDhHZ3RseEt4dVpYZHFmX20zVEVqRkE5alRnZXJ2em55MkR6Xy1Lc3FkeVMwN3lPOFlvcEFheF9iSkRkX2c4TUItOUpYMmd3bXMxMk5CZERfLXFEMjJuV2xVTWZnTnhMMkJnSXhEcXhaQ1hJeWYyMGlCSnpyM05NXy14TnhreWRiZEhpVA",
+      "description": "El Niño deve permanecer muito forte até março de 2027, aponta agência climática dos EUA &nbsp;&nbsp; Jornal da Fronteira",
+      "imageUrl": null,
+      "source": "Jornal da Fronteira",
+      "publishedAt": "2026-11-12T18:21:55.000Z",
+      "firstSeenAt": "2026-11-12T19:00:36.425Z",
+      "lastSeenAt": "2026-11-12T19:00:36.425Z"
+    },
+    {
+      "id": "event-c2f0f286",
+      "category": "clima",
+      "title": "El Niño pode ser o mais forte em quase 80 anos, alerta agência dos EUA",
+      "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxNUU5icGlzc05lQ0lpbk5VMDFyWXhyZmFkUU16M3F1d1BrVXh4OGFTMXhMakdEVWRpbV9Db1k2aXl5Y1ZfZjBPNE9KN0JHY3htMG9EYS1iVWQ4d2hTU0NkOVB5Z0FaM1BUWFNIUzYyS1M2WEFibzRWcEdWaEZzNnM0MHZCbUlJTndnamtnRWZXajE",
+      "description": "El Niño pode ser o mais forte em quase 80 anos, alerta agência dos EUA &nbsp;&nbsp; Portal MPA",
+      "imageUrl": null,
+      "source": "Portal MPA",
+      "publishedAt": "2026-11-12T18:14:00.000Z",
+      "firstSeenAt": "2026-11-12T19:00:36.425Z",
+      "lastSeenAt": "2026-11-12T19:00:36.425Z"
+    },
+    {
+      "id": "event-2f4390f4",
+      "category": "mundo",
+      "title": "Principais notícias do mundo na tarde de hoje (12)",
+      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPTU1DYjRXZHhXVXNjZmc1MFI0OWxjclBnX2ZndEZtWThmb1lfN045eUlTVjdRSEQ5UEotYl9KREt6b1p1ZUljUjRxaENVeHRPalRRcWNaVTNHQXFxRWFfa0EtN0J5aHdnWlI2MlZCdzdOQmtURXNSenN4c2NIcGx5R25Fc2ljc1BEbFFZUlFhWE45eEUwMW9aMkNBcDBFaENXQkszbEJ3Ykc4Ym1O",
+      "description": "Principais notícias do mundo na tarde de hoje (12) &nbsp;&nbsp; Tribuna do Sertão",
+      "imageUrl": null,
+      "source": "Tribuna do Sertão",
+      "publishedAt": "2026-11-12T18:01:00.000Z",
+      "firstSeenAt": "2026-11-12T19:00:36.425Z",
+      "lastSeenAt": "2026-11-12T19:00:36.425Z"
+    },
+    {
+      "id": "event-7a7a83dc",
+      "category": "clima",
+      "title": "El Niño deve seguir forte até março de 2027 e exige atenção à água e às lavouras",
+      "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE1DalpFS2I1X1c0QVlBOVRfYUZmd3dFSE1ILXVJV1BzaTdyQ05lNVp5MDNoZ3h6d3FJUWRLSS1ITU5KUkVVenM5OGRaQ0ppc0JQSU92NUI0b3FnUGM3RVJyM2xkZw",
+      "description": "El Niño deve seguir forte até março de 2027 e exige atenção à água e às lavouras &nbsp;&nbsp; CompreRural",
+      "imageUrl": null,
+      "source": "CompreRural",
+      "publishedAt": "2026-11-12T17:47:30.000Z",
+      "firstSeenAt": "2026-11-12T19:00:36.425Z",
+      "lastSeenAt": "2026-11-12T19:00:36.425Z"
+    },
+    {
+      "id": "event-381e5723",
+      "category": "brasil",
+      "title": "Cacique Raoni está internado em Mato Grosso; quadro de saúde é estável",
+      "url": "https://agenciabrasil.ebc.com.br/direitos-humanos/noticia/2026-11/cacique-raoni-esta-internado-em-mato-grosso-quadro-de-saude-e-estavel",
+      "description": "O cacique Raoni Metuktire, de 94 anos, está internado há quatro dias no Hospital Regional de Peixoto de Azevedo, em Mato Grosso, devido a uma infecção pulmonar e também para acompanhamento da pressão arterial. O quadro de saúde é considerado estável. No boletim médico mais recente, a família de Raoni pede que “todos respeitem a privacidade do cacique e de seus familiares para que ele possa receber os cuidados necessários com tranquilidade” . Notícias relacionadas: Cacique Raoni, de 94 anos, recebe cuidados paliativos em Mato Grosso. Cacique Raoni tem alta hospitalar. O líder indígena foi submetido a uma terapia à base de antibióticos, e os médicos também atuam no controle da pressão com a administração de medicamentos vasoativos. Ele segue se alimentando por via oral e respirando sem a ajuda de aparelhos. Raoni foi atendido inicialmente na Unidade de Pronto Atendimento (UPA) de Peixoto de Azevedo e encaminhado para o hospital regional onde se encontra internado. O cacique foi diagnosticado em setembro deste ano com câncer no sistema digestório e recebe cuidados paliativos em casa . I",
+      "imageUrl": "https://imagens.ebc.com.br/ZJVFINPf1fqjijtt3eLY9QjTRHs=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2025/11/16/_rbr7672.jpg?itok=42_uX9kL",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-12T17:44:00.000Z",
+      "firstSeenAt": "2026-11-12T19:00:36.425Z",
+      "lastSeenAt": "2026-11-12T19:00:36.425Z"
+    },
+    {
+      "id": "event-e4efa481",
+      "category": "brasil",
+      "title": "Fiocruz: aumentam casos de síndrome respiratória aguda por covid-19",
+      "url": "https://agenciabrasil.ebc.com.br/saude/noticia/2026-11/fiocruz-aumentam-casos-de-sindrome-respiratoria-aguda-por-covid-19",
+      "description": "Os casos confirmados de síndrome respiratória aguda grave (SRAG) por covid-19 tiveram alta no país no início de novembro , informou nesta quinta-feira (12) a Fundação Oswaldo Cruz (Fiocruz), no Boletim Infogripe . A Fiocruz ressalta, entretanto, que o número de casos graves por covid-19 permanece em níveis baixos. Notícias relacionadas: Covid-19: pelo menos 5 estados registram aumento de casos graves. Nas últimas quatro semanas, 11,5% das hospitalizações e 26,9% das mortes por SRAG viral foram causadas pelo coronavírus Sars-CoV-2, causador da doença. O boletim foi atualizado com os dados de 1º a 7 novembro que foram inseridos no Sistema de Informação da Vigilância Epidemiológica da Gripe (Sivep-Gripe) até o último sábado (7). Apesar do aumento das confirmações de covid-19, os casos de SRAG, de forma geral, apresentam tendência de queda no país. Vacinação A pesquisadora Tatiana Portella, da Fiocruz, avalia que a situação não é preocupante, mas deve servir como um lembrete para a população se vacinar. Grupos prioritários precisam ser imunizados todos os anos contra a doença, e alguns g",
+      "imageUrl": "https://imagens.ebc.com.br/RfM3RgZAViTWydxzY-drxOSATHo=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2025/10/21/pint4215.jpg?itok=jfdXJE7B",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-12T17:43:00.000Z",
+      "firstSeenAt": "2026-11-12T19:00:36.425Z",
+      "lastSeenAt": "2026-11-12T19:00:36.425Z"
+    },
+    {
+      "id": "event-d4c64a3e",
+      "category": "santa-catarina",
+      "title": "El Niño muito forte deve persistir até março de 2027",
+      "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxOcG1xTnlsYXpBeHk2U3kybEdIZkUyUmNKZTZ6MDdRbDEyMjloR1E4VXI2Qkk2UXRGME11NTlTNmY5dFNmOF9HVDZIeXltRDdUWlg3LW9VSTROOFF6NkJ6WDhkQWc5Y3BXZEd1OFA4OUxuTkRSWm1GdTNKSWE0YlMxd2Y4MmlOY0QtUDkwUXNiUnRUdmdOM3JSVHVwcUtaZV84MlE",
+      "description": "El Niño muito forte deve persistir até março de 2027 &nbsp;&nbsp; Folha Regional",
+      "imageUrl": null,
+      "source": "Folha Regional",
+      "publishedAt": "2026-11-12T17:35:00.000Z",
+      "firstSeenAt": "2026-11-12T19:00:36.425Z",
+      "lastSeenAt": "2026-11-12T19:00:36.425Z"
+    },
+    {
+      "id": "event-c9c06938",
+      "category": "santa-catarina",
+      "title": "Defesa Civil alerta para temporais em parte do estado nesta quinta",
+      "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNZDI1NFRSS243bjQyVWNFVUlBTi1KcUZNUGt6MDJ2YV96bDFIOUw3YnNveTVZR3hjS0NZaW9EN085alNBYjYtSHUyOUN4WFdkaW12TWJtbzJtOXBVekZ0dUFzYlh0TVZGbzk0U0R2SGFvYmVBZi1aSGhUWWJpeEV0bmNEeVdSbVJkQXpITGhicDN6TzNWUXNTWjBCd28",
+      "description": "Defesa Civil alerta para temporais em parte do estado nesta quinta &nbsp;&nbsp; Portal TN Sul",
+      "imageUrl": null,
+      "source": "Portal TN Sul",
+      "publishedAt": "2026-11-12T17:30:00.000Z",
+      "firstSeenAt": "2026-11-12T19:00:36.425Z",
+      "lastSeenAt": "2026-11-12T19:00:36.425Z"
+    },
+    {
+      "id": "event-20b96ddc",
+      "category": "brasil",
+      "title": "Temporais no Brasil: entenda como El Niño influencia eventos meteorológicos",
+      "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxNUDRVd0V3UVFxWVItY212dFNucnRoYUI4ZXZYRFJvWV9TOGtkVk5TRTdRNzFsNy1TbEdfUVFRY1NMUnN3WFlWSEFpWVlFcDBtUXcxY1FYUWhyRW9CYnlsdDBreEZ1aWVQR0pTWU1wWWwtaTlRWU9NYW41UDFNNHNOWjJTZ1dCZTJGQmdxaUtaTllTRHVoeHFuZjJReTI3dGdJZHl2UGFoNWF1c1FiUS1lUG5CZkV6bXQxT3g1bw",
+      "description": "Temporais no Brasil: entenda como El Niño influencia eventos meteorológicos &nbsp;&nbsp; CNN Brasil",
+      "imageUrl": null,
+      "source": "CNN Brasil",
+      "publishedAt": "2026-11-12T16:48:28.000Z",
+      "firstSeenAt": "2026-11-12T19:00:36.425Z",
+      "lastSeenAt": "2026-11-12T19:00:36.425Z"
+    },
+    {
+      "id": "event-5314f998",
+      "category": "brasil",
+      "title": "Congresso muda orçamento em favor da Copa do Mundo de futebol feminino",
+      "url": "https://agenciabrasil.ebc.com.br/esportes/noticia/2026-11/congresso-muda-orcamento-favor-da-copa-do-mundo-de-futebol-feminino",
+      "description": "O Congresso Nacional aprovou, nesta quinta-feira (12), projeto de lei que flexibiliza regras fiscais e orçamentárias para a realização da Copa do Mundo Feminina da Fifa 2027 , no Brasil entre 24 de junho e 25 de julho. De autoria da Presidência da República, o Projeto de Lei do Congresso Nacional (PLN) nº 7 de 2026 prevê exceções pontuais a algumas regras Lei de Diretrizes Orçamentárias (LDO) de 2026 e da Lei de Responsabilidade Fiscal . Entre os pontos que podem ser flexibilizados, estão: proibição de criação de novas despesas obrigatórias em 2026; exigência de comprovação de que despesas continuadas não comprometem o cumprimento da meta fiscal; apresentação de estimativa do impacto orçamentário-financeiro; restrição à contratação de novo empréstimo quando houver outro da mesma natureza ainda não quitado; limitações à ampliação, à prorrogação ou à extensão de benefícios tributários. Notícias relacionadas: Definidas as regras para o sorteio dos grupos da Copa feminina de 2027. CBF divulga calendário masculino para 2027 com pausa da Copa Feminina. Maracanã será palco de abertura da Co",
+      "imageUrl": "https://imagens.ebc.com.br/y0YS2oALft75z__EnL9yfn8w2ac=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/09/16/cbf_anuncia_amistosos_da_selecao_feminina_em_palcos_da_copa_do_mundo.jpg?itok=RzS2OtL0",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-12T16:47:00.000Z",
+      "firstSeenAt": "2026-11-12T19:00:36.425Z",
+      "lastSeenAt": "2026-11-12T19:00:36.425Z"
+    },
+    {
+      "id": "event-fae7b360",
+      "category": "mundo",
+      "title": "Hoje no TecMundo (11): GTA 6 é recorde de pré-venda, Google lança nova IA e mais",
+      "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxQSDNiSG1HREwzbHVqV21lakExWGRjRnVBR04tNkt1MkpZcmRCeHVpbDYxeGV5azk3dlUtYjlZVVRmSmRHdW1vLUVXV3k2alNxZms4bDhLRWl5WGtJV1JnVmxsM0VnREl6aUU5Y2d5dUl1MUxWbmZuU295bGg1R0dWaHJuTUJnWVVJN2Q4NFNDNmk1WjlHQ19NN3pMUUo5SU9nMDFxMWFLbnUybWZIVjZMMTMzVktZaVFSM3R4OUJaX3fSAcYBQVVfeXFMT2tySDdQOGpBRElzME9SbHNlZjctWVh2cUNjRDVHdmJKbV9ZU2x0MFFtNWhxREhmWlplMlVIQ2ZWY0dMMWhRWXR5RDdDVlh3R2hjamRTRlhsMGYyTG9nVG4xZHZJa3RIMzJjMkpqZjBhSzVySjk5eUk2MTNYcERIWE9lYWd6aXh0MldVSGp5WWNCdzBfaHhmcWs3dE8xOEJVQnNnLUVzNml4eFlMdlBkRVNLWVp4YTFGMGxLMTVacWs4QnFySVFB",
+      "description": "Hoje no TecMundo (11): GTA 6 é recorde de pré-venda, Google lança nova IA e mais &nbsp;&nbsp; Estadão",
+      "imageUrl": null,
+      "source": "Estadão",
+      "publishedAt": "2026-11-12T16:36:49.000Z",
+      "firstSeenAt": "2026-11-12T19:00:36.425Z",
+      "lastSeenAt": "2026-11-12T19:00:36.425Z"
+    },
     {
       "id": "event-ec4c91c5",
       "category": "santa-catarina",
@@ -18,7 +162,7 @@
       "source": "www.portalviu.com.br",
       "publishedAt": "2026-11-12T11:13:08.000Z",
       "firstSeenAt": "2026-11-12T11:21:17.063Z",
-      "lastSeenAt": "2026-11-12T11:21:17.063Z"
+      "lastSeenAt": "2026-11-12T19:00:36.425Z"
     },
     {
       "id": "event-d0da876f",
@@ -330,170 +474,10 @@
       "source": "Terra",
       "publishedAt": "2026-11-11T19:01:00.000Z",
       "firstSeenAt": "2026-11-11T22:26:57.531Z",
-      "lastSeenAt": "2026-11-12T11:21:17.063Z"
-    },
-    {
-      "id": "event-8355439c",
-      "category": "santa-catarina",
-      "title": "Defesa Civil prevê temporais em SC e aumento da instabilidade na quinta-feira",
-      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxPRzNIaUNRM1BEMTk3bzBJUk1pN2V5Z0t1RDlnOENNb3J6blRmVlNKcjhHME1uTENMSFF1LTQ3R3RXeWd5T25KWGh0TE9MRVRkTWdIUlI2TC1Vbk9EbXRrYVlfdk9PTkVBNmJyUU5TMnpCUVdnLUlsRXNjaW53QmtESkRRQ3lOQVNoTFZoMXU4QXg4WVBzWW85SVBIR2dueV9VZkVVcERiVkhsc1lxRVFMYmg1RVgza3diZTJ5ZlRn",
-      "description": "Defesa Civil prevê temporais em SC e aumento da instabilidade na quinta-feira &nbsp;&nbsp; Oeste Mais",
-      "imageUrl": null,
-      "source": "Oeste Mais",
-      "publishedAt": "2026-11-11T18:37:55.000Z",
-      "firstSeenAt": "2026-11-11T22:26:57.531Z",
-      "lastSeenAt": "2026-11-12T03:14:31.320Z"
-    },
-    {
-      "id": "event-eae3cc65",
-      "category": "santa-catarina",
-      "title": "Temporais com granizo e vento forte podem atingir maior parte de SC nesta quinta",
-      "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxNV3VvYlo0S0p4QXhWQkF1NlBUaVo3azk4NWpoalpsLXEyRTJ3bC0tMWstbUlrS2cxU3ZlTm1KVEhmZVRIM3g1eWxjOC16eG1KMjBPeWxJV19zbG0xYTdlSzhFal9kZE15Q3B0ckwySjIwdWxfcm9UazlmME91aDkzblVlUDZyelpfeUtQMm5lN211T3E5aW8xRUhCSFF6Q1oyNlcwaWpwcWZFVTIyeHhKTVN6TFlVaVBl",
-      "description": "Temporais com granizo e vento forte podem atingir maior parte de SC nesta quinta &nbsp;&nbsp; TopElegance",
-      "imageUrl": null,
-      "source": "TopElegance",
-      "publishedAt": "2026-11-11T15:58:56.000Z",
-      "firstSeenAt": "2026-11-11T22:26:57.531Z",
-      "lastSeenAt": "2026-11-12T03:14:31.320Z"
-    },
-    {
-      "id": "event-f6ce2c87",
-      "category": "brasil",
-      "title": "Brasil precisa de uma política nacional para eventos de negócios? novo template",
-      "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE8zTklPMUFiM2hjdUc2MjNYZXRScklWdXBNYXItSFhBUmt1dTFCRGVZZk4wUndPR0tMaG5FRlF3am9FNXVBcUp0N3NzaWZ5RFNtT1l3WEpHVFdtTE5UUzU1RzdreHJzbkU",
-      "description": "Brasil precisa de uma política nacional para eventos de negócios? novo template &nbsp;&nbsp; Portal Radar",
-      "imageUrl": null,
-      "source": "Portal Radar",
-      "publishedAt": "2026-11-11T15:04:14.000Z",
-      "firstSeenAt": "2026-11-11T15:55:43.486Z",
-      "lastSeenAt": "2026-11-11T15:55:43.486Z"
-    },
-    {
-      "id": "event-bd99c57",
-      "category": "brasil",
-      "title": "Congresso prorroga por 60 dias MP que proíbe bets no país",
-      "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2026-11/congresso-prorroga-por-60-dias-mp-que-proibe-bets-no-pais",
-      "description": "O Congresso prorrogou por 60 dias a vigência da Medida Provisória (MP) 1.394/2026 , que proibiu a exploração, a oferta, a intermediação e a publicidade das bets em todo o país. O ato assinado pelo senador Davi Alcolumbre está publicado no Diário Oficial da União desta quarta-feira (11). Notícias relacionadas: Entidades da pediatria defendem que bets devem continuar proibidas. Fux suspende todas as ações judiciais contra proibição de bets no país. PGR pede suspensão de ações contra proibição de bets. Instituída em setembro deste ano, a MP determinou o encerramento das operações das plataformas de apostas on-line no Brasil e estabeleceu regras para a devolução dos valores mantidos pelos apostadores nas contas das empresas. Após assinar o texto, o presidente Luiz Inácio Lula da Silva chegou a comparar as casas de apostas on-line com um “câncer” . “Eu tomei uma medida dura e drástica necessária. Isso é como um câncer. Ou a gente tira o tumor, ou esse tumor vai matar a gente.” Com a publicação da medida, novos depósitos passaram a ser proibidos imediatamente. Fiscalização A medida provisó",
-      "imageUrl": "https://imagens.ebc.com.br/kDG3qdfMXjfFNGOXBnBeZCZgNGg=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2025/03/13/lula4382.jpg?itok=X_F4KEFl",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-11T14:57:00.000Z",
-      "firstSeenAt": "2026-11-11T15:55:43.486Z",
-      "lastSeenAt": "2026-11-11T15:55:43.486Z"
-    },
-    {
-      "id": "event-981fc490",
-      "category": "brasil",
-      "title": "CLDF aprova reeleição de membros da Mesa Diretora",
-      "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2026-11/cldf-aprova-reeleicao-de-membros-da-mesa-diretora",
-      "description": "A Câmara Legislativa do Distrito Federal aprovou, nesta terça-feira (10), por 15 votos a 1, a Proposta de Emenda à Lei Orgânica (Pelo) nº 22/2026 . A medida autoriza deputados distritais reeleitos que já integram a Mesa Diretora a voltarem a disputar um cargo de comando da Casa para os dois primeiros anos da legislatura subsequente. Notícias relacionadas: CLDF vota proposta que libera reeleição de membros da Mesa Diretora. Apresentada pelo Pastor Daniel de Castro (PP) e por outros parlamentares, a proposta já tinha sido aprovada em primeiro turno em 27 de outubro, por 17 votos a 6. Com a aprovação definitiva, em segundo turno, a norma será promulgada com efeitos já para a próxima eleição da Mesa Diretora. A proposta aprovada retoma a redação original da Lei Orgânica que, antes de ser alterada em 2024, estava em conformidade com a Constituição Federal e com decisões do Supremo Tribunal Federal (STF). A Carta Magna proíbe a reeleição de membros das Mesas Diretoras da Câmara dos Deputados e do Senado para o mesmo cargo, dentro de uma mesma legislatura. Já o STF estabeleceu que, embora a",
-      "imageUrl": "https://imagens.ebc.com.br/RsY4jbxN7C4C1rpcN1si3mWX91U=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/124a6307.jpg?itok=DWy6HHqg",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-11T14:50:00.000Z",
-      "firstSeenAt": "2026-11-11T15:55:43.486Z",
-      "lastSeenAt": "2026-11-11T15:55:43.486Z"
-    },
-    {
-      "id": "event-8599bdbf",
-      "category": "mundo",
-      "title": "Centenas de escolas recebem ameaças simultâneas de bomba em nova onda de alarmes na Europa",
-      "url": "https://news.google.com/rss/articles/CBMikAJBVV95cUxNUUgwMmMxSFJwSTdSbUZMTHM2bjVhbFFJaXctaW1ISGNjM0djTmp2eUFKZl9ZVDY5WFZkZFF3X2Q3RzZXV1l0eHVhM0ZtekdXOTdBS2JIdjlXMXQyUUlSLVFCYjhzaHdpMVd2bVpVRENUYW1MRm9UblhsbU1vT3N4eDJrS3VURnRYWVZNR3lJVDJWbDN5djMwSUtaR3NKRHBQOE9pdlFsdmZwNGdsN3hVNkU3aW9kaGxPR01rTHFFdURZQXFrc3Q1UW1KSVdwWWMwVngtMy1WbEVRNlN1em5XWWxZanFfQWRxeWMyNzk0TkhNNFVKcU8tTzBqQzcxbUhveVhrYW5hOVhGQWxTT21BSA",
-      "description": "Centenas de escolas recebem ameaças simultâneas de bomba em nova onda de alarmes na Europa &nbsp;&nbsp; Terra",
-      "imageUrl": null,
-      "source": "Terra",
-      "publishedAt": "2026-11-11T14:46:00.000Z",
-      "firstSeenAt": "2026-11-11T15:55:43.486Z",
-      "lastSeenAt": "2026-11-11T15:55:43.486Z"
-    },
-    {
-      "id": "event-eaab4008",
-      "category": "clima",
-      "title": "El Niño até 2027: o que muda no manejo animal",
-      "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTFB2UkhyLVFoOGFMMjJyX2RycXlZTHRjQjU0SWdrRWJnVTJpdmFTazQ1N255blVGZU9CQkt5LW04N2NCZThBYTNDa2NmRkU0aEQtenhleWV4NEVPQ21vUVd1cnk3cw",
-      "description": "El Niño até 2027: o que muda no manejo animal &nbsp;&nbsp; Agronews Brasil",
-      "imageUrl": null,
-      "source": "Agronews Brasil",
-      "publishedAt": "2026-11-11T14:15:03.000Z",
-      "firstSeenAt": "2026-11-11T15:55:43.486Z",
-      "lastSeenAt": "2026-11-11T22:26:57.531Z"
-    },
-    {
-      "id": "event-14796665",
-      "category": "brasil",
-      "title": "Notícias sobre Lula [Luiz Inácio Lula da Silva]",
-      "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTFB6UmVlMG9BYmJHU1piMDlnRkdvVE5ybFdJbDFqNGpaOWc2eExVekpxdmdrUURSOHhCeEpaUTJBeGlDQ1dSb3RBTzhhbUZoZnZEUlhJdWZmQ2cyU0ZqZ3dBX2lWMkhLWXNVc0JiN3k5SWx1MWRRZUxILQ",
-      "description": "Notícias sobre Lula [Luiz Inácio Lula da Silva] &nbsp;&nbsp; Estadão",
-      "imageUrl": null,
-      "source": "Estadão",
-      "publishedAt": "2026-11-11T14:10:18.000Z",
-      "firstSeenAt": "2026-11-11T15:55:43.486Z",
-      "lastSeenAt": "2026-11-11T15:55:43.486Z"
-    },
-    {
-      "id": "event-2beb54c3",
-      "category": "mundo",
-      "title": "Trabalhadores espanhóis fazem primeira greve geral em 14 anos",
-      "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/trabalhadores-espanhois-fazem-primeira-greve-geral-em-14-anos",
-      "description": "Trabalhadores espanhóis entraram em greve geral nesta quarta-feira (11), enfrentando condições climáticas adversas para montar piquetes em um protesto em massa contra a crise de acessibilidade à moradia no país, a menos de três semanas das eleições gerais antecipadas. Trata-se da primeira greve geral desde que os trabalhadores paralisaram as atividades em 2012 contra as medidas de austeridade durante a crise da dívida na zona do euro. A greve conta com o apoio dos dois maiores sindicatos da Espanha, UGT e CCOO, que representam mais de 1 milhão de trabalhadores, bem como de associações de inquilinos indignadas com o aumento dos aluguéis e os despejos. Notícias relacionadas: Habitação: Espanha antecipa eleições; sindicatos chamam à greve geral. Protestos em Madri entram no 3º dia após despejo de aposentada. O primeiro-ministro Pedro Sánchez espera aproveitar o descontentamento dos eleitores em relação à questão da moradia nas eleições de 29 de novembro para desviar o foco político dos casos de corrupção envolvendo pessoas próximas e de um acidente ferroviário fatal ocorrido no mês pass",
-      "imageUrl": "https://imagens.ebc.com.br/i4GewoUGrxULivcE81ntck02UCQ=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/11/2026-11-11t133005z_1_lynxnpemaa18o_rtroptp_4_spain-strike-madrid.jpg?itok=CTWsmyD5",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-11T14:03:00.000Z",
-      "firstSeenAt": "2026-11-11T15:55:43.486Z",
-      "lastSeenAt": "2026-11-11T15:55:43.486Z"
-    },
-    {
-      "id": "event-192ba415",
-      "category": "mundo",
-      "title": "Apagão mundial vai acontecer em 17 de novembro? Entenda a origem do boato",
-      "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxQdVJWeE1INnRaNnJUeFpiU1hOMExJWmJMREFEMzQ0dE53NzR3MEwtY1ZGR0xDR1B2RmFjNWNlTGY0d093S1pwRldDTlpHQUlra3I3WXN0U1EtYWlUZWR6RTBPTFJVaHRlakVTalBhdHhlZm9JNld1VlhHN0YzUnBKcUNNRHItWURFUDllTGRyYUJvc3Q1MU54bEVua9IBoAFBVV95cUxOVV9pLV80R0gtZzNNNGlqWUhsMXVoNG0tTGR0R25YYjhXcURPOUs4Z3l6WWd2T056T1NfWEQtOHhRRFQzTW5nT0F1ZU9rY2JaSjJkTHYzR0VoaUpKSElER2U5blE2bDRBamtpREs1dFU1LTVOTHBPNnc2aS10OXctZ3hPNUlyWEZJWDUzSHJCaDgwWXhFLVBodFFzdFlUeHJK",
-      "description": "Apagão mundial vai acontecer em 17 de novembro? Entenda a origem do boato &nbsp;&nbsp; Imirante.com",
-      "imageUrl": null,
-      "source": "Imirante.com",
-      "publishedAt": "2026-11-11T13:51:41.000Z",
-      "firstSeenAt": "2026-11-11T15:55:43.486Z",
-      "lastSeenAt": "2026-11-11T15:55:43.486Z"
-    },
-    {
-      "id": "event-5394826a",
-      "category": "santa-catarina",
-      "title": "Defesa Civil alerta para possibilidade de retorno das chuvas intensas e temporais nesta quarta (11) e quinta-feira (12)",
-      "url": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxPYVdpVWQ4OWtnT1luX3dWb2hKazZUeU94VERRRXQtSjI4RFo0WndyREtqdzhfYjcyeEhVd0xSSjUwUzJmRUdRY05TZUljaWMzbVVvZW9Hc1hrdVJyTG9tT3hmODJfb1dPdXhqdGQtQWxfUm5EYkV2cFJuOG1xckF2cHVhTklOdklXSzlpb3hIdXR3ajhkd3BXYjFERFlwcUhBZGQxMzZoNVUzZHlkb0V3M1dwM3N5NTFENGVkM1VGWkpocUc3YUtrSUlBbjFzbkpPRGstRzRRSEdxcld4SE9uVzR30gHnAUFVX3lxTE9ZNXZtSVg4Vk5WSUZ6X0xqLWJQVVhvdTFHdnlURWFjR3kwbEc2c19VN0NBdkR4QzhiZ3JMSGpFd242ZG1sSExYYnptVF8zR2V0S1JsR2tQeFRnS09RbGtLa1RnSjl1czJJTkFlTmxISUtLNXhpWmI2QnNMM3BhZjh2WGR4bTl1R3ZjcnBGNFc1NTZNcGJrNHZaVWplT2NmOWRSY3lDaU5DRFFQMTh5SU0tdkpHaGg0T2VyU3BPS2dCTzd2c0pTcnQySWU0SHVfcldpZDdZcFFTTGZNQ3ZhUzBuQmtJaDQ3Zw",
-      "description": "Defesa Civil alerta para possibilidade de retorno das chuvas intensas e temporais nesta quarta (11) e quinta-feira (12) &nbsp;&nbsp; Blog do Prisco",
-      "imageUrl": null,
-      "source": "Blog do Prisco",
-      "publishedAt": "2026-11-11T13:20:08.000Z",
-      "firstSeenAt": "2026-11-11T22:26:57.531Z",
-      "lastSeenAt": "2026-11-11T22:26:57.531Z"
-    },
-    {
-      "id": "event-a092ad94",
-      "category": "europa",
-      "title": "Mais de 6 mil escolas recebem ameaças de bomba na Europa - SBT News",
-      "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxONlpDaTRlZmZFbE12WjByMGtxRHh5WDJ3VkZMajhicXdDM1BXRnZ0dlhaRXJpVnJYVDRrRVNXY0xhekNxY3J6aGZZb2l2ZGQ0Yl9lNEluekVJblFiNVVua3h2cEc3aF9ZVlRXdnNSNlBwVnNfVFNybDVRenBwRUtFWWxVZ0MtOFVWQUN1OXFZVWRESEl1WHhsMW1iWQ",
-      "description": "Mais de 6 mil escolas recebem ameaças de bomba na Europa &nbsp;&nbsp; SBT News",
-      "imageUrl": null,
-      "source": "SBT News",
-      "publishedAt": "2026-11-11T12:58:23.000Z",
-      "firstSeenAt": "2026-11-11T22:26:57.531Z",
-      "lastSeenAt": "2026-11-11T22:26:57.531Z"
+      "lastSeenAt": "2026-11-12T19:00:36.425Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-11T15:55:43.486Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 13,
-      "newArticles": 13,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "asia"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-11T22:26:57.531Z",
       "ok": true,
@@ -543,49 +527,39 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-12T19:00:36.425Z",
+      "ok": true,
+      "partial": true,
+      "observedArticles": 14,
+      "newArticles": 12,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "europa"
+      ],
+      "inmetChecked": false,
+      "ensoChecked": true
     }
   ],
   "checkCount": 4,
-  "lastSuccessfulAt": "2026-11-12T11:21:17.063Z",
+  "lastSuccessfulAt": "2026-11-12T19:00:36.425Z",
   "latest": {
     "alerts": {
-      "checked": true,
-      "checkedAt": "2026-11-12T11:21:17.063Z",
-      "warnings": [
-        {
-          "id": "56356",
-          "title": "Acumulado de Chuva",
-          "severity": "Perigo Potencial",
-          "phase": "vigente",
-          "regions": [],
-          "startsAt": "2026-11-10T00:00:00.000Z",
-          "endsAt": "2026-11-13T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
-        },
-        {
-          "id": "56382",
-          "title": "Tempestade",
-          "severity": "Perigo Potencial",
-          "phase": "previsto",
-          "regions": [
-            "DO",
-            "DE"
-          ],
-          "startsAt": "2026-11-13T00:00:00.000Z",
-          "endsAt": "2026-11-13T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
-        }
-      ]
+      "checked": false,
+      "checkedAt": "2026-11-12T19:00:36.425Z",
+      "warnings": []
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-12T11:21:17.063Z",
+      "checkedAt": "2026-11-12T19:00:36.425Z",
       "bulletin": {
         "status": "El Niño Advisory",
-        "issued": "8 October 2026",
-        "synopsis": "El Niño continues to strengthen, with a strong-to-very strong El Niño likely through January-March 2027 (remaining greater than an 83&#37; chance).",
+        "issued": "12 November 2026",
+        "synopsis": "El Niño continues to strengthen, with a strong-to-very strong El Niño likely through January-March 2027 (remaining greater than a 79&#37; chance). Compared to last month,",
         "source": "NOAA / Climate Prediction Center",
         "url": "https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.html",
         "kind": "monthly-climate-bulletin"
