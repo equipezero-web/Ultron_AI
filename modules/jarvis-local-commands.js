@@ -1,4 +1,5 @@
 import { JARVIS_CAPABILITIES } from "../backend/jarvis-capabilities.js?v=4.67.0";
+import {clearVisibleInterface} from "./jarvis-clear-interface.js?v=4.97.0";
 
 export const normalizeCommand=value=>String(value||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim().replace(/^(?:(?:ei|ola|hey)\s+)?(?:jarvis|j\.a\.r\.v\.i\.s\.?|ultron)[, :!?\s]+/,"").replace(/^(?:por favor[, ]+|me diga[, ]+|me fale[, ]+|eu quero que voce\s+|quero que voce\s+)+/,"").replace(/\s+/g," ").trim();
 
@@ -8,6 +9,8 @@ export function parseLocalCommand(value){
   if(/^(?:nao|nunca|se |e se |como (?:eu |posso |faco |faz)|por que|porque)\b/.test(q))return null;
   const plain=q.replace(/[.!?]+$/,"").trim();
   if(/^(?:(?:o que|que) (?:voce|tu|o jarvis|o ultron) (?:pode|consegue|sabe) fazer|(?:o que|que) (?:voce|tu) faz|quais (?:sao )?(?:as )?(?:suas|tuas) (?:capacidades|habilidades|funcoes|funcionalidades|ferramentas)|quais (?:sao )?(?:as )?funcionalidades (?:do|de) (?:jarvis|ultron)|quem e voce|o que mais voce pode fazer|quais recursos voce tem|me mostre suas funcionalidades)$/.test(plain))return {type:"capabilities"};
+  // "Limpar tudo" means the visible command surface, NEVER stored history/data.
+  if(/^(?:por favor )?(?:(?:pode|consegue) )?(?:limpar|limpe|limpa|apagar|apague|apaga)\s+(?:tudo|(?:a |o )?(?:tela|painel(?: neural)?|interface(?: do jarvis)?))(?:\s+(?:agora|por favor))?$/.test(plain))return {type:"clear-interface"};
   const match=plain.match(/^(?:por favor )?(?:pode |consegue |quero )?(desative|desativar|desativa|oculte|ocultar|esconda|esconder|remova|remover|retire|retirar|tire|tirar|ative|ativar|ativa|habilite|habilitar|ligue|ligar|mostre|mostrar|exiba|exibir|restaure|restaurar|volte a mostrar|pare de mostrar)\s+(?:o |os |a |as )?(?:textos?|respostas? em texto|legendas?)(?:\s+(?:(?:do|no|da|na)\s+(?:painel\s+)?(?:neural ring|neural|anel neural|painel de respostas|jarvis)|(?:agora|por favor)))*$/);
   if(!match)return null;
   return {type:"neural-text",enabled:/^(?:ative|ativar|ativa|habilite|habilitar|ligue|ligar|mostre|mostrar|exiba|exibir|restaure|restaurar|volte a mostrar)$/.test(match[1])};
@@ -15,6 +18,13 @@ export function parseLocalCommand(value){
 export async function runLocalCommand(command){
   const intent=parseLocalCommand(command);
   if(!intent)return null;
+  if(intent.type==="clear-interface"){
+    const result=clearVisibleInterface();
+    return {ok:result.ok,handled:true,quiet:result.ok,cleared:result.cleared,
+      route:"local-clear-interface",provider:"jarvis-local",text:result.ok?
+      "Painel visual limpo. Dados armazenados preservados.":
+      "Não consegui limpar completamente o painel visual. "+result.errors.join("; ").slice(0,180)};
+  }
   // Wait briefly for the mounted UI, without calling an external provider.
   let answer=window.ULTRON_NEURAL_ANSWER;
   for(let i=0;!answer&&i<20;i++){await new Promise(r=>setTimeout(r,50));answer=window.ULTRON_NEURAL_ANSWER;}
