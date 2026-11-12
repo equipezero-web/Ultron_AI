@@ -1,36 +1,92 @@
-// Wheel routing for the shared Neural Ring / globe / Mapbox / 2D stage.
-// Standard wheel scrolls the PAGE. Ctrl+wheel is reserved for explicit zoom;
-// maps, news and tooltips may still scroll their OWN overflowable content.
-document.addEventListener('wheel', event => {
-  const target=event.target;
-  if(!document.body.classList.contains('jarvis-command-center')||
-     !target?.closest||event.ctrlKey||event.metaKey)return;
-  const stage=target.closest('.jarvis-cc-center, .jarvis-earth-reference-layout');
-  if(!stage)return;
-  if(target.closest('textarea,input,select,[contenteditable="true"],iframe,.screen-modal'))return;
-  // Capture before Mapbox.gl / Globe.gl / HUD listeners consume wheel input.
-  // Only route this exact user gesture; never scroll during passive hover.
-  if(event.cancelable)event.preventDefault();
-  event.stopImmediatePropagation();
-  const delta=event.deltaY*(event.deltaMode===1?16:event.deltaMode===2?innerHeight:1);
-  if(!Number.isFinite(delta)||Math.abs(delta)<.01)return;
-  // Panels are allowed to scroll independently. At their edges, wheel chains
-  // to the document even if an older stylesheet declares overscroll containment.
-  const overMap=Boolean(target.closest(
-    '#jarvis-cc-canvas,.jarvis-earth-renderer canvas,.mapboxgl-canvas,.jarvis-geo-2d svg'));
-  let scroller=null;
-  if(!overMap)for(let el=target;el&&el!==document.body;el=el.parentElement){
-    if(el===stage)break;
-    if(el.scrollHeight<=el.clientHeight+2)continue;
-    const overflow=getComputedStyle(el).overflowY;
-    if(!/^(auto|scroll)$/.test(overflow))continue;
-    if(delta>0?el.scrollTop<el.scrollHeight-el.clientHeight-2:el.scrollTop>2){
-      scroller=el;break;
+// The active 3D/2D surface owns normal wheel zoom. To scroll the whole
+// document while hovering a map, the user has a narrow, permanent rail on
+// the RIGHT (plus the native page scrollbar). Never intercept wheel globally.
+function installJarvisPageScrollRail(){
+  if(document.getElementById('jarvis-page-scroll-rail'))return;
+  const rail=document.createElement('div');
+  rail.id='jarvis-page-scroll-rail';
+  rail.className='jarvis-page-scroll-rail';
+  rail.setAttribute('role','scrollbar');
+  rail.setAttribute('aria-label','Rolagem vertical da página J.A.R.V.I.S. na lateral direita');
+  rail.setAttribute('aria-orientation','vertical');
+  rail.setAttribute('aria-valuemin','0');
+  rail.setAttribute('aria-valuemax','100');
+  rail.tabIndex=0;
+  rail.title='Role a página nesta faixa; sobre o Ring ou o mapa, a roda aproxima e afasta.';
+  const thumb=document.createElement('span');
+  thumb.className='jarvis-page-scroll-thumb';
+  thumb.setAttribute('aria-hidden','true');
+  rail.append(thumb);
+  document.body.append(rail);
+  const scroller=()=>document.scrollingElement||document.documentElement;
+  let dragging=null;
+  const update=()=>{
+    const node=scroller(),maximum=Math.max(0,node.scrollHeight-node.clientHeight);
+    const available=Math.max(1,rail.clientHeight);
+    const thumbHeight=Math.max(38,Math.min(available,available*node.clientHeight/Math.max(1,node.scrollHeight)));
+    const travel=Math.max(0,available-thumbHeight);
+    thumb.style.height=thumbHeight+'px';
+    thumb.style.transform='translateY('+(maximum>0?travel*node.scrollTop/maximum:0)+'px)';
+    rail.setAttribute('aria-valuenow',String(maximum>0?Math.round(100*node.scrollTop/maximum):0));
+    rail.hidden=maximum<4;
+    return {maximum,travel};
+  };
+  const moveTo=(clientY,offset)=>{
+    const {maximum,travel}=update();
+    if(!maximum||!travel)return;
+    const top=rail.getBoundingClientRect().top;
+    scroller().scrollTop=Math.max(0,Math.min(maximum,(clientY-top-offset)/travel*maximum));
+    update();
+  };
+  rail.addEventListener('wheel',event=>{
+    if(event.ctrlKey||event.metaKey)return;
+    event.preventDefault();event.stopPropagation();
+    const delta=event.deltaY*(event.deltaMode===1?16:event.deltaMode===2?innerHeight:1);
+    if(Number.isFinite(delta))window.scrollBy({top:delta,behavior:'instant'});
+    update();
+  },{passive:false});
+  rail.addEventListener('pointerdown',event=>{
+    if(event.button!==0)return;
+    event.preventDefault();
+    const rect=thumb.getBoundingClientRect();
+    const clickOnThumb=event.clientY>=rect.top&&event.clientY<=rect.bottom;
+    dragging={id:event.pointerId,offset:clickOnThumb?event.clientY-rect.top:rect.height/2};
+    try{rail.setPointerCapture(event.pointerId);}catch{}
+    if(!clickOnThumb)moveTo(event.clientY,dragging.offset);
+  });
+  rail.addEventListener('pointermove',event=>{
+    if(!dragging||dragging.id!==event.pointerId)return;
+    moveTo(event.clientY,dragging.offset);
+  });
+  const release=event=>{
+    if(dragging&&dragging.id===event.pointerId)dragging=null;
+  };
+  rail.addEventListener('pointerup',release);
+  rail.addEventListener('pointercancel',release);
+  rail.addEventListener('lostpointercapture',release);
+  rail.addEventListener('keydown',event=>{
+    let dy=null;
+    if(event.key==='ArrowDown')dy=60;
+    if(event.key==='ArrowUp')dy=-60;
+    if(event.key==='PageDown'||event.key===' ')dy=innerHeight*.85;
+    if(event.key==='PageUp')dy=-innerHeight*.85;
+    if(event.key==='Home'||event.key==='End'){
+      event.preventDefault();
+      scroller().scrollTop=event.key==='Home'?0:scroller().scrollHeight;
+      update();return;
     }
+    if(dy!==null){event.preventDefault();window.scrollBy({top:dy,behavior:'instant'});update();}
+  });
+  window.addEventListener('scroll',update,{passive:true});
+  window.addEventListener('resize',update,{passive:true});
+  if(typeof ResizeObserver==='function'){
+    const observer=new ResizeObserver(update);
+    observer.observe(document.body);
   }
-  (scroller||document.scrollingElement||document.documentElement)
-    .scrollBy({top:delta,behavior:'instant'});
-},{passive:false,capture:true});
+  requestAnimationFrame(update);
+}
+if(document.body)installJarvisPageScrollRail();
+else document.addEventListener('DOMContentLoaded',installJarvisPageScrollRail,{once:true});
 
 // Restore scrolling if a legacy subsystem leaves an inline overflow lock after a command.
 // Do not interfere with the fullscreen camera modal.
@@ -205,7 +261,7 @@ if (earthVisual) {
         projection:'globe',
         dragPan:true,dragRotate:false,
         scrollZoom:true,doubleClickZoom:true,touchZoomRotate:true,touchPitch:false,
-        boxZoom:false,keyboard:false,cooperativeGestures:true,
+        boxZoom:false,keyboard:false,cooperativeGestures:false,
         attributionControl:true,antialias:!mobileGPU,maxZoom:20,
         fadeDuration:mobileGPU?0:300
       });
