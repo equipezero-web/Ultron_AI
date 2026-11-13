@@ -227,7 +227,8 @@ body.jarvis-command-center :is(.jarvis-cc-console-terminal,.jarvis-cc-system-doc
   gap:8px!important;
  }
  body.jarvis-command-center .jarvis-cc-dock-grid{
-  grid-template-columns:minmax(0,1fr)!important;
+  /* Four real system cards remain the established compact 2×2 grid. */
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
   gap:7px!important;
  }
  body.jarvis-command-center .jarvis-cc-tool-actions{
