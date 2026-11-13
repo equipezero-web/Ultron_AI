@@ -15,7 +15,7 @@ const project=(region,lng,lat)=>region==="pernambuco"?
 export function renderRadarMap(container,manifest,frame,{region="brazil",opacity=.78}={}){
  const root=svg("svg",{viewBox:"0 0 900 550",role:"img",
     "aria-label":"Radar meteorológico de ecos observados em "+
-      (region==="pernambuco"?"Pernambuco":"Brasil")+"; mapa dentro do Neural Ring"});
+      (region==="pernambuco"?"Pernambuco":"Brasil")+"; mapa dentro do Neural Jarvis"});
  root.classList.add("jarvis-meteo-radar-map");
  root.append(svg("rect",{x:0,y:0,width:900,height:550,fill:"#092238"}));
  const lines=svg("g",{stroke:"#2f526c","stroke-dasharray":"3 8","stroke-width":.7});
