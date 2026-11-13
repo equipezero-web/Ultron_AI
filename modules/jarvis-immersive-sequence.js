@@ -61,7 +61,7 @@ export function createImmersiveNavigator(sequence,{mode="2d"}={}){
       return {ok:false,reason:"INVALID_DIRECTION"};
     const next=index+delta;
     if(next<0||next>=sequence.items.length)
-      return {ok:false,reason:"END_OF_SEQUENCE",...snapshot()};
+      return {...snapshot(),ok:false,reason:"END_OF_SEQUENCE"};
     index=next;return snapshot();
   };
   const setMode=next=>{
