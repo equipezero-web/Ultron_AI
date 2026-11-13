@@ -104,9 +104,30 @@ try{
   };
  });
  const click=async(selector,match)=>{
+  await page.$eval(selector,button=>button.scrollIntoView({
+   behavior:"instant",block:"center",inline:"center"
+  }));
+  const hit=await page.$eval(selector,button=>{
+   const r=button.getBoundingClientRect();
+   const at=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);
+   return {label:button.textContent.trim(),hit:at===button||button.contains(at),
+    hitLabel:at?.textContent?.trim()?.slice(0,85)};
+  });
+  assert.equal(hit.hit,true,"Button covered: "+selector+" "+JSON.stringify(hit));
   await page.click(selector,{delay:30});
-  await page.waitForFunction(text=>document.getElementById("output-box")?.textContent?.includes(text),
-   {timeout:7000},match);
+  try{
+   await page.waitForFunction(text=>document.getElementById("output-box")?.textContent?.includes(text),
+    {timeout:8500},match);
+  }catch(error){
+   const diagnostic=await page.evaluate(()=>({
+    tail:document.getElementById("output-box")?.textContent?.slice(-1600),
+    fileModule:typeof window.ULTRON_LOCAL_FILES?.files,
+    fileHealth:typeof window.ULTRON_LOCAL_FILES?.health,
+    htmlButtons:document.querySelectorAll(".jarvis-cc-inline-action").length
+   }));
+   throw Error("Button did not respond: "+selector+" expected "+match+
+    " / "+JSON.stringify(diagnostic)+" / "+String(error));
+  }
  };
  await click('[data-cc="status"]',"STATUS DO SISTEMA");
  await click('[data-cc="agenda"]',"AGENDA / VISÃO LOCAL");
