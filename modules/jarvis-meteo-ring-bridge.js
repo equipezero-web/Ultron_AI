@@ -113,7 +113,7 @@ function install(){
      if(runId!==token||panel.hidden||activeTab!=="satellite")return;
      nativeCount=r.ok?1:0;
      status.textContent=r.ok?
-       "Imagem real GOES-19 / NOAA-CIRA dentro do Neural Ring. "+
+       "Imagem real GOES-19 / NOAA-CIRA dentro do Neural Jarvis. "+
        "Data e hora exatas da captura não foram verificadas; GeoColor (visível/IR) NÃO mede chuva em mm.":
        "A imagem NOAA não carregou. Não há substituição fictícia.";
    }});
@@ -186,7 +186,7 @@ function install(){
    meta.textContent=tab==="radar"?
      "RADAR REAL · mosaicos RainViewer em 2D / globo 3D Mapbox. Não é previsão nem o radar exclusivo do INPE.":
      tab==="satellite"?
-     "SATÉLITE REAL · GOES-19 NOAA/CIRA, disco completo diretamente no Neural Ring.":
+     "SATÉLITE REAL · GOES-19 NOAA/CIRA, disco completo diretamente no Neural Jarvis.":
      "INMET · estações georreferenciadas; catálogo não inclui precipitação observada.";
    for(const node of tabButtons)node.setAttribute("aria-pressed",String(node.dataset.meteoTab===tab));
    if(tab==="radar")await radarView(runId,{refresh});
