@@ -65,7 +65,7 @@ try{
  assert.deepEqual(after,{enabled:false,scenarioHidden:true,stored:null});
  const sideScroll=await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth);
  assert.ok(sideScroll<=3,"Mobile horizontal overflow: "+sideScroll);
- const unauthorized=await run("faça uma compra usando minha conta");
- assert.equal(unauthorized?.handled===true&&unauthorized?.type==="simulation",false);
+ const unauthorized=await page.evaluate(()=>window.ULTRON_INTEGRATED_INTELLIGENCE.parse("faça uma compra usando minha conta"));
+ assert.equal(unauthorized,null,"The advanced subsystem must never intercept financial requests.");
  console.log("PHASES XV–XIX BROWSER PASS: mobile terminal, source agents, consented memory/routine, 2D/3D drawing and P0.");
 }finally{await browser.close();}
