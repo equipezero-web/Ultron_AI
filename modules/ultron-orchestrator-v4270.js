@@ -600,6 +600,7 @@ function cancelP0Operations(reason="local",epoch=null){
   missionGate.clear();
   activeController?.abort();
   recoveryEngine.cancelAll();
+  window.ULTRON_INTEGRATED_INTELLIGENCE?.stop?.("P0_STOP");
   window.ULTRON_SUPERVISED_AUTONOMY?.cancel?.("P0_STOP");
   window.ULTRON_MULTIMODAL?.stop?.();
   window.ULTRON_VISUAL_ORCHESTRATOR?.stop?.();
@@ -613,6 +614,9 @@ window.addEventListener("ultron:emergency-stop",event=>{
   cancelP0Operations("priority-core",event?.detail?.epoch);
 });
 function enqueue(message, source = "terminal", approvedMission = false) {
+  // Phases XV–XIX: strict read-only commands are routed ahead of generic missions.
+  const integratedIntent=window.ULTRON_INTEGRATED_INTELLIGENCE?.parse?.(message);
+  if(integratedIntent)return window.ULTRON_INTEGRATED_INTELLIGENCE.execute(message,{source});
   // Phase XIV: consented bounded sequences must be checked before generic missions.
   const supervisedIntent=window.ULTRON_SUPERVISED_AUTONOMY?.parse?.(message);
   if(supervisedIntent)return window.ULTRON_SUPERVISED_AUTONOMY.execute(message,{source});
