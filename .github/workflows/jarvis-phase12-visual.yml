@@ -1,0 +1,70 @@
+name: JARVIS Phase XII Visual Orchestration
+on:
+  pull_request:
+    paths:
+      - 'modules/jarvis-visual-orchestration-model.js'
+      - 'modules/jarvis-visual-orchestrator.js'
+      - 'modules/jarvis-visual-orchestrator.css'
+      - 'modules/ultron-orchestrator-v4270.js'
+      - 'index.html'
+      - 'tests/jarvis-phase12-visual-orchestration.mjs'
+      - 'tests/jarvis-phase12-visual-browser.mjs'
+      - '.github/workflows/jarvis-phase12-visual.yml'
+  push:
+    paths:
+      - 'modules/jarvis-visual-orchestration-model.js'
+      - 'modules/jarvis-visual-orchestrator.js'
+      - 'modules/jarvis-visual-orchestrator.css'
+      - 'modules/ultron-orchestrator-v4270.js'
+      - 'index.html'
+      - 'tests/jarvis-phase12-visual-orchestration.mjs'
+      - 'tests/jarvis-phase12-visual-browser.mjs'
+      - '.github/workflows/jarvis-phase12-visual.yml'
+permissions:
+  contents: read
+jobs:
+  verified-scenes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Static syntax and safety
+        run: |
+          node --check modules/jarvis-visual-orchestration-model.js
+          node --check modules/jarvis-visual-orchestrator.js
+          node --check modules/ultron-orchestrator-v4270.js
+      - name: Source-gated scenes and prior phase regressions
+        run: |
+          node tests/jarvis-phase12-visual-orchestration.mjs
+          node tests/jarvis-phase11-immersive.mjs
+          node tests/jarvis-phase11-map-navigation.mjs
+          node tests/jarvis-phase10-contextual-map.mjs
+          node tests/jarvis-phase9-priorities.mjs
+          node tests/jarvis-phase8-continuity.mjs
+          node tests/jarvis-mission-safety.mjs
+  mobile-scene-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser harness
+        run: |
+          npm install --no-save --no-package-lock --ignore-scripts puppeteer-core@24.33.0
+          echo "CHROME_BIN=$(command -v google-chrome || command -v chromium || command -v chromium-browser)" >> "$GITHUB_ENV"
+      - name: Check mobile news-to-map-to-globe scene director and STOP
+        run: |
+          python3 -m http.server 8766 --bind 127.0.0.1 >/tmp/jarvis-visual-server.log 2>&1 &
+          sleep 2
+          node tests/jarvis-phase12-visual-browser.mjs
+      - name: Capture failing mobile scene
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase12-visual-browser-failure
+          path: phase12-visual-browser-failure.png
+          if-no-files-found: ignore

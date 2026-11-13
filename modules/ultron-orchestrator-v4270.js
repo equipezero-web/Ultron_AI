@@ -588,6 +588,39 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
 }
 
 function enqueue(message, source = "terminal", approvedMission = false) {
+  const directorCommand=normalize(message).replace(/^(?:jarvis|ultron)[, :]+/,"").replace(/[.!?]+$/,"").trim();
+  if(/^(?:(?:abrir|abra|iniciar|inicie|mostrar|mostre|ative|ativar) (?:a |o )?)?(?:diretor visual|orquestracao visual|apresentacao visual|roteiro visual)$/.test(directorCommand)){
+    return window.ULTRON_VISUAL_ORCHESTRATOR?.start?.()||
+      Promise.resolve({ok:false,error:"Diretor visual indisponível."});
+  }
+  if(/^(?:proxima cena|avancar cena|cena seguinte)$/.test(directorCommand)){
+    return window.ULTRON_VISUAL_ORCHESTRATOR?.next?.()||
+      Promise.resolve({ok:false,error:"Apresentação visual não iniciada."});
+  }
+  if(/^(?:cena anterior|voltar cena)$/.test(directorCommand)){
+    return window.ULTRON_VISUAL_ORCHESTRATOR?.previous?.()||
+      Promise.resolve({ok:false,error:"Apresentação visual não iniciada."});
+  }
+  if(/^(?:mostre|mostrar|abrir|abra|exibir|exiba) (?:as |os |o )?(?:noticias e imagens|noticias visuais|fontes verificadas|prioridades visuais|mapa contextual 2d|globo contextual 3d)(?: no neural ring)?$/.test(directorCommand)){
+    const scene=/noticias/.test(directorCommand)?"news":
+      /fontes|prioridades/.test(directorCommand)?"priorities":
+      /mapa/.test(directorCommand)?"map":"tour";
+    return window.ULTRON_VISUAL_ORCHESTRATOR?.show?.(scene)||
+      Promise.resolve({ok:false,error:"Cena visual indisponível."});
+  }
+  if(/^(?:status|estado|diagnostico) (?:do |da )?(?:diretor visual|orquestracao visual|apresentacao visual)$/.test(directorCommand)){
+    const module=window.ULTRON_VISUAL_ORCHESTRATOR;
+    const state=module?.state||null;
+    const plan=module?.plan?.();
+    log("VISUAL // "+(state?.active?"ATIVO":"INATIVO")+
+      " // "+(state?.scene||"SEM CENA")+" // "+
+      (plan?.available?.join(", ")||"SEM FONTES CONFIRMADAS"));
+    return Promise.resolve({ok:Boolean(module),state,available:plan?.available||[]});
+  }
+  if(/^(?:fechar|encerrar|parar|cancelar) (?:a |o )?(?:diretor visual|orquestracao visual|apresentacao visual)$/.test(directorCommand)){
+    return Promise.resolve(window.ULTRON_VISUAL_ORCHESTRATOR?.stop?.()||
+      {ok:false,error:"Diretor visual indisponível."});
+  }
   const immerseCommand=normalize(message).replace(/^(?:jarvis|ultron)[, :]+/,"").replace(/[.!?]+$/,"").trim();
   if(/^(?:(?:iniciar|inicie|abrir|abra|mostrar|mostre|explorar) (?:a |o )?)?(?:exploracao visual|experiencia imersiva|tour visual|tour contextual|explorar eventos)$/.test(immerseCommand)){
     return window.ULTRON_IMMERSIVE?.start?.({view:"2d"}) ||
@@ -640,6 +673,7 @@ function enqueue(message, source = "terminal", approvedMission = false) {
     missionGate.clear();
     activeController?.abort();
     recoveryEngine.cancelAll();
+    window.ULTRON_VISUAL_ORCHESTRATOR?.stop?.(); // Phase XII visual director cancellation.
     window.ULTRON_IMMERSIVE?.stop?.(); // P0 also ends purely visual navigation.
     // Also attempt to revoke already-submitted commands still pending in D1.
     // This is best-effort: a claimed command cannot be undone.
