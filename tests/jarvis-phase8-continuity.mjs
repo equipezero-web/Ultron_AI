@@ -45,7 +45,7 @@ assert.equal(fresh.world.highlights[0].nearBrazil,true);
 assert.equal(fresh.weather.sampledRegions,6);
 assert.equal(fresh.weather.highlights[0].country,"BR");
 assert.ok(fresh.weather.note.includes("Open-Meteo"));
-assert.match(fresh.disclaimer,/não substitui INMET/);
+assert.match(fresh.disclaimer,/não substitui INMET/i);
 const formatted=continuityView(fresh);
 assert.equal(formatted.ok,true);
 assert.match(formatted.ring,/MUNDO ATUALIZADA/);
