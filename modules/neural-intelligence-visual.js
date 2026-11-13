@@ -1,5 +1,5 @@
 /**
- * Neural Ring Intelligence HUD v1.
+ * Neural Jarvis Intelligence HUD v1.
  * Visual layer over the existing 3D command stage — does not replace,
  * capture, or stop the WebGL/Mapbox engine.
  * Data comes only from validated, source-attributed collector results.
@@ -100,7 +100,7 @@ if(stage&&visual&&intl){
   }
   const panel=add(stage,"section","jarvis-neural-news");
   panel.id="jarvis-neural-news";
-  panel.setAttribute("aria-label","Central visual de notícias e imagens do Neural Ring");
+  panel.setAttribute("aria-label","Central visual de notícias e imagens do Neural Jarvis");
   panel.setAttribute("role","region");
   const header=add(panel,"header","jarvis-neural-news-header");
   add(header,"span","jarvis-neural-news-brand","◈ ULTRON / INTELLIGENCE");
@@ -271,7 +271,7 @@ if(stage&&visual&&intl){
   panel.addEventListener("focusout",()=>{
     if(!panel.contains(document.activeElement))paused=false;
   });
-  // Don't turn a news-list wheel into a Neural Ring or Mapbox zoom.
+  // Don't turn a news-list wheel into a Neural Jarvis or Mapbox zoom.
   panel.addEventListener("wheel",event=>{
     if(event.cancelable)event.preventDefault();
     event.stopPropagation();
