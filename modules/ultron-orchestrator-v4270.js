@@ -588,6 +588,11 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
 }
 
 function enqueue(message, source = "terminal", approvedMission = false) {
+  const continuityCommand=normalize(message).replace(/^(?:jarvis|ultron)[, :]+/,"").replace(/[.!?]+$/,"").trim();
+  if(/^(?:(?:mostre|mostrar|consulte|consultar|verifique|verificar) (?:o )?)?(?:status|estado|relatorio|diagnostico) (?:da |de )?continuidade(?: operacional)?$/.test(continuityCommand)){
+    return window.ULTRON_CONTINUITY?.report?.({force:true}) ||
+      Promise.resolve({ok:false,error:"Módulo de continuidade ainda não carregado."});
+  }
   if(isRecoveryReportIntent(message))return Promise.resolve(showRecoveryReport());
   if(isRecoveryCheckIntent(message))return runRecoveryChecks();
   if(isMissionReportIntent(message))return showMissionReport();

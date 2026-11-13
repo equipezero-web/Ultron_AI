@@ -6,6 +6,7 @@ import {searchGlobalLocations,loadGlobalWeather} from "./weather-global.js";
 import {loadWeatherInsight} from "./weather-intelligence.js";
 import {pollWeatherMonitor,latestWeatherMonitor} from "./weather-monitor.js";
 import {pollGlobalIntelligence,latestGlobalIntelligence,collectGlobalIntelligence} from "./global-intelligence-monitor.js";
+import {buildContinuityStatus} from "./continuity-status.js";
 import {configureWeatherWatch,listWeatherWatches,pollPersonalWeatherWatches} from "./weather-watchlist.js";
 import {ACTIONS,parsePlanText,isActionRequest} from "./action-catalog.js";
 import {capabilityAnswer} from "./jarvis-capabilities.js";
@@ -1027,6 +1028,18 @@ export default {
       if(!operatorId)return missingOperator();
       const result=await configureWeatherWatch(env,operatorId,{action:body.action,id:body.id});
       return json(result,result.ok?200:result.status||503);
+    }
+    if(path==="/api/intelligence/continuity"&&request.method==="GET"){
+      // Cached D1 facts only: no new public-source polling and no device actions.
+      const [globalReport,weatherReport]=await Promise.all([
+        latestGlobalIntelligence(env),latestWeatherMonitor(env)
+      ]);
+      const report=buildContinuityStatus({globalReport,weatherReport});
+      return new Response(JSON.stringify(report),{
+        status:200,headers:{...corsHeaders(),
+          "Cache-Control":"public, max-age=60",
+          "X-Content-Type-Options":"nosniff"}
+      });
     }
     if(path==="/api/intelligence/global"&&request.method==="GET"){
       // First boot may occur BEFORE the first hourly cron wrote a D1 bucket.

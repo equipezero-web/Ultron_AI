@@ -87,7 +87,8 @@ if(stage){
  const wakeButton=elt("button","","INTELIGÊNCIA GLOBAL");wakeButton.type="button";
  wakeButton.dataset.intelAction="wake";
  const wakeText=elt("span","","Aguardando monitoramento mundial");
- wake.append(wakeButton,wakeText);stage.append(wake);
+ const continuityText=elt("span","jarvis-global-continuity","CONTINUIDADE · AGUARDANDO D1");
+ wake.append(wakeButton,wakeText,continuityText);stage.append(wake);
  for(const name of ["pointerdown","pointerup","wheel","click","touchstart","touchend"]){
   panel.addEventListener(name,event=>event.stopPropagation(),{passive:true});
   wake.addEventListener(name,event=>event.stopPropagation(),{passive:true});
@@ -315,6 +316,14 @@ if(stage){
      wake.hidden=false;});
   }
   awakened=awake;
+ });
+ // Continuity only displays validated D1 collection age and provider health.
+ // Never reinterpret a sample as an alert or predicted event.
+ window.addEventListener("ultron:continuity-report",event=>{
+  const detail=event?.detail||{};
+  continuityText.textContent=clean(detail.ring||
+    "CONTINUIDADE · INDISPONÍVEL",130);
+  if(detail.waking===true)wake.hidden=false;
  });
  window.addEventListener("ultron:new-conversation",close);
  window.ULTRON_GLOBAL_INTELLIGENCE={open,close,refresh:()=>open({view,region:scope,category:kind,refresh:true}),
