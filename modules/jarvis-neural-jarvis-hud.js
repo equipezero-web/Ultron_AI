@@ -103,7 +103,10 @@ function audioLoop(){
 }
 async function toggleAudio(){
  if(visualAudio)return stopAudio();
- if(!engine()?.active)return {ok:false,reason:"ENGINE_INACTIVE"};
+ if(!engine()?.active){
+  report("Áudio visual indisponível: núcleo holográfico inativo.");
+  return {ok:false,reason:"ENGINE_INACTIVE"};
+ }
  const ticket=++audioTicket;
  if(!navigator.mediaDevices?.getUserMedia){
   report("Microfone indisponível neste navegador.");
@@ -138,8 +141,10 @@ async function toggleAudio(){
  }
 }
 function toggleOverdrive(){
- if(!engine()?.active||!engine()?.setOverdrive)
+ if(!engine()?.active||!engine()?.setOverdrive){
+  report("Sobrecarga visual indisponível: motor WebGL avançado inativo.");
   return {ok:false,reason:"ADVANCED_RENDERER_UNAVAILABLE"};
+ }
  overdrive=!overdrive;
  engine().setOverdrive(overdrive);
  buttons.overdrive?.setAttribute("aria-pressed",String(overdrive));
@@ -149,7 +154,10 @@ function toggleOverdrive(){
 }
 function speak(){
  if(!engine()?.active)return {ok:false,reason:"ENGINE_INACTIVE"};
- if(!("speechSynthesis"in window))return {ok:false,reason:"SPEECH_UNAVAILABLE"};
+ if(!("speechSynthesis"in window)){
+  report("Síntese de voz indisponível neste navegador.");
+  return {ok:false,reason:"SPEECH_UNAVAILABLE"};
+ }
  const msg="Neural Jarvis pronto. Matriz holográfica disponível para visualização.";
  const utterance=new SpeechSynthesisUtterance(msg);
  utterance.lang="pt-BR";utterance.rate=1.02;utterance.pitch=.94;
@@ -158,7 +166,7 @@ function speak(){
  utterance.onend=()=>{speaking=false;};
  utterance.onerror=()=>{speaking=false;};
  try{window.speechSynthesis.speak(utterance);return {ok:true,requested:true};}
- catch{speaking=false;return {ok:false,reason:"SPEECH_FAILED"};}
+ catch{speaking=false;report("Falha ao iniciar síntese de voz neste navegador.");return {ok:false,reason:"SPEECH_FAILED"};}
 }
 function stop(){
  closeArchive();
