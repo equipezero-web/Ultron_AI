@@ -9,6 +9,11 @@ const mockIntent=text=>{
   return null;
 };
 const parts=["Ligue a TV","consulte o status do computador","aumente o volume da TV"];
+assert.deepEqual(missionRequirements(["Ligue a TV"],()=>null).map(x=>x.key),
+  ["router:devices"],"No device parser must not silently approve a physical command");
+const missingRouter=await inspectMissionDependencies(["Ligue a TV"],{parseDeviceIntent:()=>null});
+assert.equal(missingRouter.ready,false);
+assert.deepEqual(missingRouter.blocking,["DEVICE_ROUTER_UNAVAILABLE"]);
 const req=missionRequirements(parts,mockIntent);
 assert.deepEqual(req.map(x=>x.key),["bridge:mobile","bridge:desktop"],"One check per bridge type");
 let calls=0;
