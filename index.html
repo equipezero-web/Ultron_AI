@@ -24,6 +24,7 @@
 <link rel="stylesheet" href="modules/jarvis-public-world-cameras.css?v=5.30.0">
 <link rel="stylesheet" href="modules/jarvis-neural-jarvis.css?v=5.31.0">
 <link rel="stylesheet" href="modules/jarvis-neural-responsive-gold.css?v=5.32.0">
+<link rel="stylesheet" href="modules/jarvis-global-metallic-gold.css?v=5.33.0">
 </head>
 <body class="jarvis-command-center jarvis-voice-paused">
 <div class="hud-bg" aria-hidden="true">
@@ -172,14 +173,14 @@
       </section>
 
       <section class="hud-panel infra-panel">
-        <div class="panel-heading"><div><span class="panel-index">05</span><h2>INFRA</h2></div><b>LIVE</b></div>
+        <div class="panel-heading"><div><span class="panel-index">05</span><h2>INFRA</h2></div><b id="infra-state">VERIFICANDO</b></div>
         <div class="link-grid">
           <div><span>BACKEND</span><strong id="infra-backend">CHECKING</strong></div>
-          <div><span>WEBRTC</span><strong id="infra-webrtc">READY</strong></div>
-          <div><span>ICE PATH</span><strong id="infra-ice-path">AUTO</strong></div>
+          <div><span>WEBRTC</span><strong id="infra-webrtc">AGUARDANDO</strong></div>
+          <div><span>ICE PATH</span><strong id="infra-ice-path">AGUARDANDO</strong></div>
           <div><span>OPTICAL FRAME</span><strong id="infra-frame">WAITING</strong></div>
-          <div><span>MEMORY</span><strong id="storage-state">READY</strong></div>
-          <div><span>NETWORK</span><strong id="connection-state">ONLINE</strong></div>
+          <div><span>MEMORY</span><strong id="storage-state">VERIFICANDO</strong></div>
+          <div><span>NETWORK</span><strong id="connection-state">VERIFICANDO</strong></div>
         </div>
       </section>
     </aside>
