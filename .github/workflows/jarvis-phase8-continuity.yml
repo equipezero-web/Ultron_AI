@@ -1,0 +1,51 @@
+name: JARVIS Phase VIII Continuity
+on:
+  pull_request:
+    paths:
+      - 'backend/continuity-status.js'
+      - 'backend/worker.js'
+      - 'modules/jarvis-continuity-client.js'
+      - 'modules/jarvis-continuity-model.js'
+      - 'modules/jarvis-global-intelligence-ring.js'
+      - 'modules/jarvis-global-intelligence-ring.css'
+      - 'modules/ultron-orchestrator-v4270.js'
+      - 'index.html'
+      - 'tests/jarvis-phase8-continuity.mjs'
+      - '.github/workflows/jarvis-phase8-continuity.yml'
+  push:
+    paths:
+      - 'backend/continuity-status.js'
+      - 'backend/worker.js'
+      - 'modules/jarvis-continuity-client.js'
+      - 'modules/jarvis-continuity-model.js'
+      - 'modules/jarvis-global-intelligence-ring.js'
+      - 'modules/jarvis-global-intelligence-ring.css'
+      - 'modules/ultron-orchestrator-v4270.js'
+      - 'index.html'
+      - 'tests/jarvis-phase8-continuity.mjs'
+      - '.github/workflows/jarvis-phase8-continuity.yml'
+permissions:
+  contents: read
+jobs:
+  continuity-policy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax
+        run: |
+          node --check backend/continuity-status.js
+          node --check backend/worker.js
+          node --check modules/jarvis-continuity-client.js
+          node --check modules/jarvis-continuity-model.js
+          node --check modules/jarvis-global-intelligence-ring.js
+          node --check modules/ultron-orchestrator-v4270.js
+      - name: Continuity and prior phase regressions
+        run: |
+          node tests/jarvis-phase8-continuity.mjs
+          node tests/jarvis-global-intelligence.mjs
+          node tests/jarvis-weather-monitor.mjs
+          node tests/jarvis-phase7-recovery.mjs
+          node tests/jarvis-mission-diagnostics.mjs
