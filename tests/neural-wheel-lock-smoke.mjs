@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 import puppeteer from 'puppeteer-core';
 
-// Actual contract: wheel above the visualization ZOOMS. The independent
-// right-hand rail (also draggable/keyboard accessible) scrolls the page.
+// Actual contract: wheel over the hologram/map ZOOMS, and wheel elsewhere
+// scrolls the document. The desktop rail remains draggable and accessible.
 const browser=await puppeteer.launch({
  executablePath:process.env.CHROME_BIN||'/usr/bin/google-chrome',headless:true,
  args:['--no-sandbox','--disable-dev-shm-usage','--enable-webgl','--enable-unsafe-swiftshader']
@@ -34,6 +34,7 @@ try{
  await page.evaluate(()=>{
    const spacer=document.createElement('div');spacer.id='rail-test-spacer';
    spacer.style.height='1300px';spacer.style.pointerEvents='none';document.body.append(spacer);
+   window.dispatchEvent(new Event('resize'));
  });
  await page.waitForFunction(()=>{
    const rail=document.querySelector('#jarvis-page-scroll-rail');
@@ -73,18 +74,19 @@ try{
  await page.mouse.up();await sleep(150);
  assert.ok((await page.evaluate(()=>window.scrollY))>100,'Dragging scroll thumb must scroll the document');
 
- // 3: Visual stage gaps should also zoom the active Ring, not move the page.
+ // 3: Wheel over dashboard chrome (outside the hologram) must now scroll
+ // the page naturally, without changing the Neural Jarvis zoom.
  before=await reset();
- const stage=await page.$eval('.jarvis-cc-center',el=>{
-   const r=el.getBoundingClientRect();return {x:r.x,y:r.y};
+ const stage=await page.$eval('.jarvis-cc-top',el=>{
+   const r=el.getBoundingClientRect();return {x:r.x+r.width*.5,y:r.y+r.height*.5};
  });
- await page.mouse.move(stage.x+14,Math.max(12,stage.y+90));
+ await page.mouse.move(stage.x,stage.y);
  const gapZoom=await page.evaluate(()=>window.ULTRON_NEURAL_RING_3D.state.zoom);
  await page.mouse.wheel({deltaY:180});await sleep(180);
  after=await page.evaluate(()=>window.scrollY);
- assert.ok(Math.abs(after-before)<=3,'Hovering neural stage must not scroll page');
- assert.ok((await page.evaluate(()=>window.ULTRON_NEURAL_RING_3D.state.zoom))<gapZoom-.01,
-   'Stage wheel should zoom Ring when not directly above canvas');
+ assert.ok(after>before+50,'Wheel over system chrome must scroll page');
+ assert.equal((await page.evaluate(()=>window.ULTRON_NEURAL_RING_3D.state.zoom)),gapZoom,
+   'Wheel outside the Ring must not zoom the visualization');
 
  // 4: Globe.gl fallback zoom on the wheel and page navigation only on rail.
  await page.evaluate(()=>document.querySelector('[data-visual="globe"]').click());
