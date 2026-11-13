@@ -1,5 +1,6 @@
 import {NEURAL_JARVIS_ARCHITECTURE,clampBands,computeNeuralJarvisVisual}
  from "./jarvis-neural-jarvis-model.js";
+import {jarvisRenderDimensions} from "./jarvis-universal-adaptive-model.js";
 
 // One WebGL canvas, inside the existing Command Center. No extra pages,
 // duplicate controls or unrequested microphone/camera access.
@@ -187,6 +188,13 @@ export function createNeuralJarvis3D(canvas,{onError}={}){
  const mobile=window.matchMedia("(max-width: 820px)");
  const reduced=window.matchMedia("(prefers-reduced-motion: reduce)");
  const lowMemory=Number(navigator.deviceMemory||4)<=2;
+ let performanceProfile={
+  tier:lowMemory?"economy":mobile.matches?"balanced":"high",
+  fps:lowMemory?15:mobile.matches?24:30,
+  dprCap:lowMemory?1:mobile.matches?1.25:1.45,
+  maxCanvasPixels:lowMemory?390000:mobile.matches?850000:1550000,
+  particleStride:lowMemory?4:mobile.matches?2:1
+ };
  let width=0,height=0,yaw=0,pitch=0,zoom=1,expanded=false,overdrive=false;
  let bands=clampBands(),drag=null,started=performance.now();
  const touches=new Map();let pinch=null;
@@ -194,14 +202,17 @@ export function createNeuralJarvis3D(canvas,{onError}={}){
  function resize(){
   if(disposed)return;
   const r=canvas.getBoundingClientRect();
-  const dpr=Math.min(window.devicePixelRatio||1,mobile.matches?(lowMemory?1:1.25):window.innerWidth>=1920?1.15:1.5);
-  const w=Math.max(1,Math.floor(r.width*dpr)),h=Math.max(1,Math.floor(r.height*dpr));
-  if(w!==width||h!==height){width=w;height=h;canvas.width=w;canvas.height=h;gl.viewport(0,0,w,h);}
+  const size=jarvisRenderDimensions(r.width,r.height,
+   window.devicePixelRatio||1,performanceProfile);
+  const w=size.width,h=size.height;
+  if(w!==width||h!==height){
+   width=w;height=h;canvas.width=w;canvas.height=h;gl.viewport(0,0,w,h);
+  }
  }
  function render(now){
   frame=0;
   if(!visible||paused||disposed||document.hidden)return;
-  const interval=mobile.matches?(lowMemory?60:38):window.innerWidth>=1920?33:28;
+  const interval=1000/Math.max(8,Math.min(60,performanceProfile.fps||24));
   if(now-lastFrame>=interval){
    lastFrame=now;
    gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
@@ -221,7 +232,12 @@ export function createNeuralJarvis3D(canvas,{onError}={}){
     u("Size",piece.pointSize);
     gl.uniform3fv(uniform.Color,piece.color);u("Alpha",piece.alpha);
     // Draw each authored component from a separate buffer, no extra pages.
-    gl.drawArrays(piece.mode,0,piece.count);
+    const stride=Math.max(1,Math.floor(performanceProfile.particleStride||1));
+    const drawCount=piece.name==="particles"?
+      Math.ceil(piece.count/stride):
+      piece.name==="synapses"?
+        Math.max(2,Math.floor(piece.count/(2*stride))*2):piece.count;
+    gl.drawArrays(piece.mode,0,drawCount);
    }
   }
   frame=requestAnimationFrame(render);
@@ -306,7 +322,22 @@ export function createNeuralJarvis3D(canvas,{onError}={}){
   get active(){return visible&&!paused;},
   get rings(){return NEURAL_JARVIS_ARCHITECTURE.arcs;},
   get state(){return {visible,active:visible&&!paused,yaw,pitch,zoom,expanded,overdrive,
-   dragging:!!drag,audioBands:{...bands},renderedComponents:geometry.length};},
+   dragging:!!drag,audioBands:{...bands},renderedComponents:geometry.length,
+   qualityTier:performanceProfile.tier,fpsCap:performanceProfile.fps,
+   canvasPixels:width*height,particleStride:performanceProfile.particleStride};},
+  setPerformanceProfile(next){
+   if(disposed||!next||typeof next!=="object")return false;
+   performanceProfile={
+    tier:["economy","balanced","high"].includes(next.tier)?next.tier:"balanced",
+    fps:Math.max(8,Math.min(60,Number(next.fps)||24)),
+    dprCap:Math.max(.5,Math.min(2,Number(next.dprCap)||1)),
+    maxCanvasPixels:Math.max(80000,Math.min(2500000,Number(next.maxCanvasPixels)||390000)),
+    particleStride:Math.max(1,Math.min(8,Math.floor(Number(next.particleStride)||2)))
+   };
+   lastFrame=0;
+   resize();
+   return true;
+  },
   setVisible(value){
    visible=!!value;canvas.hidden=!visible;cancelAnimationFrame(frame);
    if(!visible)endDrag();
