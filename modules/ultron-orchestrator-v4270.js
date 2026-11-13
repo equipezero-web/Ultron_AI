@@ -678,7 +678,10 @@ async function runRecoveryCheck(code,{manual=false}={}){
   const online=typeof navigator!=="undefined"&&navigator.onLine!==false &&
     (manual||!document.hidden);
   const result=await recoveryEngine.run(code,{online});
-  if(result.skipped)return result;
+  if(result.skipped){
+    if(result.skipped==="offline"&&manual)log("RECOVERY // navegador offline; nenhuma consulta externa executada.",true);
+    return result;
+  }
   state.lastRecovery={code,status:result.status,reason:result.reason,verified:result.verified,at:result.checkedAt};
   if(result.attempts>0&&result.status!=="cancelled"){
     if(result.verified===true)state.proactiveRecoveries+=1;
@@ -691,8 +694,6 @@ async function runRecoveryCheck(code,{manual=false}={}){
       event:"orchestrator-recovery-check",code,verified:result.verified===true,
       result:result.status,reason:result.reason
     });}catch{}
-  }else if(result.status==="offline" && manual){
-    log("RECOVERY // navegador offline; nenhuma consulta externa executada.",true);
   }
   return result;
 }
