@@ -1,0 +1,53 @@
+name: JARVIS Public World Webcams
+on:
+  pull_request:
+    paths:
+      - 'modules/jarvis-public-world-cameras*'
+      - 'modules/ultron-orchestrator-v4270.js'
+      - 'index.html'
+      - 'tests/jarvis-public-world-cameras*'
+      - '.github/workflows/jarvis-public-world-cameras.yml'
+  push:
+    paths:
+      - 'modules/jarvis-public-world-cameras*'
+      - 'modules/ultron-orchestrator-v4270.js'
+      - 'index.html'
+      - 'tests/jarvis-public-world-cameras*'
+      - '.github/workflows/jarvis-public-world-cameras.yml'
+permissions:
+  contents: read
+jobs:
+  source-model:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate worldcam commands, safety and sources
+        run: |
+          node --check modules/jarvis-public-world-cameras-model.js
+          node --check modules/jarvis-public-world-cameras.js
+          node --check modules/ultron-orchestrator-v4270.js
+          node tests/jarvis-public-world-cameras-model.mjs
+      - name: Check Phase XIII and XIV compatibility
+        run: |
+          node tests/jarvis-phase13-context-model.mjs
+          node tests/jarvis-phase14-supervised-model.mjs
+  mobile-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser test runner
+        run: |
+          npm install --no-save --no-package-lock --ignore-scripts puppeteer-core@24.33.0
+          echo "CHROME_BIN=$(command -v google-chrome || command -v chromium || command -v chromium-browser)" >> "$GITHUB_ENV"
+      - name: Verify real source, iframe opt-in and P0 on mobile
+        run: |
+          python3 -m http.server 8768 --bind 127.0.0.1 >/tmp/worldcam-http.log 2>&1 &
+          sleep 2
+          node tests/jarvis-public-world-cameras-browser.mjs
