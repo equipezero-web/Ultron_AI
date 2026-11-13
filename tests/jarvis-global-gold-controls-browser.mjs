@@ -24,6 +24,12 @@ try{
     window.ULTRON_WORLD_CAMERAS&&window.ULTRON_NEURAL_JARVIS_UI?.state?.mounted
    ),{timeout:28000});
   }
+  // Switching device emulation can trigger a navigation/reset in Chrome.
+  // Wait for all dynamically mounted modules on EVERY viewport, not only phone.
+  await page.waitForFunction(()=>Boolean(
+    window.ULTRON_NEURAL_JARVIS?.active&&window.JARVIS_COMMAND_CENTER?.active&&
+    window.ULTRON_WORLD_CAMERAS&&window.ULTRON_NEURAL_JARVIS_UI?.state?.mounted
+  ),{timeout:20000});
   const display=await page.evaluate(()=>{
    const css=s=>getComputedStyle(document.querySelector(s));
    const r=s=>document.querySelector(s)?.getBoundingClientRect();
