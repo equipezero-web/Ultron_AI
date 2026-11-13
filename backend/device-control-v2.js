@@ -68,6 +68,10 @@ function expectedType(command) {
   return "mobile";
 }
 
+export function isCompatibleDeviceForCommand(command, deviceType) {
+  return String(deviceType || "").trim().toLowerCase() === expectedType(command);
+}
+
 function scoreDevice(device, type) {
   let score = 0;
   if (device?.status === "active") score += 100;
@@ -98,16 +102,19 @@ export function validateControlCommand(command, payload = {}) {
 export async function resolveTargetDevice(env, operatorId, { deviceId = "", deviceType = "", command = "" } = {}) {
   const devices = await listDevices(env, operatorId);
   const requestedType = String(deviceType || expectedType(command)).trim().toLowerCase();
+  // Never allow deviceType or an explicit device ID to override the command's
+  // required bridge type (TV commands are executed by the Android bridge).
+  if (!isCompatibleDeviceForCommand(command, requestedType)) return null;
 
   if (deviceId) {
-    const exact = devices.find((device) => device.id === deviceId && device.status === "active" && onlineAge(device) <= ONLINE_MAX_AGE_MS);
+    const exact = devices.find((device) => device.id === deviceId && isCompatibleDeviceForCommand(command, device.deviceType) && device.status === "active" && onlineAge(device) <= ONLINE_MAX_AGE_MS);
     if (!exact) return null;
     return exact;
   }
 
   return [...devices]
     .filter((device) => device.status === "active" && onlineAge(device) <= ONLINE_MAX_AGE_MS)
-    .filter((device) => !requestedType || device.deviceType === requestedType)
+    .filter((device) => device.deviceType === requestedType && isCompatibleDeviceForCommand(command, device.deviceType))
     .sort((a, b) => scoreDevice(b, requestedType) - scoreDevice(a, requestedType) || onlineAge(a) - onlineAge(b))[0] || null;
 }
 
