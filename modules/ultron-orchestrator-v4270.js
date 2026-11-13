@@ -213,6 +213,16 @@ async function showMissionReport() {
       log("MISSÕES SALVAS NO BACKEND // "+list.length+" registros:");
       list.forEach(item=>log(String(item.status||"unknown").toUpperCase()+" // "+
         String(item.route||item.intent||"core").slice(0,50)+" // "+String(item.id||"").slice(0,12)));
+      // Inspect only a run ID returned by the authenticated, operator-scoped
+      // history endpoint. Do not expose original command text or stored payloads.
+      const detail=await post("/api/orchestrator/run",{runId:list[0].id},{silent:true});
+      const savedSteps=detail?.run?.steps;
+      if(Array.isArray(savedSteps)){
+        const relevant=savedSteps.filter(step=>/^(?:mission-\\d+|preflight|fatal)$/.test(String(step.stepKey||""))).slice(-8);
+        relevant.forEach(step=>log(String(step.stepKey||"etapa").slice(0,24).toUpperCase()+
+          " // "+String(step.status||"unknown").slice(0,25).toUpperCase()+
+          " // "+String(step.module||"core").slice(0,48)));
+      }
       return {ok:true,runs:list.map(item=>({id:item.id,status:item.status,route:item.route}))};
     }
   }catch {}
