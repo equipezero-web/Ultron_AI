@@ -265,10 +265,14 @@ export function createNeuralJarvis3D(canvas,{onError}={}){
     drag=null;e.preventDefault();return;
    }
   }
-  drag={id:e.pointerId,x:e.clientX,y:e.clientY,oy:yaw,op:pitch,prevY:e.clientY,
-   mobileScroll:false};
-  try{canvas.setPointerCapture?.(e.pointerId);}catch{}
-  e.preventDefault();
+  drag={id:e.pointerId,x:e.clientX,y:e.clientY,oy:yaw,op:pitch,
+   verticalGesture:false};
+  // Native touch-action:pan-y lets Chrome/Safari scroll the page with inertia.
+  // Capturing a touch pointer here can starve native touch scrolling.
+  if(e.pointerType!=="touch"){
+   try{canvas.setPointerCapture?.(e.pointerId);}catch{}
+   e.preventDefault();
+  }
  }
  function onMove(e){
   if(!visible||disposed)return;
@@ -284,12 +288,11 @@ export function createNeuralJarvis3D(canvas,{onError}={}){
   if(e.pointerType==="mouse"&&!(e.buttons&1)){endDrag(e);return;}
   if(e.pointerType==="touch"&&touches.size===1){
    const dx=e.clientX-drag.x,dy=e.clientY-drag.y;
-   if(!drag.mobileScroll&&Math.abs(dy)>9&&Math.abs(dy)>Math.abs(dx)*1.3)
-    drag.mobileScroll=true;
-   if(drag.mobileScroll){
-    window.scrollBy({top:drag.prevY-e.clientY,behavior:"instant"});
-    drag.prevY=e.clientY;return;
-   }
+   if(!drag.verticalGesture&&Math.abs(dy)>7&&Math.abs(dy)>Math.abs(dx)*1.15)
+    drag.verticalGesture=true;
+   // Never emulate finger scrolling via scrollBy: let native pan-y scroll
+   // normally, with momentum, even when the swipe began over the hologram.
+   if(drag.verticalGesture)return;
   }
   yaw=drag.oy+(e.clientX-drag.x)*.008;
   pitch=clamp(drag.op+(e.clientY-drag.y)*.008,-1.35,1.35);
