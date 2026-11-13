@@ -148,7 +148,7 @@ try{
        this.options=options;this.zoom=options.zoom;this.center={lat:options.center[1],lng:options.center[0]};
        const root=document.createElement('div');root.className='mapboxgl-map';
        root.style.cssText='position:absolute;inset:0;width:100%;height:100%';
-       root.append(document.createElement('canvas'));options.container.append(root);
+       const canvas=document.createElement('canvas');canvas.className='mapboxgl-canvas';canvas.style.cssText='display:block;width:100%;height:100%';root.append(canvas);options.container.append(root);
        root.addEventListener('wheel',ev=>{
          if(!this.options.cooperativeGestures||ev.ctrlKey){
            ev.preventDefault();
