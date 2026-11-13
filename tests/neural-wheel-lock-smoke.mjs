@@ -107,8 +107,18 @@ try{
  });
  await page.mouse.move(stage.x,stage.y);
  const gapZoom=await page.evaluate(()=>window.ULTRON_NEURAL_RING_3D.state.zoom);
- await page.mouse.wheel({deltaY:180});await sleep(180);
+ const hitBefore=await page.evaluate(([x,y])=>{
+   const target=document.elementFromPoint(x,y);
+   const ancestors=[];for(let el=target;el&&ancestors.length<5;el=el.parentElement)
+    ancestors.push({tag:el.tagName,id:el.id,cls:String(el.className).slice(0,80)});
+   return ancestors;
+ },[stage.x,stage.y]);
+ await page.mouse.wheel({deltaY:180});await sleep(300);
  after=await page.evaluate(()=>window.scrollY);
+ console.log('WHEEL CHROME DEBUG',JSON.stringify({
+  before,after,hitBefore,viewport:await page.evaluate(()=>({x:innerWidth,y:innerHeight})),
+  zoomBefore:gapZoom,zoomAfter:await page.evaluate(()=>window.ULTRON_NEURAL_RING_3D.state.zoom)
+ }));
  assert.ok(after>before+50,'Wheel over system chrome must scroll page');
  assert.equal((await page.evaluate(()=>window.ULTRON_NEURAL_RING_3D.state.zoom)),gapZoom,
    'Wheel outside the Ring must not zoom the visualization');
