@@ -76,7 +76,7 @@ function createPanel(){
  panel.addEventListener("touchend",event=>{
   const t=event.changedTouches?.[0],start=pointerStart;
   pointerStart=null;
-  if(!start||!t||busy)return;
+  if(!start||!t||busy||event.target?.closest?.("button,a"))return;
   const dx=t.clientX-start.x,dy=t.clientY-start.y;
   if(Math.abs(dx)>65&&Math.abs(dx)>Math.abs(dy)*1.7)
    void step(dx<0?1:-1);
@@ -185,11 +185,28 @@ function setMode(view){
  if(!navigatorState||!active)return Promise.resolve({ok:false,error:"Exploração não iniciada"});
  return move({key:navigatorState.snapshot().current.key,view});
 }
+function injectImmersiveButton(){
+ const strip=document.querySelector(".quick-actions");
+ if(!strip||document.getElementById("btn-jarvis-immersive"))return;
+ const button=make("button","","EXPLORAR VISUAL");
+ button.type="button";button.id="btn-jarvis-immersive";
+ let touchAt=0;
+ button.addEventListener("pointerdown",event=>{
+  if(event.pointerType==="mouse"||event.button!==0)return;
+  touchAt=Date.now();void start({view:"2d"});
+ });
+ button.addEventListener("click",()=>{
+  if(Date.now()-touchAt<800)return;
+  void start({view:"2d"});
+ });
+ strip.appendChild(button);
+}
 window.addEventListener("ultron:new-conversation",close);
 document.addEventListener("visibilitychange",()=>{
  if(document.hidden&&active)status.textContent="Aba oculta. A navegação contextual está pausada.";
 });
 createPanel();
+injectImmersiveButton();
 window.ULTRON_IMMERSIVE={
  start,close,stop:close,next:()=>step(1),previous:()=>step(-1),
  setMode,select:key=>move({key}),
