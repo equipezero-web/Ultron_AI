@@ -107,12 +107,12 @@ export function createNeuralJarvis3D(canvas,{onError}={}){
   }
   return out;
  };
- upload("core",sphere(.76),{kind:0,color:[.94,.96,1],alpha:.91});
+ upload("core",sphere(.76),{kind:0,color:[1.,.77,.25],alpha:.94});
  upload("outer-core",sphere(1.06,10,18),{
-  kind:5,color:[.57,.78,.93],alpha:.13});
+  kind:5,color:[.94,.64,.18],alpha:.23});
  // Deterministic fragmented shell plates, 18 + 22 + 24 sectors, 3 layers.
  const plateRadii=[1.75,2.45,3.15],plateColors=[
-  [.63,.79,.86],[.51,.68,.78],[.68,.78,.88]];
+  [.98,.78,.36],[.82,.53,.16],[1.,.86,.49]];
  NEURAL_JARVIS_ARCHITECTURE.plates.forEach((count,layer)=>{
   const vertices=[],radius=plateRadii[layer],golden=2.399963229728653;
   for(let i=0;i<count;i++){
@@ -152,7 +152,7 @@ export function createNeuralJarvis3D(canvas,{onError}={}){
    const p3=at(b,radius-width),p4=at(b,radius+width);
    out.push(...p1,...p2,...p3,...p3,...p2,...p4);
   }
-  upload("gyro-"+layer,out,{kind:2,layer,color:[.84,.91,.99],alpha:.71-layer*.075});
+  upload("gyro-"+layer,out,{kind:2,layer,color:[1.,.78,.36],alpha:.78-layer*.065});
  });
  let seed=0x9e3779b9;
  const rand=()=>{
@@ -171,7 +171,7 @@ export function createNeuralJarvis3D(canvas,{onError}={}){
   if(Math.hypot(a[0]-b[0],a[1]-b[1],a[2]-b[2])<.87)
    links.push(...a,...b);
  }
- upload("synapses",links,{mode:gl.LINES,kind:3,color:[.49,.80,.99],alpha:.28});
+ upload("synapses",links,{mode:gl.LINES,kind:3,color:[.94,.63,.20],alpha:.35});
  const sparks=[];
  for(let i=0;i<NEURAL_JARVIS_ARCHITECTURE.particles;i++){
   const theta=rand()*Math.PI*2,v=2*rand()-1,r=1.15+rand()*2.85;
@@ -179,7 +179,7 @@ export function createNeuralJarvis3D(canvas,{onError}={}){
   sparks.push(r*Math.sin(p)*Math.cos(theta),r*Math.sin(p)*Math.sin(theta),
    r*Math.cos(p));
  }
- upload("particles",sparks,{mode:gl.POINTS,kind:4,color:[.9,.96,1],alpha:.75,
+ upload("particles",sparks,{mode:gl.POINTS,kind:4,color:[1.,.87,.54],alpha:.82,
   pointSize:window.devicePixelRatio>1?3.0:2.3});
  gl.enable(gl.DEPTH_TEST);gl.depthFunc(gl.LEQUAL);
  gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
@@ -194,14 +194,14 @@ export function createNeuralJarvis3D(canvas,{onError}={}){
  function resize(){
   if(disposed)return;
   const r=canvas.getBoundingClientRect();
-  const dpr=Math.min(window.devicePixelRatio||1,mobile.matches?(lowMemory?1:1.3):1.6);
+  const dpr=Math.min(window.devicePixelRatio||1,mobile.matches?(lowMemory?1:1.25):window.innerWidth>=1920?1.15:1.5);
   const w=Math.max(1,Math.floor(r.width*dpr)),h=Math.max(1,Math.floor(r.height*dpr));
   if(w!==width||h!==height){width=w;height=h;canvas.width=w;canvas.height=h;gl.viewport(0,0,w,h);}
  }
  function render(now){
   frame=0;
   if(!visible||paused||disposed||document.hidden)return;
-  const interval=mobile.matches?(lowMemory?60:38):28;
+  const interval=mobile.matches?(lowMemory?60:38):window.innerWidth>=1920?33:28;
   if(now-lastFrame>=interval){
    lastFrame=now;
    gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);

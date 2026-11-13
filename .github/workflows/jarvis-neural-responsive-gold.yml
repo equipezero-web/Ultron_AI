@@ -1,0 +1,59 @@
+name: Neural Jarvis Responsive Gold — Phone Notebook TV
+on:
+  pull_request:
+    paths:
+      - 'modules/jarvis-neural-responsive-gold.css'
+      - 'modules/jarvis-neural-jarvis-3d.js'
+      - 'index.html'
+      - 'tests/jarvis-neural-responsive-gold-browser.mjs'
+      - '.github/workflows/jarvis-neural-responsive-gold.yml'
+  push:
+    paths:
+      - 'modules/jarvis-neural-responsive-gold.css'
+      - 'modules/jarvis-neural-jarvis-3d.js'
+      - 'index.html'
+      - 'tests/jarvis-neural-responsive-gold-browser.mjs'
+      - '.github/workflows/jarvis-neural-responsive-gold.yml'
+permissions:
+  contents: read
+jobs:
+  model:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Engine and responsive test syntax
+        run: |
+          node --check modules/jarvis-neural-jarvis-3d.js
+          node --check tests/jarvis-neural-responsive-gold-browser.mjs
+          node tests/jarvis-neural-jarvis-model.mjs
+      - name: Protect previous JARVIS safety and multimodal phases
+        run: |
+          node tests/jarvis-phase14-supervised-model.mjs
+          node tests/jarvis-phase13-context-model.mjs
+          node tests/jarvis-public-world-cameras-model.mjs
+  responsive-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install headless browser
+        run: |
+          npm install --no-save --no-package-lock --ignore-scripts puppeteer-core@24.33.0
+          echo "CHROME_BIN=$(command -v google-chrome || command -v chromium || command -v chromium-browser)" >> "$GITHUB_ENV"
+      - name: Run responsive screens 320px to 4K
+        run: |
+          python3 -m http.server 8770 --bind 127.0.0.1 >/tmp/neural-responsive-http.log 2>&1 &
+          sleep 2
+          node tests/jarvis-neural-responsive-gold-browser.mjs
+      - name: Legacy Neural Jarvis interaction check
+        run: |
+          # The existing legacy test intentionally intercepts port 8769.
+          python3 -m http.server 8769 --bind 127.0.0.1 >/tmp/neural-legacy-http.log 2>&1 &
+          sleep 2
+          node tests/jarvis-neural-jarvis-browser.mjs
