@@ -57,7 +57,7 @@ export function intelligenceScenario(report,{scope="world",kind="all"}={}){
 }
 if(stage){
  const panel=elt("section","jarvis-global-intel-panel");
- panel.hidden=true;panel.setAttribute("aria-label","Inteligência global e monitoramento no Neural Ring");
+ panel.hidden=true;panel.setAttribute("aria-label","Inteligência global e monitoramento no Neural Jarvis");
  const heading=elt("header","jarvis-global-intel-head");
  const title=elt("strong","", "GLOBAL INTELLIGENCE");
  const dismiss=elt("button","","×");dismiss.type="button";dismiss.dataset.intelAction="close";
@@ -142,7 +142,7 @@ if(stage){
     // Query genuine public GeoJSON feeds DIRECTLY inside this Ring; do not
     // open external webpages and do not call these values a D1 monitoring history.
     status.textContent="Backend sem dados ("+backendError+"). "+
-      "Consultando fontes públicas diretamente no Neural Ring…";
+      "Consultando fontes públicas diretamente no Neural Jarvis…";
     const live=await collectGlobalIntelligence();
     if(!live.ok||!Array.isArray(live.sourceStatus))
       throw Error("Cloudflare: "+backendError+
