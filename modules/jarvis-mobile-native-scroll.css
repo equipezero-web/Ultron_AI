@@ -33,7 +33,7 @@ body.jarvis-command-center .orb-stage{
 }
 /* Native touch-action must be declared on the actual input elements, not just
    body: touch-action is intersected over the ancestor chain by the browser. */
-@media(hover:none), (pointer:coarse), (max-width:820px){
+@media (pointer:coarse), (max-width:820px){
  body.jarvis-command-center .jarvis-cc-visual[data-mode="ring"],
  body.jarvis-command-center .jarvis-cc-visual[data-mode="ring"] > #jarvis-cc-canvas,
  body.jarvis-command-center .jarvis-cc-visual .jarvis-earth-globe,
