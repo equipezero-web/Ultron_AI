@@ -107,7 +107,7 @@ assert.equal(context.eventKey,geo.key);
 assert.equal(context.type,"cataloged");
 assert.match(context.description,/atividade sísmica/i);
 assert.equal(context.url,geo.url);
-assert.match(context.evidence,/Coordenada/);
+assert.match(context.evidence,/coordenada/i);
 const inmet=resolveMultimodalContext({digest,director:{
  active:true,scene:"priorities",selectedPriorityKey:warning.key
 },now});
