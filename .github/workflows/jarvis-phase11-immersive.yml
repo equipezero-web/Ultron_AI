@@ -10,6 +10,7 @@ on:
       - 'modules/ultron-orchestrator-v4270.js'
       - 'index.html'
       - 'tests/jarvis-phase11-immersive.mjs'
+      - 'tests/jarvis-phase11-map-navigation.mjs'
       - 'tests/jarvis-phase11-immersive-browser.mjs'
       - '.github/workflows/jarvis-phase11-immersive.yml'
   push:
@@ -22,6 +23,7 @@ on:
       - 'modules/ultron-orchestrator-v4270.js'
       - 'index.html'
       - 'tests/jarvis-phase11-immersive.mjs'
+      - 'tests/jarvis-phase11-map-navigation.mjs'
       - 'tests/jarvis-phase11-immersive-browser.mjs'
       - '.github/workflows/jarvis-phase11-immersive.yml'
 permissions:
@@ -44,6 +46,7 @@ jobs:
       - name: Source-grounded narrative and prior phase regressions
         run: |
           node tests/jarvis-phase11-immersive.mjs
+          node tests/jarvis-phase11-map-navigation.mjs
           node tests/jarvis-phase10-contextual-map.mjs
           node tests/jarvis-phase9-priorities.mjs
           node tests/jarvis-phase8-continuity.mjs
