@@ -20,6 +20,7 @@ assert.equal(publicCameraEmbed(PUBLIC_WORLD_CAMERAS.find(c=>!c.embedId)),null);
 assert.equal(validatePublicCamera({...PUBLIC_WORLD_CAMERAS[0],sourceUrl:"http://192.168.0.1/live"}),false);
 assert.equal(validatePublicCamera({...PUBLIC_WORLD_CAMERAS[0],embedId:"../../../private"}),false);
 assert.deepEqual(parseWorldCameraCommand("Jarvis, câmeras do mundo"),{type:"open"});
+assert.deepEqual(parseWorldCameraCommand("Jarvis, ativar câmeras do mundo"),{type:"open"});
 assert.deepEqual(parseWorldCameraCommand("monitoramento visual mundial"),{type:"open"});
 assert.deepEqual(parseWorldCameraCommand("Jarvis, mostre a câmera de Recife"),{type:"search",term:"recife"});
 assert.deepEqual(parseWorldCameraCommand("buscar webcams em Tóquio"),{type:"search",term:"toquio"});
