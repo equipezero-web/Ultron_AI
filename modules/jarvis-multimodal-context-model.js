@@ -93,7 +93,7 @@ export function resolveMultimodalContext({
    evidence:found?"Evento com coordenada verificada na fonte.":"Sem localização individual confirmada."
   };
  }
- if(scene==="news"||(!directorActive&&news?.requested===true)){
+ if(scene==="news"||(!directorActive&&(news?.requested===true||news?.state?.requested===true))){
   const a=news?.selectedArticle;
   const url=https(a?.url),published=time(a?.publishedAt),archive=time(news?.state?.lastUpdate);
   if(!url||!news?.state?.verified||archive===null||
