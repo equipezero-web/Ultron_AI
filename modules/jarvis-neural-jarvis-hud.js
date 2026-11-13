@@ -13,9 +13,9 @@ const el=(tag,cls,text)=>{
  return node;
 };
 const engine=()=>window.ULTRON_NEURAL_JARVIS;
-let panel=null,telemetry=null,detail=null,archiveList=null,archiveOpen=false;
+let panel=null,hud=null,telemetry=null,detail=null,archiveList=null,archiveOpen=false;
 let visualAudio=false,audioContext=null,analyser=null,source=null,stream=null,bytes=null;
-let audioFrame=0,overdrive=false,speaking=false,liveBars=[],buttons={};
+let audioFrame=0,audioTicket=0,overdrive=false,speaking=false,liveBars=[],buttons={};
 function report(message){
  const line=el("p","","> [NEURAL JARVIS] "+String(message).slice(0,300));
  output?.append(line);if(output)output.scrollTop=output.scrollHeight;
@@ -67,7 +67,7 @@ function toggleArchive(){
  return {ok:true,open:true};
 }
 async function stopAudio(){
- visualAudio=false;
+ audioTicket++;visualAudio=false;
  if(audioFrame)cancelAnimationFrame(audioFrame);
  audioFrame=0;
  try{stream?.getTracks().forEach(t=>t.stop());}catch{}
@@ -103,6 +103,7 @@ function audioLoop(){
 async function toggleAudio(){
  if(visualAudio)return stopAudio();
  if(!engine()?.active)return {ok:false,reason:"ENGINE_INACTIVE"};
+ const ticket=++audioTicket;
  if(!navigator.mediaDevices?.getUserMedia){
   report("Microfone indisponível neste navegador.");
   return {ok:false,reason:"MICROPHONE_UNAVAILABLE"};
@@ -110,7 +111,7 @@ async function toggleAudio(){
  try{
   const selected=await navigator.mediaDevices.getUserMedia({audio:true,video:false});
   // If a STOP occurred while permission dialog was open, never keep tracks.
-  if(!engine()?.active){selected.getTracks().forEach(t=>t.stop());return {ok:false,reason:"ENGINE_INACTIVE"};}
+  if(ticket!==audioTicket||!engine()?.active){selected.getTracks().forEach(t=>t.stop());return {ok:false,reason:"CANCELLED_OR_ENGINE_INACTIVE"};}
   stream=selected;
   const AudioContext=window.AudioContext||window.webkitAudioContext;
   if(!AudioContext)throw Error("Web Audio API indisponível");
@@ -122,6 +123,7 @@ async function toggleAudio(){
   source.connect(analyser); // No connection to speakers; no echo/recording.
   bytes=new Uint8Array(analyser.frequencyBinCount);
   await audioContext.resume();
+  if(ticket!==audioTicket){await stopAudio();return {ok:false,reason:"CANCELLED"};}
   visualAudio=true;
   buttons.microphone?.setAttribute("aria-pressed","true");
   if(buttons.microphone)buttons.microphone.textContent="DESLIGAR ÁUDIO";
@@ -174,7 +176,7 @@ function makeButton(label,key,fn,requiresEngine=true){
 }
 function init(){
  if(!center||!actions)return false;
- const hud=el("section","neural-jarvis-hud");
+ hud=el("section","neural-jarvis-hud");
  hud.setAttribute("aria-label","Estrutura holográfica Neural Jarvis");
  telemetry=el("div","neural-jarvis-telemetry","MATRIZ WEBGL / INICIALIZANDO");
  telemetry.setAttribute("role","status");
@@ -229,6 +231,7 @@ if(mounted){
  window.addEventListener("ultron:neural-ring-3d-ready",updateTelemetry);
  window.addEventListener("ultron:visual-mode",event=>{
   const ring=event?.detail?.mode==="ring";
+  if(hud)hud.hidden=!ring;
   if(!ring){
    closeArchive();overdrive=false;engine()?.setOverdrive?.(false);
    void stopAudio();
