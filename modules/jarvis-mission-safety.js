@@ -21,7 +21,7 @@ export function assessCompoundMission(parts, parseDeviceIntent) {
   const content = parts.map(part => normalizeIntent(part));
   // No textual or voice approval can authorize unsupported destructive/financial actions.
   const blocked = content.some(text =>
-    /\b(?:apagar|apague|excluir|exclua|deletar|delete)\b.{0,60}\b(?:arquivo|documento|pasta|dados|backup)\b/.test(text) ||
+    /\b(?:apagar|apague|excluir|exclua|deletar|delete)\b.{0,60}\b(?:arquivos?|documentos?|pastas?|dados|backups?)\b/.test(text) ||
     /\b(?:pagar|pagamento|pix|transferir|transfira|comprar|compre)\b/.test(text) ||
     /\b(?:enviar|envie|mandar|mande)\b.{0,40}\b(?:whatsapp|sms|email|e-mail|mensagem)\b/.test(text) ||
     /\b(?:senha|token secreto|chave privada|credencial)\b/.test(text)
