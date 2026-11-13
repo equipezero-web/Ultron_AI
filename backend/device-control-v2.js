@@ -207,6 +207,31 @@ export async function getCommandStatus(env, operatorId, commandId) {
   };
 }
 
+// Cancel only commands which have not been claimed by a device. Once claimed
+// the remote software/hardware may already be acting; never promise reversal.
+export async function cancelQueuedControlCommand(env, operatorId, commandId) {
+  if (!operatorId || !/^[0-9a-f-]{36}$/i.test(String(commandId || "")) || !(await ensureBridgeSchema(env))) {
+    return { ok: false, error: "Identidade ou comando inválido." };
+  }
+  const update = await env.ULTRON_DB.prepare(
+    `UPDATE device_commands
+        SET status = 'cancelled', completed_at = CURRENT_TIMESTAMP
+      WHERE id = ? AND operator_id = ? AND status = 'pending'`
+  ).bind(commandId, operatorId).run();
+  if (update?.meta?.changes) return { ok: true, status: "cancelled", cancelledBeforeDelivery: true };
+  const current = await env.ULTRON_DB.prepare(
+    `SELECT status FROM device_commands WHERE id = ? AND operator_id = ? LIMIT 1`
+  ).bind(commandId, operatorId).first();
+  if (!current) return {ok: false, status: "not-found", error: "Comando não encontrado para este operador."};
+  if (current.status === "cancelled") return {ok: true, status: "cancelled", cancelledBeforeDelivery: true};
+  return {
+    ok: false,
+    status: current.status,
+    cancelledBeforeDelivery: false,
+    error: "O dispositivo já recebeu ou concluiu o comando; não é possível garantir a interrupção."
+  };
+}
+
 export async function commandHistory(env, operatorId, limit = 20) {
   if (!operatorId || !(await ensureBridgeSchema(env))) return [];
   const safeLimit = Math.max(1, Math.min(50, Number(limit || 20)));
