@@ -588,6 +588,31 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
 }
 
 function enqueue(message, source = "terminal", approvedMission = false) {
+  const immerseCommand=normalize(message).replace(/^(?:jarvis|ultron)[, :]+/,"").replace(/[.!?]+$/,"").trim();
+  if(/^(?:(?:iniciar|inicie|abrir|abra|mostrar|mostre|explorar) (?:a |o )?)?(?:exploracao visual|experiencia imersiva|tour visual|tour contextual|explorar eventos)$/.test(immerseCommand)){
+    return window.ULTRON_IMMERSIVE?.start?.({view:"2d"}) ||
+      Promise.resolve({ok:false,error:"Módulo imersivo não disponível."});
+  }
+  if(/^(?:proximo evento|proximo registro|evento seguinte|avancar evento)$/.test(immerseCommand)){
+    return window.ULTRON_IMMERSIVE?.next?.() ||
+      Promise.resolve({ok:false,error:"Exploração não iniciada."});
+  }
+  if(/^(?:evento anterior|registro anterior|voltar evento)$/.test(immerseCommand)){
+    return window.ULTRON_IMMERSIVE?.previous?.() ||
+      Promise.resolve({ok:false,error:"Exploração não iniciada."});
+  }
+  if(/^(?:mudar|trocar|alterar|mostrar|mostre) (?:exploracao |visualizacao )?(?:para |em |no )?(?:mapa )?2d$/.test(immerseCommand)){
+    return window.ULTRON_IMMERSIVE?.setMode?.("2d") ||
+      Promise.resolve({ok:false,error:"Exploração não iniciada."});
+  }
+  if(/^(?:mudar|trocar|alterar|mostrar|mostre) (?:exploracao |visualizacao )?(?:para |em |no )?(?:globo )?3d$/.test(immerseCommand)){
+    return window.ULTRON_IMMERSIVE?.setMode?.("3d") ||
+      Promise.resolve({ok:false,error:"Exploração não iniciada."});
+  }
+  if(/^(?:fechar|encerrar|parar) (?:a |o )?(?:exploracao visual|experiencia imersiva|tour visual)$/.test(immerseCommand)){
+    return Promise.resolve(window.ULTRON_IMMERSIVE?.close?.()||
+      {ok:false,error:"Exploração não iniciada."});
+  }
   const geoCommand=normalize(message).replace(/^(?:jarvis|ultron)[, :]+/,"").replace(/[.!?]+$/,"").trim();
   const geoMode=/^(?:mostre|mostrar|abra|abrir|visualize|visualizar) (?:as )?(?:prioridades|eventos catalogados|registros verificados) (?:no |em )?(mapa 2d|globo 3d)$/.exec(geoCommand)
     ||/^(?:mostre|mostrar|abra|abrir|visualize|visualizar) (?:o )?(mapa 2d|globo 3d) (?:das |dos |de )?(?:prioridades|eventos catalogados|registros verificados)$/.exec(geoCommand);
@@ -615,6 +640,7 @@ function enqueue(message, source = "terminal", approvedMission = false) {
     missionGate.clear();
     activeController?.abort();
     recoveryEngine.cancelAll();
+    window.ULTRON_IMMERSIVE?.stop?.(); // P0 also ends purely visual navigation.
     // Also attempt to revoke already-submitted commands still pending in D1.
     // This is best-effort: a claimed command cannot be undone.
     void window.ULTRON_DEVICES?.cancelOutstandingCommands?.();
