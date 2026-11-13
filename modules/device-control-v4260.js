@@ -34,11 +34,12 @@ function memoryKey() {
   return window.ULTRON_MEMORY?.getMemoryKey?.() || null;
 }
 
-async function postCloud(path, payload = {}) {
+async function postCloud(path, payload = {}, {signal=null}={}) {
   const response = await fetch(`${API_BASE}${path}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     cache: "no-store",
+    ...(signal ? {signal} : {}),
     body: JSON.stringify(payload)
   });
   const data = await response.json().catch(() => ({}));
@@ -314,7 +315,7 @@ async function monitorCommand(commandId,{signal=null,maxAttempts=20}={}) {
     await pauseUntil(900,signal);
     if(signal?.aborted)return cancelQueuedCommand(commandId);
     try {
-      const result = await postCloud("/api/control/status", { memoryKey: key, commandId });
+      const result = await postCloud("/api/control/status", { memoryKey: key, commandId }, {signal:signal || AbortSignal.timeout(6500)});
       const command = result?.command;
       if(signal?.aborted)return cancelQueuedCommand(commandId);
       if (!command) continue;
