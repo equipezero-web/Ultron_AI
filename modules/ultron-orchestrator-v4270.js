@@ -600,6 +600,7 @@ function cancelP0Operations(reason="local",epoch=null){
   missionGate.clear();
   activeController?.abort();
   recoveryEngine.cancelAll();
+  window.ULTRON_SUPERVISED_AUTONOMY?.cancel?.("P0_STOP");
   window.ULTRON_MULTIMODAL?.stop?.();
   window.ULTRON_VISUAL_ORCHESTRATOR?.stop?.();
   window.ULTRON_IMMERSIVE?.stop?.();
@@ -612,6 +613,9 @@ window.addEventListener("ultron:emergency-stop",event=>{
   cancelP0Operations("priority-core",event?.detail?.epoch);
 });
 function enqueue(message, source = "terminal", approvedMission = false) {
+  // Phase XIV: consented bounded sequences must be checked before generic missions.
+  const supervisedIntent=window.ULTRON_SUPERVISED_AUTONOMY?.parse?.(message);
+  if(supervisedIntent)return window.ULTRON_SUPERVISED_AUTONOMY.execute(message,{source});
   // Phase XIII: resolve only exact whitelisted references ("isto", "essa
   // notícia", "este evento") against the currently verified visual scene.
   const contextualIntent=window.ULTRON_MULTIMODAL?.parse?.(message);

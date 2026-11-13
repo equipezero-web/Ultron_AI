@@ -1,0 +1,30 @@
+name: JARVIS Phase XIV supervised autonomy
+on:
+  push:
+    paths:
+      - 'modules/jarvis-supervised-autonomy*'
+      - 'modules/ultron-orchestrator-v4270.js'
+      - 'tests/jarvis-phase14-supervised-model.mjs'
+      - '.github/workflows/jarvis-phase14-supervised.yml'
+  pull_request:
+    paths:
+      - 'modules/jarvis-supervised-autonomy*'
+      - 'modules/ultron-orchestrator-v4270.js'
+      - 'tests/jarvis-phase14-supervised-model.mjs'
+      - '.github/workflows/jarvis-phase14-supervised.yml'
+jobs:
+  model-and-regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax and supervised policy
+        run: |
+          node --check modules/jarvis-supervised-autonomy.js
+          node --check modules/jarvis-supervised-autonomy-model.js
+          node --check modules/ultron-orchestrator-v4270.js
+          node tests/jarvis-phase14-supervised-model.mjs
+      - name: Multimodal compatibility
+        run: node tests/jarvis-phase13-context-model.mjs
