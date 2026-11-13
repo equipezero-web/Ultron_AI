@@ -101,13 +101,13 @@ window.addEventListener("ultron:continuity-report",event=>{
  worldUnavailable=info.ok!==true;
  if(info.waking===true)worldDone=true;
  if(wakePending)maybeWake();
- else render({quiet:true});
+ else render({quiet:false});
 });
 window.addEventListener("ultron:intelligence-visual-update",event=>{
  const info=event?.detail||{};
  if(info.waking===true)historyDone=true;
  if(wakePending)maybeWake();
- else render({quiet:true});
+ else render({quiet:false});
 });
 async function review(){
  if(Date.now()-lastManualAt<MIN_MANUAL){
