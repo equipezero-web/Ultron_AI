@@ -45,11 +45,12 @@ export function createRecoveryEngine({
     const r=records.get(code),timestamp=now();
     if(!online){
       r.status="offline";r.reason="BROWSER_OFFLINE";r.verified=false;
-      r.nextCheckAt=null;return Promise.resolve({ok:false,...safeRecord(r)});
+      r.nextCheckAt=null;r.attempts=0;
+      return Promise.resolve({ok:false,...safeRecord(r),skipped:"offline"});
     }
     if(r.circuitUntil>timestamp){
       r.status="circuit-open";r.nextCheckAt=r.circuitUntil;
-      return Promise.resolve({ok:false,...safeRecord(r)});
+      return Promise.resolve({ok:false,...safeRecord(r),skipped:"circuit-open"});
     }
     if(r.cooldownUntil>timestamp){
       // A recent successful read is not reinterpreted as a fresh recovery.
