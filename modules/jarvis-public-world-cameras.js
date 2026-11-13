@@ -81,7 +81,16 @@ function build(){
  const heading=make("strong","","◈ J.A.R.V.I.S. // VISÃO MUNDIAL");
  const close=make("button","","×");close.type="button";
  close.setAttribute("aria-label","Fechar câmeras mundiais");
- close.addEventListener("click",hide);
+ let closePressedAt=0;
+ close.addEventListener("pointerdown",event=>{
+  if(event.button!==0)return;
+  closePressedAt=Date.now();event.stopPropagation();hide();
+ });
+ close.addEventListener("click",event=>{
+  event.stopPropagation();
+  if(Date.now()-closePressedAt<850)return;
+  hide();
+ });
  head.append(heading,close);
  summary=make("p","jarvis-worldcam-summary");
  const toolbar=make("div","jarvis-worldcam-filters");
