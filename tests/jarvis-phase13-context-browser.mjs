@@ -161,6 +161,7 @@ try{
     multimodal:window.ULTRON_MULTIMODAL.state,
     director:window.ULTRON_VISUAL_ORCHESTRATOR.state};
  });
+ console.log("PHASE XIII P0 receipt",JSON.stringify(canceledScenario));
  assert.equal(canceledScenario.busyBefore,true,JSON.stringify(canceledScenario));
  assert.equal(canceledScenario.competing.ok,false);
  assert.equal(canceledScenario.competing.reason,"CONTEXT_BUSY");
