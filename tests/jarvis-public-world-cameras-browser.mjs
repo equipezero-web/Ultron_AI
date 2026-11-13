@@ -14,6 +14,7 @@ try{
   waitUntil:"domcontentloaded",timeout:35000
  });
  await page.waitForFunction(()=>Boolean(window.ULTRON_WORLD_CAMERAS&&window.ULTRON_ORCHESTRATOR),{timeout:20000});
+ await page.waitForSelector(".jarvis-cc-center",{timeout:20000});
  const run=cmd=>page.evaluate(input=>window.ULTRON_ORCHESTRATOR.execute(input,"terminal"),cmd);
  const opened=await run("Jarvis, câmeras do mundo");
  assert.equal(opened.ok,true,JSON.stringify(opened));
