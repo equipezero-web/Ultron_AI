@@ -160,3 +160,26 @@ body.jarvis-command-center .jarvis-global-priority-empty{
    max-height:42vh;overflow-y:auto;overscroll-behavior:contain;
  }
 }
+
+/* Phase X: compact inline map actions, only for source-geocoded events. */
+body.jarvis-command-center .jarvis-context-map-actions{
+ display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-top:4px;
+}
+body.jarvis-command-center .jarvis-context-map-actions button{
+ min-height:28px;min-width:68px;padding:4px 7px;
+ background:rgba(30,82,108,.82);border:1px solid #54889e;
+ border-radius:5px;color:#def5fa;font:600 10px/1.25 system-ui,sans-serif;
+ cursor:pointer;touch-action:manipulation;
+}
+body.jarvis-command-center .jarvis-context-map-actions button:focus-visible{
+ outline:2px solid #b3eadd;outline-offset:2px;
+}
+body.jarvis-command-center .jarvis-context-map-status{
+ display:block;margin:4px 0 0;color:#e8d7a1;font:10px/1.35 system-ui,sans-serif;
+}
+body.jarvis-command-center .jarvis-context-map-status[hidden]{display:none!important}
+@media(max-width:460px){
+ body.jarvis-command-center .jarvis-context-map-actions button{
+  min-height:32px;flex:1 1 84px;
+ }
+}
