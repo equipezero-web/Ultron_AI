@@ -175,30 +175,9 @@ if (earthVisual) {
   const referenceSide = reference.querySelector('.jarvis-earth-reference-side');
   const referenceStatus = reference.querySelector('#jarvis-earth-reference-status');
 
-  // Mapbox lives under a touch-action:none canvas to keep pinch responsive.
-  // One-finger VERTICAL gestures must nevertheless scroll the dashboard.
-  // Two fingers remain owned by Mapbox cooperative zoom and pan.
-  let mapTouchScroll=null;
-  referenceMapHost.addEventListener('touchstart',event=>{
-    if(event.touches.length!==1){mapTouchScroll=null;return;}
-    const finger=event.touches[0];
-    mapTouchScroll={startX:finger.clientX,startY:finger.clientY,
-      lastY:finger.clientY,scrolling:false};
-  },{passive:true,capture:true});
-  referenceMapHost.addEventListener('touchmove',event=>{
-    if(!mapTouchScroll||event.touches.length!==1)return;
-    const finger=event.touches[0],dx=finger.clientX-mapTouchScroll.startX,
-      dy=finger.clientY-mapTouchScroll.startY;
-    if(!mapTouchScroll.scrolling&&Math.abs(dy)>8&&Math.abs(dy)>Math.abs(dx)*1.2)
-      mapTouchScroll.scrolling=true;
-    if(!mapTouchScroll.scrolling)return;
-    if(event.cancelable)event.preventDefault();
-    event.stopImmediatePropagation();
-    window.scrollBy({top:mapTouchScroll.lastY-finger.clientY,behavior:'instant'});
-    mapTouchScroll.lastY=finger.clientY;
-  },{passive:false,capture:true});
-  for(const type of ['touchend','touchcancel'])
-    referenceMapHost.addEventListener(type,()=>{mapTouchScroll=null;},{passive:true,capture:true});
+  // Native pan-y on the map container permits normal one-finger scrolling.
+  // Mapbox still receives intentional map interactions and multi-touch events.
+  // Do not emulate page scroll with window.scrollBy or cancel touchmove here.
 
   let referenceMap = null, referenceLoading = null, referenceMode = false;
   let referenceSelection = false;
@@ -853,13 +832,11 @@ if (earthVisual) {
           if (dragState.pointerId != null && event.pointerId != null && event.pointerId !== dragState.pointerId) return;
           if(event.pointerType==='touch'&&touchPointers.size===1){
             const dx=event.clientX-dragState.x,dy=event.clientY-dragState.y;
-            if(!dragState.scrollGesture&&Math.abs(dy)>8&&Math.abs(dy)>Math.abs(dx)*1.2)
+            if(!dragState.scrollGesture&&Math.abs(dy)>7&&Math.abs(dy)>Math.abs(dx)*1.15)
               dragState.scrollGesture=true;
-            if(dragState.scrollGesture){
-              window.scrollBy({top:dragState.touchLastY-event.clientY,behavior:'instant'});
-              dragState.touchLastY=event.clientY;
-              return;
-            }
+            // CSS touch-action:pan-y handles one-finger vertical navigation
+            // with native inertia. Never fight it with a manual scrollBy.
+            if(dragState.scrollGesture)return;
           }
           const dx = event.clientX - dragState.x;
           const dy = event.clientY - dragState.y;
