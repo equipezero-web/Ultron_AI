@@ -147,23 +147,29 @@ try{
   window.__pendingScene=new Promise(resolve=>{window.__resolveScene=resolve;});
   window.ULTRON_IMMERSIVE.start=()=>window.__pendingScene;
  });
- const pending=page.evaluate(()=>
-  window.ULTRON_ORCHESTRATOR.execute("mostre isso no globo 3D","terminal"));
- await page.waitForFunction(()=>window.ULTRON_MULTIMODAL?.state?.busy===true,{
-  timeout:4000
+ const canceledScenario=await page.evaluate(async()=>{
+  // Keep all concurrent instructions in the same browser task to ensure the
+  // rejected visual promise is settled before ending the CDP evaluation.
+  const pending=window.ULTRON_ORCHESTRATOR.execute("mostre isso no globo 3D","terminal");
+  await Promise.resolve();
+  const busyBefore=window.ULTRON_MULTIMODAL.state.busy;
+  const competing=await window.ULTRON_ORCHESTRATOR.execute("explique isso","terminal");
+  const stop=await window.ULTRON_ORCHESTRATOR.execute("PARE","operator");
+  window.__resolveScene({ok:true,view:"3d",eventKey:"g:usgs1"});
+  const canceled=await pending;
+  return {busyBefore,competing,stop,canceled,
+    multimodal:window.ULTRON_MULTIMODAL.state,
+    director:window.ULTRON_VISUAL_ORCHESTRATOR.state};
  });
- const competing=await page.evaluate(()=>
-  window.ULTRON_ORCHESTRATOR.execute("explique isso","terminal"));
- assert.equal(competing.ok,false);assert.equal(competing.reason,"CONTEXT_BUSY");
- const stop=await page.evaluate(()=>
-  window.ULTRON_ORCHESTRATOR.execute("PARE","operator"));
- assert.equal(stop.ok,true);assert.equal(stop.status,"cancelled");
- await page.evaluate(()=>window.__resolveScene({ok:true,view:"3d",eventKey:"g:usgs1"}));
- const canceled=await pending;
- assert.equal(canceled.ok,false);
- assert.equal(canceled.cancelled,true);
- assert.equal(await page.evaluate(()=>window.ULTRON_MULTIMODAL.state.busy),false);
- assert.equal(await page.evaluate(()=>window.ULTRON_VISUAL_ORCHESTRATOR.state.active),false);
+ assert.equal(canceledScenario.busyBefore,true,JSON.stringify(canceledScenario));
+ assert.equal(canceledScenario.competing.ok,false);
+ assert.equal(canceledScenario.competing.reason,"CONTEXT_BUSY");
+ assert.equal(canceledScenario.stop.ok,true);
+ assert.equal(canceledScenario.stop.status,"cancelled");
+ assert.equal(canceledScenario.canceled.ok,false);
+ assert.equal(canceledScenario.canceled.cancelled,true);
+ assert.equal(canceledScenario.multimodal.busy,false);
+ assert.equal(canceledScenario.director.active,false);
  console.log("PHASE XIII BROWSER PASS: verified pronouns, official source link, INMET no-geocoding, voice 3D and 2D receipts, news image, mobile and P0 STOP");
 }catch(error){
  if(page)await page.screenshot({path:"phase13-context-browser-failure.png",fullPage:true}).catch(()=>{});
