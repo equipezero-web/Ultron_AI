@@ -75,7 +75,14 @@ export function parseWorldCameraCommand(message){
  if(/^(?:status|estado) (?:das cameras mundiais|do monitoramento visual mundial)$/.test(s))
   return {type:"status"};
  const match=s.match(/^(?:mostrar|mostre|abrir|abra|buscar|busque|ver) (?:as |uma |a )?(?:cameras?|webcams?) (?:de|do|da|em|no|na) ([a-z0-9\s-]{2,64})$/);
- if(match)return {type:"search",term:match[1].trim()};
+ if(match){
+  const term=match[1].trim();
+  // Keep private, attached, household and local optical-camera requests
+  // in their existing permission-aware camera controller.
+  if(/\b(?:celular|telefone|smartphone|notebook|computador|laptop|dispositivo|webcam local|camera local|ip|rtsp|privad[ao]s?|particular|minha|meu|quarto|banheiro|apartamento|residencia)\b/.test(term))
+   return null;
+  return {type:"search",term};
+ }
  return null;
 }
 export function cameraDirectorySummary(){
