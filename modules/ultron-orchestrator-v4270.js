@@ -40,6 +40,7 @@ let lastVoiceInput={text:"",at:0};
 const recoveryEngine=createRecoveryEngine({
   probe:(code,{signal})=>probeRecoveryHealth(code,{baseUrl:API_BASE,signal})
 });
+const recoveryReportTasks=new Map();
 
 function normalize(text) {
   return String(text || "")
@@ -673,8 +674,10 @@ function showRecoveryReport(){
   log("Limite: até 2 consultas GET por verificação. Bloqueio após 3 verificações falhas. Nenhum comando de TV, celular, PC, pagamento ou arquivo é repetido.");
   return {ok:true,checks};
 }
-async function runRecoveryCheck(code,{manual=false}={}){
-  if(!recoveryEngine.targetCodes.includes(code))return {ok:false,status:"unsupported"};
+function runRecoveryCheck(code,{manual=false}={}){
+  if(!recoveryEngine.targetCodes.includes(code))return Promise.resolve({ok:false,status:"unsupported"});
+  if(recoveryReportTasks.has(code))return recoveryReportTasks.get(code);
+  const task=(async()=>{
   const online=typeof navigator!=="undefined"&&navigator.onLine!==false &&
     (manual||!document.hidden);
   const result=await recoveryEngine.run(code,{online});
@@ -696,6 +699,13 @@ async function runRecoveryCheck(code,{manual=false}={}){
     });}catch{}
   }
   return result;
+  })();
+  recoveryReportTasks.set(code,task);
+  void task.then(
+    ()=>{if(recoveryReportTasks.get(code)===task)recoveryReportTasks.delete(code);},
+    ()=>{if(recoveryReportTasks.get(code)===task)recoveryReportTasks.delete(code);}
+  );
+  return task;
 }
 async function runRecoveryChecks(){
   const codes=recoveryEngine.targetCodes;
