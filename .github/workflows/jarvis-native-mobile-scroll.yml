@@ -6,6 +6,7 @@ on:
       - 'modules/jarvis-neural-jarvis-3d.js'
       - 'modules/jarvis-earth.js'
       - 'modules/jarvis-command-center-v4330.js'
+      - 'modules/neural-spatial-control-v4250.js'
       - 'index.html'
       - 'tests/jarvis-mobile-native-scroll-browser.mjs'
       - '.github/workflows/jarvis-native-mobile-scroll.yml'
@@ -15,6 +16,7 @@ on:
       - 'modules/jarvis-neural-jarvis-3d.js'
       - 'modules/jarvis-earth.js'
       - 'modules/jarvis-command-center-v4330.js'
+      - 'modules/neural-spatial-control-v4250.js'
       - 'index.html'
       - 'tests/jarvis-mobile-native-scroll-browser.mjs'
       - '.github/workflows/jarvis-native-mobile-scroll.yml'
@@ -33,6 +35,7 @@ jobs:
           node --check modules/jarvis-neural-jarvis-3d.js
           node --check modules/jarvis-earth.js
           node --check modules/jarvis-command-center-v4330.js
+          node --check modules/neural-spatial-control-v4250.js
           node --check tests/jarvis-mobile-native-scroll-browser.mjs
           node tests/jarvis-neural-jarvis-model.mjs
           node tests/jarvis-universal-adaptive-model.mjs
