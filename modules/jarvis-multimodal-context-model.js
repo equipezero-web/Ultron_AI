@@ -36,7 +36,7 @@ export function parseMultimodalCommand(raw){
   return {type:"navigate",direction:1};
  if(/^(?:item anterior|destaque anterior|anterior da tela)$/.test(command))
   return {type:"navigate",direction:-1};
- if(/^(?:volte|voltar|retorne|retornar) (?:a |para a |as |para as )?noticias(?: e imagens)?$/.test(command))
+ if(/^(?:volte|voltar|retorne|retornar) (?:a |para a |para |as |para as )?noticias(?: e imagens)?$/.test(command))
   return {type:"scene",scene:"news"};
  if(/^(?:status|estado|diagnostico) (?:da |do )?(?:orquestracao multimodal|controle contextual|contexto visual)$/.test(command))
   return {type:"status"};
