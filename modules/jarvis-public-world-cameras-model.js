@@ -30,6 +30,8 @@ export const PUBLIC_WORLD_CAMERAS=Object.freeze([
   "https://camerasdomundo.com/rainbow-bridge-toquio/","ちんあなご","Sm3nG3DHgBI"),
  entry("seoul-river","Rio Han — Seul","Seul","Coreia do Sul","Ásia","cidades",
   "https://camerasdomundo.com/en/seoul-city-centre/","RIVERWORKER","vk5BHoDxXf0"),
+ entry("tembe-elephants","Tembe Elephant Park — fauna","Emangusi","África do Sul","África","natureza",
+  "https://africam.com/lodge/tembe-elephant-park/","Africam"),
  entry("taronga-zoo","Elefantes — Zoológico Taronga","Sydney","Austrália","Oceania","natureza",
   "https://camerasdomundo.com/elefantes-zoologico-sydney-ao-vivo/","Taronga Zoo")
 ]);
@@ -43,13 +45,13 @@ const plain=s=>String(s??"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toL
 export function normalizeCameraText(text){return plain(text).replace(/\s+/g," ").slice(0,120);}
 export function validatePublicCamera(camera){
  if(!camera||!(/^[a-z0-9-]{2,60}$/.test(camera.id))||
-  !["América do Sul","América do Norte","Europa","Ásia","Oceania"].includes(camera.region)||
+  !["América do Sul","América do Norte","Europa","Ásia","África","Oceania"].includes(camera.region)||
   !CAMERA_CATEGORY_NAMES[camera.category]||
   typeof camera.name!=="string"||!camera.name.trim()||typeof camera.city!=="string"||
   typeof camera.country!=="string"||typeof camera.publisher!=="string")return false;
  try{
   const url=new URL(camera.sourceUrl);
-  if(url.protocol!=="https:"||url.hostname!=="camerasdomundo.com"||
+  if(url.protocol!=="https:"||!["camerasdomundo.com","africam.com"].includes(url.hostname)||
    url.username||url.password||url.port)return false;
  }catch{return false;}
  return camera.embedId===null||/^[a-zA-Z0-9_-]{11}$/.test(camera.embedId);
@@ -89,5 +91,5 @@ export function cameraDirectorySummary(){
  const countries=[...new Set(PUBLIC_WORLD_CAMERAS.map(c=>c.country))].sort();
  const regions=[...new Set(PUBLIC_WORLD_CAMERAS.map(c=>c.region))];
  return {indexed:PUBLIC_WORLD_CAMERAS.length,countries,regions,embedded:PUBLIC_WORLD_CAMERAS.filter(c=>c.embedId).length,
-  liveVerified:0,source:"Câmeras do Mundo — catálogo externo"};
+  liveVerified:0,source:"Câmeras do Mundo / Africam — catálogos públicos externos"};
 }
