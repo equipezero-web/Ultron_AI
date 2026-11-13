@@ -703,6 +703,8 @@ async function runRecoveryChecks(){
   showRecoveryReport();
   return {ok:results.every(r=>r.verified===true),results};
 }
+// SELF-HEAL now means a verified, bounded read-only health check, not an
+// arbitrary repair or a claim of physical device recovery.
 async function safeSelfHeal(alert){
   const code=String(alert?.code||"");
   if(code==="browser-offline"){
@@ -740,7 +742,18 @@ function injectRecoveryButton(){
   button.id="btn-orchestrator-recovery";
   button.type="button";
   button.textContent="RECUPERAÇÃO";
-  button.addEventListener("click",()=>{showRecoveryReport();});
+  // Mobile quick-actions can cancel click while the strip snaps. Use one
+  // pointerdown for touch/pen and retain click for keyboard/mouse.
+  let touchAt=0;
+  button.addEventListener("pointerdown",(event)=>{
+    if(event.pointerType==="mouse"||event.button!==0)return;
+    touchAt=Date.now();
+    showRecoveryReport();
+  });
+  button.addEventListener("click",()=>{
+    if(Date.now()-touchAt<800)return;
+    showRecoveryReport();
+  });
   actions.appendChild(button);
 }
 
