@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import {interpretDeviceReceipt} from "../modules/device-command-receipts.js";
+import {interpretDeviceReceipt,createPendingCommandTracker} from "../modules/device-command-receipts.js";
 import {cancelQueuedControlCommand} from "../backend/device-control-v2.js";
 
 for(const status of ["pending","claimed"]) {
@@ -22,6 +22,23 @@ const aborted=interpretDeviceReceipt({status:"claimed"},{aborted:true});
 assert.equal(aborted.cancelled,true);
 assert.equal(aborted.ok,false);
 assert.equal(aborted.commandStatus,"claimed","Cannot claim physical cancellation after claim");
+
+let time=1000;
+const tracker=createPendingCommandTracker({now:()=>time,max:2,ttlMs:300_000});
+const ta="01234567-aaaa-4abc-9abc-0123456789ab";
+const tb="01234567-bbbb-4abc-9abc-0123456789ab";
+const tc="01234567-cccc-4abc-9abc-0123456789ab";
+assert.equal(tracker.track("not-a-command"),false);
+assert.equal(tracker.track(ta),true);
+assert.equal(tracker.track(tb),true);
+assert.equal(tracker.track(tc),true);
+assert.deepEqual(tracker.list(),[tb,tc],"Bounded cache must evict oldest command");
+tracker.settle(tb);
+assert.deepEqual(tracker.drain(),[tc]);
+assert.deepEqual(tracker.drain(),[],"Stop is idempotent");
+tracker.track(ta);
+time+=300_000;
+assert.deepEqual(tracker.list(),[],"Old pending IDs expire without leaking memory");
 
 const owner="user-a",other="user-b";
 const a="01234567-aaaa-4abc-9abc-0123456789ab";
