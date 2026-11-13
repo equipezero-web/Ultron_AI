@@ -22,10 +22,13 @@ Com autorização expressa, verifica os coletores públicos já instalados a cad
 
 Comandos: "ativar rotina de monitoramento", "verificar rotina agora", "status da rotina", "desativar rotina de monitoramento".
 
-## XIX — Cenários matemáticos 2D/3D
-Exige registro geográfico publicado e explicitamente selecionado (Fase XIII). No Neural Ring, apresenta uma curva gaussiana normalizada em gráfico 2D ou uma malha matemática projetada em 3D; controle de escala, alternância e fechamento. O painel indica a fonte do ponto e deixa claro que o gráfico é hipotético: não representa terremoto real, clima, alerta, intensidade, área afetada, risco, velocidade ou previsão. Não desenha falsas regiões de impacto sobre o Mapbox.
+## XIX — Visualização geográfica 2D/3D de dados reais
 
-Comandos: "simulação 2D", "simulação 3D", "fechar simulação".
+Exige registro geográfico público e explicitamente selecionado, com coordenadas válidas, fonte publicada e data verificada pelas Fases IX–XIII. Ao solicitar a visualização, reutiliza o mapa contextual real existente, sem outra tela nem gráfico sintético. A origem e a data aparecem no terminal e a visualização só é confirmada após o controlador de mapas retornar sucesso, modo 2D ou 3D e ponto selecionado. Se o 3D não estiver disponível, informa o fallback real para 2D.
+
+Não cria curvas, valores de risco, previsões, intensidade, áreas afetadas, mapas de calor, animações que simulem propagação física, ou informações não publicadas na fonte. Ausência de dados = visualização recusada. A navegação da câmera no globo não deve ser confundida com mudança do fenômeno real.
+
+Comandos: "mostrar dados reais em 2D", "mostrar dados reais em 3D", "visualização real 2D", "visualização real 3D". Comandos antigos de "simulação 2D/3D" são recusados com explicação.
 
 ## Segurança operacional
 - Entradas aceitas são instruções estritamente listadas. Linguagem livre não vira código.
@@ -33,7 +36,7 @@ Comandos: "simulação 2D", "simulação 3D", "fechar simulação".
 - Verificação de fonte, data de publicação e evento contextual precede sugestões/simulações.
 - STOP/P0 encerra rotina e visualização; tarefas externas já iniciadas podem terminar independentemente.
 - O registro local de ações tem no máximo 20 itens genéricos e não guarda dados pessoais.
-- O módulo é progressivo: falhas de coletores e Canvas não devem derrubar o núcleo principal.
+- O módulo é progressivo: falhas de coletores ou renderizador de mapa não devem derrubar o núcleo principal.
 
 ## Testes e deploy
 - node tests/jarvis-phases15-19-model.mjs
@@ -43,4 +46,4 @@ Comandos: "simulação 2D", "simulação 3D", "fechar simulação".
 
 O workflow CI valida sintaxe, modelos, regressões e integração mobile. Merge e deploy no GitHub Pages dependem dos checks. Compatibilidade em celulares físicos e consistência das fontes devem ser verificadas em produção.
 
-Delimitação: são MVPs funcionais e verificáveis das Fases XV–XIX, não uma IA geral autônoma, aprendizado de modelo sem supervisão ou previsão física meteorológica.
+Delimitação: são MVPs verificáveis das Fases XV–XIX, não uma IA geral autônoma, treinamento de modelos sem supervisão nem previsão física meteorológica. Dados de testes podem ser sintéticos, mas a aplicação em produção nunca deve mostrá-los como notícias ou observações reais.
