@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "1.0",
-  "fetchedAt": "2026-11-12T19:00:36.425Z",
+  "fetchedAt": "2026-11-13T00:19:13.425Z",
   "priority": [
     "Brasil",
     "Santa Catarina",
@@ -22,36 +22,36 @@
       "label": "Brasil",
       "articles": [
         {
-          "title": "Cacique Raoni está internado em Mato Grosso; quadro de saúde é estável",
-          "url": "https://agenciabrasil.ebc.com.br/direitos-humanos/noticia/2026-11/cacique-raoni-esta-internado-em-mato-grosso-quadro-de-saude-e-estavel",
-          "publishedAt": "2026-11-12T17:44:00.000Z",
-          "description": "O cacique Raoni Metuktire, de 94 anos, está internado há quatro dias no Hospital Regional de Peixoto de Azevedo, em Mato Grosso, devido a uma infecção pulmonar e também para acompanhamento da pressão arterial. O quadro de saúde é considerado estável. No boletim médico mais recente, a família de Raoni pede que “todos respeitem a privacidade do cacique e de seus familiares para que ele possa receber os cuidados necessários com tranquilidade” . Notícias relacionadas: Cacique Raoni, de 94 anos, recebe cuidados paliativos em Mato Grosso. Cacique Raoni tem alta hospitalar. O líder indígena foi submetido a uma terapia à base de antibióticos, e os médicos também atuam no controle da pressão com a administração de medicamentos vasoativos. Ele segue se alimentando por via oral e respirando sem a ajuda de aparelhos. Raoni foi atendido inicialmente na Unidade de Pronto Atendimento (UPA) de Peixoto de Azevedo e encaminhado para o hospital regional onde se encontra internado. O cacique foi diagnosticado em setembro deste ano com câncer no sistema digestório e recebe cuidados paliativos em casa . I",
+          "title": "Professora é demitida de escola em SC após foto em apoio a Lula",
+          "url": "https://agenciabrasil.ebc.com.br/educacao/noticia/2026-11/professora-e-demitida-de-escola-em-sc-apos-foto-em-apoio-lula",
+          "publishedAt": "2026-11-12T23:25:00.000Z",
+          "description": "Uma professora foi demitida, nesta semana, do Colégio Unificado, na cidade de Itajaí (SC), após a postagem de uma foto em que ela e outros funcionários faziam o gesto do “L” com as mãos em apoio ao presidente reeleito Luiz Inácio Lula da Silva. O Sindicato dos Professores de Blumenau e Região (Sinpabre) manifestou repúdio à decisão da escola particular tanto em relação à demissão como a denúncias de perseguição política contra outros professores que receberam advertências disciplinares pela manifestação de preferência política durante uma confraternização. Notícias relacionadas: Assédio eleitoral supera 7 mil denúncias, aponta ministério. Governo estuda restringir crédito a empresas por assédio eleitoral. Assédio eleitoral: saiba como denunciar crime mesmo após eleições. “A fotografia foi posteriormente publicada em uma rede social pessoal, sem identificação visual da escola”, argumentou o sindicato. De acordo com a entidade, esse não foi um episódio isolado, já que “multiplicam-se denúncias de trabalhadores ameaçados, constrangidos e dispensados em razão de suas convicções políticas",
           "source": "Agência Brasil",
-          "imageUrl": "https://imagens.ebc.com.br/ZJVFINPf1fqjijtt3eLY9QjTRHs=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2025/11/16/_rbr7672.jpg?itok=42_uX9kL"
+          "imageUrl": "https://cdn.jsdelivr.net/gh/sergiosdlima/assets-ebc@1.0.0/public/thumbs/thumb_1200x600_agbrasil.png"
         },
         {
-          "title": "Fiocruz: aumentam casos de síndrome respiratória aguda por covid-19",
-          "url": "https://agenciabrasil.ebc.com.br/saude/noticia/2026-11/fiocruz-aumentam-casos-de-sindrome-respiratoria-aguda-por-covid-19",
-          "publishedAt": "2026-11-12T17:43:00.000Z",
-          "description": "Os casos confirmados de síndrome respiratória aguda grave (SRAG) por covid-19 tiveram alta no país no início de novembro , informou nesta quinta-feira (12) a Fundação Oswaldo Cruz (Fiocruz), no Boletim Infogripe . A Fiocruz ressalta, entretanto, que o número de casos graves por covid-19 permanece em níveis baixos. Notícias relacionadas: Covid-19: pelo menos 5 estados registram aumento de casos graves. Nas últimas quatro semanas, 11,5% das hospitalizações e 26,9% das mortes por SRAG viral foram causadas pelo coronavírus Sars-CoV-2, causador da doença. O boletim foi atualizado com os dados de 1º a 7 novembro que foram inseridos no Sistema de Informação da Vigilância Epidemiológica da Gripe (Sivep-Gripe) até o último sábado (7). Apesar do aumento das confirmações de covid-19, os casos de SRAG, de forma geral, apresentam tendência de queda no país. Vacinação A pesquisadora Tatiana Portella, da Fiocruz, avalia que a situação não é preocupante, mas deve servir como um lembrete para a população se vacinar. Grupos prioritários precisam ser imunizados todos os anos contra a doença, e alguns g",
+          "title": "Caixa Seguridade informa ataque cibernético e vazamento de dados",
+          "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/caixa-seguridade-informa-ataque-cibernetico-e-vazamento-de-dados",
+          "publishedAt": "2026-11-12T23:06:00.000Z",
+          "description": "A Caixa Seguridade informou, nesta quinta-feira (12), em comunicado ao mercado, que sua subsidiária Caixa Vida e Previdência identificou um ataque cibernético ocorrido em 6 de novembro, que resultou no vazamento de dados dos 7,6 milhões de clientes ativos da companhia. Segundo a empresa, foram copiados clandestinamente CPFs, endereços, telefones, e-mails e datas de nascimento. Dados de ex-clientes também foram vazados. “Com base na apuração preliminar, não há indícios de comprometimento de dados financeiros ou de autenticação, tais como valores de apólices, saldos de previdência, dados bancários ou senhas”, informou a Caixa Seguridade no comunicado. A companhia informou ainda que os titulares dos dados afetados estão sendo comunicados e recebendo recomendações de proteção diante do risco de fraudes. Além disso, será disponibilizado um canal de comunicação por meio de um endereço de e-mail específico para receber dúvidas dos clientes. “Uma vez identificados e bloqueados os mecanismos utilizados durante o ataque, foram implementadas medidas adicionais de proteção e iniciada investigaçã",
           "source": "Agência Brasil",
-          "imageUrl": "https://imagens.ebc.com.br/RfM3RgZAViTWydxzY-drxOSATHo=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2025/10/21/pint4215.jpg?itok=jfdXJE7B"
+          "imageUrl": "https://imagens.ebc.com.br/YmL5ussvI_uDWM3nDmJmDA13r8g=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/20231025_144832.jpg?itok=OaDpA_2T"
         },
         {
-          "title": "Temporais no Brasil: entenda como El Niño influencia eventos meteorológicos",
-          "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxNUDRVd0V3UVFxWVItY212dFNucnRoYUI4ZXZYRFJvWV9TOGtkVk5TRTdRNzFsNy1TbEdfUVFRY1NMUnN3WFlWSEFpWVlFcDBtUXcxY1FYUWhyRW9CYnlsdDBreEZ1aWVQR0pTWU1wWWwtaTlRWU9NYW41UDFNNHNOWjJTZ1dCZTJGQmdxaUtaTllTRHVoeHFuZjJReTI3dGdJZHl2UGFoNWF1c1FiUS1lUG5CZkV6bXQxT3g1bw?oc=5",
-          "publishedAt": "2026-11-12T16:48:28.000Z",
-          "description": "Temporais no Brasil: entenda como El Niño influencia eventos meteorológicos &nbsp;&nbsp; CNN Brasil",
-          "source": "CNN Brasil",
-          "imageUrl": null
+          "title": "Dólar dispara 1,58% e fecha a R$ 5,65, maior nível em 17 meses",
+          "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/dolar-dispara-158-e-fecha-r-565-maior-nivel-em-17-meses",
+          "publishedAt": "2026-11-12T22:35:00.000Z",
+          "description": "Em meio a turbulências nos cenários doméstico e internacional, o dólar disparou frente ao real e fechou acima de R$ 5,65 nesta quinta-feira (12), no maior patamar desde junho de 2025. A moeda foi impulsionada pela insatisfação dos investidores com o pacote fiscal anunciado pelo governo e pelo fortalecimento da divisa estadunidense no exterior. Na bolsa, o Ibovespa recuou, pressionado principalmente pela queda das ações do Banco do Brasil (BB), em meio à queda do lucro no terceiro trimestre . No mercado internacional, o petróleo também encerrou em alta, diante das tensões entre Estados Unidos e Irã. Números do dia • Dólar comercial: R$ 5,6507 (+1,58%); • Ibovespa: 171.324,31 pontos (-0,47%); • Volume financeiro da bolsa: R$ 32,24 bilhões; • Dólar no exterior (DXY): 103,160 pontos (+0,28%); • Petróleo WTI: US$ 88,74 (+2,55%); • Petróleo Brent: US$ 95,82 (+3,30%). Câmbio O dólar comercial encerrou o pregão com valorização de 1,58%, cotado a R$ 5,6507. Foi o maior nível de fechamento da moeda estadunidense desde 2 de junho de 2025. A pressão sobre o câmbio ocorreu após o governo apresent",
+          "source": "Agência Brasil",
+          "imageUrl": "https://imagens.ebc.com.br/qgr1uCa7n_TP2WKn5oQPmLd6V2M=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/07/23/2026-07-23t123806z_1_lynxmpem6m19r_rtroptp_4_usa-trump-tariffs-indonesia.jpg?itok=6u1xpzSK"
         },
         {
-          "title": "Congresso muda orçamento em favor da Copa do Mundo de futebol feminino",
-          "url": "https://agenciabrasil.ebc.com.br/esportes/noticia/2026-11/congresso-muda-orcamento-favor-da-copa-do-mundo-de-futebol-feminino",
-          "publishedAt": "2026-11-12T16:47:00.000Z",
-          "description": "O Congresso Nacional aprovou, nesta quinta-feira (12), projeto de lei que flexibiliza regras fiscais e orçamentárias para a realização da Copa do Mundo Feminina da Fifa 2027 , no Brasil entre 24 de junho e 25 de julho. De autoria da Presidência da República, o Projeto de Lei do Congresso Nacional (PLN) nº 7 de 2026 prevê exceções pontuais a algumas regras Lei de Diretrizes Orçamentárias (LDO) de 2026 e da Lei de Responsabilidade Fiscal . Entre os pontos que podem ser flexibilizados, estão: proibição de criação de novas despesas obrigatórias em 2026; exigência de comprovação de que despesas continuadas não comprometem o cumprimento da meta fiscal; apresentação de estimativa do impacto orçamentário-financeiro; restrição à contratação de novo empréstimo quando houver outro da mesma natureza ainda não quitado; limitações à ampliação, à prorrogação ou à extensão de benefícios tributários. Notícias relacionadas: Definidas as regras para o sorteio dos grupos da Copa feminina de 2027. CBF divulga calendário masculino para 2027 com pausa da Copa Feminina. Maracanã será palco de abertura da Co",
+          "title": "Zanin rejeita ação para determinar segundo turno para o governo do Rio",
+          "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/zanin-rejeita-acao-para-determinar-segundo-turno-para-o-governo-do-rio",
+          "publishedAt": "2026-11-12T22:30:00.000Z",
+          "description": "O ministro do Supremo Tribunal Federal Cristiano Zanin negou nesta quinta-feira (12) dar andamento ao processo que pediu um segundo turno das eleições para governador do estado do Rio de Janeiro. Por questões processuais, o ministro negou pedido do PSD, partido do candidato Eduardo Paes, de suspender a decisão do Tribunal Superior Eleitoral (TSE) que anulou os votos obtidos pelo candidato Anthony Garotinho (Republicanos) e determinou a retotalização dos votos para o cargo de governador. Notícias relacionadas: STF derruba imunidade para punir violência patrimonial contra mulheres. Dino mantém prazo inicial da 5x2, mas flexibiliza regra de transição. Operação mira suspeitos de fraudar concurso de 2025 da Polícia Federal. A nova contagem de votos permitiu a eleição de Douglas Ruas (PL) no primeiro turno, por ter passado de 49,27% para 50,88% dos votos válidos. Na decisão, o ministro entendeu que a Arguição de Descumprimento de Preceito Fundamental (ADPF), tipo de processo protocolado pelo PSD, não pode ser utilizada para questionar a decisão do TSE. “A arguição de descumprimento de prec",
           "source": "Agência Brasil",
-          "imageUrl": "https://imagens.ebc.com.br/y0YS2oALft75z__EnL9yfn8w2ac=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/09/16/cbf_anuncia_amistosos_da_selecao_feminina_em_palcos_da_copa_do_mundo.jpg?itok=RzS2OtL0"
+          "imageUrl": "https://imagens.ebc.com.br/3xcP4VAl8oUtQxbDlKdjwPr_QI8=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/_supremo_tribunal_federal250620213575.jpg?itok=7-xc0U8V"
         }
       ],
       "checked": true,
@@ -62,11 +62,19 @@
       "label": "Santa Catarina",
       "articles": [
         {
-          "title": "El Niño muito forte deve persistir até março de 2027",
-          "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxOcG1xTnlsYXpBeHk2U3kybEdIZkUyUmNKZTZ6MDdRbDEyMjloR1E4VXI2Qkk2UXRGME11NTlTNmY5dFNmOF9HVDZIeXltRDdUWlg3LW9VSTROOFF6NkJ6WDhkQWc5Y3BXZEd1OFA4OUxuTkRSWm1GdTNKSWE0YlMxd2Y4MmlOY0QtUDkwUXNiUnRUdmdOM3JSVHVwcUtaZV84MlE?oc=5",
-          "publishedAt": "2026-11-12T17:35:00.000Z",
-          "description": "El Niño muito forte deve persistir até março de 2027 &nbsp;&nbsp; Folha Regional",
-          "source": "Folha Regional",
+          "title": "Defesa Civil emite alertas de tempestade severa com granizo em Joinville e Norte de SC",
+          "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxNUmVJeDdGSG9zQUtzWTFueFpjV1ItdnpXWEw1NGhRb0RkVE5NNUw0OGZYNnlvM3V1MTFnc3RIWTVWLTlwdDR1cThqZ0pTeHV3dlV0ZnliVlUwdTV3eVZGU1ljR09UMFNseGFzZ0p0LWpjd056ZG1uX05KTU5zYTA2akRDR3RPNy1LWDRFcFFuV201dFppc1Z4MV9YTng0c1ZVYlBOMWprcFRmWGxpdXRDVmdvaWhud2dnZjcyTmJlTnM?oc=5",
+          "publishedAt": "2026-11-12T22:02:09.000Z",
+          "description": "Defesa Civil emite alertas de tempestade severa com granizo em Joinville e Norte de SC &nbsp;&nbsp; TopElegance",
+          "source": "TopElegance",
+          "imageUrl": null
+        },
+        {
+          "title": "SC tem previsão de temporais com granizo e ventos fortes ao longo desta quinta-feira 12 de novembro",
+          "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxQRWpnQ2dMbmd4VWpOMWRaUEpFakVGWnowSDNpNUgwSHQ3NWl0TnQyVTB3bWhJbHdnN1RLemM4VXRPNkNTaVRScW45bGZ6a0NGMlpOYm02VGJMWHRNdXdWbWRVMms5NC16LVJGdndIODhLUmt2a1R5dVdtdmNtWEtaQUJjOTBhTGFYVG8wckNYNV96a0IxNHlORms5UlB1NVVSNnc5N3ZDc1hoSFU2R1BHdzY2OExhRkkyc2pCRGFQbkdiVjFSMlpDVGRwalRfR1NSTFE?oc=5",
+          "publishedAt": "2026-11-12T21:08:07.000Z",
+          "description": "SC tem previsão de temporais com granizo e ventos fortes ao longo desta quinta-feira 12 de novembro &nbsp;&nbsp; Jornal de Pomerode",
+          "source": "Jornal de Pomerode",
           "imageUrl": null
         },
         {
@@ -75,14 +83,6 @@
           "publishedAt": "2026-11-12T17:30:00.000Z",
           "description": "Defesa Civil alerta para temporais em parte do estado nesta quinta &nbsp;&nbsp; Portal TN Sul",
           "source": "Portal TN Sul",
-          "imageUrl": null
-        },
-        {
-          "title": "Inmet emite alertas de tempestade para várias regiões do Brasil; veja a previsão",
-          "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxNcUFha19HanVhVE16RWhGTkFMbmlqQTZBVnByNFhiZm9MRWNvVng5VXc1Y2xVRzRKMTk1VTZCTGNPbms0SXFHZDdrWFBPalBZSU1oajFZWUdTazJzdHZhOFBqTmxONm9aYzloZjZxN0dZTVBPZERXYXBySFUtR1ZQc2tyOFY2MDRObXMwUnZOalV6M1VTQWltbTZLUElKTGxKR2pzbmxCS1VfZ3dSNkdMSVljU2w?oc=5",
-          "publishedAt": "2026-11-12T11:54:44.000Z",
-          "description": "Inmet emite alertas de tempestade para várias regiões do Brasil; veja a previsão &nbsp;&nbsp; Portal Viu",
-          "source": "Portal Viu",
           "imageUrl": null
         }
       ],
@@ -94,27 +94,27 @@
       "label": "Clima e El Niño",
       "articles": [
         {
-          "title": "El Niño deve permanecer muito forte até março de 2027, aponta agência climática dos EUA",
-          "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxOSjREQm56cTRUbllnMUhGTk5ISmdzd1VJZ0FGeEppMjdVUzNfYWJKZ25aOE12MU9xeDhHZ3RseEt4dVpYZHFmX20zVEVqRkE5alRnZXJ2em55MkR6Xy1Lc3FkeVMwN3lPOFlvcEFheF9iSkRkX2c4TUItOUpYMmd3bXMxMk5CZERfLXFEMjJuV2xVTWZnTnhMMkJnSXhEcXhaQ1hJeWYyMGlCSnpyM05NXy14TnhreWRiZEhpVA?oc=5",
-          "publishedAt": "2026-11-12T18:21:55.000Z",
-          "description": "El Niño deve permanecer muito forte até março de 2027, aponta agência climática dos EUA &nbsp;&nbsp; Jornal da Fronteira",
-          "source": "Jornal da Fronteira",
+          "title": "“Super” El Niño ganha força e tem mais de 79% de chance de seguir em nível forte a muito forte até março, diz NOAA",
+          "url": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxQV0ZSQU9iZGNib21hd3BILWJFbXM1YXlMckEySkNWR0syOHRYYjdQVzRwUGVOcWtiLUdncHVLTUtXUWRBTXdpRGxEeHE3ME83Z1dYUkJjSmJzLUpqOV85dFJkaDNVaXQ0R1JoXzNkWThycDRNRHcyRDlMaG94Vlh0ZzNrZXZRRkZuN3ZEUHN1VEpiTkpLSWdpMGVmeWhIOVJ5TWZ1RTZ2azZTYmN1UTRYUkZMckU3WFlKRHNySDl3NHg4RWszQUx0bl9sWDhObzFPM1h4RXdQR05lLVJs?oc=5",
+          "publishedAt": "2026-11-12T20:58:36.000Z",
+          "description": "“Super” El Niño ganha força e tem mais de 79% de chance de seguir em nível forte a muito forte até março, diz NOAA &nbsp;&nbsp; NSC Total",
+          "source": "NSC Total",
           "imageUrl": null
         },
         {
-          "title": "El Niño pode ser o mais forte em quase 80 anos, alerta agência dos EUA",
-          "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxNUU5icGlzc05lQ0lpbk5VMDFyWXhyZmFkUU16M3F1d1BrVXh4OGFTMXhMakdEVWRpbV9Db1k2aXl5Y1ZfZjBPNE9KN0JHY3htMG9EYS1iVWQ4d2hTU0NkOVB5Z0FaM1BUWFNIUzYyS1M2WEFibzRWcEdWaEZzNnM0MHZCbUlJTndnamtnRWZXajE?oc=5",
-          "publishedAt": "2026-11-12T18:14:00.000Z",
-          "description": "El Niño pode ser o mais forte em quase 80 anos, alerta agência dos EUA &nbsp;&nbsp; Portal MPA",
-          "source": "Portal MPA",
+          "title": "Como o super El Niño pode atingir a população negra e as periferias do Brasil",
+          "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxQRTJub3JoVE43V3RPY3c2d3cyVjlBMWxfTkVINWowN0lSZkZSQmF6ZjZNSmJGWE5QbFpZVTh5d3M4NjhBTUZXYldUYk9VcXFMTkVjd3U1S1lNS2F2QURRdTZIamZFc0JvLVY2eVJKWW02ZVpoektNR3UzNFAtRDVlWDI5OGZEUEtza3hsSmc1cXdEMWdUcWRLTVNybVNSb1pEYWk0?oc=5",
+          "publishedAt": "2026-11-12T20:29:51.000Z",
+          "description": "Como o super El Niño pode atingir a população negra e as periferias do Brasil &nbsp;&nbsp; Mídia NINJA",
+          "source": "Mídia NINJA",
           "imageUrl": null
         },
         {
-          "title": "El Niño deve seguir forte até março de 2027 e exige atenção à água e às lavouras",
-          "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE1DalpFS2I1X1c0QVlBOVRfYUZmd3dFSE1ILXVJV1BzaTdyQ05lNVp5MDNoZ3h6d3FJUWRLSS1ITU5KUkVVenM5OGRaQ0ppc0JQSU92NUI0b3FnUGM3RVJyM2xkZw?oc=5",
-          "publishedAt": "2026-11-12T17:47:30.000Z",
-          "description": "El Niño deve seguir forte até março de 2027 e exige atenção à água e às lavouras &nbsp;&nbsp; CompreRural",
-          "source": "CompreRural",
+          "title": "Pico do El Niño no Brasil deve chegar em breve: confira o período previsto",
+          "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxPSnBuazhZNnFmY0VCMFF4X1plUnk0d3c2ZjJtUjk1VmtoZTdtMGlqY3E4MHk1RGNDRnRGdnRCM2Z0Wk1UYnBEdUhlUEFaQURsZU5OUFZGWnJwbHRWdXlSUHpIdTVZZ2dJSHVUVG1JZ0xQc1hhNjlXWnlES1ViME1ha2J6dkRGY2tjRHZIWGQ5U0ZHaVAtRWNJUHd3OU1wUENxY1dPaUJNeGp0VUEtQVB2Yk5oUzRiSzhoblpyVHBGUEw?oc=5",
+          "publishedAt": "2026-11-12T19:24:26.000Z",
+          "description": "Pico do El Niño no Brasil deve chegar em breve: confira o período previsto &nbsp;&nbsp; Concursos no Brasil",
+          "source": "Concursos no Brasil",
           "imageUrl": null
         }
       ],
@@ -126,27 +126,27 @@
       "label": "Mundo",
       "articles": [
         {
-          "title": "Resumão: Nvidia, tiroteio em Washington e notícias do dia",
-          "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxQbDFNX19LZ3AxTTJZQ1ByLVdPeEJubGoxVWJCRFdMc2hFQTRiM0JqSjh1MDVKVlNWaUtBLU9fQWJSa0ptaVVpeDhpMjJIdnN3ZTlQeUFySW94NmV0ektEa0M2c016TjB6bFlGWkp4YTk1ZDBhaGFPZlkteFB0VFAwSlVtUWhVV2drTEUyaFE5VGxzajVFcXZYWDR1WFV0QmstSzFENENBVEVNNTZVS0E?oc=5",
-          "publishedAt": "2026-11-12T18:35:06.000Z",
-          "description": "Resumão: Nvidia, tiroteio em Washington e notícias do dia &nbsp;&nbsp; Correio do Povo Penedo",
-          "source": "Correio do Povo Penedo",
+          "title": "O governo de Donald Trump anunciou nesta quinta-feira (12) que atingiu recorde de detenções e deportações de imigrantes na história dos Estados Unidos no último ano fiscal (que são",
+          "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5aVDd5eDBUMWJjYmtEX2dLZmxaMVNuT2NwVzNPRHBSV002eDhwRVZoNjE2UlVoYVcxQk5qdVZ4VU9NZ2ZXQktSSUlsRTM0UTF4cHc?oc=5",
+          "publishedAt": "2026-11-12T23:39:41.000Z",
+          "description": "O governo de Donald Trump anunciou nesta quinta-feira (12) que atingiu recorde de detenções e deportações de imigrantes na história dos Estados Unidos no último ano fiscal (que são os 12 meses consecutivos contados de outubro de um ano a setembro &nbsp;&nbsp; Instagram",
+          "source": "Instagram",
           "imageUrl": null
         },
         {
-          "title": "Principais notícias do mundo na tarde de hoje (12)",
-          "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPTU1DYjRXZHhXVXNjZmc1MFI0OWxjclBnX2ZndEZtWThmb1lfN045eUlTVjdRSEQ5UEotYl9KREt6b1p1ZUljUjRxaENVeHRPalRRcWNaVTNHQXFxRWFfa0EtN0J5aHdnWlI2MlZCdzdOQmtURXNSenN4c2NIcGx5R25Fc2ljc1BEbFFZUlFhWE45eEUwMW9aMkNBcDBFaENXQkszbEJ3Ykc4Ym1O?oc=5",
-          "publishedAt": "2026-11-12T18:01:00.000Z",
-          "description": "Principais notícias do mundo na tarde de hoje (12) &nbsp;&nbsp; Tribuna do Sertão",
-          "source": "Tribuna do Sertão",
+          "title": "Outlook: falha na Microsoft deixa email fora do ar email e afeta Teams, Microsoft 365 e outras plataformas; o que se sabe",
+          "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE5UeHJuZnpRUDlRQmZfQU9heTJFaFZjMlo2OW1YN0tZREY3RGtJVzZxQ1FFUkhzYlpkLTlTMTBKeU1wZ1IzakZPQzQ2ckJNbTNnQVhld2xaRkh6Y2hKZlZrUDlIONIBaEFVX3lxTE9ndkNIckJLMWZDeHFwV2ozMHpLdEcxczhaa1ZyUnRxYlcwN3pFTHBQSnBBSjAydzJ5bHd3dGZFQkxKVlN0MllDd3UzMV9TaTljVGd4VTdJa0tCamgwRm5mSEFUUVA2aVNr?oc=5",
+          "publishedAt": "2026-11-12T21:37:12.000Z",
+          "description": "Outlook: falha na Microsoft deixa email fora do ar email e afeta Teams, Microsoft 365 e outras plataformas; o que se sabe &nbsp;&nbsp; BBC",
+          "source": "BBC",
           "imageUrl": null
         },
         {
-          "title": "Hoje no TecMundo (11): GTA 6 é recorde de pré-venda, Google lança nova IA e mais",
-          "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxQSDNiSG1HREwzbHVqV21lakExWGRjRnVBR04tNkt1MkpZcmRCeHVpbDYxeGV5azk3dlUtYjlZVVRmSmRHdW1vLUVXV3k2alNxZms4bDhLRWl5WGtJV1JnVmxsM0VnREl6aUU5Y2d5dUl1MUxWbmZuU295bGg1R0dWaHJuTUJnWVVJN2Q4NFNDNmk1WjlHQ19NN3pMUUo5SU9nMDFxMWFLbnUybWZIVjZMMTMzVktZaVFSM3R4OUJaX3fSAcYBQVVfeXFMT2tySDdQOGpBRElzME9SbHNlZjctWVh2cUNjRDVHdmJKbV9ZU2x0MFFtNWhxREhmWlplMlVIQ2ZWY0dMMWhRWXR5RDdDVlh3R2hjamRTRlhsMGYyTG9nVG4xZHZJa3RIMzJjMkpqZjBhSzVySjk5eUk2MTNYcERIWE9lYWd6aXh0MldVSGp5WWNCdzBfaHhmcWs3dE8xOEJVQnNnLUVzNml4eFlMdlBkRVNLWVp4YTFGMGxLMTVacWs4QnFySVFB?oc=5",
-          "publishedAt": "2026-11-12T16:36:49.000Z",
-          "description": "Hoje no TecMundo (11): GTA 6 é recorde de pré-venda, Google lança nova IA e mais &nbsp;&nbsp; Estadão",
-          "source": "Estadão",
+          "title": "Papa volta ao Peru, onde foi missionário por 20 anos",
+          "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPRnFKSmZ2QmVWeER5Y1BfVkduVVZQeGticUhxbG1UQTlfMXpnbjZ3T01EOU03TlRQeFlFOGhuNTJfem52OVhpOXd1QThaMWwxSldlUE1ORERkbTNDT1lDd0g1YldlVGZPNTlBWnFrSTA0emIxY1A5b2RFRkIwazN1T1hHQVZaQ1F1QnAxTFJQMTM4VV9MRDUw?oc=5",
+          "publishedAt": "2026-11-12T19:00:27.000Z",
+          "description": "Papa volta ao Peru, onde foi missionário por 20 anos &nbsp;&nbsp; SBT News",
+          "source": "SBT News",
           "imageUrl": null
         }
       ],
@@ -164,6 +164,14 @@
       "id": "europa",
       "label": "Europa",
       "articles": [
+        {
+          "title": "Putin diz que Rússia está aberta a dialogar com a Europa - SBT News",
+          "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPT2RiSExTc0M2UTJpY3VjbEJ5eG1BTExnZWhwWFp1ZmJBbUhqSkJlb19pQjZZWFVLVVhSeG0ydGxnU0ZEbFhGODVkblptMVlmVDU5bG53SXhKQy04bDlOUk52MVBTc3JaQWJTYUwzZG9rdjdfa3VJTjU1V2xHWFpIX3FvZElEVUpxR09HV1Z3NXpmOG9wV1MxSFc1MA?oc=5",
+          "publishedAt": "2026-11-12T16:43:55.000Z",
+          "description": "Putin diz que Rússia está aberta a dialogar com a Europa &nbsp;&nbsp; SBT News",
+          "source": "SBT News",
+          "imageUrl": null
+        },
         {
           "title": "Zagueiro de R$ 618 milhões, Arroyo entra na mira da Europa e Gabigol pode ser negociado: as últimas notícias do Cruzeiro - Terra",
           "url": "https://news.google.com/rss/articles/CBMirwJBVV95cUxNWE12SHpfbTNSV25kMldUUlpRdEIzeVNLQnlyWHZFajFWQ2w5UGY1UFFONGRZRWt6MkpsTk45WDM2MWI5R1pCRWw4TmJOdUF2NERXSnhnUGZ0Vjk2MlQ5cXowNnBzZUJrbDAwMVc3MjRSUDQzTlIwbmQyc0xmRU9HZXcxaWdTajZMdVF4RkwyamtTN3JHRDBwdzFscl9DckdIVzdTVmNhMmRrR2VsUVNzX2E5OWMzZGtSTkc4LS12Vks5bTd5bGNTcmFBOWZnc1E1NFppT01KTlBrR2ZHYUgya3hjR1dpQ2J3QzJIdWtubHBYUUJXQ3ZFVVRtVlQtMDhrSEVkNnRkUEgzMUJ1dVRNVEcyaWJCZ2I1SXE2MjZLSzkwbEotUTVibEZ2UnJGREU?oc=5",
@@ -186,7 +194,16 @@
     {
       "id": "africa",
       "label": "África",
-      "articles": [],
+      "articles": [
+        {
+          "title": "COP31: Presidente moçambicano defende resposta atempada em África - Notícias ao Minuto",
+          "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNVkgxVDdxd1FWSTAyV3JhTXBSeXp0c0pMR2x5cnJ6MnpWbjZ5cU80WlRMRlk4Qm1ZMmdvdXJjSmhFOXFiZVZQaHFlSVpLTUVoTjk3aTh5bGlEd0Z2cDlGTWNxQUl2RGdwZmxxRFJBOTJLc2VZVTVCbHpoVHFmZFlJTzFvQUdEenZzTTg3UWFVV0xHREFtOEhjX3k0ZXNOdGdqbmFFcEVUTkw0NkJRVTVqMQ?oc=5",
+          "publishedAt": "2026-11-12T17:00:00.000Z",
+          "description": "COP31: Presidente moçambicano defende resposta atempada em África &nbsp;&nbsp; Notícias ao Minuto",
+          "source": "Notícias ao Minuto",
+          "imageUrl": null
+        }
+      ],
       "checked": true,
       "error": null
     },
@@ -206,16 +223,31 @@
     }
   ],
   "alerts": {
-    "checked": false,
-    "warnings": [],
-    "error": "This operation was aborted"
+    "checked": true,
+    "warnings": [
+      {
+        "id": "56390",
+        "title": "Tempestade",
+        "severity": "Perigo Potencial",
+        "phase": "previsto",
+        "regions": [
+          "DO",
+          "DE"
+        ],
+        "startsAt": "2026-11-14T00:00:00.000Z",
+        "endsAt": "2026-11-14T00:00:00.000Z",
+        "source": "INMET",
+        "url": "https://avisos.inmet.gov.br/"
+      }
+    ],
+    "error": null
   },
   "enso": {
     "checked": true,
     "bulletin": {
       "status": "El Niño Advisory",
       "issued": "12 November 2026",
-      "synopsis": "El Niño continues to strengthen, with a strong-to-very strong El Niño likely through January-March 2027 (remaining greater than a 79&#37; chance). Compared to last month,",
+      "synopsis": null,
       "source": "NOAA / Climate Prediction Center",
       "url": "https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.html",
       "kind": "monthly-climate-bulletin"
@@ -237,7 +269,7 @@
     }
   ],
   "hasNews": true,
-  "partial": true,
+  "partial": false,
   "delivery": "github-scheduled-snapshot",
   "live": false,
   "refreshedBy": "scheduled-github-action"

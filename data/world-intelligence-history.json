@@ -4,10 +4,154 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-12T19:00:36.425Z",
-  "oldestEventAt": "2026-11-11T19:01:00.000Z",
-  "windowStartAt": "2026-11-11T19:00:36.425Z",
+  "updatedAt": "2026-11-13T00:19:13.425Z",
+  "oldestEventAt": "2026-11-12T01:20:00.000Z",
+  "windowStartAt": "2026-11-12T00:19:13.425Z",
   "events": [
+    {
+      "id": "event-e5edcabe",
+      "category": "mundo",
+      "title": "O governo de Donald Trump anunciou nesta quinta-feira (12) que atingiu recorde de detenções e deportações de imigrantes na história dos Estados Unidos no último ano fiscal (que são",
+      "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5aVDd5eDBUMWJjYmtEX2dLZmxaMVNuT2NwVzNPRHBSV002eDhwRVZoNjE2UlVoYVcxQk5qdVZ4VU9NZ2ZXQktSSUlsRTM0UTF4cHc",
+      "description": "O governo de Donald Trump anunciou nesta quinta-feira (12) que atingiu recorde de detenções e deportações de imigrantes na história dos Estados Unidos no último ano fiscal (que são os 12 meses consecutivos contados de outubro de um ano a setembro &nbsp;&nbsp; Instagram",
+      "imageUrl": null,
+      "source": "Instagram",
+      "publishedAt": "2026-11-12T23:39:41.000Z",
+      "firstSeenAt": "2026-11-13T00:19:13.425Z",
+      "lastSeenAt": "2026-11-13T00:19:13.425Z"
+    },
+    {
+      "id": "event-b14f65fd",
+      "category": "brasil",
+      "title": "Professora é demitida de escola em SC após foto em apoio a Lula",
+      "url": "https://agenciabrasil.ebc.com.br/educacao/noticia/2026-11/professora-e-demitida-de-escola-em-sc-apos-foto-em-apoio-lula",
+      "description": "Uma professora foi demitida, nesta semana, do Colégio Unificado, na cidade de Itajaí (SC), após a postagem de uma foto em que ela e outros funcionários faziam o gesto do “L” com as mãos em apoio ao presidente reeleito Luiz Inácio Lula da Silva. O Sindicato dos Professores de Blumenau e Região (Sinpabre) manifestou repúdio à decisão da escola particular tanto em relação à demissão como a denúncias de perseguição política contra outros professores que receberam advertências disciplinares pela manifestação de preferência política durante uma confraternização. Notícias relacionadas: Assédio eleitoral supera 7 mil denúncias, aponta ministério. Governo estuda restringir crédito a empresas por assédio eleitoral. Assédio eleitoral: saiba como denunciar crime mesmo após eleições. “A fotografia foi posteriormente publicada em uma rede social pessoal, sem identificação visual da escola”, argumentou o sindicato. De acordo com a entidade, esse não foi um episódio isolado, já que “multiplicam-se denúncias de trabalhadores ameaçados, constrangidos e dispensados em razão de suas convicções políticas",
+      "imageUrl": "https://cdn.jsdelivr.net/gh/sergiosdlima/assets-ebc@1.0.0/public/thumbs/thumb_1200x600_agbrasil.png",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-12T23:25:00.000Z",
+      "firstSeenAt": "2026-11-13T00:19:13.425Z",
+      "lastSeenAt": "2026-11-13T00:19:13.425Z"
+    },
+    {
+      "id": "event-a56393ec",
+      "category": "brasil",
+      "title": "Caixa Seguridade informa ataque cibernético e vazamento de dados",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/caixa-seguridade-informa-ataque-cibernetico-e-vazamento-de-dados",
+      "description": "A Caixa Seguridade informou, nesta quinta-feira (12), em comunicado ao mercado, que sua subsidiária Caixa Vida e Previdência identificou um ataque cibernético ocorrido em 6 de novembro, que resultou no vazamento de dados dos 7,6 milhões de clientes ativos da companhia. Segundo a empresa, foram copiados clandestinamente CPFs, endereços, telefones, e-mails e datas de nascimento. Dados de ex-clientes também foram vazados. “Com base na apuração preliminar, não há indícios de comprometimento de dados financeiros ou de autenticação, tais como valores de apólices, saldos de previdência, dados bancários ou senhas”, informou a Caixa Seguridade no comunicado. A companhia informou ainda que os titulares dos dados afetados estão sendo comunicados e recebendo recomendações de proteção diante do risco de fraudes. Além disso, será disponibilizado um canal de comunicação por meio de um endereço de e-mail específico para receber dúvidas dos clientes. “Uma vez identificados e bloqueados os mecanismos utilizados durante o ataque, foram implementadas medidas adicionais de proteção e iniciada investigaçã",
+      "imageUrl": "https://imagens.ebc.com.br/YmL5ussvI_uDWM3nDmJmDA13r8g=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/20231025_144832.jpg?itok=OaDpA_2T",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-12T23:06:00.000Z",
+      "firstSeenAt": "2026-11-13T00:19:13.425Z",
+      "lastSeenAt": "2026-11-13T00:19:13.425Z"
+    },
+    {
+      "id": "event-88726187",
+      "category": "brasil",
+      "title": "Dólar dispara 1,58% e fecha a R$ 5,65, maior nível em 17 meses",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/dolar-dispara-158-e-fecha-r-565-maior-nivel-em-17-meses",
+      "description": "Em meio a turbulências nos cenários doméstico e internacional, o dólar disparou frente ao real e fechou acima de R$ 5,65 nesta quinta-feira (12), no maior patamar desde junho de 2025. A moeda foi impulsionada pela insatisfação dos investidores com o pacote fiscal anunciado pelo governo e pelo fortalecimento da divisa estadunidense no exterior. Na bolsa, o Ibovespa recuou, pressionado principalmente pela queda das ações do Banco do Brasil (BB), em meio à queda do lucro no terceiro trimestre . No mercado internacional, o petróleo também encerrou em alta, diante das tensões entre Estados Unidos e Irã. Números do dia • Dólar comercial: R$ 5,6507 (+1,58%); • Ibovespa: 171.324,31 pontos (-0,47%); • Volume financeiro da bolsa: R$ 32,24 bilhões; • Dólar no exterior (DXY): 103,160 pontos (+0,28%); • Petróleo WTI: US$ 88,74 (+2,55%); • Petróleo Brent: US$ 95,82 (+3,30%). Câmbio O dólar comercial encerrou o pregão com valorização de 1,58%, cotado a R$ 5,6507. Foi o maior nível de fechamento da moeda estadunidense desde 2 de junho de 2025. A pressão sobre o câmbio ocorreu após o governo apresent",
+      "imageUrl": "https://imagens.ebc.com.br/qgr1uCa7n_TP2WKn5oQPmLd6V2M=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/07/23/2026-07-23t123806z_1_lynxmpem6m19r_rtroptp_4_usa-trump-tariffs-indonesia.jpg?itok=6u1xpzSK",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-12T22:35:00.000Z",
+      "firstSeenAt": "2026-11-13T00:19:13.425Z",
+      "lastSeenAt": "2026-11-13T00:19:13.425Z"
+    },
+    {
+      "id": "event-e534b6dc",
+      "category": "brasil",
+      "title": "Zanin rejeita ação para determinar segundo turno para o governo do Rio",
+      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/zanin-rejeita-acao-para-determinar-segundo-turno-para-o-governo-do-rio",
+      "description": "O ministro do Supremo Tribunal Federal Cristiano Zanin negou nesta quinta-feira (12) dar andamento ao processo que pediu um segundo turno das eleições para governador do estado do Rio de Janeiro. Por questões processuais, o ministro negou pedido do PSD, partido do candidato Eduardo Paes, de suspender a decisão do Tribunal Superior Eleitoral (TSE) que anulou os votos obtidos pelo candidato Anthony Garotinho (Republicanos) e determinou a retotalização dos votos para o cargo de governador. Notícias relacionadas: STF derruba imunidade para punir violência patrimonial contra mulheres. Dino mantém prazo inicial da 5x2, mas flexibiliza regra de transição. Operação mira suspeitos de fraudar concurso de 2025 da Polícia Federal. A nova contagem de votos permitiu a eleição de Douglas Ruas (PL) no primeiro turno, por ter passado de 49,27% para 50,88% dos votos válidos. Na decisão, o ministro entendeu que a Arguição de Descumprimento de Preceito Fundamental (ADPF), tipo de processo protocolado pelo PSD, não pode ser utilizada para questionar a decisão do TSE. “A arguição de descumprimento de prec",
+      "imageUrl": "https://imagens.ebc.com.br/3xcP4VAl8oUtQxbDlKdjwPr_QI8=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/_supremo_tribunal_federal250620213575.jpg?itok=7-xc0U8V",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-12T22:30:00.000Z",
+      "firstSeenAt": "2026-11-13T00:19:13.425Z",
+      "lastSeenAt": "2026-11-13T00:19:13.425Z"
+    },
+    {
+      "id": "event-9a5b1cf2",
+      "category": "santa-catarina",
+      "title": "Defesa Civil emite alertas de tempestade severa com granizo em Joinville e Norte de SC",
+      "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxNUmVJeDdGSG9zQUtzWTFueFpjV1ItdnpXWEw1NGhRb0RkVE5NNUw0OGZYNnlvM3V1MTFnc3RIWTVWLTlwdDR1cThqZ0pTeHV3dlV0ZnliVlUwdTV3eVZGU1ljR09UMFNseGFzZ0p0LWpjd056ZG1uX05KTU5zYTA2akRDR3RPNy1LWDRFcFFuV201dFppc1Z4MV9YTng0c1ZVYlBOMWprcFRmWGxpdXRDVmdvaWhud2dnZjcyTmJlTnM",
+      "description": "Defesa Civil emite alertas de tempestade severa com granizo em Joinville e Norte de SC &nbsp;&nbsp; TopElegance",
+      "imageUrl": null,
+      "source": "TopElegance",
+      "publishedAt": "2026-11-12T22:02:09.000Z",
+      "firstSeenAt": "2026-11-13T00:19:13.425Z",
+      "lastSeenAt": "2026-11-13T00:19:13.425Z"
+    },
+    {
+      "id": "event-c7db9782",
+      "category": "mundo",
+      "title": "Outlook: falha na Microsoft deixa email fora do ar email e afeta Teams, Microsoft 365 e outras plataformas; o que se sabe",
+      "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE5UeHJuZnpRUDlRQmZfQU9heTJFaFZjMlo2OW1YN0tZREY3RGtJVzZxQ1FFUkhzYlpkLTlTMTBKeU1wZ1IzakZPQzQ2ckJNbTNnQVhld2xaRkh6Y2hKZlZrUDlIONIBaEFVX3lxTE9ndkNIckJLMWZDeHFwV2ozMHpLdEcxczhaa1ZyUnRxYlcwN3pFTHBQSnBBSjAydzJ5bHd3dGZFQkxKVlN0MllDd3UzMV9TaTljVGd4VTdJa0tCamgwRm5mSEFUUVA2aVNr",
+      "description": "Outlook: falha na Microsoft deixa email fora do ar email e afeta Teams, Microsoft 365 e outras plataformas; o que se sabe &nbsp;&nbsp; BBC",
+      "imageUrl": null,
+      "source": "BBC",
+      "publishedAt": "2026-11-12T21:37:12.000Z",
+      "firstSeenAt": "2026-11-13T00:19:13.425Z",
+      "lastSeenAt": "2026-11-13T00:19:13.425Z"
+    },
+    {
+      "id": "event-473cb7c4",
+      "category": "santa-catarina",
+      "title": "SC tem previsão de temporais com granizo e ventos fortes ao longo desta quinta-feira 12 de novembro",
+      "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxQRWpnQ2dMbmd4VWpOMWRaUEpFakVGWnowSDNpNUgwSHQ3NWl0TnQyVTB3bWhJbHdnN1RLemM4VXRPNkNTaVRScW45bGZ6a0NGMlpOYm02VGJMWHRNdXdWbWRVMms5NC16LVJGdndIODhLUmt2a1R5dVdtdmNtWEtaQUJjOTBhTGFYVG8wckNYNV96a0IxNHlORms5UlB1NVVSNnc5N3ZDc1hoSFU2R1BHdzY2OExhRkkyc2pCRGFQbkdiVjFSMlpDVGRwalRfR1NSTFE",
+      "description": "SC tem previsão de temporais com granizo e ventos fortes ao longo desta quinta-feira 12 de novembro &nbsp;&nbsp; Jornal de Pomerode",
+      "imageUrl": null,
+      "source": "Jornal de Pomerode",
+      "publishedAt": "2026-11-12T21:08:07.000Z",
+      "firstSeenAt": "2026-11-13T00:19:13.425Z",
+      "lastSeenAt": "2026-11-13T00:19:13.425Z"
+    },
+    {
+      "id": "event-f0d5966a",
+      "category": "clima",
+      "title": "“Super” El Niño ganha força e tem mais de 79% de chance de seguir em nível forte a muito forte até março, diz NOAA",
+      "url": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxQV0ZSQU9iZGNib21hd3BILWJFbXM1YXlMckEySkNWR0syOHRYYjdQVzRwUGVOcWtiLUdncHVLTUtXUWRBTXdpRGxEeHE3ME83Z1dYUkJjSmJzLUpqOV85dFJkaDNVaXQ0R1JoXzNkWThycDRNRHcyRDlMaG94Vlh0ZzNrZXZRRkZuN3ZEUHN1VEpiTkpLSWdpMGVmeWhIOVJ5TWZ1RTZ2azZTYmN1UTRYUkZMckU3WFlKRHNySDl3NHg4RWszQUx0bl9sWDhObzFPM1h4RXdQR05lLVJs",
+      "description": "“Super” El Niño ganha força e tem mais de 79% de chance de seguir em nível forte a muito forte até março, diz NOAA &nbsp;&nbsp; NSC Total",
+      "imageUrl": null,
+      "source": "NSC Total",
+      "publishedAt": "2026-11-12T20:58:36.000Z",
+      "firstSeenAt": "2026-11-13T00:19:13.425Z",
+      "lastSeenAt": "2026-11-13T00:19:13.425Z"
+    },
+    {
+      "id": "event-b47555f8",
+      "category": "clima",
+      "title": "Como o super El Niño pode atingir a população negra e as periferias do Brasil",
+      "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxQRTJub3JoVE43V3RPY3c2d3cyVjlBMWxfTkVINWowN0lSZkZSQmF6ZjZNSmJGWE5QbFpZVTh5d3M4NjhBTUZXYldUYk9VcXFMTkVjd3U1S1lNS2F2QURRdTZIamZFc0JvLVY2eVJKWW02ZVpoektNR3UzNFAtRDVlWDI5OGZEUEtza3hsSmc1cXdEMWdUcWRLTVNybVNSb1pEYWk0",
+      "description": "Como o super El Niño pode atingir a população negra e as periferias do Brasil &nbsp;&nbsp; Mídia NINJA",
+      "imageUrl": null,
+      "source": "Mídia NINJA",
+      "publishedAt": "2026-11-12T20:29:51.000Z",
+      "firstSeenAt": "2026-11-13T00:19:13.425Z",
+      "lastSeenAt": "2026-11-13T00:19:13.425Z"
+    },
+    {
+      "id": "event-a295c3d0",
+      "category": "clima",
+      "title": "Pico do El Niño no Brasil deve chegar em breve: confira o período previsto",
+      "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxPSnBuazhZNnFmY0VCMFF4X1plUnk0d3c2ZjJtUjk1VmtoZTdtMGlqY3E4MHk1RGNDRnRGdnRCM2Z0Wk1UYnBEdUhlUEFaQURsZU5OUFZGWnJwbHRWdXlSUHpIdTVZZ2dJSHVUVG1JZ0xQc1hhNjlXWnlES1ViME1ha2J6dkRGY2tjRHZIWGQ5U0ZHaVAtRWNJUHd3OU1wUENxY1dPaUJNeGp0VUEtQVB2Yk5oUzRiSzhoblpyVHBGUEw",
+      "description": "Pico do El Niño no Brasil deve chegar em breve: confira o período previsto &nbsp;&nbsp; Concursos no Brasil",
+      "imageUrl": null,
+      "source": "Concursos no Brasil",
+      "publishedAt": "2026-11-12T19:24:26.000Z",
+      "firstSeenAt": "2026-11-13T00:19:13.425Z",
+      "lastSeenAt": "2026-11-13T00:19:13.425Z"
+    },
+    {
+      "id": "event-32db0e55",
+      "category": "mundo",
+      "title": "Papa volta ao Peru, onde foi missionário por 20 anos",
+      "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPRnFKSmZ2QmVWeER5Y1BfVkduVVZQeGticUhxbG1UQTlfMXpnbjZ3T01EOU03TlRQeFlFOGhuNTJfem52OVhpOXd1QThaMWwxSldlUE1ORERkbTNDT1lDd0g1YldlVGZPNTlBWnFrSTA0emIxY1A5b2RFRkIwazN1T1hHQVZaQ1F1QnAxTFJQMTM4VV9MRDUw",
+      "description": "Papa volta ao Peru, onde foi missionário por 20 anos &nbsp;&nbsp; SBT News",
+      "imageUrl": null,
+      "source": "SBT News",
+      "publishedAt": "2026-11-12T19:00:27.000Z",
+      "firstSeenAt": "2026-11-13T00:19:13.425Z",
+      "lastSeenAt": "2026-11-13T00:19:13.425Z"
+    },
     {
       "id": "event-83029234",
       "category": "mundo",
@@ -114,7 +258,19 @@
       "source": "Portal TN Sul",
       "publishedAt": "2026-11-12T17:30:00.000Z",
       "firstSeenAt": "2026-11-12T19:00:36.425Z",
-      "lastSeenAt": "2026-11-12T19:00:36.425Z"
+      "lastSeenAt": "2026-11-13T00:19:13.425Z"
+    },
+    {
+      "id": "event-9b52f6c1",
+      "category": "africa",
+      "title": "COP31: Presidente moçambicano defende resposta atempada em África - Notícias ao Minuto",
+      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNVkgxVDdxd1FWSTAyV3JhTXBSeXp0c0pMR2x5cnJ6MnpWbjZ5cU80WlRMRlk4Qm1ZMmdvdXJjSmhFOXFiZVZQaHFlSVpLTUVoTjk3aTh5bGlEd0Z2cDlGTWNxQUl2RGdwZmxxRFJBOTJLc2VZVTVCbHpoVHFmZFlJTzFvQUdEenZzTTg3UWFVV0xHREFtOEhjX3k0ZXNOdGdqbmFFcEVUTkw0NkJRVTVqMQ",
+      "description": "COP31: Presidente moçambicano defende resposta atempada em África &nbsp;&nbsp; Notícias ao Minuto",
+      "imageUrl": null,
+      "source": "Notícias ao Minuto",
+      "publishedAt": "2026-11-12T17:00:00.000Z",
+      "firstSeenAt": "2026-11-13T00:19:13.425Z",
+      "lastSeenAt": "2026-11-13T00:19:13.425Z"
     },
     {
       "id": "event-20b96ddc",
@@ -139,6 +295,18 @@
       "publishedAt": "2026-11-12T16:47:00.000Z",
       "firstSeenAt": "2026-11-12T19:00:36.425Z",
       "lastSeenAt": "2026-11-12T19:00:36.425Z"
+    },
+    {
+      "id": "event-5eb439da",
+      "category": "europa",
+      "title": "Putin diz que Rússia está aberta a dialogar com a Europa - SBT News",
+      "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPT2RiSExTc0M2UTJpY3VjbEJ5eG1BTExnZWhwWFp1ZmJBbUhqSkJlb19pQjZZWFVLVVhSeG0ydGxnU0ZEbFhGODVkblptMVlmVDU5bG53SXhKQy04bDlOUk52MVBTc3JaQWJTYUwzZG9rdjdfa3VJTjU1V2xHWFpIX3FvZElEVUpxR09HV1Z3NXpmOG9wV1MxSFc1MA",
+      "description": "Putin diz que Rússia está aberta a dialogar com a Europa &nbsp;&nbsp; SBT News",
+      "imageUrl": null,
+      "source": "SBT News",
+      "publishedAt": "2026-11-12T16:43:55.000Z",
+      "firstSeenAt": "2026-11-13T00:19:13.425Z",
+      "lastSeenAt": "2026-11-13T00:19:13.425Z"
     },
     {
       "id": "event-fae7b360",
@@ -283,218 +451,9 @@
       "publishedAt": "2026-11-12T01:20:00.000Z",
       "firstSeenAt": "2026-11-12T03:14:31.320Z",
       "lastSeenAt": "2026-11-12T03:14:31.320Z"
-    },
-    {
-      "id": "event-6f86c85f",
-      "category": "brasil",
-      "title": "BNDES recebe selo Diamante de transparência pública pela quarta vez",
-      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/bndes-recebe-selo-diamante-de-transparencia-publica-pela-quarta-vez",
-      "description": "O Banco Nacional de Desenvolvimento Econômico e Social (BNDES) recebeu, pela quarta vez consecutiva, o selo Diamante do Radar Nacional da Transparência Pública. Neste ano, a instituição alcançou 100% de pontuação na avaliação, resultado inédito entre os órgãos federais. Além do BNDES, apenas a Amazônia Azul Tecnologias de Defesa (Amazul), empresa pública vinculada ao Ministério da Defesa, obteve nota máxima entre os 53 órgãos federais avaliados em 2026. O questionário da avaliação continha 101 perguntas, que correspondiam a 266 critérios de avaliação da transparência. A certificação foi entregue na terça-feira (10), no Museu do Amanhã, no Rio de Janeiro. O Programa Nacional de Transparência Pública (PNTP), responsável pela avaliação, busca estimular a transparência ativa nos órgãos públicos. A iniciativa é coordenada pela Associação dos Membros dos Tribunais de Contas do Brasil (Atricon), em parceria com os 33 tribunais de contas do país. O selo Diamante é concedido às instituições que atingem pelo menos 95% de conformidade nos critérios de transparência. O BNDES participa da avaliaç",
-      "imageUrl": "https://imagens.ebc.com.br/oK8SbsgegM-UYxYoi6H0l-_-FK4=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/06/12/20241112_122546.jpg?itok=-W5Is57G",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-12T00:06:00.000Z",
-      "firstSeenAt": "2026-11-12T03:14:31.320Z",
-      "lastSeenAt": "2026-11-12T03:14:31.320Z"
-    },
-    {
-      "id": "event-dd06a218",
-      "category": "brasil",
-      "title": "Letramento digital precisa vir antes de uso da IA, diz Unesco",
-      "url": "https://agenciabrasil.ebc.com.br/educacao/noticia/2026-11/letramento-digital-precisa-vir-antes-de-uso-da-ia-diz-unesco",
-      "description": "A aprovação pelo Ministério da Educação (MEC) de diretrizes para a utilização da inteligência artificial (AI) na educação foi bem recebida por especialistas e instituições que trabalham com o tema. A norma proíbe o uso de IA para estudantes dos primeiros anos da educação básica e orienta sobre o uso da ferramenta por alunos do ensino médio e superior e a utilização ética e adequada pelos professores. Notícias relacionadas: MEC fixa novas normas para educação de alunos com altas habilidades. MEC aprova diretrizes para uso de IA em cada etapa da educação. Uma das organizações que ajudaram na elaboração do documento foi a Organização das Nações Unidas para a Educação, a Ciência e a Cultura (Unesco). A coordenadora do setor de Educação da instituição no Brasil, Rebeca Otero, ressalta que um dos pontos principais da diretriz, que precisa ser observada pelas escolas, é o letramento digital dos estudantes. “Antes de usar a IA, o estudante precisa desenvolver o pensamento crítico sobre a ferramenta. Entender como a IA funciona, como ela busca as informações, a confiabilidade das respostas, p",
-      "imageUrl": "https://imagens.ebc.com.br/znr6hRwUId44Ct6U33HeAxR8ooo=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/10/15/2026-07-14t114051z_1313620900_mt1zuma000k094kv_rtrmadp_3_zuma.jpg?itok=9PvFIWQy",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-11T23:46:00.000Z",
-      "firstSeenAt": "2026-11-12T03:14:31.320Z",
-      "lastSeenAt": "2026-11-12T03:14:31.320Z"
-    },
-    {
-      "id": "event-77c6d9d7",
-      "category": "brasil",
-      "title": "Precariedade do sistema prisional entra no debate da maioridade penal",
-      "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2026-11/precariedade-do-sistema-prisional-entra-no-debate-da-maioridade-penal",
-      "description": "Duas comissões parlamentares da Câmara dos Deputados dedicaram, nesta quarta-feira (11), audiências públicas simultâneas para discutir a Proposta de Emenda à Constituição (PEC) 32/2015, que trata da redução da maioridade penal. Uma delas é uma comissão especial sobre o tema iniciada na terça-feira (10). O outro colegiado que se debruçou sobre o assunto foi a Comissão de Segurança Pública e Combate ao Crime Organizado da Câmara. Ambas as audiências receberam juristas, advogados, trabalhadores da segurança pública e representantes do governo federal e do Ministério Público. Notícias relacionadas: Projetos de lei que envolvem saúde feminina avançam na Câmara. Congresso prorroga por 60 dias MP que proíbe bets no país. CLDF aprova reeleição de membros da Mesa Diretora. Entre as falas de muitos convidados, contrários e favoráveis à medida, havia ao menos um discurso em comum: colocar um adolescente de 16 anos em um presídio de adultos não resolve o problema da segurança pública, e poderia criar outros. Entre eles, entregar mais mão de obra para facções criminosas. Chico Lucas, Secretário N",
-      "imageUrl": "https://imagens.ebc.com.br/RwkCxg5kyPyd4TJfvhzPlnjqIgE=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/palacio_do_congresso_nacional_250620213592.jpg?itok=cKlnSdt5",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-11T23:46:00.000Z",
-      "firstSeenAt": "2026-11-12T03:14:31.320Z",
-      "lastSeenAt": "2026-11-12T03:14:31.320Z"
-    },
-    {
-      "id": "event-a1065358",
-      "category": "mundo",
-      "title": "Principais notícias do mundo na noite de hoje (11)",
-      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxNdS1PSWFfNWJrendxR2l2djZYX2l5cDE3bEttT0JidjctX0lHTDhaNy1MdWV5RXNQaGVFaEdQRFhfczFsdGQtNVBmUU1YRk4ydXRBRUVaWGVjTTJlQ2FoZnNneUFGR1VxUFByZ0ZuaUZibVRPTFFqZzlJNFJuak01cWVHNmRlbERuMUZtTC0zU182QkNKQUpCcjFrRDNmejlCNGlIdDZqeHBINHJX",
-      "description": "Principais notícias do mundo na noite de hoje (11) &nbsp;&nbsp; Tribuna do Sertão",
-      "imageUrl": null,
-      "source": "Tribuna do Sertão",
-      "publishedAt": "2026-11-11T23:31:00.000Z",
-      "firstSeenAt": "2026-11-12T03:14:31.320Z",
-      "lastSeenAt": "2026-11-12T11:21:17.063Z"
-    },
-    {
-      "id": "event-6f3cf13f",
-      "category": "mundo",
-      "title": "Maioria dos brasileiros acredita que o mundo vai acabar — e aponta quem seria o responsável",
-      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxQZU5wbjRvZl9wWXgwM2FnamJYVm1DQ01LOGxPMDJGR0hBWFhnMi1LUFNaYWM5WlFKenhUQUl0bjVSZExINUtSOHlKX2xmOUxjVWJrTE1xTkNIcG94YmhrcXpCSWdzTWR2T1RtSXFTQ19PS2dtZ05BMG1aS3I0UURBWnFVUzRhYmhEa0xRUG02R1ctN1NQNTQ2OEpRQ1lBektOOE1PeUlxemdXR2IyWHJYZzNRWmxXRVk",
-      "description": "Maioria dos brasileiros acredita que o mundo vai acabar — e aponta quem seria o responsável &nbsp;&nbsp; Exame",
-      "imageUrl": null,
-      "source": "Exame",
-      "publishedAt": "2026-11-11T23:19:45.000Z",
-      "firstSeenAt": "2026-11-12T03:14:31.320Z",
-      "lastSeenAt": "2026-11-12T03:14:31.320Z"
-    },
-    {
-      "id": "event-5b6055ee",
-      "category": "santa-catarina",
-      "title": "Calor e risco de temporais marcam a quinta-feira em Pomerode",
-      "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE8yTWxDcE5TdnlEUUJ0aDJrY1lxdWptQzNONFRQMHVFeW9YS3djQzhyWlVOZXRURUo2RUQ0TGQ1WExSNFE3M25wbFREb0t4ZGFKZUN1bHZPeWVaa1VmdDlnVDJ6QTVady1meGZIakRmb3ZGOFVxTC1ZTw",
-      "description": "Calor e risco de temporais marcam a quinta-feira em Pomerode &nbsp;&nbsp; Testo Notícias",
-      "imageUrl": null,
-      "source": "Testo Notícias",
-      "publishedAt": "2026-11-11T22:37:18.000Z",
-      "firstSeenAt": "2026-11-12T03:14:31.320Z",
-      "lastSeenAt": "2026-11-12T03:14:31.320Z"
-    },
-    {
-      "id": "event-63f46f3",
-      "category": "mundo",
-      "title": "SBT News alcança 2 milhões de seguidores no Instagram",
-      "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxNYUMwZ1JSbzItZlVNMkV1bzl3T3dvZFNuaFJKcjQzN2Rtc1kxWkxZQWdXVWpOSjdSak5Wbjd1TkJOcEZYNWdiUklCQk9TNG1VVHhfNjRsMnlEYVhFZUt3MDR4ZTB3Wk9DMm9USnhCTDhVTGFIWk5DWjg1N0s1dmRoWnNZT3ZXczlhV2VOTS1hUk1wX1YtSy1tdUthU25mQUZ0dWVoUg",
-      "description": "SBT News alcança 2 milhões de seguidores no Instagram &nbsp;&nbsp; SBT News",
-      "imageUrl": null,
-      "source": "SBT News",
-      "publishedAt": "2026-11-11T22:17:50.000Z",
-      "firstSeenAt": "2026-11-11T22:26:57.531Z",
-      "lastSeenAt": "2026-11-12T03:14:31.320Z"
-    },
-    {
-      "id": "event-abda1360",
-      "category": "clima",
-      "title": "El Niño e temporais no Sul e Sudeste: Inmet explica o que favorece os eventos extremos",
-      "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5LYTU0M3NSd3RQLW16Y3p0OWstN2ZxMlh4ay1KamViUThPdXRyaFZzTDhveGQzSHBWeWd5bktENjI4UlVabHhmMGQ3UFhMN0xtaVpuU0JuRXlJaER4R1pwdWxsejBJZFotTmc",
-      "description": "El Niño e temporais no Sul e Sudeste: Inmet explica o que favorece os eventos extremos &nbsp;&nbsp; CompreRural",
-      "imageUrl": null,
-      "source": "CompreRural",
-      "publishedAt": "2026-11-11T21:53:46.000Z",
-      "firstSeenAt": "2026-11-11T22:26:57.531Z",
-      "lastSeenAt": "2026-11-12T11:21:17.063Z"
-    },
-    {
-      "id": "event-fb8c75f2",
-      "category": "brasil",
-      "title": "Projetos de servidores públicos disputam sete prêmios de R$ 12 mil",
-      "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2026-11/projetos-de-servidores-publicos-disputam-sete-premios-de-r-12-mil",
-      "description": "Um total de 14 projetos criados por servidores públicos disputa, até o dia 27, o Prêmio Espírito Público . As iniciativas finalistas, criadas por servidores públicos brasileiros das cinco regiões brasileiras, foram selecionadas entre 867 inscritos. Agora, as melhores práticas serão avaliadas tanto por um grupo de especialistas como por votação popular. Notícias relacionadas: Eleições: fórum de servidores públicos denuncia censura na internet. Os vencedores em cada uma das sete categorias receberão R$ 12 mil e serão anunciados no dia 9 de dezembro, em uma cerimônia em Brasília (DF). O prêmio está na oitava edição e é promovido pelo instituto República.org. As sete categorias dos projetos são: desenvolvimento social, educação, gestão de pessoas, gestão e transformação digital, meio ambiente e emergência climática, saúde e segurança pública. O projeto mais votado pelo público durante a votação popular será anunciado na mesma cerimônia e receberá um certificado adicional como “Prêmio Especial do Público”. Nesse caso, não há premiação em dinheiro. Os projetos estão disponíveis para votaçã",
-      "imageUrl": "https://imagens.ebc.com.br/PeLQRPNn7qu9KjYT4Jeqz8dzxQI=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/atoms/image/1109814-mcamgo_abr02232018795920180223.jpg?itok=jJr3ymMP",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-11T21:47:00.000Z",
-      "firstSeenAt": "2026-11-11T22:26:57.531Z",
-      "lastSeenAt": "2026-11-11T22:26:57.531Z"
-    },
-    {
-      "id": "event-64f626f7",
-      "category": "brasil",
-      "title": "BB e banco alemão farão aporte de 100 milhões de euros em bioeconomia",
-      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/bb-e-banco-alemao-farao-aporte-de-100-milhoes-de-euros-em-bioeconomia",
-      "description": "O Banco do Brasil (BB) e o banco de desenvolvimento alemão KfW avançaram na estruturação de nova operação de financiamento de 100 milhões de euros para fortalecer cadeias produtivas sustentáveis da bioeconomia, com foco na Amazônia. A iniciativa foi anunciada nesta quarta-feira (11), durante a COP31, por meio de declaração conjunta da Cooperação Financeira Brasil–Alemanha. Os recursos serão destinados ao refinanciamento de operações de crédito do BB voltadas a pequenos produtores, agricultores familiares, comunidades tradicionais, povos indígenas, cooperativas e micro, pequenas e médias empresas. Notícias relacionadas: Governo anuncia medidas de ajuste para economia de até R$ 60 bilhões . Proposta que facilita transição tributária será enviada ao Congresso. O objetivo é ampliar o acesso ao financiamento para atividades que geram renda a partir da biodiversidade e do uso sustentável dos recursos naturais. Para o vice-presidente de Governo e Sustentabilidade do Banco do Brasil, José Ricardo Sasseron, o fortalecimento da bioeconomia depende diretamente das condições oferecidas a quem vi",
-      "imageUrl": "https://imagens.ebc.com.br/mmr-kZ_EH097feHPcw-Nt87ibfs=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/09/02/floresta_amazonica_conservada_em_caracarai_rr.jpg?itok=2Q1CHcRT",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-11T21:21:00.000Z",
-      "firstSeenAt": "2026-11-11T22:26:57.531Z",
-      "lastSeenAt": "2026-11-11T22:26:57.531Z"
-    },
-    {
-      "id": "event-797b94b",
-      "category": "mundo",
-      "title": "Quer ficar por dentro de tudo o que acontece no esporte? No Imirante Esportes, você acompanha as principais notícias, os resultados, os destaques e os bastidores do mundo esportivo",
-      "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE55QjZyTVlsQ1Q0cFNEdW04cWx6NU9ScUtrNkNwSTJzc1d5Z250Sm5OdlhmSThxbFltM2xpR1B2RWYwZldGOHotRGNjUE0tZEo1UVZueFVR",
-      "description": "Quer ficar por dentro de tudo o que acontece no esporte? No Imirante Esportes, você acompanha as principais notícias, os resultados, os destaques e os bastidores do mundo esportivo. &nbsp;&nbsp; Instagram",
-      "imageUrl": null,
-      "source": "Instagram",
-      "publishedAt": "2026-11-11T21:12:58.000Z",
-      "firstSeenAt": "2026-11-11T22:26:57.531Z",
-      "lastSeenAt": "2026-11-11T22:26:57.531Z"
-    },
-    {
-      "id": "event-53e4cadd",
-      "category": "brasil",
-      "title": "História política do Brasil revela a importância estratégica dos vice-presidentes",
-      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxQeVpfcHBjRHlYLVlzNFlwOWlfUWkwZTNpdERuNnF0U1JXSDdhR3JGV3Bla2VJd0kzc0czemNEY2xCUy1Rdi1yMXh1OXZ6OVhGTzU4UWd6c0kxTjlTVm1QRjdvMzJXNXduUmZaM09KdEFfR3RWOUJpTUxBMVpxQVNaUERDVTdwaFVoLXIwdzhlZ0pnWk5pMENtcUhwVjZaUUxWZ2g5S1JRZ0lGQ0lJR0VxWnc0bnhGRTd5UTNBS0V3",
-      "description": "História política do Brasil revela a importância estratégica dos vice-presidentes &nbsp;&nbsp; Gazeta do Povo",
-      "imageUrl": null,
-      "source": "Gazeta do Povo",
-      "publishedAt": "2026-11-11T21:07:00.000Z",
-      "firstSeenAt": "2026-11-11T22:26:57.531Z",
-      "lastSeenAt": "2026-11-11T22:26:57.531Z"
-    },
-    {
-      "id": "event-2f7e1757",
-      "category": "brasil",
-      "title": "Governo anuncia medidas de ajuste para economia de até R$ 60 bilhões",
-      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/governo-anuncia-medidas-de-ajuste-para-economia-de-ate-r-60-bilhoes",
-      "description": "O governo federal prepara um pacote de medidas de ajuste fiscal com potencial de gerar uma economia entre R$ 50 bilhões e R$ 60 bilhões em 2027. A proposta foi apresentada nesta quarta-feira (11) pelo ministro do Planejamento e Orçamento, Bruno Moretti, durante audiência pública na Comissão Mista de Orçamento (CMO), no Congresso Nacional. As medidas serão reunidas em um projeto de lei complementar (PLP), negociado com lideranças do Senado. O objetivo é reforçar o controle das despesas, ampliar a arrecadação e contribuir para o cumprimento da meta fiscal do próximo ano. Notícias relacionadas: Proposta que facilita transição tributária será enviada ao Congresso. Segundo Moretti, o pacote combina iniciativas de aumento de receitas e racionalização de gastos, com a preservação de despesas essenciais à garantia de direitos sociais. “Entre medidas de receitas e medidas de despesas, sempre buscando proteger as despesas que são cruciais para assegurar direitos, racionalizar algumas despesas, rever gastos tributários que não entregam aqueles resultados que são pretendidos e até rever alguns p",
-      "imageUrl": "https://imagens.ebc.com.br/t0iA4VRV9ltbc284NUSZ_2INP8w=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/11/reuniao_de_lideres-5_1.jpg?itok=x-AX5jZ1",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-11T20:48:00.000Z",
-      "firstSeenAt": "2026-11-11T22:26:57.531Z",
-      "lastSeenAt": "2026-11-11T22:26:57.531Z"
-    },
-    {
-      "id": "event-4bcc7e86",
-      "category": "mundo",
-      "title": "Nova York tem menor número de tiroteios e homicídios da história",
-      "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxNSzJOMFY4LUg3TElqeExPb3RZc1RRdWVtYW1JMXlxQzFaLWF3Tk5ybTBVOHdTTEhrbktKb1BDc3ozOXJJYVdfRzJJcjZPQmdvSlRHaXNBcjZpTkw0NWJCRmVUc3Y0TkRqcUVWeDJ3OS1Ja1ZUS1E0SjN3MEh4R0psUmdWTi1zZUpLNVEyMVg2NlZhY1cwcHZQVGM0Y0tQMGxwY3FwT3dyRWtvQWJzS2NqbEkxYTk",
-      "description": "Nova York tem menor número de tiroteios e homicídios da história &nbsp;&nbsp; Folha de S.Paulo",
-      "imageUrl": null,
-      "source": "Folha de S.Paulo",
-      "publishedAt": "2026-11-11T20:30:00.000Z",
-      "firstSeenAt": "2026-11-11T22:26:57.531Z",
-      "lastSeenAt": "2026-11-11T22:26:57.531Z"
-    },
-    {
-      "id": "event-8fc9cba4",
-      "category": "clima",
-      "title": "Calor, chuva e frio em poucos dias: como proteger seu cão e seu gato do tempo instável",
-      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxNaXp0RWZXSmh0LWZNdjNDZjRrNlNfeER6TU5id1haZnVCcG5LZ0V5eGFkTFAwSDdTTmRzMzEwNTIxWUdtSDRKM3F6ZzFWbW83LUZ1SEJxSy1JSlZrckk2RGdBRnZxXzZRQ3FtT3hNNWhxN2E4ejFLSks1bWxBNmVqNEVkU0VoUHVMVjdLdWFHYlNwS0NpYmRQSVdGbDBGZXhMc29BTlNGcUVoZWdNb180WHdISkY3OTRneWtFeG1R",
-      "description": "Calor, chuva e frio em poucos dias: como proteger seu cão e seu gato do tempo instável &nbsp;&nbsp; Revista Ana Maria",
-      "imageUrl": null,
-      "source": "Revista Ana Maria",
-      "publishedAt": "2026-11-11T19:30:14.000Z",
-      "firstSeenAt": "2026-11-12T03:14:31.320Z",
-      "lastSeenAt": "2026-11-12T11:21:17.063Z"
-    },
-    {
-      "id": "event-4b27b6a2",
-      "category": "europa",
-      "title": "Zagueiro de R$ 618 milhões, Arroyo entra na mira da Europa e Gabigol pode ser negociado: as últimas notícias do Cruzeiro - Terra",
-      "url": "https://news.google.com/rss/articles/CBMirwJBVV95cUxNWE12SHpfbTNSV25kMldUUlpRdEIzeVNLQnlyWHZFajFWQ2w5UGY1UFFONGRZRWt6MkpsTk45WDM2MWI5R1pCRWw4TmJOdUF2NERXSnhnUGZ0Vjk2MlQ5cXowNnBzZUJrbDAwMVc3MjRSUDQzTlIwbmQyc0xmRU9HZXcxaWdTajZMdVF4RkwyamtTN3JHRDBwdzFscl9DckdIVzdTVmNhMmRrR2VsUVNzX2E5OWMzZGtSTkc4LS12Vks5bTd5bGNTcmFBOWZnc1E1NFppT01KTlBrR2ZHYUgya3hjR1dpQ2J3QzJIdWtubHBYUUJXQ3ZFVVRtVlQtMDhrSEVkNnRkUEgzMUJ1dVRNVEcyaWJCZ2I1SXE2MjZLSzkwbEotUTVibEZ2UnJGREU",
-      "description": "Zagueiro de R$ 618 milhões, Arroyo entra na mira da Europa e Gabigol pode ser negociado: as últimas notícias do Cruzeiro &nbsp;&nbsp; Terra",
-      "imageUrl": null,
-      "source": "Terra",
-      "publishedAt": "2026-11-11T19:01:00.000Z",
-      "firstSeenAt": "2026-11-11T22:26:57.531Z",
-      "lastSeenAt": "2026-11-12T19:00:36.425Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-11T22:26:57.531Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 15,
-      "newArticles": 13,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "europa",
-        "asia"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-12T03:14:31.320Z",
       "ok": true,
@@ -543,23 +502,55 @@
       ],
       "inmetChecked": false,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-13T00:19:13.425Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 15,
+      "newArticles": 14,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "europa",
+        "africa"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 4,
-  "lastSuccessfulAt": "2026-11-12T19:00:36.425Z",
+  "lastSuccessfulAt": "2026-11-13T00:19:13.425Z",
   "latest": {
     "alerts": {
-      "checked": false,
-      "checkedAt": "2026-11-12T19:00:36.425Z",
-      "warnings": []
+      "checked": true,
+      "checkedAt": "2026-11-13T00:19:13.425Z",
+      "warnings": [
+        {
+          "id": "56390",
+          "title": "Tempestade",
+          "severity": "Perigo Potencial",
+          "phase": "previsto",
+          "regions": [
+            "DO",
+            "DE"
+          ],
+          "startsAt": "2026-11-14T00:00:00.000Z",
+          "endsAt": "2026-11-14T00:00:00.000Z",
+          "source": "INMET",
+          "url": "https://avisos.inmet.gov.br/"
+        }
+      ]
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-12T19:00:36.425Z",
+      "checkedAt": "2026-11-13T00:19:13.425Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
-        "synopsis": "El Niño continues to strengthen, with a strong-to-very strong El Niño likely through January-March 2027 (remaining greater than a 79&#37; chance). Compared to last month,",
+        "synopsis": null,
         "source": "NOAA / Climate Prediction Center",
         "url": "https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.html",
         "kind": "monthly-climate-bulletin"
