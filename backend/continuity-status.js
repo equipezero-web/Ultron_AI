@@ -51,7 +51,9 @@ export function buildContinuityStatus({
    .slice(0,6).map(e=>({
      id:safe(e.id,90),kind:safe(e.kind,35),title:safe(e.title,170),
      source:e.source.toUpperCase(),eventAt:e.eventAt,
-     url:safeSourceLink(e.url,e.source),nearBrazil:e.nearBrazil===true
+     url:safeSourceLink(e.url,e.source),nearBrazil:e.nearBrazil===true,
+     alertLevel:e.source==="gdacs"&&["red","orange","green"].includes(e.gdacsAlert)
+       ?e.gdacsAlert:null
    }));
   const weatherAge=ageInMinutes(weatherReport?.checkedAt,now);
   const weatherAvailable=weatherReport?.ok===true&&Array.isArray(weatherReport.regions)&&weatherAge!==null;

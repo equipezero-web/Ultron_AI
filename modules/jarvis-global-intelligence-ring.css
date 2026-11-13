@@ -119,3 +119,44 @@ body.jarvis-command-center .jarvis-global-intel-empty{font:12px/1.5 system-ui,sa
  body.jarvis-command-center .jarvis-global-intel-actions button,
  body.jarvis-command-center .jarvis-global-intel-actions select{font-size:11px}
 }
+
+/* Phase IX: compact, source-linked contextual priorities inside the existing Ring. */
+body.jarvis-command-center .jarvis-global-priority{
+  flex:1 1 100%;min-width:0;max-height:min(156px,27vh);
+  overflow-y:auto;overscroll-behavior:contain;
+  border-top:1px solid rgba(144,190,204,.3);
+  padding-top:5px;color:#d9eaf3;
+}
+body.jarvis-command-center .jarvis-global-priority-heading{
+  display:block;font:600 10px/1.4 system-ui,sans-serif;
+  color:#aee4cf;letter-spacing:.02em;
+}
+body.jarvis-command-center .jarvis-global-priority-items{
+  display:flex;flex-direction:column;gap:5px;margin-top:4px;
+}
+body.jarvis-command-center .jarvis-global-priority-entry{
+  display:flex;flex-direction:column;gap:1px;min-width:0;
+  padding:4px 0;border-bottom:1px solid rgba(144,190,204,.12);
+}
+body.jarvis-command-center .jarvis-global-priority-entry small{
+  color:#a9c8d5;font:9px/1.3 system-ui,sans-serif;
+}
+body.jarvis-command-center .jarvis-global-priority-entry a,
+body.jarvis-command-center .jarvis-global-priority-entry span{
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+  overflow:hidden;overflow-wrap:anywhere;
+  color:#ecf6fa;font:11px/1.35 system-ui,sans-serif;
+  text-decoration:none;
+}
+body.jarvis-command-center .jarvis-global-priority-entry a:focus-visible{
+  outline:2px solid #b6e7df;outline-offset:2px;
+}
+body.jarvis-command-center .jarvis-global-priority-empty{
+  margin:0;color:#afc4d1;font:10px/1.4 system-ui,sans-serif;
+}
+@media(max-width:460px){
+ body.jarvis-command-center .jarvis-global-priority{max-height:min(128px,22vh)}
+ body.jarvis-command-center .jarvis-cc-center>.jarvis-global-intel-wake{
+   max-height:42vh;overflow-y:auto;overscroll-behavior:contain;
+ }
+}
