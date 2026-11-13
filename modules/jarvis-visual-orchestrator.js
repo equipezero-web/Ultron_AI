@@ -199,9 +199,11 @@ async function step(direction){
  const state=nav.snapshot();
  const nextIndex=state.index+direction;
  if(nextIndex<0||nextIndex>=state.count)return {ok:false,error:"Fim das cenas disponíveis"};
- return show(plan().scenes[nextIndex]?.id||"expired");
+ return show((()=>{const current=plan();return current.scenes.find(x=>x.id===state.current.id)
+  ? current.scenes[nextIndex]?.id : null;})()||"expired");
 }
 function stop(){
+ if(!active&&!busy)return {ok:true,stopped:false};
  seq++;busy=false;active=false;nav=null;
  if(panel)panel.hidden=true;
  window.ULTRON_IMMERSIVE?.close?.();
