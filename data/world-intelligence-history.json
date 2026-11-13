@@ -4,10 +4,166 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-13T07:01:42.106Z",
-  "oldestEventAt": "2026-11-12T08:00:00.000Z",
-  "windowStartAt": "2026-11-12T07:01:42.106Z",
+  "updatedAt": "2026-11-13T15:22:48.310Z",
+  "oldestEventAt": "2026-11-12T16:36:49.000Z",
+  "windowStartAt": "2026-11-12T15:22:48.310Z",
   "events": [
+    {
+      "id": "event-44c3d13",
+      "category": "mundo",
+      "title": "Record News reúne especialistas para debater turismo e grandes eventos esportivos",
+      "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxNZGJJSGFOdmRiSi0zQklXWUtFLUxDVi1GZ1Y3VWZseV9NelNvZWk4UDZvQWFHbVlYb255RHI1YU0tUFE5STlUT2VjTXhYTU5yRnB1SVNEY1NxanZQWG1WRm9LLURmN3V3aGRjYW9PZGtTY1NDUFF4NDNfS25udTNmc0JEb1FPWkF3SDRzZ3FxZmJld0l1Q1FPckU2dnFRZHRBNUdBQ1FPRUQ2UGVTUjd3bDFB",
+      "description": "Record News reúne especialistas para debater turismo e grandes eventos esportivos &nbsp;&nbsp; Propmark",
+      "imageUrl": null,
+      "source": "Propmark",
+      "publishedAt": "2026-11-13T14:50:00.000Z",
+      "firstSeenAt": "2026-11-13T15:22:48.310Z",
+      "lastSeenAt": "2026-11-13T15:22:48.310Z"
+    },
+    {
+      "id": "event-a4e5c70d",
+      "category": "brasil",
+      "title": "Rec’n’Play promove aulões gratuitos para estudantes que vão fazer Enem",
+      "url": "https://agenciabrasil.ebc.com.br/educacao/noticia/2026-11/recnplay-promove-auloes-gratuitos-para-estudantes-que-vao-fazer-enem",
+      "description": "Os estudantes que estão se preparando para o segundo dia de provas do Exame Nacional do Ensino Médio (Enem) e de outros processos seletivos de ingresso no ensino superior - e que estiverem neste final de semana no Recife - vão poder revisar seus conteúdos durante aulões gratuitos neste sábado (14) dentro da programação do festival REC’n’Play. As atividades serão realizadas no centro histórico do Recife, em dois espaços distintos. O primeiro deles será o Aulão Enem, no Auditório É do Povo, no Cais do Sertão, com aulas de biologia, química, física e matemática. Notícias relacionadas: PF trabalha em sistema para aprimorar busca por pessoas desaparecidas. “Há mais memória no celular do que na relação”, diz escritor. REC&#039;n&#039;Play 2026 será palco de tecnologia e criatividade no Recife. A segunda atividade é o Aulão SSA 1, voltado aos estudantes que farão o Sistema Seriado de Avaliação da Universidade de Pernambuco (UPE), marcado para a Arena Pernambuco de Negócios, que fica no auditório do Núcleo de Empreendedorismo e Residência Digital (Nerd). Nesse caso, as aulas ocorrem em dois",
+      "imageUrl": "https://imagens.ebc.com.br/dU_5B5gx84iDMOSzxrwMfno7j-o=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/02/divulgacao-recnplay.jpeg?itok=sozQ8GHX",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-13T14:41:00.000Z",
+      "firstSeenAt": "2026-11-13T15:22:48.310Z",
+      "lastSeenAt": "2026-11-13T15:22:48.310Z"
+    },
+    {
+      "id": "event-474be8d8",
+      "category": "brasil",
+      "title": "PF trabalha em sistema para aprimorar busca por pessoas desaparecidas",
+      "url": "https://agenciabrasil.ebc.com.br/geral/noticia/2026-11/pf-trabalha-em-sistema-para-aprimorar-busca-por-pessoas-desaparecidas",
+      "description": "Até o início do próximo ano, a Polícia Federal (PF) pretende entregar um banco de dados online para unificar informações e facilitar a busca por pessoas desaparecidas dentro ou fora do país. “Estamos trabalhando em um sistema que vai ser automático. Então, a gente vai receber essas informações e a resposta será muito mais rápida”, disse o agente Luan Vitor Miranda da Costa, chefe substituto do Serviço de Enfrentamento a Graves Violações dos Direitos Humanos da PF. Notícias relacionadas: “Há mais memória no celular do que na relação”, diz escritor. REC&#039;n&#039;Play 2026 será palco de tecnologia e criatividade no Recife. Em 2023, a Polícia Federal lançou um projeto para enfrentar o desaparecimento de pessoas e a exploração humana. Chamado de Lumini, o projeto já analisou mais de 10 mil casos, alcançando mais de 72% de resoluções sobre desaparecimentos e 89% de identificação de cadáveres nos dados até setembro deste ano. Agora, a PF trabalha no aprimoramento do programa. Em entrevista à Agência Brasil, durante o festival de inovação e tecnologia Rec’n’Play, que acontece até este sáb",
+      "imageUrl": "https://imagens.ebc.com.br/Sx-4km4Lp4X1T5pOYdN1s0Dxhc4=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/movimentacao-pf_mcamgo_abr_31082023-3.jpg?itok=Xs-lL5iu",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-13T14:09:00.000Z",
+      "firstSeenAt": "2026-11-13T15:22:48.310Z",
+      "lastSeenAt": "2026-11-13T15:22:48.310Z"
+    },
+    {
+      "id": "event-ccc4c466",
+      "category": "brasil",
+      "title": "Inmet emite alerta amarelo para tempestades em 15 estados e no DF",
+      "url": "https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-11/inmet-emite-alerta-amarelo-para-tempestades-em-15-estados-e-no-df",
+      "description": "O Instituto Nacional de Meteorologia (Inmet) emitiu alerta amarelo, com grau de severidade avaliado como perigo potencial, em razão de tempestades em pelo menos 15 estados e no Distrito Federal. O alerta começou a valer pouco depois das 9h desta sexta-feira (13) e vigora até as 23h59. Segundo o instituto, podem ocorrer chuvas entre 20 e 30 milímetros por hora (mm/h) ou até 50 milímetros por dia (mm/dia), além de ventos intensos que devem variar de 40 a 60 quilômetros por hora (km/h) e queda de granizo. Notícias relacionadas: COP30 fortaleceu multilateralismo, diz Corrêa do Lago. Praias do Rio vão ter boletins de balneabilidade duas vezes por semana. De acordo com o Inmet, há baixo risco de corte de energia elétrica, estragos em plantações, queda de galhos de árvores e alagamentos. As orientações, em caso de rajadas de vento, incluem não se abrigar debaixo de árvores, diante do risco de queda e de descargas elétricas, e não estacionar veículos próximos a torres de transmissão e placas de propaganda. “Evite usar aparelhos eletrônicos ligados à tomada. Obtenha mais informações junto à d",
+      "imageUrl": "https://imagens.ebc.com.br/OVozQvF-l5UvQe0XZ8IhovJavw0=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2020-10-27t120239z_139293719_rc20rj92rhaw_rtrmadp_3_markets-emerging-liquidity_0.jpg?itok=aZY1zA2e",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-13T14:03:00.000Z",
+      "firstSeenAt": "2026-11-13T15:22:48.310Z",
+      "lastSeenAt": "2026-11-13T15:22:48.310Z"
+    },
+    {
+      "id": "event-d494126",
+      "category": "brasil",
+      "title": "Ex-tesoureiro da Caixa é condenado por desviar quase R$ 890 mil",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/ex-tesoureiro-da-caixa-e-condenado-por-desviar-quase-r-890-mil",
+      "description": "A 5ª Turma Especializada do Tribunal Regional Federal da 2ª Região (TRF2) confirmou a condenação por improbidade administrativa de um ex-tesoureiro da Caixa Econômica Federal pelo desvio de R$ 889,5 mil de quatro caixas eletrônicos do banco. Segundo a sentença, o dinheiro foi utilizado para a realização de apostas em bets online. A condenação foi confirmada no fim de outubro, e a publicação do acórdão (decisão colegiada) foi realizada em 6 de novembro. De acordo com a sentença de primeiro grau, Irineu Barth Júnior, que foi demitido pela Caixa após processo disciplinar, reconheceu em juízo que desviou a quantia para jogar em bets. Notícias relacionadas: Saiba como as bets adoeceram e endividaram os brasileiros. Entidades da pediatria defendem que bets devem continuar proibidas. Congresso prorroga por 60 dias MP que proíbe bets no país. Ele foi condenado a devolver a quantia desviada e também a pagar uma multa no mesmo valor. Somadas, as sanções chegam a R$ 1,779 milhão. A sentença foi proferida pelo juiz Igor de Lazari Barbosa Carneiro, da 5ª Vara Federal Cível de Vitória, em processo",
+      "imageUrl": "https://imagens.ebc.com.br/G1F6jaJ7NilQXXPxQqm6l1BDw8M=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/09/10/0d7a9996.jpg?itok=6UFcvC_Y",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-13T14:02:00.000Z",
+      "firstSeenAt": "2026-11-13T15:22:48.310Z",
+      "lastSeenAt": "2026-11-13T15:22:48.310Z"
+    },
+    {
+      "id": "event-3f176709",
+      "category": "santa-catarina",
+      "title": "Tempo firme predomina no fim de semana, mas temporais voltam a atingir SC a partir de domingo",
+      "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxPZXQ3aWJlOGJGLU5VdVprb3VWYWdIa05yVzFfcjlTbk1FM3dGU1Z1RFZLQkZhNVZMT0ZxUzJ6Q1RxUThqYlVDUHJINTM1WFd3amFud011bEt0U2RhakhRYllmWEgyaXVZdWxTMEV4dk8xczFwMzlhbWI0dnMxNDlwc3NXYURWdEZiVmd6OGRoeHROR2RBa0FENU5pQ2xJS3FfRUM2ZHVFaWJaLTRrMGdLOWtmN2RuYXJBSHVPWG9oci0zNUo0SU9r",
+      "description": "Tempo firme predomina no fim de semana, mas temporais voltam a atingir SC a partir de domingo &nbsp;&nbsp; Jornal do Comércio",
+      "imageUrl": null,
+      "source": "Jornal do Comércio",
+      "publishedAt": "2026-11-13T13:35:22.000Z",
+      "firstSeenAt": "2026-11-13T15:22:48.310Z",
+      "lastSeenAt": "2026-11-13T15:22:48.310Z"
+    },
+    {
+      "id": "event-e72d02de",
+      "category": "mundo",
+      "title": "Portugal: Mãe de menino mutilado em escola cobra Justiça - 13/11/2026 - Mundo",
+      "url": "https://news.google.com/rss/articles/CBMitgJBVV95cUxOaUJTcFkzYWRmTnZWbkgtQVkwdVhkTEYtRjFrTFU3bER3MFZKV19KcWM3cTB6Z3pXM05YTm1QRDQwaXlqdVNLeElUMTJjVDJObV9FSUNlVGdpR0F5WmRJN0YwMS13dEFFcWYxVWNHNDFDMXVOcWx3ajhzY3pRUFp1OHRPTWpWZmM0NzNUeGRjZ0dYZGJPZHZwRzNobjJibDlWR3ZfcUNsczVTUDhwV3FrdkVGbS12MFNBT0Z4OUFiS1B5a0F6ai0zc0pERng4SmJrYTZxbGpWc1dCdWViSlp2dHJkUWNzdDk0X2xrS2RsUkdWMXBDd245cGJaU3RzV21nbFU1aGI2YkNmYS1YcUdSbXRDQzhWZ2huZ3B4NTBQOGprYnZfT2pGbjhEazR2UnZ6eEhmeHFR",
+      "description": "Portugal: Mãe de menino mutilado em escola cobra Justiça - 13/11/2026 - Mundo &nbsp;&nbsp; Folha de S.Paulo",
+      "imageUrl": null,
+      "source": "Folha de S.Paulo",
+      "publishedAt": "2026-11-13T12:59:00.000Z",
+      "firstSeenAt": "2026-11-13T15:22:48.310Z",
+      "lastSeenAt": "2026-11-13T15:22:48.310Z"
+    },
+    {
+      "id": "event-64319312",
+      "category": "santa-catarina",
+      "title": "Sol e temporais isolados: veja como fica o tempo no fim de semana",
+      "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQMzE1Zm83UFRZbm1yQWZ6UFVHWUQ3TmZPc3NKUjhlRmNqbUFRRWc5bEVQbmhqak1Ub3ZjdkJXMVBKWHFiOElxN1dmTVU2QndJZENFbjBKMmFMcXFZaGFxUTJMdFYtcEpibjNtMmx1cmttdWxaMERnWExDbkMzaGIwUWQzbUdHTy1RRHBaNXNIaFU0dUNnenJhOHFKbmZXdkZNYjdreGdCRm5kS1pRaVNZ",
+      "description": "Sol e temporais isolados: veja como fica o tempo no fim de semana &nbsp;&nbsp; Riomafra Mix",
+      "imageUrl": null,
+      "source": "Riomafra Mix",
+      "publishedAt": "2026-11-13T12:43:19.000Z",
+      "firstSeenAt": "2026-11-13T15:22:48.310Z",
+      "lastSeenAt": "2026-11-13T15:22:48.310Z"
+    },
+    {
+      "id": "event-951b2e06",
+      "category": "clima",
+      "title": "El Niño deve continuar se fortalecendo até 2027 e pode ser o mais intenso desde 1950, aponta previsão da NOAA",
+      "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTFBycmpMUGMwZ2h3VDMyQVpFOEYtYXNRMlFMLWZCaHhuWTd2RXBMQ2xXQ3RGckVoMUFUTGV6UDdBbXFMb1VxQ0lkQTlPa2hSdkpIT1VDcndNcXpIY2RseEhSUlJ2dUplVlpCQl9XNTIwN08yeFFXVEtkNnU1N09udw",
+      "description": "El Niño deve continuar se fortalecendo até 2027 e pode ser o mais intenso desde 1950, aponta previsão da NOAA &nbsp;&nbsp; ND Mais",
+      "imageUrl": null,
+      "source": "ND Mais",
+      "publishedAt": "2026-11-13T12:42:43.000Z",
+      "firstSeenAt": "2026-11-13T15:22:48.310Z",
+      "lastSeenAt": "2026-11-13T15:22:48.310Z"
+    },
+    {
+      "id": "event-23f36580",
+      "category": "mundo",
+      "title": "Principais notícias do mundo na manhã de hoje (13)",
+      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQTFZSd2tMVk9va1JyRjN2bGpIdWxnUFJyaEtwMms2QlFMWUYza1dMSnZLdVZtVkxlTjB2eTZFNXc3QW1fcV80dkhCVzgzSW5sbVNjczM5dzVxbTZIMGtIVUFaLXYxVGhJN1VxQnJTVXlNeGd0eHhyN05tVnRZMjN5cmt1X2dhaHZ4RDk1NG9PN0oxeGQ2aGx2YlFiWHo0elpUTzJzam1RVQ",
+      "description": "Principais notícias do mundo na manhã de hoje (13) &nbsp;&nbsp; Tribuna do Sertão",
+      "imageUrl": null,
+      "source": "Tribuna do Sertão",
+      "publishedAt": "2026-11-13T11:57:53.000Z",
+      "firstSeenAt": "2026-11-13T15:22:48.310Z",
+      "lastSeenAt": "2026-11-13T15:22:48.310Z"
+    },
+    {
+      "id": "event-7eac259f",
+      "category": "europa",
+      "title": "Clube da Europa quer Breno Bidon, STJD adverte zagueiro e nova camisa é lançada: as últimas notícias do Corinthians - Terra",
+      "url": "https://news.google.com/rss/articles/CBMirgJBVV95cUxNNHFrYUhySTd6Ulg5MEwtWEZfUWI0UWJLMzBYOGF1dlNtQnk3bjJnZlZEY2lGU0hUMl9MMDVCY3pHUFJHX2s5MTFBWEN5U3h4emVmck9hQ3p0QW0zUHBMSWxLU1o4ZkxfWWJ6RU5Qc2I5eFZCOW9IdVcySk5Xc3psaV9ScmRPQl9DZVNWMV9uYnFpUEJnMmFUejI3dVFDbTBWeS1HRFpITzBDc2RVWmZqeThWTDB2b3hVQll2R19oamMtV1hvQnRWcHNSUmlDQzgtWVBkcDNXOGk2N09oSXpBV1Z0eW9ENkJMWmpUVXFKZWI5a052OXEzOW1ZcURidzVNWXQ3NjZEZVBqZm10ODJfazBfcldjd3hJMGdzaVJLN2o2RTBqSjRpZVdNMjRxdw",
+      "description": "Clube da Europa quer Breno Bidon, STJD adverte zagueiro e nova camisa é lançada: as últimas notícias do Corinthians &nbsp;&nbsp; Terra",
+      "imageUrl": null,
+      "source": "Terra",
+      "publishedAt": "2026-11-13T11:12:00.000Z",
+      "firstSeenAt": "2026-11-13T15:22:48.310Z",
+      "lastSeenAt": "2026-11-13T15:22:48.310Z"
+    },
+    {
+      "id": "event-a95f4b22",
+      "category": "europa",
+      "title": "Revelação recebe proposta da Europa, três atacantes na mira e empresário de Igor Jesus se manifesta: as últimas notícias do Flamengo - Terra",
+      "url": "https://news.google.com/rss/articles/CBMiwAJBVV95cUxOdldwV1RNSXpnRngwaGp2VVZXUFNNMGxqZzJUWHNGcFJMU2lBdG5xa3FkeXMwLW1YcDNuQTJ6UXFTM3lkMjFySVJqbi1PY2JPbTdaUksxZkJ6NjVkRHg4RUtzODNkY3YzdlZoelJDNFFLb1hZUTN3Z2stdnc5UUlwQVBNdHA1Zk40UEJFZUZabWZKRkx2QjdLeVF5LUNsZWJ4NVJWVmctei0wVmNCUHAwSVUzTXM0ZVpSS1Q1MXp4YlozWW9MTnVUWEJlbHl1QS15amNhWG1ZQ2xFeFc3YmF4UkYzelY0RktsWnR0LTlaZDhiczNRTEtXNGZCczVuVW11RGdxLVViUjAzYmZyUzV6NXVKQl9oY0pVQXozMEtjOTFpQ3lqOGQzZ1NwSk82VmVrZHJVNTh1Wm0yWTYzalhRSQ",
+      "description": "Revelação recebe proposta da Europa, três atacantes na mira e empresário de Igor Jesus se manifesta: as últimas notícias do Flamengo &nbsp;&nbsp; Terra",
+      "imageUrl": null,
+      "source": "Terra",
+      "publishedAt": "2026-11-13T10:41:00.000Z",
+      "firstSeenAt": "2026-11-13T15:22:48.310Z",
+      "lastSeenAt": "2026-11-13T15:22:48.310Z"
+    },
+    {
+      "id": "event-5e963812",
+      "category": "santa-catarina",
+      "title": "Tempo firme na sexta e no sábado, mas temporais com granizo voltam no domingo em SC",
+      "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxNQnltV1ZfWG44VHV5azdwZnFBYnI5andaMjBGNFAwSmRqS0s5SlNxUUlaM2F2U0pBSzJSdkNEWmJZU2VuSi1WeXRKblJyOEc5eWxYNG9TdWpVY3QycElvQy04a3dqaFFjT1VDaWdtTG41al9FSEYtY2Jxd1prcFBZSlBmdlNfTE1WRjhPTkJWVjZRVkRwTVNPYW5LbU94blduTE1QT25PQW03SkxrT3B3TW05bnJpUTZuaWVr",
+      "description": "Tempo firme na sexta e no sábado, mas temporais com granizo voltam no domingo em SC &nbsp;&nbsp; TopElegance",
+      "imageUrl": null,
+      "source": "TopElegance",
+      "publishedAt": "2026-11-13T09:58:00.000Z",
+      "firstSeenAt": "2026-11-13T15:22:48.310Z",
+      "lastSeenAt": "2026-11-13T15:22:48.310Z"
+    },
     {
       "id": "event-51a98046",
       "category": "santa-catarina",
@@ -174,7 +330,7 @@
       "source": "NSC Total",
       "publishedAt": "2026-11-12T20:58:36.000Z",
       "firstSeenAt": "2026-11-13T00:19:13.425Z",
-      "lastSeenAt": "2026-11-13T07:01:42.106Z"
+      "lastSeenAt": "2026-11-13T15:22:48.310Z"
     },
     {
       "id": "event-b47555f8",
@@ -186,7 +342,7 @@
       "source": "Mídia NINJA",
       "publishedAt": "2026-11-12T20:29:51.000Z",
       "firstSeenAt": "2026-11-13T00:19:13.425Z",
-      "lastSeenAt": "2026-11-13T07:01:42.106Z"
+      "lastSeenAt": "2026-11-13T15:22:48.310Z"
     },
     {
       "id": "event-4b94d98f",
@@ -354,7 +510,7 @@
       "source": "Notícias ao Minuto",
       "publishedAt": "2026-11-12T17:00:00.000Z",
       "firstSeenAt": "2026-11-13T00:19:13.425Z",
-      "lastSeenAt": "2026-11-13T07:01:42.106Z"
+      "lastSeenAt": "2026-11-13T15:22:48.310Z"
     },
     {
       "id": "event-20b96ddc",
@@ -403,121 +559,9 @@
       "publishedAt": "2026-11-12T16:36:49.000Z",
       "firstSeenAt": "2026-11-12T19:00:36.425Z",
       "lastSeenAt": "2026-11-12T19:00:36.425Z"
-    },
-    {
-      "id": "event-ec4c91c5",
-      "category": "santa-catarina",
-      "title": "Inmet emite alertas de tempestade para várias regiões do Brasil; veja a previsão",
-      "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxNcUFha19HanVhVE16RWhGTkFMbmlqQTZBVnByNFhiZm9MRWNvVng5VXc1Y2xVRzRKMTk1VTZCTGNPbms0SXFHZDdrWFBPalBZSU1oajFZWUdTazJzdHZhOFBqTmxONm9aYzloZjZxN0dZTVBPZERXYXBySFUtR1ZQc2tyOFY2MDRObXMwUnZOalV6M1VTQWltbTZLUElKTGxKR2pzbmxCS1VfZ3dSNkdMSVljU2w",
-      "description": "Inmet emite alertas de tempestade para várias regiões do Brasil; veja a previsão &nbsp;&nbsp; www.portalviu.com.br",
-      "imageUrl": null,
-      "source": "www.portalviu.com.br",
-      "publishedAt": "2026-11-12T11:13:08.000Z",
-      "firstSeenAt": "2026-11-12T11:21:17.063Z",
-      "lastSeenAt": "2026-11-12T19:00:36.425Z"
-    },
-    {
-      "id": "event-d0da876f",
-      "category": "brasil",
-      "title": "Praias do Rio vão ter boletins de balneabilidade duas vezes por semana",
-      "url": "https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-11/praias-do-rio-vao-ter-boletins-de-balneabilidade-duas-vezes-por-semana",
-      "description": "O Instituto Estadual do Ambiente (Inea), passa, a partir de agora, a divulgar duas vezes por semana os boletins de balneabilidade das praias das zonas sul e sudoeste da capital. A partir desta semana, as atualizações, que antes eram realizadas semanalmente, serão publicadas às terças e sextas-feiras. A mudança reforça o monitoramento da qualidade da água e amplia o acesso dos banhistas a informações atualizadas, especialmente durante a alta temporada e os períodos de chuvas intensas. Notícias relacionadas: Municípios terão que prestar contas sobre gestão de praias. Pesquisadores alertam para impacto da poluição do oceano por mercúrio. A medida considera os impactos das chuvas sobre a qualidade da água do mar. Em outubro, a cidade do Rio de Janeiro registrou o mês mais chuvoso desde o início da série histórica do Alerta Rio, em 1997. Durante os temporais, o escoamento da água pelas ruas e sistemas de drenagem pode levar lixo, esgoto e outros resíduos até o mar, provocando alterações na balneabilidade. Em trechos próximos à foz de rios e à saída de galerias de águas pluviais, a qualida",
-      "imageUrl": "https://imagens.ebc.com.br/PAaUSniWQJZ7RFVSi7vuLrgR4mA=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/atoms/image/925137-ba%C3%ADa%20de%20guanabara_rj_7345.jpg?itok=HlDutu7s",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-12T10:32:00.000Z",
-      "firstSeenAt": "2026-11-12T11:21:17.063Z",
-      "lastSeenAt": "2026-11-12T11:21:17.063Z"
-    },
-    {
-      "id": "event-a62793fc",
-      "category": "brasil",
-      "title": "“Há mais memória no celular do que na relação”, diz escritor",
-      "url": "https://agenciabrasil.ebc.com.br/cultura/noticia/2026-11/ha-mais-memoria-no-celular-do-que-na-relacao-diz-escritor",
-      "description": "Foi na Rua da Moeda, em pleno Recife Antigo, que se ouviu uma multidão aos gritos. Foi um pedido do escritor e poeta Fabrício Carpinejar, ao encerrar uma mesa dentro do Rec’n’Play , maior festival de inovação, empreendedorismo e tecnologia do país “Vamos soltar um grito. Eu vou contar 1,2, 3 e vocês vão soltar um grito libertador. Isso aqui não é autoajuda, isso aqui é um exorcismo. Vamos soltar um grito libertador para deixar o ressentimento e a culpa para trás, deixar as marcas para trás. Vamos sair desse festival literalmente com a alma lavada”, convidou o escritor. Notícias relacionadas: Enap promove evento para discutir inovação na gestão pública . Empresas de três regiões terão aporte de R$ 450 milhões para inovação. Na mesa Inovação pelo Afeto: que ninguém seja invisível ao seu lado , Carpinejar provocou o público presente, mesmo sob uma fina garoa, a refletir sobre o afeto, a memória e a convivência na era da hiperconectividade, temas que ele vem trabalhando em seu mais recente livro, No Meu Tempo eu Era Melhor . Poeta Fabrício Carpinejar diz que pessoas têm dedicado muito es",
-      "imageUrl": "https://imagens.ebc.com.br/PgT233iaLwU18XYeyyaoDqt4WqM=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/12/ha_mais_memoria_no_celular_do_que_na_relacao_diz_carpinejar_durante_recnplay01.jpg?itok=8-4flqxN",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-12T10:14:00.000Z",
-      "firstSeenAt": "2026-11-12T11:21:17.063Z",
-      "lastSeenAt": "2026-11-12T11:21:17.063Z"
-    },
-    {
-      "id": "event-2f8eb6bb",
-      "category": "brasil",
-      "title": "Mega-Sena sorteia prêmio de R$ 20 milhões nesta quinta-feira",
-      "url": "https://agenciabrasil.ebc.com.br/geral/noticia/2026-11/mega-sena-sorteia-premio-de-r-20-milhoes-nesta-quinta-feira",
-      "description": "A Mega-Sena sorteia nesta quinta-feira (12) prêmio estimado em R$ 20 milhões . As seis dezenas do concurso 3.085 serão sorteadas a partir das 21h (horário de Brasília) no Espaço da Sorte, em São Paulo. As apostas podem ser feitas até às 20h (horário de Brasília) de hoje em casas lotéricas credenciadas pela Caixa em todo o país ou pela internet, no site ou aplicativo da Caixa. A aposta simples, com seis dezenas, custa R$ 6. Notícias relacionadas: Mega da Virada: Caixa anuncia que prêmio deve superar R$ 1 bilhão. No último concurso, foram sorteados os números 06 - 14 - 22 - 30 - 31 - 37 e uma aposta de Iturama (MG) acertou as seis dezenas .",
-      "imageUrl": "https://imagens.ebc.com.br/MfZHMDabCaFkb7-AEj5r_dejyjM=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/mega_sena_mcajr_abr_2904223680.jpg?itok=5iwnRMLK",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-12T10:02:00.000Z",
-      "firstSeenAt": "2026-11-12T11:21:17.063Z",
-      "lastSeenAt": "2026-11-12T11:21:17.063Z"
-    },
-    {
-      "id": "event-e35baa46",
-      "category": "santa-catarina",
-      "title": "Santa Catarina terá quinta-feira com risco de temporais isolados e chuva intensa",
-      "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxNSXRrYUd2am1XZHpzUUlJZWRzdHIzMEI4WHlPQXh2MjNHVXhMeFNxbXg5NDRuNjlWYTRrWWlaeTFZLWN0Vlo0UVFOcnlqRnBhOU14WkNlOEtyUTFfZy1NWWpuejNydnZidzNIVjFXUDBpREloZVVCTWwxeVdNcHpFY0xYSmd3aktiekJrUTNWT2I0Y3g4QUdnQVFIYlB0Q0FIVzVIQ1Mta3FSZ0dhVVNESnhSaFY2QVo0",
-      "description": "Santa Catarina terá quinta-feira com risco de temporais isolados e chuva intensa &nbsp;&nbsp; No Ponto SC",
-      "imageUrl": null,
-      "source": "No Ponto SC",
-      "publishedAt": "2026-11-12T09:28:11.000Z",
-      "firstSeenAt": "2026-11-12T11:21:17.063Z",
-      "lastSeenAt": "2026-11-12T11:21:17.063Z"
-    },
-    {
-      "id": "event-8fbab6b",
-      "category": "brasil",
-      "title": "O que você precisa saber para começar o dia",
-      "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxOd0Z1c09IVjQxT2Uza0dqM0xVZGYtS0lhYmVkQkxhNk5CcExib2VqRWNHdHZJZU5ZQkVvSUg4RE5BODNvOTRxN1c4S3JKYjN4cnpuS2pYd3prSlJXWW5RNlhpdXZKRVowRXZjTXp3SnBVUVlNT3J1OTZPRGx0LW1ZcU1zRHFJYWpDTVF4ZXlPc2JiT0Z3ZXMw",
-      "description": "O que você precisa saber para começar o dia &nbsp;&nbsp; Rádio Metrópole",
-      "imageUrl": null,
-      "source": "Rádio Metrópole",
-      "publishedAt": "2026-11-12T09:00:00.000Z",
-      "firstSeenAt": "2026-11-12T11:21:17.063Z",
-      "lastSeenAt": "2026-11-12T11:21:17.063Z"
-    },
-    {
-      "id": "event-1c4137a9",
-      "category": "santa-catarina",
-      "title": "Temporais com vento forte, granizo e chuva intensa avançam por SC nesta quinta-feira (12)",
-      "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQenRvY2owQkpReUpSNG12ZlRQdnBBNzJQVTNOcGdBSzZweENJZmYteFNXZHpjUlhRcnc3c1BwcXh6RVl6b2xPMEE2eWpMTUdoRmxibmxBN2lzb3VWSFZRTVFLZVZnak5sZ2ZUOFdiVUtNQmtJUFpLUTNKRnFNWnpyQVNhYTUzZElzN3RSY2E1X09ZdExjdUtnb0hxczF0SXJrODdLQ3BYSURTbzZpTW9OQ0E0enlLdw",
-      "description": "Temporais com vento forte, granizo e chuva intensa avançam por SC nesta quinta-feira (12) &nbsp;&nbsp; SCC10",
-      "imageUrl": null,
-      "source": "SCC10",
-      "publishedAt": "2026-11-12T08:00:00.000Z",
-      "firstSeenAt": "2026-11-12T11:21:17.063Z",
-      "lastSeenAt": "2026-11-12T11:21:17.063Z"
-    },
-    {
-      "id": "event-c68ec23",
-      "category": "mundo",
-      "title": "Jogos de hoje: quem joga no futebol e onde assistir ao vivo – quinta-feira (12/11/2026)",
-      "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxPY1ZuOGR3UFNta1BkN21jOWZ4SlhRaFhDcTRENXVsZ1BkalZ6VWFlaGVoRHdfVERvdHM1UV9nbGk4aUZ4dFNGcTM4a1NQeTQ4X0RzRjI5WXI2SWhKN041eXpCU1JmRk5EalNQUWVjR0IyV2tCbEZfLXdWZ21UcnVwR01ZeGE0Tk1CMEdtQlZVUTVmenVFcVcybXptWTdlRDJRRXNfeTFnYlU4cjVEb05pSWlYRGF1WUVHQnhYWjU5T1pvVk0z",
-      "description": "Jogos de hoje: quem joga no futebol e onde assistir ao vivo – quinta-feira (12/11/2026) &nbsp;&nbsp; LANCE!",
-      "imageUrl": null,
-      "source": "LANCE!",
-      "publishedAt": "2026-11-12T08:00:00.000Z",
-      "firstSeenAt": "2026-11-12T11:21:17.063Z",
-      "lastSeenAt": "2026-11-12T11:21:17.063Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-12T11:21:17.063Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 14,
-      "newArticles": 9,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "europa"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-12T19:00:36.425Z",
       "ok": true,
@@ -567,17 +611,34 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-13T15:22:48.310Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 16,
+      "newArticles": 13,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "europa",
+        "africa"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 4,
-  "lastSuccessfulAt": "2026-11-13T07:01:42.106Z",
+  "lastSuccessfulAt": "2026-11-13T15:22:48.310Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-13T07:01:42.106Z",
+      "checkedAt": "2026-11-13T15:22:48.310Z",
       "warnings": [
         {
-          "id": "56390",
+          "id": "56395",
           "title": "Tempestade",
           "severity": "Perigo Potencial",
           "phase": "previsto",
@@ -589,12 +650,64 @@
           "endsAt": "2026-11-14T00:00:00.000Z",
           "source": "INMET",
           "url": "https://avisos.inmet.gov.br/"
+        },
+        {
+          "id": "56396",
+          "title": "Chuvas Intensas",
+          "severity": "Perigo Potencial",
+          "phase": "previsto",
+          "regions": [],
+          "startsAt": "2026-11-14T00:00:00.000Z",
+          "endsAt": "2026-11-14T00:00:00.000Z",
+          "source": "INMET",
+          "url": "https://avisos.inmet.gov.br/"
+        },
+        {
+          "id": "56397",
+          "title": "Tempestade",
+          "severity": "Perigo Potencial",
+          "phase": "previsto",
+          "regions": [],
+          "startsAt": "2026-11-14T00:00:00.000Z",
+          "endsAt": "2026-11-15T00:00:00.000Z",
+          "source": "INMET",
+          "url": "https://avisos.inmet.gov.br/"
+        },
+        {
+          "id": "56398",
+          "title": "Tempestade",
+          "severity": "Perigo Potencial",
+          "phase": "previsto",
+          "regions": [
+            "DO",
+            "DO"
+          ],
+          "startsAt": "2026-11-14T00:00:00.000Z",
+          "endsAt": "2026-11-14T00:00:00.000Z",
+          "source": "INMET",
+          "url": "https://avisos.inmet.gov.br/"
+        },
+        {
+          "id": "56399",
+          "title": "Tempestade",
+          "severity": "Perigo Potencial",
+          "phase": "previsto",
+          "regions": [
+            "DO",
+            "DO",
+            "DE",
+            "DO"
+          ],
+          "startsAt": "2026-11-15T00:00:00.000Z",
+          "endsAt": "2026-11-15T00:00:00.000Z",
+          "source": "INMET",
+          "url": "https://avisos.inmet.gov.br/"
         }
       ]
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-13T07:01:42.106Z",
+      "checkedAt": "2026-11-13T15:22:48.310Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
