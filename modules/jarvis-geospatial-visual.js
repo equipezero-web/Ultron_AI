@@ -665,6 +665,10 @@ if(stage){
    return {ok:true,id:p.id,mode:"2d",lat:p.lat,lng:p.lng};
  }
  function stop(){playing=false;play.textContent="▶";play.setAttribute("aria-label","Reproduzir quadros");if(clock!==null)clearInterval(clock);clock=null;}
+ function isCatalogedObservations(){
+   return dataset?.id?.startsWith("global-intelligence-")||
+     dataset?.id?.startsWith("contextual-priorities-");
+ }
  function draw(){
    if(!dataset)return;
    resize();
@@ -705,7 +709,7 @@ if(stage){
      window.ULTRON_EARTH?.setThematicCountries?.(polygons);
    }
    const required=layerChoice.value+":"+scopeChoice.value+":"+currentIntensityDay();
-   if(!dataset.theme&&!panel.hidden&&required!==intensityKey)void chooseIntensity();
+   if(!dataset.theme&&!isCatalogedObservations()&&!panel.hidden&&required!==intensityKey)void chooseIntensity();
  }
  async function setMode(next){
    if(!dataset)return {ok:false,error:"Sem dados carregados"};
@@ -730,8 +734,8 @@ if(stage){
    intensityReport=initialIntensity?.ok?initialIntensity:null;
    intensityKey=intensityReport?layerChoice.value+":"+dataset.projection+":0":"";
    intensityToken++;
-   intensityBar.hidden=Boolean(dataset.theme);
-   intensityLegend.hidden=false;intensityMessage.hidden=false;
+   intensityBar.hidden=Boolean(dataset.theme)||isCatalogedObservations();
+   intensityLegend.hidden=isCatalogedObservations();intensityMessage.hidden=isCatalogedObservations();
    if(dataset.theme)renderGlobalTheme();
    else if(intensityReport)intensityLegendRender(intensityReport);
    else{intensityLegend.replaceChildren();intensityMessage.replaceChildren();}
@@ -744,11 +748,11 @@ if(stage){
    caveat.textContent=dataset.source.disclaimer;
    officialAlerts.hidden=!dataset.id.startsWith("weather-")||dataset.projection==="world";
    filter.hidden=Boolean(dataset.theme)||dataset.id.startsWith("weather-")||dataset.id.startsWith("spatial-"); // A single local weather point has no competing ENSO categories.
-   placeBar.hidden=dataset.projection!=="world"||Boolean(dataset.theme);
-   insightBar.hidden=dataset.projection!=="world"||Boolean(dataset.theme);
+   placeBar.hidden=dataset.projection!=="world"||Boolean(dataset.theme)||isCatalogedObservations();
+   insightBar.hidden=dataset.projection!=="world"||Boolean(dataset.theme)||isCatalogedObservations();
    placeRefresh.disabled=!/^weather-global-\d+$/.test(dataset.id);
    watchAdd.disabled=!/^weather-global-\d+$/.test(dataset.id);
-   watchPanel.hidden=dataset.projection!=="world"||Boolean(dataset.theme);
+   watchPanel.hidden=dataset.projection!=="world"||Boolean(dataset.theme)||isCatalogedObservations();
    if(refreshClock!==null){clearInterval(refreshClock);refreshClock=null;}
    if(/^weather-global-\d+$/.test(dataset.id))refreshClock=setInterval(()=>{
      if(panel.hidden||document.hidden)return;
