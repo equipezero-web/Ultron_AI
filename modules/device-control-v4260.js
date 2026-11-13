@@ -334,6 +334,8 @@ function bindNaturalLanguageInterception() {
   if (!input || !sendButton) return;
   const intercept = (event) => {
     const raw = input.value.trim();
+    // Unified orchestrator must see compound device missions and P0 controls.
+    if (window.ULTRON_ORCHESTRATOR?.execute) return false;
     const intent = parseDeviceIntent(raw);
     const automationList = /\b(listar|liste|mostrar|mostre)\b.*\bautomac/.test(normalizeSpeech(raw));
     if (!intent && !automationList) return false;
