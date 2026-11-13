@@ -1,0 +1,52 @@
+name: JARVIS Phase IX Contextual Priorities
+on:
+  pull_request:
+    paths:
+      - 'modules/jarvis-contextual-priority.js'
+      - 'modules/jarvis-contextual-alerts.js'
+      - 'modules/jarvis-continuity-client.js'
+      - 'modules/jarvis-global-intelligence-ring.js'
+      - 'modules/jarvis-global-intelligence-ring.css'
+      - 'modules/ultron-orchestrator-v4270.js'
+      - 'backend/continuity-status.js'
+      - 'index.html'
+      - 'tests/jarvis-phase9-priorities.mjs'
+      - '.github/workflows/jarvis-phase9-priorities.yml'
+  push:
+    paths:
+      - 'modules/jarvis-contextual-priority.js'
+      - 'modules/jarvis-contextual-alerts.js'
+      - 'modules/jarvis-continuity-client.js'
+      - 'modules/jarvis-global-intelligence-ring.js'
+      - 'modules/jarvis-global-intelligence-ring.css'
+      - 'modules/ultron-orchestrator-v4270.js'
+      - 'backend/continuity-status.js'
+      - 'index.html'
+      - 'tests/jarvis-phase9-priorities.mjs'
+      - '.github/workflows/jarvis-phase9-priorities.yml'
+permissions:
+  contents: read
+jobs:
+  contextual-verification:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax
+        run: |
+          node --check modules/jarvis-contextual-priority.js
+          node --check modules/jarvis-contextual-alerts.js
+          node --check modules/jarvis-continuity-client.js
+          node --check modules/jarvis-global-intelligence-ring.js
+          node --check modules/ultron-orchestrator-v4270.js
+          node --check backend/continuity-status.js
+      - name: Contextual feed and safety regressions
+        run: |
+          node tests/jarvis-phase9-priorities.mjs
+          node tests/jarvis-phase8-continuity.mjs
+          node tests/world-intelligence-history.mjs
+          node tests/jarvis-global-intelligence.mjs
+          node tests/jarvis-phase7-recovery.mjs
+          node tests/jarvis-mission-safety.mjs
