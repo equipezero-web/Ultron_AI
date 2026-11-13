@@ -53,6 +53,15 @@ body.jarvis-command-center .orb-stage{
  body.jarvis-command-center .jarvis-cc-center{
    overscroll-behavior-y:auto!important;
  }
+ /* The full-screen Earth overlay has nested overflow:hidden containers,
+    which may become zero-range scroll containers and swallow the finger pan.
+    overflow:clip preserves visual clipping WITHOUT creating a scrollport. */
+ body.jarvis-command-center .jarvis-earth-reference-layout,
+ body.jarvis-command-center .jarvis-earth-reference-map{
+   overflow:clip!important;
+   overscroll-behavior-y:auto!important;
+   touch-action:pan-y!important;
+ }
  /* Scrollable informational panels must transfer vertical swipes to the page
     on reaching their ends, instead of trapping the user inside a short box. */
  body.jarvis-command-center :is(
