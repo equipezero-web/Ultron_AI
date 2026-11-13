@@ -85,10 +85,14 @@ try{
  assert.equal(first.scene,"priorities");
  const selection=await page.evaluate(()=>window.ULTRON_VISUAL_ORCHESTRATOR.state);
  assert.equal(selection.selectedPriorityKey,"a:warning1");
- const noPoint=await page.evaluate(()=>
-  window.ULTRON_ORCHESTRATOR.execute("Jarvis, mostre isso no globo 3D","terminal"));
- assert.equal(noPoint.ok,false);
- assert.equal(noPoint.reason,"NO_VERIFIED_COORDINATES");
+ const noPoint=await page.evaluate(async()=>({
+  parsed:window.ULTRON_MULTIMODAL.parse("Jarvis, mostre isso no globo 3D"),
+  current:window.ULTRON_MULTIMODAL.current,
+  selected:window.ULTRON_VISUAL_ORCHESTRATOR.context,
+  result:await window.ULTRON_ORCHESTRATOR.execute("Jarvis, mostre isso no globo 3D","terminal")
+ }));
+ assert.equal(noPoint.result.ok,false,JSON.stringify(noPoint));
+ assert.equal(noPoint.result.reason,"NO_VERIFIED_COORDINATES",JSON.stringify(noPoint));
  assert.equal((await page.evaluate(()=>window.__mmLog)).some(x=>x.startsWith("tour-")),false);
  const official=await page.evaluate(()=>
   window.ULTRON_ORCHESTRATOR.execute("Jarvis, qual é a fonte deste evento?","terminal"));
