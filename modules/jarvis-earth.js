@@ -798,6 +798,11 @@ if (earthVisual) {
             view:{...(globe.pointOfView() || home)},
             moved:false,touchLastY:event.clientY,scrollGesture:false
           };
+          // Globe.gl/OrbitControls may register pointerdown handlers that
+          // call preventDefault, suppressing native touch panning even when
+          // touch-action is pan-y. Our gesture handler runs on the container
+          // in capture phase; do not forward touch pointerdown to OrbitControls.
+          if(event.pointerType==="touch")event.stopPropagation();
         };
         const stopDrag = event => {
           if (event?.pointerType === 'touch') {
