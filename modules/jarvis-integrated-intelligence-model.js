@@ -32,10 +32,14 @@ export function parseAdvancedCommand(raw){
   "desativar rotina de monitoramento":{type:"routine-stop"},
   "verificar rotina agora":{type:"routine-check"},
   "status da rotina":{type:"routine-status"},
-  "simular cenario ilustrativo":{type:"simulation",mode:"2d"},
-  "simulacao 2d":{type:"simulation",mode:"2d"},
-  "simulacao 3d":{type:"simulation",mode:"3d"},
-  "fechar simulacao":{type:"simulation-close"},
+  "mostrar dados reais em 2d":{type:"verified-map",mode:"2d"},
+  "mostrar dados reais em 3d":{type:"verified-map",mode:"3d"},
+  "visualizacao real 2d":{type:"verified-map",mode:"2d"},
+  "visualizacao real 3d":{type:"verified-map",mode:"3d"},
+  "simulacao 2d":{type:"no-simulation"},
+  "simulacao 3d":{type:"no-simulation"},
+  "simular cenario ilustrativo":{type:"no-simulation"},
+  "fechar simulacao":{type:"no-simulation"},
   "status da inteligencia integrada":{type:"status"}
  };
  return commands[s]||null;
@@ -115,23 +119,17 @@ export function analyzeSpecialists(digest,{now=Date.now(),current=null}={}){
   state.items.some(x=>x.key===current.eventKey&&x.url===current.url),
   caveat:"Especialistas locais determinísticos: não são três IAs externas. Contagens não indicam gravidade."};
 }
-export function selectSimulationSource(digest,current,{now=Date.now()}={}){
+// Only geolocated, attributed, currently verified public observations can
+// request the existing Phase X map. No interpolation, prediction or fake values.
+export function selectVerifiedGeoSource(digest,current,{now=Date.now()}={}){
  const state=verifiedDigest(digest,{now});
  if(!state.ok||current?.ok!==true||!current.eventKey)
   return {ok:false,reason:"NO_VERIFIED_SELECTED_LOCATION"};
  const item=state.items.find(x=>x.key===current.eventKey&&x.url===current.url&&
-  x.type==="cataloged"&&"lat"in x);
+  x.type==="cataloged"&&"lat"in x&&"lng"in x&&
+  /^(USGS|NASA|GDACS)$/.test(x.source));
  if(!item)return {ok:false,reason:"LOCATION_NOT_IN_VERIFIED_SNAPSHOT"};
+ // The map's contextualGeoScene performs a second official-source verification.
  return {ok:true,key:item.key,title:item.title,url:item.url,lat:item.lat,lng:item.lng,
-  source:item.source,verifiedAt:Date.parse(digest.generatedAt)};
-}
-// A unitless what-if curve, never spatial impact, physics, weather or casualty forecasts.
-export function hypotheticalCurve({scale=2,samples=31}={}){
- const s=Math.max(1,Math.min(5,Number(scale)||2));
- const count=Math.max(5,Math.min(101,Math.floor(samples)||31));
- return Array.from({length:count},(_,i)=>{
-  const distance=(i/(count-1))*5;
-  const value=Math.exp(-Math.pow(distance/s,2));
-  return {distance:Number(distance.toFixed(3)),normalized:Number(value.toFixed(6))};
- });
+  source:item.source,publishedAt:item.publishedAt,verifiedAt:Date.parse(digest.generatedAt)};
 }
