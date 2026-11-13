@@ -62,7 +62,7 @@ try{
   assert.match(display.topBackground,/gradient/);
   assert.match(display.terminalBackground,/gradient/);
   assert.match(display.quickButtonBackground,/gradient/);
-  assert.match(display.title,/rgb\(255, 227, 155\)/);
+  assert.match(display.title,/rgb\(249, 217, 142\)/);
   assert.match(display.commandInputBorder,/rgba?\(222, 169, 61/);
   assert.equal(display.coreActive,true);
   assert.equal(display.globe,true);
