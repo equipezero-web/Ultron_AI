@@ -600,6 +600,7 @@ function cancelP0Operations(reason="local",epoch=null){
   missionGate.clear();
   activeController?.abort();
   recoveryEngine.cancelAll();
+  window.ULTRON_WORLD_CAMERAS?.stop?.();
   window.ULTRON_SUPERVISED_AUTONOMY?.cancel?.("P0_STOP");
   window.ULTRON_MULTIMODAL?.stop?.();
   window.ULTRON_VISUAL_ORCHESTRATOR?.stop?.();
@@ -613,6 +614,9 @@ window.addEventListener("ultron:emergency-stop",event=>{
   cancelP0Operations("priority-core",event?.detail?.epoch);
 });
 function enqueue(message, source = "terminal", approvedMission = false) {
+  // Public world webcams: whitelisted text/voice commands, never private device video.
+  const worldCameraIntent=window.ULTRON_WORLD_CAMERAS?.parse?.(message);
+  if(worldCameraIntent)return window.ULTRON_WORLD_CAMERAS.execute(message,{source});
   // Phase XIV: consented bounded sequences must be checked before generic missions.
   const supervisedIntent=window.ULTRON_SUPERVISED_AUTONOMY?.parse?.(message);
   if(supervisedIntent)return window.ULTRON_SUPERVISED_AUTONOMY.execute(message,{source});
