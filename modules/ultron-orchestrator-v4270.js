@@ -218,7 +218,7 @@ async function showMissionReport() {
       const detail=await post("/api/orchestrator/run",{runId:list[0].id},{silent:true});
       const savedSteps=detail?.run?.steps;
       if(Array.isArray(savedSteps)){
-        const relevant=savedSteps.filter(step=>/^(?:mission-\\d+|preflight|fatal)$/.test(String(step.stepKey||""))).slice(-8);
+        const relevant=savedSteps.filter(step=>/^(?:mission-\d+|preflight|fatal)$/.test(String(step.stepKey||""))).slice(-8);
         relevant.forEach(step=>log(String(step.stepKey||"etapa").slice(0,24).toUpperCase()+
           " // "+String(step.status||"unknown").slice(0,25).toUpperCase()+
           " // "+String(step.module||"core").slice(0,48)));
