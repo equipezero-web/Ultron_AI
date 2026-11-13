@@ -10,6 +10,13 @@ export function missionRequirements(parts, parseDeviceIntent=()=>null, isCameraA
   for(const part of Array.isArray(parts)?parts:[]) {
     let intent = null;
     try { intent=parseDeviceIntent(part); } catch {}
+    // A missing parser must never make an explicit device action look safe.
+    const n=String(part||"").normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").toLowerCase();
+    const explicitDevice=/\\b(?:tv|televisao|televisor|celular|telefone|android|computador|notebook|pc|windows)\\b/.test(n) &&
+      /\\b(?:ligue|ligar|desligue|desligar|abra|abrir|volume|status|estado|reinicie|reiniciar|suspenda|suspender|bloqueie|bloquear|mudo|mute|canal|hdmi)\\b/.test(n);
+    if(!intent&&explicitDevice)requirements.set("router:devices",{
+      key:"router:devices",kind:"router",label:"Roteador de dispositivos"
+    });
     if (intent && ["desktop","mobile"].includes(intent.deviceType)) {
       const kind=intent.deviceType;
       requirements.set("bridge:"+kind,{key:"bridge:"+kind,kind:"bridge",deviceType:kind,
@@ -47,7 +54,11 @@ export async function inspectMissionDependencies(parts, {
     }catch(error){deviceError=clean(error?.message||error,120);}
   }
   for(const requirement of requirements) {
-    if(requirement.kind==="bridge"){
+    if(requirement.kind==="router"){
+      checks.push({key:requirement.key,label:requirement.label,ready:false,
+        state:"unavailable",code:"DEVICE_ROUTER_UNAVAILABLE",
+        detail:"Comando de dispositivo não reconhecido; nenhuma execução é autorizada pela pré-verificação."});
+    }else if(requirement.kind==="bridge"){
       const matches=Array.isArray(devices)?devices.filter(d=>
         d?.deviceType===requirement.deviceType && d?.status==="active"):[];
       const online=matches.some(d=>d.online===true);
