@@ -11,9 +11,9 @@ export function missionRequirements(parts, parseDeviceIntent=()=>null, isCameraA
     let intent = null;
     try { intent=parseDeviceIntent(part); } catch {}
     // A missing parser must never make an explicit device action look safe.
-    const n=String(part||"").normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").toLowerCase();
-    const explicitDevice=/\\b(?:tv|televisao|televisor|celular|telefone|android|computador|notebook|pc|windows)\\b/.test(n) &&
-      /\\b(?:ligue|ligar|desligue|desligar|abra|abrir|volume|status|estado|reinicie|reiniciar|suspenda|suspender|bloqueie|bloquear|mudo|mute|canal|hdmi)\\b/.test(n);
+    const n=String(part||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+    const explicitDevice=/\b(?:tv|televisao|televisor|celular|telefone|android|computador|notebook|pc|windows)\b/.test(n) &&
+      /\b(?:ligue|ligar|desligue|desligar|abra|abrir|volume|status|estado|reinicie|reiniciar|suspenda|suspender|bloqueie|bloquear|mudo|mute|canal|hdmi)\b/.test(n);
     if(!intent&&explicitDevice)requirements.set("router:devices",{
       key:"router:devices",kind:"router",label:"Roteador de dispositivos"
     });
