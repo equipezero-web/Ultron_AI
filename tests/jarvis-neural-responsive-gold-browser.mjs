@@ -76,7 +76,7 @@ try{
    bad.push("neural buttons missing/hidden");
   if(result.minHeight<43||result.minWidth<43)bad.push("touch target too small");
   if(result.actions.width>result.viewport.width+5)bad.push("action toolbar too wide");
-  if(!/rgb\(255, 227, 155\)/.test(result.titleColor||""))
+  if(!/rgb\(249, 217, 142\)/.test(result.titleColor||""))
    bad.push("Stark gold title missing "+result.titleColor);
   if(bad.length)issues.push({screen:config.name,bad,metrics:result});
   else console.log("RESPONSIVE SCREEN PASS",config.name,

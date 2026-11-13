@@ -1303,10 +1303,10 @@ try {
     }
     await page.click('[data-command="status"]');
     await page.waitForFunction(()=>document.getElementById('output-box')
-      .textContent.includes('Sistema ONLINE'),{timeout:5000});
+      .textContent.includes('INTERFACE JARVIS ATIVA'),{timeout:5000});
     await page.click('[data-command="center"]');
     assert.match(await page.$eval('#output-box',el=>el.textContent),
-      /Esfera holográfica centralizada/);
+      /Neural Jarvis centralizado/);
     await page.click('[data-command="clear"]');
     assert.equal(await page.$eval('#output-box',el=>el.children.length),0,
       'LIMPAR TERMINAL should clear responses without deleting data');

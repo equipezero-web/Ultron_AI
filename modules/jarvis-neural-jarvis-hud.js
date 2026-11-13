@@ -103,7 +103,10 @@ function audioLoop(){
 }
 async function toggleAudio(){
  if(visualAudio)return stopAudio();
- if(!engine()?.active)return {ok:false,reason:"ENGINE_INACTIVE"};
+ if(!engine()?.active){
+  report("Áudio visual indisponível: núcleo holográfico inativo.");
+  return {ok:false,reason:"ENGINE_INACTIVE"};
+ }
  const ticket=++audioTicket;
  if(!navigator.mediaDevices?.getUserMedia){
   report("Microfone indisponível neste navegador.");
@@ -138,8 +141,10 @@ async function toggleAudio(){
  }
 }
 function toggleOverdrive(){
- if(!engine()?.active||!engine()?.setOverdrive)
+ if(!engine()?.active||!engine()?.setOverdrive){
+  report("Sobrecarga visual indisponível: motor WebGL avançado inativo.");
   return {ok:false,reason:"ADVANCED_RENDERER_UNAVAILABLE"};
+ }
  overdrive=!overdrive;
  engine().setOverdrive(overdrive);
  buttons.overdrive?.setAttribute("aria-pressed",String(overdrive));
@@ -149,7 +154,10 @@ function toggleOverdrive(){
 }
 function speak(){
  if(!engine()?.active)return {ok:false,reason:"ENGINE_INACTIVE"};
- if(!("speechSynthesis"in window))return {ok:false,reason:"SPEECH_UNAVAILABLE"};
+ if(!("speechSynthesis"in window)){
+  report("Síntese de voz indisponível neste navegador.");
+  return {ok:false,reason:"SPEECH_UNAVAILABLE"};
+ }
  const msg="Neural Jarvis pronto. Matriz holográfica disponível para visualização.";
  const utterance=new SpeechSynthesisUtterance(msg);
  utterance.lang="pt-BR";utterance.rate=1.02;utterance.pitch=.94;
@@ -158,7 +166,7 @@ function speak(){
  utterance.onend=()=>{speaking=false;};
  utterance.onerror=()=>{speaking=false;};
  try{window.speechSynthesis.speak(utterance);return {ok:true,requested:true};}
- catch{speaking=false;return {ok:false,reason:"SPEECH_FAILED"};}
+ catch{speaking=false;report("Falha ao iniciar síntese de voz neste navegador.");return {ok:false,reason:"SPEECH_FAILED"};}
 }
 function stop(){
  closeArchive();
@@ -172,7 +180,23 @@ function makeButton(label,key,fn,requiresEngine=true){
  const b=el("button","neural-jarvis-control",label);
  b.type="button";
  b.dataset.requiresEngine=String(requiresEngine);
- b.addEventListener("click",()=>void fn());
+ // The responsive console can move after pointerdown. Run on the first
+ // real press to preserve microphone/speech browser activation; dedupe click.
+ let lastPointerAt=0;
+ const run=()=>{
+  if(b.disabled)return;
+  try{Promise.resolve(fn()).catch(error=>report(
+   "Falha no controle "+label+": "+String(error?.message||error)));}
+  catch(error){report("Falha no controle "+label+": "+String(error?.message||error));}
+ };
+ b.addEventListener("pointerdown",event=>{
+  if(event.button!==0)return;
+  lastPointerAt=Date.now();run();
+ });
+ b.addEventListener("click",()=>{
+  if(Date.now()-lastPointerAt<850)return;
+  run();
+ });
  actions?.append(b);buttons[key]=b;return b;
 }
 function init(){
@@ -204,7 +228,16 @@ function init(){
  header.append(el("strong","","ARQUIVOS // MATRIZ HOLOGRÁFICA"));
  const close=el("button","","×");close.type="button";
  close.setAttribute("aria-label","Fechar arquivos neurais");
- close.addEventListener("click",closeArchive);
+ let closePressedAt=0;
+ close.addEventListener("pointerdown",event=>{
+  if(event.button!==0)return;
+  closePressedAt=Date.now();event.stopPropagation();closeArchive();
+ });
+ close.addEventListener("click",event=>{
+  event.stopPropagation();
+  if(Date.now()-closePressedAt<850)return;
+  closeArchive();
+ });
  header.append(close);
  archiveList=el("div","neural-jarvis-archive-list");
  detail=el("div","neural-jarvis-archive-detail");

@@ -1,0 +1,64 @@
+name: JARVIS Global Metallic Gold & Button Functionality
+on:
+  pull_request:
+    paths:
+      - 'modules/jarvis-global-metallic-gold.css'
+      - 'modules/jarvis-command-center-v4330.js'
+      - 'modules/jarvis-neural-jarvis-hud.js'
+      - 'script.js'
+      - 'index.html'
+      - 'tests/jarvis-global-gold-controls-browser.mjs'
+      - '.github/workflows/jarvis-global-gold-controls.yml'
+  push:
+    paths:
+      - 'modules/jarvis-global-metallic-gold.css'
+      - 'modules/jarvis-command-center-v4330.js'
+      - 'modules/jarvis-neural-jarvis-hud.js'
+      - 'script.js'
+      - 'index.html'
+      - 'tests/jarvis-global-gold-controls-browser.mjs'
+      - '.github/workflows/jarvis-global-gold-controls.yml'
+permissions:
+  contents: read
+jobs:
+  syntax-and-model:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax and source data contracts
+        run: |
+          node --check modules/jarvis-command-center-v4330.js
+          node --check modules/jarvis-neural-jarvis-hud.js
+          node --check script.js
+          node --check tests/jarvis-global-gold-controls-browser.mjs
+          node tests/jarvis-neural-jarvis-model.mjs
+          node tests/jarvis-public-world-cameras-model.mjs
+      - name: Safety contracts
+        run: |
+          node tests/jarvis-phase14-supervised-model.mjs
+          node tests/jarvis-phase13-context-model.mjs
+  interactive-chrome:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser harness
+        run: |
+          npm install --no-save --no-package-lock --ignore-scripts puppeteer-core@24.33.0
+          echo "CHROME_BIN=$(command -v google-chrome || command -v chromium || command -v chromium-browser)" >> "$GITHUB_ENV"
+      - name: Test click actions and global gold at phone, notebook and TV widths
+        run: |
+          python3 -m http.server 8772 --bind 127.0.0.1 >/tmp/jarvis-gold-http.log 2>&1 &
+          sleep 2
+          node tests/jarvis-global-gold-controls-browser.mjs
+      - name: Verify complete prior responsive behavior
+        run: |
+          python3 -m http.server 8770 --bind 127.0.0.1 >/tmp/jarvis-responsive-http.log 2>&1 &
+          sleep 2
+          node tests/jarvis-neural-responsive-gold-browser.mjs
