@@ -107,15 +107,15 @@ try{
   }
  }
  assert.deepEqual(issues,[],"Responsive regressions: "+JSON.stringify(issues));
- const page=await browser.newPage();
- await page.setViewport({width:390,height:844,isMobile:true,hasTouch:true});
- await page.setRequestInterception(true);
+ const stopPage=await browser.newPage();
+ await stopPage.setViewport({width:390,height:844,isMobile:true,hasTouch:true});
+ await stopPage.setRequestInterception(true);
  page.on("request",req=>req.url().startsWith("http://127.0.0.1:8770/")?
   req.continue():req.abort("blockedbyclient"));
- await page.goto(origin,{waitUntil:"domcontentloaded",timeout:35000});
- await page.waitForFunction(()=>window.ULTRON_NEURAL_JARVIS?.active,{timeout:25000});
- await page.evaluate(()=>window.dispatchEvent(new CustomEvent("ultron:emergency-stop")));
- const stopped=await page.evaluate(()=>window.ULTRON_NEURAL_JARVIS_UI.state);
+ await stopPage.goto(origin,{waitUntil:"domcontentloaded",timeout:35000});
+ await stopPage.waitForFunction(()=>window.ULTRON_NEURAL_JARVIS?.active,{timeout:25000});
+ await stopPage.evaluate(()=>window.dispatchEvent(new CustomEvent("ultron:emergency-stop")));
+ const stopped=await stopPage.evaluate(()=>window.ULTRON_NEURAL_JARVIS_UI.state);
  assert.equal(stopped.audioPermission,"off");
  console.log("NEURAL JARVIS RESPONSIVE GOLD PASS: phone, landscape, tablet, notebook, Full HD and 4K TV.");
 }finally{await browser.close();}
