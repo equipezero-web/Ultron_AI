@@ -162,6 +162,7 @@ if (stage) {
           zoomBy:engine.zoomBy,setAudioBands:engine.setAudioBands||(()=>{}),
           setOverdrive:engine.setOverdrive||null,
           setExpanded:engine.setExpanded||null,
+          setPerformanceProfile:engine.setPerformanceProfile||null,
           get state(){return engine.state;}
         };
         // Legacy handle and events remain for existing global intelligence modules.

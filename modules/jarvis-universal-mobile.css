@@ -1,0 +1,227 @@
+/* Universal responsive layer: phone 280–699px, landscape, tablet/foldable,
+   desktop/notebook and TV. Loaded AFTER golden theme; scientific data stay intact. */
+body.jarvis-command-center{
+ --jarvis-tap:44px;
+ -webkit-text-size-adjust:100%;
+ text-size-adjust:100%;
+ overscroll-behavior-x:none;
+}
+body.jarvis-command-center,
+body.jarvis-command-center .app-shell,
+body.jarvis-command-center .hud-layout,
+body.jarvis-command-center .jarvis-command-center-ui,
+body.jarvis-command-center .jarvis-cc-console-layout,
+body.jarvis-command-center .jarvis-cc-console-terminal,
+body.jarvis-command-center .jarvis-cc-system-dock,
+body.jarvis-command-center .jarvis-cc-tool-actions,
+body.jarvis-command-center .quick-actions{
+ min-width:0;
+ max-width:100%;
+}
+body.jarvis-command-center .jarvis-command-center-ui{
+ overflow-wrap:anywhere;
+}
+body.jarvis-command-center :is(#command-input,.jarvis-cc-console-terminal input,
+ .jarvis-cc-console-terminal textarea,.jarvis-worldcam-filters input,
+ .jarvis-worldcam-filters select){
+ font-size:max(16px,1em)!important; /* iOS Safari must not auto-zoom input */
+}
+body.jarvis-command-center :is(.jarvis-cc-tool-actions,.quick-actions) button{
+ min-height:var(--jarvis-tap)!important;
+ -webkit-tap-highlight-color:rgba(244,200,98,.18);
+ touch-action:manipulation;
+}
+body.jarvis-command-center :is(.jarvis-worldcam-head,.neural-jarvis-archive-head,
+ .jarvis-global-intel-head) button{
+ min-width:var(--jarvis-tap)!important;min-height:var(--jarvis-tap)!important;
+}
+body.jarvis-command-center .jarvis-cc-visual[data-mode="ring"]{
+ aspect-ratio:1 / 1!important;
+}
+body.jarvis-command-center .jarvis-cc-visual[data-mode="ring"]>#jarvis-cc-canvas{
+ width:100%!important;height:100%!important;
+ object-fit:contain;
+}
+body.jarvis-command-center :is(.jarvis-cc-console-terminal,
+ .jarvis-cc-system-dock,.jarvis-cc-responses,.jarvis-cc-tool-actions,
+ .jarvis-global-intel-panel,.jarvis-worldcam-panel,.neural-jarvis-archive){
+ overflow-wrap:anywhere;
+}
+body.jarvis-command-center .jarvis-worldcam-panel :is(iframe,video,img),
+body.jarvis-command-center .jarvis-global-intel-panel :is(video,img),
+body.jarvis-command-center .jarvis-cc-camera-mirror{
+ max-width:100%!important;
+}
+/* Preserve map legend colors and status semantics; economy reduces
+   decorative work only. Do not hide evidence or device controls. */
+body.jarvis-command-center[data-jarvis-power="economy"] .hud-bg :is(
+ .hud-glow,.scanlines,.hud-particles),
+body.jarvis-command-center[data-jarvis-power="economy"] .jarvis-cc-wave,
+body.jarvis-command-center[data-jarvis-motion="reduced"] .jarvis-cc-wave{
+ animation:none!important;filter:none!important;
+}
+body.jarvis-command-center[data-jarvis-power="economy"] .hud-bg .scanlines{
+ display:none!important;
+}
+body.jarvis-command-center[data-jarvis-power="economy"] :is(
+ .jarvis-cc-console-terminal,.jarvis-cc-system-dock,
+ .jarvis-global-intel-panel,.jarvis-worldcam-panel){
+ box-shadow:inset 0 1px rgba(255,211,115,.13)!important;
+ backdrop-filter:none!important;
+ -webkit-backdrop-filter:none!important;
+}
+body.jarvis-command-center[data-jarvis-network="offline"] #connection-state{
+ color:#ffdb94!important;
+}
+body.jarvis-command-center[data-jarvis-network="limited"] #connection-state{
+ color:#ffe09a!important;
+}
+@media(max-width:699px){
+ body.jarvis-command-center{
+  --jarvis-tap:44px;
+  max-width:100vw!important;
+  overflow-x:clip!important;
+ }
+ body.jarvis-command-center .app-shell{
+  width:100%;padding-left:max(7px,env(safe-area-inset-left,0px))!important;
+  padding-right:max(7px,env(safe-area-inset-right,0px))!important;
+  padding-bottom:max(12px,env(safe-area-inset-bottom,0px))!important;
+ }
+ body.jarvis-command-center .jarvis-cc-top{
+  padding-left:max(8px,env(safe-area-inset-left,0px))!important;
+  padding-right:max(8px,env(safe-area-inset-right,0px))!important;
+ }
+ body.jarvis-command-center .jarvis-cc-visual[data-mode="ring"]{
+  width:min(calc(100vw - 30px),470px)!important;
+  height:auto!important;
+  aspect-ratio:1 / 1!important;
+  min-height:0!important;
+ }
+ body.jarvis-command-center .jarvis-cc-visual[data-mode="globe"]{
+  max-width:calc(100vw - 18px)!important;
+ }
+ body.jarvis-command-center .jarvis-cc-center{
+  min-height:clamp(465px,68svh,740px)!important;
+  height:auto!important;
+  padding-bottom:14px!important;
+ }
+ body.jarvis-command-center .jarvis-cc-heading{
+  max-width:calc(100% - 18px)!important;
+  overflow-wrap:anywhere;
+ }
+ body.jarvis-command-center .jarvis-cc-dock-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:clamp(4px,1.5vw,9px)!important;
+ }
+ body.jarvis-command-center .jarvis-cc-dock-module{
+  min-width:0!important;width:100%!important;
+  padding-inline:clamp(5px,1.7vw,12px)!important;
+ }
+ body.jarvis-command-center .jarvis-cc-dock-module :is(h2,h3,p,strong,small){
+  overflow-wrap:anywhere!important;
+ }
+ body.jarvis-command-center :is(.jarvis-cc-actions,.jarvis-cc-tool-actions){
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:6px!important;
+ }
+ body.jarvis-command-center :is(.jarvis-cc-actions,.jarvis-cc-tool-actions) button{
+  width:100%!important;min-width:0!important;
+  padding-inline:clamp(5px,1.7vw,9px)!important;
+  word-break:normal!important;overflow-wrap:anywhere!important;
+ }
+ body.jarvis-command-center .jarvis-cc-responses,
+ body.jarvis-command-center .jarvis-cc-console-events{
+  max-height:min(45svh,350px);
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+ }
+ body.jarvis-command-center :is(
+  .jarvis-worldcam-panel,.jarvis-global-intel-panel,.ultron-neural-answer,
+  .jarvis-meteo-center,.jarvis-geo-visual){
+  max-width:calc(100% - 8px)!important;
+  overflow-x:hidden;
+ }
+ body.jarvis-command-center .jarvis-worldcam-filters{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ }
+ body.jarvis-command-center .jarvis-worldcam-filters input{
+  grid-column:1 / -1!important;
+ }
+ body.jarvis-command-center .jarvis-worldcam-results{
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+ }
+ body.jarvis-command-center .neural-jarvis-archive,
+ body.jarvis-command-center .jarvis-worldcam-panel{
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+ }
+ body.jarvis-command-center .screen-panel{
+  width:min(100%,calc(100vw - 12px))!important;
+  max-height:calc(100dvh - max(10px,env(safe-area-inset-top,0px)) -
+   max(10px,env(safe-area-inset-bottom,0px)))!important;
+  overflow:auto;
+ }
+ body.jarvis-command-center .screen-panel #webcam{
+  max-height:50dvh;
+  object-fit:contain;
+ }
+}
+/* Tiny screens and enlarged accessibility fonts must never produce tiny
+   unreadable two-column cards. Ordinary 320px phones still use compact 2x2. */
+@media(max-width:299px){
+ body.jarvis-command-center .jarvis-cc-dock-grid,
+ body.jarvis-command-center .jarvis-cc-tool-actions{
+  grid-template-columns:minmax(0,1fr)!important;
+ }
+ body.jarvis-command-center .jarvis-cc-dock-module{
+  min-height:80px;
+ }
+ body.jarvis-command-center .jarvis-cc-top{
+  font-size:8px!important;
+ }
+}
+/* Short landscape phone: allow page scrolling, not screen-locked overflow. */
+@media(max-height:490px) and (orientation:landscape) and (pointer:coarse){
+ body.jarvis-command-center .jarvis-cc-center{
+  min-height:400px!important;
+  padding-top:48px!important;
+ }
+ body.jarvis-command-center .jarvis-cc-visual[data-mode="ring"]{
+  width:min(49svh,65vw,390px)!important;
+  height:auto!important;
+  aspect-ratio:1 / 1!important;
+ }
+ body.jarvis-command-center .neural-jarvis-archive{
+  max-height:calc(100% - 52px)!important;
+ }
+}
+/* Foldables/tablets in portrait and browser split-screen: use actual viewport
+   width, not unreliable UA strings or assumed phone model names. */
+@media(min-width:700px) and (max-width:1099px) and (pointer:coarse){
+ body.jarvis-command-center .jarvis-cc-center{
+  min-height:500px!important;
+ }
+ body.jarvis-command-center .jarvis-cc-tool-actions{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+ }
+ body.jarvis-command-center .jarvis-cc-tool-actions button{
+  min-height:46px!important;
+ }
+ body.jarvis-command-center .jarvis-cc-visual[data-mode="ring"]{
+  width:min(70svh,75vw,600px)!important;
+  height:auto!important;aspect-ratio:1 / 1!important;
+ }
+}
+@media(min-width:1100px){
+ body.jarvis-command-center .jarvis-cc-visual[data-mode="ring"]{
+  aspect-ratio:1 / 1!important;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ body.jarvis-command-center :is(.hud-bg,.jarvis-cc-visual,
+  .neural-jarvis-band-track span){
+  animation:none!important;transition:none!important;
+ }
+}
