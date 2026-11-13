@@ -114,7 +114,7 @@ export async function recordOrchestrationStep(env, {
   if (!operatorId || !runId || !(await ensureOrchestrationSchema(env))) {
     return { ok: false, error: "Execução de orquestração inválida." };
   }
-  const allowed = new Set(["queued", "running", "completed", "failed", "skipped", "waiting-confirmation","submitted"]);
+  const allowed = new Set(["queued", "running", "completed", "failed", "skipped", "waiting-confirmation", "submitted", "cancelled"]);
   const cleanStatus = allowed.has(String(status)) ? String(status) : "running";
   const id = crypto.randomUUID();
   await env.ULTRON_DB.batch([
@@ -122,7 +122,7 @@ export async function recordOrchestrationStep(env, {
       `INSERT INTO orchestration_steps
         (id, run_id, operator_id, step_key, module, status, detail_json, created_at, completed_at)
        VALUES (?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP,
-         CASE WHEN ? IN ('completed','failed','skipped','waiting-confirmation','submitted') THEN CURRENT_TIMESTAMP ELSE NULL END)`
+         CASE WHEN ? IN ('completed','failed','skipped','waiting-confirmation','submitted','cancelled') THEN CURRENT_TIMESTAMP ELSE NULL END)`
     ).bind(
       id,
       runId,

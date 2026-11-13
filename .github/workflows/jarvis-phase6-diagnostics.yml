@@ -1,0 +1,40 @@
+name: JARVIS Phase VI Mission Diagnostics
+on:
+  pull_request:
+    paths:
+      - 'modules/jarvis-mission-diagnostics.js'
+      - 'modules/ultron-orchestrator-v4270.js'
+      - 'backend/orchestration-engine.js'
+      - 'index.html'
+      - 'tests/jarvis-mission-diagnostics.mjs'
+      - '.github/workflows/jarvis-phase6-diagnostics.yml'
+  push:
+    paths:
+      - 'modules/jarvis-mission-diagnostics.js'
+      - 'modules/ultron-orchestrator-v4270.js'
+      - 'backend/orchestration-engine.js'
+      - 'index.html'
+      - 'tests/jarvis-mission-diagnostics.mjs'
+      - '.github/workflows/jarvis-phase6-diagnostics.yml'
+permissions:
+  contents: read
+jobs:
+  diagnostic-policy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax
+        run: |
+          node --check modules/jarvis-mission-diagnostics.js
+          node --check modules/ultron-orchestrator-v4270.js
+          node --check backend/orchestration-engine.js
+      - name: Phase VI and regressions
+        run: |
+          node tests/jarvis-mission-diagnostics.mjs
+          node tests/jarvis-mission-safety.mjs
+          node tests/jarvis-device-receipts.mjs
+          node tests/jarvis-autonomy.mjs
+          node tests/device-overview-v517.mjs
