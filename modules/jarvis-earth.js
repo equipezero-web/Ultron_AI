@@ -856,7 +856,16 @@ if (earthVisual) {
           touches[0].clientY - touches[1].clientY
         );
         canvasHost.addEventListener('touchstart', event => {
-          if (!visible || streetMode || referenceMode || event.touches.length < 2) return;
+          if (!visible || streetMode || referenceMode) return;
+          if(event.touches.length===1){
+            // Globe.gl's internal touch listeners may prevent native page
+            // scrolling even when computed touch-action is pan-y. Ignore
+            // its one-finger touch handlers; our Pointer Events handler still
+            // owns intentional horizontal drag.
+            event.stopImmediatePropagation();
+            return;
+          }
+          if(event.touches.length<2)return;
           const view = globe.pointOfView() || home;
           nativePinch = {
             distance: Math.max(1, nativeDistance(event.touches)),
@@ -866,8 +875,14 @@ if (earthVisual) {
           event.preventDefault();
         }, {passive:false,capture:true});
         canvasHost.addEventListener('touchmove', event => {
-          if (!nativePinch || !visible || streetMode || referenceMode) return;
-          if (event.touches.length < 2) return;
+          if (!visible || streetMode || referenceMode)return;
+          if(event.touches.length===1){
+            // Do not forward single-finger touchmove to Globe.gl: browser
+            // needs it uncancelled to provide momentum scrolling.
+            event.stopImmediatePropagation();
+            return;
+          }
+          if (!nativePinch || event.touches.length<2) return;
           const scale = nativePinch.distance / Math.max(1, nativeDistance(event.touches));
           const altitude = clamp(nativePinch.altitude * scale, 0.06, 5);
           const view = globe.pointOfView() || home;
