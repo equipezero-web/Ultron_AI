@@ -1,0 +1,282 @@
+/* J.A.R.V.I.S — Stark-inspired metallic-gold operational theme v5.33.
+   One complete design language across phone, tablet, PC, notebook and TV.
+   Map/satellite/radar imagery and scientific legend values retain their source colors. */
+html:has(body.jarvis-command-center){background:#040403!important}
+body.jarvis-command-center{
+ --stark-gold:#d4af37;
+ --stark-gold-bright:#ffe39b;
+ --stark-gold-copper:#ae741f;
+ --stark-gold-flare:#ffbf52;
+ --stark-gold-edge:rgba(235,188,79,.58);
+ --stark-gold-muted:#cdb883;
+ --stark-gold-shadow:rgba(255,175,39,.16);
+ --stark-bg:#050505;
+ --stark-surface:#0d0d0c;
+ --stark-glass:rgba(16,14,10,.93);
+ background:radial-gradient(ellipse at 48% 12%,#221708 0%,#0b0a07 35%,#050505 70%,#020202 100%)!important;
+ color:#e9dfcc!important;
+ color-scheme:dark;
+}
+body.jarvis-command-center .app-shell,
+body.jarvis-command-center .hud-layout,
+body.jarvis-command-center .center-column,
+body.jarvis-command-center .neural-stage,
+body.jarvis-command-center .orb-stage{
+ background:transparent!important;
+}
+body.jarvis-command-center .jarvis-command-center-ui{
+ --cc-red:#d4af37;
+ --cc-navy:#17120a;
+ --cc-titanium:#e1c785;
+ color:#e8dac0!important;
+ background:
+  radial-gradient(ellipse at 50% 17%,rgba(226,159,48,.105),transparent 43%),
+  repeating-linear-gradient(90deg,rgba(188,138,49,.045) 0 1px,transparent 1px 32px),
+  repeating-linear-gradient(0deg,rgba(188,138,49,.045) 0 1px,transparent 1px 32px),
+  linear-gradient(142deg,#080809 0%,#0d0b08 54%,#050506 100%)!important;
+ isolation:isolate;
+}
+/* Top-level operational chrome, not technical imagery. */
+body.jarvis-command-center :is(.jarvis-cc-top,.jarvis-cc-bottom,.jarvis-cc-console-terminal,.jarvis-cc-system-dock){
+ background:linear-gradient(154deg,rgba(32,25,13,.95),rgba(7,8,10,.97) 52%,rgba(19,15,10,.96))!important;
+ border-color:rgba(217,171,70,.42)!important;
+ color:#e9dcbd!important;
+}
+body.jarvis-command-center .jarvis-cc-top{
+ border-bottom:1px solid rgba(249,194,79,.62)!important;
+ box-shadow:inset 0 1px rgba(255,231,160,.11),0 6px 27px rgba(0,0,0,.28)!important;
+}
+body.jarvis-command-center :is(.jarvis-cc-top,.jarvis-cc-heading,.jarvis-cc-dock-heading,.jarvis-cc-console-terminal>header,.jarvis-cc-responses-title){
+ color:#f9d98e!important;
+ text-shadow:0 0 13px rgba(226,158,40,.23)!important;
+}
+body.jarvis-command-center .jarvis-cc-center{
+ background:
+  radial-gradient(ellipse at 50% 47%,rgba(233,172,50,.14),transparent 42%),
+  radial-gradient(ellipse at center,#181207 0%,#080808 58%,#040404 91%)!important;
+}
+body.jarvis-command-center .jarvis-cc-top .jarvis-cc-dot{
+ background:#ddbb64!important;box-shadow:0 0 13px rgba(253,205,101,.65)!important;
+}
+/* Shared visual panels, including future dynamically-mounted modules. */
+body.jarvis-command-center :is(
+ .hud-panel,.jarvis-cc-dock-module,.jarvis-cc-console-events,
+ .jarvis-cc-widget,.jarvis-cc-panel,.jarvis-cc-inline-result,
+ .jarvis-global-intel-panel,.jarvis-worldcam-panel,
+ .jarvis-meteo-center,.ultron-neural-answer,
+ .jarvis-neural-news,.jarvis-neural-answer,
+ .jarvis-geo-visual,.jarvis-visual-orchestrator-panel,
+ .neural-jarvis-archive,.neural-jarvis-bands
+){
+ border-color:var(--stark-gold-edge)!important;
+ color:#ecdebd!important;
+ background:linear-gradient(148deg,rgba(34,25,13,.95),rgba(8,10,12,.98) 55%,rgba(21,16,10,.97))!important;
+ box-shadow:inset 0 1px 0 rgba(255,218,132,.09),
+  0 12px 37px rgba(0,0,0,.28),0 0 21px rgba(208,143,32,.095)!important;
+}
+/* Keep radar/data maps and images authentic. */
+body.jarvis-command-center :is(.mapboxgl-map,.mapboxgl-canvas,.jarvis-earth-renderer,
+ .jarvis-meteo-radar-map,.jarvis-meteo-satellite-image,.jarvis-earth-map-layer,
+ .jarvis-geo-visual svg,.jarvis-meteo-center canvas,
+ .jarvis-meteo-center img,.jarvis-worldcam-view iframe){
+ filter:none!important;mix-blend-mode:normal;
+}
+/* Metallic frame treatment for interaction surfaces. */
+body.jarvis-command-center :is(
+ .jarvis-cc-tool-actions button,.quick-actions button,
+ .jarvis-cc-actions button,.hud-button,.jarvis-cc-inline-action,
+ .jarvis-cc-panel button,.jarvis-cc-console-terminal button,
+ .jarvis-cc-system-dock button,.jarvis-cc-dock-module button,
+ .jarvis-global-intel-panel button,.jarvis-worldcam-panel button,
+ .jarvis-meteo-center button,.ultron-neural-answer button,
+ .jarvis-neural-news button,.neural-jarvis-archive button
+):not(:disabled):not(.mapboxgl-ctrl-zoom-in):not(.mapboxgl-ctrl-zoom-out){
+ position:relative;
+ background:linear-gradient(155deg,#47310f 0%,#291d0d 34%,#0b0b0c 58%,#392609 90%,#4b330e)!important;
+ border:1px solid rgba(249,197,83,.62)!important;
+ color:#ffe7ad!important;
+ box-shadow:inset 0 1px 0 rgba(255,229,150,.28),
+  inset 0 -1px 0 rgba(76,43,7,.84),0 3px 12px rgba(0,0,0,.40)!important;
+ border-radius:8px!important;
+ text-shadow:0 1px 1px rgba(0,0,0,.55)!important;
+ cursor:pointer!important;
+ touch-action:manipulation;
+ min-height:40px;
+ transition:background-color .16s ease,border-color .16s ease,
+  box-shadow .16s ease,transform .16s ease!important;
+}
+body.jarvis-command-center :is(
+ .jarvis-cc-tool-actions button,.quick-actions button,.jarvis-cc-actions button,
+ .hud-button,.jarvis-cc-inline-action,.jarvis-cc-panel button,
+ .jarvis-cc-console-terminal button,.jarvis-cc-system-dock button,
+ .jarvis-global-intel-panel button,.jarvis-worldcam-panel button,
+ .jarvis-meteo-center button,.ultron-neural-answer button,
+ .jarvis-neural-news button,.neural-jarvis-archive button
+):is(:hover,:focus-visible,[aria-pressed="true"],[aria-expanded="true"]):not(:disabled){
+ color:#fff0c6!important;border-color:#ffe3a0!important;
+ background:linear-gradient(145deg,#644513 0%,#3d270d 45%,#17120b 72%,#6c4510)!important;
+ box-shadow:inset 0 1px 0 rgba(255,240,187,.30),
+  0 0 17px rgba(235,163,41,.28),0 3px 12px rgba(0,0,0,.36)!important;
+}
+body.jarvis-command-center :is(
+ .jarvis-cc-tool-actions button,.quick-actions button,.jarvis-cc-actions button,
+ .hud-button,.jarvis-cc-inline-action,.jarvis-cc-panel button,
+ .jarvis-global-intel-panel button,.jarvis-worldcam-panel button,
+ .jarvis-meteo-center button,.ultron-neural-answer button
+):focus-visible{
+ outline:2px solid #ffe39b!important;outline-offset:2px!important;
+}
+body.jarvis-command-center :is(button,input,select,textarea):disabled{
+ cursor:not-allowed!important;opacity:.53!important;
+}
+body.jarvis-command-center :is(.jarvis-cc-tool-actions button,.quick-actions button,.jarvis-cc-inline-action){
+ min-height:44px!important;
+ font-size:clamp(11px,.83vw,16px)!important;
+}
+/* Inputs, source filters, editable controls: maintain comfortable contrast. */
+body.jarvis-command-center :is(
+ #command-input,#jarvis-cc-input-slot textarea,
+ .jarvis-cc-console-terminal input,.jarvis-cc-console-terminal select,
+ .jarvis-cc-console-terminal textarea,
+ .jarvis-worldcam-filters input,.jarvis-worldcam-filters select,
+ .jarvis-meteo-center input,.jarvis-meteo-center select,
+ .jarvis-global-intel-panel input,.jarvis-global-intel-panel select
+){
+ background:linear-gradient(165deg,#111009,#08090c)!important;
+ border:1px solid rgba(222,169,61,.58)!important;
+ color:#fff0cc!important;
+ border-radius:8px!important;
+ caret-color:#ffdd83!important;
+ box-shadow:inset 0 2px 9px rgba(0,0,0,.43)!important;
+ min-width:0;
+}
+body.jarvis-command-center :is(input,textarea)::placeholder{color:#b9a77d!important;opacity:1!important}
+body.jarvis-command-center :is(input,select,textarea):focus-visible{
+ outline:2px solid rgba(255,210,120,.87)!important;outline-offset:2px!important;
+}
+/* Headings and regular explanatory text, without imposing gold on data legends. */
+body.jarvis-command-center :is(
+ .hud-panel .panel-heading,.hud-panel .panel-heading h2,
+ .jarvis-cc-dock-heading,.jarvis-cc-responses-title,
+ .jarvis-cc-inline-result>p,
+ .jarvis-global-intel-head strong,.jarvis-worldcam-head strong,
+ .jarvis-meteo-center>header,.ultron-neural-answer-head,
+ .jarvis-neural-news header,.jarvis-worldcam-summary
+){
+ color:#ffe3a0!important;text-shadow:0 0 13px rgba(239,180,66,.18)!important;
+}
+body.jarvis-command-center :is(
+ .jarvis-cc-console-events,.jarvis-cc-log,.jarvis-cc-responses,
+ .jarvis-cc-output,.jarvis-global-intel-panel,.jarvis-worldcam-panel
+) :is(a,button) {
+ text-decoration-color:rgba(255,198,82,.65);
+}
+body.jarvis-command-center :is(
+ .jarvis-worldcam-source,.jarvis-worldcam-footer a,
+ .jarvis-global-intel-panel a,.ultron-neural-answer a,
+ .jarvis-meteo-center a,.jarvis-cc-console-terminal a
+){
+ color:#ffd889!important;text-underline-offset:3px;
+}
+/* Status remains truthful: preserved semantic red, green and warning, no fake online. */
+body.jarvis-command-center :is(.alert,.error,[data-status="error"],[data-status="failed"]){
+ color:#ff9c98!important;
+}
+body.jarvis-command-center :is(.green,[data-status="success"]){
+ color:#b8e7b8!important;
+}
+body.jarvis-command-center :is(.warn,.warning,[data-status="warning"]){
+ color:#ffdb94!important;
+}
+body.jarvis-command-center .jarvis-cc-system-dock{
+ border:1px solid rgba(220,171,68,.5)!important;
+}
+body.jarvis-command-center .jarvis-cc-dock-module{
+ border-radius:12px!important;
+ overflow-wrap:anywhere;
+}
+body.jarvis-command-center .jarvis-cc-dock-grid{
+ min-width:0;max-width:100%;
+}
+body.jarvis-command-center .jarvis-cc-tool-actions{
+ min-width:0!important;max-width:100%!important;
+}
+body.jarvis-command-center .jarvis-cc-tool-actions button,
+body.jarvis-command-center .quick-actions button{
+ white-space:normal!important;overflow-wrap:anywhere!important;
+}
+body.jarvis-command-center .jarvis-worldcam-results,
+body.jarvis-command-center .jarvis-global-intel-panel,
+body.jarvis-command-center .jarvis-cc-console-terminal,
+body.jarvis-command-center .neural-jarvis-archive{
+ scrollbar-width:thin;scrollbar-color:rgba(231,184,79,.48) transparent;
+}
+/* Glowing mechanical highlights: cosmetic only, never block pointer events. */
+body.jarvis-command-center :is(.jarvis-cc-console-terminal,.jarvis-cc-system-dock,.hud-panel)::before{
+ pointer-events:none;
+}
+body.jarvis-command-center :is(.jarvis-cc-console-terminal,.jarvis-cc-system-dock){
+ background-image:
+  linear-gradient(155deg,rgba(253,209,104,.085),transparent 32%),
+  linear-gradient(150deg,#1c160b,#09090b 55%,#15100a)!important;
+}
+/* Compact touch UI across all phones; readable throughout tablets/notebooks/TV. */
+@media(max-width:699px){
+ body.jarvis-command-center .jarvis-cc-console-layout{
+  grid-template-columns:minmax(0,1fr)!important;
+  gap:8px!important;
+ }
+ body.jarvis-command-center .jarvis-cc-dock-grid{
+  grid-template-columns:minmax(0,1fr)!important;
+  gap:7px!important;
+ }
+ body.jarvis-command-center .jarvis-cc-tool-actions{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:6px!important;
+ }
+ body.jarvis-command-center .jarvis-cc-tool-actions button{
+  width:100%!important;min-width:0!important;min-height:44px!important;
+  padding:8px 6px!important;
+ }
+ body.jarvis-command-center .quick-actions{
+  flex-wrap:wrap!important;gap:6px!important;
+ }
+ body.jarvis-command-center .jarvis-worldcam-filters{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+ }
+ body.jarvis-command-center .jarvis-worldcam-filters input{grid-column:1/-1!important;}
+ body.jarvis-command-center .jarvis-cc-inline-action{
+  max-width:100%!important;overflow-wrap:anywhere!important;
+ }
+ body.jarvis-command-center :is(.jarvis-worldcam-panel,.jarvis-global-intel-panel,.jarvis-meteo-center){
+  max-width:calc(100% - 8px)!important;
+ }
+}
+@media(min-width:700px) and (max-width:1199px){
+ body.jarvis-command-center .jarvis-cc-tool-actions{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+ }
+ body.jarvis-command-center .jarvis-cc-tool-actions button{
+  min-width:0!important;min-height:44px!important;
+ }
+}
+@media(min-width:1920px){
+ body.jarvis-command-center :is(.jarvis-cc-console-terminal,.jarvis-cc-system-dock,.hud-panel){
+  border-width:1px!important;
+ }
+ body.jarvis-command-center .jarvis-cc-tool-actions button,
+ body.jarvis-command-center .quick-actions button{
+  font-size:clamp(15px,.83vw,21px)!important;
+  min-height:clamp(48px,3svh,68px)!important;
+  padding:clamp(11px,.75vw,19px)!important;
+ }
+ body.jarvis-command-center .jarvis-cc-dock-heading{
+  font-size:clamp(14px,1vw,24px)!important;
+ }
+}
+@media(prefers-reduced-motion:reduce){
+ body.jarvis-command-center button{
+  transition:none!important;animation:none!important;
+ }
+}
