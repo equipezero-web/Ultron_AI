@@ -1,0 +1,27 @@
+name: Device overview and safe routing
+on:
+  push:
+    paths:
+      - 'modules/device-overview.js'
+      - 'modules/device-control-v4260.js'
+      - 'backend/device-control-v2.js'
+      - 'tests/device-overview-v517.mjs'
+      - '.github/workflows/device-overview-v517.yml'
+  pull_request:
+    paths:
+      - 'modules/device-overview.js'
+      - 'modules/device-control-v4260.js'
+      - 'backend/device-control-v2.js'
+      - 'tests/device-overview-v517.mjs'
+      - '.github/workflows/device-overview-v517.yml'
+permissions:
+  contents: read
+jobs:
+  policy-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node tests/device-overview-v517.mjs
