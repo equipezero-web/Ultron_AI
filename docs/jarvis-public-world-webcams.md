@@ -3,10 +3,10 @@
 ## Objetivo e fonte
 Módulo de webcams públicas de pontos turísticos, aeroportos, praias, estradas, portos e natureza, integrado à área original do Neural Ring, sem criar páginas internas extras.
 
-A referência de descoberta é https://camerasdomundo.com/, que atua como agregador e informa não ser proprietário das imagens/transmissões. Não copiar ou retransmitir streams diretamente, não descobrir webcams por IP, não tentar acessar CCTV restrito, não ativar câmeras do usuário/dispositivos.
+As referências são https://camerasdomundo.com/ (agregador de transmissões de terceiros) e https://africam.com/ (transmissões públicas próprias de fauna africana). Não copiar ou retransmitir streams diretamente, não descobrir webcams por IP, não tentar acessar CCTV restrito, não ativar câmeras do usuário/dispositivos.
 
 ## Implementação
-- Índice inicial curado de 13 câmeras divulgadas publicamente por fontes reais em 10 países, 5 regiões continentais; ampliar apenas quando URLs e permissões puderem ser confirmadas.
+- Índice inicial curado de 14 câmeras divulgadas publicamente por fontes reais em 11 países, 6 regiões continentais; ampliar apenas quando URLs e permissões puderem ser confirmadas.
 - Cada entrada inclui página de origem, localização por cidade/país, categoria, atribuição do canal e, quando o agregador publicou um embed, identificador do player do YouTube.
 - Vídeo só é carregado depois de uma ação explícita do usuário e via youtube-nocookie.com/embed. Não usa RTSP, proxies de streaming nem conteúdo que exija acesso privado.
 - Player abre somente dentro do Neural Ring e é removido ao fechar, trocar câmera ou disparar P0 STOP.
