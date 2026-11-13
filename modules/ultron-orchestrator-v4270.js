@@ -588,6 +588,10 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
 }
 
 function enqueue(message, source = "terminal", approvedMission = false) {
+  // Phase XIII: resolve only exact whitelisted references ("isto", "essa
+  // notícia", "este evento") against the currently verified visual scene.
+  const contextualIntent=window.ULTRON_MULTIMODAL?.parse?.(message);
+  if(contextualIntent)return window.ULTRON_MULTIMODAL.execute(message,{source});
   const directorCommand=normalize(message).replace(/^(?:jarvis|ultron)[, :]+/,"").replace(/[.!?]+$/,"").trim();
   if(/^(?:(?:abrir|abra|iniciar|inicie|mostrar|mostre|ative|ativar) (?:a |o )?)?(?:diretor visual|orquestracao visual|apresentacao visual|roteiro visual)$/.test(directorCommand)){
     return window.ULTRON_VISUAL_ORCHESTRATOR?.start?.()||
@@ -673,6 +677,7 @@ function enqueue(message, source = "terminal", approvedMission = false) {
     missionGate.clear();
     activeController?.abort();
     recoveryEngine.cancelAll();
+    window.ULTRON_MULTIMODAL?.stop?.(); // Phase XIII cancel in-flight contextual receipt.
     window.ULTRON_VISUAL_ORCHESTRATOR?.stop?.(); // Phase XII visual director cancellation.
     window.ULTRON_IMMERSIVE?.stop?.(); // P0 also ends purely visual navigation.
     // Also attempt to revoke already-submitted commands still pending in D1.
