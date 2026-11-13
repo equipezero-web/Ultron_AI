@@ -91,10 +91,10 @@ try{
   selected:window.ULTRON_VISUAL_ORCHESTRATOR.context,
   result:await window.ULTRON_ORCHESTRATOR.execute("Jarvis, mostre isso no globo 3D","terminal")
  }));
- console.log("PHASE XIII no-geocode diagnostic",JSON.stringify(noPoint));
  assert.equal(noPoint.result.ok,false,JSON.stringify(noPoint));
  assert.equal(noPoint.result.reason,"NO_VERIFIED_COORDINATES",JSON.stringify(noPoint));
- assert.equal((await page.evaluate(()=>window.__mmLog)).some(x=>x.startsWith("tour-")),false);
+ assert.equal((await page.evaluate(()=>window.__mmLog)).some(x=>x.startsWith("tour-3d-")),false,
+  "The director may close an inactive tour, but must never open the globe for INMET");
  const official=await page.evaluate(()=>
   window.ULTRON_ORCHESTRATOR.execute("Jarvis, qual é a fonte deste evento?","terminal"));
  assert.equal(official.ok,true);assert.match(official.sourceUrl,/avisos.inmet.gov.br/);
