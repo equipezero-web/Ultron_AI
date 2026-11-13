@@ -88,7 +88,12 @@ if(stage){
  wakeButton.dataset.intelAction="wake";
  const wakeText=elt("span","","Aguardando monitoramento mundial");
  const continuityText=elt("span","jarvis-global-continuity","CONTINUIDADE · AGUARDANDO D1");
- wake.append(wakeButton,wakeText,continuityText);stage.append(wake);
+ const priorityArea=elt("section","jarvis-global-priority");
+ priorityArea.setAttribute("aria-label","Prioridades de fontes verificadas");
+ const priorityHeading=elt("strong","jarvis-global-priority-heading","PRIORIDADES · AGUARDANDO FONTES");
+ const priorityItems=elt("div","jarvis-global-priority-items");
+ priorityArea.append(priorityHeading,priorityItems);
+ wake.append(wakeButton,wakeText,priorityArea,continuityText);stage.append(wake);
  for(const name of ["pointerdown","pointerup","wheel","click","touchstart","touchend"]){
   panel.addEventListener(name,event=>event.stopPropagation(),{passive:true});
   wake.addEventListener(name,event=>event.stopPropagation(),{passive:true});
@@ -324,6 +329,30 @@ if(stage){
   continuityText.textContent=clean(detail.ring||
     "CONTINUIDADE · INDISPONÍVEL",130);
   if(detail.waking===true)wake.hidden=false;
+ });
+ window.addEventListener("ultron:contextual-priorities",event=>{
+  const detail=event?.detail||{};
+  if(detail.ok!==true)return;
+  const items=Array.isArray(detail.items)?detail.items.slice(0,3):[];
+  priorityHeading.textContent="PRIORIDADES VERIFICADAS · "+items.length+
+    " destaque(s) · "+Math.max(0,Number(detail.newCount)||0)+" novos no resumo";
+  priorityItems.replaceChildren();
+  if(!items.length){
+   priorityItems.append(elt("p","jarvis-global-priority-empty",
+    "Sem destaques atuais confirmados nas fontes disponíveis."));
+  }
+  for(const item of items){
+   const row=elt("div","jarvis-global-priority-entry");
+   const source=clean(item.verifiedLabel||item.source||"Fonte",95);
+   const meta=elt("small","",source+" · "+clean(item.region||"",65)+
+     (item.isNew?" · NOVO NO RESUMO":""));
+   const url=validUrl(item.url);
+   const headline=elt(url?"a":"span","",clean(item.title||"Sem título",135));
+   if(url){headline.href=url;headline.target="_blank";headline.rel="noopener noreferrer";}
+   row.append(meta,headline);
+   priorityItems.append(row);
+  }
+  if(detail.waking===true||detail.manual===true)wake.hidden=false;
  });
  window.addEventListener("ultron:new-conversation",close);
  window.ULTRON_GLOBAL_INTELLIGENCE={open,close,refresh:()=>open({view,region:scope,category:kind,refresh:true}),
