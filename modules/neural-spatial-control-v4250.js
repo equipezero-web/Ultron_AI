@@ -187,7 +187,9 @@ if (stage && orbStage) {
 
   function pointerUp(event) {
     state.dragging = false;
-    orbStage.releasePointerCapture?.(event.pointerId);
+    if(event?.pointerId!=null && orbStage.hasPointerCapture?.(event.pointerId)){
+      try{orbStage.releasePointerCapture(event.pointerId);}catch{}
+    }
   }
 
   function wheel(event) {
