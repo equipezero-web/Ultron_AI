@@ -159,7 +159,13 @@ if (stage && orbStage) {
     }
   }
 
+  const modernCenterMounted=()=>Boolean(
+    orbStage.querySelector('.jarvis-command-center-ui')
+  );
   function pointerDown(event) {
+    // Legacy spatial controller must not capture every touch in the whole
+    // modern Command Center: that intercepts scrolling and button gestures.
+    if(modernCenterMounted())return;
     if (event.button !== undefined && event.button !== 0) return;
     state.dragging = true;
     state.source = 'POINTER';
@@ -169,6 +175,7 @@ if (stage && orbStage) {
   }
 
   function pointerMove(event) {
+    if(modernCenterMounted()){state.dragging=false;return;}
     if (!state.dragging) return;
     const dx = event.clientX - state.lastPointerX;
     const dy = event.clientY - state.lastPointerY;
@@ -184,6 +191,12 @@ if (stage && orbStage) {
   }
 
   function wheel(event) {
+    // The modern Neural Jarvis and globe already provide direct wheel zoom
+    // within their canvases. Never suppress page/trackpad wheel events on
+    // the 2,400px-tall surrounding dashboard.
+    if(modernCenterMounted())return;
+    if(!event.target.closest?.('.core-orb,.vortex,.orb-visual'))return;
+    if(event.ctrlKey||event.metaKey)return;
     event.preventDefault();
     state.targetScale = clamp(state.targetScale - event.deltaY * .00055, .78, 1.48);
     state.targetDepth = clamp((state.targetScale - 1) * 120, -34, 54);
