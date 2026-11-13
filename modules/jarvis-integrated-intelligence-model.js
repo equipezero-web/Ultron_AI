@@ -7,6 +7,18 @@ const stamp=s=>{const t=Date.parse(String(s??""));return Number.isFinite(t)?t:nu
 const origin=s=>{try{const u=new URL(String(s??""));return u.protocol==="https:"&&!u.username&&!u.password&&!u.port&&
  !/^(?:localhost|\d+\.\d+\.\d+\.\d+|\[)/i.test(u.hostname)?u.href:null;}catch{return null;}};
 const DAY=86400000;
+function trustedSource(item){
+ const href=origin(item?.url);
+ if(!href)return false;
+ const host=new URL(href).hostname;
+ if(item?.type==="official-alert")return item.source==="INMET"&&host==="avisos.inmet.gov.br";
+ if(item?.type==="cataloged"){
+  return (item.source==="USGS"&&host==="earthquake.usgs.gov")||
+   (item.source==="NASA"&&host==="eonet.gsfc.nasa.gov")||
+   (item.source==="GDACS"&&["gdacs.org","www.gdacs.org"].includes(host));
+ }
+ return item?.type==="news"&&Boolean(clean(item?.source,80));
+}
 export const OPERATIONAL_MEMORY_TTL=30*DAY;
 export const ROUTINE_INTERVAL=15*60000;
 export function parseAdvancedCommand(raw){
@@ -51,7 +63,8 @@ export function verifiedDigest(digest,{now=Date.now()}={}){
   !Array.isArray(digest.items))return {ok:false,reason:"STALE_OR_UNVERIFIED_CONTEXT",items:[]};
  const items=digest.items.filter(x=>{
   const t=stamp(x?.publishedAt),url=origin(x?.url);
-  return url&&t!==null&&t<=now+300000&&now-t<=7*DAY&&
+  return url&&trustedSource(x)&&t!==null&&t<=now+300000&&
+   now-t<=(x.type==="news"?DAY:7*DAY)&&
    /^[gna]:[\w:./-]{1,160}$/.test(String(x.key||""))&&clean(x.title)&&
    ["cataloged","news","official-alert"].includes(x.type);
  }).slice(0,10).map(x=>({
