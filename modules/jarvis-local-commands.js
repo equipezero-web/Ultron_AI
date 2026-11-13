@@ -40,10 +40,10 @@ export async function runLocalCommand(command){
     const ok=result?.ok===true&&result.visible===true;
     return {ok,handled:true,route:"local-global-intelligence",
       provider:"jarvis-local",text:ok?
-      "Inteligência global exibida no Neural Ring. "+
+      "Inteligência global exibida no Neural Jarvis. "+
       result.eventCount+" registros publicados no filtro; até "+result.plotted+
       " locais representados no mapa. Fontes e horários indicados.":
-      "Não foi possível confirmar o monitoramento mundial no Neural Ring: "+
+      "Não foi possível confirmar o monitoramento mundial no Neural Jarvis: "+
       String(result?.error||"sem coleta válida").slice(0,150)};
   }
   if(intent.type==="meteorological-center"){
@@ -51,9 +51,9 @@ export async function runLocalCommand(command){
     const result=await window.ULTRON_METEO_CENTER?.open?.({tab:intent.tab,view:intent.view});
     const ok=result?.ok===true&&result.visible===true;
     return {ok,handled:true,route:"local-meteorological-center",provider:"jarvis-local",
-      text:ok?"Centro meteorológico aberto no Neural Ring: "+intent.tab.toUpperCase()+". "+
+      text:ok?"Centro meteorológico aberto no Neural Jarvis: "+intent.tab.toUpperCase()+". "+
         "Radar, satélite, observação e previsão são identificados separadamente.":
-        "Não foi possível abrir o centro meteorológico no Neural Ring."};
+        "Não foi possível abrir o centro meteorológico no Neural Jarvis."};
   }
   // Wait briefly for the mounted UI, without calling an external provider.
   let answer=window.ULTRON_NEURAL_ANSWER;
@@ -64,10 +64,10 @@ export async function runLocalCommand(command){
     else{
       answer.setTextEnabled(intent.enabled);
       ok=answer.textEnabled===intent.enabled;
-      text=ok?(intent.enabled?"Textos do Neural Ring ativados.":"Textos do Neural Ring desativados. Imagens, vídeos e voz continuam disponíveis."):"Não consegui verificar a alteração dos textos.";
+      text=ok?(intent.enabled?"Textos do Neural Jarvis ativados.":"Textos do Neural Jarvis desativados. Imagens, vídeos e voz continuam disponíveis."):"Não consegui verificar a alteração dos textos.";
     }
   }else{
-    text="Sou o J.A.R.V.I.S., seu centro de comando. Estas são as minhas funções projetadas:\n\n"+JARVIS_CAPABILITIES.map(([name,description])=>"• "+name+": "+description).join("\n")+"\n• Controle da interface: ativar e desativar os textos do Neural Ring por comando, sem confirmação adicional.\n\nPosso executar comandos claros nos módulos disponíveis; funções externas dependem de conexão, configuração e permissões. Não preciso pesquisar na internet para explicar minhas capacidades.";
+    text="Sou o J.A.R.V.I.S., seu centro de comando. Estas são as minhas funções projetadas:\n\n"+JARVIS_CAPABILITIES.map(([name,description])=>"• "+name+": "+description).join("\n")+"\n• Controle da interface: ativar e desativar os textos do Neural Jarvis por comando, sem confirmação adicional.\n\nPosso executar comandos claros nos módulos disponíveis; funções externas dependem de conexão, configuração e permissões. Não preciso pesquisar na internet para explicar minhas capacidades.";
     const id=window.__ultronQuestionSequence=(Number(window.__ultronQuestionSequence)||0)+1;
     window.dispatchEvent(new CustomEvent("ultron:question-start",{detail:{id,question:command}}));
     window.dispatchEvent(new CustomEvent("ultron:answer",{detail:{id,text,visualContext:null,webResearch:{requested:false,used:false,sources:[]}}}));
