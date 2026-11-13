@@ -1,0 +1,63 @@
+name: JARVIS Universal Mobile, Networks and Devices
+on:
+  pull_request:
+    paths:
+      - 'modules/jarvis-universal-adaptive*'
+      - 'modules/jarvis-universal-mobile.css'
+      - 'modules/jarvis-neural-jarvis-3d.js'
+      - 'modules/jarvis-command-center-v4330.js'
+      - 'index.html'
+      - 'tests/jarvis-universal-adaptive*'
+      - '.github/workflows/jarvis-universal-adaptive.yml'
+  push:
+    paths:
+      - 'modules/jarvis-universal-adaptive*'
+      - 'modules/jarvis-universal-mobile.css'
+      - 'modules/jarvis-neural-jarvis-3d.js'
+      - 'modules/jarvis-command-center-v4330.js'
+      - 'index.html'
+      - 'tests/jarvis-universal-adaptive*'
+      - '.github/workflows/jarvis-universal-adaptive.yml'
+permissions:
+  contents: read
+jobs:
+  model:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Static checks and device/network policy
+        run: |
+          node --check modules/jarvis-universal-adaptive-model.js
+          node --check modules/jarvis-universal-adaptive.js
+          node --check modules/jarvis-neural-jarvis-3d.js
+          node --check modules/jarvis-command-center-v4330.js
+          node --check tests/jarvis-universal-adaptive-browser.mjs
+          node tests/jarvis-universal-adaptive-model.mjs
+          node tests/jarvis-neural-jarvis-model.mjs
+          node tests/jarvis-public-world-cameras-model.mjs
+          node tests/jarvis-phase14-supervised-model.mjs
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Chrome test harness
+        run: |
+          npm install --no-save --no-package-lock --ignore-scripts puppeteer-core@24.33.0
+          echo "CHROME_BIN=$(command -v google-chrome || command -v chromium || command -v chromium-browser)" >> "$GITHUB_ENV"
+      - name: Test 280px to 4K, slow networks, Save-Data, offline and P0
+        run: |
+          python3 -m http.server 8774 --bind 127.0.0.1 >/tmp/jarvis-universal-http.log 2>&1 &
+          sleep 2
+          node tests/jarvis-universal-adaptive-browser.mjs
+      - name: Protect existing Neural Jarvis UI interactions
+        run: |
+          python3 -m http.server 8770 --bind 127.0.0.1 >/tmp/jarvis-responsive-http.log 2>&1 &
+          sleep 2
+          node tests/jarvis-neural-responsive-gold-browser.mjs
