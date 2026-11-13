@@ -34,7 +34,7 @@ async function open({view="2d",focusKey=null}={}){
  }
  try{
   if(!window.ULTRON_GEO_VISUAL){
-   await import("./jarvis-geospatial-visual.js?v=4.96.0");
+   await import("./jarvis-geospatial-visual.js?v=5.24.0");
   }
   if(serial!==requestId)return {ok:false,error:"Visualização substituída"};
   const map=window.ULTRON_GEO_VISUAL;
@@ -76,7 +76,24 @@ async function open({view="2d",focusKey=null}={}){
   return {ok:false,error:message};
  }
 }
+function injectMapButton(){
+ const strip=document.querySelector(".quick-actions");
+ if(!strip||document.getElementById("btn-contextual-map"))return;
+ const button=document.createElement("button");
+ button.type="button";button.id="btn-contextual-map";button.textContent="MAPA CONTEXTUAL";
+ let touchAt=0;
+ button.addEventListener("pointerdown",event=>{
+  if(event.pointerType==="mouse"||event.button!==0)return;
+  touchAt=Date.now();void open({view:"2d"});
+ });
+ button.addEventListener("click",()=>{
+  if(Date.now()-touchAt<800)return;
+  void open({view:"2d"});
+ });
+ strip.appendChild(button);
+}
 window.ULTRON_CONTEXTUAL_MAP={
  open,
  get state(){return lastMap?{...lastMap}:{ok:false,reason:"NOT_OPENED"};}
 };
+injectMapButton();
