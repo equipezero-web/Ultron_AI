@@ -229,7 +229,7 @@ function lastAssistantEarthOffer() {
   return {place: named ? normalize(named[0]) : ''};
 }
 
-async function routeSingle(command, run, index = 0, {signal} = {}) {
+async function routeSingle(command, run, index = 0, {signal,awaitCompletion=false} = {}) {
   ensureNotStopped(signal);
   const prefix = `step-${index + 1}`;
   const local=await runLocalCommand(command);
@@ -287,20 +287,22 @@ async function routeSingle(command, run, index = 0, {signal} = {}) {
       command: deviceIntent?.command || "automations.list",
       deviceType: deviceIntent?.deviceType || null
     });
-    const result = await devices.routeNaturalLanguage(command, deviceIntent);
+    const result = await devices.routeNaturalLanguage(command, deviceIntent, {awaitCompletion,signal});
     const waiting = Boolean(result?.needsConfirmation);
-    const ok = result?.ok !== false;
+    const submitted = Boolean(result?.submitted);
+    const ok = result?.ok === true && !submitted;
     await recordStep(
       run,
       prefix,
       "device-control",
-      waiting ? "waiting-confirmation" : (ok ? "completed" : "failed"),
+      waiting ? "waiting-confirmation" : submitted ? "submitted" : (ok ? "completed" : "failed"),
       { verified: result?.verified === true, status: result?.commandStatus || null }
     );
     return {
       route: "device-control",
       ok,
       waitingConfirmation: waiting,
+      submitted,
       result
     };
   }
@@ -419,13 +421,18 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
       if (signal.aborted) { finalStatus = "cancelled"; break; }
       const part = parts[i];
       if (parts.length > 1) log(`ETAPA ${i + 1}/${parts.length} // ${part}`);
-      const routed = await routeSingle(part, run, i, {signal});
+      const routed = await routeSingle(part, run, i, {signal,awaitCompletion:parts.length>1});
       results.push(routed);
       if (signal.aborted) { finalStatus = "cancelled"; break; }
       finalRoute = finalRoute || routed.route;
       if(routed?.result?.status==="submitted"&&finalStatus==="completed")finalStatus="submitted";
       if (routed.waitingConfirmation) {
         finalStatus = "waiting-confirmation";
+        break;
+      }
+      // A queued command is not a completed physical action: no next step.
+      if (routed.submitted) {
+        finalStatus = "submitted";
         break;
       }
       if (!routed.ok) {
@@ -455,7 +462,7 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
       }
     });
     log(`FINAL // ${finalStatus.toUpperCase()} // ${parts.length > 1 ? "MULTI-STEP" : (finalRoute || "CORE")}.`, finalStatus === "failed");
-    return { ok: finalStatus !== "failed" && finalStatus !== "cancelled", status: finalStatus, runId: run.runId, results };
+    return { ok: finalStatus === "completed", status: finalStatus, runId: run.runId, results };
   } catch (error) {
     if (signal.aborted) {
       await finishRun(run, "cancelled", "p0-stop", { source, completedSteps: results.length });
