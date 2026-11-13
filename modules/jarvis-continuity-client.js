@@ -113,6 +113,9 @@ document.addEventListener("visibilitychange",()=>{
 window.addEventListener("online",()=>{void refresh({reason:"reconnect"});});
 window.ULTRON_CONTINUITY={
   refresh,report,
+  // Public-source fields only; return a defensive copy so consumers cannot
+  // mutate the cache used to judge freshness.
+  get snapshot(){return latest?JSON.parse(JSON.stringify(latest)):null;},
   get state(){return {available:Boolean(latest),lastCheckAt:lastCheckAt?new Date(lastCheckAt).toISOString():null,
     errorCode,loading:Boolean(inflight),world:latest?.world?.state||"unavailable",
     weather:latest?.weather?.state||"unavailable"};}
