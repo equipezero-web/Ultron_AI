@@ -104,3 +104,11 @@ body.jarvis-command-center .screen-modal[aria-hidden="false"] .screen-panel{
   overflow-y:auto;
   -webkit-overflow-scrolling:touch;
 }
+/* Overlay close must remain a real, accessible 44px touch target on
+   desktop, touch laptops and mobile. Narrow 36px X hitboxes caused misses. */
+body.jarvis-command-center .ultron-neural-answer-close{
+  min-width:44px!important;
+  min-height:44px!important;
+  touch-action:manipulation!important;
+}
+
