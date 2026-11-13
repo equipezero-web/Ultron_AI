@@ -1,6 +1,6 @@
 import {TASK_CONTEXT} from "./jarvis-task-context.js?v=4.69.0";
 import {classifyOperatorTurn,splitOperatorSteps} from "./jarvis-intent-engine.js?v=4.69.0";
-import {directPlan,resolveActionPlan,runActionPlan} from "./jarvis-action-engine.js?v=4.96.0";
+import {directPlan,resolveActionPlan,runActionPlan} from "./jarvis-action-engine.js?v=4.101.1";
 import {parseLocalCommand,runLocalCommand} from "./jarvis-local-commands.js?v=5.10.0";
 import {parseMissionControl,assessCompoundMission,createMissionGate} from "./jarvis-mission-safety.js";
 import API_CONFIG from "../config.js";
