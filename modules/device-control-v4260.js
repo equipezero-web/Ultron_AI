@@ -1,5 +1,6 @@
 import API_CONFIG from "../config.js";
 import { summarizeDevices } from "./device-overview.js";
+import { interpretDeviceReceipt } from "./device-command-receipts.js";
 
 const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
 const LOCAL_BASE = "http://127.0.0.1:8765";
@@ -265,25 +266,69 @@ async function createScheduled(intent, schedule) {
   });
 }
 
-async function monitorCommand(commandId) {
+// A P0 stop only revokes a command that is still pending in the Cloud queue.
+export async function cancelQueuedCommand(commandId) {
+  const key = memoryKey();
+  if (!key || !commandId) return {ok:false,status:"unavailable"};
+  try {
+    const response = await fetch(`${API_BASE}/api/control/cancel`,{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      cache:"no-store",
+      signal:AbortSignal.timeout(5000),
+      body:JSON.stringify({memoryKey:key,commandId})
+    });
+    const result = await response.json().catch(()=>({}));
+    if(response.ok && result?.status==="cancelled") {
+      outputLine("P0 // comando pendente cancelado antes do envio ao dispositivo.");
+      return result;
+    }
+    outputLine("P0 // não foi possível retirar comando do aparelho: "+String(result?.status||result?.error||"sem confirmação")+".",true);
+    return {ok:false,status:result?.status||"unknown"};
+  }catch(error){
+    outputLine("P0 // falha ao confirmar cancelamento remoto; o dispositivo pode já ter recebido a ordem.",true);
+    return {ok:false,status:"unknown"};
+  }
+}
+
+function pauseUntil(ms,signal) {
+  return new Promise(resolve=>{
+    if(signal?.aborted)return resolve();
+    const timer=setTimeout(done,ms);
+    function onAbort(){done();}
+    function done(){
+      clearTimeout(timer);
+      signal?.removeEventListener("abort",onAbort);
+      resolve();
+    }
+    signal?.addEventListener("abort",onAbort,{once:true});
+  });
+}
+
+async function monitorCommand(commandId,{signal=null,maxAttempts=20}={}) {
   const key = memoryKey();
   if (!key || !commandId) return null;
   let last = "pending";
-  for (let attempt = 0; attempt < 20; attempt += 1) {
-    await new Promise((resolve) => setTimeout(resolve, 900));
+  for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
+    if(signal?.aborted)return cancelQueuedCommand(commandId);
+    await pauseUntil(900,signal);
+    if(signal?.aborted)return cancelQueuedCommand(commandId);
     try {
       const result = await postCloud("/api/control/status", { memoryKey: key, commandId });
       const command = result?.command;
+      if(signal?.aborted)return cancelQueuedCommand(commandId);
       if (!command) continue;
       if (command.status !== last) {
         last = command.status;
         outputLine(`${command.command} // ${String(command.status).toUpperCase()} // ${command.deviceName || command.deviceType}.`, command.status === "failed");
       }
       if (["completed", "failed", "expired", "cancelled"].includes(command.status)) return command;
-    } catch {}
+    } catch {
+      if(signal?.aborted)return cancelQueuedCommand(commandId);
+    }
   }
-  outputLine(`Comando ${commandId.slice(0, 8)} continua aguardando o dispositivo.`, true);
-  return null;
+  outputLine(`Comando ${commandId.slice(0, 8)} ainda sem confirmação física do dispositivo.`, true);
+  return {status:"pending"};
 }
 
 export async function listAutomations() {
@@ -293,7 +338,7 @@ export async function listAutomations() {
   return result.automations || [];
 }
 
-export async function routeNaturalLanguage(text, parsedIntent = null) {
+export async function routeNaturalLanguage(text, parsedIntent = null, {awaitCompletion=false,signal=null}={}) {
   const n = normalizeSpeech(text);
   if (/\b(listar|liste|mostrar|mostre)\b.*\bautomac/.test(n)) {
     const automations = await listAutomations();
@@ -304,6 +349,7 @@ export async function routeNaturalLanguage(text, parsedIntent = null) {
 
   const intent = parsedIntent || parseDeviceIntent(text);
   if (!intent) return { handled: false };
+  if(signal?.aborted)return {handled:true,ok:false,cancelled:true};
   if (intent.sensitive && !intent.payload?.confirm) {
     outputLine(`CONFIRMAÇÃO NECESSÁRIA: ${intent.label}. Repita incluindo "CONFIRMO".`, true);
     return { handled: true, ok: false, needsConfirmation: true, intent };
@@ -314,14 +360,23 @@ export async function routeNaturalLanguage(text, parsedIntent = null) {
     if (schedule) {
       const result = await createScheduled(intent, schedule);
       outputLine(`AUTOMAÇÃO CRIADA: ${intent.label} // ${schedule.label} // próxima execução ${result.nextRunAt}.`);
-      return { handled: true, ok: true, intent, schedule, result };
+      return { handled: true, ok: true, submitted: awaitCompletion, commandStatus:"scheduled", intent, schedule, result };
     }
 
-    outputLine(`EXECUTANDO: ${intent.label}.`);
+    if(signal?.aborted)return {handled:true,ok:false,cancelled:true,intent};
+    outputLine(`ENVIANDO À FILA: ${intent.label}.`);
     const result = await sendControl(intent);
+    if(signal?.aborted) {
+      const cancellation = result.commandId ? await cancelQueuedCommand(result.commandId) : null;
+      return {handled:true,ok:false,cancelled:true,commandStatus:cancellation?.status||"unknown",intent,result};
+    }
     outputLine(`FILA: ${result.commandId?.slice(0, 8) || "OK"} → ${result.device?.deviceName || intent.deviceType}.`);
-    if (result.commandId) monitorCommand(result.commandId);
-    return { handled: true, ok: true, intent, result };
+    if (awaitCompletion && result.commandId) {
+      const remote = await monitorCommand(result.commandId,{signal});
+      return {handled:true,...interpretDeviceReceipt(remote,{aborted:signal?.aborted}),intent,result};
+    }
+    if(result.commandId)void monitorCommand(result.commandId);
+    return { handled: true, ok: true, submitted:Boolean(result.commandId),verified:false,commandStatus:result.status||"pending", intent, result };
   } catch (error) {
     outputLine(`ERRO: ${error.message}`, true);
     return { handled: true, ok: false, intent, error };
@@ -449,6 +504,7 @@ window.ULTRON_DEVICES = {
   pairDesktop,
   listDevices,
   showDeviceOverview,
+  cancelQueuedCommand,
   routeNaturalLanguage,
   parseDeviceIntent,
   listAutomations,
