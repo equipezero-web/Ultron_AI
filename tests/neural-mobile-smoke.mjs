@@ -59,7 +59,7 @@ try {
             touch:cs.touchAction,overflow:cs.overflowY,
             pointer:cs.pointerEvents,top:Math.round(r.top),h:Math.round(r.height)});
         }
-        return {chain,maxScroll:document.scrollingElement.scrollHeight-document.scrollingElement.clientHeight};
+        return {chain:a,maxScroll:document.scrollingElement.scrollHeight-document.scrollingElement.clientHeight};
       });
       console.log('GLOBE SCROLL ANCESTORS',JSON.stringify(chain));
     }
