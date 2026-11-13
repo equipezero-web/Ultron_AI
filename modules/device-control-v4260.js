@@ -1,4 +1,5 @@
 import API_CONFIG from "../config.js";
+import { summarizeDevices } from "./device-overview.js";
 
 const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
 const LOCAL_BASE = "http://127.0.0.1:8765";
@@ -202,6 +203,29 @@ export async function listDevices() {
   return data.devices || [];
 }
 
+// Inventory is read-only and appears in the existing terminal, not a new page.
+export async function showDeviceOverview() {
+  outputLine("CENTRAL DE DISPOSITIVOS // consultando registros reais...");
+  try {
+    if (!memoryKey()) throw new Error("Identidade do operador indisponível.");
+    const summary = summarizeDevices(await listDevices());
+    outputLine(`REGISTROS ${summary.total} // ONLINE ${summary.online} // PAREADOS OFFLINE ${summary.pairedOffline} // INATIVOS ${summary.inactive}.`);
+    if (!summary.total) {
+      outputLine("Nenhum aparelho registrado. Use CONECTAR CELULAR ou CONECTAR PC para iniciar o pareamento.");
+      return summary;
+    }
+    for (const item of summary.items.slice(0, 12)) {
+      outputLine(`${item.label} // ${item.name} // ${item.state}${item.capabilities.length ? " // RECURSOS: " + item.capabilities.join(", ") : ""}.`);
+    }
+    if (summary.items.length > 12) outputLine(`Outros ${summary.items.length - 12} dispositivos não exibidos; consulte o gateway.`);
+    outputLine("GATEWAY ativo não comprova que celular, computador ou TV estejam conectados. A TV LG também exige autorização no próprio aparelho.");
+    return summary;
+  } catch (error) {
+    outputLine("Consulta de dispositivos falhou: " + String(error?.message || error), true);
+    return null;
+  }
+}
+
 export async function pairDesktop() {
   outputLine("DESKTOP BRIDGE: procurando Ultron Local Core...");
   const pairing = await startPairing("desktop", "Ultron Desktop Bridge");
@@ -336,6 +360,14 @@ function injectControls() {
     bindDevicePress(desktop,()=>pairDesktop().catch(error=>outputLine(error.message,true)));
     actions.appendChild(desktop);
   }
+  if (!document.getElementById("btn-device-overview")) {
+    const button = document.createElement("button");
+    button.id = "btn-device-overview";
+    button.type = "button";
+    button.textContent = "DISPOSITIVOS";
+    bindDevicePress(button, () => { void showDeviceOverview(); });
+    actions.appendChild(button);
+  }
   if (!document.getElementById("btn-automations")) {
     const button = document.createElement("button");
     button.id = "btn-automations";
@@ -351,13 +383,17 @@ async function refreshBridgeState() {
   if (!indicator || !API_BASE) return;
   try {
     const response = await fetch(`${API_BASE}/api/health`, { cache: "no-store", signal: AbortSignal.timeout(6500) });
+    if (!response.ok) throw new Error("Gateway HTTP " + response.status);
     const data = await response.json();
     if (data?.deviceControl?.ready && data?.automations?.ready) {
       indicator.textContent = "GATEWAY READY";
       indicator.className = "green";
     } else if (data?.bridge?.ready) {
-      indicator.textContent = "READY";
+      indicator.textContent = "BRIDGE READY";
       indicator.className = "green";
+    } else {
+      indicator.textContent = "GATEWAY PARCIAL";
+      indicator.className = "";
     }
   } catch (error) {
     indicator.textContent = "GATEWAY OFF";
@@ -410,6 +446,7 @@ window.ULTRON_DEVICES = {
   startPairing,
   pairDesktop,
   listDevices,
+  showDeviceOverview,
   routeNaturalLanguage,
   parseDeviceIntent,
   listAutomations,
