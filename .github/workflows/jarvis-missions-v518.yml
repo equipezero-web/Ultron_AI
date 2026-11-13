@@ -1,0 +1,41 @@
+name: JARVIS P0 and mission approvals
+on:
+  pull_request:
+    paths:
+      - 'modules/jarvis-mission-safety.js'
+      - 'modules/ultron-orchestrator-v4270.js'
+      - 'modules/jarvis-action-engine.js'
+      - 'modules/device-control-v4260.js'
+      - 'index.html'
+      - 'tests/jarvis-mission-safety.mjs'
+      - '.github/workflows/jarvis-missions-v518.yml'
+  push:
+    paths:
+      - 'modules/jarvis-mission-safety.js'
+      - 'modules/ultron-orchestrator-v4270.js'
+      - 'modules/jarvis-action-engine.js'
+      - 'modules/device-control-v4260.js'
+      - 'index.html'
+      - 'tests/jarvis-mission-safety.mjs'
+      - '.github/workflows/jarvis-missions-v518.yml'
+permissions:
+  contents: read
+jobs:
+  mission-safety:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax
+        run: |
+          node --check modules/jarvis-mission-safety.js
+          node --check modules/ultron-orchestrator-v4270.js
+          node --check modules/jarvis-action-engine.js
+          node --check modules/device-control-v4260.js
+      - name: Mission safety and legacy action tests
+        run: |
+          node tests/jarvis-mission-safety.mjs
+          node tests/jarvis-autonomy.mjs
+          node tests/device-overview-v517.mjs
