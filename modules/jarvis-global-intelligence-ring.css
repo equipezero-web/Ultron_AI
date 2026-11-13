@@ -88,6 +88,12 @@ body.jarvis-command-center .jarvis-cc-center>.jarvis-global-intel-wake{
  align-items:center;background:rgba(4,20,37,.94);border:1px solid #456f83;
  color:#beddeb;border-radius:8px;padding:6px 9px;
  font:11px/1.35 system-ui,sans-serif;
+ flex-wrap:wrap;
+}
+body.jarvis-command-center .jarvis-global-continuity{
+ display:block;flex:1 1 100%;min-width:0;
+ font:10px/1.35 system-ui,sans-serif;color:#a5d9cf;
+ overflow-wrap:anywhere;
 }
 body.jarvis-command-center .jarvis-cc-center>.jarvis-global-intel-wake[hidden]{display:none!important}
 body.jarvis-command-center .jarvis-global-intel-wake button{
