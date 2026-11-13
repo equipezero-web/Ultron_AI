@@ -233,6 +233,7 @@ async function routeSingle(command, run, index = 0, {signal,awaitCompletion=fals
   ensureNotStopped(signal);
   const prefix = `step-${index + 1}`;
   const local=await runLocalCommand(command);
+  ensureNotStopped(signal);
   if(local){if(!local.quiet)log(local.text,!local.ok);return {route:local.route,ok:local.ok,result:local};}
   const plan=directPlan(command);
   if(plan){const result=await runActionPlan(plan,command,{signal});log(result.text,!result.ok);return {route:result.route,ok:result.ok,result};}
@@ -378,6 +379,7 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
   // BEFORE generic autonomy or atmospheric mapping plans consume "monitoramento mundial".
   if(parseLocalCommand(clean)?.type==="global-intelligence"){
     const local=await runLocalCommand(clean);
+    if(signal.aborted)return {ok:false,status:"cancelled",results:[]};
     state.processed++;if(!local.ok)state.failed++;
     state.lastRoute=local.route;state.lastResult={route:local.route,ok:local.ok,result:local};
     if(!local.quiet)log(local.text,!local.ok);
@@ -389,6 +391,7 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
   }
   if(parseLocalCommand(clean)){
     const local=await runLocalCommand(clean);
+    if(signal.aborted)return {ok:false,status:"cancelled",results:[]};
     state.processed++;if(!local.ok)state.failed++;
     state.lastRoute=local.route;state.lastResult={route:local.route,ok:local.ok,result:local};
     if(!local.quiet)log(local.text,!local.ok);
@@ -402,6 +405,8 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
     await finishRun(run, "cancelled", "p0-stop", { source });
     log("P0 // execução interrompida antes das etapas.");
     state.busy = false;
+    const mode=document.getElementById("system-mode");
+    if(mode && mode.textContent==="ORCHESTRATING") mode.textContent="STANDBY";
     return {ok:false,status:"cancelled",runId:run.runId,results:[]};
   }
   state.activeRunId = run.runId;
