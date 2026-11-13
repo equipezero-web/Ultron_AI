@@ -67,6 +67,7 @@ try{
   });
   const bad=[];
   if(result.documentWidth>result.viewport.width+5)bad.push("document horizontal overflow "+(result.documentWidth-result.viewport.width));
+  if(config.width>=1100&&result.center.width<result.viewport.width*.94)bad.push("wide screen dashboard not full-width");
   if(!result.center||result.center.width>result.viewport.width+5)bad.push("center exceeds viewport");
   if(!result.visual||result.visual.width>result.center.width+6)bad.push("visual exceeds center");
   if(!result.engine||!result.ringVisible)bad.push("3D engine unavailable");
@@ -80,7 +81,7 @@ try{
   if(bad.length)issues.push({screen:config.name,bad,metrics:result});
   else console.log("RESPONSIVE SCREEN PASS",config.name,
    config.width+"x"+config.height,JSON.stringify({
-    stage:Math.round(result.center.width),canvas:Math.round(result.canvas.width),
+    stage:Math.round(result.center.width),viewport:result.viewport.width,canvas:Math.round(result.canvas.width),
     controls:result.actionsCount,gold:result.titleColor}));
   if(config.name==="phone"){
    const open=await page.evaluate(()=>window.ULTRON_NEURAL_JARVIS_UI.toggleArchive());
@@ -110,7 +111,7 @@ try{
  const stopPage=await browser.newPage();
  await stopPage.setViewport({width:390,height:844,isMobile:true,hasTouch:true});
  await stopPage.setRequestInterception(true);
- page.on("request",req=>req.url().startsWith("http://127.0.0.1:8770/")?
+ stopPage.on("request",req=>req.url().startsWith("http://127.0.0.1:8770/")?
   req.continue():req.abort("blockedbyclient"));
  await stopPage.goto(origin,{waitUntil:"domcontentloaded",timeout:35000});
  await stopPage.waitForFunction(()=>window.ULTRON_NEURAL_JARVIS?.active,{timeout:25000});
