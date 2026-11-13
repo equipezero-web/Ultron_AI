@@ -82,6 +82,10 @@ try{
   }));
  }
  await page.setViewport({width:390,height:844,isMobile:true,hasTouch:true,deviceScaleFactor:1});
+ await page.waitForFunction(()=>Boolean(
+  window.JARVIS_COMMAND_CENTER?.active&&window.ULTRON_NEURAL_JARVIS?.active&&
+  window.ULTRON_WORLD_CAMERAS&&window.ULTRON_NEURAL_JARVIS_UI?.state?.mounted
+ ),{timeout:20000});
  // External services and permissions are replaced with explicit test doubles.
  // This validates the handlers and their source-attributed failure responses,
  // never a fabricated successful live connection.
