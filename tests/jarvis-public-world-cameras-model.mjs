@@ -26,7 +26,7 @@ assert.deepEqual(parseWorldCameraCommand("Jarvis, mostre a câmera de Recife"),{
 assert.deepEqual(parseWorldCameraCommand("buscar webcams em Tóquio"),{type:"search",term:"toquio"});
 assert.deepEqual(parseWorldCameraCommand("fechar câmeras mundiais"),{type:"close"});
 assert.deepEqual(parseWorldCameraCommand("status das câmeras mundiais"),{type:"status"});
-for(const cmd of ["abrir câmera","ligar câmera do celular","acessar câmeras privadas",
+for(const cmd of ["abrir câmera","abrir câmera do celular","mostre a câmera do computador","abra a câmera do meu quarto","ligar câmera do celular","acessar câmeras privadas",
  "localize câmera de apartamento","ativar câmera escondida",
  "acessar rtsp://127.0.0.1/live","espionar pessoas",
  "mostrar senha das câmeras","abrir o globo","cancelar plano"]){
