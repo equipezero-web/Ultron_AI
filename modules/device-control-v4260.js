@@ -1,5 +1,6 @@
 import API_CONFIG from "../config.js";
 import { summarizeDevices } from "./device-overview.js";
+import { interpretDeviceReceipt } from "./device-command-receipts.js";
 
 const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
 const LOCAL_BASE = "http://127.0.0.1:8765";
@@ -372,11 +373,7 @@ export async function routeNaturalLanguage(text, parsedIntent = null, {awaitComp
     outputLine(`FILA: ${result.commandId?.slice(0, 8) || "OK"} → ${result.device?.deviceName || intent.deviceType}.`);
     if (awaitCompletion && result.commandId) {
       const remote = await monitorCommand(result.commandId,{signal});
-      if(signal?.aborted)return {handled:true,ok:false,cancelled:true,commandStatus:remote?.status||"unknown",intent,result};
-      if(remote?.status==="completed")return {handled:true,ok:true,verified:true,commandStatus:"completed",intent,result};
-      if(["failed","expired","cancelled"].includes(remote?.status))
-        return {handled:true,ok:false,commandStatus:remote.status,intent,result};
-      return {handled:true,ok:false,submitted:true,commandStatus:remote?.status||"pending",intent,result};
+      return {handled:true,...interpretDeviceReceipt(remote,{aborted:signal?.aborted}),intent,result};
     }
     if(result.commandId)void monitorCommand(result.commandId);
     return { handled: true, ok: true, submitted:Boolean(result.commandId),verified:false,commandStatus:result.status||"pending", intent, result };
