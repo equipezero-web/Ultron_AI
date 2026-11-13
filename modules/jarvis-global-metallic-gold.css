@@ -280,3 +280,49 @@ body.jarvis-command-center :is(.jarvis-cc-console-terminal,.jarvis-cc-system-doc
   transition:none!important;animation:none!important;
  }
 }
+
+/* 3D earth data and camera feeds stay true-color; surrounding controls are
+   the same warm metallic interface as the command terminal. */
+body.jarvis-command-center :is(
+ .jarvis-earth-reference-hud,.jarvis-earth-reference-side,
+ .jarvis-earth-reference-panel,.jarvis-earth-reference-choices,
+ .jarvis-earth-reference-zoom
+){
+ color:#f5e6bf!important;
+ border-color:rgba(222,170,58,.56)!important;
+}
+body.jarvis-command-center :is(
+ .jarvis-earth-reference-hud,.jarvis-earth-reference-side
+){
+ background:linear-gradient(150deg,rgba(37,26,11,.96),rgba(8,9,11,.98))!important;
+}
+body.jarvis-command-center :is(
+ .jarvis-earth-reference-choices button,.jarvis-earth-reference-zoom button,
+ .jarvis-earth-reference-side button,.jarvis-earth-reference-hud button
+):not(:disabled){
+ color:#ffe4a5!important;
+ background:linear-gradient(150deg,#433011,#110f0d 58%,#4b310e)!important;
+ border-color:rgba(255,199,89,.68)!important;
+ box-shadow:inset 0 1px 0 rgba(255,229,153,.2),0 2px 12px #0008!important;
+ min-width:40px;min-height:40px;
+}
+body.jarvis-command-center .jarvis-command-center-ui [data-stark-focused]{
+ outline:2px solid #ffe39b!important;outline-offset:2px!important;
+}
+body.jarvis-command-center :is(.jarvis-earth-reference-hud,.jarvis-earth-reference-side) :is(h1,h2,h3,strong){
+ color:#f7d48b!important;
+}
+body.jarvis-command-center .screen-panel{
+ background:linear-gradient(145deg,#24190b,#09090c 55%,#140f09)!important;
+ border:1px solid rgba(255,205,110,.53)!important;
+ color:#ffedc9!important;
+}
+body.jarvis-command-center .screen-panel .screen-head strong{
+ color:#ffe19c!important;
+}
+@media(min-width:1920px){
+ body.jarvis-command-center .jarvis-earth-reference-choices button,
+ body.jarvis-command-center .jarvis-earth-reference-zoom button{
+  min-width:52px;min-height:52px;
+ }
+}
