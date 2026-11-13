@@ -228,7 +228,16 @@ function init(){
  header.append(el("strong","","ARQUIVOS // MATRIZ HOLOGRÁFICA"));
  const close=el("button","","×");close.type="button";
  close.setAttribute("aria-label","Fechar arquivos neurais");
- close.addEventListener("click",closeArchive);
+ let closePressedAt=0;
+ close.addEventListener("pointerdown",event=>{
+  if(event.button!==0)return;
+  closePressedAt=Date.now();event.stopPropagation();closeArchive();
+ });
+ close.addEventListener("click",event=>{
+  event.stopPropagation();
+  if(Date.now()-closePressedAt<850)return;
+  closeArchive();
+ });
  header.append(close);
  archiveList=el("div","neural-jarvis-archive-list");
  detail=el("div","neural-jarvis-archive-detail");
