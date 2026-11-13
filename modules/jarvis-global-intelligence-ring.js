@@ -346,7 +346,15 @@ if(stage){
    const source=clean(item.verifiedLabel||item.source||"Fonte",95);
    const meta=elt("small","",source+" · "+clean(item.region||"",65)+
      (item.isNew?" · NOVO NO RESUMO":""));
-   const url=validUrl(item.url);
+   // News and INMET links do not belong to the geospatial-only allowlist.
+   // Priority model already filters sources; enforce generic public HTTPS here.
+   let url=null;
+   try{
+    const candidate=new URL(String(item.url||""));
+    if(candidate.protocol==="https:"&&!candidate.username&&!candidate.password&&!candidate.port&&
+       !/^(?:localhost|\\d+\\.\\d+\\.\\d+\\.\\d+|\\[.+\\])$/i.test(candidate.hostname))
+      url=candidate.href;
+   }catch{}
    const headline=elt(url?"a":"span","",clean(item.title||"Sem título",135));
    if(url){headline.href=url;headline.target="_blank";headline.rel="noopener noreferrer";}
    row.append(meta,headline);
