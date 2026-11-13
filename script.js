@@ -369,12 +369,12 @@ async function testVoice() {
     const response = await fetch(apiUrl("/api/voice"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text: "ULTRON online. Núcleo neural e sensor óptico operacionais." })
+      body: JSON.stringify({ text: "Teste de voz do J.A.R.V.I.S. O áudio foi gerado pelo provedor." })
     });
     const data = await readApiResponse(response);
     if (!response.ok) throw new Error(getErrorMessage(data, response.status));
     if (!data?.audioBase64) throw new Error("O provedor não retornou áudio.");
-    window.ULTRON_VISUAL_PANEL?.setCaption?.("ULTRON online. Núcleo neural e sensor óptico operacionais.");
+    window.ULTRON_VISUAL_PANEL?.setCaption?.("Teste de voz do J.A.R.V.I.S.; áudio obtido do provedor.");
     playVoice(data.audioBase64, data.audioMimeType || "audio/mpeg");
     addLog(output, "Voz recebida e enviada para reprodução.");
   } catch (error) {
@@ -401,10 +401,12 @@ async function loadHealth() {
     setClass("voice-module", data.elevenlabs || data.voiceRouter ? "green" : "");
     setText("bridge-module", data.deviceBridge || data.bridge?.ready ? "READY" : "API WAIT");
     setText("infra-backend", "ONLINE");
+    setText("infra-state", "ONLINE");
   } catch (error) {
     setText("gemini-module", "BACKEND OFF");
     setText("voice-module", "BACKEND OFF");
     setText("infra-backend", "OFFLINE");
+    setText("infra-state", "OFFLINE");
     addLog(output, `BACKEND ERROR: ${error.message}`, "alert");
   }
 }
@@ -423,17 +425,24 @@ function handleQuick(command) {
     return;
   }
   if (command === "center") {
-    window.ULTRON_NEURAL_RING_3D?.reset?.() || window.ULTRON_NEURAL_3D?.reset?.();
-    addLog(output, "Esfera holográfica centralizada.");
+    window.JARVIS_COMMAND_CENTER?.setVisualMode?.("ring");
+    const reset=window.ULTRON_NEURAL_JARVIS?.reset?.() ||
+      window.ULTRON_NEURAL_RING_3D?.reset?.() ||
+      window.ULTRON_NEURAL_3D?.reset?.();
+    addLog(output,reset?.ok?"Neural Jarvis centralizado.":
+      "Motor holográfico indisponível. A central continuará acessível pelo terminal.",
+      reset?.ok?"":"alert");
     return;
   }
   if (command === "status") {
     const cameraState = window.ULTRON_MOBILE_CAMERA?.state || {};
     const gestureState = window.ULTRON_HAND_GESTURES?.state || {};
-    const orb = window.ULTRON_NEURAL_3D?.state || {};
+    const orb = window.ULTRON_NEURAL_JARVIS?.state || {};
+    const cameraActive=Boolean((cameraState.active||camera.stream)&&video?.videoWidth);
+    const backend=$("infra-backend")?.textContent?.trim()||"NÃO VERIFICADO";
     addLog(
       output,
-      `Sistema ONLINE | Optical ${cameraState.active ? "ONLINE" : "standby"} | ${video?.videoWidth || 0}×${video?.videoHeight || 0} @ ${opticalFps || 0} FPS | mãos ${orb.handCount || 0} | gesto ${gestureState.gesture || "NONE"} | AI ${$("gemini-module")?.textContent || "--"}`
+      `INTERFACE JARVIS ATIVA | Backend ${backend} | Optical ${cameraActive?"QUADRO VISÍVEL":"SEM QUADRO"} | ${video?.videoWidth||0}×${video?.videoHeight||0} @ ${opticalFps||0} FPS | Neural Jarvis ${orb.active?"WEBGL ATIVO":"EM ESPERA"} | gesto ${gestureState.gesture||"NÃO DETECTADO"} | AI ${$("gemini-module")?.textContent||"NÃO VERIFICADA"}`
     );
   }
 }
@@ -480,10 +489,18 @@ setInterval(() => {
   setText("uptime", `${hours}:${minutes}:${seconds}`);
 }, 1000);
 
-setText("storage-state", "READY");
-setText("connection-state", navigator.onLine ? "ONLINE" : "OFFLINE");
-window.addEventListener("online", () => setText("connection-state", "ONLINE"));
-window.addEventListener("offline", () => setText("connection-state", "OFFLINE"));
+try {
+  const probe="jarvis-local-storage-probe";
+  localStorage.setItem(probe,"1");
+  const ok=localStorage.getItem(probe)==="1";
+  localStorage.removeItem(probe);
+  setText("storage-state",ok?"LOCAL PRONTO":"INDISPONÍVEL");
+} catch {setText("storage-state","BLOQUEADO");}
+const updateBrowserNetwork=()=>setText("connection-state",
+  navigator.onLine?"NAVEGADOR ONLINE":"NAVEGADOR OFFLINE");
+updateBrowserNetwork();
+window.addEventListener("online",updateBrowserNetwork);
+window.addEventListener("offline",updateBrowserNetwork);
 
 if (prefs.cameraAccepted) {
   addLog(output, "Preferência anterior de câmera detectada. A webcam local permanecerá desligada; o Ultron prioriza o celular.");
