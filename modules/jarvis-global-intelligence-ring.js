@@ -92,7 +92,9 @@ if(stage){
  priorityArea.setAttribute("aria-label","Prioridades de fontes verificadas");
  const priorityHeading=elt("strong","jarvis-global-priority-heading","PRIORIDADES · AGUARDANDO FONTES");
  const priorityItems=elt("div","jarvis-global-priority-items");
- priorityArea.append(priorityHeading,priorityItems);
+ const mapStatus=elt("small","jarvis-context-map-status","");
+ mapStatus.hidden=true;
+ priorityArea.append(priorityHeading,priorityItems,mapStatus);
  wake.append(wakeButton,wakeText,priorityArea,continuityText);stage.append(wake);
  for(const name of ["pointerdown","pointerup","wheel","click","touchstart","touchend"]){
   panel.addEventListener(name,event=>event.stopPropagation(),{passive:true});
@@ -358,9 +360,39 @@ if(stage){
    const headline=elt(url?"a":"span","",clean(item.title||"Sem título",135));
    if(url){headline.href=url;headline.target="_blank";headline.rel="noopener noreferrer";}
    row.append(meta,headline);
+   if(item.type==="cataloged"&&typeof item.lat==="number"&&
+      Number.isFinite(item.lat)&&typeof item.lng==="number"&&Number.isFinite(item.lng)){
+    const controls=elt("div","jarvis-context-map-actions");
+    for(const [mode,label] of [["2d","MAPA 2D"],["3d","GLOBO 3D"]]){
+     const button=elt("button","",label);
+     button.type="button";button.dataset.contextMapMode=mode;
+     button.setAttribute("aria-label",label+" · "+clean(item.title,90));
+     button.addEventListener("click",()=>{
+      const controller=window.ULTRON_CONTEXTUAL_MAP;
+      if(!controller?.open){
+       mapStatus.textContent="Visualização contextual ainda não disponível.";
+       mapStatus.hidden=false;return;
+      }
+      void controller.open({view:mode,focusKey:item.key});
+     });
+     controls.append(button);
+    }
+    row.append(controls);
+   }
    priorityItems.append(row);
   }
   if(detail.waking===true||detail.manual===true)wake.hidden=false;
+ });
+ window.addEventListener("ultron:contextual-map-status",event=>{
+  const detail=event?.detail||{};
+  mapStatus.hidden=false;
+  mapStatus.textContent=detail.ok===true
+    ?"Mapa "+String(detail.view||"").toUpperCase()+" aberto · "+
+      clean(detail.eventName||"registro catalogado",90)+
+      (detail.fallback3d?" · globo indisponível; mapa 2D usado":"")+
+      " · pinos não indicam extensão de risco"
+    :"Mapa contextual indisponível · "+clean(detail.error||"Fonte ou coordenada não confirmada",115);
+  if(detail.ok===true)wake.hidden=true; // Do not obscure the actual map on mobile.
  });
  window.addEventListener("ultron:new-conversation",close);
  window.ULTRON_GLOBAL_INTELLIGENCE={open,close,refresh:()=>open({view,region:scope,category:kind,refresh:true}),
