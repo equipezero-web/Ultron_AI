@@ -4,6 +4,8 @@ import {directPlan,resolveActionPlan,runActionPlan} from "./jarvis-action-engine
 import {parseLocalCommand,runLocalCommand} from "./jarvis-local-commands.js?v=5.10.0";
 import {parseMissionControl,assessCompoundMission,createMissionGate} from "./jarvis-mission-safety.js";
 import {inspectMissionDependencies,missionStepOutcome,createMissionJournal} from "./jarvis-mission-diagnostics.js";
+import {createRecoveryEngine} from "./jarvis-recovery-engine.js";
+import {probeRecoveryHealth} from "./jarvis-recovery-probes.js";
 import API_CONFIG from "../config.js";
 
 const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
@@ -21,7 +23,9 @@ const state = {
   lastUnifiedState: null,
   processed: 0,
   failed: 0,
-  proactiveRecoveries: 0
+  proactiveRecoveries: 0,
+  recoveryChecksFailed: 0,
+  lastRecovery: null
 };
 
 let queue = Promise.resolve();
@@ -33,7 +37,10 @@ function ensureNotStopped(signal) {
   if (signal?.aborted) throw new Error("P0: execução interrompida pelo operador.");
 }
 let lastVoiceInput={text:"",at:0};
-const proactiveCooldown = new Map();
+const recoveryEngine=createRecoveryEngine({
+  probe:(code,{signal})=>probeRecoveryHealth(code,{baseUrl:API_BASE,signal})
+});
+const recoveryReportTasks=new Map();
 
 function normalize(text) {
   return String(text || "")
@@ -581,12 +588,15 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
 }
 
 function enqueue(message, source = "terminal", approvedMission = false) {
+  if(isRecoveryReportIntent(message))return Promise.resolve(showRecoveryReport());
+  if(isRecoveryCheckIntent(message))return runRecoveryChecks();
   if(isMissionReportIntent(message))return showMissionReport();
   const control = parseMissionControl(message);
   if (control?.type === "stop") {
     queueGeneration += 1;
     missionGate.clear();
     activeController?.abort();
+    recoveryEngine.cancelAll();
     // Also attempt to revoke already-submitted commands still pending in D1.
     // This is best-effort: a claimed command cannot be undone.
     void window.ULTRON_DEVICES?.cancelOutstandingCommands?.();
@@ -637,30 +647,83 @@ async function refreshUnifiedState() {
   }
 }
 
-async function safeSelfHeal(alert) {
-  const code = String(alert?.code || "");
-  if (!code) return;
-  const previous = proactiveCooldown.get(code) || 0;
-  if (Date.now() - previous < 60_000) return;
-  proactiveCooldown.set(code, Date.now());
-
-  let attempted = false;
-  if (code === "memory-degraded") {
-    attempted = true;
-    await window.ULTRON_MEMORY?.refreshMemoryHealth?.();
-  } else if (code === "bridge-degraded") {
-    attempted = true;
-    await window.ULTRON_DEVICES?.refreshBridgeState?.();
-  } else if (code === "browser-offline") {
-    // Não há ação segura capaz de restaurar a rede; apenas manter o diagnóstico.
-    attempted = false;
+const RECOVERY_STATUS={
+  "healthy":"SAUDÁVEL","degraded":"DEGRADADO","circuit-open":"CIRCUITO ABERTO",
+  "checking":"VERIFICANDO","offline":"SEM INTERNET","cancelled":"CANCELADO","not-checked":"NÃO VERIFICADO"
+};
+function isRecoveryReportIntent(message){
+  const n=normalize(message).replace(/^(?:jarvis|ultron)[, :]+/,"").replace(/[.!?]+$/,"").trim();
+  return /^(?:(?:mostre|mostrar|consulte|consultar|verifique|verificar) (?:o )?)?(?:status|estado|diagnostico|relatorio) (?:da |de )?recuperacao(?: inteligente)?$/.test(n);
+}
+function isRecoveryCheckIntent(message){
+  const n=normalize(message).replace(/^(?:jarvis|ultron)[, :]+/,"").replace(/[.!?]+$/,"").trim();
+  return /^(?:verifique|verificar|reverifique|reverificar|teste|testar) (?:as )?(?:conexoes|conectividade|memoria e gateway|gateway e memoria)$/.test(n);
+}
+function showRecoveryReport(){
+  const checks=recoveryEngine.snapshot();
+  log("RECUPERAÇÃO // revalidação segura de leitura (sem reiniciar aparelhos).");
+  for(const check of checks){
+    const status=RECOVERY_STATUS[check.status]||check.status.toUpperCase();
+    const until=check.nextCheckAt&&check.nextCheckAt>Date.now()
+      ?" // próxima janela: "+new Date(check.nextCheckAt).toLocaleTimeString("pt-BR",{hour12:false})
+      :"";
+    log(check.service+" // "+status+" // "+check.reason+
+      " // tentativas: "+check.attempts+" // falhas consecutivas: "+check.failures+until,
+      check.status==="degraded"||check.status==="circuit-open");
   }
-
-  if (attempted) {
-    state.proactiveRecoveries += 1;
-    log(`SELF-HEAL // ${code} // revalidação automática executada.`);
-    await window.ULTRON_TELEMETRY?.push?.({ event: "orchestrator-self-heal", code });
+  log("Limite: até 2 consultas GET por verificação. Bloqueio após 3 verificações falhas. Nenhum comando de TV, celular, PC, pagamento ou arquivo é repetido.");
+  return {ok:true,checks};
+}
+function runRecoveryCheck(code,{manual=false}={}){
+  if(!recoveryEngine.targetCodes.includes(code))return Promise.resolve({ok:false,status:"unsupported"});
+  if(recoveryReportTasks.has(code))return recoveryReportTasks.get(code);
+  const task=(async()=>{
+  const online=typeof navigator!=="undefined"&&navigator.onLine!==false &&
+    (manual||!document.hidden);
+  const result=await recoveryEngine.run(code,{online});
+  if(result.skipped){
+    if(result.skipped==="offline"&&manual)log("RECOVERY // navegador offline; nenhuma consulta externa executada.",true);
+    return result;
   }
+  state.lastRecovery={code,status:result.status,reason:result.reason,verified:result.verified,at:result.checkedAt};
+  if(result.attempts>0&&result.status!=="cancelled"){
+    if(result.verified===true)state.proactiveRecoveries+=1;
+    else state.recoveryChecksFailed+=1;
+    log("RECOVERY // "+code+" // "+(result.verified?"SERVIÇO RESPONDENDO":
+      result.status==="circuit-open"?"FALHAS REPETIDAS — PAUSA DE SEGURANÇA":"NÃO CONFIRMADO")+
+      " // "+result.reason+" // "+result.attempts+" tentativa(s).",!result.verified);
+    // Telemetry is observational. Never send a command or secret from an alert.
+    try{await window.ULTRON_TELEMETRY?.push?.({
+      event:"orchestrator-recovery-check",code,verified:result.verified===true,
+      result:result.status,reason:result.reason
+    });}catch{}
+  }
+  return result;
+  })();
+  recoveryReportTasks.set(code,task);
+  void task.then(
+    ()=>{if(recoveryReportTasks.get(code)===task)recoveryReportTasks.delete(code);},
+    ()=>{if(recoveryReportTasks.get(code)===task)recoveryReportTasks.delete(code);}
+  );
+  return task;
+}
+async function runRecoveryChecks(){
+  const codes=recoveryEngine.targetCodes;
+  const results=await Promise.all(codes.map(code=>runRecoveryCheck(code,{manual:true})));
+  showRecoveryReport();
+  return {ok:results.every(r=>r.verified===true),results};
+}
+// SELF-HEAL now means a verified, bounded read-only health check, not an
+// arbitrary repair or a claim of physical device recovery.
+async function safeSelfHeal(alert){
+  const code=String(alert?.code||"");
+  if(code==="browser-offline"){
+    recoveryEngine.cancelAll();
+    log("RECOVERY // navegador offline; consultas pendentes interrompidas. Sem executar ações físicas.",true);
+    return;
+  }
+  if(!recoveryEngine.targetCodes.includes(code))return;
+  await runRecoveryCheck(code);
 }
 
 function injectActivityButton() {
@@ -682,6 +745,27 @@ function injectMissionButton(){
   button.addEventListener("click",()=>{void showMissionReport();});
   actions.appendChild(button);
 }
+function injectRecoveryButton(){
+  const actions=document.querySelector(".quick-actions");
+  if(!actions||document.getElementById("btn-orchestrator-recovery"))return;
+  const button=document.createElement("button");
+  button.id="btn-orchestrator-recovery";
+  button.type="button";
+  button.textContent="RECUPERAÇÃO";
+  // Mobile quick-actions can cancel click while the strip snaps. Use one
+  // pointerdown for touch/pen and retain click for keyboard/mouse.
+  let touchAt=0;
+  button.addEventListener("pointerdown",(event)=>{
+    if(event.pointerType==="mouse"||event.button!==0)return;
+    touchAt=Date.now();
+    showRecoveryReport();
+  });
+  button.addEventListener("click",()=>{
+    if(Date.now()-touchAt<800)return;
+    showRecoveryReport();
+  });
+  actions.appendChild(button);
+}
 
 sendButton?.addEventListener("click", (event) => intercept(event, "terminal"), true);
 input?.addEventListener("keydown", (event) => {
@@ -689,11 +773,13 @@ input?.addEventListener("keydown", (event) => {
   intercept(event, "terminal");
 }, true);
 
-window.addEventListener("ultron:proactive-alert", (event) => safeSelfHeal(event.detail || {}));
-window.addEventListener("online", () => {
-  window.ULTRON_MEMORY?.refreshMemoryHealth?.();
-  window.ULTRON_DEVICES?.refreshBridgeState?.();
-  refreshUnifiedState();
+window.addEventListener("ultron:proactive-alert",(event)=>{
+  void safeSelfHeal(event.detail||{}).catch(()=>log("RECOVERY // falha interna na verificação de leitura.",true));
+});
+window.addEventListener("online",()=>{
+  // Recheck only fixed GET /api/health probes, not the original device action.
+  void runRecoveryChecks();
+  void refreshUnifiedState();
 });
 window.addEventListener("ultron:voice-command", (event) => {
   const command = String(event?.detail?.command || event?.detail?.text || "").trim();
@@ -709,6 +795,9 @@ window.ULTRON_ORCHESTRATOR = {
   execute: enqueue,
   history: showHistory,
   missions:showMissionReport,
+  recovery:showRecoveryReport,
+  checkRecovery:runRecoveryChecks,
+  get recoveryHealth(){return recoveryEngine.snapshot();},
   get missionJournal(){return missionJournal.list();},
   refreshState: refreshUnifiedState,
   get state() { return { ...state }; }
@@ -716,6 +805,7 @@ window.ULTRON_ORCHESTRATOR = {
 
 injectActivityButton();
 injectMissionButton();
+injectRecoveryButton();
 setTimeout(refreshUnifiedState, 3500);
 setInterval(refreshUnifiedState, 30000);
 log("TOTAL INTEGRATION CORE v4.27.0 // READY.");

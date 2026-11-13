@@ -1,0 +1,40 @@
+name: JARVIS Phase VII Recovery Safety
+on:
+  pull_request:
+    paths:
+      - 'modules/jarvis-recovery-probes.js'
+      - 'modules/jarvis-recovery-engine.js'
+      - 'modules/ultron-orchestrator-v4270.js'
+      - 'index.html'
+      - 'tests/jarvis-phase7-recovery.mjs'
+      - '.github/workflows/jarvis-phase7-recovery.yml'
+  push:
+    paths:
+      - 'modules/jarvis-recovery-probes.js'
+      - 'modules/jarvis-recovery-engine.js'
+      - 'modules/ultron-orchestrator-v4270.js'
+      - 'index.html'
+      - 'tests/jarvis-phase7-recovery.mjs'
+      - '.github/workflows/jarvis-phase7-recovery.yml'
+permissions:
+  contents: read
+jobs:
+  recovery-safety:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax
+        run: |
+          node --check modules/jarvis-recovery-probes.js
+          node --check modules/jarvis-recovery-engine.js
+          node --check modules/ultron-orchestrator-v4270.js
+      - name: Recovery and existing mission regression tests
+        run: |
+          node tests/jarvis-phase7-recovery.mjs
+          node tests/jarvis-mission-diagnostics.mjs
+          node tests/jarvis-mission-safety.mjs
+          node tests/jarvis-device-receipts.mjs
+          node tests/jarvis-autonomy.mjs
