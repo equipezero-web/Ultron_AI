@@ -1,6 +1,6 @@
 import {TASK_CONTEXT} from "./jarvis-task-context.js?v=4.69.0";
 import {classifyOperatorTurn,splitOperatorSteps} from "./jarvis-intent-engine.js?v=4.69.0";
-import {directPlan,resolveActionPlan,runActionPlan} from "./jarvis-action-engine.js?v=4.96.0";
+import {directPlan,resolveActionPlan,runActionPlan} from "./jarvis-action-engine.js?v=4.101.1";
 import {parseLocalCommand,runLocalCommand} from "./jarvis-local-commands.js?v=5.10.0";
 import {parseMissionControl,assessCompoundMission,createMissionGate} from "./jarvis-mission-safety.js";
 import API_CONFIG from "../config.js";
@@ -229,10 +229,11 @@ function lastAssistantEarthOffer() {
   return {place: named ? normalize(named[0]) : ''};
 }
 
-async function routeSingle(command, run, index = 0, {signal} = {}) {
+async function routeSingle(command, run, index = 0, {signal,awaitCompletion=false} = {}) {
   ensureNotStopped(signal);
   const prefix = `step-${index + 1}`;
   const local=await runLocalCommand(command);
+  ensureNotStopped(signal);
   if(local){if(!local.quiet)log(local.text,!local.ok);return {route:local.route,ok:local.ok,result:local};}
   const plan=directPlan(command);
   if(plan){const result=await runActionPlan(plan,command,{signal});log(result.text,!result.ok);return {route:result.route,ok:result.ok,result};}
@@ -287,20 +288,22 @@ async function routeSingle(command, run, index = 0, {signal} = {}) {
       command: deviceIntent?.command || "automations.list",
       deviceType: deviceIntent?.deviceType || null
     });
-    const result = await devices.routeNaturalLanguage(command, deviceIntent);
+    const result = await devices.routeNaturalLanguage(command, deviceIntent, {awaitCompletion,signal});
     const waiting = Boolean(result?.needsConfirmation);
-    const ok = result?.ok !== false;
+    const submitted = Boolean(result?.submitted);
+    const ok = result?.ok === true && !submitted;
     await recordStep(
       run,
       prefix,
       "device-control",
-      waiting ? "waiting-confirmation" : (ok ? "completed" : "failed"),
+      waiting ? "waiting-confirmation" : submitted ? "submitted" : (ok ? "completed" : "failed"),
       { verified: result?.verified === true, status: result?.commandStatus || null }
     );
     return {
       route: "device-control",
       ok,
       waitingConfirmation: waiting,
+      submitted,
       result
     };
   }
@@ -376,6 +379,7 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
   // BEFORE generic autonomy or atmospheric mapping plans consume "monitoramento mundial".
   if(parseLocalCommand(clean)?.type==="global-intelligence"){
     const local=await runLocalCommand(clean);
+    if(signal.aborted)return {ok:false,status:"cancelled",results:[]};
     state.processed++;if(!local.ok)state.failed++;
     state.lastRoute=local.route;state.lastResult={route:local.route,ok:local.ok,result:local};
     if(!local.quiet)log(local.text,!local.ok);
@@ -387,6 +391,7 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
   }
   if(parseLocalCommand(clean)){
     const local=await runLocalCommand(clean);
+    if(signal.aborted)return {ok:false,status:"cancelled",results:[]};
     state.processed++;if(!local.ok)state.failed++;
     state.lastRoute=local.route;state.lastResult={route:local.route,ok:local.ok,result:local};
     if(!local.quiet)log(local.text,!local.ok);
@@ -400,6 +405,8 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
     await finishRun(run, "cancelled", "p0-stop", { source });
     log("P0 // execução interrompida antes das etapas.");
     state.busy = false;
+    const mode=document.getElementById("system-mode");
+    if(mode && mode.textContent==="ORCHESTRATING") mode.textContent="STANDBY";
     return {ok:false,status:"cancelled",runId:run.runId,results:[]};
   }
   state.activeRunId = run.runId;
@@ -419,13 +426,18 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
       if (signal.aborted) { finalStatus = "cancelled"; break; }
       const part = parts[i];
       if (parts.length > 1) log(`ETAPA ${i + 1}/${parts.length} // ${part}`);
-      const routed = await routeSingle(part, run, i, {signal});
+      const routed = await routeSingle(part, run, i, {signal,awaitCompletion:parts.length>1});
       results.push(routed);
       if (signal.aborted) { finalStatus = "cancelled"; break; }
       finalRoute = finalRoute || routed.route;
       if(routed?.result?.status==="submitted"&&finalStatus==="completed")finalStatus="submitted";
       if (routed.waitingConfirmation) {
         finalStatus = "waiting-confirmation";
+        break;
+      }
+      // A queued command is not a completed physical action: no next step.
+      if (routed.submitted) {
+        finalStatus = "submitted";
         break;
       }
       if (!routed.ok) {
@@ -455,7 +467,7 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
       }
     });
     log(`FINAL // ${finalStatus.toUpperCase()} // ${parts.length > 1 ? "MULTI-STEP" : (finalRoute || "CORE")}.`, finalStatus === "failed");
-    return { ok: finalStatus !== "failed" && finalStatus !== "cancelled", status: finalStatus, runId: run.runId, results };
+    return { ok: finalStatus === "completed", status: finalStatus, runId: run.runId, results };
   } catch (error) {
     if (signal.aborted) {
       await finishRun(run, "cancelled", "p0-stop", { source, completedSteps: results.length });
@@ -486,6 +498,9 @@ function enqueue(message, source = "terminal", approvedMission = false) {
     queueGeneration += 1;
     missionGate.clear();
     activeController?.abort();
+    // Also attempt to revoke already-submitted commands still pending in D1.
+    // This is best-effort: a claimed command cannot be undone.
+    void window.ULTRON_DEVICES?.cancelOutstandingCommands?.();
     log("P0 STOP // tarefas pendentes descartadas e próximas etapas interrompidas. Uma operação já enviada a outro dispositivo pode ainda terminar.");
     return Promise.resolve({ok:true,status:"cancelled",route:"p0-stop"});
   }

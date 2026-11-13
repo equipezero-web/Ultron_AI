@@ -77,7 +77,8 @@ import {
   commandHistory,
   deviceControlHealth,
   enqueueControlCommand,
-  getCommandStatus
+  getCommandStatus,
+  cancelQueuedControlCommand
 } from "./device-control-v2.js";
 import {
   automationHealth,
@@ -1369,6 +1370,14 @@ export default {
         payload: body?.payload || {}
       });
       return json(result, result?.ok === false ? (result?.needsConfirmation ? 409 : 400) : 200);
+    }
+
+    if (path === "/api/control/cancel" && request.method === "POST") {
+      const body = await bodyOf(request);
+      const operatorId = await operatorFrom(body);
+      if (!operatorId) return missingOperator();
+      const result = await cancelQueuedControlCommand(env, operatorId, body?.commandId);
+      return json(result, result?.ok === false ? (result?.status === "not-found" ? 404 : 409) : 200);
     }
 
     if (path === "/api/control/status" && request.method === "POST") {
