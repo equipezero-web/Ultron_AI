@@ -134,12 +134,14 @@ try{
   req.continue():req.abort("blockedbyclient"));
  await setup(page,1366,768,{mobile:false});
  await page.evaluate(()=>{document.scrollingElement.scrollTop=0;});
- const heading=await page.$eval(".jarvis-cc-heading",el=>el.getBoundingClientRect().toJSON());
+ // The center heading may be visually overlaid by the hologram canvas;
+ // use the independent system top bar to test true non-canvas wheel scrolling.
+ const heading=await page.$eval(".jarvis-cc-top",el=>el.getBoundingClientRect().toJSON());
  await page.mouse.move(heading.left+heading.width*.5,heading.top+heading.height*.5);
  await page.mouse.wheel({deltaY:440});
  await delay(200);
  const wheelScroll=await page.evaluate(()=>document.scrollingElement.scrollTop);
- assert.ok(wheelScroll>20,"wheel above stage heading must scroll page");
+ assert.ok(wheelScroll>20,"wheel above the top system bar must scroll the page");
  await page.evaluate(()=>{document.scrollingElement.scrollTop=0;});
  const canvas=await page.$eval("#jarvis-cc-canvas",el=>el.getBoundingClientRect().toJSON());
  const beforeZoom=await page.evaluate(()=>window.ULTRON_NEURAL_JARVIS.state.zoom);
