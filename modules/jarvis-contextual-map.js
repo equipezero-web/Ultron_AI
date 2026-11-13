@@ -59,7 +59,7 @@ async function open({view="2d",focusKey=null}={}){
    ok:true,view:selectedMode,fallback3d,scenario:chosen.scenario.id,
    eventName:point?.name||"Registro catalogado",source:chosen.selectedSource,
    selectedPoint:chosen.focusPointId,pointCount:chosen.candidateCount,
-   representative:chosen.representative===true
+   representative:chosen.representative===true,checkedAt:digest.generatedAt
   };
   lastMap=result;
   log("MAPA "+(selectedMode==="3d"?"3D":"2D")+" // "+result.eventName+
@@ -75,6 +75,45 @@ async function open({view="2d",focusKey=null}={}){
   publish({ok:false,error:message});
   return {ok:false,error:message};
  }
+}
+// Move across the currently verified scenario without tearing down and
+// reconstructing Mapbox/WebGL on every step. Revalidate source and freshness.
+async function focus({focusKey,view=null}={}){
+ if(typeof focusKey!=="string"||!/^g:[\\w:./-]{1,150}$/.test(focusKey))
+   return {ok:false,error:"Evento contextual inválido"};
+ const mode=view===null?(lastMap?.view||"2d"):view;
+ if(!["2d","3d"].includes(mode))return {ok:false,error:"Modo inválido"};
+ const digest=window.ULTRON_CONTEXTUAL?.preview?.();
+ const selected=contextualGeoScene(digest,{focusKey,now:Date.now()});
+ if(!selected.ok)return {ok:false,error:"Evento não está na coleta atual com coordenadas verificadas.",reason:selected.reason};
+ const map=window.ULTRON_GEO_VISUAL;
+ // When a snapshot changed, reinitialize with its actual points. Otherwise
+ // a repeated ID could point at an outdated or unrelated observation.
+ if(!map?.state?.visible||map.state.scenario!==selected.scenario.id||
+    lastMap?.checkedAt!==digest.generatedAt){
+   return open({view:mode,focusKey});
+ }
+ const serial=++requestId;
+ let actual=mode,fallback3d=false;
+ if(map.state.mode!==mode){
+   let switched=await map.setMode(mode);
+   if(serial!==requestId)return {ok:false,error:"Navegação substituída"};
+   if(!switched?.ok&&mode==="3d"){
+     switched=await map.setMode("2d");
+     if(!switched?.ok)return {ok:false,error:"Globo indisponível e mapa 2D não respondeu"};
+     actual="2d";fallback3d=true;
+   }else if(!switched?.ok)return {ok:false,error:switched?.error||"Falha ao trocar o modo"};
+ }
+ const moved=map.focusPoint(selected.focusPointId,{zoom:actual==="2d"?3.2:4});
+ if(!moved?.ok)return {ok:false,error:moved?.error||"Mapa não confirmou o foco"};
+ const point=selected.scenario.frames[0].points.find(p=>p.id===selected.focusPointId);
+ const result={ok:true,view:actual,fallback3d,scenario:selected.scenario.id,
+   eventName:point?.name||"Registro catalogado",source:selected.selectedSource,
+   selectedPoint:selected.focusPointId,pointCount:selected.candidateCount,
+   representative:selected.representative===true,checkedAt:digest.generatedAt};
+ lastMap=result;
+ publish(result);
+ return result;
 }
 function injectMapButton(){
  const strip=document.querySelector(".quick-actions");
@@ -93,7 +132,7 @@ function injectMapButton(){
  strip.appendChild(button);
 }
 window.ULTRON_CONTEXTUAL_MAP={
- open,
+ open,focus,
  get state(){return lastMap?{...lastMap}:{ok:false,reason:"NOT_OPENED"};}
 };
 injectMapButton();
