@@ -1,0 +1,45 @@
+name: JARVIS device execution receipts
+on:
+  pull_request:
+    paths:
+      - 'modules/device-command-receipts.js'
+      - 'modules/device-control-v4260.js'
+      - 'modules/ultron-orchestrator-v4270.js'
+      - 'backend/device-control-v2.js'
+      - 'backend/worker.js'
+      - 'tests/jarvis-device-receipts.mjs'
+      - '.github/workflows/device-receipts-v519.yml'
+      - 'index.html'
+  push:
+    paths:
+      - 'modules/device-command-receipts.js'
+      - 'modules/device-control-v4260.js'
+      - 'modules/ultron-orchestrator-v4270.js'
+      - 'backend/device-control-v2.js'
+      - 'backend/worker.js'
+      - 'tests/jarvis-device-receipts.mjs'
+      - '.github/workflows/device-receipts-v519.yml'
+      - 'index.html'
+permissions:
+  contents: read
+jobs:
+  receipts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax
+        run: |
+          node --check modules/device-command-receipts.js
+          node --check modules/device-control-v4260.js
+          node --check modules/ultron-orchestrator-v4270.js
+          node --check backend/device-control-v2.js
+          node --check backend/worker.js
+      - name: Local policy regression
+        run: |
+          node tests/jarvis-device-receipts.mjs
+          node tests/jarvis-mission-safety.mjs
+          node tests/jarvis-autonomy.mjs
+          node tests/device-overview-v517.mjs
