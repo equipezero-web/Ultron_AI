@@ -215,7 +215,8 @@ async function showMissionReport() {
         String(item.route||item.intent||"core").slice(0,50)+" // "+String(item.id||"").slice(0,12)));
       // Inspect only a run ID returned by the authenticated, operator-scoped
       // history endpoint. Do not expose original command text or stored payloads.
-      const detail=await post("/api/orchestrator/run",{runId:list[0].id},{silent:true});
+      let detail=null;
+      try { detail=await post("/api/orchestrator/run",{runId:list[0].id},{silent:true}); } catch {}
       const savedSteps=detail?.run?.steps;
       if(Array.isArray(savedSteps)){
         const relevant=savedSteps.filter(step=>/^(?:mission-\d+|preflight|fatal)$/.test(String(step.stepKey||""))).slice(-8);
@@ -472,7 +473,11 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
     if(parts.length>1){
       const preflight=await inspectMissionDependencies(parts,{
         parseDeviceIntent:part=>window.ULTRON_DEVICES?.parseDeviceIntent?.(part)||null,
-        listDevices:window.ULTRON_DEVICES?.listDevices?.bind(window.ULTRON_DEVICES),
+        listDevices:()=>{
+          if(!memoryKey())throw new Error("Identidade do operador não carregada.");
+          if(typeof window.ULTRON_DEVICES?.listDevices!=="function")throw new Error("Gateway de dispositivos não inicializado.");
+          return window.ULTRON_DEVICES.listDevices();
+        },
         isCameraActivation,
         cameraAvailable:()=>typeof window.ULTRON_CORE?.activateCamera==="function"
       });
