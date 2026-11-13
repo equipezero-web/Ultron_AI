@@ -588,6 +588,11 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
 }
 
 function enqueue(message, source = "terminal", approvedMission = false) {
+  const contextualCommand=normalize(message).replace(/^(?:jarvis|ultron)[, :]+/,"").replace(/[.!?]+$/,"").trim();
+  if(/^(?:(?:mostre|mostrar|consulte|consultar|quero ver) (?:os?|as?)? ?)?(?:alertas prioritarios|prioridades verificadas|resumo contextual|relatorio contextual|inteligencia contextual|novidades verificadas)(?: do mundo)?$/.test(contextualCommand)){
+    return window.ULTRON_CONTEXTUAL?.review?.() ||
+      Promise.resolve({ok:false,error:"Módulo de prioridades ainda não carregado."});
+  }
   const continuityCommand=normalize(message).replace(/^(?:jarvis|ultron)[, :]+/,"").replace(/[.!?]+$/,"").trim();
   if(/^(?:(?:mostre|mostrar|consulte|consultar|verifique|verificar) (?:o )?)?(?:status|estado|relatorio|diagnostico) (?:da |de )?continuidade(?: operacional)?$/.test(continuityCommand)){
     return window.ULTRON_CONTINUITY?.report?.({force:true}) ||
