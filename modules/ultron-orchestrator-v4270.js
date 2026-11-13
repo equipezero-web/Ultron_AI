@@ -2,6 +2,7 @@ import {TASK_CONTEXT} from "./jarvis-task-context.js?v=4.69.0";
 import {classifyOperatorTurn,splitOperatorSteps} from "./jarvis-intent-engine.js?v=4.69.0";
 import {directPlan,resolveActionPlan,runActionPlan} from "./jarvis-action-engine.js?v=4.96.0";
 import {parseLocalCommand,runLocalCommand} from "./jarvis-local-commands.js?v=5.10.0";
+import {parseMissionControl,assessCompoundMission,createMissionGate} from "./jarvis-mission-safety.js";
 import API_CONFIG from "../config.js";
 
 const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
@@ -23,6 +24,12 @@ const state = {
 };
 
 let queue = Promise.resolve();
+let queueGeneration = 0;
+let activeController = null;
+const missionGate = createMissionGate();
+function ensureNotStopped(signal) {
+  if (signal?.aborted) throw new Error("P0: execução interrompida pelo operador.");
+}
 let lastVoiceInput={text:"",at:0};
 const proactiveCooldown = new Map();
 
@@ -222,12 +229,13 @@ function lastAssistantEarthOffer() {
   return {place: named ? normalize(named[0]) : ''};
 }
 
-async function routeSingle(command, run, index = 0) {
+async function routeSingle(command, run, index = 0, {signal} = {}) {
+  ensureNotStopped(signal);
   const prefix = `step-${index + 1}`;
   const local=await runLocalCommand(command);
   if(local){if(!local.quiet)log(local.text,!local.ok);return {route:local.route,ok:local.ok,result:local};}
   const plan=directPlan(command);
-  if(plan){const result=await runActionPlan(plan,command);log(result.text,!result.ok);return {route:result.route,ok:result.ok,result};}
+  if(plan){const result=await runActionPlan(plan,command,{signal});log(result.text,!result.ok);return {route:result.route,ok:result.ok,result};}
   if (isEarthStatusIntent(command)) {
     const earthState = window.ULTRON_EARTH?.state || null;
     const available = Boolean(earthState?.available);
@@ -239,7 +247,7 @@ async function routeSingle(command, run, index = 0) {
     return {route:'earth-status',ok:available,result:{text,...earthState}};
   }
   const deviceCommand=window.ULTRON_DEVICES?.parseDeviceIntent?.(command);
-  if(!deviceCommand){const plan=await resolveActionPlan(command);if(plan){const result=await runActionPlan(plan,command);log(result.text,!result.ok);return {route:result.route,ok:result.ok,result};}}
+  if(!deviceCommand){const plan=await resolveActionPlan(command);if(plan){const result=await runActionPlan(plan,command,{signal});log(result.text,!result.ok);return {route:result.route,ok:result.ok,result};}}
   const earthIntent = parseEarthIntent(command);
   const isAffirmation = /^(?:sim|quero|pode|claro|isso|isso mesmo|ok|certo|confirmo|com certeza)[.!?\s]*$/.test(normalize(command));
   const place = earthIntent?.place ?? (isAffirmation ? lastAssistantEarthOffer()?.place : null);
@@ -342,9 +350,27 @@ async function routeSingle(command, run, index = 0) {
   return { route: "ai-core", ok, result };
 }
 
-async function executeMessage(message, source = "terminal") {
+async function executeMessage(message, source = "terminal", approvedMission = false) {
   const clean = String(message || "").trim();
   if (!clean) return null;
+  const controller = new AbortController();
+  activeController = controller;
+  const signal = controller.signal;
+  try {
+    const previewParts = splitCompound(clean);
+    const mission = assessCompoundMission(previewParts, window.ULTRON_DEVICES?.parseDeviceIntent);
+    if (mission.blocked) {
+      log("MISSÃO BLOQUEADA // ações destrutivas, financeiras, comunicações externas ou acesso a segredos exigem fluxos separados.",true);
+      return {ok:false,status:"blocked",results:[]};
+    }
+    if (mission.requiresApproval && !approvedMission) {
+      const preview = missionGate.preview(clean, previewParts);
+      log("MISSÃO PENDENTE " + preview.code + " // " + preview.parts.length + " etapas com efeitos em dispositivos.");
+      preview.parts.forEach((part,i)=>log("PRÉVIA " + (i+1) + "/" + preview.parts.length + " // " + part));
+      log('Nenhum comando foi enviado. Para autorizar: "confirmar missão ' + preview.code + '". Para descartar: "cancelar missão ' + preview.code + '". Válido por 2 minutos.');
+      return {ok:false,status:"waiting-confirmation",code:preview.code,results:[]};
+    }
+
 
   // Explicit worldwide intelligence commands must reach the real D1/map module
   // BEFORE generic autonomy or atmospheric mapping plans consume "monitoramento mundial".
@@ -357,7 +383,7 @@ async function executeMessage(message, source = "terminal") {
   }
   const singlePlan=splitCompound(clean).length===1?directPlan(clean):null;
   if(singlePlan){
-    const result=await runActionPlan(singlePlan,clean);state.processed++;if(!result.ok)state.failed++;state.lastRoute=result.route;state.lastResult={route:result.route,ok:result.ok,result};log(result.text,!result.ok);return {ok:result.ok,status:result.ok?"completed":"failed",results:[state.lastResult]};
+    const result=await runActionPlan(singlePlan,clean,{signal});state.processed++;if(!result.ok&&!result.cancelled)state.failed++;state.lastRoute=result.route;state.lastResult={route:result.route,ok:result.ok,result};log(result.text,!result.ok);return {ok:result.ok,status:result.status,results:[state.lastResult]};
   }
   if(parseLocalCommand(clean)){
     const local=await runLocalCommand(clean);
@@ -370,6 +396,12 @@ async function executeMessage(message, source = "terminal") {
   document.getElementById("system-mode")?.replaceChildren(document.createTextNode("ORCHESTRATING"));
   log(`INPUT ${source.toUpperCase()} // ${clean}`);
   const run = await beginRun(clean);
+  if (signal.aborted) {
+    await finishRun(run, "cancelled", "p0-stop", { source });
+    log("P0 // execução interrompida antes das etapas.");
+    state.busy = false;
+    return {ok:false,status:"cancelled",runId:run.runId,results:[]};
+  }
   state.activeRunId = run.runId;
   state.lastRunId = run.runId;
 
@@ -384,10 +416,12 @@ async function executeMessage(message, source = "terminal") {
 
   try {
     for (let i = 0; i < parts.length; i += 1) {
+      if (signal.aborted) { finalStatus = "cancelled"; break; }
       const part = parts[i];
       if (parts.length > 1) log(`ETAPA ${i + 1}/${parts.length} // ${part}`);
-      const routed = await routeSingle(part, run, i);
+      const routed = await routeSingle(part, run, i, {signal});
       results.push(routed);
+      if (signal.aborted) { finalStatus = "cancelled"; break; }
       finalRoute = finalRoute || routed.route;
       if(routed?.result?.status==="submitted"&&finalStatus==="completed")finalStatus="submitted";
       if (routed.waitingConfirmation) {
@@ -400,6 +434,7 @@ async function executeMessage(message, source = "terminal") {
       }
     }
 
+    if (signal.aborted) finalStatus = "cancelled";
     state.processed += 1;
     if (finalStatus === "failed") state.failed += 1;
     state.lastRoute = finalRoute;
@@ -420,8 +455,13 @@ async function executeMessage(message, source = "terminal") {
       }
     });
     log(`FINAL // ${finalStatus.toUpperCase()} // ${parts.length > 1 ? "MULTI-STEP" : (finalRoute || "CORE")}.`, finalStatus === "failed");
-    return { ok: finalStatus !== "failed", status: finalStatus, runId: run.runId, results };
+    return { ok: finalStatus !== "failed" && finalStatus !== "cancelled", status: finalStatus, runId: run.runId, results };
   } catch (error) {
+    if (signal.aborted) {
+      await finishRun(run, "cancelled", "p0-stop", { source, completedSteps: results.length });
+      log("P0 // interrompido; nenhuma nova etapa será iniciada.");
+      return {ok:false,status:"cancelled",runId:run.runId,results};
+    }
     state.failed += 1;
     state.lastResult = { error: error.message };
     await recordStep(run, "fatal", finalRoute || "orchestrator", "failed", { error: error.message });
@@ -433,15 +473,43 @@ async function executeMessage(message, source = "terminal") {
     state.activeRunId = null;
     const mode = document.getElementById("system-mode");
     if (mode && mode.textContent === "ORCHESTRATING") mode.textContent = "STANDBY";
+    state.activeRunId = null;
+  }
+  } finally {
+    if (activeController === controller) activeController = null;
   }
 }
 
-function enqueue(message, source = "terminal") {
+function enqueue(message, source = "terminal", approvedMission = false) {
+  const control = parseMissionControl(message);
+  if (control?.type === "stop") {
+    queueGeneration += 1;
+    missionGate.clear();
+    activeController?.abort();
+    log("P0 STOP // tarefas pendentes descartadas e próximas etapas interrompidas. Uma operação já enviada a outro dispositivo pode ainda terminar.");
+    return Promise.resolve({ok:true,status:"cancelled",route:"p0-stop"});
+  }
+  if (control?.type === "cancel") {
+    const removed = missionGate.cancel(control.code);
+    log(removed ? "MISSÃO " + control.code + " descartada sem executar." : "Nenhuma missão pendente corresponde a " + control.code + ".",!removed);
+    return Promise.resolve({ok:removed,status:removed?"cancelled":"not-found"});
+  }
+  if (control?.type === "confirm") {
+    const approved = missionGate.consume(control.code);
+    if (!approved) {
+      log("Confirmação recusada: código inexistente, expirado ou já utilizado.",true);
+      return Promise.resolve({ok:false,status:"not-found"});
+    }
+    return enqueue(approved.message,source + "/confirmed",true);
+  }
   if(source.startsWith("voice") && lastVoiceInput.text===message && Date.now()-lastVoiceInput.at<900)return queue;
   if(source.startsWith("voice"))lastVoiceInput={text:message,at:Date.now()};
+  const generation = queueGeneration;
   queue = queue
     .catch(() => null)
-    .then(() => executeMessage(message, source));
+    .then(() => generation !== queueGeneration
+      ? {ok:false,status:"cancelled",route:"p0-stop"}
+      : executeMessage(message, source, approvedMission));
   return queue;
 }
 
@@ -522,6 +590,8 @@ window.ULTRON_ORCHESTRATOR = {
   version: "4.69.0",
   understand:classifyOperatorTurn,
   get taskContext(){return TASK_CONTEXT?.snapshot()||null;},
+  get pendingMission(){return missionGate.snapshot();},
+  stop(){return enqueue("PARE","operator");},
   execute: enqueue,
   history: showHistory,
   refreshState: refreshUnifiedState,
