@@ -120,7 +120,7 @@ try{
    {distance:Math.min(160,nonCanvasY-30)});
   const other=await page.evaluate(()=>document.scrollingElement.scrollTop);
   assert.ok(other>10,
-   name+": normal scroll must work away from hologram: "+nonCanvasHit+" "+other);
+   name+": normal scroll must work away from hologram: "+JSON.stringify(nonCanvasHit)+" "+other);
   const p0=await page.evaluate(()=>window.ULTRON_NEURAL_JARVIS_UI?.state);
   assert.equal(p0.audioPermission,"off");
   console.log("NATIVE MOBILE SCROLL PASS",name,width+"x"+height,
