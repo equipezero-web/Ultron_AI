@@ -219,7 +219,7 @@ if(stage){
       "Confira horários, origem e formato das coordenadas.";
     return {ok:false,error:"Não foi possível validar dados geográficos"};
   }
-  if(!window.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.96.0");
+  if(!window.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=5.24.0");
   const result=await window.ULTRON_GEO_VISUAL.open({data,view});
   if(request!==requestId||!visible)return {ok:false,error:"Visualização substituída"};
   if((!result?.ok||window.ULTRON_GEO_VISUAL.state.scenario!==SCENARIO)&&view==="3d"){
