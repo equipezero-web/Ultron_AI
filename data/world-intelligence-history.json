@@ -4,10 +4,70 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-13T00:19:13.425Z",
-  "oldestEventAt": "2026-11-12T01:20:00.000Z",
-  "windowStartAt": "2026-11-12T00:19:13.425Z",
+  "updatedAt": "2026-11-13T07:01:42.106Z",
+  "oldestEventAt": "2026-11-12T08:00:00.000Z",
+  "windowStartAt": "2026-11-12T07:01:42.106Z",
   "events": [
+    {
+      "id": "event-51a98046",
+      "category": "santa-catarina",
+      "title": "Previsão do tempo em Santa Catarina indica sol, chuva isolada e temporais",
+      "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxNV2NhUjBzdVlnZlJnOUtsT0ptWXh6N0ZnTG9FWjJhbXFOdjBCVmlDZnN5T2FWRDZEMkNTUDdhMHZEclQyOWQ3czJpWUkwYXl1WVdwLW9Kc3ItTWE5QTF2TWxvZ0JuSDcyTnVERC1SMlhhZHdZenlzQVJRNjQtZXNjT3dxcnFmaVhaOEczREZFT0VpVWJrekZCbEFzLXFBQTZUVkw5VERoaHJSc0ZETjM0by1OVFRKM1FIRnJseFBOcE5lZlVWLWpIS1EtOFpuTW8wcWFMVGdMandfV1U",
+      "description": "Previsão do tempo em Santa Catarina indica sol, chuva isolada e temporais &nbsp;&nbsp; primeira página sc",
+      "imageUrl": null,
+      "source": "primeira página sc",
+      "publishedAt": "2026-11-13T04:11:23.000Z",
+      "firstSeenAt": "2026-11-13T07:01:42.106Z",
+      "lastSeenAt": "2026-11-13T07:01:42.106Z"
+    },
+    {
+      "id": "event-b51c2432",
+      "category": "brasil",
+      "title": "Flávio expõe o que aconteceu no inquérito das fake news",
+      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQMmh1TWpSV0NBd1EzM1NtYkdrVXdKVl96cmhHZW5NRUMyZlY0RWVUbThseFJjeWpUZ0pBY3ZYdEZEdHc4dFpJTFhBM0xtTGpZcVhxTm5mVFk5c1MxcjYtYXlLR3VYUEhSRk1oZksxUFhoWE1ILTQtRWtDZFFWRk10WHpIbW90cEptS1ZIV0VDY29xWG95TUl0Mkxqa09TdTh6dWU4UGpFWQ",
+      "description": "Flávio expõe o que aconteceu no inquérito das fake news &nbsp;&nbsp; Pleno.News",
+      "imageUrl": null,
+      "source": "Pleno.News",
+      "publishedAt": "2026-11-13T02:34:00.000Z",
+      "firstSeenAt": "2026-11-13T07:01:42.106Z",
+      "lastSeenAt": "2026-11-13T07:01:42.106Z"
+    },
+    {
+      "id": "event-7204dce9",
+      "category": "brasil",
+      "title": "Senado aprova texto-base de pacote que prevê economia de até R$ 60 bi",
+      "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2026-11/senado-aprova-texto-base-de-pacote-que-preve-economia-de-ate-r-60-bi",
+      "description": "Após quase quatro horas de votação, o Senado aprovou nesta quinta-feira (12) o texto-base do projeto de ajuste fiscal do governo, por 45 votos a 31. A proposta prevê medidas para reduzir despesas e ampliar a arrecadação, com economia estimada entre R$ 50 bilhões e R$ 60 bilhões em 2027, segundo o ministro Bruno Moretti. Notícias relacionadas: Governo anuncia medidas de ajuste para economia de até R$ 60 bilhões . Proposta que facilita transição tributária será enviada ao Congresso. Os destaques ainda serão analisados, provavelmente na terça-feira (17). Depois, o projeto seguirá para a Câmara dos Deputados . Corte de benefícios O texto prevê uma redução linear de 10% nos benefícios tributários, além do corte aprovado no fim de 2025. A medida poderá representar uma redução de até 20% em relação aos valores originais. Entre as exceções estão benefícios relacionados à folha de pagamentos, ao setor de tecnologia da informação, a semicondutores e à isenção de veículos para pessoas com deficiência e autistas. Limite de despesas O projeto também reduz de 2,5% para 2% acima da inflação o limit",
+      "imageUrl": "https://imagens.ebc.com.br/TvOMb2Hb5US1-3Zj1B458fNfYng=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/12/sessao_do_congresso_12-11-26-2_0.jpg?itok=-u9GH371",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-13T00:54:00.000Z",
+      "firstSeenAt": "2026-11-13T07:01:42.106Z",
+      "lastSeenAt": "2026-11-13T07:01:42.106Z"
+    },
+    {
+      "id": "event-a4a2d9a7",
+      "category": "brasil",
+      "title": "STF encerra processo sobre perdas inflacionárias em planos econômicos",
+      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/stf-encerra-processo-sobre-perdas-inflacionarias-em-planos-economicos",
+      "description": "O Supremo Tribunal Federal (STF) confirmou, nesta quinta-feira (12), a validade da decisão que homologou um acordo para encerrar os processos judiciais sobre perdas financeiras de poupadores provocadas por planos econômicos das décadas de 1980 e 1990. O plenário rejeitou três recursos apresentados por entidades sem legitimidade jurídica para contestar a decisão da Corte. Com isso, o Supremo determinou o encerramento definitivo do caso e manteve até junho de 2027 o prazo para adesão ao acordo. Em março de 2018, o STF homologou o acordo final firmado entre a Advocacia-Geral da União (AGU), representantes de bancos e associações de defesa do consumidor para encerrar as ações judiciais sobre o tema. O acordo prevê a correção de aplicações na poupança durante a entrada em vigor dos planos econômicos Bresser (1987), Verão (1989) e Collor 2 (1991).",
+      "imageUrl": "https://cdn.jsdelivr.net/gh/sergiosdlima/assets-ebc@1.0.0/public/thumbs/thumb_1200x600_agbrasil.png",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-13T00:35:00.000Z",
+      "firstSeenAt": "2026-11-13T07:01:42.106Z",
+      "lastSeenAt": "2026-11-13T07:01:42.106Z"
+    },
+    {
+      "id": "event-9f760d2e",
+      "category": "brasil",
+      "title": "PGR é contra revisar condenação de Jair Bolsonaro",
+      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/pgr-e-contra-revisar-condenacao-de-jair-bolsonaro",
+      "description": "O procurador-geral da República, Paulo Gonet, enviou nesta quinta-feira (12) ao Supremo Tribunal Federal (STF) parecer contra o pedido de revisão criminal protocolado pela defesa do ex-presidente Jair Bolsonaro. Na petição, protocolada no mês passado no Supremo, a defesa de Bolsonaro pretende derrubar a decisão da Primeira Turma que condenou o ex-presidente a 27 anos e três meses de prisão no processo que julgou a tentativa de golpe de estado no Brasil . Notícias relacionadas: Justiça Federal rejeita ação de improbidade contra Bolsonaro. Na manifestação, Gonet disse que as provas utilizadas pelo STF demonstraram a estabilidade de uma organização voltada a um fim bem definido. “As dúvidas que a petição inicial, apoiada no parecer técnico, suscita sobre a rastreabilidade de procedimentos técnicos não são capazes de, por si, evidenciar a inocência ou revelar uma causa especial de diminuição de pena”, afirmou. Após receber a manifestação da PGR, o ministro Kassio Nunes Marques, relator do caso, deve liberar o caso para julgamento no plenário da Corte. Kassio se tornou relator da revisão",
+      "imageUrl": "https://imagens.ebc.com.br/VHqamWWvVf5XVvo5Az85TnysiJk=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2025/08/01/01082025-pzzb6496.jpg?itok=69QOLSxC",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-13T00:26:00.000Z",
+      "firstSeenAt": "2026-11-13T07:01:42.106Z",
+      "lastSeenAt": "2026-11-13T07:01:42.106Z"
+    },
     {
       "id": "event-e5edcabe",
       "category": "mundo",
@@ -18,7 +78,7 @@
       "source": "Instagram",
       "publishedAt": "2026-11-12T23:39:41.000Z",
       "firstSeenAt": "2026-11-13T00:19:13.425Z",
-      "lastSeenAt": "2026-11-13T00:19:13.425Z"
+      "lastSeenAt": "2026-11-13T07:01:42.106Z"
     },
     {
       "id": "event-b14f65fd",
@@ -78,7 +138,7 @@
       "source": "TopElegance",
       "publishedAt": "2026-11-12T22:02:09.000Z",
       "firstSeenAt": "2026-11-13T00:19:13.425Z",
-      "lastSeenAt": "2026-11-13T00:19:13.425Z"
+      "lastSeenAt": "2026-11-13T07:01:42.106Z"
     },
     {
       "id": "event-c7db9782",
@@ -114,7 +174,7 @@
       "source": "NSC Total",
       "publishedAt": "2026-11-12T20:58:36.000Z",
       "firstSeenAt": "2026-11-13T00:19:13.425Z",
-      "lastSeenAt": "2026-11-13T00:19:13.425Z"
+      "lastSeenAt": "2026-11-13T07:01:42.106Z"
     },
     {
       "id": "event-b47555f8",
@@ -126,7 +186,19 @@
       "source": "Mídia NINJA",
       "publishedAt": "2026-11-12T20:29:51.000Z",
       "firstSeenAt": "2026-11-13T00:19:13.425Z",
-      "lastSeenAt": "2026-11-13T00:19:13.425Z"
+      "lastSeenAt": "2026-11-13T07:01:42.106Z"
+    },
+    {
+      "id": "event-4b94d98f",
+      "category": "santa-catarina",
+      "title": "Defesa Civil alerta para tempestade severa em cidades de SC",
+      "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxQelBmeF8yMmZSUUQ3dFR0ZEhRcEdIV0ozVzJWQlF6UC1vZXFscFdmaUoyMFJSeGVLSWVkOVBVbTJFdk4yOHZnWmRYQzgzcWlKQlduUGRsNl9CUjB6N1BNSEdiSGMzdTlmdDdPNllwYVFMQ2pmZjJEanE4bk5wSWVXTkFLZjRIUEVyR0t5b3daZHFERUhYWmVIdDVTZ213bW9xQ29tdVVrZnpaN2JPMmplN0pwb1R2bmtuUGw0NmVxZDRJX1lzeGVjUVdVSnNNUzN50gHQAUFVX3lxTFB6UGZ4XzIyZlJRRDd0VHRkSFFwR0hXSjNXMlZCUXpQLW9lcWxwV2ZpSjIwUlJ4ZUtJZWQ5UFVtMkV2TjI4dmdaZFhDODNxaUpCV25QZGw2X0JSMHo3UE1IR2JIYzN1OWZ0N082WXBhUUxDamZmMkRqcThuTnBJZVdOQUtmNEhQRXJHS3lvd1pkcURFSFhaZUh0NVNnbXdtb3FDb211VWtmelo3Yk8yamU3SnBvVHZua25QbDQ2ZXFkNElfWXN4ZWNRV1VKc01TM3k",
+      "description": "Defesa Civil alerta para tempestade severa em cidades de SC &nbsp;&nbsp; Jornal Correio do Norte",
+      "imageUrl": null,
+      "source": "Jornal Correio do Norte",
+      "publishedAt": "2026-11-12T19:30:00.000Z",
+      "firstSeenAt": "2026-11-13T07:01:42.106Z",
+      "lastSeenAt": "2026-11-13T07:01:42.106Z"
     },
     {
       "id": "event-a295c3d0",
@@ -139,6 +211,18 @@
       "publishedAt": "2026-11-12T19:24:26.000Z",
       "firstSeenAt": "2026-11-13T00:19:13.425Z",
       "lastSeenAt": "2026-11-13T00:19:13.425Z"
+    },
+    {
+      "id": "event-71657fa8",
+      "category": "mundo",
+      "title": "Parktec CG participa pela primeira vez do Web Summit em Lisboa – CGNotícias",
+      "url": "https://news.google.com/rss/articles/CBMijAJBVV95cUxORHg5UlhtbGhtM1NuSzZ6RWhqeUhheXAxWHppWFJfT21aMXhJbjVjckRIMkFIX1RVM3JsclhpcXBqU3pEVmZPSVdELUlDc3JoNkpKQTd3WS1WNlU5dXF3VFV4aW1RWjFudTI3dVdVSi04WGhDSzZ4d0F5T0Y0YUxIcjBZY3ktOTBLVjllbDB1Vzl1ZEVTQW8zSnZscEJ0VHdNSTNTTmJjcDlMWHA3T3VrY3p3bnNIVU5RMGhyNjBIcTlfUENVMTdtbno3WDhrd1FjdWtTczlOMEtSU1RGSW1fS3l1ZjVFZUdMUWFjQW1HeWFGNzhGelAtVy1ITU1HSUtsWDhveUpzcVA2NDc0",
+      "description": "Parktec CG participa pela primeira vez do Web Summit em Lisboa – CGNotícias &nbsp;&nbsp; Prefeitura de Campo Grande",
+      "imageUrl": null,
+      "source": "Prefeitura de Campo Grande",
+      "publishedAt": "2026-11-12T19:02:00.000Z",
+      "firstSeenAt": "2026-11-13T07:01:42.106Z",
+      "lastSeenAt": "2026-11-13T07:01:42.106Z"
     },
     {
       "id": "event-32db0e55",
@@ -174,7 +258,7 @@
       "source": "Jornal da Fronteira",
       "publishedAt": "2026-11-12T18:21:55.000Z",
       "firstSeenAt": "2026-11-12T19:00:36.425Z",
-      "lastSeenAt": "2026-11-12T19:00:36.425Z"
+      "lastSeenAt": "2026-11-13T07:01:42.106Z"
     },
     {
       "id": "event-c2f0f286",
@@ -198,7 +282,7 @@
       "source": "Tribuna do Sertão",
       "publishedAt": "2026-11-12T18:01:00.000Z",
       "firstSeenAt": "2026-11-12T19:00:36.425Z",
-      "lastSeenAt": "2026-11-12T19:00:36.425Z"
+      "lastSeenAt": "2026-11-13T07:01:42.106Z"
     },
     {
       "id": "event-7a7a83dc",
@@ -270,7 +354,7 @@
       "source": "Notícias ao Minuto",
       "publishedAt": "2026-11-12T17:00:00.000Z",
       "firstSeenAt": "2026-11-13T00:19:13.425Z",
-      "lastSeenAt": "2026-11-13T00:19:13.425Z"
+      "lastSeenAt": "2026-11-13T07:01:42.106Z"
     },
     {
       "id": "event-20b96ddc",
@@ -415,62 +499,9 @@
       "publishedAt": "2026-11-12T08:00:00.000Z",
       "firstSeenAt": "2026-11-12T11:21:17.063Z",
       "lastSeenAt": "2026-11-12T11:21:17.063Z"
-    },
-    {
-      "id": "event-9ad10ea0",
-      "category": "mundo",
-      "title": "SS United States: navio mais rápido do mundo é afundado para virar recife",
-      "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxNeEhCdndNUGZhRUgyRXlPRWpLc0VRYmRoNm45QWtwOVBaTGp1bXNpbEJ0VFRSXzRtQ0JDR3lIX3VEaGtfMmduSVFvOGpxenZNTEduSzFkQ29XWFM5WllSQ0wtM3VSLWxjeTdOSzBENzBtd2NaMThPQm5UdzZkbDdGRTVENVhEUWU4ZUpacGNEb3V3V2VQNjJ3cGZTUXhZb0trbW12UHJJRk01WHpLTWZ2SzNHd1JjN1BGSXdaeTN4VUdhTE1jdzR5ZjBn",
-      "description": "SS United States: navio mais rápido do mundo é afundado para virar recife &nbsp;&nbsp; UOL Notícias",
-      "imageUrl": null,
-      "source": "UOL Notícias",
-      "publishedAt": "2026-11-12T04:57:24.000Z",
-      "firstSeenAt": "2026-11-12T11:21:17.063Z",
-      "lastSeenAt": "2026-11-12T11:21:17.063Z"
-    },
-    {
-      "id": "event-b09000ec",
-      "category": "clima",
-      "title": "Estiagem preocupa moradores e produtores rurais do Vale do Jiquiriçá; entenda por que não chove forte na região",
-      "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxPYUNGdkh6N2VrX0h5Q2kyN3YtbnpqRGxHMmNiT0FBdnA4SXdoMHR5SUlUSVduY3VBcU1hbUxPS0RTa1dLMXh2eEoxOHFPblM1TEpxNU5RRWdaRVlCMGdSRDhyQ01mUTd0RHEtMHkwd1FEN3ZVNmp4VHZDUUZ3eHRxZg",
-      "description": "Estiagem preocupa moradores e produtores rurais do Vale do Jiquiriçá; entenda por que não chove forte na região &nbsp;&nbsp; Mídia Bahia",
-      "imageUrl": null,
-      "source": "Mídia Bahia",
-      "publishedAt": "2026-11-12T01:23:48.000Z",
-      "firstSeenAt": "2026-11-12T03:14:31.320Z",
-      "lastSeenAt": "2026-11-12T11:21:17.063Z"
-    },
-    {
-      "id": "event-2b1ff8a9",
-      "category": "brasil",
-      "title": "Lucro do BB cai 66,5% no 3º trimestre com inadimplência do agro",
-      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/lucro-do-bb-cai-665-no-3o-trimestre-com-inadimplencia-do-agro",
-      "description": "Pressionado pelo aumento da inadimplência, principalmente do agronegócio, o Banco do Brasil (BB) registrou lucro líquido ajustado de R$ 1,27 bilhão no terceiro trimestre de 2026, queda de 66,5% em relação ao mesmo período do ano passado. Com esse cenário, a instituição reduziu pela metade a projeção de lucro para o ano e elevou a estimativa de despesas com perdas em operações de crédito. Notícias relacionadas: Governo anuncia medidas de ajuste para economia de até R$ 60 bilhões . Proposta que facilita transição tributária será enviada ao Congresso. \"O aumento reflete principalmente a continuidade da elevação da inadimplência em parte da carteira de agronegócios e reforços pontuais em empresas do segmento atacado\", afirmou o banco. Inadimplência O principal fator por trás da queda do lucro foi o aumento do custo do crédito, indicador que reúne provisões para possíveis calotes, descontos concedidos em renegociações e valores recuperados de dívidas antigas. No terceiro trimestre, essa despesa somou R$ 21,2 bilhões, alta de 18,4% em relação ao mesmo período de 2025 . Segundo o banco, a i",
-      "imageUrl": "https://imagens.ebc.com.br/1nlNn9uOdRUU_Ly1nLdbpUK3Tg4=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/banco-do-brasil_mcamgo_abr_280620211818-3.jpg?itok=2wwStPuz",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-12T01:20:00.000Z",
-      "firstSeenAt": "2026-11-12T03:14:31.320Z",
-      "lastSeenAt": "2026-11-12T03:14:31.320Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-12T03:14:31.320Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 14,
-      "newArticles": 9,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "europa",
-        "asia"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-12T11:21:17.063Z",
       "ok": true,
@@ -519,14 +550,31 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-13T07:01:42.106Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 14,
+      "newArticles": 7,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "europa",
+        "africa"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 4,
-  "lastSuccessfulAt": "2026-11-13T00:19:13.425Z",
+  "lastSuccessfulAt": "2026-11-13T07:01:42.106Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-13T00:19:13.425Z",
+      "checkedAt": "2026-11-13T07:01:42.106Z",
       "warnings": [
         {
           "id": "56390",
@@ -546,7 +594,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-13T00:19:13.425Z",
+      "checkedAt": "2026-11-13T07:01:42.106Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",

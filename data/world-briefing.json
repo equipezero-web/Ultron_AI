@@ -1,7 +1,7 @@
 {
   "ok": true,
   "version": "1.0",
-  "fetchedAt": "2026-11-13T00:19:13.425Z",
+  "fetchedAt": "2026-11-13T07:01:42.106Z",
   "priority": [
     "Brasil",
     "Santa Catarina",
@@ -22,36 +22,36 @@
       "label": "Brasil",
       "articles": [
         {
-          "title": "Professora é demitida de escola em SC após foto em apoio a Lula",
-          "url": "https://agenciabrasil.ebc.com.br/educacao/noticia/2026-11/professora-e-demitida-de-escola-em-sc-apos-foto-em-apoio-lula",
-          "publishedAt": "2026-11-12T23:25:00.000Z",
-          "description": "Uma professora foi demitida, nesta semana, do Colégio Unificado, na cidade de Itajaí (SC), após a postagem de uma foto em que ela e outros funcionários faziam o gesto do “L” com as mãos em apoio ao presidente reeleito Luiz Inácio Lula da Silva. O Sindicato dos Professores de Blumenau e Região (Sinpabre) manifestou repúdio à decisão da escola particular tanto em relação à demissão como a denúncias de perseguição política contra outros professores que receberam advertências disciplinares pela manifestação de preferência política durante uma confraternização. Notícias relacionadas: Assédio eleitoral supera 7 mil denúncias, aponta ministério. Governo estuda restringir crédito a empresas por assédio eleitoral. Assédio eleitoral: saiba como denunciar crime mesmo após eleições. “A fotografia foi posteriormente publicada em uma rede social pessoal, sem identificação visual da escola”, argumentou o sindicato. De acordo com a entidade, esse não foi um episódio isolado, já que “multiplicam-se denúncias de trabalhadores ameaçados, constrangidos e dispensados em razão de suas convicções políticas",
+          "title": "Flávio expõe o que aconteceu no inquérito das fake news",
+          "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQMmh1TWpSV0NBd1EzM1NtYkdrVXdKVl96cmhHZW5NRUMyZlY0RWVUbThseFJjeWpUZ0pBY3ZYdEZEdHc4dFpJTFhBM0xtTGpZcVhxTm5mVFk5c1MxcjYtYXlLR3VYUEhSRk1oZksxUFhoWE1ILTQtRWtDZFFWRk10WHpIbW90cEptS1ZIV0VDY29xWG95TUl0Mkxqa09TdTh6dWU4UGpFWQ?oc=5",
+          "publishedAt": "2026-11-13T02:34:00.000Z",
+          "description": "Flávio expõe o que aconteceu no inquérito das fake news &nbsp;&nbsp; Pleno.News",
+          "source": "Pleno.News",
+          "imageUrl": null
+        },
+        {
+          "title": "Senado aprova texto-base de pacote que prevê economia de até R$ 60 bi",
+          "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2026-11/senado-aprova-texto-base-de-pacote-que-preve-economia-de-ate-r-60-bi",
+          "publishedAt": "2026-11-13T00:54:00.000Z",
+          "description": "Após quase quatro horas de votação, o Senado aprovou nesta quinta-feira (12) o texto-base do projeto de ajuste fiscal do governo, por 45 votos a 31. A proposta prevê medidas para reduzir despesas e ampliar a arrecadação, com economia estimada entre R$ 50 bilhões e R$ 60 bilhões em 2027, segundo o ministro Bruno Moretti. Notícias relacionadas: Governo anuncia medidas de ajuste para economia de até R$ 60 bilhões . Proposta que facilita transição tributária será enviada ao Congresso. Os destaques ainda serão analisados, provavelmente na terça-feira (17). Depois, o projeto seguirá para a Câmara dos Deputados . Corte de benefícios O texto prevê uma redução linear de 10% nos benefícios tributários, além do corte aprovado no fim de 2025. A medida poderá representar uma redução de até 20% em relação aos valores originais. Entre as exceções estão benefícios relacionados à folha de pagamentos, ao setor de tecnologia da informação, a semicondutores e à isenção de veículos para pessoas com deficiência e autistas. Limite de despesas O projeto também reduz de 2,5% para 2% acima da inflação o limit",
+          "source": "Agência Brasil",
+          "imageUrl": "https://imagens.ebc.com.br/TvOMb2Hb5US1-3Zj1B458fNfYng=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/12/sessao_do_congresso_12-11-26-2_0.jpg?itok=-u9GH371"
+        },
+        {
+          "title": "STF encerra processo sobre perdas inflacionárias em planos econômicos",
+          "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/stf-encerra-processo-sobre-perdas-inflacionarias-em-planos-economicos",
+          "publishedAt": "2026-11-13T00:35:00.000Z",
+          "description": "O Supremo Tribunal Federal (STF) confirmou, nesta quinta-feira (12), a validade da decisão que homologou um acordo para encerrar os processos judiciais sobre perdas financeiras de poupadores provocadas por planos econômicos das décadas de 1980 e 1990. O plenário rejeitou três recursos apresentados por entidades sem legitimidade jurídica para contestar a decisão da Corte. Com isso, o Supremo determinou o encerramento definitivo do caso e manteve até junho de 2027 o prazo para adesão ao acordo. Em março de 2018, o STF homologou o acordo final firmado entre a Advocacia-Geral da União (AGU), representantes de bancos e associações de defesa do consumidor para encerrar as ações judiciais sobre o tema. O acordo prevê a correção de aplicações na poupança durante a entrada em vigor dos planos econômicos Bresser (1987), Verão (1989) e Collor 2 (1991).",
           "source": "Agência Brasil",
           "imageUrl": "https://cdn.jsdelivr.net/gh/sergiosdlima/assets-ebc@1.0.0/public/thumbs/thumb_1200x600_agbrasil.png"
         },
         {
-          "title": "Caixa Seguridade informa ataque cibernético e vazamento de dados",
-          "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/caixa-seguridade-informa-ataque-cibernetico-e-vazamento-de-dados",
-          "publishedAt": "2026-11-12T23:06:00.000Z",
-          "description": "A Caixa Seguridade informou, nesta quinta-feira (12), em comunicado ao mercado, que sua subsidiária Caixa Vida e Previdência identificou um ataque cibernético ocorrido em 6 de novembro, que resultou no vazamento de dados dos 7,6 milhões de clientes ativos da companhia. Segundo a empresa, foram copiados clandestinamente CPFs, endereços, telefones, e-mails e datas de nascimento. Dados de ex-clientes também foram vazados. “Com base na apuração preliminar, não há indícios de comprometimento de dados financeiros ou de autenticação, tais como valores de apólices, saldos de previdência, dados bancários ou senhas”, informou a Caixa Seguridade no comunicado. A companhia informou ainda que os titulares dos dados afetados estão sendo comunicados e recebendo recomendações de proteção diante do risco de fraudes. Além disso, será disponibilizado um canal de comunicação por meio de um endereço de e-mail específico para receber dúvidas dos clientes. “Uma vez identificados e bloqueados os mecanismos utilizados durante o ataque, foram implementadas medidas adicionais de proteção e iniciada investigaçã",
+          "title": "PGR é contra revisar condenação de Jair Bolsonaro",
+          "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/pgr-e-contra-revisar-condenacao-de-jair-bolsonaro",
+          "publishedAt": "2026-11-13T00:26:00.000Z",
+          "description": "O procurador-geral da República, Paulo Gonet, enviou nesta quinta-feira (12) ao Supremo Tribunal Federal (STF) parecer contra o pedido de revisão criminal protocolado pela defesa do ex-presidente Jair Bolsonaro. Na petição, protocolada no mês passado no Supremo, a defesa de Bolsonaro pretende derrubar a decisão da Primeira Turma que condenou o ex-presidente a 27 anos e três meses de prisão no processo que julgou a tentativa de golpe de estado no Brasil . Notícias relacionadas: Justiça Federal rejeita ação de improbidade contra Bolsonaro. Na manifestação, Gonet disse que as provas utilizadas pelo STF demonstraram a estabilidade de uma organização voltada a um fim bem definido. “As dúvidas que a petição inicial, apoiada no parecer técnico, suscita sobre a rastreabilidade de procedimentos técnicos não são capazes de, por si, evidenciar a inocência ou revelar uma causa especial de diminuição de pena”, afirmou. Após receber a manifestação da PGR, o ministro Kassio Nunes Marques, relator do caso, deve liberar o caso para julgamento no plenário da Corte. Kassio se tornou relator da revisão ",
           "source": "Agência Brasil",
-          "imageUrl": "https://imagens.ebc.com.br/YmL5ussvI_uDWM3nDmJmDA13r8g=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/20231025_144832.jpg?itok=OaDpA_2T"
-        },
-        {
-          "title": "Dólar dispara 1,58% e fecha a R$ 5,65, maior nível em 17 meses",
-          "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/dolar-dispara-158-e-fecha-r-565-maior-nivel-em-17-meses",
-          "publishedAt": "2026-11-12T22:35:00.000Z",
-          "description": "Em meio a turbulências nos cenários doméstico e internacional, o dólar disparou frente ao real e fechou acima de R$ 5,65 nesta quinta-feira (12), no maior patamar desde junho de 2025. A moeda foi impulsionada pela insatisfação dos investidores com o pacote fiscal anunciado pelo governo e pelo fortalecimento da divisa estadunidense no exterior. Na bolsa, o Ibovespa recuou, pressionado principalmente pela queda das ações do Banco do Brasil (BB), em meio à queda do lucro no terceiro trimestre . No mercado internacional, o petróleo também encerrou em alta, diante das tensões entre Estados Unidos e Irã. Números do dia • Dólar comercial: R$ 5,6507 (+1,58%); • Ibovespa: 171.324,31 pontos (-0,47%); • Volume financeiro da bolsa: R$ 32,24 bilhões; • Dólar no exterior (DXY): 103,160 pontos (+0,28%); • Petróleo WTI: US$ 88,74 (+2,55%); • Petróleo Brent: US$ 95,82 (+3,30%). Câmbio O dólar comercial encerrou o pregão com valorização de 1,58%, cotado a R$ 5,6507. Foi o maior nível de fechamento da moeda estadunidense desde 2 de junho de 2025. A pressão sobre o câmbio ocorreu após o governo apresent",
-          "source": "Agência Brasil",
-          "imageUrl": "https://imagens.ebc.com.br/qgr1uCa7n_TP2WKn5oQPmLd6V2M=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/07/23/2026-07-23t123806z_1_lynxmpem6m19r_rtroptp_4_usa-trump-tariffs-indonesia.jpg?itok=6u1xpzSK"
-        },
-        {
-          "title": "Zanin rejeita ação para determinar segundo turno para o governo do Rio",
-          "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/zanin-rejeita-acao-para-determinar-segundo-turno-para-o-governo-do-rio",
-          "publishedAt": "2026-11-12T22:30:00.000Z",
-          "description": "O ministro do Supremo Tribunal Federal Cristiano Zanin negou nesta quinta-feira (12) dar andamento ao processo que pediu um segundo turno das eleições para governador do estado do Rio de Janeiro. Por questões processuais, o ministro negou pedido do PSD, partido do candidato Eduardo Paes, de suspender a decisão do Tribunal Superior Eleitoral (TSE) que anulou os votos obtidos pelo candidato Anthony Garotinho (Republicanos) e determinou a retotalização dos votos para o cargo de governador. Notícias relacionadas: STF derruba imunidade para punir violência patrimonial contra mulheres. Dino mantém prazo inicial da 5x2, mas flexibiliza regra de transição. Operação mira suspeitos de fraudar concurso de 2025 da Polícia Federal. A nova contagem de votos permitiu a eleição de Douglas Ruas (PL) no primeiro turno, por ter passado de 49,27% para 50,88% dos votos válidos. Na decisão, o ministro entendeu que a Arguição de Descumprimento de Preceito Fundamental (ADPF), tipo de processo protocolado pelo PSD, não pode ser utilizada para questionar a decisão do TSE. “A arguição de descumprimento de prec",
-          "source": "Agência Brasil",
-          "imageUrl": "https://imagens.ebc.com.br/3xcP4VAl8oUtQxbDlKdjwPr_QI8=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/_supremo_tribunal_federal250620213575.jpg?itok=7-xc0U8V"
+          "imageUrl": "https://imagens.ebc.com.br/VHqamWWvVf5XVvo5Az85TnysiJk=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2025/08/01/01082025-pzzb6496.jpg?itok=69QOLSxC"
         }
       ],
       "checked": true,
@@ -62,6 +62,14 @@
       "label": "Santa Catarina",
       "articles": [
         {
+          "title": "Previsão do tempo em Santa Catarina indica sol, chuva isolada e temporais",
+          "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxNV2NhUjBzdVlnZlJnOUtsT0ptWXh6N0ZnTG9FWjJhbXFOdjBCVmlDZnN5T2FWRDZEMkNTUDdhMHZEclQyOWQ3czJpWUkwYXl1WVdwLW9Kc3ItTWE5QTF2TWxvZ0JuSDcyTnVERC1SMlhhZHdZenlzQVJRNjQtZXNjT3dxcnFmaVhaOEczREZFT0VpVWJrekZCbEFzLXFBQTZUVkw5VERoaHJSc0ZETjM0by1OVFRKM1FIRnJseFBOcE5lZlVWLWpIS1EtOFpuTW8wcWFMVGdMandfV1U?oc=5",
+          "publishedAt": "2026-11-13T04:11:23.000Z",
+          "description": "Previsão do tempo em Santa Catarina indica sol, chuva isolada e temporais &nbsp;&nbsp; primeira página sc",
+          "source": "primeira página sc",
+          "imageUrl": null
+        },
+        {
           "title": "Defesa Civil emite alertas de tempestade severa com granizo em Joinville e Norte de SC",
           "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxNUmVJeDdGSG9zQUtzWTFueFpjV1ItdnpXWEw1NGhRb0RkVE5NNUw0OGZYNnlvM3V1MTFnc3RIWTVWLTlwdDR1cThqZ0pTeHV3dlV0ZnliVlUwdTV3eVZGU1ljR09UMFNseGFzZ0p0LWpjd056ZG1uX05KTU5zYTA2akRDR3RPNy1LWDRFcFFuV201dFppc1Z4MV9YTng0c1ZVYlBOMWprcFRmWGxpdXRDVmdvaWhud2dnZjcyTmJlTnM?oc=5",
           "publishedAt": "2026-11-12T22:02:09.000Z",
@@ -70,19 +78,11 @@
           "imageUrl": null
         },
         {
-          "title": "SC tem previsão de temporais com granizo e ventos fortes ao longo desta quinta-feira 12 de novembro",
-          "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxQRWpnQ2dMbmd4VWpOMWRaUEpFakVGWnowSDNpNUgwSHQ3NWl0TnQyVTB3bWhJbHdnN1RLemM4VXRPNkNTaVRScW45bGZ6a0NGMlpOYm02VGJMWHRNdXdWbWRVMms5NC16LVJGdndIODhLUmt2a1R5dVdtdmNtWEtaQUJjOTBhTGFYVG8wckNYNV96a0IxNHlORms5UlB1NVVSNnc5N3ZDc1hoSFU2R1BHdzY2OExhRkkyc2pCRGFQbkdiVjFSMlpDVGRwalRfR1NSTFE?oc=5",
-          "publishedAt": "2026-11-12T21:08:07.000Z",
-          "description": "SC tem previsão de temporais com granizo e ventos fortes ao longo desta quinta-feira 12 de novembro &nbsp;&nbsp; Jornal de Pomerode",
-          "source": "Jornal de Pomerode",
-          "imageUrl": null
-        },
-        {
-          "title": "Defesa Civil alerta para temporais em parte do estado nesta quinta",
-          "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNZDI1NFRSS243bjQyVWNFVUlBTi1KcUZNUGt6MDJ2YV96bDFIOUw3YnNveTVZR3hjS0NZaW9EN085alNBYjYtSHUyOUN4WFdkaW12TWJtbzJtOXBVekZ0dUFzYlh0TVZGbzk0U0R2SGFvYmVBZi1aSGhUWWJpeEV0bmNEeVdSbVJkQXpITGhicDN6TzNWUXNTWjBCd28?oc=5",
-          "publishedAt": "2026-11-12T17:30:00.000Z",
-          "description": "Defesa Civil alerta para temporais em parte do estado nesta quinta &nbsp;&nbsp; Portal TN Sul",
-          "source": "Portal TN Sul",
+          "title": "Defesa Civil alerta para tempestade severa em cidades de SC",
+          "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxQelBmeF8yMmZSUUQ3dFR0ZEhRcEdIV0ozVzJWQlF6UC1vZXFscFdmaUoyMFJSeGVLSWVkOVBVbTJFdk4yOHZnWmRYQzgzcWlKQlduUGRsNl9CUjB6N1BNSEdiSGMzdTlmdDdPNllwYVFMQ2pmZjJEanE4bk5wSWVXTkFLZjRIUEVyR0t5b3daZHFERUhYWmVIdDVTZ213bW9xQ29tdVVrZnpaN2JPMmplN0pwb1R2bmtuUGw0NmVxZDRJX1lzeGVjUVdVSnNNUzN50gHQAUFVX3lxTFB6UGZ4XzIyZlJRRDd0VHRkSFFwR0hXSjNXMlZCUXpQLW9lcWxwV2ZpSjIwUlJ4ZUtJZWQ5UFVtMkV2TjI4dmdaZFhDODNxaUpCV25QZGw2X0JSMHo3UE1IR2JIYzN1OWZ0N082WXBhUUxDamZmMkRqcThuTnBJZVdOQUtmNEhQRXJHS3lvd1pkcURFSFhaZUh0NVNnbXdtb3FDb211VWtmelo3Yk8yamU3SnBvVHZua25QbDQ2ZXFkNElfWXN4ZWNRV1VKc01TM3k?oc=5",
+          "publishedAt": "2026-11-12T19:30:00.000Z",
+          "description": "Defesa Civil alerta para tempestade severa em cidades de SC &nbsp;&nbsp; Jornal Correio do Norte",
+          "source": "Jornal Correio do Norte",
           "imageUrl": null
         }
       ],
@@ -110,11 +110,11 @@
           "imageUrl": null
         },
         {
-          "title": "Pico do El Niño no Brasil deve chegar em breve: confira o período previsto",
-          "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxPSnBuazhZNnFmY0VCMFF4X1plUnk0d3c2ZjJtUjk1VmtoZTdtMGlqY3E4MHk1RGNDRnRGdnRCM2Z0Wk1UYnBEdUhlUEFaQURsZU5OUFZGWnJwbHRWdXlSUHpIdTVZZ2dJSHVUVG1JZ0xQc1hhNjlXWnlES1ViME1ha2J6dkRGY2tjRHZIWGQ5U0ZHaVAtRWNJUHd3OU1wUENxY1dPaUJNeGp0VUEtQVB2Yk5oUzRiSzhoblpyVHBGUEw?oc=5",
-          "publishedAt": "2026-11-12T19:24:26.000Z",
-          "description": "Pico do El Niño no Brasil deve chegar em breve: confira o período previsto &nbsp;&nbsp; Concursos no Brasil",
-          "source": "Concursos no Brasil",
+          "title": "El Niño deve permanecer muito forte até março de 2027, aponta agência climática dos EUA",
+          "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxOSjREQm56cTRUbllnMUhGTk5ISmdzd1VJZ0FGeEppMjdVUzNfYWJKZ25aOE12MU9xeDhHZ3RseEt4dVpYZHFmX20zVEVqRkE5alRnZXJ2em55MkR6Xy1Lc3FkeVMwN3lPOFlvcEFheF9iSkRkX2c4TUItOUpYMmd3bXMxMk5CZERfLXFEMjJuV2xVTWZnTnhMMkJnSXhEcXhaQ1hJeWYyMGlCSnpyM05NXy14TnhreWRiZEhpVA?oc=5",
+          "publishedAt": "2026-11-12T18:21:55.000Z",
+          "description": "El Niño deve permanecer muito forte até março de 2027, aponta agência climática dos EUA &nbsp;&nbsp; Jornal da Fronteira",
+          "source": "Jornal da Fronteira",
           "imageUrl": null
         }
       ],
@@ -128,25 +128,25 @@
         {
           "title": "O governo de Donald Trump anunciou nesta quinta-feira (12) que atingiu recorde de detenções e deportações de imigrantes na história dos Estados Unidos no último ano fiscal (que são",
           "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5aVDd5eDBUMWJjYmtEX2dLZmxaMVNuT2NwVzNPRHBSV002eDhwRVZoNjE2UlVoYVcxQk5qdVZ4VU9NZ2ZXQktSSUlsRTM0UTF4cHc?oc=5",
-          "publishedAt": "2026-11-12T23:39:41.000Z",
+          "publishedAt": "2026-11-12T22:00:22.000Z",
           "description": "O governo de Donald Trump anunciou nesta quinta-feira (12) que atingiu recorde de detenções e deportações de imigrantes na história dos Estados Unidos no último ano fiscal (que são os 12 meses consecutivos contados de outubro de um ano a setembro &nbsp;&nbsp; Instagram",
           "source": "Instagram",
           "imageUrl": null
         },
         {
-          "title": "Outlook: falha na Microsoft deixa email fora do ar email e afeta Teams, Microsoft 365 e outras plataformas; o que se sabe",
-          "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE5UeHJuZnpRUDlRQmZfQU9heTJFaFZjMlo2OW1YN0tZREY3RGtJVzZxQ1FFUkhzYlpkLTlTMTBKeU1wZ1IzakZPQzQ2ckJNbTNnQVhld2xaRkh6Y2hKZlZrUDlIONIBaEFVX3lxTE9ndkNIckJLMWZDeHFwV2ozMHpLdEcxczhaa1ZyUnRxYlcwN3pFTHBQSnBBSjAydzJ5bHd3dGZFQkxKVlN0MllDd3UzMV9TaTljVGd4VTdJa0tCamgwRm5mSEFUUVA2aVNr?oc=5",
-          "publishedAt": "2026-11-12T21:37:12.000Z",
-          "description": "Outlook: falha na Microsoft deixa email fora do ar email e afeta Teams, Microsoft 365 e outras plataformas; o que se sabe &nbsp;&nbsp; BBC",
-          "source": "BBC",
+          "title": "Parktec CG participa pela primeira vez do Web Summit em Lisboa – CGNotícias",
+          "url": "https://news.google.com/rss/articles/CBMijAJBVV95cUxORHg5UlhtbGhtM1NuSzZ6RWhqeUhheXAxWHppWFJfT21aMXhJbjVjckRIMkFIX1RVM3JsclhpcXBqU3pEVmZPSVdELUlDc3JoNkpKQTd3WS1WNlU5dXF3VFV4aW1RWjFudTI3dVdVSi04WGhDSzZ4d0F5T0Y0YUxIcjBZY3ktOTBLVjllbDB1Vzl1ZEVTQW8zSnZscEJ0VHdNSTNTTmJjcDlMWHA3T3VrY3p3bnNIVU5RMGhyNjBIcTlfUENVMTdtbno3WDhrd1FjdWtTczlOMEtSU1RGSW1fS3l1ZjVFZUdMUWFjQW1HeWFGNzhGelAtVy1ITU1HSUtsWDhveUpzcVA2NDc0?oc=5",
+          "publishedAt": "2026-11-12T19:02:00.000Z",
+          "description": "Parktec CG participa pela primeira vez do Web Summit em Lisboa – CGNotícias &nbsp;&nbsp; Prefeitura de Campo Grande",
+          "source": "Prefeitura de Campo Grande",
           "imageUrl": null
         },
         {
-          "title": "Papa volta ao Peru, onde foi missionário por 20 anos",
-          "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPRnFKSmZ2QmVWeER5Y1BfVkduVVZQeGticUhxbG1UQTlfMXpnbjZ3T01EOU03TlRQeFlFOGhuNTJfem52OVhpOXd1QThaMWwxSldlUE1ORERkbTNDT1lDd0g1YldlVGZPNTlBWnFrSTA0emIxY1A5b2RFRkIwazN1T1hHQVZaQ1F1QnAxTFJQMTM4VV9MRDUw?oc=5",
-          "publishedAt": "2026-11-12T19:00:27.000Z",
-          "description": "Papa volta ao Peru, onde foi missionário por 20 anos &nbsp;&nbsp; SBT News",
-          "source": "SBT News",
+          "title": "Principais notícias do mundo na tarde de hoje (12)",
+          "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPTU1DYjRXZHhXVXNjZmc1MFI0OWxjclBnX2ZndEZtWThmb1lfN045eUlTVjdRSEQ5UEotYl9KREt6b1p1ZUljUjRxaENVeHRPalRRcWNaVTNHQXFxRWFfa0EtN0J5aHdnWlI2MlZCdzdOQmtURXNSenN4c2NIcGx5R25Fc2ljc1BEbFFZUlFhWE45eEUwMW9aMkNBcDBFaENXQkszbEJ3Ykc4Ym1O?oc=5",
+          "publishedAt": "2026-11-12T18:01:00.000Z",
+          "description": "Principais notícias do mundo na tarde de hoje (12) &nbsp;&nbsp; Tribuna do Sertão",
+          "source": "Tribuna do Sertão",
           "imageUrl": null
         }
       ],
@@ -164,14 +164,6 @@
       "id": "europa",
       "label": "Europa",
       "articles": [
-        {
-          "title": "Putin diz que Rússia está aberta a dialogar com a Europa - SBT News",
-          "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPT2RiSExTc0M2UTJpY3VjbEJ5eG1BTExnZWhwWFp1ZmJBbUhqSkJlb19pQjZZWFVLVVhSeG0ydGxnU0ZEbFhGODVkblptMVlmVDU5bG53SXhKQy04bDlOUk52MVBTc3JaQWJTYUwzZG9rdjdfa3VJTjU1V2xHWFpIX3FvZElEVUpxR09HV1Z3NXpmOG9wV1MxSFc1MA?oc=5",
-          "publishedAt": "2026-11-12T16:43:55.000Z",
-          "description": "Putin diz que Rússia está aberta a dialogar com a Europa &nbsp;&nbsp; SBT News",
-          "source": "SBT News",
-          "imageUrl": null
-        },
         {
           "title": "Zagueiro de R$ 618 milhões, Arroyo entra na mira da Europa e Gabigol pode ser negociado: as últimas notícias do Cruzeiro - Terra",
           "url": "https://news.google.com/rss/articles/CBMirwJBVV95cUxNWE12SHpfbTNSV25kMldUUlpRdEIzeVNLQnlyWHZFajFWQ2w5UGY1UFFONGRZRWt6MkpsTk45WDM2MWI5R1pCRWw4TmJOdUF2NERXSnhnUGZ0Vjk2MlQ5cXowNnBzZUJrbDAwMVc3MjRSUDQzTlIwbmQyc0xmRU9HZXcxaWdTajZMdVF4RkwyamtTN3JHRDBwdzFscl9DckdIVzdTVmNhMmRrR2VsUVNzX2E5OWMzZGtSTkc4LS12Vks5bTd5bGNTcmFBOWZnc1E1NFppT01KTlBrR2ZHYUgya3hjR1dpQ2J3QzJIdWtubHBYUUJXQ3ZFVVRtVlQtMDhrSEVkNnRkUEgzMUJ1dVRNVEcyaWJCZ2I1SXE2MjZLSzkwbEotUTVibEZ2UnJGREU?oc=5",
