@@ -377,6 +377,18 @@ if(stage){
      });
      controls.append(button);
     }
+    const explore=elt("button","","EXPLORAR");
+    explore.type="button";explore.dataset.intelAction="immersive";
+    explore.setAttribute("aria-label","Explorar registro com contexto visual · "+clean(item.title,90));
+    explore.addEventListener("click",()=>{
+      const immersive=window.ULTRON_IMMERSIVE;
+      if(!immersive?.start){
+        mapStatus.textContent="Exploração visual ainda não disponível.";
+        mapStatus.hidden=false;return;
+      }
+      void immersive.start({view:"2d",focusKey:item.key});
+    });
+    controls.append(explore);
     row.append(controls);
    }
    priorityItems.append(row);
