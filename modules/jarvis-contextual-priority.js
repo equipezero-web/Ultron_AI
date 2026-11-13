@@ -20,7 +20,7 @@ function trustedEventLink(item){
  const u=link(item?.url);if(!u)return null;
  const host=new URL(u).hostname;
  const expected={USGS:"earthquake.usgs.gov",NASA:"eonet.gsfc.nasa.gov",GDACS:"www.gdacs.org"};
- return host===expected[item?.source]?u:null;
+ return host===expected[item?.source]||(item?.source==="GDACS"&&host==="gdacs.org")?u:null;
 }
 const keyId=s=>clean(s,150).replace(/[^\w:./-]/g,"_");
 export function readPriorityLedger(text,{now=Date.now()}={}){
