@@ -68,7 +68,7 @@ export function findPublicCameras({search="",country="",category="",region=""}={
 }
 export function parseWorldCameraCommand(message){
  const s=normalizeCameraText(message).replace(/^(?:jarvis|ultron)[ ,:.-]+/,"").replace(/[.!?]+$/,"").trim();
- if(/^(?:cameras? (?:do mundo|mundiais|publicas do mundo)|monitoramento visual mundial|abrir cameras do mundo|abra cameras do mundo|mostre cameras do mundo|mostrar cameras do mundo|exibir webcams mundiais)$/.test(s))
+ if(/^(?:cameras? (?:do mundo|mundiais|publicas do mundo)|monitoramento visual mundial|ativar cameras do mundo|ative as cameras do mundo|ativar monitoramento visual mundial|abrir cameras do mundo|abra cameras do mundo|mostre cameras do mundo|mostrar cameras do mundo|exibir webcams mundiais)$/.test(s))
   return {type:"open"};
  if(/^(?:fechar|feche|ocultar|oculte) (?:cameras do mundo|cameras mundiais|monitoramento visual mundial)$/.test(s))
   return {type:"close"};
