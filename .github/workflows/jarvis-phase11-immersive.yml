@@ -10,6 +10,7 @@ on:
       - 'modules/ultron-orchestrator-v4270.js'
       - 'index.html'
       - 'tests/jarvis-phase11-immersive.mjs'
+      - 'tests/jarvis-phase11-immersive-browser.mjs'
       - '.github/workflows/jarvis-phase11-immersive.yml'
   push:
     paths:
@@ -21,6 +22,7 @@ on:
       - 'modules/ultron-orchestrator-v4270.js'
       - 'index.html'
       - 'tests/jarvis-phase11-immersive.mjs'
+      - 'tests/jarvis-phase11-immersive-browser.mjs'
       - '.github/workflows/jarvis-phase11-immersive.yml'
 permissions:
   contents: read
@@ -47,3 +49,27 @@ jobs:
           node tests/jarvis-phase8-continuity.mjs
           node tests/jarvis-phase3-geospatial.mjs
           node tests/jarvis-mission-safety.mjs
+  mobile-immersive-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser harness
+        run: |
+          npm install --no-save --no-package-lock --ignore-scripts puppeteer-core@24.33.0
+          echo "CHROME_BIN=$(command -v google-chrome || command -v chromium || command -v chromium-browser)" >> "$GITHUB_ENV"
+      - name: Open mobile Neural Ring and navigate verified story cards
+        run: |
+          python3 -m http.server 8766 --bind 127.0.0.1 >/tmp/jarvis-immersive-http.log 2>&1 &
+          sleep 2
+          node tests/jarvis-phase11-immersive-browser.mjs
+      - name: Capture mobile UI failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase11-immersive-browser-failure
+          path: phase11-immersive-browser-failure.png
+          if-no-files-found: ignore
