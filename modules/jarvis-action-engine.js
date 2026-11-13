@@ -362,10 +362,12 @@ async function executeStep(step,original){
  default:throw Error("Ação não permitida");
  }
 }
-export async function runActionPlan(plan,original){
+export async function runActionPlan(plan,original,{signal}={}){
  const valid=validatePlan(plan);if(!valid)return null;
  const results=[];
+ let cancelled=Boolean(signal?.aborted);
  for(const step of valid.steps){
+  if(signal?.aborted){cancelled=true;break;}
   const startedAt=Date.now();
   try{
    const raw=await executeStep(step,original);
@@ -375,19 +377,23 @@ export async function runActionPlan(plan,original){
    results.push(result);
    if(verified)TASK_CONTEXT?.recordAction(step,result);
    W().dispatchEvent?.(new CustomEvent("ultron:task-step",{detail:{...result}}));
+   if(signal?.aborted){cancelled=true;break;}
   }catch(e){
    const failed={action:step.action,ok:false,verified:false,status:"failed",text:String(e?.message||e).slice(0,350),elapsedMs:Date.now()-startedAt};
    results.push(failed);
    W().dispatchEvent?.(new CustomEvent("ultron:task-step",{detail:{...failed}}));
+   if(signal?.aborted)cancelled=true;
    break;
   }
  }
- const ok=results.length===valid.steps.length&&results.every(x=>x.ok);
+ if(signal?.aborted)cancelled=true;
+ const ok=!cancelled&&results.length===valid.steps.length&&results.every(x=>x.ok);
  const verified=ok&&results.every(x=>x.verified);
- const status=!ok?"failed":verified?"completed":"submitted";
- const text=results.map(x=>x.text).join(" ");
- if(!ok||!results.some(x=>["research","news.refresh","devices.list","files.list","system.status","parity.check"].includes(x.action)))W().ULTRON_VOICE_OUTPUT?.speak?.(text,{reason:"autonomy",announce:false});
- return {ok,verified,status,handled:true,route:"autonomy",text,steps:results};
+ const status=cancelled?"cancelled":!ok?"failed":verified?"completed":"submitted";
+ const text=cancelled?"P0 STOP: missão interrompida. Etapas concluídas: "+results.length+"/"+valid.steps.length+".":
+  results.map(x=>x.text).join(" ");
+ if(!cancelled&&(!ok||!results.some(x=>["research","news.refresh","devices.list","files.list","system.status","parity.check"].includes(x.action))))W().ULTRON_VOICE_OUTPUT?.speak?.(text,{reason:"autonomy",announce:false});
+ return {ok,verified,cancelled,status,handled:true,route:"autonomy",text,steps:results};
 }
 export async function resolveActionPlan(message){
  const direct=directPlan(message);if(direct)return direct;
