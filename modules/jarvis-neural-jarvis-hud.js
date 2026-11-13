@@ -31,7 +31,8 @@ function updateTelemetry(){
  if(!telemetry)return;
  const s=state();
  telemetry.textContent=s.running?
-  "MATRIZ WEBGL OPERACIONAL · ÁUDIO "+(visualAudio?"AUTORIZADO":"DESATIVADO"):
+  (engine()?.architecture?"MATRIZ HOLOGRÁFICA WEBGL":"MOTOR WEBGL DE RESERVA")+
+   " · ÁUDIO "+(visualAudio?"AUTORIZADO":"DESATIVADO"):
   "MATRIZ WEBGL INDISPONÍVEL / EM INICIALIZAÇÃO";
  const active=!!engine()?.active;
  for(const b of Object.values(buttons)){
@@ -241,6 +242,8 @@ if(mounted){
  window.addEventListener("ultron:emergency-stop",stop);
  document.addEventListener("visibilitychange",()=>{
   if(document.hidden){
+   // Do not keep microphone tracks in background tabs.
+   void stopAudio();
    engine()?.setAudioBands?.({bass:0,mid:0,high:0});
    for(const bar of liveBars)bar.style.width="0%";
   }else if(visualAudio&&!audioFrame){audioFrame=requestAnimationFrame(audioLoop);}
