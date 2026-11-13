@@ -51,6 +51,18 @@ try {
     const r=await page.$eval(selector,el=>{
       const x=el.getBoundingClientRect();return {x:x.x,y:x.y,w:x.width,h:x.height};
     });
+    if(selector.includes('earth-renderer')){
+      const chain=await page.$eval(selector,el=>{
+        const a=[];for(let n=el;n&&a.length<13;n=n.parentElement){
+          const cs=getComputedStyle(n),r=n.getBoundingClientRect();
+          a.push({tag:n.tagName,id:n.id,cls:String(n.className).slice(0,110),
+            touch:cs.touchAction,overflow:cs.overflowY,
+            pointer:cs.pointerEvents,top:Math.round(r.top),h:Math.round(r.height)});
+        }
+        return {chain,maxScroll:document.scrollingElement.scrollHeight-document.scrollingElement.clientHeight};
+      });
+      console.log('GLOBE SCROLL ANCESTORS',JSON.stringify(chain));
+    }
     console.log('SCROLL TOUCH TARGET',selector,JSON.stringify({r,before}));
     const x=Math.round(Math.max(25,Math.min(365,r.x+r.w*.5)));
     const y=Math.round(Math.max(160,Math.min(770,r.y+r.h*.60)));
