@@ -4,10 +4,166 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-13T15:22:48.310Z",
-  "oldestEventAt": "2026-11-12T16:36:49.000Z",
-  "windowStartAt": "2026-11-12T15:22:48.310Z",
+  "updatedAt": "2026-11-13T21:28:55.699Z",
+  "oldestEventAt": "2026-11-12T21:37:12.000Z",
+  "windowStartAt": "2026-11-12T21:28:55.699Z",
   "events": [
+    {
+      "id": "event-9994b093",
+      "category": "mundo",
+      "title": "EUA suspendem decolagens em todo o país por segurança",
+      "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxQU3ZEb21MVjdMOHF0WExucmh4XzFpOGU5WDY3c1dJd05lQUF6UmlxX2FUTDIyZ1pyb1NleGdheFFvY3IwVEdLMTBMYV95ZURPUHZQZTJaZDhzSDFEdFNKMUVuU2tpZGs5enRsWEpTOFM0YnFEdGkyRlhmN3J5UUJOaWg2aGdKb0ZmUnA0SjJnYWxKMUpSRDNNNDhn",
+      "description": "EUA suspendem decolagens em todo o país por segurança &nbsp;&nbsp; SBT News",
+      "imageUrl": null,
+      "source": "SBT News",
+      "publishedAt": "2026-11-13T21:21:15.000Z",
+      "firstSeenAt": "2026-11-13T21:28:55.699Z",
+      "lastSeenAt": "2026-11-13T21:28:55.699Z"
+    },
+    {
+      "id": "event-2faf51ad",
+      "category": "brasil",
+      "title": "Fachin defende indicação de ministra negra para o STF",
+      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/fachin-defende-indicacao-de-ministra-negra-para-o-stf",
+      "description": "O presidente do Supremo Tribunal Federal e do Conselho Nacional de Justiça (CNJ), ministro Edson Fachin, defendeu nesta sexta-feira (13) a indicação de uma ministra negra para compor a Corte. Fachin participou do Encontro Nacional de Juízas e Juízes Negros (Enajun), no Rio de Janeiro, e elogiou o currículo das juízas que participaram do evento. \"Eu olhava o auditório, ouvia as manifestações das magistradas que me precederam e certamente me vinha à cabeça que, quem de direito para definir uma próxima vaga da Suprema Corte brasileira, saberia que há magistradas negras à altura deste lugar para honrar o Brasil e o povo brasileiro\", afirmou. O ministro também ressaltou que números do CNJ apontam que pessoas negras representam apenas 15% dos magistrados e 28% dos servidores do Judiciário em todo o país. “Essa assimetria não é acaso nem falta de mérito, é herança. O Judiciário brasileiro não foi, ao longo da História, mero espectador da desigualdade racial. Em muitos momentos foi seu avalista.” Atualmente, o STF é formado por 11 ministros e está com uma cadeira vaga. Em 2025, o ministro Lu",
+      "imageUrl": "https://imagens.ebc.com.br/IaxsO36k-I6qqQ6aYOOki28D-B0=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/13/55651656390_b2227b44e4_o.jpg?itok=v3oXhGcK",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-13T20:47:00.000Z",
+      "firstSeenAt": "2026-11-13T21:28:55.699Z",
+      "lastSeenAt": "2026-11-13T21:28:55.699Z"
+    },
+    {
+      "id": "event-9161f8d7",
+      "category": "brasil",
+      "title": "Confiança da indústria atinge menor nível desde maio de 2020",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/confianca-da-industria-atinge-menor-nivel-desde-maio-de-2020",
+      "description": "A confiança dos empresários industriais caiu seis pontos em novembro, passando de 46,2 para 40,2 pontos, segundo levantamento divulgado pela Confederação Nacional da Indústria (CNI) nesta sexta-feira (13). O Índice de Confiança do Empresário Industrial (Icei) chegou ao menor nível desde maio de 2020, quando marcou 34,7 pontos. Esta foi a terceira maior queda mensal desde o início da série histórica, em 2010. Com o resultado, o setor completa 23 meses abaixo da linha divisória de 50 pontos que separa o otimismo do pessimismo. Notícias relacionadas: Associações do agro rebatem BB sobre alta da inadimplência. Ex-tesoureiro da Caixa é condenado por desviar quase R$ 890 mil. Vendas no comércio variam 0,2% em setembro; IBGE mostra estabilidade. Segundo Marcelo Azevedo, gerente de Análise Econômica da CNI, a falta de confiança já afeta decisões de contratação, produção e investimento, com possíveis reflexos sobre emprego, renda e crescimento econômico. Piora nas condições O Índice de Condições Atuais recuou 2,3 pontos, para 37,7 pontos, o menor resultado desde julho de 2020. A avaliação neg",
+      "imageUrl": "https://imagens.ebc.com.br/jaXHCtC8dGH_sbtgxprlUjfTJ10=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2015-12-02t000000z_640900256_mt1imgcnpbu37067810_rtrmadp_3_china-aluminum.jpg?itok=abS3E80u",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-13T20:29:00.000Z",
+      "firstSeenAt": "2026-11-13T21:28:55.699Z",
+      "lastSeenAt": "2026-11-13T21:28:55.699Z"
+    },
+    {
+      "id": "event-b955676f",
+      "category": "clima",
+      "title": "El Niño pode chegar ao fim no outono de 2027",
+      "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxNdDlwZXlxX20wM0s4blV3UFMyZDYyYURsWndYU3NpQlJ3WnNFOWU2ZHFNcld5VEVOcHg0ZmUtSkZPX05CT2wwMVFqY0JnWFZBQjRxZXRIRlVZbm5GczJMb2JadUpBZ3pCY09odnFyaFNiR25oOUg5TExuQ0FPTmx5MGNwdDhsTHk5S19sM04yRnVPaDFuOVdXRw",
+      "description": "El Niño pode chegar ao fim no outono de 2027 &nbsp;&nbsp; Agrolink",
+      "imageUrl": null,
+      "source": "Agrolink",
+      "publishedAt": "2026-11-13T20:07:00.000Z",
+      "firstSeenAt": "2026-11-13T21:28:55.699Z",
+      "lastSeenAt": "2026-11-13T21:28:55.699Z"
+    },
+    {
+      "id": "event-cce001ba",
+      "category": "mundo",
+      "title": "Made in France: empresas francesas de tecnologia buscam independência de gigantes digitais",
+      "url": "https://news.google.com/rss/articles/CBMijwJBVV95cUxORnRBSU82SGx0NXlhenE1amlUX3dCUlkxWkxQbzh1UWVnRW5iclgzamxLSzBBenJNZW9iQmhHc1BnRWN2QUxYM3lreEZzZ0xWck5QVXp1MDU4YXBMbndtMnhZbzk4LVV6ZW5oQkZBU3otZEVTRDFtR205R0ZIaXV0aTRVLVZHVW5TYlVUYTlCdm1RaTNmdkZrQk1oNjRsOXlCWkFadmE2R0dhTk5YMTd4LWY5a01ibUJ0UkFIZ0J6ZFAyVS1FTWYyV1k5SDlGODZieG9scW40YmFyRElkbHpfYjdSdGI3MklHSEhQalpmRGM2T0F5V3FtNGxhNk1obFJkTmF6S01HUmVnZTF0QTZr",
+      "description": "Made in France: empresas francesas de tecnologia buscam independência de gigantes digitais &nbsp;&nbsp; Terra",
+      "imageUrl": null,
+      "source": "Terra",
+      "publishedAt": "2026-11-13T20:02:00.000Z",
+      "firstSeenAt": "2026-11-13T21:28:55.699Z",
+      "lastSeenAt": "2026-11-13T21:28:55.699Z"
+    },
+    {
+      "id": "event-f7e703aa",
+      "category": "brasil",
+      "title": "Milton Leite se torna réu por suspeita de ligação com o PCC",
+      "url": "https://agenciabrasil.ebc.com.br/geral/noticia/2026-11/milton-leite-se-torna-reu-por-suspeita-de-ligacao-com-o-pcc",
+      "description": "A Justiça de São Paulo acatou denúncia do Ministério Público e tornou Milton Leite e mais 13 pessoas réus por suspeita de ligação com a facção criminosa Primeiro Comando da Capital (PCC). Leite é ex-vereador e ex-presidente da Câmara Municipal de São Paulo e está preso. O político filiado ao partido União Brasil foi para a cadeia em setembro após uma operação da Polícia Civil junto com o Ministério Público que investigava a atuação do PCC no transporte coletivo paulistano . Notícias relacionadas: INSS: mutirão oferece 7,9 mil vagas em 8 estados neste fim de semana. Salto: fábrica de solventes no interior de SP é atingida por incêndio . PF trabalha em sistema para aprimorar busca por pessoas desaparecidas. Com a decisão da Justiça tornada pública nesta quinta-feira (12), Leite teve a prisão temporária convertida em preventiva. Outros 11 denunciados também tiveram prisões preventivas decretadas. No documento que torna Leite réu, a denúncia informa que ele e todo o grupo de investigados “agiram sob a orientação de lideranças da organização criminosa, como Antônio José Muller Junior, vul",
+      "imageUrl": "https://imagens.ebc.com.br/RuqiQ_KNR4QTei8sTOqwOOkduHE=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/09/17/padrao-site-1-5.jpg?itok=HU7Yelem",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-13T19:56:00.000Z",
+      "firstSeenAt": "2026-11-13T21:28:55.699Z",
+      "lastSeenAt": "2026-11-13T21:28:55.699Z"
+    },
+    {
+      "id": "event-ab598c27",
+      "category": "clima",
+      "title": "El Niño tem mais de 79% de chance de seguir forte até março de 2027",
+      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxQMnRiODZYQXE0SkdJNktiTnhLN3RHclMxZGNaRWtPR3lDXy1IQWRyZ0o3VERUUXFQYWJiczJHcWZ4UENIb3Q2TXh2N2lnZ1A0all2Y0s1LTRHWWlkX3YxN193UmpQdTZWcVRrRFlEM3pPTlZkS0ZoRkFaUjV6LS11Vi1VZ05wWU9xWktPeWRxYVI0ck9SWWc2dXExZzk3NzJxZ3RXM1VUNE9sYng4ZjVIR2pLOU5jc2M",
+      "description": "El Niño tem mais de 79% de chance de seguir forte até março de 2027 &nbsp;&nbsp; Leouve",
+      "imageUrl": null,
+      "source": "Leouve",
+      "publishedAt": "2026-11-13T19:16:11.000Z",
+      "firstSeenAt": "2026-11-13T21:28:55.699Z",
+      "lastSeenAt": "2026-11-13T21:28:55.699Z"
+    },
+    {
+      "id": "event-b63f58e7",
+      "category": "mundo",
+      "title": "Fora dos Jogos Olímpicos, classe Star deu origem à Copa do Mundo da Vela que chega ao Rio de Janeiro",
+      "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTFBUaU9CRktJVDJrT1I1dVJfRDRqVnVlLXhldG84NnpBQXdqcVFLMzQtNVIzcjlkcTJidXBORXZjbnNrNW9fNUdENTNzcUJVNVhwSkZGVGZDN3d5eW8yYXZydGFHWm9Sb3pxcmliSmdR",
+      "description": "Fora dos Jogos Olímpicos, classe Star deu origem à Copa do Mundo da Vela que chega ao Rio de Janeiro &nbsp;&nbsp; Náutica",
+      "imageUrl": null,
+      "source": "Náutica",
+      "publishedAt": "2026-11-13T19:12:19.000Z",
+      "firstSeenAt": "2026-11-13T21:28:55.699Z",
+      "lastSeenAt": "2026-11-13T21:28:55.699Z"
+    },
+    {
+      "id": "event-47ebfe00",
+      "category": "brasil",
+      "title": "Podcast do Senac conta a história da educação profissional no Brasil em comemoração aos seus 80 anos",
+      "url": "https://news.google.com/rss/articles/CBMinAJBVV95cUxPaUJBTFJYV19jTEJXS00xUUdDQUdxNE9FRHhqYUdvdDhkTkpEYnRMSURabXUwaEczZzBaZWtKczZ4RmdDVUVFM1BjOGdJY3NJWnBKWXc3cXRIZUF2UWd5RlIyLXVUZG5pY0Fsb1JXYlVVcFdpbWQzRkR3dUd4UlhwMkFPTFVPR1JUWFNuVzJTd2tFQXlQQm0yV2JMeTIwSUFQM0pydWw0WnZQbFpMMG1Sazg0YlBCdXM4UG9fUlZqenJaYV81RUJubjlfa1ZFX3Y5TjFsZERWMlc0ZHAwcVFnTHJOb1hYNTdnNldHbFlQRVp6RHRxWkVYWWpkakxPZURwS0VQVzRmZnBGcy1QWV94UTdyVWxHcGZrdTFMdtIBnAJBVV95cUxPaUJBTFJYV19jTEJXS00xUUdDQUdxNE9FRHhqYUdvdDhkTkpEYnRMSURabXUwaEczZzBaZWtKczZ4RmdDVUVFM1BjOGdJY3NJWnBKWXc3cXRIZUF2UWd5RlIyLXVUZG5pY0Fsb1JXYlVVcFdpbWQzRkR3dUd4UlhwMkFPTFVPR1JUWFNuVzJTd2tFQXlQQm0yV2JMeTIwSUFQM0pydWw0WnZQbFpMMG1Sazg0YlBCdXM4UG9fUlZqenJaYV81RUJubjlfa1ZFX3Y5TjFsZERWMlc0ZHAwcVFnTHJOb1hYNTdnNldHbFlQRVp6RHRxWkVYWWpkakxPZURwS0VQVzRmZnBGcy1QWV94UTdyVWxHcGZrdTFMdg",
+      "description": "Podcast do Senac conta a história da educação profissional no Brasil em comemoração aos seus 80 anos &nbsp;&nbsp; O GLOBO",
+      "imageUrl": null,
+      "source": "O GLOBO",
+      "publishedAt": "2026-11-13T19:10:58.000Z",
+      "firstSeenAt": "2026-11-13T21:28:55.699Z",
+      "lastSeenAt": "2026-11-13T21:28:55.699Z"
+    },
+    {
+      "id": "event-142739f1",
+      "category": "santa-catarina",
+      "title": "Calor pode chegar a 35 °C e temporais isolados são previstos para o fim de semana em SC",
+      "url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxNQnRNUE91UVZ5eG5iUVg1T09tRzdseDdEQUNON2lCcXNyTzJlSWJiN0VKY3ZnejJ5UHN2NTdIWWtNVzVhMmlDdXo5MExFR3V4MG9qTFU2RHpEc3hfblF4QWROcXVBenF5VXN2clFpU1BYdW1IcWI0cHBKVDNiaTQzVmhyZ2hPdlllby1TOGFtdVFvTFkyUTlkQjRJb20xZTJSZlhacHdZdWdNTFAtcTdPSFpGckdDQ0Nrak52OEFBX3FiUml6bGhxcF8xN2FXbXVSSWdqaA",
+      "description": "Calor pode chegar a 35 °C e temporais isolados são previstos para o fim de semana em SC &nbsp;&nbsp; Santa Catarina em Pauta",
+      "imageUrl": null,
+      "source": "Santa Catarina em Pauta",
+      "publishedAt": "2026-11-13T18:48:00.000Z",
+      "firstSeenAt": "2026-11-13T21:28:55.699Z",
+      "lastSeenAt": "2026-11-13T21:28:55.699Z"
+    },
+    {
+      "id": "event-da9c4711",
+      "category": "clima",
+      "title": "El Niño 2026: o que o Pacífico já está dizendo às empresas",
+      "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxQd2Z0UHBzcXJPREpmTDNkUFN3MWpaMk11VW9UMVpGRDJLYjBuZG5tS3NYaUxtaWdsTlI2NkdXSlBFaXJQbjRBT05mUmh2OWVKcXo1cXkwaVYzZ1FCV0V2YUNyaHlrRTlUNFZMZldOZFROQVlNOFJfOW9iTU9BaTI5aXBfRFZZUDZLSjNVTU9WaGl5QXFqX2drMl9HQi1NWHpxSkZMMl82MnBYeFNMaDkxX01nblBSUnpLVUxfdW90VXdySllMdG5udDNjMHdBSzh2MmNtMGxEZVEyaWPSAdsBQVVfeXFMUHdmdFBwc3FyT0RKZkwzZFBTdzFqWjJNdVVvVDFaRkQyS2IwbmRubUtzWGlMbWlnbE5SNjZHV0pQRWlyUG40QU9OZlJodjllSnF6NXF5MGlWM2dRQldFdmFDcmh5a0U5VDRWTGZXTmRUTkFZTThSXzlvYk1PQWkyOWlwX0RWWVA2S0ozVU1PVmhpeUFxal9nazJfR0ItTVh6cUpGTDJfNjJwWHhTTGg5MV9NZ25QUlJ6S1VMX3VvdFV3ckpZTHRubnQzYzB3QUs4djJjbTBsRGVRMmlj",
+      "description": "El Niño 2026: o que o Pacífico já está dizendo às empresas &nbsp;&nbsp; Valor Econômico",
+      "imageUrl": null,
+      "source": "Valor Econômico",
+      "publishedAt": "2026-11-13T18:44:53.000Z",
+      "firstSeenAt": "2026-11-13T21:28:55.699Z",
+      "lastSeenAt": "2026-11-13T21:28:55.699Z"
+    },
+    {
+      "id": "event-e722256f",
+      "category": "santa-catarina",
+      "title": "Calor de até 35°C e possibilidade de temporais: confira a previsão do tempo para o fim de semana",
+      "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxQbUJqZWdGQkhPU3E5eWh2STdhZThDb1BSUjlxWUplV3F6TXczUy1YX3MyWDRVeGJ1aVE3M18zRmNRN0lxOGZqUU9FZEpqWlI5TzdRdTYta2I1X05WX3lKVUlGeEpkYjcxRHJMZDlna05IVmlCaVJ2RzloTW5fMktaeF9iVXlRclR2WnpoVVFteGRqYTBxb3k3SDlpTVVCb3hMUGVRYjVIcE0xakthbXN5RFBWUzRzNTFSNVU0LVRSYzI0T2ZCcURIWjhydw",
+      "description": "Calor de até 35°C e possibilidade de temporais: confira a previsão do tempo para o fim de semana &nbsp;&nbsp; Jornal de Pomerode",
+      "imageUrl": null,
+      "source": "Jornal de Pomerode",
+      "publishedAt": "2026-11-13T17:39:07.000Z",
+      "firstSeenAt": "2026-11-13T21:28:55.699Z",
+      "lastSeenAt": "2026-11-13T21:28:55.699Z"
+    },
+    {
+      "id": "event-4b5dd5cf",
+      "category": "santa-catarina",
+      "title": "Calor de 35°C antecede temporais em SC",
+      "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOZzEzUTliOHhuaE9EYjBvalkzV1czMUptc2VYdk0yemZJWnZJTmoxbld5X2piOTFIQW1EM3NVZHprVkdVUmdyam9qV055azZPR1V2YU1DQ1NOVUc2a0QtN0kycEtPWWJkZ2lIdnBYYm1FRkpBRjZUeGZTclFaVWhLMg",
+      "description": "Calor de 35°C antecede temporais em SC &nbsp;&nbsp; Imagem da Ilha",
+      "imageUrl": null,
+      "source": "Imagem da Ilha",
+      "publishedAt": "2026-11-13T17:23:00.000Z",
+      "firstSeenAt": "2026-11-13T21:28:55.699Z",
+      "lastSeenAt": "2026-11-13T21:28:55.699Z"
+    },
     {
       "id": "event-44c3d13",
       "category": "mundo",
@@ -150,7 +306,7 @@
       "source": "Terra",
       "publishedAt": "2026-11-13T10:41:00.000Z",
       "firstSeenAt": "2026-11-13T15:22:48.310Z",
-      "lastSeenAt": "2026-11-13T15:22:48.310Z"
+      "lastSeenAt": "2026-11-13T21:28:55.699Z"
     },
     {
       "id": "event-5e963812",
@@ -187,6 +343,18 @@
       "publishedAt": "2026-11-13T02:34:00.000Z",
       "firstSeenAt": "2026-11-13T07:01:42.106Z",
       "lastSeenAt": "2026-11-13T07:01:42.106Z"
+    },
+    {
+      "id": "event-bbb6ac3e",
+      "category": "europa",
+      "title": "Novas ameaças de bomba na Europa reforçam suspeitas de guerra híbrida - G1",
+      "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxOeERweEltSlN6VFNseTRVX1FmUlhUcjY3RHZHVnhhM1dxaG5MUW0tLXJrN0lqN3VGVnRfV3A3RmlGOUliR2lvRnpSelpkVmJDTjBlTF9odGtaMFZDSEJudlVyUm5Da1FlRnh2R2FvVWhISVFGNXVnbTVtRXNNV2pZN0FNYzk0RnhBODJEQmdzbkFESkFtYVFjVjdhaC1XRE5WN1ZfN0xCLWszQ3h6eENnaFV4cDJWYjFvb05hdXBWZnpHZk1DT3BvZzFlUdIB2gFBVV95cUxPMXhvdEgzbFdRdHdtdG83TVNqeUR3YUpxUGk3MWNOdGdmcGRLTnZrWkpWa21fNDAwWWl4cXRaS3F1X2JwOWdNdWVnYVBYWUVYMHJTVVViT0VFcFF2OUJPNWNVLXN6OTVDR0ZXMTBuVl9aby01YVpFZkc0S2w3UmFvNzBBVU9xazZ3OWJWaGpFaGZoN1E1Z0dEemNTX2ZZSDIzWmY1SVNITnRIeURNYVktRnZieDdGSUp1YlFLRGdJdDdqNE5FTlFmaE9ZRjlheVUyR3VseTE0Z0pZdw",
+      "description": "Novas ameaças de bomba na Europa reforçam suspeitas de guerra híbrida &nbsp;&nbsp; G1",
+      "imageUrl": null,
+      "source": "G1",
+      "publishedAt": "2026-11-13T01:03:43.000Z",
+      "firstSeenAt": "2026-11-13T21:28:55.699Z",
+      "lastSeenAt": "2026-11-13T21:28:55.699Z"
     },
     {
       "id": "event-7204dce9",
@@ -307,277 +475,9 @@
       "publishedAt": "2026-11-12T21:37:12.000Z",
       "firstSeenAt": "2026-11-13T00:19:13.425Z",
       "lastSeenAt": "2026-11-13T00:19:13.425Z"
-    },
-    {
-      "id": "event-473cb7c4",
-      "category": "santa-catarina",
-      "title": "SC tem previsão de temporais com granizo e ventos fortes ao longo desta quinta-feira 12 de novembro",
-      "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxQRWpnQ2dMbmd4VWpOMWRaUEpFakVGWnowSDNpNUgwSHQ3NWl0TnQyVTB3bWhJbHdnN1RLemM4VXRPNkNTaVRScW45bGZ6a0NGMlpOYm02VGJMWHRNdXdWbWRVMms5NC16LVJGdndIODhLUmt2a1R5dVdtdmNtWEtaQUJjOTBhTGFYVG8wckNYNV96a0IxNHlORms5UlB1NVVSNnc5N3ZDc1hoSFU2R1BHdzY2OExhRkkyc2pCRGFQbkdiVjFSMlpDVGRwalRfR1NSTFE",
-      "description": "SC tem previsão de temporais com granizo e ventos fortes ao longo desta quinta-feira 12 de novembro &nbsp;&nbsp; Jornal de Pomerode",
-      "imageUrl": null,
-      "source": "Jornal de Pomerode",
-      "publishedAt": "2026-11-12T21:08:07.000Z",
-      "firstSeenAt": "2026-11-13T00:19:13.425Z",
-      "lastSeenAt": "2026-11-13T00:19:13.425Z"
-    },
-    {
-      "id": "event-f0d5966a",
-      "category": "clima",
-      "title": "“Super” El Niño ganha força e tem mais de 79% de chance de seguir em nível forte a muito forte até março, diz NOAA",
-      "url": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxQV0ZSQU9iZGNib21hd3BILWJFbXM1YXlMckEySkNWR0syOHRYYjdQVzRwUGVOcWtiLUdncHVLTUtXUWRBTXdpRGxEeHE3ME83Z1dYUkJjSmJzLUpqOV85dFJkaDNVaXQ0R1JoXzNkWThycDRNRHcyRDlMaG94Vlh0ZzNrZXZRRkZuN3ZEUHN1VEpiTkpLSWdpMGVmeWhIOVJ5TWZ1RTZ2azZTYmN1UTRYUkZMckU3WFlKRHNySDl3NHg4RWszQUx0bl9sWDhObzFPM1h4RXdQR05lLVJs",
-      "description": "“Super” El Niño ganha força e tem mais de 79% de chance de seguir em nível forte a muito forte até março, diz NOAA &nbsp;&nbsp; NSC Total",
-      "imageUrl": null,
-      "source": "NSC Total",
-      "publishedAt": "2026-11-12T20:58:36.000Z",
-      "firstSeenAt": "2026-11-13T00:19:13.425Z",
-      "lastSeenAt": "2026-11-13T15:22:48.310Z"
-    },
-    {
-      "id": "event-b47555f8",
-      "category": "clima",
-      "title": "Como o super El Niño pode atingir a população negra e as periferias do Brasil",
-      "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxQRTJub3JoVE43V3RPY3c2d3cyVjlBMWxfTkVINWowN0lSZkZSQmF6ZjZNSmJGWE5QbFpZVTh5d3M4NjhBTUZXYldUYk9VcXFMTkVjd3U1S1lNS2F2QURRdTZIamZFc0JvLVY2eVJKWW02ZVpoektNR3UzNFAtRDVlWDI5OGZEUEtza3hsSmc1cXdEMWdUcWRLTVNybVNSb1pEYWk0",
-      "description": "Como o super El Niño pode atingir a população negra e as periferias do Brasil &nbsp;&nbsp; Mídia NINJA",
-      "imageUrl": null,
-      "source": "Mídia NINJA",
-      "publishedAt": "2026-11-12T20:29:51.000Z",
-      "firstSeenAt": "2026-11-13T00:19:13.425Z",
-      "lastSeenAt": "2026-11-13T15:22:48.310Z"
-    },
-    {
-      "id": "event-4b94d98f",
-      "category": "santa-catarina",
-      "title": "Defesa Civil alerta para tempestade severa em cidades de SC",
-      "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxQelBmeF8yMmZSUUQ3dFR0ZEhRcEdIV0ozVzJWQlF6UC1vZXFscFdmaUoyMFJSeGVLSWVkOVBVbTJFdk4yOHZnWmRYQzgzcWlKQlduUGRsNl9CUjB6N1BNSEdiSGMzdTlmdDdPNllwYVFMQ2pmZjJEanE4bk5wSWVXTkFLZjRIUEVyR0t5b3daZHFERUhYWmVIdDVTZ213bW9xQ29tdVVrZnpaN2JPMmplN0pwb1R2bmtuUGw0NmVxZDRJX1lzeGVjUVdVSnNNUzN50gHQAUFVX3lxTFB6UGZ4XzIyZlJRRDd0VHRkSFFwR0hXSjNXMlZCUXpQLW9lcWxwV2ZpSjIwUlJ4ZUtJZWQ5UFVtMkV2TjI4dmdaZFhDODNxaUpCV25QZGw2X0JSMHo3UE1IR2JIYzN1OWZ0N082WXBhUUxDamZmMkRqcThuTnBJZVdOQUtmNEhQRXJHS3lvd1pkcURFSFhaZUh0NVNnbXdtb3FDb211VWtmelo3Yk8yamU3SnBvVHZua25QbDQ2ZXFkNElfWXN4ZWNRV1VKc01TM3k",
-      "description": "Defesa Civil alerta para tempestade severa em cidades de SC &nbsp;&nbsp; Jornal Correio do Norte",
-      "imageUrl": null,
-      "source": "Jornal Correio do Norte",
-      "publishedAt": "2026-11-12T19:30:00.000Z",
-      "firstSeenAt": "2026-11-13T07:01:42.106Z",
-      "lastSeenAt": "2026-11-13T07:01:42.106Z"
-    },
-    {
-      "id": "event-a295c3d0",
-      "category": "clima",
-      "title": "Pico do El Niño no Brasil deve chegar em breve: confira o período previsto",
-      "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxPSnBuazhZNnFmY0VCMFF4X1plUnk0d3c2ZjJtUjk1VmtoZTdtMGlqY3E4MHk1RGNDRnRGdnRCM2Z0Wk1UYnBEdUhlUEFaQURsZU5OUFZGWnJwbHRWdXlSUHpIdTVZZ2dJSHVUVG1JZ0xQc1hhNjlXWnlES1ViME1ha2J6dkRGY2tjRHZIWGQ5U0ZHaVAtRWNJUHd3OU1wUENxY1dPaUJNeGp0VUEtQVB2Yk5oUzRiSzhoblpyVHBGUEw",
-      "description": "Pico do El Niño no Brasil deve chegar em breve: confira o período previsto &nbsp;&nbsp; Concursos no Brasil",
-      "imageUrl": null,
-      "source": "Concursos no Brasil",
-      "publishedAt": "2026-11-12T19:24:26.000Z",
-      "firstSeenAt": "2026-11-13T00:19:13.425Z",
-      "lastSeenAt": "2026-11-13T00:19:13.425Z"
-    },
-    {
-      "id": "event-71657fa8",
-      "category": "mundo",
-      "title": "Parktec CG participa pela primeira vez do Web Summit em Lisboa – CGNotícias",
-      "url": "https://news.google.com/rss/articles/CBMijAJBVV95cUxORHg5UlhtbGhtM1NuSzZ6RWhqeUhheXAxWHppWFJfT21aMXhJbjVjckRIMkFIX1RVM3JsclhpcXBqU3pEVmZPSVdELUlDc3JoNkpKQTd3WS1WNlU5dXF3VFV4aW1RWjFudTI3dVdVSi04WGhDSzZ4d0F5T0Y0YUxIcjBZY3ktOTBLVjllbDB1Vzl1ZEVTQW8zSnZscEJ0VHdNSTNTTmJjcDlMWHA3T3VrY3p3bnNIVU5RMGhyNjBIcTlfUENVMTdtbno3WDhrd1FjdWtTczlOMEtSU1RGSW1fS3l1ZjVFZUdMUWFjQW1HeWFGNzhGelAtVy1ITU1HSUtsWDhveUpzcVA2NDc0",
-      "description": "Parktec CG participa pela primeira vez do Web Summit em Lisboa – CGNotícias &nbsp;&nbsp; Prefeitura de Campo Grande",
-      "imageUrl": null,
-      "source": "Prefeitura de Campo Grande",
-      "publishedAt": "2026-11-12T19:02:00.000Z",
-      "firstSeenAt": "2026-11-13T07:01:42.106Z",
-      "lastSeenAt": "2026-11-13T07:01:42.106Z"
-    },
-    {
-      "id": "event-32db0e55",
-      "category": "mundo",
-      "title": "Papa volta ao Peru, onde foi missionário por 20 anos",
-      "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxPRnFKSmZ2QmVWeER5Y1BfVkduVVZQeGticUhxbG1UQTlfMXpnbjZ3T01EOU03TlRQeFlFOGhuNTJfem52OVhpOXd1QThaMWwxSldlUE1ORERkbTNDT1lDd0g1YldlVGZPNTlBWnFrSTA0emIxY1A5b2RFRkIwazN1T1hHQVZaQ1F1QnAxTFJQMTM4VV9MRDUw",
-      "description": "Papa volta ao Peru, onde foi missionário por 20 anos &nbsp;&nbsp; SBT News",
-      "imageUrl": null,
-      "source": "SBT News",
-      "publishedAt": "2026-11-12T19:00:27.000Z",
-      "firstSeenAt": "2026-11-13T00:19:13.425Z",
-      "lastSeenAt": "2026-11-13T00:19:13.425Z"
-    },
-    {
-      "id": "event-83029234",
-      "category": "mundo",
-      "title": "Resumão: Nvidia, tiroteio em Washington e notícias do dia",
-      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxQbDFNX19LZ3AxTTJZQ1ByLVdPeEJubGoxVWJCRFdMc2hFQTRiM0JqSjh1MDVKVlNWaUtBLU9fQWJSa0ptaVVpeDhpMjJIdnN3ZTlQeUFySW94NmV0ektEa0M2c016TjB6bFlGWkp4YTk1ZDBhaGFPZlkteFB0VFAwSlVtUWhVV2drTEUyaFE5VGxzajVFcXZYWDR1WFV0QmstSzFENENBVEVNNTZVS0E",
-      "description": "Resumão: Nvidia, tiroteio em Washington e notícias do dia &nbsp;&nbsp; Correio do Povo Penedo",
-      "imageUrl": null,
-      "source": "Correio do Povo Penedo",
-      "publishedAt": "2026-11-12T18:35:06.000Z",
-      "firstSeenAt": "2026-11-12T19:00:36.425Z",
-      "lastSeenAt": "2026-11-12T19:00:36.425Z"
-    },
-    {
-      "id": "event-cde9df6b",
-      "category": "clima",
-      "title": "El Niño deve permanecer muito forte até março de 2027, aponta agência climática dos EUA",
-      "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxOSjREQm56cTRUbllnMUhGTk5ISmdzd1VJZ0FGeEppMjdVUzNfYWJKZ25aOE12MU9xeDhHZ3RseEt4dVpYZHFmX20zVEVqRkE5alRnZXJ2em55MkR6Xy1Lc3FkeVMwN3lPOFlvcEFheF9iSkRkX2c4TUItOUpYMmd3bXMxMk5CZERfLXFEMjJuV2xVTWZnTnhMMkJnSXhEcXhaQ1hJeWYyMGlCSnpyM05NXy14TnhreWRiZEhpVA",
-      "description": "El Niño deve permanecer muito forte até março de 2027, aponta agência climática dos EUA &nbsp;&nbsp; Jornal da Fronteira",
-      "imageUrl": null,
-      "source": "Jornal da Fronteira",
-      "publishedAt": "2026-11-12T18:21:55.000Z",
-      "firstSeenAt": "2026-11-12T19:00:36.425Z",
-      "lastSeenAt": "2026-11-13T07:01:42.106Z"
-    },
-    {
-      "id": "event-c2f0f286",
-      "category": "clima",
-      "title": "El Niño pode ser o mais forte em quase 80 anos, alerta agência dos EUA",
-      "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxNUU5icGlzc05lQ0lpbk5VMDFyWXhyZmFkUU16M3F1d1BrVXh4OGFTMXhMakdEVWRpbV9Db1k2aXl5Y1ZfZjBPNE9KN0JHY3htMG9EYS1iVWQ4d2hTU0NkOVB5Z0FaM1BUWFNIUzYyS1M2WEFibzRWcEdWaEZzNnM0MHZCbUlJTndnamtnRWZXajE",
-      "description": "El Niño pode ser o mais forte em quase 80 anos, alerta agência dos EUA &nbsp;&nbsp; Portal MPA",
-      "imageUrl": null,
-      "source": "Portal MPA",
-      "publishedAt": "2026-11-12T18:14:00.000Z",
-      "firstSeenAt": "2026-11-12T19:00:36.425Z",
-      "lastSeenAt": "2026-11-12T19:00:36.425Z"
-    },
-    {
-      "id": "event-2f4390f4",
-      "category": "mundo",
-      "title": "Principais notícias do mundo na tarde de hoje (12)",
-      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPTU1DYjRXZHhXVXNjZmc1MFI0OWxjclBnX2ZndEZtWThmb1lfN045eUlTVjdRSEQ5UEotYl9KREt6b1p1ZUljUjRxaENVeHRPalRRcWNaVTNHQXFxRWFfa0EtN0J5aHdnWlI2MlZCdzdOQmtURXNSenN4c2NIcGx5R25Fc2ljc1BEbFFZUlFhWE45eEUwMW9aMkNBcDBFaENXQkszbEJ3Ykc4Ym1O",
-      "description": "Principais notícias do mundo na tarde de hoje (12) &nbsp;&nbsp; Tribuna do Sertão",
-      "imageUrl": null,
-      "source": "Tribuna do Sertão",
-      "publishedAt": "2026-11-12T18:01:00.000Z",
-      "firstSeenAt": "2026-11-12T19:00:36.425Z",
-      "lastSeenAt": "2026-11-13T07:01:42.106Z"
-    },
-    {
-      "id": "event-7a7a83dc",
-      "category": "clima",
-      "title": "El Niño deve seguir forte até março de 2027 e exige atenção à água e às lavouras",
-      "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE1DalpFS2I1X1c0QVlBOVRfYUZmd3dFSE1ILXVJV1BzaTdyQ05lNVp5MDNoZ3h6d3FJUWRLSS1ITU5KUkVVenM5OGRaQ0ppc0JQSU92NUI0b3FnUGM3RVJyM2xkZw",
-      "description": "El Niño deve seguir forte até março de 2027 e exige atenção à água e às lavouras &nbsp;&nbsp; CompreRural",
-      "imageUrl": null,
-      "source": "CompreRural",
-      "publishedAt": "2026-11-12T17:47:30.000Z",
-      "firstSeenAt": "2026-11-12T19:00:36.425Z",
-      "lastSeenAt": "2026-11-12T19:00:36.425Z"
-    },
-    {
-      "id": "event-381e5723",
-      "category": "brasil",
-      "title": "Cacique Raoni está internado em Mato Grosso; quadro de saúde é estável",
-      "url": "https://agenciabrasil.ebc.com.br/direitos-humanos/noticia/2026-11/cacique-raoni-esta-internado-em-mato-grosso-quadro-de-saude-e-estavel",
-      "description": "O cacique Raoni Metuktire, de 94 anos, está internado há quatro dias no Hospital Regional de Peixoto de Azevedo, em Mato Grosso, devido a uma infecção pulmonar e também para acompanhamento da pressão arterial. O quadro de saúde é considerado estável. No boletim médico mais recente, a família de Raoni pede que “todos respeitem a privacidade do cacique e de seus familiares para que ele possa receber os cuidados necessários com tranquilidade” . Notícias relacionadas: Cacique Raoni, de 94 anos, recebe cuidados paliativos em Mato Grosso. Cacique Raoni tem alta hospitalar. O líder indígena foi submetido a uma terapia à base de antibióticos, e os médicos também atuam no controle da pressão com a administração de medicamentos vasoativos. Ele segue se alimentando por via oral e respirando sem a ajuda de aparelhos. Raoni foi atendido inicialmente na Unidade de Pronto Atendimento (UPA) de Peixoto de Azevedo e encaminhado para o hospital regional onde se encontra internado. O cacique foi diagnosticado em setembro deste ano com câncer no sistema digestório e recebe cuidados paliativos em casa . I",
-      "imageUrl": "https://imagens.ebc.com.br/ZJVFINPf1fqjijtt3eLY9QjTRHs=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2025/11/16/_rbr7672.jpg?itok=42_uX9kL",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-12T17:44:00.000Z",
-      "firstSeenAt": "2026-11-12T19:00:36.425Z",
-      "lastSeenAt": "2026-11-12T19:00:36.425Z"
-    },
-    {
-      "id": "event-e4efa481",
-      "category": "brasil",
-      "title": "Fiocruz: aumentam casos de síndrome respiratória aguda por covid-19",
-      "url": "https://agenciabrasil.ebc.com.br/saude/noticia/2026-11/fiocruz-aumentam-casos-de-sindrome-respiratoria-aguda-por-covid-19",
-      "description": "Os casos confirmados de síndrome respiratória aguda grave (SRAG) por covid-19 tiveram alta no país no início de novembro , informou nesta quinta-feira (12) a Fundação Oswaldo Cruz (Fiocruz), no Boletim Infogripe . A Fiocruz ressalta, entretanto, que o número de casos graves por covid-19 permanece em níveis baixos. Notícias relacionadas: Covid-19: pelo menos 5 estados registram aumento de casos graves. Nas últimas quatro semanas, 11,5% das hospitalizações e 26,9% das mortes por SRAG viral foram causadas pelo coronavírus Sars-CoV-2, causador da doença. O boletim foi atualizado com os dados de 1º a 7 novembro que foram inseridos no Sistema de Informação da Vigilância Epidemiológica da Gripe (Sivep-Gripe) até o último sábado (7). Apesar do aumento das confirmações de covid-19, os casos de SRAG, de forma geral, apresentam tendência de queda no país. Vacinação A pesquisadora Tatiana Portella, da Fiocruz, avalia que a situação não é preocupante, mas deve servir como um lembrete para a população se vacinar. Grupos prioritários precisam ser imunizados todos os anos contra a doença, e alguns g",
-      "imageUrl": "https://imagens.ebc.com.br/RfM3RgZAViTWydxzY-drxOSATHo=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2025/10/21/pint4215.jpg?itok=jfdXJE7B",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-12T17:43:00.000Z",
-      "firstSeenAt": "2026-11-12T19:00:36.425Z",
-      "lastSeenAt": "2026-11-12T19:00:36.425Z"
-    },
-    {
-      "id": "event-d4c64a3e",
-      "category": "santa-catarina",
-      "title": "El Niño muito forte deve persistir até março de 2027",
-      "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxOcG1xTnlsYXpBeHk2U3kybEdIZkUyUmNKZTZ6MDdRbDEyMjloR1E4VXI2Qkk2UXRGME11NTlTNmY5dFNmOF9HVDZIeXltRDdUWlg3LW9VSTROOFF6NkJ6WDhkQWc5Y3BXZEd1OFA4OUxuTkRSWm1GdTNKSWE0YlMxd2Y4MmlOY0QtUDkwUXNiUnRUdmdOM3JSVHVwcUtaZV84MlE",
-      "description": "El Niño muito forte deve persistir até março de 2027 &nbsp;&nbsp; Folha Regional",
-      "imageUrl": null,
-      "source": "Folha Regional",
-      "publishedAt": "2026-11-12T17:35:00.000Z",
-      "firstSeenAt": "2026-11-12T19:00:36.425Z",
-      "lastSeenAt": "2026-11-12T19:00:36.425Z"
-    },
-    {
-      "id": "event-c9c06938",
-      "category": "santa-catarina",
-      "title": "Defesa Civil alerta para temporais em parte do estado nesta quinta",
-      "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNZDI1NFRSS243bjQyVWNFVUlBTi1KcUZNUGt6MDJ2YV96bDFIOUw3YnNveTVZR3hjS0NZaW9EN085alNBYjYtSHUyOUN4WFdkaW12TWJtbzJtOXBVekZ0dUFzYlh0TVZGbzk0U0R2SGFvYmVBZi1aSGhUWWJpeEV0bmNEeVdSbVJkQXpITGhicDN6TzNWUXNTWjBCd28",
-      "description": "Defesa Civil alerta para temporais em parte do estado nesta quinta &nbsp;&nbsp; Portal TN Sul",
-      "imageUrl": null,
-      "source": "Portal TN Sul",
-      "publishedAt": "2026-11-12T17:30:00.000Z",
-      "firstSeenAt": "2026-11-12T19:00:36.425Z",
-      "lastSeenAt": "2026-11-13T00:19:13.425Z"
-    },
-    {
-      "id": "event-9b52f6c1",
-      "category": "africa",
-      "title": "COP31: Presidente moçambicano defende resposta atempada em África - Notícias ao Minuto",
-      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNVkgxVDdxd1FWSTAyV3JhTXBSeXp0c0pMR2x5cnJ6MnpWbjZ5cU80WlRMRlk4Qm1ZMmdvdXJjSmhFOXFiZVZQaHFlSVpLTUVoTjk3aTh5bGlEd0Z2cDlGTWNxQUl2RGdwZmxxRFJBOTJLc2VZVTVCbHpoVHFmZFlJTzFvQUdEenZzTTg3UWFVV0xHREFtOEhjX3k0ZXNOdGdqbmFFcEVUTkw0NkJRVTVqMQ",
-      "description": "COP31: Presidente moçambicano defende resposta atempada em África &nbsp;&nbsp; Notícias ao Minuto",
-      "imageUrl": null,
-      "source": "Notícias ao Minuto",
-      "publishedAt": "2026-11-12T17:00:00.000Z",
-      "firstSeenAt": "2026-11-13T00:19:13.425Z",
-      "lastSeenAt": "2026-11-13T15:22:48.310Z"
-    },
-    {
-      "id": "event-20b96ddc",
-      "category": "brasil",
-      "title": "Temporais no Brasil: entenda como El Niño influencia eventos meteorológicos",
-      "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxNUDRVd0V3UVFxWVItY212dFNucnRoYUI4ZXZYRFJvWV9TOGtkVk5TRTdRNzFsNy1TbEdfUVFRY1NMUnN3WFlWSEFpWVlFcDBtUXcxY1FYUWhyRW9CYnlsdDBreEZ1aWVQR0pTWU1wWWwtaTlRWU9NYW41UDFNNHNOWjJTZ1dCZTJGQmdxaUtaTllTRHVoeHFuZjJReTI3dGdJZHl2UGFoNWF1c1FiUS1lUG5CZkV6bXQxT3g1bw",
-      "description": "Temporais no Brasil: entenda como El Niño influencia eventos meteorológicos &nbsp;&nbsp; CNN Brasil",
-      "imageUrl": null,
-      "source": "CNN Brasil",
-      "publishedAt": "2026-11-12T16:48:28.000Z",
-      "firstSeenAt": "2026-11-12T19:00:36.425Z",
-      "lastSeenAt": "2026-11-12T19:00:36.425Z"
-    },
-    {
-      "id": "event-5314f998",
-      "category": "brasil",
-      "title": "Congresso muda orçamento em favor da Copa do Mundo de futebol feminino",
-      "url": "https://agenciabrasil.ebc.com.br/esportes/noticia/2026-11/congresso-muda-orcamento-favor-da-copa-do-mundo-de-futebol-feminino",
-      "description": "O Congresso Nacional aprovou, nesta quinta-feira (12), projeto de lei que flexibiliza regras fiscais e orçamentárias para a realização da Copa do Mundo Feminina da Fifa 2027 , no Brasil entre 24 de junho e 25 de julho. De autoria da Presidência da República, o Projeto de Lei do Congresso Nacional (PLN) nº 7 de 2026 prevê exceções pontuais a algumas regras Lei de Diretrizes Orçamentárias (LDO) de 2026 e da Lei de Responsabilidade Fiscal . Entre os pontos que podem ser flexibilizados, estão: proibição de criação de novas despesas obrigatórias em 2026; exigência de comprovação de que despesas continuadas não comprometem o cumprimento da meta fiscal; apresentação de estimativa do impacto orçamentário-financeiro; restrição à contratação de novo empréstimo quando houver outro da mesma natureza ainda não quitado; limitações à ampliação, à prorrogação ou à extensão de benefícios tributários. Notícias relacionadas: Definidas as regras para o sorteio dos grupos da Copa feminina de 2027. CBF divulga calendário masculino para 2027 com pausa da Copa Feminina. Maracanã será palco de abertura da Co",
-      "imageUrl": "https://imagens.ebc.com.br/y0YS2oALft75z__EnL9yfn8w2ac=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/09/16/cbf_anuncia_amistosos_da_selecao_feminina_em_palcos_da_copa_do_mundo.jpg?itok=RzS2OtL0",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-12T16:47:00.000Z",
-      "firstSeenAt": "2026-11-12T19:00:36.425Z",
-      "lastSeenAt": "2026-11-12T19:00:36.425Z"
-    },
-    {
-      "id": "event-5eb439da",
-      "category": "europa",
-      "title": "Putin diz que Rússia está aberta a dialogar com a Europa - SBT News",
-      "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPT2RiSExTc0M2UTJpY3VjbEJ5eG1BTExnZWhwWFp1ZmJBbUhqSkJlb19pQjZZWFVLVVhSeG0ydGxnU0ZEbFhGODVkblptMVlmVDU5bG53SXhKQy04bDlOUk52MVBTc3JaQWJTYUwzZG9rdjdfa3VJTjU1V2xHWFpIX3FvZElEVUpxR09HV1Z3NXpmOG9wV1MxSFc1MA",
-      "description": "Putin diz que Rússia está aberta a dialogar com a Europa &nbsp;&nbsp; SBT News",
-      "imageUrl": null,
-      "source": "SBT News",
-      "publishedAt": "2026-11-12T16:43:55.000Z",
-      "firstSeenAt": "2026-11-13T00:19:13.425Z",
-      "lastSeenAt": "2026-11-13T00:19:13.425Z"
-    },
-    {
-      "id": "event-fae7b360",
-      "category": "mundo",
-      "title": "Hoje no TecMundo (11): GTA 6 é recorde de pré-venda, Google lança nova IA e mais",
-      "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxQSDNiSG1HREwzbHVqV21lakExWGRjRnVBR04tNkt1MkpZcmRCeHVpbDYxeGV5azk3dlUtYjlZVVRmSmRHdW1vLUVXV3k2alNxZms4bDhLRWl5WGtJV1JnVmxsM0VnREl6aUU5Y2d5dUl1MUxWbmZuU295bGg1R0dWaHJuTUJnWVVJN2Q4NFNDNmk1WjlHQ19NN3pMUUo5SU9nMDFxMWFLbnUybWZIVjZMMTMzVktZaVFSM3R4OUJaX3fSAcYBQVVfeXFMT2tySDdQOGpBRElzME9SbHNlZjctWVh2cUNjRDVHdmJKbV9ZU2x0MFFtNWhxREhmWlplMlVIQ2ZWY0dMMWhRWXR5RDdDVlh3R2hjamRTRlhsMGYyTG9nVG4xZHZJa3RIMzJjMkpqZjBhSzVySjk5eUk2MTNYcERIWE9lYWd6aXh0MldVSGp5WWNCdzBfaHhmcWs3dE8xOEJVQnNnLUVzNml4eFlMdlBkRVNLWVp4YTFGMGxLMTVacWs4QnFySVFB",
-      "description": "Hoje no TecMundo (11): GTA 6 é recorde de pré-venda, Google lança nova IA e mais &nbsp;&nbsp; Estadão",
-      "imageUrl": null,
-      "source": "Estadão",
-      "publishedAt": "2026-11-12T16:36:49.000Z",
-      "firstSeenAt": "2026-11-12T19:00:36.425Z",
-      "lastSeenAt": "2026-11-12T19:00:36.425Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-12T19:00:36.425Z",
-      "ok": true,
-      "partial": true,
-      "observedArticles": 14,
-      "newArticles": 12,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "europa"
-      ],
-      "inmetChecked": false,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-13T00:19:13.425Z",
       "ok": true,
@@ -628,14 +528,31 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-13T21:28:55.699Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 15,
+      "newArticles": 14,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "europa",
+        "africa"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 4,
-  "lastSuccessfulAt": "2026-11-13T15:22:48.310Z",
+  "lastSuccessfulAt": "2026-11-13T21:28:55.699Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-13T15:22:48.310Z",
+      "checkedAt": "2026-11-13T21:28:55.699Z",
       "warnings": [
         {
           "id": "56395",
@@ -707,7 +624,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-13T15:22:48.310Z",
+      "checkedAt": "2026-11-13T21:28:55.699Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
