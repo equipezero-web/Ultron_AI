@@ -1,0 +1,53 @@
+/* J.A.R.V.I.S. Phase XIX — compact mathematical scenario, existing Neural Ring only. */
+body.jarvis-command-center .jarvis-cc-center>.jarvis-advanced-scenario{
+ position:absolute;right:10px;bottom:12px;z-index:244;
+ width:min(395px,calc(100% - 20px));max-height:min(86%,560px);
+ overflow:auto;box-sizing:border-box;padding:12px;border-radius:14px;
+ border:1px solid rgba(111,207,230,.52);color:#e9f4fb;
+ background:rgba(3,12,22,.96);box-shadow:0 8px 30px rgba(0,0,0,.42);
+ font:13px/1.4 system-ui,-apple-system,Segoe UI,sans-serif;
+}
+body.jarvis-command-center .jarvis-advanced-scenario[hidden]{display:none!important;}
+body.jarvis-command-center .jarvis-advanced-scenario-head{
+ display:flex;align-items:center;justify-content:space-between;gap:8px;
+ font-size:12px;letter-spacing:.02em;
+}
+body.jarvis-command-center .jarvis-advanced-scenario-head strong{min-width:0;overflow-wrap:anywhere;}
+body.jarvis-command-center .jarvis-advanced-scenario-head button{
+ color:#fff;background:rgba(105,146,167,.14);border:1px solid rgba(170,214,232,.5);
+ border-radius:8px;font-size:22px;width:34px;min-width:34px;height:34px;
+ cursor:pointer;
+}
+body.jarvis-command-center .jarvis-advanced-scenario-meta{
+ margin:6px 0;font-size:11px;color:#b6d0de;overflow-wrap:anywhere;
+}
+body.jarvis-command-center .jarvis-advanced-scenario-controls{
+ display:flex;gap:12px;align-items:center;margin:6px 0 8px;
+}
+body.jarvis-command-center .jarvis-advanced-scenario-controls div{display:flex;gap:5px;}
+body.jarvis-command-center .jarvis-advanced-scenario-controls button{
+ color:#e7f4fa;background:rgba(76,132,164,.15);
+ border:1px solid rgba(115,194,213,.5);border-radius:6px;padding:6px 10px;
+ font-weight:700;cursor:pointer;min-height:32px;
+}
+body.jarvis-command-center .jarvis-advanced-scenario-controls button[aria-pressed="true"]{
+ color:#06131e;background:#84dbe9;
+}
+body.jarvis-command-center .jarvis-advanced-scenario-controls input{
+ flex:1;min-width:40px;accent-color:#84dbe9;
+}
+body.jarvis-command-center .jarvis-advanced-scenario canvas{
+ display:block;width:100%;height:auto;max-width:100%;border-radius:8px;
+ border:1px solid rgba(111,207,230,.2);
+}
+body.jarvis-command-center .jarvis-advanced-scenario-disclaimer{
+ margin:7px 0 0;color:#f3cf98;font-size:11px;line-height:1.45;
+}
+@media(max-width:600px){
+ body.jarvis-command-center .jarvis-cc-center>.jarvis-advanced-scenario{
+  left:8px;right:8px;bottom:8px;width:auto;max-height:75%;padding:9px;
+ }
+ body.jarvis-command-center .jarvis-advanced-scenario-controls button{
+  min-height:36px;min-width:40px;
+ }
+}
