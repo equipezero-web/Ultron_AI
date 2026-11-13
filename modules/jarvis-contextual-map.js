@@ -3,7 +3,18 @@ import {contextualGeoScene} from "./jarvis-contextual-geo.js";
 // Phase X: visual actions run only after explicit operator click/command.
 // Wake notifications remain read-only text; no automatic camera movement.
 const output=document.getElementById("output-box");
-let requestId=0,lastMap=null;
+let requestId=0,lastMap=null,lastFingerprint=null;
+// The digest's generatedAt changes on each harmless preview. Compare the
+// validated source points instead, so moving within the SAME observation set
+// focuses the existing map without rebuilding Globe.gl or SVG.
+function fingerprint(scenario){
+ const points=scenario?.frames?.[0]?.points;
+ if(!Array.isArray(points))return null;
+ return JSON.stringify(points.map(p=>({
+   id:p.id,name:p.name,lat:p.lat,lng:p.lng,kind:p.kind,
+   source:p.source,observedAt:p.observedAt
+ })).sort((a,b)=>a.id.localeCompare(b.id)));
+}
 function log(msg){
  if(!output)return;
  const p=document.createElement("p");
@@ -61,7 +72,7 @@ async function open({view="2d",focusKey=null}={}){
    selectedPoint:chosen.focusPointId,pointCount:chosen.candidateCount,
    representative:chosen.representative===true,checkedAt:digest.generatedAt
   };
-  lastMap=result;
+  lastMap=result;lastFingerprint=fingerprint(chosen.scenario);
   log("MAPA "+(selectedMode==="3d"?"3D":"2D")+" // "+result.eventName+
     " // "+result.pointCount+" registro(s) de fontes verificadas. "+
     (fallback3d?"Globo indisponível; mapa 2D ativado. ":"")+
@@ -90,7 +101,7 @@ async function focus({focusKey,view=null}={}){
  // When a snapshot changed, reinitialize with its actual points. Otherwise
  // a repeated ID could point at an outdated or unrelated observation.
  if(!map?.state?.visible||map.state.scenario!==selected.scenario.id||
-    lastMap?.checkedAt!==digest.generatedAt){
+    lastFingerprint!==fingerprint(selected.scenario)){
    return open({view:mode,focusKey});
  }
  const serial=++requestId;
