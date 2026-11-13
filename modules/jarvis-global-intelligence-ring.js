@@ -352,7 +352,7 @@ if(stage){
    try{
     const candidate=new URL(String(item.url||""));
     if(candidate.protocol==="https:"&&!candidate.username&&!candidate.password&&!candidate.port&&
-       !/^(?:localhost|\\d+\\.\\d+\\.\\d+\\.\\d+|\\[.+\\])$/i.test(candidate.hostname))
+       !/^(?:localhost|\d+\.\d+\.\d+\.\d+|\[.+\])$/i.test(candidate.hostname))
       url=candidate.href;
    }catch{}
    const headline=elt(url?"a":"span","",clean(item.title||"Sem título",135));
