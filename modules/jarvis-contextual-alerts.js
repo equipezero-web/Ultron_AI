@@ -25,7 +25,7 @@ function currentData(){
   archive:window.ULTRON_INTELLIGENCE?.visualData?.history||null
  };
 }
-function publish(digest,{wake=false}={}){
+function publish(digest,{wake=false,manual=false}={}){
  const items=digest.items.slice(0,3).map(item=>({
   type:item.type,title:item.title,source:item.source,url:item.url,
   verifiedLabel:item.verifiedLabel,region:item.region,
@@ -33,7 +33,7 @@ function publish(digest,{wake=false}={}){
  }));
  window.dispatchEvent(new CustomEvent("ultron:contextual-priorities",{
   detail:{
-   ok:true,waking:wake,items,newCount:digest.newCount,
+   ok:true,waking:wake,manual,items,newCount:digest.newCount,
    worldState:digest.worldState,archiveState:digest.archiveState,
    summary:"PRIORIDADES // "+digest.items.length+" registros de fontes verificadas · "+
     digest.newCount+" não exibido(s) na última revisão.",
@@ -49,7 +49,7 @@ function render({wake=false,manual=false,quiet=false}={}){
    digest.archiveState==="verified");
  if(!available){
   if(!quiet)log("Fontes persistidas não verificadas ou desatualizadas; nenhuma prioridade atual será presumida.");
-  publish(digest,{wake});
+  publish(digest,{wake,manual});
   return digest;
  }
  if(wake||manual){
