@@ -53,4 +53,7 @@ jobs:
           node tests/jarvis-neural-responsive-gold-browser.mjs
       - name: Legacy Neural Jarvis interaction check
         run: |
-          JARVIS_TEST_URL=http://127.0.0.1:8770/ node tests/jarvis-neural-jarvis-browser.mjs
+          # The existing legacy test intentionally intercepts port 8769.
+          python3 -m http.server 8769 --bind 127.0.0.1 >/tmp/neural-legacy-http.log 2>&1 &
+          sleep 2
+          node tests/jarvis-neural-jarvis-browser.mjs
