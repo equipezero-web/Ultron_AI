@@ -498,6 +498,9 @@ function enqueue(message, source = "terminal", approvedMission = false) {
     queueGeneration += 1;
     missionGate.clear();
     activeController?.abort();
+    // Also attempt to revoke already-submitted commands still pending in D1.
+    // This is best-effort: a claimed command cannot be undone.
+    void window.ULTRON_DEVICES?.cancelOutstandingCommands?.();
     log("P0 STOP // tarefas pendentes descartadas e próximas etapas interrompidas. Uma operação já enviada a outro dispositivo pode ainda terminar.");
     return Promise.resolve({ok:true,status:"cancelled",route:"p0-stop"});
   }
