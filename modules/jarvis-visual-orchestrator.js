@@ -19,11 +19,10 @@ function log(message){
  output.appendChild(p);output.scrollTop=output.scrollHeight;
 }
 function data(){
- return {
-  digest:window.ULTRON_CONTEXTUAL?.preview?.()||null,
-  news:window.ULTRON_NEURAL_NEWS?.state||null,
-  now:Date.now()
- };
+ let digest=null,news=null;
+ try{digest=window.ULTRON_CONTEXTUAL?.preview?.()||null;}catch{}
+ try{news=window.ULTRON_NEURAL_NEWS?.state||null;}catch{}
+ return {digest,news,now:Date.now()};
 }
 function plan(){return buildVisualStoryboard(data());}
 function publish(detail){
@@ -196,11 +195,13 @@ async function start({scene="auto"}={}){
 async function step(direction){
  if(!active||!nav)return {ok:false,error:"Inicie a apresentação visual"};
  if(direction!==1&&direction!==-1)return {ok:false,error:"Direção inválida"};
- const state=nav.snapshot();
- const nextIndex=state.index+direction;
- if(nextIndex<0||nextIndex>=state.count)return {ok:false,error:"Fim das cenas disponíveis"};
- return show((()=>{const current=plan();return current.scenes.find(x=>x.id===state.current.id)
-  ? current.scenes[nextIndex]?.id : null;})()||"expired");
+ const state=nav.snapshot(),current=plan();
+ const currentIndex=current.scenes.findIndex(x=>x.id===state.current.id);
+ if(currentIndex<0)return {ok:false,error:"A cena atual perdeu a confirmação das fontes"};
+ const nextIndex=currentIndex+direction;
+ if(nextIndex<0||nextIndex>=current.scenes.length)
+  return {ok:false,error:"Fim das cenas disponíveis"};
+ return show(current.scenes[nextIndex].id);
 }
 function stop(){
  if(!active&&!busy)return {ok:true,stopped:false};
