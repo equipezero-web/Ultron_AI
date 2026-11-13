@@ -52,6 +52,7 @@ export function buildContinuityStatus({
      id:safe(e.id,90),kind:safe(e.kind,35),title:safe(e.title,170),
      source:e.source.toUpperCase(),eventAt:e.eventAt,
      url:safeSourceLink(e.url,e.source),nearBrazil:e.nearBrazil===true,
+     lat:e.lat,lng:e.lng,representative:e.representative===true,
      alertLevel:e.source==="gdacs"&&["red","orange","green"].includes(e.gdacsAlert)
        ?e.gdacsAlert:null
    }));
