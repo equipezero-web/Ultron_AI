@@ -161,12 +161,12 @@ try{
     multimodal:window.ULTRON_MULTIMODAL.state,
     director:window.ULTRON_VISUAL_ORCHESTRATOR.state};
  });
- console.log("PHASE XIII P0 receipt",JSON.stringify(canceledScenario));
  assert.equal(canceledScenario.busyBefore,true,JSON.stringify(canceledScenario));
  assert.equal(canceledScenario.competing.ok,false);
  assert.equal(canceledScenario.competing.reason,"CONTEXT_BUSY");
  assert.equal(canceledScenario.stop.ok,true);
- assert.equal(canceledScenario.stop.status,"cancelled");
+ assert.equal(canceledScenario.stop.priority,"P0",JSON.stringify(canceledScenario));
+ assert.equal(canceledScenario.stop.stopped,true);
  assert.equal(canceledScenario.canceled.ok,false);
  assert.equal(canceledScenario.canceled.cancelled,true);
  assert.equal(canceledScenario.multimodal.busy,false);
