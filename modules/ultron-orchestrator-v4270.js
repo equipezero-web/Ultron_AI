@@ -537,6 +537,9 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
     log(`FINAL // ${finalStatus.toUpperCase()} // ${parts.length > 1 ? "MULTI-STEP" : (finalRoute || "CORE")}.`, finalStatus === "failed");
     return { ok: finalStatus === "completed", status: finalStatus, runId: run.runId, results };
   } catch (error) {
+    const currentMission=missionJournal.get(run.runId);
+    const activeIndex=currentMission?.steps.findIndex(item=>item.status==="running")??-1;
+    if(activeIndex>=0)missionJournal.finishStep(run.runId,activeIndex,signal.aborted?"cancelled":"failed",finalRoute||"orchestrator");
     if (signal.aborted) {
       missionJournal.finish(run.runId,"cancelled");
       await finishRun(run, "cancelled", "p0-stop", { source, completedSteps: results.length });
