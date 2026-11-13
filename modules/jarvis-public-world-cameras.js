@@ -4,7 +4,6 @@ import {PUBLIC_WORLD_CAMERAS, CAMERA_CATEGORY_NAMES, WORLD_CAMERAS_HOME,
 
 // Public third-party webcams only. Nothing here activates user/device cameras.
 // Playing a listed stream is NOT proof that its owner is currently broadcasting.
-const stage=document.querySelector(".jarvis-cc-center");
 const output=document.getElementById("output-box");
 const make=(tag,cls,txt)=>{
  const el=document.createElement(tag);if(cls)el.className=cls;
@@ -70,8 +69,11 @@ function optionList(select,entries){
  }
 }
 function build(){
- if(panel)return true;
- if(!stage){say("Neural Ring indisponível para a central de câmeras.");return false;}
+ if(panel?.isConnected)return true;
+ // The command center is dynamically mounted after this module loads.
+ const stage=document.querySelector(".jarvis-cc-center");
+ if(!stage){say("Neural Ring ainda não montado. Tente novamente após a inicialização.");return false;}
+ panel=null;
  panel=make("section","jarvis-worldcam-panel");
  panel.hidden=true;panel.setAttribute("role","region");
  panel.setAttribute("aria-label","Câmeras públicas pelo mundo");
