@@ -5,7 +5,7 @@ const stage=document.querySelector(".jarvis-cc-center");
 if(stage){
  const panel=document.createElement("section");
  panel.className="jarvis-meteo-center";panel.hidden=true;
- panel.setAttribute("aria-label","Centro meteorológico JARVIS dentro do Neural Ring");
+ panel.setAttribute("aria-label","Centro meteorológico JARVIS dentro do Neural Jarvis");
  const head=document.createElement("header");head.className="jarvis-meteo-head";
  const title=document.createElement("strong");title.textContent="J.A.R.V.I.S. // METEOROLOGIA";
  const closeButton=document.createElement("button");closeButton.textContent="×";closeButton.type="button";
@@ -265,7 +265,7 @@ if(stage){
  async function open({tab="radar",view:desiredView="2d",refresh=false}={}){
    if(!Object.hasOwn(METEO_VIEWERS,tab))return {ok:false,error:"Fonte desconhecida."};
    const token=++loadToken;current=tab;view=desiredView==="3d"?"3d":"2d";
-   if(!stage)return {ok:false,error:"Neural Ring indisponível."};
+   if(!stage)return {ok:false,error:"Neural Jarvis indisponível."};
    window.ULTRON_GEO_VISUAL?.close?.();window.ULTRON_NEURAL_ANSWER?.clear?.();
    if(tab!=="apac"||view!=="3d")window.ULTRON_EARTH?.close?.();
    resetContent();panel.hidden=false;

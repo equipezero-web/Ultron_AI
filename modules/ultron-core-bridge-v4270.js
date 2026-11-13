@@ -116,7 +116,7 @@ async function ask(message) {
     const provider = data.providerLabel || data.provider || "AI";
     log(`ULTRON [${provider}]: ${data.text}`);
     // The orchestrator handles both typed and spoken commands. Publish the
-    // answer to the same Neural Ring surface before audio or legacy visuals.
+    // answer to the same Neural Jarvis surface before audio or legacy visuals.
     if(data?.text)TASK_CONTEXT?.captureQuestion(clean);
     emit("answer",{text:data.text,visualContext:data.visualContext,webResearch:data.webResearch});
     prepareVisual(data);

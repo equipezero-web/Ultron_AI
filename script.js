@@ -249,7 +249,7 @@ async function execute() {
 
   addLog(output, `OPERATOR: ${command}`);
   // Geographic intent is independent from the optical camera and AI vision.
-  // Direct Neural Ring globe command when the orchestrator is temporarily unavailable.
+  // Direct Neural Jarvis globe command when the orchestrator is temporarily unavailable.
   // Example: "Jarvis, no globo ache a China".
   const scoped = command.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
     .trim().replace(/^(?:jarvis|ultron)[, ]+/, '')

@@ -1,4 +1,4 @@
-// Live-image sources used directly INSIDE the existing Neural Ring.
+// Live-image sources used directly INSIDE the existing Neural Jarvis.
 // Never confuse observed radar echoes, GOES imagery, APAC gauges and forecasts.
 export const RAINVIEWER_META="https://api.rainviewer.com/public/weather-maps.json";
 export const RAINVIEWER_ATTRIBUTION="https://www.rainviewer.com/";

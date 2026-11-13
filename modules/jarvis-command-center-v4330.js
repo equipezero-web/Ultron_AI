@@ -13,10 +13,10 @@ if (stage) {
       <section class="jarvis-cc-widget"><header>TELEMETRY <span>LIVE</span></header><div class="jarvis-cc-wave" aria-hidden="true"></div><div class="jarvis-cc-metric">CORE STATUS <b id="jarvis-cc-metric">READY</b></div><div class="jarvis-cc-metric">BRIDGE <b>REMOTE</b></div></section>
       <section class="jarvis-cc-widget"><header>SUBSYSTEMS <span>LINK</span></header><div class="jarvis-cc-metric">VOICE <b>ENABLED</b></div><div class="jarvis-cc-metric">CAMERA <b>ON DEMAND</b></div><div class="jarvis-cc-metric">DEVICES <b>GATEWAY</b></div></section>
     <div id="jarvis-cc-link-slot"></div></aside>
-    <div class="jarvis-cc-center"><div class="jarvis-cc-heading">J.A.R.V.I.S. <span>// HOLOGRAPHIC COMMAND</span></div><div class="jarvis-cc-visual"><canvas id="jarvis-cc-canvas" aria-label="Visualização holográfica do globo terrestre" role="img"></canvas><div class="jarvis-cc-orb-label" id="jarvis-cc-visual-label">NEURAL RING</div></div><div class="jarvis-cc-camera-slot" id="jarvis-cc-camera-slot"></div><div class="jarvis-cc-orb-controls"><button type="button" data-visual="ring" aria-pressed="true" title="Exibir anel holográfico">◎</button><button type="button" data-visual="globe" aria-pressed="false" title="Mostrar globo terrestre">◉</button></div></div>
+    <div class="jarvis-cc-center"><div class="jarvis-cc-heading">NEURAL JARVIS <span>// MATRIZ HOLOGRÁFICA</span></div><div class="jarvis-cc-visual"><canvas id="jarvis-cc-canvas" aria-label="Visualização 3D do Neural Jarvis" role="img"></canvas><div class="jarvis-cc-orb-label" id="jarvis-cc-visual-label">NEURAL JARVIS</div></div><div class="jarvis-cc-camera-slot" id="jarvis-cc-camera-slot"></div><div class="jarvis-cc-orb-controls"><button type="button" data-visual="ring" aria-pressed="true" title="Exibir a matriz holográfica Neural Jarvis">◎</button><button type="button" data-visual="globe" aria-pressed="false" title="Mostrar globo terrestre">◉</button></div></div>
     <aside class="jarvis-cc-right"><div id="jarvis-cc-voice-slot"></div><div id="jarvis-cc-infra-slot"></div></aside><div class="jarvis-cc-bottom"><div class="jarvis-cc-responses"><div class="jarvis-cc-responses-title">J.A.R.V.I.S // RESPOSTAS E EVENTOS</div><div id="jarvis-cc-response-slot"></div></div><div id="jarvis-cc-input-slot"></div><div class="jarvis-cc-actions">
       <button type="button" data-cc="earth">GLOBO 3D</button>
-      <button type="button" data-cc="ring">VOLTAR AO RING</button>
+      <button type="button" data-cc="ring">VOLTAR AO NEURAL JARVIS</button>
       <button type="button" data-cc="status">SISTEMA</button>
       <button type="button" data-cc="agenda">AGENDA</button>
       <button type="button" data-cc="camera">CÂMERA</button>
@@ -143,18 +143,30 @@ if (stage) {
   async function bootNeuralRing() {
     if (ringEngine) return ringEngine;
     if (ringPromise) return ringPromise;
-    ringPromise = import('./jarvis-neural-ring-3d.js?v=4.92.0')
-      .then(module => module.createNeuralRing3D(canvas,{onError:report3D}))
+    ringPromise = import('./jarvis-neural-jarvis-3d.js?v=5.31.0')
+      .then(module => module.createNeuralJarvis3D(canvas,{onError:report3D}))
+      .catch(error=>{
+        logEvent('NEURAL JARVIS // WebGL principal não iniciou: '+(error?.message||'desconhecido')+
+          ' // tentando motor de reserva');
+        return import('./jarvis-neural-ring-3d.js?v=4.92.0')
+          .then(module=>module.createNeuralRing3D(canvas,{onError:report3D}));
+      })
       .then(engine => {
         ringEngine = engine;
         visual.classList.remove('jarvis-ring-fallback');
         engine.setVisible(visualMode === 'ring');
-        window.ULTRON_NEURAL_RING_3D = {
-          engine:'webgl', get active(){return engine.active;}, get rings(){return engine.rings;},
-          setVisible:engine.setVisible, resize:engine.resize, reset:engine.reset,
-          zoomBy:engine.zoomBy,
+        window.ULTRON_NEURAL_JARVIS = {
+          engine:engine.engine, architecture:engine.architecture||null,
+          get active(){return engine.active;},get rings(){return engine.rings;},
+          setVisible:engine.setVisible,resize:engine.resize,reset:engine.reset,
+          zoomBy:engine.zoomBy,setAudioBands:engine.setAudioBands||(()=>{}),
+          setOverdrive:engine.setOverdrive||null,
+          setExpanded:engine.setExpanded||null,
           get state(){return engine.state;}
         };
+        // Legacy handle and events remain for existing global intelligence modules.
+        window.ULTRON_NEURAL_RING_3D=window.ULTRON_NEURAL_JARVIS;
+        window.dispatchEvent(new CustomEvent('ultron:neural-jarvis-ready'));
         window.dispatchEvent(new CustomEvent('ultron:neural-ring-3d-ready'));
         return engine;
       })
@@ -169,7 +181,7 @@ if (stage) {
   function setVisualMode(mode) {
     visualMode = mode === 'globe' ? 'globe' : 'ring';
     visual.dataset.mode = visualMode;
-    visualLabel.textContent = visualMode === 'globe' ? 'GLOBO TERRESTRE' : 'NEURAL RING // 3D';
+    visualLabel.textContent = visualMode === 'globe' ? 'GLOBO TERRESTRE' : 'NEURAL JARVIS // 3D';
     ui.querySelectorAll('[data-visual]').forEach(button => {
       button.setAttribute('aria-pressed',String(button.dataset.visual === visualMode));
     });
@@ -355,7 +367,7 @@ if (stage) {
         if (!earth?.open) throw new Error('Motor terrestre não inicializado');
         const result = await earth.open();
         if (result?.ok === false) throw new Error(result.error || 'Globo indisponível');
-        logEvent('EARTH // GLOBO ATIVO NO NEURAL RING');
+        logEvent('EARTH // GLOBO ATIVO NO NEURAL JARVIS');
       } catch (error) {
         logEvent('EARTH // ' + (error?.message || 'globo indisponível'));
       } finally { openingEarth = false; }
@@ -363,7 +375,7 @@ if (stage) {
     ring(){
       if(window.ULTRON_EARTH?.state?.visible)window.ULTRON_EARTH.close();
       setVisualMode('ring');
-      logEvent('NEURAL RING // RESTAURADO');
+      logEvent('NEURAL JARVIS // RESTAURADO');
     },
     status() {
       const voice=window.ULTRON_VOICE_MATCH?.state;

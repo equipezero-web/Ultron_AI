@@ -116,7 +116,7 @@ function close(){
  return {ok:true,closed:true};
 }
 async function start({view="2d",focusKey=null}={}){
- if(!panel)return {ok:false,error:"Neural Ring não está disponível"};
+ if(!panel)return {ok:false,error:"Neural Jarvis não está disponível"};
  if(!["2d","3d"].includes(view))return {ok:false,error:"Modo inválido"};
  if(busy)return {ok:false,error:"Navegação em andamento"};
  const ticket=++request;

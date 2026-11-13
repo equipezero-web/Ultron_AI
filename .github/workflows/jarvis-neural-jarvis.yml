@@ -1,0 +1,56 @@
+name: JARVIS Neural Jarvis holographic matrix
+on:
+  pull_request:
+    paths:
+      - 'modules/jarvis-neural-jarvis*'
+      - 'modules/jarvis-command-center-v4330.js'
+      - 'modules/ultron-neural-answer.js'
+      - 'index.html'
+      - 'tests/jarvis-neural-jarvis*'
+      - '.github/workflows/jarvis-neural-jarvis.yml'
+  push:
+    paths:
+      - 'modules/jarvis-neural-jarvis*'
+      - 'modules/jarvis-command-center-v4330.js'
+      - 'index.html'
+      - 'tests/jarvis-neural-jarvis*'
+      - '.github/workflows/jarvis-neural-jarvis.yml'
+permissions:
+  contents: read
+jobs:
+  source-model:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Native WebGL/HUD syntax and reference structure
+        run: |
+          node --check modules/jarvis-neural-jarvis-model.js
+          node --check modules/jarvis-neural-jarvis-3d.js
+          node --check modules/jarvis-neural-jarvis-hud.js
+          node --check modules/jarvis-command-center-v4330.js
+          node tests/jarvis-neural-jarvis-model.mjs
+      - name: Previous phase contracts
+        run: |
+          node tests/jarvis-phase14-supervised-model.mjs
+          node tests/jarvis-phase13-context-model.mjs
+          node tests/jarvis-phase12-visual-orchestration.mjs
+  browser-mobile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Chromium test harness
+        run: |
+          npm install --no-save --no-package-lock --ignore-scripts puppeteer-core@24.33.0
+          echo "CHROME_BIN=$(command -v google-chrome || command -v chromium || command -v chromium-browser)" >> "$GITHUB_ENV"
+      - name: Verify mobile 3D engine and globe interoperability
+        run: |
+          python3 -m http.server 8769 --bind 127.0.0.1 >/tmp/neural-jarvis-http.log 2>&1 &
+          sleep 2
+          node tests/jarvis-neural-jarvis-browser.mjs

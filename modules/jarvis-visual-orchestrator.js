@@ -148,7 +148,7 @@ function deactivateOther(sceneId){
  }
 }
 async function show(sceneId,{focusKey=null}={}){
- if(!stage)return {ok:false,error:"Neural Ring não disponível"};
+ if(!stage)return {ok:false,error:"Neural Jarvis não disponível"};
  if(busy)return {ok:false,error:"Transição já em andamento"};
  const current=plan(),scene=current.scenes.find(x=>x.id===sceneId);
  if(!scene){

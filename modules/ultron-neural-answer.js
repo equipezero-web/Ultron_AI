@@ -1,18 +1,18 @@
 import {buildMediaModel} from "./jarvis-media-model.js?v=4.70.0";
-/* One response surface in the Neural Ring, without news or images at boot. */
+/* One response surface in the Neural Jarvis, without news or images at boot. */
 const center=document.querySelector('.jarvis-cc-center');
 if(center){
   const box=document.createElement('section');
   box.className='ultron-neural-answer';
   box.hidden=true;
-  box.setAttribute('aria-label','Resposta do Ultron no Neural Ring');
+  box.setAttribute('aria-label','Resposta do Ultron no Neural Jarvis');
   const head=document.createElement('header');
   head.className='ultron-neural-answer-head';
   const status=document.createElement('span');
   status.textContent='ULTRON // RESPOSTA';
   const close=document.createElement('button');
   close.type='button';close.className='ultron-neural-answer-close';
-  close.setAttribute('aria-label','Fechar resposta e mostrar somente o Neural Ring');
+  close.setAttribute('aria-label','Fechar resposta e mostrar somente o Neural Jarvis');
   close.textContent='×';
   head.append(status,close);
   const text=document.createElement('div');
