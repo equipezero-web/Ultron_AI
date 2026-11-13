@@ -1,0 +1,80 @@
+name: JARVIS Phase XIII Multimodal Context
+on:
+  pull_request:
+    paths:
+      - 'modules/jarvis-multimodal-context-model.js'
+      - 'modules/jarvis-multimodal-controller.js'
+      - 'modules/jarvis-visual-orchestrator.js'
+      - 'modules/jarvis-visual-orchestrator.css'
+      - 'modules/neural-intelligence-visual.js'
+      - 'modules/jarvis-immersive-context.js'
+      - 'modules/ultron-orchestrator-v4270.js'
+      - 'index.html'
+      - 'tests/jarvis-phase13-context-model.mjs'
+      - 'tests/jarvis-phase13-context-browser.mjs'
+      - '.github/workflows/jarvis-phase13-multimodal.yml'
+  push:
+    paths:
+      - 'modules/jarvis-multimodal-context-model.js'
+      - 'modules/jarvis-multimodal-controller.js'
+      - 'modules/jarvis-visual-orchestrator.js'
+      - 'modules/jarvis-visual-orchestrator.css'
+      - 'modules/neural-intelligence-visual.js'
+      - 'modules/jarvis-immersive-context.js'
+      - 'modules/ultron-orchestrator-v4270.js'
+      - 'index.html'
+      - 'tests/jarvis-phase13-context-model.mjs'
+      - 'tests/jarvis-phase13-context-browser.mjs'
+      - '.github/workflows/jarvis-phase13-multimodal.yml'
+permissions:
+  contents: read
+jobs:
+  contextual-source-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax and module safety
+        run: |
+          node --check modules/jarvis-multimodal-context-model.js
+          node --check modules/jarvis-multimodal-controller.js
+          node --check modules/jarvis-visual-orchestrator.js
+          node --check modules/neural-intelligence-visual.js
+          node --check modules/jarvis-immersive-context.js
+          node --check modules/ultron-orchestrator-v4270.js
+      - name: Contextual model and previous-phase regressions
+        run: |
+          node tests/jarvis-phase13-context-model.mjs
+          node tests/jarvis-phase12-visual-orchestration.mjs
+          node tests/jarvis-phase11-immersive.mjs
+          node tests/jarvis-phase11-map-navigation.mjs
+          node tests/jarvis-phase10-contextual-map.mjs
+          node tests/jarvis-phase9-priorities.mjs
+          node tests/jarvis-phase8-continuity.mjs
+          node tests/jarvis-mission-safety.mjs
+  mobile-context-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install headless Chrome harness
+        run: |
+          npm install --no-save --no-package-lock --ignore-scripts puppeteer-core@24.33.0
+          echo "CHROME_BIN=$(command -v google-chrome || command -v chromium || command -v chromium-browser)" >> "$GITHUB_ENV"
+      - name: Voice/text contextual commands and mobile Ring state
+        run: |
+          python3 -m http.server 8766 --bind 127.0.0.1 >/tmp/jarvis-context-http.log 2>&1 &
+          sleep 2
+          node tests/jarvis-phase13-context-browser.mjs
+      - name: Record mobile context failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase13-context-browser-failure
+          path: phase13-context-browser-failure.png
+          if-no-files-found: ignore
