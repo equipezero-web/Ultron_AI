@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import {parseAdvancedCommand,verifiedDigest,makeProactiveSuggestion,
- readOperationalMemory,updateOperationalMemory,analyzeSpecialists,selectSimulationSource,
- hypotheticalCurve,ROUTINE_INTERVAL} from "../modules/jarvis-integrated-intelligence-model.js";
+ readOperationalMemory,updateOperationalMemory,analyzeSpecialists,selectVerifiedGeoSource,
+ ROUTINE_INTERVAL} from "../modules/jarvis-integrated-intelligence-model.js";
 const now=Date.parse("2026-11-13T17:00:00Z");
 const time=new Date(now-600000).toISOString();
 const url="https://earthquake.usgs.gov/earthquakes/eventpage/usgs1";
@@ -24,9 +24,10 @@ const accepted={
  "ativar rotina de monitoramento":{type:"routine-start"},
  "desativar rotina de monitoramento":{type:"routine-stop"},
  "verificar rotina agora":{type:"routine-check"},
- "simulação 2D":{type:"simulation",mode:"2d"},
- "simulação 3D":{type:"simulation",mode:"3d"},
- "fechar simulação":{type:"simulation-close"}
+ "mostrar dados reais em 2D":{type:"verified-map",mode:"2d"},
+ "mostrar dados reais em 3D":{type:"verified-map",mode:"3d"},
+ "simulação 2D":{type:"no-simulation"},
+ "simulação 3D":{type:"no-simulation"}
 };
 for(const [command,result] of Object.entries(accepted))
  assert.deepEqual(parseAdvancedCommand(command),result,command);
@@ -60,13 +61,13 @@ assert.equal(agents.ok,true);
 assert.deepEqual(agents.agents.map(a=>a.count),[1,1,1]);
 assert.equal(agents.selectedVerified,true);
 const selected={ok:true,eventKey:"g:usgs1",url};
-const scenario=selectSimulationSource(digest,selected,{now});
+const scenario=selectVerifiedGeoSource(digest,selected,{now});
 assert.equal(scenario.ok,true);assert.equal(scenario.lat,-8.08);
-assert.equal(selectSimulationSource(digest,{...selected,url:"https://false.example/"},{now}).ok,false);
-assert.equal(selectSimulationSource(digest,{ok:true,eventKey:"n:br1",url:digest.items[1].url},{now}).ok,false);
-const curve=hypotheticalCurve({scale:2,samples:31});
-assert.equal(curve.length,31);assert.equal(curve[0].normalized,1);
-assert.ok(curve[curve.length-1].normalized<0.1);
-assert.ok(hypotheticalCurve({scale:5})[15].normalized>curve[15].normalized);
+assert.equal(selectVerifiedGeoSource(digest,{...selected,url:"https://false.example/"},{now}).ok,false);
+assert.equal(selectVerifiedGeoSource(digest,{ok:true,eventKey:"n:br1",url:digest.items[1].url},{now}).ok,false);
+const fakeLabel={...digest,items:[{...digest.items[0],source:"UNVERIFIED"}]};
+assert.equal(selectVerifiedGeoSource(fakeLabel,selected,{now}).ok,false);
+assert.equal(selectVerifiedGeoSource(stale,selected,{now}).ok,false);
+assert.equal(parseAdvancedCommand("simule a intensidade real de um tsunami"),null);
 assert.equal(ROUTINE_INTERVAL,900000);
-console.log("PHASES XV–XIX PASS: source freshness, suggestions, opt-in memory, specialist provenance, strict read-only commands and illustrative 2D/3D math.");
+console.log("PHASES XV–XIX PASS: source freshness, suggestions, opt-in memory, specialist provenance, strict read-only commands and real source-backed 2D/3D map routes, no fabricated data.");
