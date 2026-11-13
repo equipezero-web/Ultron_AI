@@ -21,7 +21,7 @@ try {
     const r=el.getBoundingClientRect();
     return {x:r.x,y:r.y,w:r.width,h:r.height,touch:getComputedStyle(el).touchAction};
   });
-  assert.equal(ringArea.touch,'none','Mobile neural ring must own touch gestures');
+  assert.equal(ringArea.touch,'pan-y','One-finger native scroll must remain enabled on the Neural Jarvis canvas');
   const ringClient=await page.target().createCDPSession();
   const rx=ringArea.x+ringArea.w*.5,ry=ringArea.y+ringArea.h*.45;
   const ringTouches=(gap)=>[
@@ -39,7 +39,7 @@ try {
   assert.equal(await page.evaluate(()=>window.ULTRON_NEURAL_RING_3D.state.zoom),1);
 
   // One-finger VERTICAL swipe over WebGL must advance the page even while
-  // the canvases retain touch-action:none to preserve two-finger pinch.
+  // the canvases use touch-action:pan-y and JS still implements two-finger pinch.
   await page.evaluate(()=>{
     const spacer=document.createElement('div');spacer.style.height='1300px';
     spacer.id='touch-page-scroll-spacer';document.body.append(spacer);
@@ -82,8 +82,8 @@ try {
       viewport:document.documentElement.scrollWidth-innerWidth
     };
   });
-  assert.equal(overlay.action,'none','The globe layer must intercept two-finger pinch instead of scrolling the page');
-  assert.equal(overlay.canvasTouch,'none');
+  assert.equal(overlay.action,'pan-y','Native one-finger page scroll must work over globe map layer');
+  assert.equal(overlay.canvasTouch,'pan-y','Globe canvas must allow native one-finger scrolling');
   assert.ok(overlay.plus>=40 && overlay.minus>=40,'Touch zoom buttons need a usable size');
   assert.ok(overlay.viewport<=3,'Globe must not overflow the phone viewport');
 
