@@ -1,9 +1,10 @@
 import API_CONFIG from "../config.js";
 import { summarizeDevices } from "./device-overview.js";
-import { interpretDeviceReceipt } from "./device-command-receipts.js";
+import { interpretDeviceReceipt, createPendingCommandTracker } from "./device-command-receipts.js";
 
 const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
 const LOCAL_BASE = "http://127.0.0.1:8765";
+const pendingCommands = createPendingCommandTracker({max:12});
 
 function outputLine(message, alert = false) {
   const output = document.getElementById("output-box");
@@ -281,6 +282,7 @@ export async function cancelQueuedCommand(commandId) {
     });
     const result = await response.json().catch(()=>({}));
     if(response.ok && result?.status==="cancelled") {
+      pendingCommands.settle(commandId);
       outputLine("P0 // comando pendente cancelado antes do envio ao dispositivo.");
       return result;
     }
@@ -306,6 +308,16 @@ function pauseUntil(ms,signal) {
   });
 }
 
+export async function cancelOutstandingCommands() {
+  const ids=pendingCommands.drain();
+  if(!ids.length)return {attempted:0,cancelled:0};
+  const result=await Promise.all(ids.map(id=>cancelQueuedCommand(id)));
+  const cancelled=result.filter(value=>value?.status==="cancelled").length;
+  outputLine("P0 // fila da sessão: " + cancelled + "/" + ids.length + " comandos cancelados antes de serem reivindicados."+
+    (cancelled<ids.length ? " Os demais podem estar em execução ou sem confirmação." : ""),cancelled<ids.length);
+  return {attempted:ids.length,cancelled};
+}
+
 async function monitorCommand(commandId,{signal=null,maxAttempts=20}={}) {
   const key = memoryKey();
   if (!key || !commandId) return null;
@@ -323,7 +335,10 @@ async function monitorCommand(commandId,{signal=null,maxAttempts=20}={}) {
         last = command.status;
         outputLine(`${command.command} // ${String(command.status).toUpperCase()} // ${command.deviceName || command.deviceType}.`, command.status === "failed");
       }
-      if (["completed", "failed", "expired", "cancelled"].includes(command.status)) return command;
+      if (["completed", "failed", "expired", "cancelled"].includes(command.status)) {
+        pendingCommands.settle(commandId);
+        return command;
+      }
     } catch {
       if(signal?.aborted)return cancelQueuedCommand(commandId);
     }
@@ -367,6 +382,7 @@ export async function routeNaturalLanguage(text, parsedIntent = null, {awaitComp
     if(signal?.aborted)return {handled:true,ok:false,cancelled:true,intent};
     outputLine(`ENVIANDO À FILA: ${intent.label}.`);
     const result = await sendControl(intent);
+    if(result.commandId) pendingCommands.track(result.commandId);
     if(signal?.aborted) {
       const cancellation = result.commandId ? await cancelQueuedCommand(result.commandId) : null;
       return {handled:true,ok:false,cancelled:true,commandStatus:cancellation?.status||"unknown",intent,result};
@@ -506,6 +522,7 @@ window.ULTRON_DEVICES = {
   listDevices,
   showDeviceOverview,
   cancelQueuedCommand,
+  cancelOutstandingCommands,
   routeNaturalLanguage,
   parseDeviceIntent,
   listAutomations,
