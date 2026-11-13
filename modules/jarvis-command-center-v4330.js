@@ -368,8 +368,12 @@ if (stage) {
         const result = await earth.open();
         if (result?.ok === false) throw new Error(result.error || 'Globo indisponível');
         logEvent('EARTH // GLOBO ATIVO NO NEURAL JARVIS');
+        show('GLOBO 3D','Visualizador terrestre solicitado. O mapa e as informações dependem do carregamento dos provedores e não implicam localização confirmada.');
       } catch (error) {
         logEvent('EARTH // ' + (error?.message || 'globo indisponível'));
+        show('GLOBO INDISPONÍVEL',String(error?.message||'O provedor do mapa não respondeu')+
+          '. O Neural Jarvis e os demais controles continuam disponíveis.',
+          {label:'Voltar ao Neural Jarvis',run:()=>actions.ring()});
       } finally { openingEarth = false; }
     },
     ring(){
@@ -409,7 +413,12 @@ if (stage) {
       if(window.ULTRON_MOBILE_CAMERA?.smartConnect){
         const request=window.ULTRON_MOBILE_CAMERA.smartConnect();
         show('SENSOR ÓPTICO','Conexão com câmera do celular solicitada. STUN disponível não significa câmera transmitindo; confirme STREAMING e quadro visível.');
-        Promise.resolve(request).catch(error=>show('SENSOR ÓPTICO',
+        Promise.resolve(request).then(result=>{
+          if(result===false||result?.ok===false)
+            show('SENSOR ÓPTICO / SEM CONEXÃO',
+              'O dispositivo ainda não forneceu uma transmissão. Verifique o Ultron Bridge e a autorização da câmera.',
+              {label:'Reverificar sensor',run:()=>actions.camera()});
+        }).catch(error=>show('SENSOR ÓPTICO / FALHA',
           'Não foi possível conectar a câmera: '+String(error?.message||error)));
         return;
       }
