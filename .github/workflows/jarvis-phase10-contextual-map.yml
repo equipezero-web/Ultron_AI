@@ -1,0 +1,56 @@
+name: JARVIS Phase X Contextual Maps
+on:
+  pull_request:
+    paths:
+      - 'backend/continuity-status.js'
+      - 'modules/jarvis-contextual-geo.js'
+      - 'modules/jarvis-contextual-map.js'
+      - 'modules/jarvis-contextual-priority.js'
+      - 'modules/jarvis-contextual-alerts.js'
+      - 'modules/jarvis-global-intelligence-ring.js'
+      - 'modules/jarvis-global-intelligence-ring.css'
+      - 'modules/jarvis-geospatial-visual.js'
+      - 'modules/ultron-orchestrator-v4270.js'
+      - 'index.html'
+      - 'tests/jarvis-phase10-contextual-map.mjs'
+      - '.github/workflows/jarvis-phase10-contextual-map.yml'
+  push:
+    paths:
+      - 'backend/continuity-status.js'
+      - 'modules/jarvis-contextual-geo.js'
+      - 'modules/jarvis-contextual-map.js'
+      - 'modules/jarvis-contextual-priority.js'
+      - 'modules/jarvis-contextual-alerts.js'
+      - 'modules/jarvis-global-intelligence-ring.js'
+      - 'modules/jarvis-global-intelligence-ring.css'
+      - 'modules/jarvis-geospatial-visual.js'
+      - 'modules/ultron-orchestrator-v4270.js'
+      - 'index.html'
+      - 'tests/jarvis-phase10-contextual-map.mjs'
+      - '.github/workflows/jarvis-phase10-contextual-map.yml'
+permissions:
+  contents: read
+jobs:
+  geo-integrity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate syntax and source integrity
+        run: |
+          node --check modules/jarvis-contextual-geo.js
+          node --check modules/jarvis-contextual-map.js
+          node --check modules/jarvis-geospatial-visual.js
+          node --check modules/jarvis-global-intelligence-ring.js
+          node --check modules/ultron-orchestrator-v4270.js
+          node --check backend/continuity-status.js
+      - name: Geospatial, context and prior phase regressions
+        run: |
+          node tests/jarvis-phase10-contextual-map.mjs
+          node tests/jarvis-phase9-priorities.mjs
+          node tests/jarvis-phase8-continuity.mjs
+          node tests/jarvis-phase3-geospatial.mjs
+          node tests/jarvis-global-intelligence.mjs
+          node tests/jarvis-phase7-recovery.mjs

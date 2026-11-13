@@ -27,9 +27,11 @@ function currentData(){
 }
 function publish(digest,{wake=false,manual=false}={}){
  const items=digest.items.slice(0,3).map(item=>({
-  type:item.type,title:item.title,source:item.source,url:item.url,
+  key:item.key,type:item.type,title:item.title,source:item.source,url:item.url,
   verifiedLabel:item.verifiedLabel,region:item.region,
-  publishedAt:item.publishedAt,isNew:item.isNew
+  publishedAt:item.publishedAt,isNew:item.isNew,
+  ...(item.type==="cataloged"&&typeof item.lat==="number"&&typeof item.lng==="number"
+    ?{lat:item.lat,lng:item.lng,representative:item.representative===true}: {})
  }));
  window.dispatchEvent(new CustomEvent("ultron:contextual-priorities",{
   detail:{

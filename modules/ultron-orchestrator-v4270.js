@@ -588,6 +588,14 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
 }
 
 function enqueue(message, source = "terminal", approvedMission = false) {
+  const geoCommand=normalize(message).replace(/^(?:jarvis|ultron)[, :]+/,"").replace(/[.!?]+$/,"").trim();
+  const geoMode=/^(?:mostre|mostrar|abra|abrir|visualize|visualizar) (?:as )?(?:prioridades|eventos catalogados|registros verificados) (?:no |em )?(mapa 2d|globo 3d)$/.exec(geoCommand)
+    ||/^(?:mostre|mostrar|abra|abrir|visualize|visualizar) (?:o )?(mapa 2d|globo 3d) (?:das |dos |de )?(?:prioridades|eventos catalogados|registros verificados)$/.exec(geoCommand);
+  if(geoMode){
+    const mode=(geoMode[1]||"").includes("3d")?"3d":"2d";
+    return window.ULTRON_CONTEXTUAL_MAP?.open?.({view:mode}) ||
+      Promise.resolve({ok:false,error:"Visualização contextual não disponível."});
+  }
   const contextualCommand=normalize(message).replace(/^(?:jarvis|ultron)[, :]+/,"").replace(/[.!?]+$/,"").trim();
   if(/^(?:(?:mostre|mostrar|consulte|consultar|quero ver) (?:os?|as?)? ?)?(?:alertas prioritarios|prioridades verificadas|resumo contextual|relatorio contextual|inteligencia contextual|novidades verificadas)(?: do mundo)?$/.test(contextualCommand)){
     return window.ULTRON_CONTEXTUAL?.review?.() ||

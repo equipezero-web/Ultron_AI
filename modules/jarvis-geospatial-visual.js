@@ -625,7 +625,7 @@ if(stage){
    })().finally(()=>{geoLoading[projection]=null;});
    return geoLoading[projection];
  }
- function selectRegion(p){
+ function selectRegion(p,{skipGlobe=false}={}){
    selected=p?.id||null;
    detail.replaceChildren();
    if(!p){detail.textContent="Selecione uma região para consultar o contexto.";return;}
@@ -635,11 +635,40 @@ if(stage){
    detail.append(b,line,link);
    for(const node of list.querySelectorAll("button"))node.setAttribute("aria-pressed",String(node.dataset.id===selected));
    for(const node of svg.querySelectorAll(".jarvis-geo-marker"))node.setAttribute("aria-pressed",String(node.dataset.regionId===selected));
-   if(mode==="3d"&&typeof window.ULTRON_EARTH?.focus==="function"){
+   if(!skipGlobe&&mode==="3d"&&typeof window.ULTRON_EARTH?.focus==="function"){
      try{window.ULTRON_EARTH.focus(p.lat,p.lng,5,false,p.name);}catch{}
    }
  }
+ // Select an exact point from the currently rendered, source-verified scenario.
+ // A 2D focus changes only the SVG viewport; a 3D focus uses the existing
+ // Earth control, and its actual response is checked before reporting success.
+ function focusPoint(id,{zoom=3}={}){
+   if(panel.hidden||!dataset)return {ok:false,error:"Mapa não está aberto"};
+   const p=geoFrame(dataset,frameIndex,filterKind)?.points.find(x=>x.id===id);
+   if(!p)return {ok:false,error:"Ponto não pertence ao cenário atual"};
+   if(mode==="3d"){
+     const earth=window.ULTRON_EARTH;
+     if(!earth?.state?.visible||typeof earth.focus!=="function")
+       return {ok:false,error:"Globo 3D indisponível"};
+     let result;
+     try{result=earth.focus(p.lat,p.lng,Math.max(2,Math.min(6,Number(zoom)||3)),false,p.name);}
+     catch{return {ok:false,error:"Falha ao centralizar o globo"};}
+     if(result?.ok!==true)return {ok:false,error:result?.error||"Globo não confirmou o foco"};
+     selectRegion(p,{skipGlobe:true});
+     return {ok:true,id:p.id,mode:"3d",lat:p.lat,lng:p.lng};
+   }
+   selectRegion(p);
+   const {x,y}=dataset.projection==="world"?worldXY(p.lng,p.lat):brazilXY(p.lng,p.lat);
+   if(!Number.isFinite(x)||!Number.isFinite(y))return {ok:false,error:"Coordenadas inválidas"};
+   mapCenter={x,y};
+   setMapZoom(Math.max(1,Math.min(5,Number(zoom)||3)));
+   return {ok:true,id:p.id,mode:"2d",lat:p.lat,lng:p.lng};
+ }
  function stop(){playing=false;play.textContent="▶";play.setAttribute("aria-label","Reproduzir quadros");if(clock!==null)clearInterval(clock);clock=null;}
+ function isCatalogedObservations(){
+   return dataset?.id?.startsWith("global-intelligence-")||
+     dataset?.id?.startsWith("contextual-priorities-");
+ }
  function draw(){
    if(!dataset)return;
    resize();
@@ -680,7 +709,7 @@ if(stage){
      window.ULTRON_EARTH?.setThematicCountries?.(polygons);
    }
    const required=layerChoice.value+":"+scopeChoice.value+":"+currentIntensityDay();
-   if(!dataset.theme&&!panel.hidden&&required!==intensityKey)void chooseIntensity();
+   if(!dataset.theme&&!isCatalogedObservations()&&!panel.hidden&&required!==intensityKey)void chooseIntensity();
  }
  async function setMode(next){
    if(!dataset)return {ok:false,error:"Sem dados carregados"};
@@ -705,8 +734,8 @@ if(stage){
    intensityReport=initialIntensity?.ok?initialIntensity:null;
    intensityKey=intensityReport?layerChoice.value+":"+dataset.projection+":0":"";
    intensityToken++;
-   intensityBar.hidden=Boolean(dataset.theme);
-   intensityLegend.hidden=false;intensityMessage.hidden=false;
+   intensityBar.hidden=Boolean(dataset.theme)||isCatalogedObservations();
+   intensityLegend.hidden=isCatalogedObservations();intensityMessage.hidden=isCatalogedObservations();
    if(dataset.theme)renderGlobalTheme();
    else if(intensityReport)intensityLegendRender(intensityReport);
    else{intensityLegend.replaceChildren();intensityMessage.replaceChildren();}
@@ -719,11 +748,11 @@ if(stage){
    caveat.textContent=dataset.source.disclaimer;
    officialAlerts.hidden=!dataset.id.startsWith("weather-")||dataset.projection==="world";
    filter.hidden=Boolean(dataset.theme)||dataset.id.startsWith("weather-")||dataset.id.startsWith("spatial-"); // A single local weather point has no competing ENSO categories.
-   placeBar.hidden=dataset.projection!=="world"||Boolean(dataset.theme);
-   insightBar.hidden=dataset.projection!=="world"||Boolean(dataset.theme);
+   placeBar.hidden=dataset.projection!=="world"||Boolean(dataset.theme)||isCatalogedObservations();
+   insightBar.hidden=dataset.projection!=="world"||Boolean(dataset.theme)||isCatalogedObservations();
    placeRefresh.disabled=!/^weather-global-\d+$/.test(dataset.id);
    watchAdd.disabled=!/^weather-global-\d+$/.test(dataset.id);
-   watchPanel.hidden=dataset.projection!=="world"||Boolean(dataset.theme);
+   watchPanel.hidden=dataset.projection!=="world"||Boolean(dataset.theme)||isCatalogedObservations();
    if(refreshClock!==null){clearInterval(refreshClock);refreshClock=null;}
    if(/^weather-global-\d+$/.test(dataset.id))refreshClock=setInterval(()=>{
      if(panel.hidden||document.hidden)return;
@@ -945,7 +974,7 @@ if(stage){
  play.addEventListener("click",()=>togglePlayback());
  window.addEventListener("ultron:new-conversation",closePanel);
  window.ULTRON_GEO_VISUAL={
-   open,close:closePanel,setMode,setFrame,applyFilter,play:()=>togglePlayback(true),pause:()=>togglePlayback(false),
+   open,close:closePanel,setMode,setFrame,applyFilter,focusPoint,play:()=>togglePlayback(true),pause:()=>togglePlayback(false),
    get state(){return {visible:!panel.hidden,mode,playing,frame:frameIndex,scenario:dataset?.id||null,
      count:dataset?geoFrame(dataset,frameIndex,filterKind)?.points.length||0:0,frameCount:dataset?.frames.length||0,
      source:dataset?.source.url||null,filter:filterKind,layer:intensityReport?.layer||layerChoice.value,

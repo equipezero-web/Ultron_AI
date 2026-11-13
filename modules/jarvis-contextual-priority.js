@@ -81,6 +81,9 @@ export function buildContextualPriorities({
    const isNew=hasBaseline&&!seen.has(key);
    items.push({key,type:"cataloged",title:clean(event.title),source:clean(event.source,20),
     url,publishedAt:event.eventAt,category:clean(event.kind,40),
+    ...(typeof event.lat==="number"&&Number.isFinite(event.lat)&&Math.abs(event.lat)<=90&&
+      typeof event.lng==="number"&&Number.isFinite(event.lng)&&Math.abs(event.lng)<=180
+      ?{lat:event.lat,lng:event.lng,representative:event.representative===true}:{}),
     region:brazil?"proximidade do Brasil":"mundo",nearBrazil:brazil,
     verifiedLabel:level?"Nível GDACS publicado: "+level.toUpperCase():"Evento catalogado",
     isNew,
