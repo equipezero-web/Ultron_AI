@@ -218,6 +218,10 @@ if (stage) {
     // right-hand page scroll rail (or the native scrollbar) to navigate.
     if(!document.body.classList.contains('jarvis-command-center'))return;
     if(event.target.closest?.('.jarvis-earth-reference-side,.jarvis-geo-visual,.jarvis-neural-news,textarea,input,select,[contenteditable="true"]'))return;
+    // The old stage-wide wheel handler swallowed wheel/touchpad scrolling even
+    // on labels, gaps and telemetry. Zoom belongs only to the visual surface.
+    if(!event.target.closest?.('.jarvis-cc-visual'))return;
+    if(event.ctrlKey||event.metaKey)return; // Preserve browser accessibility zoom.
     event.preventDefault();
     event.stopPropagation();
     if(visualMode==='ring'){
