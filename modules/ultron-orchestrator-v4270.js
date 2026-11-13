@@ -3,6 +3,7 @@ import {classifyOperatorTurn,splitOperatorSteps} from "./jarvis-intent-engine.js
 import {directPlan,resolveActionPlan,runActionPlan} from "./jarvis-action-engine.js?v=4.101.1";
 import {parseLocalCommand,runLocalCommand} from "./jarvis-local-commands.js?v=5.10.0";
 import {parseMissionControl,assessCompoundMission,createMissionGate} from "./jarvis-mission-safety.js";
+import {inspectMissionDependencies,missionStepOutcome,createMissionJournal} from "./jarvis-mission-diagnostics.js";
 import API_CONFIG from "../config.js";
 
 const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
@@ -27,6 +28,7 @@ let queue = Promise.resolve();
 let queueGeneration = 0;
 let activeController = null;
 const missionGate = createMissionGate();
+const missionJournal = createMissionJournal({maxEntries:12});
 function ensureNotStopped(signal) {
   if (signal?.aborted) throw new Error("P0: execução interrompida pelo operador.");
 }
@@ -137,6 +139,12 @@ function isAutomationList(text) {
   return /\b(listar|liste|mostrar|mostre)\b.*\bautomac/.test(normalize(text));
 }
 
+function isMissionReportIntent(text) {
+  const n=normalize(text).replace(/^(?:jarvis|ultron)[, :]+/,"").replace(/[.!?]+$/,"").trim();
+  return /^(?:(?:mostre|mostrar|consulte|consultar|verifique|verificar) )?(?:o )?(?:relatorio|historico|diagnostico|status|estado) (?:das? |de )?missoes(?: recentes| atuais)?$/.test(n) ||
+    /^(?:mostre|mostrar|consulte|consultar) (?:a )?(?:ultima|ultima) missao$/.test(n);
+}
+
 function isHistoryIntent(text) {
   const n = normalize(text);
   return /\b(historico|atividade|execucoes|ultimos comandos|ultimas execucoes)\b/.test(n) &&
@@ -182,6 +190,34 @@ async function showHistory() {
     log(`${String(run.status || "-").toUpperCase()} // ${run.route || run.intent || "core"} // ${String(run.message || "").slice(0, 90)}`);
   }
   return { ok: true, runs };
+}
+
+async function showMissionReport() {
+  const latest=missionJournal.latest();
+  if(latest){
+    log("MISSÃO // "+latest.id.slice(0,12)+" // "+latest.status.toUpperCase()+
+      " // "+latest.steps.filter(s=>s.status==="completed").length+"/"+latest.steps.length+" etapas concluídas.");
+    if(latest.preflight){
+      log("PRÉ-VERIFICAÇÃO // "+(latest.preflight.ready?"APROVADA":"BLOQUEADA")+" // "+latest.preflight.checks.length+" dependências.");
+      latest.preflight.checks.forEach(c=>log(c.label+" // "+c.state.toUpperCase()+" // "+c.code,!c.ready));
+    }
+    latest.steps.forEach(s=>log("ETAPA "+s.number+" // "+s.status.toUpperCase()+
+      (s.route?" // "+s.route:"")+(s.dependsOn?" // depende da "+s.dependsOn:"")));
+    if(latest.localOnly)log("Histórico somente nesta página: armazenamento remoto não disponível.",true);
+    return {ok:true,run:latest};
+  }
+  try{
+    const result=await post("/api/orchestrator/history",{limit:5},{silent:true});
+    const list=result?.runs;
+    if(Array.isArray(list)&&list.length){
+      log("MISSÕES SALVAS NO BACKEND // "+list.length+" registros:");
+      list.forEach(item=>log(String(item.status||"unknown").toUpperCase()+" // "+
+        String(item.route||item.intent||"core").slice(0,50)+" // "+String(item.id||"").slice(0,12)));
+      return {ok:true,runs:list.map(item=>({id:item.id,status:item.status,route:item.route}))};
+    }
+  }catch {}
+  log("Sem missões recentes verificáveis nesta sessão; backend sem histórico acessível.");
+  return {ok:true,runs:[]};
 }
 
 // Geographic actions must be executed, not passed to conversational AI.
@@ -413,6 +449,7 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
   state.lastRunId = run.runId;
 
   const parts = splitCompound(clean);
+  missionJournal.create({id:run.runId,total:parts.length,source,localOnly:Boolean(run.localOnly)});
   const intent=classifyOperatorTurn(clean);
   if(intent.compound)log("INTENÇÃO // "+intent.kind.toUpperCase()+" // "+parts.length+" etapas.");
   if (parts.length > 1) log(`COMANDO COMPOSTO // ${parts.length} etapas em sequência.`);
@@ -422,31 +459,60 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
   let finalStatus = "completed";
 
   try {
-    for (let i = 0; i < parts.length; i += 1) {
-      if (signal.aborted) { finalStatus = "cancelled"; break; }
-      const part = parts[i];
-      if (parts.length > 1) log(`ETAPA ${i + 1}/${parts.length} // ${part}`);
-      const routed = await routeSingle(part, run, i, {signal,awaitCompletion:parts.length>1});
-      results.push(routed);
-      if (signal.aborted) { finalStatus = "cancelled"; break; }
-      finalRoute = finalRoute || routed.route;
-      if(routed?.result?.status==="submitted"&&finalStatus==="completed")finalStatus="submitted";
-      if (routed.waitingConfirmation) {
-        finalStatus = "waiting-confirmation";
-        break;
-      }
-      // A queued command is not a completed physical action: no next step.
-      if (routed.submitted) {
-        finalStatus = "submitted";
-        break;
-      }
-      if (!routed.ok) {
-        finalStatus = "failed";
-        break;
+    if(parts.length>1){
+      const preflight=await inspectMissionDependencies(parts,{
+        parseDeviceIntent:part=>window.ULTRON_DEVICES?.parseDeviceIntent?.(part)||null,
+        listDevices:window.ULTRON_DEVICES?.listDevices?.bind(window.ULTRON_DEVICES),
+        isCameraActivation,
+        cameraAvailable:()=>typeof window.ULTRON_CORE?.activateCamera==="function"
+      });
+      missionJournal.preflight(run.runId,preflight);
+      if(signal.aborted) {
+        finalStatus="cancelled";
+      }else{
+        await recordStep(run,"preflight","mission-dependencies",preflight.ready?"completed":"failed",{
+          verified:true,checks:preflight.checks.map(c=>({key:c.key,code:c.code,ready:c.ready,state:c.state}))
+        });
+        for(const check of preflight.checks)log("DEPENDÊNCIA // "+check.label+" // "+
+          check.state.toUpperCase()+" // "+check.detail,!check.ready);
+        if(!preflight.ready){
+          state.failed+=1;
+          state.lastRoute="mission-dependencies";
+          state.lastResult={route:"mission-dependencies",ok:false,blocking:preflight.blocking};
+          missionJournal.finish(run.runId,"failed");
+          await finishRun(run,"failed","mission-dependencies",{
+            code:"MISSION_PREFLIGHT_BLOCKED",blocking:preflight.blocking,executedSteps:0
+          });
+          log("MISSÃO BLOQUEADA ANTES DA EXECUÇÃO // "+preflight.blocking.join(", "),true);
+          return {ok:false,status:"failed",runId:run.runId,blocking:preflight.blocking,results:[]};
+        }
       }
     }
+    for (let i = 0; i < parts.length && finalStatus==="completed"; i += 1) {
+      if(signal.aborted){finalStatus="cancelled";break;}
+      if(!missionJournal.beginStep(run.runId,i)){
+        finalStatus="failed";
+        log("DEPENDÊNCIA DA ETAPA "+(i+1)+" NÃO CONCLUÍDA. Sequência interrompida.",true);
+        break;
+      }
+      const part=parts[i];
+      if(parts.length>1)log(`ETAPA ${i+1}/${parts.length} // ${part}`);
+      const routed=await routeSingle(part,run,i,{signal,awaitCompletion:parts.length>1});
+      const outcome=missionStepOutcome(routed,signal.aborted);
+      missionJournal.finishStep(run.runId,i,outcome,routed?.route);
+      results.push(routed);
+      finalRoute=finalRoute||routed?.route;
+      await recordStep(run,"mission-"+(i+1),routed?.route||"unknown",outcome,{
+        verified:outcome==="completed" && routed?.result?.verified!==false,
+        outcome,
+        stepIndex:i+1,
+        dependsOn:i===0?null:i
+      });
+      if(outcome!=="completed") finalStatus=outcome;
+    }
 
-    if (signal.aborted) finalStatus = "cancelled";
+    if(signal.aborted)finalStatus="cancelled";
+    missionJournal.finish(run.runId,finalStatus);
     state.processed += 1;
     if (finalStatus === "failed") state.failed += 1;
     state.lastRoute = finalRoute;
@@ -455,7 +521,9 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
       source,
       stepCount: results.length,
       routes: results.map((item) => item.route),
-      results: results.map((item) => ({ route: item.route, ok: item.ok, waitingConfirmation: Boolean(item.waitingConfirmation) }))
+      results: missionJournal.get(run.runId)?.steps.map(item=>({
+        step:item.number,route:item.route,status:item.status,dependsOn:item.dependsOn
+      })) || []
     });
     await window.ULTRON_TELEMETRY?.push?.({
       event: "orchestration-complete",
@@ -470,11 +538,13 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
     return { ok: finalStatus === "completed", status: finalStatus, runId: run.runId, results };
   } catch (error) {
     if (signal.aborted) {
+      missionJournal.finish(run.runId,"cancelled");
       await finishRun(run, "cancelled", "p0-stop", { source, completedSteps: results.length });
       log("P0 // interrompido; nenhuma nova etapa será iniciada.");
       return {ok:false,status:"cancelled",runId:run.runId,results};
     }
     state.failed += 1;
+    missionJournal.finish(run.runId,"failed");
     state.lastResult = { error: error.message };
     await recordStep(run, "fatal", finalRoute || "orchestrator", "failed", { error: error.message });
     await finishRun(run, "failed", finalRoute || "orchestrator", { error: error.message });
@@ -493,6 +563,7 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
 }
 
 function enqueue(message, source = "terminal", approvedMission = false) {
+  if(isMissionReportIntent(message))return showMissionReport();
   const control = parseMissionControl(message);
   if (control?.type === "stop") {
     queueGeneration += 1;
@@ -583,6 +654,16 @@ function injectActivityButton() {
   button.addEventListener("click", () => enqueue("mostrar histórico do Ultron", "quick-action"));
   actions.appendChild(button);
 }
+function injectMissionButton(){
+  const actions=document.querySelector(".quick-actions");
+  if(!actions||document.getElementById("btn-orchestrator-missions"))return;
+  const button=document.createElement("button");
+  button.id="btn-orchestrator-missions";
+  button.type="button";
+  button.textContent="MISSÕES";
+  button.addEventListener("click",()=>{void showMissionReport();});
+  actions.appendChild(button);
+}
 
 sendButton?.addEventListener("click", (event) => intercept(event, "terminal"), true);
 input?.addEventListener("keydown", (event) => {
@@ -609,11 +690,14 @@ window.ULTRON_ORCHESTRATOR = {
   stop(){return enqueue("PARE","operator");},
   execute: enqueue,
   history: showHistory,
+  missions:showMissionReport,
+  get missionJournal(){return missionJournal.list();},
   refreshState: refreshUnifiedState,
   get state() { return { ...state }; }
 };
 
 injectActivityButton();
+injectMissionButton();
 setTimeout(refreshUnifiedState, 3500);
 setInterval(refreshUnifiedState, 30000);
 log("TOTAL INTEGRATION CORE v4.27.0 // READY.");
