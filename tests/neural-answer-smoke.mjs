@@ -1307,9 +1307,15 @@ try {
     await page.click('[data-command="center"]');
     assert.match(await page.$eval('#output-box',el=>el.textContent),
       /Neural Jarvis centralizado/);
+    await page.evaluate(()=>{
+      const marker=document.createElement('p');
+      marker.dataset.testClearSentinel='true';
+      marker.textContent='CLEAR_TERMINAL_SENTINEL_2026';
+      document.getElementById('output-box').append(marker);
+    });
     await page.click('[data-command="clear"]');
-    assert.equal(await page.$eval('#output-box',el=>el.children.length),0,
-      'LIMPAR TERMINAL should clear responses without deleting data');
+    assert.equal(await page.$('#output-box [data-test-clear-sentinel]'),null,
+      'LIMPAR TERMINAL should remove pre-existing entries without suppressing legitimate later async logs');
     // Phone pairing must work without starting remote camera or asking for
     // camera access. Repeated presses cannot create duplicate pairing codes.
     await page.evaluate(()=>{
