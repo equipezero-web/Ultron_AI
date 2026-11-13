@@ -36,10 +36,35 @@ try{
    spacer.style.height='1300px';spacer.style.pointerEvents='none';document.body.append(spacer);
    window.dispatchEvent(new Event('resize'));
  });
- await page.waitForFunction(()=>{
-   const rail=document.querySelector('#jarvis-page-scroll-rail');
-   return rail&&!rail.hidden&&rail.getBoundingClientRect().height>250;
- },{timeout:5000});
+ try{
+  await page.waitForFunction(()=>{
+    const rail=document.querySelector('#jarvis-page-scroll-rail');
+    return rail&&!rail.hidden&&getComputedStyle(rail).display!=="none"&&
+      rail.getBoundingClientRect().height>250;
+  },{timeout:6000});
+ }catch(error){
+  const detail=await page.evaluate(()=>{
+   const rail=document.getElementById("jarvis-page-scroll-rail");
+   const html=document.documentElement,body=document.body;
+   const scroller=document.scrollingElement;
+   return {
+    railExists:!!rail,railHidden:rail?.hidden,
+    railDisplay:rail?getComputedStyle(rail).display:null,
+    railHeight:rail?.getBoundingClientRect().height,
+    scrollNode:scroller?.tagName,scrollHeight:scroller?.scrollHeight,
+    clientHeight:scroller?.clientHeight,
+    bodyHeight:body.scrollHeight,htmlHeight:html.scrollHeight,
+    bodyOverflow:getComputedStyle(body).overflow,
+    htmlOverflow:getComputedStyle(html).overflow,
+    earthAvailable:!!window.ULTRON_EARTH?.state?.available,
+    coarse:matchMedia("(pointer:coarse)").matches,
+    maxWidth820:matchMedia("(max-width:820px)").matches,
+    width:innerWidth,height:innerHeight
+   };
+  });
+  throw Error("Desktop rail did not become usable: "+JSON.stringify(detail)+
+    " / "+String(error));
+ }
  const rail=await page.$eval('#jarvis-page-scroll-rail',el=>({
    pos:getComputedStyle(el).position,width:el.getBoundingClientRect().width,
    right:innerWidth-el.getBoundingClientRect().right,
