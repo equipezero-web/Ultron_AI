@@ -180,7 +180,23 @@ function makeButton(label,key,fn,requiresEngine=true){
  const b=el("button","neural-jarvis-control",label);
  b.type="button";
  b.dataset.requiresEngine=String(requiresEngine);
- b.addEventListener("click",()=>void fn());
+ // The responsive console can move after pointerdown. Run on the first
+ // real press to preserve microphone/speech browser activation; dedupe click.
+ let lastPointerAt=0;
+ const run=()=>{
+  if(b.disabled)return;
+  try{Promise.resolve(fn()).catch(error=>report(
+   "Falha no controle "+label+": "+String(error?.message||error)));}
+  catch(error){report("Falha no controle "+label+": "+String(error?.message||error));}
+ };
+ b.addEventListener("pointerdown",event=>{
+  if(event.button!==0)return;
+  lastPointerAt=Date.now();run();
+ });
+ b.addEventListener("click",()=>{
+  if(Date.now()-lastPointerAt<850)return;
+  run();
+ });
  actions?.append(b);buttons[key]=b;return b;
 }
 function init(){
