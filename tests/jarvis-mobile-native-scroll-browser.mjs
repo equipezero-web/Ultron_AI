@@ -105,8 +105,17 @@ try{
    root.scrollTop=0;
   });
   const nonCanvasY=height-65;
-  const nonCanvasHit=await page.evaluate(([x,y])=>document.elementFromPoint(x,y)?.tagName,
-   [Math.min(width-15,24),nonCanvasY]);
+  const nonCanvasHit=await page.evaluate(([x,y])=>{
+   const el=document.elementFromPoint(x,y),chain=[];
+   for(let n=el;n&&chain.length<8;n=n.parentElement){
+    const cs=getComputedStyle(n),r=n.getBoundingClientRect();
+    chain.push({tag:n.tagName,id:n.id,cls:String(n.className).slice(0,110),
+     touch:cs.touchAction,overflow:cs.overflowY,rect:{
+      left:Math.round(r.left),top:Math.round(r.top),
+      width:Math.round(r.width),height:Math.round(r.height)}});
+   }
+   return chain;
+  },[Math.min(width-15,24),nonCanvasY]);
   await gesture(page,Math.min(width-15,24),nonCanvasY,
    {distance:Math.min(160,nonCanvasY-30)});
   const other=await page.evaluate(()=>document.scrollingElement.scrollTop);
