@@ -212,5 +212,18 @@ window.ULTRON_IMMERSIVE={
  setMode,select:key=>move({key}),
  get state(){const snap=navigatorState?.snapshot();
   return {active,busy,mode:snap?.view||null,index:snap?.index??null,
-   count:snap?.count||0,eventKey:snap?.current?.key||null};}
+   count:snap?.count||0,eventKey:snap?.current?.key||null};},
+ get current(){
+  if(!active||!navigatorState)return null;
+  const item=navigatorState.snapshot().current;
+  return {key:item.key,title:item.title,category:item.category,
+   sourceUrl:item.sourceUrl,publishedAt:item.publishedAt,
+   lat:item.lat,lng:item.lng,explanation:item.explanation,
+   locationNote:item.locationNote,representative:item.representative};
+ },
+ presentContext(message){
+  if(!active||!status)return false;
+  status.textContent=String(message||"").slice(0,300);
+  return true;
+ }
 };

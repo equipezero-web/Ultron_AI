@@ -587,7 +587,35 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
   }
 }
 
+// The priority-core v4.30 gate can intercept P0 before enqueue() runs.
+// Listen for its actual emergency event to cancel mission, device and visual
+// work, rather than relying only on the local terminal/voice P0 parser.
+let lastPriorityStopEpoch=-1;
+function cancelP0Operations(reason="local",epoch=null){
+  if(Number.isSafeInteger(epoch)){
+    if(epoch===lastPriorityStopEpoch)return {ok:true,status:"cancelled",route:"p0-stop",duplicate:true};
+    lastPriorityStopEpoch=epoch;
+  }
+  queueGeneration+=1;
+  missionGate.clear();
+  activeController?.abort();
+  recoveryEngine.cancelAll();
+  window.ULTRON_MULTIMODAL?.stop?.();
+  window.ULTRON_VISUAL_ORCHESTRATOR?.stop?.();
+  window.ULTRON_IMMERSIVE?.stop?.();
+  void window.ULTRON_DEVICES?.cancelOutstandingCommands?.();
+  log("P0 STOP // cancelamento das missões e apresentações em curso confirmado. "+
+    "Uma operação já enviada a outro aparelho pode terminar.");
+  return {ok:true,status:"cancelled",route:"p0-stop",reason};
+}
+window.addEventListener("ultron:emergency-stop",event=>{
+  cancelP0Operations("priority-core",event?.detail?.epoch);
+});
 function enqueue(message, source = "terminal", approvedMission = false) {
+  // Phase XIII: resolve only exact whitelisted references ("isto", "essa
+  // notícia", "este evento") against the currently verified visual scene.
+  const contextualIntent=window.ULTRON_MULTIMODAL?.parse?.(message);
+  if(contextualIntent)return window.ULTRON_MULTIMODAL.execute(message,{source});
   const directorCommand=normalize(message).replace(/^(?:jarvis|ultron)[, :]+/,"").replace(/[.!?]+$/,"").trim();
   if(/^(?:(?:abrir|abra|iniciar|inicie|mostrar|mostre|ative|ativar) (?:a |o )?)?(?:diretor visual|orquestracao visual|apresentacao visual|roteiro visual)$/.test(directorCommand)){
     return window.ULTRON_VISUAL_ORCHESTRATOR?.start?.()||
@@ -669,17 +697,7 @@ function enqueue(message, source = "terminal", approvedMission = false) {
   if(isMissionReportIntent(message))return showMissionReport();
   const control = parseMissionControl(message);
   if (control?.type === "stop") {
-    queueGeneration += 1;
-    missionGate.clear();
-    activeController?.abort();
-    recoveryEngine.cancelAll();
-    window.ULTRON_VISUAL_ORCHESTRATOR?.stop?.(); // Phase XII visual director cancellation.
-    window.ULTRON_IMMERSIVE?.stop?.(); // P0 also ends purely visual navigation.
-    // Also attempt to revoke already-submitted commands still pending in D1.
-    // This is best-effort: a claimed command cannot be undone.
-    void window.ULTRON_DEVICES?.cancelOutstandingCommands?.();
-    log("P0 STOP // tarefas pendentes descartadas e próximas etapas interrompidas. Uma operação já enviada a outro dispositivo pode ainda terminar.");
-    return Promise.resolve({ok:true,status:"cancelled",route:"p0-stop"});
+    return Promise.resolve(cancelP0Operations("operator"));
   }
   if (control?.type === "cancel") {
     const removed = missionGate.cancel(control.code);

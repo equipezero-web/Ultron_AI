@@ -12,7 +12,8 @@ const el=(tag,cls,content)=>{
 };
 const text=(value,max=190)=>String(value??"").replace(/[<>\r\n]/g," ").trim().slice(0,max);
 let seq=0,busy=false,active=false,nav=null,lastActual=null;
-let panel,title,description,meta,source,steps,entries,status,prev,next,closeButton;
+let selectedPriorityKey=null,lastFocusedKey=null;
+let panel,title,description,meta,source,steps,entries,status,prev,next,closeButton,contextLine,contextLink;
 function log(message){
  if(!output)return;
  const p=el("p","","[ORQUESTRAÇÃO VISUAL] "+text(message,290));
@@ -52,7 +53,23 @@ function render(message=""){
   const label=el("small","",item.source+" · "+item.type+" · "+new Date(item.publishedAt).toLocaleString("pt-BR"));
   const link=el("a","",item.title);
   link.href=item.url;link.target="_blank";link.rel="noopener noreferrer";
-  row.append(label,link);entries.append(row);
+  row.append(label,link);
+  if(scene.id==="priorities"){
+   const button=el("button","jarvis-visual-orch-select","SELECIONAR");
+   button.type="button";
+   button.setAttribute("aria-label","Selecionar registro contextual: "+item.title);
+   button.setAttribute("aria-pressed",String(selectedPriorityKey===item.id));
+   button.addEventListener("click",()=>{
+     selectedPriorityKey=item.id;
+     contextLine.hidden=true;contextLink.hidden=true;
+     render("Registro selecionado: "+item.title+". Use EXPLIQUE ISSO ou QUAL A FONTE.");
+     window.dispatchEvent(new CustomEvent("ultron:visual-context-selection",{
+       detail:{scene:"priorities",key:item.id}
+     }));
+   });
+   row.append(button);
+  }
+  entries.append(row);
  }
  if(scene.id==="news"){
   const state=window.ULTRON_NEURAL_NEWS?.state;
@@ -89,7 +106,11 @@ function createPanel(){
  steps=el("nav","jarvis-visual-orch-scenes");
  steps.setAttribute("aria-label","Cenas com fontes verificadas");
  entries=el("div","jarvis-visual-orch-entries");
- body.append(title,description,meta,source,steps,entries);
+ contextLine=el("p","jarvis-visual-orch-context","");
+ contextLine.hidden=true;
+ contextLink=el("a","jarvis-visual-orch-context-source","Consultar fonte deste registro");
+ contextLink.hidden=true;contextLink.target="_blank";contextLink.rel="noopener noreferrer";
+ body.append(title,description,meta,source,steps,entries,contextLine,contextLink);
  const footer=el("footer","jarvis-visual-orch-controls");
  prev=el("button","","‹");prev.type="button";prev.setAttribute("aria-label","Cena anterior");
  next=el("button","","›");next.type="button";next.setAttribute("aria-label","Próxima cena");
@@ -126,7 +147,7 @@ function deactivateOther(sceneId){
   if(sceneId==="map")window.ULTRON_IMMERSIVE?.close?.();
  }
 }
-async function show(sceneId){
+async function show(sceneId,{focusKey=null}={}){
  if(!stage)return {ok:false,error:"Neural Ring não disponível"};
  if(busy)return {ok:false,error:"Transição já em andamento"};
  const current=plan(),scene=current.scenes.find(x=>x.id===sceneId);
@@ -144,10 +165,10 @@ async function show(sceneId){
    const news=window.ULTRON_NEURAL_NEWS;
    if(!news?.show||!news.state?.count)outcome={ok:false,error:"Notícias verificadas indisponíveis"};
   }else if(scene.id==="map"){
-   outcome=await window.ULTRON_CONTEXTUAL_MAP?.open?.({view:"2d",focusKey:scene.focusKey})
+   outcome=await window.ULTRON_CONTEXTUAL_MAP?.open?.({view:"2d",focusKey:focusKey||scene.focusKey})
      ||{ok:false,error:"Mapa contextual indisponível"};
   }else if(scene.id==="tour"){
-   outcome=await window.ULTRON_IMMERSIVE?.start?.({view:"3d",focusKey:scene.focusKey})
+   outcome=await window.ULTRON_IMMERSIVE?.start?.({view:"3d",focusKey:focusKey||scene.focusKey})
      ||{ok:false,error:"Exploração 3D indisponível"};
   }
  }catch(error){outcome={ok:false,error:text(error?.message||"Módulo visual indisponível",150)};}
@@ -168,7 +189,16 @@ async function show(sceneId){
   nav=createVisualSceneNavigator(current);
  }
  nav.choose(scene.id);
+ if(scene.id==="priorities"){
+  if(!scene.entries.some(e=>e.id===selectedPriorityKey))
+    selectedPriorityKey=scene.entries[0]?.id||null;
+ }
+ if(scene.id==="map"||scene.id==="tour")
+   lastFocusedKey=outcome.selectedPoint||
+      (scene.id==="tour"?window.ULTRON_IMMERSIVE?.state?.eventKey:null)||
+      focusKey||scene.focusKey||null;
  active=true;lastActual=outcome;panel.hidden=false;
+ contextLine.hidden=true;contextLink.hidden=true;
  const actualMode=scene.id==="tour"?(outcome.view||"2d"):
   scene.id==="map"?(outcome.view||"2d"):null;
  const fallback=Boolean(outcome.fallback3d);
@@ -206,6 +236,9 @@ async function step(direction){
 function stop(){
  if(!active&&!busy)return {ok:true,stopped:false};
  seq++;busy=false;active=false;nav=null;
+ selectedPriorityKey=null;lastFocusedKey=null;
+ if(contextLine)contextLine.hidden=true;
+ if(contextLink)contextLink.hidden=true;
  if(panel)panel.hidden=true;
  window.ULTRON_IMMERSIVE?.close?.();
  // Only close context-owned geo display, never unrelated weather/camera.
@@ -236,9 +269,43 @@ window.addEventListener("ultron:new-conversation",stop);
 document.addEventListener("visibilitychange",()=>{
  if(document.hidden&&active&&status)status.textContent="Aba em segundo plano. Navegação manual pausada.";
 });
+function selectPriority(key){
+ if(busy||!active||nav?.snapshot().current.id!=="priorities")
+  return {ok:false,reason:"NO_ACTIVE_PRIORITY_SCENE"};
+ const current=plan().scenes.find(s=>s.id==="priorities");
+ if(!current?.entries?.some(e=>e.id===key))
+  return {ok:false,reason:"PRIORITY_NOT_CURRENT"};
+ selectedPriorityKey=key;
+ contextLine.hidden=true;contextLink.hidden=true;
+ render("Destaque confirmado. A seleção não altera automaticamente o mapa.");
+ return {ok:true,selectedPriorityKey:key};
+}
+function presentContext({description="",url=null}={}){
+ if(!active||!panel||panel.hidden)return false;
+ contextLine.textContent=text(description,390);
+ contextLine.hidden=!contextLine.textContent;
+ let verifiedLink=null;
+ try{
+  const target=new URL(url);
+  if(target.protocol==="https:"&&!target.username&&!target.password)
+   verifiedLink=target.href;
+ }catch{}
+ contextLink.hidden=!verifiedLink;
+ if(verifiedLink)contextLink.href=verifiedLink;
+ return true;
+}
 window.ULTRON_VISUAL_ORCHESTRATOR={
- start,show,stop,next:()=>step(1),previous:()=>step(-1),plan,
+ start,show,stop,next:()=>step(1),previous:()=>step(-1),
+ selectPriority,presentContext,plan,
+ get context(){
+  if(!active)return null;
+  const scene=nav?.snapshot().current.id||null;
+  return {active,scene,
+    selectedPriorityKey:scene==="priorities"?selectedPriorityKey:null,
+    focusKey:scene==="tour"||scene==="map"?lastFocusedKey:null};
+ },
  get state(){return {active,busy,scene:nav?.snapshot().current.id||null,
   index:nav?.snapshot().index??null,count:nav?.snapshot().count||0,
+  selectedPriorityKey,lastFocusedKey,
   mode:lastActual?.view||null};}
 };

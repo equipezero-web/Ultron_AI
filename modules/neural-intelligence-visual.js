@@ -293,8 +293,19 @@ if(stage&&visual&&intl){
       headline:entries[selected]?.title||null,
       hasImage:Boolean(entries[selected]?.imageUrl),
       waking,expanded,collapsed:panel.classList.contains("is-collapsed"),
-      lastUpdate:archiveAt
+      lastUpdate:archiveAt,
+      verified:valid,
+      requested:panel.classList.contains("is-requested")
     };},
+    get selectedArticle(){
+      const item=entries[selected];
+      if(!valid||!item)return null;
+      const published=Date.parse(item.publishedAt);
+      if(!Number.isFinite(published)||published>Date.now()+300000||
+         Date.now()-published>24*60*60*1000)return null;
+      return {id:item.id,title:item.title,source:item.source,url:item.url,
+       imageUrl:item.imageUrl,publishedAt:item.publishedAt,category:item.category};
+    },
     show:()=>{panel.classList.add("is-requested");panel.classList.remove("is-collapsed");collapse.textContent="−";},
     hide:()=>{panel.classList.remove("is-requested");},
     select:n=>{if(Number.isInteger(n)&&n>=0&&n<entries.length){selected=n;expanded=false;updateCard();}},
