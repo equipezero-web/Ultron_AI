@@ -1,0 +1,49 @@
+name: JARVIS Phase XI Immersive Context
+on:
+  pull_request:
+    paths:
+      - 'modules/jarvis-immersive-sequence.js'
+      - 'modules/jarvis-immersive-context.js'
+      - 'modules/jarvis-immersive-context.css'
+      - 'modules/jarvis-contextual-map.js'
+      - 'modules/jarvis-global-intelligence-ring.js'
+      - 'modules/ultron-orchestrator-v4270.js'
+      - 'index.html'
+      - 'tests/jarvis-phase11-immersive.mjs'
+      - '.github/workflows/jarvis-phase11-immersive.yml'
+  push:
+    paths:
+      - 'modules/jarvis-immersive-sequence.js'
+      - 'modules/jarvis-immersive-context.js'
+      - 'modules/jarvis-immersive-context.css'
+      - 'modules/jarvis-contextual-map.js'
+      - 'modules/jarvis-global-intelligence-ring.js'
+      - 'modules/ultron-orchestrator-v4270.js'
+      - 'index.html'
+      - 'tests/jarvis-phase11-immersive.mjs'
+      - '.github/workflows/jarvis-phase11-immersive.yml'
+permissions:
+  contents: read
+jobs:
+  source-grounded-immersive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax
+        run: |
+          node --check modules/jarvis-immersive-sequence.js
+          node --check modules/jarvis-immersive-context.js
+          node --check modules/jarvis-contextual-map.js
+          node --check modules/jarvis-global-intelligence-ring.js
+          node --check modules/ultron-orchestrator-v4270.js
+      - name: Source-grounded narrative and prior phase regressions
+        run: |
+          node tests/jarvis-phase11-immersive.mjs
+          node tests/jarvis-phase10-contextual-map.mjs
+          node tests/jarvis-phase9-priorities.mjs
+          node tests/jarvis-phase8-continuity.mjs
+          node tests/jarvis-phase3-geospatial.mjs
+          node tests/jarvis-mission-safety.mjs
