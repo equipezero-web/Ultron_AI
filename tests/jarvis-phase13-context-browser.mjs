@@ -139,8 +139,11 @@ try{
  const unsupported=await page.evaluate(()=>window.ULTRON_MULTIMODAL.parse("abra câmera"));
  assert.equal(unsupported,null);
  // Cancel a pending visual transition before its module reports success.
- await page.evaluate(()=>{
-  window.ULTRON_VISUAL_ORCHESTRATOR.selectPriority("g:usgs1");
+ await page.evaluate(async()=>{
+  // Source context must be the selected geological event, not a news article.
+  await window.ULTRON_VISUAL_ORCHESTRATOR.show("priorities");
+  const chosen=window.ULTRON_VISUAL_ORCHESTRATOR.selectPriority("g:usgs1");
+  if(!chosen.ok)throw Error("Verified event selection failed");
   window.__pendingScene=new Promise(resolve=>{window.__resolveScene=resolve;});
   window.ULTRON_IMMERSIVE.start=()=>window.__pendingScene;
  });
