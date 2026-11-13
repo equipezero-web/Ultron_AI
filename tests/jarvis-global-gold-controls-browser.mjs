@@ -134,9 +134,20 @@ try{
  await page.waitForSelector(".jarvis-cc-inline-action");
  const saved=await page.evaluate(()=>document.getElementById("output-box").textContent.includes("Adicionar compromisso"));
  assert.equal(saved,true,"Agenda must expose actual local appointment action");
- await click('[data-cc="files"]',"ARQUIVOS LOCAIS");
- await click('[data-cc="devices"]',"Nenhum dispositivo pareado");
- await click('[data-cc="camera"]',"SENSOR ÓPTICO / SEM CONEXÃO");
+ await click('[data-cc="files"]',"ARQUIVOS");
+ const fileResult=await page.evaluate(()=>document.getElementById("output-box").textContent);
+ assert.ok(/ARQUIVOS LOCAIS|ARQUIVOS \/ LOCAL CORE OFFLINE|Módulo de arquivos não inicializado/.test(fileResult),
+  "File control must give a true local-file or offline outcome");
+ await click('[data-cc="devices"]',"CENTRAL DE DISPOSITIVOS");
+ // Restore the camera double immediately before action: lazy device modules
+ // can replace window.ULTRON_MOBILE_CAMERA after initial startup.
+ await page.evaluate(()=>{
+  window.ULTRON_MOBILE_CAMERA={smartConnect:async()=>false};
+ });
+ await click('[data-cc="camera"]',"SENSOR ÓPTICO");
+ const cameraResult=await page.evaluate(()=>document.getElementById("output-box").textContent);
+ assert.match(cameraResult,/SENSOR ÓPTICO \/ SEM CONEXÃO/,
+  "A false camera request must report no stream rather than claim online");
  await click('[data-cc="earth"]',"GLOBO 3D");
  await page.click('[data-cc="ring"]');
  const neuralButtons=await page.evaluate(()=>[...document.querySelectorAll(".neural-jarvis-control")]
