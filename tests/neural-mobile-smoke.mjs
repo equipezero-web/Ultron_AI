@@ -177,7 +177,7 @@ try {
   assert.equal(proof.rotation,true,'Mapbox pinch should zoom without unwanted rotation');
   assert.equal(proof.pitch,true);
   assert.equal(proof.pan,true);
-  assert.equal(proof.mapboxTouch,'none');
+  assert.equal(proof.mapboxTouch,'pan-y','Mapbox map canvas should leave vertical finger scroll to the browser');
   assert.equal(proof.option,true);
   assert.equal(await page.evaluate(()=>window.__mobileMap.options.cooperativeGestures),false,
     'Mapbox should zoom directly with the mouse wheel while the right rail owns page scrolling');
