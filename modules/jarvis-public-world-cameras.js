@@ -204,6 +204,15 @@ const strip=document.querySelector(".quick-actions");
 if(strip&&!document.getElementById("btn-world-public-cameras")){
  const button=make("button","","CÂMERAS MUNDIAIS");
  button.type="button";button.id="btn-world-public-cameras";
- button.addEventListener("click",()=>open());
+ let lastPointerAt=0;
+ button.addEventListener("pointerdown",event=>{
+  if(event.button!==0)return;
+  lastPointerAt=Date.now();
+  open();
+ });
+ button.addEventListener("click",()=>{
+  if(Date.now()-lastPointerAt<850)return;
+  open();
+ });
  strip.append(button);
 }
