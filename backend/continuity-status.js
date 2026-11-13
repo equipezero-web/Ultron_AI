@@ -72,7 +72,7 @@ export function buildContinuityStatus({
   const worldState=!globalAvailable?"unavailable":!globalFresh?"stale":
     sources.every(x=>x.status==="ready")?"healthy":"partial";
   const weatherState=!weatherAvailable?"unavailable":!weatherFresh?"stale":
-    weatherItems.length>0?"healthy":"partial";
+    weatherItems.length>=6?"healthy":"partial";
   return {
     ok:true,version:"1.0",generatedAt:new Date(now).toISOString(),
     collection:"read-only-persisted",coverage:"Amostras e eventos catalogados; não é vigilância integral do planeta.",
