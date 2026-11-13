@@ -79,7 +79,7 @@ async function open({view="2d",focusKey=null}={}){
 // Move across the currently verified scenario without tearing down and
 // reconstructing Mapbox/WebGL on every step. Revalidate source and freshness.
 async function focus({focusKey,view=null}={}){
- if(typeof focusKey!=="string"||!/^g:[\\w:./-]{1,150}$/.test(focusKey))
+ if(typeof focusKey!=="string"||!/^g:[\w:./-]{1,150}$/.test(focusKey))
    return {ok:false,error:"Evento contextual inválido"};
  const mode=view===null?(lastMap?.view||"2d"):view;
  if(!["2d","3d"].includes(mode))return {ok:false,error:"Modo inválido"};
