@@ -48,6 +48,6 @@ export function computeNeuralJarvisVisual({time=0,bands={},overdrive=false,expan
 export function validateNeuralJarvisArchive(files=NEURAL_JARVIS_FILES){
  return Array.isArray(files)&&files.length===4&&
   new Set(files.map(x=>x.code)).size===4&&
-  files.every(x=>/^[A-Z]{3}-[A-Z]{3}-\d{2}$/.test(x.code)&&
+  files.every(x=>/^[A-Z]{3}-[A-Z]{3,4}-\d{2}$/.test(x.code)&&
   typeof x.title==="string"&&typeof x.detail==="string");
 }
