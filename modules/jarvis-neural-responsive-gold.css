@@ -9,6 +9,19 @@ body.jarvis-command-center {
  --neural-gold-soft:rgba(255,195,72,.16);
  --neural-black:#05070b;
 }
+/* TV layout must use the available browser width, not an inherited dashboard max-width. */
+@media(min-width:1100px){
+ body.jarvis-command-center .app-shell,
+ body.jarvis-command-center .hud-layout,
+ body.jarvis-command-center .center-column,
+ body.jarvis-command-center .neural-stage,
+ body.jarvis-command-center .orb-stage,
+ body.jarvis-command-center .jarvis-command-center-ui{
+  width:100%!important;max-width:none!important;
+  min-width:0!important;margin-inline:0!important;
+  box-sizing:border-box!important;
+ }
+}
 body.jarvis-command-center .jarvis-command-center-ui{
  min-width:0!important;max-width:100%!important;width:100%!important;
  box-sizing:border-box!important;
