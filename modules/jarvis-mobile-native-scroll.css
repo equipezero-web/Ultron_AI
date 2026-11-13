@@ -27,6 +27,9 @@ body.jarvis-command-center .center-column,
 body.jarvis-command-center .neural-stage,
 body.jarvis-command-center .orb-stage{
   overflow-y:visible!important;
+  /* Legacy .orb-stage had touch-action:none on its entire 2,400px-tall
+     section, silently disabling one-finger scroll even outside WebGL. */
+  touch-action:pan-y!important;
 }
 /* Native touch-action must be declared on the actual input elements, not just
    body: touch-action is intersected over the ancestor chain by the browser. */
