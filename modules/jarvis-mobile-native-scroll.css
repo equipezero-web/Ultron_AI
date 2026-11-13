@@ -1,0 +1,114 @@
+/* Mobile native scroll repair v5.35.
+   A single document scroller. No manual one-finger scrollBy, no scroll jail.
+   Keep deliberate 3D rotation (horizontal drag), scene zoom (two fingers),
+   wheel zoom while inside the actual visual only, and P0 controls. */
+html:has(body.jarvis-command-center){
+  height:auto!important;
+  min-height:100%!important;
+  overflow-x:clip!important;
+  overflow-y:auto!important;
+  overscroll-behavior-y:auto!important;
+  scroll-behavior:auto!important;
+  -webkit-overflow-scrolling:touch;
+}
+body.jarvis-command-center{
+  position:relative!important;
+  height:auto!important;
+  min-height:100dvh!important;
+  max-height:none!important;
+  overflow-x:clip!important;
+  overflow-y:visible!important;
+  overscroll-behavior-y:auto!important;
+  touch-action:pan-y!important;
+}
+body.jarvis-command-center .app-shell,
+body.jarvis-command-center .hud-layout,
+body.jarvis-command-center .center-column,
+body.jarvis-command-center .neural-stage,
+body.jarvis-command-center .orb-stage{
+  overflow-y:visible!important;
+  /* Legacy .orb-stage had touch-action:none on its entire 2,400px-tall
+     section, silently disabling one-finger scroll even outside WebGL. */
+  touch-action:pan-y!important;
+}
+/* Native touch-action must be declared on the actual input elements, not just
+   body: touch-action is intersected over the ancestor chain by the browser. */
+@media (pointer:coarse), (max-width:820px){
+ body.jarvis-command-center .jarvis-cc-visual[data-mode="ring"],
+ body.jarvis-command-center .jarvis-cc-visual[data-mode="ring"] > #jarvis-cc-canvas,
+ body.jarvis-command-center .jarvis-cc-visual .jarvis-earth-globe,
+ body.jarvis-command-center .jarvis-cc-visual .jarvis-earth-renderer,
+ body.jarvis-command-center .jarvis-cc-visual .jarvis-earth-renderer canvas,
+ body.jarvis-command-center .jarvis-earth-reference-map,
+ body.jarvis-command-center .jarvis-earth-reference-map .mapboxgl-map,
+ body.jarvis-command-center .jarvis-earth-reference-map .mapboxgl-canvas-container,
+ body.jarvis-command-center .jarvis-earth-reference-map .mapboxgl-canvas,
+ body.jarvis-command-center .jarvis-earth-reference-map .jarvis-earth-globe,
+ body.jarvis-command-center .jarvis-earth-reference-map .jarvis-earth-renderer,
+ body.jarvis-command-center .jarvis-earth-reference-map .jarvis-earth-renderer canvas,
+ body.jarvis-command-center .jarvis-geo-map-canvas{
+   touch-action:pan-y!important;
+   overscroll-behavior-y:auto!important;
+ }
+ body.jarvis-command-center .jarvis-cc-center{
+   overscroll-behavior-y:auto!important;
+ }
+ /* The full-screen Earth overlay has nested overflow:hidden containers,
+    which may become zero-range scroll containers and swallow the finger pan.
+    overflow:clip preserves visual clipping WITHOUT creating a scrollport. */
+ body.jarvis-command-center .jarvis-earth-reference-layout,
+ body.jarvis-command-center .jarvis-earth-reference-map{
+   overflow:clip!important;
+   overscroll-behavior-y:auto!important;
+   touch-action:pan-y!important;
+ }
+ /* Scrollable informational panels must transfer vertical swipes to the page
+    on reaching their ends, instead of trapping the user inside a short box. */
+ body.jarvis-command-center :is(
+   #output-box,.jarvis-cc-responses,.jarvis-cc-console-events,
+   .jarvis-cc-console-terminal,.jarvis-worldcam-results,
+   .jarvis-global-intel-panel,.jarvis-neural-news,
+   .jarvis-geo-visual,.jarvis-geo-metrics,
+   .jarvis-meteo-center,.ultron-neural-answer
+ ){
+   overscroll-behavior-y:auto!important;
+   -webkit-overflow-scrolling:touch;
+ }
+ /* Overlaid detail panels stay independently scrollable while visible.
+    Controls are not obscured by unintended gesture-catching layers. */
+ body.jarvis-command-center :is(
+   .jarvis-cc-orb-controls button,.jarvis-cc-tool-actions button,
+   .jarvis-cc-actions button,.jarvis-earth-reference-zoom button,
+   .jarvis-earth-selection-close,.neural-jarvis-archive-head button
+ ){
+   touch-action:manipulation!important;
+ }
+ /* The dedicated desktop rail overlaps the phone's right-edge swipe.
+    Mobile uses the standard browser scroll instead. */
+ body.jarvis-command-center #jarvis-page-scroll-rail{
+   display:none!important;
+   pointer-events:none!important;
+ }
+}
+@media(max-width:699px){
+ body.jarvis-command-center .jarvis-command-center-ui{
+   overflow:visible!important;
+ }
+ body.jarvis-command-center .jarvis-cc-center{
+   overflow:visible!important;
+ }
+}
+/* Dedicated modal with its own content is the exception: internal scrolling
+   is deliberate, never locked for the whole document. */
+body.jarvis-command-center .screen-modal[aria-hidden="false"] .screen-panel{
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+}
+/* Overlay close must remain a real, accessible 44px touch target on
+   desktop, touch laptops and mobile. Narrow 36px X hitboxes caused misses. */
+body.jarvis-command-center .ultron-neural-answer-close{
+  min-width:44px!important;
+  min-height:44px!important;
+  touch-action:manipulation!important;
+}
+

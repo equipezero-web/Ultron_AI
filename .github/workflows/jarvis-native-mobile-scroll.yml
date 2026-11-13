@@ -1,0 +1,64 @@
+name: JARVIS Native Mobile Scroll & Touch
+on:
+  pull_request:
+    paths:
+      - 'modules/jarvis-mobile-native-scroll.css'
+      - 'modules/jarvis-neural-jarvis-3d.js'
+      - 'modules/jarvis-earth.js'
+      - 'modules/jarvis-command-center-v4330.js'
+      - 'modules/neural-spatial-control-v4250.js'
+      - 'index.html'
+      - 'tests/jarvis-mobile-native-scroll-browser.mjs'
+      - '.github/workflows/jarvis-native-mobile-scroll.yml'
+  push:
+    paths:
+      - 'modules/jarvis-mobile-native-scroll.css'
+      - 'modules/jarvis-neural-jarvis-3d.js'
+      - 'modules/jarvis-earth.js'
+      - 'modules/jarvis-command-center-v4330.js'
+      - 'modules/neural-spatial-control-v4250.js'
+      - 'index.html'
+      - 'tests/jarvis-mobile-native-scroll-browser.mjs'
+      - '.github/workflows/jarvis-native-mobile-scroll.yml'
+permissions:
+  contents: read
+jobs:
+  syntax-model:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate syntax and prior safety contracts
+        run: |
+          node --check modules/jarvis-neural-jarvis-3d.js
+          node --check modules/jarvis-earth.js
+          node --check modules/jarvis-command-center-v4330.js
+          node --check modules/neural-spatial-control-v4250.js
+          node --check tests/jarvis-mobile-native-scroll-browser.mjs
+          node tests/jarvis-neural-jarvis-model.mjs
+          node tests/jarvis-universal-adaptive-model.mjs
+          node tests/jarvis-phase14-supervised-model.mjs
+  swipe-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser
+        run: |
+          npm install --no-save --no-package-lock --ignore-scripts puppeteer-core@24.33.0
+          echo "CHROME_BIN=$(command -v google-chrome || command -v chromium || command -v chromium-browser)" >> "$GITHUB_ENV"
+      - name: Real swipes on 7 phone viewports and desktop wheel
+        run: |
+          python3 -m http.server 8775 --bind 127.0.0.1 >/tmp/jarvis-native-scroll-http.log 2>&1 &
+          sleep 2
+          node tests/jarvis-mobile-native-scroll-browser.mjs
+      - name: Preserve earlier 320px through 4K layout
+        run: |
+          python3 -m http.server 8770 --bind 127.0.0.1 >/tmp/jarvis-responsive-http.log 2>&1 &
+          sleep 2
+          node tests/jarvis-neural-responsive-gold-browser.mjs

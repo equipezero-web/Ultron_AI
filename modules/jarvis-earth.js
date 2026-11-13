@@ -175,30 +175,9 @@ if (earthVisual) {
   const referenceSide = reference.querySelector('.jarvis-earth-reference-side');
   const referenceStatus = reference.querySelector('#jarvis-earth-reference-status');
 
-  // Mapbox lives under a touch-action:none canvas to keep pinch responsive.
-  // One-finger VERTICAL gestures must nevertheless scroll the dashboard.
-  // Two fingers remain owned by Mapbox cooperative zoom and pan.
-  let mapTouchScroll=null;
-  referenceMapHost.addEventListener('touchstart',event=>{
-    if(event.touches.length!==1){mapTouchScroll=null;return;}
-    const finger=event.touches[0];
-    mapTouchScroll={startX:finger.clientX,startY:finger.clientY,
-      lastY:finger.clientY,scrolling:false};
-  },{passive:true,capture:true});
-  referenceMapHost.addEventListener('touchmove',event=>{
-    if(!mapTouchScroll||event.touches.length!==1)return;
-    const finger=event.touches[0],dx=finger.clientX-mapTouchScroll.startX,
-      dy=finger.clientY-mapTouchScroll.startY;
-    if(!mapTouchScroll.scrolling&&Math.abs(dy)>8&&Math.abs(dy)>Math.abs(dx)*1.2)
-      mapTouchScroll.scrolling=true;
-    if(!mapTouchScroll.scrolling)return;
-    if(event.cancelable)event.preventDefault();
-    event.stopImmediatePropagation();
-    window.scrollBy({top:mapTouchScroll.lastY-finger.clientY,behavior:'instant'});
-    mapTouchScroll.lastY=finger.clientY;
-  },{passive:false,capture:true});
-  for(const type of ['touchend','touchcancel'])
-    referenceMapHost.addEventListener(type,()=>{mapTouchScroll=null;},{passive:true,capture:true});
+  // Native pan-y on the map container permits normal one-finger scrolling.
+  // Mapbox still receives intentional map interactions and multi-touch events.
+  // Do not emulate page scroll with window.scrollBy or cancel touchmove here.
 
   let referenceMap = null, referenceLoading = null, referenceMode = false;
   let referenceSelection = false;
@@ -819,6 +798,11 @@ if (earthVisual) {
             view:{...(globe.pointOfView() || home)},
             moved:false,touchLastY:event.clientY,scrollGesture:false
           };
+          // Globe.gl/OrbitControls may register pointerdown handlers that
+          // call preventDefault, suppressing native touch panning even when
+          // touch-action is pan-y. Our gesture handler runs on the container
+          // in capture phase; do not forward touch pointerdown to OrbitControls.
+          if(event.pointerType==="touch")event.stopPropagation();
         };
         const stopDrag = event => {
           if (event?.pointerType === 'touch') {
@@ -853,13 +837,11 @@ if (earthVisual) {
           if (dragState.pointerId != null && event.pointerId != null && event.pointerId !== dragState.pointerId) return;
           if(event.pointerType==='touch'&&touchPointers.size===1){
             const dx=event.clientX-dragState.x,dy=event.clientY-dragState.y;
-            if(!dragState.scrollGesture&&Math.abs(dy)>8&&Math.abs(dy)>Math.abs(dx)*1.2)
+            if(!dragState.scrollGesture&&Math.abs(dy)>7&&Math.abs(dy)>Math.abs(dx)*1.15)
               dragState.scrollGesture=true;
-            if(dragState.scrollGesture){
-              window.scrollBy({top:dragState.touchLastY-event.clientY,behavior:'instant'});
-              dragState.touchLastY=event.clientY;
-              return;
-            }
+            // CSS touch-action:pan-y handles one-finger vertical navigation
+            // with native inertia. Never fight it with a manual scrollBy.
+            if(dragState.scrollGesture)return;
           }
           const dx = event.clientX - dragState.x;
           const dy = event.clientY - dragState.y;
@@ -879,7 +861,16 @@ if (earthVisual) {
           touches[0].clientY - touches[1].clientY
         );
         canvasHost.addEventListener('touchstart', event => {
-          if (!visible || streetMode || referenceMode || event.touches.length < 2) return;
+          if (!visible || streetMode || referenceMode) return;
+          if(event.touches.length===1){
+            // Globe.gl's internal touch listeners may prevent native page
+            // scrolling even when computed touch-action is pan-y. Ignore
+            // its one-finger touch handlers; our Pointer Events handler still
+            // owns intentional horizontal drag.
+            event.stopImmediatePropagation();
+            return;
+          }
+          if(event.touches.length<2)return;
           const view = globe.pointOfView() || home;
           nativePinch = {
             distance: Math.max(1, nativeDistance(event.touches)),
@@ -889,8 +880,14 @@ if (earthVisual) {
           event.preventDefault();
         }, {passive:false,capture:true});
         canvasHost.addEventListener('touchmove', event => {
-          if (!nativePinch || !visible || streetMode || referenceMode) return;
-          if (event.touches.length < 2) return;
+          if (!visible || streetMode || referenceMode)return;
+          if(event.touches.length===1){
+            // Do not forward single-finger touchmove to Globe.gl: browser
+            // needs it uncancelled to provide momentum scrolling.
+            event.stopImmediatePropagation();
+            return;
+          }
+          if (!nativePinch || event.touches.length<2) return;
           const scale = nativePinch.distance / Math.max(1, nativeDistance(event.touches));
           const altitude = clamp(nativePinch.altitude * scale, 0.06, 5);
           const view = globe.pointOfView() || home;

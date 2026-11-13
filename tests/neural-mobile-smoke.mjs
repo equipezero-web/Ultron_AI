@@ -21,7 +21,7 @@ try {
     const r=el.getBoundingClientRect();
     return {x:r.x,y:r.y,w:r.width,h:r.height,touch:getComputedStyle(el).touchAction};
   });
-  assert.equal(ringArea.touch,'none','Mobile neural ring must own touch gestures');
+  assert.equal(ringArea.touch,'pan-y','One-finger native scroll must remain enabled on the Neural Jarvis canvas');
   const ringClient=await page.target().createCDPSession();
   const rx=ringArea.x+ringArea.w*.5,ry=ringArea.y+ringArea.h*.45;
   const ringTouches=(gap)=>[
@@ -39,7 +39,7 @@ try {
   assert.equal(await page.evaluate(()=>window.ULTRON_NEURAL_RING_3D.state.zoom),1);
 
   // One-finger VERTICAL swipe over WebGL must advance the page even while
-  // the canvases retain touch-action:none to preserve two-finger pinch.
+  // the canvases use touch-action:pan-y and JS still implements two-finger pinch.
   await page.evaluate(()=>{
     const spacer=document.createElement('div');spacer.style.height='1300px';
     spacer.id='touch-page-scroll-spacer';document.body.append(spacer);
@@ -51,6 +51,18 @@ try {
     const r=await page.$eval(selector,el=>{
       const x=el.getBoundingClientRect();return {x:x.x,y:x.y,w:x.width,h:x.height};
     });
+    if(selector.includes('earth-renderer')){
+      const chain=await page.$eval(selector,el=>{
+        const a=[];for(let n=el;n&&a.length<13;n=n.parentElement){
+          const cs=getComputedStyle(n),r=n.getBoundingClientRect();
+          a.push({tag:n.tagName,id:n.id,cls:String(n.className).slice(0,110),
+            touch:cs.touchAction,overflow:cs.overflowY,
+            pointer:cs.pointerEvents,top:Math.round(r.top),h:Math.round(r.height)});
+        }
+        return {chain:a,maxScroll:document.scrollingElement.scrollHeight-document.scrollingElement.clientHeight};
+      });
+      console.log('GLOBE SCROLL ANCESTORS',JSON.stringify(chain));
+    }
     console.log('SCROLL TOUCH TARGET',selector,JSON.stringify({r,before}));
     const x=Math.round(Math.max(25,Math.min(365,r.x+r.w*.5)));
     const y=Math.round(Math.max(160,Math.min(770,r.y+r.h*.60)));
@@ -82,8 +94,8 @@ try {
       viewport:document.documentElement.scrollWidth-innerWidth
     };
   });
-  assert.equal(overlay.action,'none','The globe layer must intercept two-finger pinch instead of scrolling the page');
-  assert.equal(overlay.canvasTouch,'none');
+  assert.equal(overlay.action,'pan-y','Native one-finger page scroll must work over globe map layer');
+  assert.equal(overlay.canvasTouch,'pan-y','Globe canvas must allow native one-finger scrolling');
   assert.ok(overlay.plus>=40 && overlay.minus>=40,'Touch zoom buttons need a usable size');
   assert.ok(overlay.viewport<=3,'Globe must not overflow the phone viewport');
 
@@ -177,7 +189,7 @@ try {
   assert.equal(proof.rotation,true,'Mapbox pinch should zoom without unwanted rotation');
   assert.equal(proof.pitch,true);
   assert.equal(proof.pan,true);
-  assert.equal(proof.mapboxTouch,'none');
+  assert.equal(proof.mapboxTouch,'pan-y','Mapbox map canvas should leave vertical finger scroll to the browser');
   assert.equal(proof.option,true);
   assert.equal(await page.evaluate(()=>window.__mobileMap.options.cooperativeGestures),false,
     'Mapbox should zoom directly with the mouse wheel while the right rail owns page scrolling');
