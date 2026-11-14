@@ -4,10 +4,106 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-14T15:01:50.949Z",
-  "oldestEventAt": "2026-11-13T17:23:00.000Z",
-  "windowStartAt": "2026-11-13T15:01:50.949Z",
+  "updatedAt": "2026-11-14T19:55:21.208Z",
+  "oldestEventAt": "2026-11-13T19:56:00.000Z",
+  "windowStartAt": "2026-11-13T19:55:21.208Z",
   "events": [
+    {
+      "id": "event-f5c8bb46",
+      "category": "brasil",
+      "title": "Inmet: chuvas e tempestades predominam no país, neste fim de semana",
+      "url": "https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-11/inmet-chuvas-e-tempestades-predominam-no-pais-neste-fim-de-semana",
+      "description": "O Instituto Nacional de Meteorologia (Inmet) informou que, neste sábado (14), domingo (15) e segunda-feira (16), a previsão é de tempestades no país, com destaque para as regiões Centro-Oeste e Sudeste, além de áreas do Nordeste e Norte. O norte do Pará, partes do litoral do Nordeste e o extremo sul do Brasil devem ter tempo estável. Notícias relacionadas: Governo abre consulta pública sobre enfrentamento ao calor extremo. No sábado (14), as condições meteorológicas favorecem pancadas de chuva fortes, com possibilidade de temporais, especialmente em Santa Catarina, Paraná, Mato Grosso do Sul e áreas do Rio Grande do Sul. Segundo o Inmet, também haverá condições para chuva em parte do interior do Brasil, com destaque para áreas entre a Bahia e o Espírito Santo, onde a convergência de umidade deverá contribuir para a formação de instabilidades. As condições poderão limitar a ocorrência de precipitação em parte de São Paulo, Minas Gerais e do Centro-Oeste, embora o aquecimento do dia e a elevada disponibilidade de umidade ainda favoreçam pancadas isoladas. No extremo norte do país, o Am",
+      "imageUrl": "https://imagens.ebc.com.br/pMQu7ZGPr9aw8v36dbJy7-Pcv3k=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/_mg_9230.jpg?itok=FoVvdnSa",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-14T19:06:00.000Z",
+      "firstSeenAt": "2026-11-14T19:55:21.208Z",
+      "lastSeenAt": "2026-11-14T19:55:21.208Z"
+    },
+    {
+      "id": "event-6e750ab9",
+      "category": "brasil",
+      "title": "Coritiba lança camisa com Enedina Marques em alusão ao 20 de novembro",
+      "url": "https://agenciabrasil.ebc.com.br/direitos-humanos/noticia/2026-11/coritiba-lanca-camisa-com-enedina-marques-em-alusao-ao-20-de-novembro",
+      "description": "Uma camisa para homenagear o dia da Consciência Negra, celebrado em 20 de novembro, foi a forma como o clube de futebol Coritiba resolveu fazer para chamar atenção para a data. A camisa, lançada nessa sexta-feira (13), faz uma homenagem a Enedina Alves Marques, a primeira mulher negra a se formar em engenharia no Brasil. A iniciativa faz parte da coleção Pelo Mundo Vai Brilhar, que valoriza personagens e símbolos da história de Curitiba. Trajetória Enedina nasceu na capital paranaense, em 1913 e teve uma trajetória marcada pelo enfrentamento a barreiras raciais e de gênero. Em 1945, se tornou a primeira mulher negra a se formar em Engenharia Civil no Brasil, pela Universidade Federal do Paraná (UFPR). Enedina morreu em agosto de 1981, aos 68 anos. Sua trajetória fez com que, em janeiro de 2024, ela ganhasse uma estátua no calçadão da Rua XV de Novembro, no Centro de Curitiba. A estátua foi criada pelo artista Rafael Sartori e serviu de inspiração para a camisa do Coritiba. “Histórias que abrem caminhos. Legados que constroem o futuro”, escreveu o clube em sua rede social . O Coritiba",
+      "imageUrl": "https://imagens.ebc.com.br/P7hkIor5SOTh7x4y6O8HAr1VwpI=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/14/camisa_coritiba_consciencia_negra02.jpg?itok=iIlxPk9y",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-14T18:22:00.000Z",
+      "firstSeenAt": "2026-11-14T19:55:21.208Z",
+      "lastSeenAt": "2026-11-14T19:55:21.208Z"
+    },
+    {
+      "id": "event-f0474be8",
+      "category": "mundo",
+      "title": "Principais notícias do mundo na tarde de hoje (14)",
+      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPQjJGYnlDdmZzdXRFeXFXVXY2TUR6bVNKSVNSYjNPQmJGcWIwY2EyTWVzaEkwOHU2N3k1RE8xNnBBc210YjdnZEZSSHhjNThHeUxvQXMtQjgxNnR0YnFSdERpckRjYzZYc3pjXzV3aWZfa0t4bnRrZ2o2bWRWWktORFpydElZRjlkS0VleTl6aDVDZFVsZGdlaFlCTVVMaUdKV0tVN0lHNHduR0tC",
+      "description": "Principais notícias do mundo na tarde de hoje (14) &nbsp;&nbsp; Tribuna do Sertão",
+      "imageUrl": null,
+      "source": "Tribuna do Sertão",
+      "publishedAt": "2026-11-14T18:06:28.000Z",
+      "firstSeenAt": "2026-11-14T19:55:21.208Z",
+      "lastSeenAt": "2026-11-14T19:55:21.208Z"
+    },
+    {
+      "id": "event-5aa189ed",
+      "category": "brasil",
+      "title": "Governo abre consulta pública sobre enfrentamento ao calor extremo",
+      "url": "https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-11/governo-abre-consulta-publica-sobre-enfrentamento-ao-calor-extremo",
+      "description": "O Ministério do Meio Ambiente e Mudança do Clima (MMA) abriu uma consulta pública com objetivo de receber contribuições para o enfrentamento do calor extremo no país e para ampliar o acesso da população a ambientes mais frescos e saudáveis. Aberta nesta sexta-feira (13), a consulta pública ficará disponível na plataforma Brasil Participativo até 23 de novembro. Notícias relacionadas: Estudo prevê até 13,3 mil mortes no Brasil com calor do Super El Niño. As propostas vão ajudar a construir o Plano de Ação pelo Resfriamento e Combate ao Calor Extremo (Pnar Brasil), que reúne medidas para proteger a saúde, reduzir desigualdades e preparar o país para o aumento das temperaturas. Em nota, o MMA ressaltou que o calor extremo afeta a saúde, as condições de trabalho e a qualidade de vida da população, especialmente nas áreas urbanas com pouca vegetação e maior exposição ao sol. “O desafio é encontrar formas de tornar as cidades e os ambientes construídos mais frescos e seguros, sem aumentar desnecessariamente o consumo de energia e as emissões de gases de efeito estufa”, diz a pasta. Com apo",
+      "imageUrl": "https://imagens.ebc.com.br/_i15j7PANiECyWqg8VoFUDFqw_E=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2025/12/26/_d6a4895_01.jpg?itok=Mq8WKdwF",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-14T17:48:00.000Z",
+      "firstSeenAt": "2026-11-14T19:55:21.208Z",
+      "lastSeenAt": "2026-11-14T19:55:21.208Z"
+    },
+    {
+      "id": "event-14c7850f",
+      "category": "brasil",
+      "title": "TV Brasil apresenta show do Bossacucanova no Cena Musical deste sábado",
+      "url": "https://agenciabrasil.ebc.com.br/cultura/noticia/2026-11/tv-brasil-apresenta-show-do-bossacucanova-no-cena-musical-deste-sabado",
+      "description": "Celebrando 25 anos de trajetória, a banda formada por Marcelinho da Lua e Marcio Menescal apresenta o espetáculo Uma Batida Diferente, em que revisita clássicos da bossa nova, do samba e da MPB, combinando harmonias de violão, melodias consagradas da música brasileira e batidas eletrônicas contemporâneas. O grupo Bossacucanova é a atração do Cena Musical que a TV Brasil exibe neste sábado, às 23h. Notícias relacionadas: Drauzio Varella é novo membro da Academia Brasileira de Letras. 34º Festival MixBrasil reúne cinema, teatro, games e literatura em SP. Mostra “Elas Dirigem” leva filmes premiados do cinema alemão ao DF. A edição integra a nova temporada do programa, apresentado pela jornalista e cantora Bia Aparecida, com direção artística de Waldecir de Oliveira. Reconhecido por criar uma sonoridade própria ao aproximar tradição e modernidade, o Bossacucanova consolidou sua carreira ao reinterpretar referências da música brasileira sob uma perspectiva contemporânea. Ao longo de duas décadas e meia, o grupo conquistou espaço no cenário nacional e internacional ao unir gêneros e influê",
+      "imageUrl": "https://imagens.ebc.com.br/iKFgVoCxkR-d9V3fZBnzmpzNwV0=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/13/copia-de-foto-andre-telles-24-set-2026-bndes-5a-quintas-no-bndes-bosacucanova-7177.jpg?itok=eWNlHhRY",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-14T17:10:00.000Z",
+      "firstSeenAt": "2026-11-14T19:55:21.208Z",
+      "lastSeenAt": "2026-11-14T19:55:21.208Z"
+    },
+    {
+      "id": "event-a5e3f66",
+      "category": "clima",
+      "title": "El Niño deve perder força em 2027 e pode terminar durante o outono",
+      "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxQUEZ4ZTRCdV81bjI3Tkx4a1lMblJzNVdpUGNjSmhMNEx3bDNLd2pRa0VBM2JqTzd0Nkd6UlkyM0JqcGZnZXQ1YVdJRmYyYnBla092UHVPOEVRcF95T2toVFFzaGN1V250dmRPVFZjRlhuV25VMS1pX05SOTBnT2M5NURDYl90TG9MLU8xT2c4NHczWjJ6enlfNTBTRkRNdDBKWXB3M1ZB0gGrAUFVX3lxTFBLeEdzMFdXWXBPY3FHN3A4aERTWXNteU40aWRtQ2wwX3ppNldvTmdwd2tiLUY3Qlh4bURpSU9wX3M1WmR0RzgyTUt3RUtIWm1OZllNY1RPaXJ1Zl9IOHl5VDNHdDM0UGFnTFExRFRYOUg4X013WlZ6d2N5YkFTZlJEYlJTWGdfRnNvUFh4TGdTSVVUdEVXZ0RoTGRKYzVTQVpKTjJZYmVmdDNoMA",
+      "description": "El Niño deve perder força em 2027 e pode terminar durante o outono &nbsp;&nbsp; Costa Norte",
+      "imageUrl": null,
+      "source": "Costa Norte",
+      "publishedAt": "2026-11-14T16:10:00.000Z",
+      "firstSeenAt": "2026-11-14T19:55:21.208Z",
+      "lastSeenAt": "2026-11-14T19:55:21.208Z"
+    },
+    {
+      "id": "event-d0100efe",
+      "category": "mundo",
+      "title": "Romário detona Carlo Ancelotti na Seleção: 'Mete o pé'",
+      "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxOMVJzUlJUWFp6NVVyLXZpX2tpN0RPcTAxR05vYWI5Z2ZHRm1Nb1dmeUdYb1FEU3U3NlJxTUNnRzk0djM1SDljUmxmd3UyOU8xQm5lOU1TdlZ5dmlaaGt2aGpiVUJ1TnVpTm1pX3cyVF9sY2I5SDRubHBlUmtael9nUTk1cmlvQWpDc1FSMU94bkJ6REJvNnVGeTYwSkpoc3E0YVR0b3lWOTFSSVJLZXlqSmRjX0VSUGVSaDFPMlpkbzFGQQ",
+      "description": "Romário detona Carlo Ancelotti na Seleção: 'Mete o pé' &nbsp;&nbsp; LANCE!",
+      "imageUrl": null,
+      "source": "LANCE!",
+      "publishedAt": "2026-11-14T15:07:39.000Z",
+      "firstSeenAt": "2026-11-14T19:55:21.208Z",
+      "lastSeenAt": "2026-11-14T19:55:21.208Z"
+    },
+    {
+      "id": "event-ae72972e",
+      "category": "santa-catarina",
+      "title": "Calor e temporais isolados marcam previsão para o fim de semana em SC",
+      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxQYjItMndFamhHaXhzXzJmYWVubnlXQmg0eFkwdWNpejV4cnQxWmkyOENTdkoxbmU3aXJ0Uy1PVHhVWmZtcHBKRGxxc29lMnBQQ1BEcFdsbm5JN2dydVc4dEFWUHNzQ3dHUjhXQzE1MjZ5aHRaZ2NOd0JXQVNiczlOOUppeTZiemwzTUVrNzQ0Nkp2RmlHNTc3R3NCUC12ZU40QUNwX3JLd3VMY1ZBanc",
+      "description": "Calor e temporais isolados marcam previsão para o fim de semana em SC &nbsp;&nbsp; AJ Notícias",
+      "imageUrl": null,
+      "source": "AJ Notícias",
+      "publishedAt": "2026-11-14T14:59:34.000Z",
+      "firstSeenAt": "2026-11-14T19:55:21.208Z",
+      "lastSeenAt": "2026-11-14T19:55:21.208Z"
+    },
     {
       "id": "event-8cdb4933",
       "category": "brasil",
@@ -54,7 +150,7 @@
       "source": "HC Notícias",
       "publishedAt": "2026-11-14T12:04:00.000Z",
       "firstSeenAt": "2026-11-14T15:01:50.949Z",
-      "lastSeenAt": "2026-11-14T15:01:50.949Z"
+      "lastSeenAt": "2026-11-14T19:55:21.208Z"
     },
     {
       "id": "event-a2f869bb",
@@ -78,7 +174,7 @@
       "source": "Portal O Dia",
       "publishedAt": "2026-11-14T11:30:47.000Z",
       "firstSeenAt": "2026-11-14T15:01:50.949Z",
-      "lastSeenAt": "2026-11-14T15:01:50.949Z"
+      "lastSeenAt": "2026-11-14T19:55:21.208Z"
     },
     {
       "id": "event-571b2b8d",
@@ -102,7 +198,19 @@
       "source": "Canal Ideal",
       "publishedAt": "2026-11-14T10:57:00.000Z",
       "firstSeenAt": "2026-11-14T15:01:50.949Z",
-      "lastSeenAt": "2026-11-14T15:01:50.949Z"
+      "lastSeenAt": "2026-11-14T19:55:21.208Z"
+    },
+    {
+      "id": "event-316b13ae",
+      "category": "santa-catarina",
+      "title": "Calor, temporais e pancadas de chuva marcam o fim de semana em SC",
+      "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxOTXlvY01VYXBGcDJkVk5GeFMwMkp0YU9tUzY4N193TTBIUDZmZzVzX1BwUHRrRmdsdGhNeDA3eU9RUlNVSUNwS2ZFTzk2R2RoaGR5SE1SVlltbzJvbE1KUkxqX2dTdHlHNEVyNGlTVndiTWhfcEVjQ2hrek50ZFNZeFc2cW5oVHRKM2s0YVJ5MEhrVjZWQUpyTTRrUUY2OXJKQUE",
+      "description": "Calor, temporais e pancadas de chuva marcam o fim de semana em SC &nbsp;&nbsp; Sul. Agora",
+      "imageUrl": null,
+      "source": "Sul. Agora",
+      "publishedAt": "2026-11-14T10:49:00.000Z",
+      "firstSeenAt": "2026-11-14T19:55:21.208Z",
+      "lastSeenAt": "2026-11-14T19:55:21.208Z"
     },
     {
       "id": "event-c02f64cf",
@@ -210,7 +318,7 @@
       "source": "CenárioMT",
       "publishedAt": "2026-11-14T00:47:55.000Z",
       "firstSeenAt": "2026-11-14T01:39:22.856Z",
-      "lastSeenAt": "2026-11-14T15:01:50.949Z"
+      "lastSeenAt": "2026-11-14T19:55:21.208Z"
     },
     {
       "id": "event-c3e82189",
@@ -415,110 +523,9 @@
       "publishedAt": "2026-11-13T19:56:00.000Z",
       "firstSeenAt": "2026-11-13T21:28:55.699Z",
       "lastSeenAt": "2026-11-13T21:28:55.699Z"
-    },
-    {
-      "id": "event-ab598c27",
-      "category": "clima",
-      "title": "El Niño tem mais de 79% de chance de seguir forte até março de 2027",
-      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxQMnRiODZYQXE0SkdJNktiTnhLN3RHclMxZGNaRWtPR3lDXy1IQWRyZ0o3VERUUXFQYWJiczJHcWZ4UENIb3Q2TXh2N2lnZ1A0all2Y0s1LTRHWWlkX3YxN193UmpQdTZWcVRrRFlEM3pPTlZkS0ZoRkFaUjV6LS11Vi1VZ05wWU9xWktPeWRxYVI0ck9SWWc2dXExZzk3NzJxZ3RXM1VUNE9sYng4ZjVIR2pLOU5jc2M",
-      "description": "El Niño tem mais de 79% de chance de seguir forte até março de 2027 &nbsp;&nbsp; Leouve",
-      "imageUrl": null,
-      "source": "Leouve",
-      "publishedAt": "2026-11-13T19:16:11.000Z",
-      "firstSeenAt": "2026-11-13T21:28:55.699Z",
-      "lastSeenAt": "2026-11-13T21:28:55.699Z"
-    },
-    {
-      "id": "event-b63f58e7",
-      "category": "mundo",
-      "title": "Fora dos Jogos Olímpicos, classe Star deu origem à Copa do Mundo da Vela que chega ao Rio de Janeiro",
-      "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTFBUaU9CRktJVDJrT1I1dVJfRDRqVnVlLXhldG84NnpBQXdqcVFLMzQtNVIzcjlkcTJidXBORXZjbnNrNW9fNUdENTNzcUJVNVhwSkZGVGZDN3d5eW8yYXZydGFHWm9Sb3pxcmliSmdR",
-      "description": "Fora dos Jogos Olímpicos, classe Star deu origem à Copa do Mundo da Vela que chega ao Rio de Janeiro &nbsp;&nbsp; Náutica",
-      "imageUrl": null,
-      "source": "Náutica",
-      "publishedAt": "2026-11-13T19:12:19.000Z",
-      "firstSeenAt": "2026-11-13T21:28:55.699Z",
-      "lastSeenAt": "2026-11-13T21:28:55.699Z"
-    },
-    {
-      "id": "event-47ebfe00",
-      "category": "brasil",
-      "title": "Podcast do Senac conta a história da educação profissional no Brasil em comemoração aos seus 80 anos",
-      "url": "https://news.google.com/rss/articles/CBMinAJBVV95cUxPaUJBTFJYV19jTEJXS00xUUdDQUdxNE9FRHhqYUdvdDhkTkpEYnRMSURabXUwaEczZzBaZWtKczZ4RmdDVUVFM1BjOGdJY3NJWnBKWXc3cXRIZUF2UWd5RlIyLXVUZG5pY0Fsb1JXYlVVcFdpbWQzRkR3dUd4UlhwMkFPTFVPR1JUWFNuVzJTd2tFQXlQQm0yV2JMeTIwSUFQM0pydWw0WnZQbFpMMG1Sazg0YlBCdXM4UG9fUlZqenJaYV81RUJubjlfa1ZFX3Y5TjFsZERWMlc0ZHAwcVFnTHJOb1hYNTdnNldHbFlQRVp6RHRxWkVYWWpkakxPZURwS0VQVzRmZnBGcy1QWV94UTdyVWxHcGZrdTFMdtIBnAJBVV95cUxPaUJBTFJYV19jTEJXS00xUUdDQUdxNE9FRHhqYUdvdDhkTkpEYnRMSURabXUwaEczZzBaZWtKczZ4RmdDVUVFM1BjOGdJY3NJWnBKWXc3cXRIZUF2UWd5RlIyLXVUZG5pY0Fsb1JXYlVVcFdpbWQzRkR3dUd4UlhwMkFPTFVPR1JUWFNuVzJTd2tFQXlQQm0yV2JMeTIwSUFQM0pydWw0WnZQbFpMMG1Sazg0YlBCdXM4UG9fUlZqenJaYV81RUJubjlfa1ZFX3Y5TjFsZERWMlc0ZHAwcVFnTHJOb1hYNTdnNldHbFlQRVp6RHRxWkVYWWpkakxPZURwS0VQVzRmZnBGcy1QWV94UTdyVWxHcGZrdTFMdg",
-      "description": "Podcast do Senac conta a história da educação profissional no Brasil em comemoração aos seus 80 anos &nbsp;&nbsp; O GLOBO",
-      "imageUrl": null,
-      "source": "O GLOBO",
-      "publishedAt": "2026-11-13T19:10:58.000Z",
-      "firstSeenAt": "2026-11-13T21:28:55.699Z",
-      "lastSeenAt": "2026-11-13T21:28:55.699Z"
-    },
-    {
-      "id": "event-142739f1",
-      "category": "santa-catarina",
-      "title": "Calor pode chegar a 35 °C e temporais isolados são previstos para o fim de semana em SC",
-      "url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxNQnRNUE91UVZ5eG5iUVg1T09tRzdseDdEQUNON2lCcXNyTzJlSWJiN0VKY3ZnejJ5UHN2NTdIWWtNVzVhMmlDdXo5MExFR3V4MG9qTFU2RHpEc3hfblF4QWROcXVBenF5VXN2clFpU1BYdW1IcWI0cHBKVDNiaTQzVmhyZ2hPdlllby1TOGFtdVFvTFkyUTlkQjRJb20xZTJSZlhacHdZdWdNTFAtcTdPSFpGckdDQ0Nrak52OEFBX3FiUml6bGhxcF8xN2FXbXVSSWdqaA",
-      "description": "Calor pode chegar a 35 °C e temporais isolados são previstos para o fim de semana em SC &nbsp;&nbsp; Santa Catarina em Pauta",
-      "imageUrl": null,
-      "source": "Santa Catarina em Pauta",
-      "publishedAt": "2026-11-13T18:48:00.000Z",
-      "firstSeenAt": "2026-11-13T21:28:55.699Z",
-      "lastSeenAt": "2026-11-14T08:00:23.092Z"
-    },
-    {
-      "id": "event-da9c4711",
-      "category": "clima",
-      "title": "El Niño 2026: o que o Pacífico já está dizendo às empresas",
-      "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxQd2Z0UHBzcXJPREpmTDNkUFN3MWpaMk11VW9UMVpGRDJLYjBuZG5tS3NYaUxtaWdsTlI2NkdXSlBFaXJQbjRBT05mUmh2OWVKcXo1cXkwaVYzZ1FCV0V2YUNyaHlrRTlUNFZMZldOZFROQVlNOFJfOW9iTU9BaTI5aXBfRFZZUDZLSjNVTU9WaGl5QXFqX2drMl9HQi1NWHpxSkZMMl82MnBYeFNMaDkxX01nblBSUnpLVUxfdW90VXdySllMdG5udDNjMHdBSzh2MmNtMGxEZVEyaWPSAdsBQVVfeXFMUHdmdFBwc3FyT0RKZkwzZFBTdzFqWjJNdVVvVDFaRkQyS2IwbmRubUtzWGlMbWlnbE5SNjZHV0pQRWlyUG40QU9OZlJodjllSnF6NXF5MGlWM2dRQldFdmFDcmh5a0U5VDRWTGZXTmRUTkFZTThSXzlvYk1PQWkyOWlwX0RWWVA2S0ozVU1PVmhpeUFxal9nazJfR0ItTVh6cUpGTDJfNjJwWHhTTGg5MV9NZ25QUlJ6S1VMX3VvdFV3ckpZTHRubnQzYzB3QUs4djJjbTBsRGVRMmlj",
-      "description": "El Niño 2026: o que o Pacífico já está dizendo às empresas &nbsp;&nbsp; Valor Econômico",
-      "imageUrl": null,
-      "source": "Valor Econômico",
-      "publishedAt": "2026-11-13T18:44:53.000Z",
-      "firstSeenAt": "2026-11-13T21:28:55.699Z",
-      "lastSeenAt": "2026-11-13T21:28:55.699Z"
-    },
-    {
-      "id": "event-e722256f",
-      "category": "santa-catarina",
-      "title": "Calor de até 35°C e possibilidade de temporais: confira a previsão do tempo para o fim de semana",
-      "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxQbUJqZWdGQkhPU3E5eWh2STdhZThDb1BSUjlxWUplV3F6TXczUy1YX3MyWDRVeGJ1aVE3M18zRmNRN0lxOGZqUU9FZEpqWlI5TzdRdTYta2I1X05WX3lKVUlGeEpkYjcxRHJMZDlna05IVmlCaVJ2RzloTW5fMktaeF9iVXlRclR2WnpoVVFteGRqYTBxb3k3SDlpTVVCb3hMUGVRYjVIcE0xakthbXN5RFBWUzRzNTFSNVU0LVRSYzI0T2ZCcURIWjhydw",
-      "description": "Calor de até 35°C e possibilidade de temporais: confira a previsão do tempo para o fim de semana &nbsp;&nbsp; Jornal de Pomerode",
-      "imageUrl": null,
-      "source": "Jornal de Pomerode",
-      "publishedAt": "2026-11-13T17:39:07.000Z",
-      "firstSeenAt": "2026-11-13T21:28:55.699Z",
-      "lastSeenAt": "2026-11-14T08:00:23.092Z"
-    },
-    {
-      "id": "event-4b5dd5cf",
-      "category": "santa-catarina",
-      "title": "Calor de 35°C antecede temporais em SC",
-      "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOZzEzUTliOHhuaE9EYjBvalkzV1czMUptc2VYdk0yemZJWnZJTmoxbld5X2piOTFIQW1EM3NVZHprVkdVUmdyam9qV055azZPR1V2YU1DQ1NOVUc2a0QtN0kycEtPWWJkZ2lIdnBYYm1FRkpBRjZUeGZTclFaVWhLMg",
-      "description": "Calor de 35°C antecede temporais em SC &nbsp;&nbsp; Imagem da Ilha",
-      "imageUrl": null,
-      "source": "Imagem da Ilha",
-      "publishedAt": "2026-11-13T17:23:00.000Z",
-      "firstSeenAt": "2026-11-13T21:28:55.699Z",
-      "lastSeenAt": "2026-11-13T21:28:55.699Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-13T15:22:48.310Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 16,
-      "newArticles": 13,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "europa",
-        "africa"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-13T21:28:55.699Z",
       "ok": true,
@@ -586,14 +593,31 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-14T19:55:21.208Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 13,
+      "newArticles": 9,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "europa",
+        "africa"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 5,
-  "lastSuccessfulAt": "2026-11-14T15:01:50.949Z",
+  "lastSuccessfulAt": "2026-11-14T19:55:21.208Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-14T15:01:50.949Z",
+      "checkedAt": "2026-11-14T19:55:21.208Z",
       "warnings": [
         {
           "id": "56406",
@@ -650,7 +674,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-14T15:01:50.949Z",
+      "checkedAt": "2026-11-14T19:55:21.208Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
