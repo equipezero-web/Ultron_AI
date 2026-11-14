@@ -4,10 +4,130 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-14T19:55:21.208Z",
-  "oldestEventAt": "2026-11-13T19:56:00.000Z",
-  "windowStartAt": "2026-11-13T19:55:21.208Z",
+  "updatedAt": "2026-11-14T23:35:54.064Z",
+  "oldestEventAt": "2026-11-13T23:42:49.000Z",
+  "windowStartAt": "2026-11-13T23:35:54.064Z",
   "events": [
+    {
+      "id": "event-5a72b16b",
+      "category": "santa-catarina",
+      "title": "Vale do Itajaí tem risco alto de temporais com granizo no domingo",
+      "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxNekdoekV0V1l5VTZDdWJBcFUtVVk3Tm0wSHJDM1pJSFR3clNtWF83dlFuZ2dRZXhrSUQ1Q0J6cFM1RjRpZndpRG9FYnlxQmJTbjNUdWVkaWFaR0w5RFhwZ1N3Zi1wTXNMRzNhR2locVlGR1ZLb1pLZy1jQXd6eENtV2JwYzFPNzk3TUZQdW5qVGZ3QlFlU0tqLTZ4TEpOdw",
+      "description": "Vale do Itajaí tem risco alto de temporais com granizo no domingo &nbsp;&nbsp; Timbó Net",
+      "imageUrl": null,
+      "source": "Timbó Net",
+      "publishedAt": "2026-11-14T23:13:55.000Z",
+      "firstSeenAt": "2026-11-14T23:35:54.064Z",
+      "lastSeenAt": "2026-11-14T23:35:54.064Z"
+    },
+    {
+      "id": "event-25ae9f30",
+      "category": "brasil",
+      "title": "Unedestinos fecha parceria com ICCA para fortalecer captação de eventos no Brasil",
+      "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxNUU1NUmFKeS0yR3A4SzR3Y3dLOE9pZ3NkZlhmRDRyT3laeE9QNDkxbS14dDVOT3ZjRnMwcmIzRlp5b2liMmh1MVZKZHpfTXlFU2lqSjdNM0loLXZTM0FaSmRvVk5feTh4OWR2NjVQVy1STHZOZ3dMcE1ucVI4c1JjdDJpc1hvTU40eFdpZkYzNVJCRWhRZk56ejlWM2FNdVc4a0pZM1NNV3loTF9TblVENUUxbkNzUnp2QXVRVUh5RXNKNDlTTUtnbXM4WUxraDQ",
+      "description": "Unedestinos fecha parceria com ICCA para fortalecer captação de eventos no Brasil &nbsp;&nbsp; Mercado e Eventos",
+      "imageUrl": null,
+      "source": "Mercado e Eventos",
+      "publishedAt": "2026-11-14T22:39:15.000Z",
+      "firstSeenAt": "2026-11-14T23:35:54.064Z",
+      "lastSeenAt": "2026-11-14T23:35:54.064Z"
+    },
+    {
+      "id": "event-e02b46a7",
+      "category": "mundo",
+      "title": "Entre rondadas, rajadas e correntes: os desafios da Baía de Guanabara na Copa do Mundo da Vela",
+      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxOWjRTbm1qR3dZU05UTUxBTWdzc3Yxb0xkR25JMkMwZXBJMEtrdDRRX1oydWJYZzZUUTVHVXJ0aUZYcnlCUnJtVnlXVTRCTEIwLWQzRFdndkthSDVIRzR3MTlZY1Z5S1YxOXZzbHhqdkdjbi0yZkdHUjFVZWtGOVhNUE9IODBVQ1pXdnRuSUJJRXBJNVlCd3VEOFh5VDFyVE5wWlVPYTFhMGhxekRpNDhMQTRJMF9YaVE",
+      "description": "Entre rondadas, rajadas e correntes: os desafios da Baía de Guanabara na Copa do Mundo da Vela &nbsp;&nbsp; Náutica",
+      "imageUrl": null,
+      "source": "Náutica",
+      "publishedAt": "2026-11-14T22:26:09.000Z",
+      "firstSeenAt": "2026-11-14T23:35:54.064Z",
+      "lastSeenAt": "2026-11-14T23:35:54.064Z"
+    },
+    {
+      "id": "event-14ec7659",
+      "category": "mundo",
+      "title": "Brasil e Filipinas assinam acordos sobre agro e livre concorrência",
+      "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/brasil-e-filipinas-assinam-acordos-sobre-agro-e-livre-concorrencia",
+      "description": "Brasil e Filipinas assinaram, neste sábado (14), em Manila, dois acordos para facilitar o comércio agrícola e fortalecer o combate a práticas anticoncorrenciais entre os dois países. Os dois memorandos de entendimento foram firmados durante a visita oficial do presidente Luiz Inácio Lula da Silva ao país asiático, após reunião com o presidente filipino, Ferdinand Marcos Júnior. Notícias relacionadas: Lula cita herói anticolonial das Filipinas ao comentar sua reeleição. Lula chega às Filipinas; Brasil quer ser Parceiro de Diálogo da Asean. Nos últimos anos, Brasil e Filipinas vêm aprofundando a agenda de cooperação bilateral. Em 2026, foi anunciada a assistência técnica para o fortalecimento da indústria canavieira filipina. Os dois países também buscam estabelecer novas parcerias em pesquisas agropecuárias. Os negócios entre Brasil e Filipinas movimentam, atualmente, cerca de US$ 3 bilhões. Asean O presidente Lula viajou para as Filipinas a fim de participar, a convite de Ferdinand Marcos Júnior, da Cúpula da Associação de Nações do Sudeste Asiático (Asean). O mandatário brasileiro t",
+      "imageUrl": "https://imagens.ebc.com.br/Plo8oXurV483zPnIQVvZdEmUtFc=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/14/55651844601_faebd07eec_o.jpg?itok=YtUk2CeL",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-14T21:53:00.000Z",
+      "firstSeenAt": "2026-11-14T23:35:54.064Z",
+      "lastSeenAt": "2026-11-14T23:35:54.064Z"
+    },
+    {
+      "id": "event-d381d10e",
+      "category": "brasil",
+      "title": "Como era o mundo quando o primeiro Big Brother Brasil Estreou em 2002? Músicas, filmes e notícias do ano",
+      "url": "https://news.google.com/rss/articles/CBMijwJBVV95cUxQQVZjemMxN01FbGIzTGZLUmJmOVdSOTZYc0RzQlpGVmcwejNGOUF4d0d3QVBlS0U0N3FVNVVXc0V6aHl5ejJHNU40bHZkUmZGVTJiV1BhbEpvTGEyc1BMQzVPS0piSmVzbEJuY2x0NnUxNnhwV3Q1NXlIRzNNNmU2eVh2ZEMxVWtFQUM0SjJmaGdsUFFzOGZINllvdktnVUhrUjVJZENBNElIZ0lLenozd1VtaUNEcmtOT3YxN1BOQnJEVmRDQ3VkYVktczZZUUZhTXdBeEpSUGZCNkhuRkxjVm8wTXQyb2NTSHZCMy1RN01SZE5uYnVpVWRLSDl0WGQtUFQ4cjhPWUVJTHhYQXlj",
+      "description": "Como era o mundo quando o primeiro Big Brother Brasil Estreou em 2002? Músicas, filmes e notícias do ano &nbsp;&nbsp; Terra",
+      "imageUrl": null,
+      "source": "Terra",
+      "publishedAt": "2026-11-14T21:46:00.000Z",
+      "firstSeenAt": "2026-11-14T23:35:54.064Z",
+      "lastSeenAt": "2026-11-14T23:35:54.064Z"
+    },
+    {
+      "id": "event-271f3061",
+      "category": "brasil",
+      "title": "Circuito Cultural começa no Rio com celebração da Consciência Negra",
+      "url": "https://agenciabrasil.ebc.com.br/cultura/noticia/2026-11/circuito-cultural-comeca-no-rio-com-celebracao-da-consciencia-negra",
+      "description": "A relação entre arte, meio ambiente, sociedade e cidade vai ser o foco dos artistas que participarão das exposições incluídas na programação do Circuito Cultural Instituto 12 – Conexões Criativas. O evento começou neste sábado (14), com vários programas gratuitos entre exposições artísticas, palestras, shows e espetáculos de dança, na sede do Instituto 12, no Leblon, Zona Sul do Rio. A entrada é gratuita, mas como a disponibilidade é limitada à capacidade do espaço, é preciso retirar os ingressos no Sympla , de acordo com os horários de cada sessão. Com curadoria de João Vergara, doutor em Arte e Cultura Contemporânea pela Universidade do Estado do Rio de Janeiro (Uerj), a mostra será dividida em quatro ciclos com os temas: Reconexão, Respiração, Reinvenção e Reconstrução, mobilizando diferentes linguagens. O programa do Instituto, segundo o curador, está focado também para a área de sustentabilidade, visão do futuro e arte nesse contexto. “O pensamento curatorial que a gente imaginou era passar por essas quatro formas de pensar o futuro, que a gente imagina em um mundo tão conflagra",
+      "imageUrl": "https://imagens.ebc.com.br/tT6XQ_ksmo3pUy_5YwPLxg5Y9ao=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2025/11/20/toms0519.jpg?itok=bzCXLvYU",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-14T21:26:00.000Z",
+      "firstSeenAt": "2026-11-14T23:35:54.064Z",
+      "lastSeenAt": "2026-11-14T23:35:54.064Z"
+    },
+    {
+      "id": "event-4edc6c55",
+      "category": "clima",
+      "title": "El Niño pode terminar no outono de 2027, mas há um alerta para o Brasil",
+      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxOd1gyZ016WkI1UE1OLUdvSTctZlJWdmJRQmczNS11a1hPSFRtLU9OMHJpQ3B3ZERMdFo1MnVFRFJ1ZW5WSDl3SVM1TWk4MUt1NFZHZDhpYVgtb3lOVTBWVlRoZmNwcWxxWGM0ZGdOVmJHQW9CUnQ0bWlrTWxUTk1Ed19wWEYzR3JFQ25VbEhnUVF5ZG5IRnJ0NVQ2aElMT0JJQzllUFNwcHphampvOTM3ajhDZkNKN1FXOWZ6S293",
+      "description": "El Niño pode terminar no outono de 2027, mas há um alerta para o Brasil &nbsp;&nbsp; Diário do Pará",
+      "imageUrl": null,
+      "source": "Diário do Pará",
+      "publishedAt": "2026-11-14T21:05:00.000Z",
+      "firstSeenAt": "2026-11-14T23:35:54.064Z",
+      "lastSeenAt": "2026-11-14T23:35:54.064Z"
+    },
+    {
+      "id": "event-c0bb5c0d",
+      "category": "brasil",
+      "title": "REC&#039;n&#039;Play: rede social sem território não vira voto, diz deputado",
+      "url": "https://agenciabrasil.ebc.com.br/cultura/noticia/2026-11/recnplay-rede-social-sem-territorio-nao-vira-voto-diz-deputado",
+      "description": "As últimas eleições presidenciais no país demonstraram a força e a importância da mobilização pelas redes sociais – que ajudaram a construir uma virada histórica para o presidente Luiz Inácio Lula da Silva, no segundo turno, algo que nunca havia ocorrido no país desde a redemocratização. Para o ativista e deputado estadual recém-eleito por Pernambuco Vinicius Castello, essa virada, no entanto, não pode ser creditada unicamente a essa mobilização construída na internet. Notícias relacionadas: REC&#039;n&#039;Play 2026 será palco de tecnologia e criatividade no Recife. Instalação no Rec’n’Play propõe que ruas do Recife celebrem mulheres. “Rede sem território não vira voto”, reforçou ele na palestra O Poder das Redes na Mobilização Popular , ocorrida durante o festival REC’n’Play, que termina neste sábado (14) em Recife. Para ele, apesar das redes sociais agora desempenharem um papel fundamental na constituição política do país, a mobilização ainda precisa ser construída dentro dos territórios, em um contato direto com a população. “O presidente Lula não teria virado [e ganhado o segund",
+      "imageUrl": "https://imagens.ebc.com.br/dU_5B5gx84iDMOSzxrwMfno7j-o=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/02/divulgacao-recnplay.jpeg?itok=sozQ8GHX",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-14T20:55:00.000Z",
+      "firstSeenAt": "2026-11-14T23:35:54.064Z",
+      "lastSeenAt": "2026-11-14T23:35:54.064Z"
+    },
+    {
+      "id": "event-5a4b7f04",
+      "category": "mundo",
+      "title": "Israel reforça alerta para possível ataque surpresa dos EUA ao Irã",
+      "url": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxObEdyY0NQdjFrYVpjVVpnZXJoMXlaU252Wk9qOUdnMU5DVkRWM0ZkOHl2Wm5TOFpQUzhZSUFlaDFqak9ud0szRlJjTDhJb2RIN3FDNDkxRkZtQzg2S2pKc001MHJGVXY0STY3SEk0NzdQM2VGZnpQMldncVZfOHRPcUgyYzFNNlJtcmNmUVhJVzlVbjZZNU9pb3RXOFFDZFVzcmtuZ19EZy1KdnhUSm9mMkl5LUdlZ0tJUjZpYUVIY3pGUjZCRXc3OXZIZ01WWl8tN3VGNFBYNnA",
+      "description": "Israel reforça alerta para possível ataque surpresa dos EUA ao Irã &nbsp;&nbsp; UOL Notícias",
+      "imageUrl": null,
+      "source": "UOL Notícias",
+      "publishedAt": "2026-11-14T20:48:10.000Z",
+      "firstSeenAt": "2026-11-14T23:35:54.064Z",
+      "lastSeenAt": "2026-11-14T23:35:54.064Z"
+    },
+    {
+      "id": "event-b7c89ace",
+      "category": "clima",
+      "title": "El Niño atinge pico no fim do ano e se despede no outono de 2027",
+      "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxQcnd5aVl6RkhjUmZkaHRYdTVnVDVPelV0N2hnejl4UXNtdjZGV3VmV0VPb0JIVkxrVmFIT1RVSmZ3V2k5Nm1TLXExYUdhZGY4aTRrbkxSZmVoQWwxb2Z1NXlRODRUNk51b1JpMXQyd0pvMmEwdUg5VGxMdG1XRG9CVnp4V2RxUHV4ajk3TXJwcmlNcEdJRHQtQVBzUnVlOEp2RFE",
+      "description": "El Niño atinge pico no fim do ano e se despede no outono de 2027 &nbsp;&nbsp; Guararema News",
+      "imageUrl": null,
+      "source": "Guararema News",
+      "publishedAt": "2026-11-14T20:00:00.000Z",
+      "firstSeenAt": "2026-11-14T23:35:54.064Z",
+      "lastSeenAt": "2026-11-14T23:35:54.064Z"
+    },
     {
       "id": "event-f5c8bb46",
       "category": "brasil",
@@ -102,7 +222,7 @@
       "source": "AJ Notícias",
       "publishedAt": "2026-11-14T14:59:34.000Z",
       "firstSeenAt": "2026-11-14T19:55:21.208Z",
-      "lastSeenAt": "2026-11-14T19:55:21.208Z"
+      "lastSeenAt": "2026-11-14T23:35:54.064Z"
     },
     {
       "id": "event-8cdb4933",
@@ -141,6 +261,18 @@
       "lastSeenAt": "2026-11-14T15:01:50.949Z"
     },
     {
+      "id": "event-1787cd46",
+      "category": "santa-catarina",
+      "title": "Fim de semana terá calor e risco de temporais em Pomerode",
+      "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxQWS04NnZuTnNfeVdCeEVZYWJualUtTjMzd3NIYWpQS2RSdm5NdDZQRHRNUEZlSUt4Mm42cVFRamZ0LTVzX0hIRUViNFBrdW5HY25nVDZYbXMxQXM3dER3eXdOcGxqekdRSDUzLU9EYUM1VkhfLVZVaGVKX3BSdEh3OWk5WVk",
+      "description": "Fim de semana terá calor e risco de temporais em Pomerode &nbsp;&nbsp; Testo Notícias",
+      "imageUrl": null,
+      "source": "Testo Notícias",
+      "publishedAt": "2026-11-14T12:05:01.000Z",
+      "firstSeenAt": "2026-11-14T23:35:54.064Z",
+      "lastSeenAt": "2026-11-14T23:35:54.064Z"
+    },
+    {
       "id": "event-76dcae6d",
       "category": "clima",
       "title": "El Niño já tem data para acabar e deve começar a perder força nos próximos 4 meses, aponta NOAA",
@@ -150,7 +282,7 @@
       "source": "HC Notícias",
       "publishedAt": "2026-11-14T12:04:00.000Z",
       "firstSeenAt": "2026-11-14T15:01:50.949Z",
-      "lastSeenAt": "2026-11-14T19:55:21.208Z"
+      "lastSeenAt": "2026-11-14T23:35:54.064Z"
     },
     {
       "id": "event-a2f869bb",
@@ -391,158 +523,9 @@
       "publishedAt": "2026-11-13T23:42:49.000Z",
       "firstSeenAt": "2026-11-14T01:39:22.856Z",
       "lastSeenAt": "2026-11-14T08:00:23.092Z"
-    },
-    {
-      "id": "event-6a6a63f1",
-      "category": "mundo",
-      "title": "Principais notícias do mundo na noite de hoje (13)",
-      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxNMGh5LUtrMEtyOWdMV25VLWJXOFRnUFRpSjNJUXk0SEJDLXFacnlGWC1HLUFtYUl5amxtNWw4cGZkcHFQcVdmb2UtNHptal9abURpUVVBTkF6cEppTTBueFFQb1JWVjJadTZ3Zkd0dl9BSEtLejZIdERWd3BHOGs0TkxSLWVmRWFudTZTRnhzc3pxQ1ZOUW9KRWp3bVFLYU1HUEktNzdOVktWdlNp",
-      "description": "Principais notícias do mundo na noite de hoje (13) &nbsp;&nbsp; Tribuna do Sertão",
-      "imageUrl": null,
-      "source": "Tribuna do Sertão",
-      "publishedAt": "2026-11-13T23:33:29.000Z",
-      "firstSeenAt": "2026-11-14T01:39:22.856Z",
-      "lastSeenAt": "2026-11-14T08:00:23.092Z"
-    },
-    {
-      "id": "event-2a057a31",
-      "category": "clima",
-      "title": "El Niño deve perder força e previsão aponta mudança importante; veja o que esperar do fenômeno nos próximos meses",
-      "url": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxNRGhaRE5CUXF0eVh3eTFldi03RGpnelctN0QtT2poSTdCeVF3QkZsU003RVNyeUZfMFg2bkVPbFFqUTFueGp1OWVmMWl6a2JwU2tUWXJPMzFUVFoyWENiMWViSWhOVmlJVi16bWZmVGhJdl91aFhJU3F0eWVybUtNYXB6YWVsc0cyeTF6N1J2blFNOGN0bVdDVktKNDVjb2ZJOS0yaE80eXhPZWlKdmxoZ2VZcmpBRG1KZjlldEk4YmFBYTZ2QUhwNXpMZ3lwTTZ1ajhESThDWWlPZW1lVk5xZ1UteGo1UVBE0gHuAUFVX3lxTE5JMXRnOXp3WV8tUzJJYTI3Y2d0aHFBZWRkRWd5UWtJMlZDbXpVMjR2YUMyTWZRblNaY0lPdmlDVFFxT3Vxdi1ZdXpGTTVDZ1dqOXVrRUJLd3dBNTlCTkVobXh5Yi11N180OWJocS1FTXZmWVdrcE9hWlRjQXhfcWljaFRkbmZtMmxVWlZMN1JCdE8xZ2NvaEhMZ0FfcGNLQ2JGbjNUNFdPM3haYmZUMjZ2V0NPTW1iS3B1N2ZIREUxX24xeEs2ZjB6ZDNuYm05VlBZX29qWEFsNmdMVmo5NTE3YU9iNzN5TWNSclQzNEE",
-      "description": "El Niño deve perder força e previsão aponta mudança importante; veja o que esperar do fenômeno nos próximos meses &nbsp;&nbsp; GMC Online",
-      "imageUrl": null,
-      "source": "GMC Online",
-      "publishedAt": "2026-11-13T23:18:00.000Z",
-      "firstSeenAt": "2026-11-14T01:39:22.856Z",
-      "lastSeenAt": "2026-11-14T08:00:23.092Z"
-    },
-    {
-      "id": "event-10b81ca4",
-      "category": "clima",
-      "title": "Mais crédito rural é solução de curto prazo para eventos cli",
-      "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxNRkZzc0w4NUZpTGc4Q2I1UHVpUVRaRXNkdGU1bFdnazFfZmxUQzJzTkpZNk4wNTZOLUIybGFjdFFsa3hQcWFVb1Q2SnVRZjJXZTJWLXFBOHBnTFlEZFlTalZSTHZwNXhtM0VRdEdvWFZjdUI5X1pNelNnaG9nemdNV0FwcFBpWGRiZmtMWEtiZHotVWRoM2ctQ3hyU1VZS1JkbTJHRk1B",
-      "description": "Mais crédito rural é solução de curto prazo para eventos cli &nbsp;&nbsp; O Brasilianista",
-      "imageUrl": null,
-      "source": "O Brasilianista",
-      "publishedAt": "2026-11-13T23:00:00.000Z",
-      "firstSeenAt": "2026-11-14T08:00:23.092Z",
-      "lastSeenAt": "2026-11-14T08:00:23.092Z"
-    },
-    {
-      "id": "event-a9ae8fa5",
-      "category": "mundo",
-      "title": "Suspensão de voos nos EUA: veja FOTOS de aeroportos durante paralisação",
-      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxQRElnbnY3U2RfWkZjX012WVg5WGlvS185V1RRVmxjajJZS2Y3QWxsZjNIRzNSYXByazBuU3c4b3ZPb3FqbmJmYlNtTFhlWDZ6OEktWnJvYkJ3eDhiRnI3dllUOXpWMGZxdVp6VWhUSl9tYWNoTnJjMk1XdXhVNkVZZ0FETXJXSGRoNURLdEFwVzNxS1cyOWgybkpxaUlEY2s4ZUp3dkNjTkJPUjJmaTBjazVIdzdPVFdrd1d1aDBR0gHMAUFVX3lxTE1FV3RTU2I0NDZwSFFvMklXSF9KUldWZ1dRZEFKXzNRaWZldEhEcmgzTmRqNDN3VTZEZzhxVDZPLTkxejhmcUV3YWpMWUt0YnBzaThxTnlpWG9mMDVpY0UweTdiYjg3TVhVWTh2U0llTG5XbWxVRWd3WjZpa3k4VjNjRDZUU3RIbnJINHp6NHlUcUMzWGd5M0R2Y2xZZkxZTUdRR2NiY281NlZoWTRDNEFwUGRqNy1peDJ5VDQ4TnpSU2pGd1NYU2NlMFphdA",
-      "description": "Suspensão de voos nos EUA: veja FOTOS de aeroportos durante paralisação &nbsp;&nbsp; G1",
-      "imageUrl": null,
-      "source": "G1",
-      "publishedAt": "2026-11-13T22:27:07.000Z",
-      "firstSeenAt": "2026-11-14T01:39:22.856Z",
-      "lastSeenAt": "2026-11-14T01:39:22.856Z"
-    },
-    {
-      "id": "event-9994b093",
-      "category": "mundo",
-      "title": "EUA suspendem decolagens em todo o país por segurança",
-      "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxQU3ZEb21MVjdMOHF0WExucmh4XzFpOGU5WDY3c1dJd05lQUF6UmlxX2FUTDIyZ1pyb1NleGdheFFvY3IwVEdLMTBMYV95ZURPUHZQZTJaZDhzSDFEdFNKMUVuU2tpZGs5enRsWEpTOFM0YnFEdGkyRlhmN3J5UUJOaWg2aGdKb0ZmUnA0SjJnYWxKMUpSRDNNNDhn",
-      "description": "EUA suspendem decolagens em todo o país por segurança &nbsp;&nbsp; SBT News",
-      "imageUrl": null,
-      "source": "SBT News",
-      "publishedAt": "2026-11-13T21:21:15.000Z",
-      "firstSeenAt": "2026-11-13T21:28:55.699Z",
-      "lastSeenAt": "2026-11-13T21:28:55.699Z"
-    },
-    {
-      "id": "event-2faf51ad",
-      "category": "brasil",
-      "title": "Fachin defende indicação de ministra negra para o STF",
-      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/fachin-defende-indicacao-de-ministra-negra-para-o-stf",
-      "description": "O presidente do Supremo Tribunal Federal e do Conselho Nacional de Justiça (CNJ), ministro Edson Fachin, defendeu nesta sexta-feira (13) a indicação de uma ministra negra para compor a Corte. Fachin participou do Encontro Nacional de Juízas e Juízes Negros (Enajun), no Rio de Janeiro, e elogiou o currículo das juízas que participaram do evento. \"Eu olhava o auditório, ouvia as manifestações das magistradas que me precederam e certamente me vinha à cabeça que, quem de direito para definir uma próxima vaga da Suprema Corte brasileira, saberia que há magistradas negras à altura deste lugar para honrar o Brasil e o povo brasileiro\", afirmou. O ministro também ressaltou que números do CNJ apontam que pessoas negras representam apenas 15% dos magistrados e 28% dos servidores do Judiciário em todo o país. “Essa assimetria não é acaso nem falta de mérito, é herança. O Judiciário brasileiro não foi, ao longo da História, mero espectador da desigualdade racial. Em muitos momentos foi seu avalista.” Atualmente, o STF é formado por 11 ministros e está com uma cadeira vaga. Em 2025, o ministro Lu",
-      "imageUrl": "https://imagens.ebc.com.br/IaxsO36k-I6qqQ6aYOOki28D-B0=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/13/55651656390_b2227b44e4_o.jpg?itok=v3oXhGcK",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-13T20:47:00.000Z",
-      "firstSeenAt": "2026-11-13T21:28:55.699Z",
-      "lastSeenAt": "2026-11-13T21:28:55.699Z"
-    },
-    {
-      "id": "event-d233b553",
-      "category": "santa-catarina",
-      "title": "Santa Catarina terá calor de até 35 °C e risco de temporais no fim de semana",
-      "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxQSzJhR3VuOU1HMmJlbGVaZlVtOEI1YnBYY1dmcHRrc29Hc1d0MVVmU1ZoV0xILUp6b0p3VnA0cDRuYXJBTG44Nkx3TjB1bnhyZDQ0U3lfbi1rVVJqRW5RcDNGYm5VbjlrNlZhOU9CN2JYSFJuWFhJdjVfemhkdnZrajZqVmxJVkRya0E2VGEwY0ZsQVhyOEdmanp1M19MMWR1Zi05d3JmZE1GdkJkZTUxMG9n",
-      "description": "Santa Catarina terá calor de até 35 °C e risco de temporais no fim de semana &nbsp;&nbsp; No Ponto SC",
-      "imageUrl": null,
-      "source": "No Ponto SC",
-      "publishedAt": "2026-11-13T20:36:21.000Z",
-      "firstSeenAt": "2026-11-14T01:39:22.856Z",
-      "lastSeenAt": "2026-11-14T08:00:23.092Z"
-    },
-    {
-      "id": "event-9161f8d7",
-      "category": "brasil",
-      "title": "Confiança da indústria atinge menor nível desde maio de 2020",
-      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/confianca-da-industria-atinge-menor-nivel-desde-maio-de-2020",
-      "description": "A confiança dos empresários industriais caiu seis pontos em novembro, passando de 46,2 para 40,2 pontos, segundo levantamento divulgado pela Confederação Nacional da Indústria (CNI) nesta sexta-feira (13). O Índice de Confiança do Empresário Industrial (Icei) chegou ao menor nível desde maio de 2020, quando marcou 34,7 pontos. Esta foi a terceira maior queda mensal desde o início da série histórica, em 2010. Com o resultado, o setor completa 23 meses abaixo da linha divisória de 50 pontos que separa o otimismo do pessimismo. Notícias relacionadas: Associações do agro rebatem BB sobre alta da inadimplência. Ex-tesoureiro da Caixa é condenado por desviar quase R$ 890 mil. Vendas no comércio variam 0,2% em setembro; IBGE mostra estabilidade. Segundo Marcelo Azevedo, gerente de Análise Econômica da CNI, a falta de confiança já afeta decisões de contratação, produção e investimento, com possíveis reflexos sobre emprego, renda e crescimento econômico. Piora nas condições O Índice de Condições Atuais recuou 2,3 pontos, para 37,7 pontos, o menor resultado desde julho de 2020. A avaliação neg",
-      "imageUrl": "https://imagens.ebc.com.br/jaXHCtC8dGH_sbtgxprlUjfTJ10=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2015-12-02t000000z_640900256_mt1imgcnpbu37067810_rtrmadp_3_china-aluminum.jpg?itok=abS3E80u",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-13T20:29:00.000Z",
-      "firstSeenAt": "2026-11-13T21:28:55.699Z",
-      "lastSeenAt": "2026-11-13T21:28:55.699Z"
-    },
-    {
-      "id": "event-b955676f",
-      "category": "clima",
-      "title": "El Niño pode chegar ao fim no outono de 2027",
-      "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxNdDlwZXlxX20wM0s4blV3UFMyZDYyYURsWndYU3NpQlJ3WnNFOWU2ZHFNcld5VEVOcHg0ZmUtSkZPX05CT2wwMVFqY0JnWFZBQjRxZXRIRlVZbm5GczJMb2JadUpBZ3pCY09odnFyaFNiR25oOUg5TExuQ0FPTmx5MGNwdDhsTHk5S19sM04yRnVPaDFuOVdXRw",
-      "description": "El Niño pode chegar ao fim no outono de 2027 &nbsp;&nbsp; Agrolink",
-      "imageUrl": null,
-      "source": "Agrolink",
-      "publishedAt": "2026-11-13T20:07:00.000Z",
-      "firstSeenAt": "2026-11-13T21:28:55.699Z",
-      "lastSeenAt": "2026-11-13T21:28:55.699Z"
-    },
-    {
-      "id": "event-cce001ba",
-      "category": "mundo",
-      "title": "Made in France: empresas francesas de tecnologia buscam independência de gigantes digitais",
-      "url": "https://news.google.com/rss/articles/CBMijwJBVV95cUxORnRBSU82SGx0NXlhenE1amlUX3dCUlkxWkxQbzh1UWVnRW5iclgzamxLSzBBenJNZW9iQmhHc1BnRWN2QUxYM3lreEZzZ0xWck5QVXp1MDU4YXBMbndtMnhZbzk4LVV6ZW5oQkZBU3otZEVTRDFtR205R0ZIaXV0aTRVLVZHVW5TYlVUYTlCdm1RaTNmdkZrQk1oNjRsOXlCWkFadmE2R0dhTk5YMTd4LWY5a01ibUJ0UkFIZ0J6ZFAyVS1FTWYyV1k5SDlGODZieG9scW40YmFyRElkbHpfYjdSdGI3MklHSEhQalpmRGM2T0F5V3FtNGxhNk1obFJkTmF6S01HUmVnZTF0QTZr",
-      "description": "Made in France: empresas francesas de tecnologia buscam independência de gigantes digitais &nbsp;&nbsp; Terra",
-      "imageUrl": null,
-      "source": "Terra",
-      "publishedAt": "2026-11-13T20:02:00.000Z",
-      "firstSeenAt": "2026-11-13T21:28:55.699Z",
-      "lastSeenAt": "2026-11-13T21:28:55.699Z"
-    },
-    {
-      "id": "event-f7e703aa",
-      "category": "brasil",
-      "title": "Milton Leite se torna réu por suspeita de ligação com o PCC",
-      "url": "https://agenciabrasil.ebc.com.br/geral/noticia/2026-11/milton-leite-se-torna-reu-por-suspeita-de-ligacao-com-o-pcc",
-      "description": "A Justiça de São Paulo acatou denúncia do Ministério Público e tornou Milton Leite e mais 13 pessoas réus por suspeita de ligação com a facção criminosa Primeiro Comando da Capital (PCC). Leite é ex-vereador e ex-presidente da Câmara Municipal de São Paulo e está preso. O político filiado ao partido União Brasil foi para a cadeia em setembro após uma operação da Polícia Civil junto com o Ministério Público que investigava a atuação do PCC no transporte coletivo paulistano . Notícias relacionadas: INSS: mutirão oferece 7,9 mil vagas em 8 estados neste fim de semana. Salto: fábrica de solventes no interior de SP é atingida por incêndio . PF trabalha em sistema para aprimorar busca por pessoas desaparecidas. Com a decisão da Justiça tornada pública nesta quinta-feira (12), Leite teve a prisão temporária convertida em preventiva. Outros 11 denunciados também tiveram prisões preventivas decretadas. No documento que torna Leite réu, a denúncia informa que ele e todo o grupo de investigados “agiram sob a orientação de lideranças da organização criminosa, como Antônio José Muller Junior, vul",
-      "imageUrl": "https://imagens.ebc.com.br/RuqiQ_KNR4QTei8sTOqwOOkduHE=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/09/17/padrao-site-1-5.jpg?itok=HU7Yelem",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-13T19:56:00.000Z",
-      "firstSeenAt": "2026-11-13T21:28:55.699Z",
-      "lastSeenAt": "2026-11-13T21:28:55.699Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-13T21:28:55.699Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 15,
-      "newArticles": 14,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "europa",
-        "africa"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-14T01:39:22.856Z",
       "ok": true,
@@ -610,14 +593,31 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-14T23:35:54.064Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 13,
+      "newArticles": 11,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "europa",
+        "africa"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 5,
-  "lastSuccessfulAt": "2026-11-14T19:55:21.208Z",
+  "lastSuccessfulAt": "2026-11-14T23:35:54.064Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-14T19:55:21.208Z",
+      "checkedAt": "2026-11-14T23:35:54.064Z",
       "warnings": [
         {
           "id": "56406",
@@ -674,7 +674,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-14T19:55:21.208Z",
+      "checkedAt": "2026-11-14T23:35:54.064Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
