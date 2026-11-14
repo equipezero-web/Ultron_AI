@@ -4,10 +4,130 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-13T21:28:55.699Z",
-  "oldestEventAt": "2026-11-12T21:37:12.000Z",
-  "windowStartAt": "2026-11-12T21:28:55.699Z",
+  "updatedAt": "2026-11-14T01:39:22.856Z",
+  "oldestEventAt": "2026-11-13T02:34:00.000Z",
+  "windowStartAt": "2026-11-13T01:39:22.856Z",
   "events": [
+    {
+      "id": "event-f3655eb9",
+      "category": "mundo",
+      "title": "Paralisação de voos nos EUA chega ao fim; anuncia agência",
+      "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxQcWZUaW5YTTBzQV93WWRuWlR0V040XzI1SmJUa2FqS3hVdDNSQTVOSnRKS2tUcWp6RUVyVkRmcVBxczd2TWhUWmV1Z0YwOUtjMEVCSm9kbUwyaENJTXlDci1PaHVOYkZzUVQ4QW1ITDJTWkRaU1FvZFFzRWZSSUZfTk81X2JaQU5PbEZEQkwxUklJaEtjRXczaVpndWtjRmgxQzdoTXV0WHphVEJhakxCWEVn0gHAAUFVX3lxTFAwb2djRktfc1Q4Qk5DQUpGT1NQRm5jZy1nckF0ZFdhaVpsVGJjTHlWV1lnM3Z6RVNUQ1NOYVJ5Ul9ZODZtVDUwZC02aWFabmIydXA5UW45MjM0MHdYZldFR1o0cF9QZU5NZER2akk0eC1ZN0NzX1BUUnZ4TktlTmp6aU1CYjF6REdPeTM2R1dNdGVPM3VNZC1Wc0U0d3ZmUWRqR2RJeDBjUnlvckdhZWx3bGVSRzVCYkhBdXp6bllnTA",
+      "description": "Paralisação de voos nos EUA chega ao fim; anuncia agência &nbsp;&nbsp; O GLOBO",
+      "imageUrl": null,
+      "source": "O GLOBO",
+      "publishedAt": "2026-11-14T01:25:47.000Z",
+      "firstSeenAt": "2026-11-14T01:39:22.856Z",
+      "lastSeenAt": "2026-11-14T01:39:22.856Z"
+    },
+    {
+      "id": "event-54aea976",
+      "category": "clima",
+      "title": "El Niño deve atingir força máxima até janeiro de 2027",
+      "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxQYWpJOHBBS2pudXNFMGlWRXZTWFdzR0l1ZTNxT29wQUp2b3YwMlc3aGV2dlh0U3phX1A4ekFJaEJBSUpIN2JUU1pUaE5INmRGQ25hSGpvaDJwVTR0YWZFMEJXVWdhZzBKVHFGSDhmUVYxdFlBaS1lblY3RklGZUdBM0Z6SGYwSk43bDlzaQ",
+      "description": "El Niño deve atingir força máxima até janeiro de 2027 &nbsp;&nbsp; CenárioMT",
+      "imageUrl": null,
+      "source": "CenárioMT",
+      "publishedAt": "2026-11-14T00:47:55.000Z",
+      "firstSeenAt": "2026-11-14T01:39:22.856Z",
+      "lastSeenAt": "2026-11-14T01:39:22.856Z"
+    },
+    {
+      "id": "event-9e8e2c4b",
+      "category": "brasil",
+      "title": "STF tem 4 votos para manter início da escala 5x2 em dezembro",
+      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/stf-tem-4-votos-para-manter-inicio-da-escala-5x2-em-dezembro",
+      "description": "O Supremo Tribunal Federal (STF) registrou nesta sexta-feira (13) quatro votos para referendar a liminar que estabeleceu regras de transição para o início da escala de trabalho 5x2. Ontem, o ministro Flávio Dino, que é relator do caso, permitiu que a nova carga horária de 42 horas semanais seja distribuída em cinco dias de trabalho, com jornada de até 8 horas e 24 minutos, durante a transição . Notícias relacionadas: Dino mantém prazo inicial da 5x2, mas flexibiliza regra de transição. Saiba quando começa a valer o fim da escala 6x1. Além disso, o ministro manteve a implantação da nova escala para 16 de dezembro deste ano. Até o momento, os ministros Alexandre de Moraes, Cármen Lúcia e Gilmar Mendes acompanharam o voto do relator. A votação virtual está prevista para ser finalizada na segunda-feira (16). Fim da escala 6x1 Em uma decisão histórica, o Senado Federal aprovou no mês passado o fim da escala 6x1 de trabalho. Com isso, o trabalhador passa a ter dois dias por semana de descanso remunerado, em jornada máxima de 5x2, sem redução salarial. Além disso, a atual jornada de trabalh",
+      "imageUrl": "https://imagens.ebc.com.br/_ySG1aHdaiHYYOOqRdSCtKACC3Y=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/11042023-pzzb9223.jpg?itok=WHuCJnUV",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-14T00:23:00.000Z",
+      "firstSeenAt": "2026-11-14T01:39:22.856Z",
+      "lastSeenAt": "2026-11-14T01:39:22.856Z"
+    },
+    {
+      "id": "event-572edb6b",
+      "category": "brasil",
+      "title": "Gilmar diz que Moro agiu para impedir candidatura de Lula em 2018",
+      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/gilmar-diz-que-moro-agiu-para-impedir-candidatura-de-lula-em-2018",
+      "description": "O ministro Gilmar Mendes, do Supremo Tribunal Federal (STF), acusou nesta sexta-feira (13) o senador Sergio Moro (PL-PR), ex-juiz da Operação Lava Jato, de “manipular o sistema de Justiça” para retirar o presidente Luiz Inácio Lula da Silva das eleições de 2018. Na época, Lula estava preso em função das investigações. Notícias relacionadas: Lula cobra pedido de desculpas da imprensa sobre triplex em Guarujá. Justiça determina que valor do triplex em Guarujá deve ir para OAS. Em uma postagem das redes sociais, Mendes disse que Moro foi declarado suspeito para julgar os casos da operação por ter atuado em conluio com o ex-procurador Deltan Dallagnol. “A sentença do caso triplex não foi anulada por meros detalhes processuais. Sergio Moro foi declarado suspeito diante de provas robustas de que, em conluio com o então coordenador da força-tarefa, Deltan Dallagnol, manipulou o sistema de Justiça para alijar o atual presidente da República da disputa eleitoral de 2018”, afirmou o ministro. As declarações de Gilmar Mendes foram publicadas após o senador afirmar que a condenação de Lula na La",
+      "imageUrl": "https://imagens.ebc.com.br/t6k_z6rCnX2vFyZvxXWOAQnqgFY=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/img_8878.jpg?itok=GFbZ-WG_",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-14T00:11:00.000Z",
+      "firstSeenAt": "2026-11-14T01:39:22.856Z",
+      "lastSeenAt": "2026-11-14T01:39:22.856Z"
+    },
+    {
+      "id": "event-136e2109",
+      "category": "brasil",
+      "title": "Anac orienta passageiros a consultar aéreas sobre voos para os EUA",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/anac-orienta-passageiros-consultar-aereas-sobre-voos-para-os-eua",
+      "description": "A Agência Nacional de Aviação Civil (Anac) orienta os passageiros com viagens marcadas para os Estados Unidos que busquem as companhias aéreas para verificar a situação do voo ou eventuais alterações. Mais cedo, a Administração Federal de Aviação dos Estados Unidos (FAA) determinou uma suspensão nacional de decolagens “devido a circunstância extraordinária e por motivos de segurança”. Notícias relacionadas: EUA suspendem todos os voos por causa de falha de comunicação. Anac estabelece regras mais restritivas para aviação em Congonhas (SP). Em nota, a Anac diz que está monitorando a excepcionalidade que levou o controle de voo dos Estados Unidos a cancelar temporariamente as partidas de aviões em seus aeroportos. Não há previsão de duração da paralisação, que é a segunda desde os ataques de 11 de setembro. A Agência destacou a importância de as empresas aéreas observarem suas responsabilidades e os direitos dos passageiros, garantidos por legislação nacional. Segundo a Anac, os casos de atrasos, cancelamentos e interrupção do serviço devem ser comunicados imediatamente pelas empresas,",
+      "imageUrl": "https://imagens.ebc.com.br/BzGu1iOF9ZyLmbV-pDtuNW6GKpk=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/_mg_3653.jpg?itok=QegjTjyk",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-14T00:00:00.000Z",
+      "firstSeenAt": "2026-11-14T01:39:22.856Z",
+      "lastSeenAt": "2026-11-14T01:39:22.856Z"
+    },
+    {
+      "id": "event-480c450d",
+      "category": "clima",
+      "title": "Quando será o pico do El Niño? Veja até quando vai durar",
+      "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxPNXJadzZOTFU2Y1hWQWlwVmFra21ZTmh5Unh1cUdxa2lpVDBmTEVscXp0WmtBTmhtemRSYTNocTJOV1hJeE5ySFRQcm1RbEtLWjlNM0pIM2FXNUZ6aTBvZXp2RDZIMUhfODlsVHc2b0hjaUZRNFc4ak5xc0RoMllwYVhTVVlPa3AtT3VhZG1mdWsyU1RoZXRMRGdMVG4",
+      "description": "Quando será o pico do El Niño? Veja até quando vai durar &nbsp;&nbsp; Game Overdrive",
+      "imageUrl": null,
+      "source": "Game Overdrive",
+      "publishedAt": "2026-11-13T23:43:22.000Z",
+      "firstSeenAt": "2026-11-14T01:39:22.856Z",
+      "lastSeenAt": "2026-11-14T01:39:22.856Z"
+    },
+    {
+      "id": "event-fc2d90a9",
+      "category": "brasil",
+      "title": "EUA suspendem todos os voos do país por problema em sistemas de comunicação: o que se sabe",
+      "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE56YVlrdm14cGsxOVBRNUdFZmpQbHo3UWp2blZZTWR5dGJ5dFhkMVVIUW1XZ1lBSExKcUliYzdUSWJleVdlZTMtT1FQd0liMXVlSzgxNThVT0d6ZzNHQndfVVFDVdIBaEFVX3lxTE5CZE93UWJWTmhCeW1uWTViTzBQLXJkWWpBVXFtbjd2OWRvTnNMM1V2Q1RjMTlHRXlTRHplaEtDMWc0TjhxM1BoUnVWbHNsbWs5Q1FfSi1Jc2tsS1A4c0RSUWl1QzMtcWdQ",
+      "description": "EUA suspendem todos os voos do país por problema em sistemas de comunicação: o que se sabe &nbsp;&nbsp; BBC",
+      "imageUrl": null,
+      "source": "BBC",
+      "publishedAt": "2026-11-13T23:42:49.000Z",
+      "firstSeenAt": "2026-11-14T01:39:22.856Z",
+      "lastSeenAt": "2026-11-14T01:39:22.856Z"
+    },
+    {
+      "id": "event-6a6a63f1",
+      "category": "mundo",
+      "title": "Principais notícias do mundo na noite de hoje (13)",
+      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxNMGh5LUtrMEtyOWdMV25VLWJXOFRnUFRpSjNJUXk0SEJDLXFacnlGWC1HLUFtYUl5amxtNWw4cGZkcHFQcVdmb2UtNHptal9abURpUVVBTkF6cEppTTBueFFQb1JWVjJadTZ3Zkd0dl9BSEtLejZIdERWd3BHOGs0TkxSLWVmRWFudTZTRnhzc3pxQ1ZOUW9KRWp3bVFLYU1HUEktNzdOVktWdlNp",
+      "description": "Principais notícias do mundo na noite de hoje (13) &nbsp;&nbsp; Tribuna do Sertão",
+      "imageUrl": null,
+      "source": "Tribuna do Sertão",
+      "publishedAt": "2026-11-13T23:33:29.000Z",
+      "firstSeenAt": "2026-11-14T01:39:22.856Z",
+      "lastSeenAt": "2026-11-14T01:39:22.856Z"
+    },
+    {
+      "id": "event-2a057a31",
+      "category": "clima",
+      "title": "El Niño deve perder força e previsão aponta mudança importante; veja o que esperar do fenômeno nos próximos meses",
+      "url": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxNRGhaRE5CUXF0eVh3eTFldi03RGpnelctN0QtT2poSTdCeVF3QkZsU003RVNyeUZfMFg2bkVPbFFqUTFueGp1OWVmMWl6a2JwU2tUWXJPMzFUVFoyWENiMWViSWhOVmlJVi16bWZmVGhJdl91aFhJU3F0eWVybUtNYXB6YWVsc0cyeTF6N1J2blFNOGN0bVdDVktKNDVjb2ZJOS0yaE80eXhPZWlKdmxoZ2VZcmpBRG1KZjlldEk4YmFBYTZ2QUhwNXpMZ3lwTTZ1ajhESThDWWlPZW1lVk5xZ1UteGo1UVBE0gHuAUFVX3lxTE5JMXRnOXp3WV8tUzJJYTI3Y2d0aHFBZWRkRWd5UWtJMlZDbXpVMjR2YUMyTWZRblNaY0lPdmlDVFFxT3Vxdi1ZdXpGTTVDZ1dqOXVrRUJLd3dBNTlCTkVobXh5Yi11N180OWJocS1FTXZmWVdrcE9hWlRjQXhfcWljaFRkbmZtMmxVWlZMN1JCdE8xZ2NvaEhMZ0FfcGNLQ2JGbjNUNFdPM3haYmZUMjZ2V0NPTW1iS3B1N2ZIREUxX24xeEs2ZjB6ZDNuYm05VlBZX29qWEFsNmdMVmo5NTE3YU9iNzN5TWNSclQzNEE",
+      "description": "El Niño deve perder força e previsão aponta mudança importante; veja o que esperar do fenômeno nos próximos meses &nbsp;&nbsp; GMC Online",
+      "imageUrl": null,
+      "source": "GMC Online",
+      "publishedAt": "2026-11-13T23:18:00.000Z",
+      "firstSeenAt": "2026-11-14T01:39:22.856Z",
+      "lastSeenAt": "2026-11-14T01:39:22.856Z"
+    },
+    {
+      "id": "event-a9ae8fa5",
+      "category": "mundo",
+      "title": "Suspensão de voos nos EUA: veja FOTOS de aeroportos durante paralisação",
+      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxQRElnbnY3U2RfWkZjX012WVg5WGlvS185V1RRVmxjajJZS2Y3QWxsZjNIRzNSYXByazBuU3c4b3ZPb3FqbmJmYlNtTFhlWDZ6OEktWnJvYkJ3eDhiRnI3dllUOXpWMGZxdVp6VWhUSl9tYWNoTnJjMk1XdXhVNkVZZ0FETXJXSGRoNURLdEFwVzNxS1cyOWgybkpxaUlEY2s4ZUp3dkNjTkJPUjJmaTBjazVIdzdPVFdrd1d1aDBR0gHMAUFVX3lxTE1FV3RTU2I0NDZwSFFvMklXSF9KUldWZ1dRZEFKXzNRaWZldEhEcmgzTmRqNDN3VTZEZzhxVDZPLTkxejhmcUV3YWpMWUt0YnBzaThxTnlpWG9mMDVpY0UweTdiYjg3TVhVWTh2U0llTG5XbWxVRWd3WjZpa3k4VjNjRDZUU3RIbnJINHp6NHlUcUMzWGd5M0R2Y2xZZkxZTUdRR2NiY281NlZoWTRDNEFwUGRqNy1peDJ5VDQ4TnpSU2pGd1NYU2NlMFphdA",
+      "description": "Suspensão de voos nos EUA: veja FOTOS de aeroportos durante paralisação &nbsp;&nbsp; G1",
+      "imageUrl": null,
+      "source": "G1",
+      "publishedAt": "2026-11-13T22:27:07.000Z",
+      "firstSeenAt": "2026-11-14T01:39:22.856Z",
+      "lastSeenAt": "2026-11-14T01:39:22.856Z"
+    },
     {
       "id": "event-9994b093",
       "category": "mundo",
@@ -31,6 +151,18 @@
       "publishedAt": "2026-11-13T20:47:00.000Z",
       "firstSeenAt": "2026-11-13T21:28:55.699Z",
       "lastSeenAt": "2026-11-13T21:28:55.699Z"
+    },
+    {
+      "id": "event-d233b553",
+      "category": "santa-catarina",
+      "title": "Santa Catarina terá calor de até 35 °C e risco de temporais no fim de semana",
+      "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxQSzJhR3VuOU1HMmJlbGVaZlVtOEI1YnBYY1dmcHRrc29Hc1d0MVVmU1ZoV0xILUp6b0p3VnA0cDRuYXJBTG44Nkx3TjB1bnhyZDQ0U3lfbi1rVVJqRW5RcDNGYm5VbjlrNlZhOU9CN2JYSFJuWFhJdjVfemhkdnZrajZqVmxJVkRya0E2VGEwY0ZsQVhyOEdmanp1M19MMWR1Zi05d3JmZE1GdkJkZTUxMG9n",
+      "description": "Santa Catarina terá calor de até 35 °C e risco de temporais no fim de semana &nbsp;&nbsp; No Ponto SC",
+      "imageUrl": null,
+      "source": "No Ponto SC",
+      "publishedAt": "2026-11-13T20:36:21.000Z",
+      "firstSeenAt": "2026-11-14T01:39:22.856Z",
+      "lastSeenAt": "2026-11-14T01:39:22.856Z"
     },
     {
       "id": "event-9161f8d7",
@@ -126,7 +258,7 @@
       "source": "Santa Catarina em Pauta",
       "publishedAt": "2026-11-13T18:48:00.000Z",
       "firstSeenAt": "2026-11-13T21:28:55.699Z",
-      "lastSeenAt": "2026-11-13T21:28:55.699Z"
+      "lastSeenAt": "2026-11-14T01:39:22.856Z"
     },
     {
       "id": "event-da9c4711",
@@ -150,7 +282,7 @@
       "source": "Jornal de Pomerode",
       "publishedAt": "2026-11-13T17:39:07.000Z",
       "firstSeenAt": "2026-11-13T21:28:55.699Z",
-      "lastSeenAt": "2026-11-13T21:28:55.699Z"
+      "lastSeenAt": "2026-11-14T01:39:22.856Z"
     },
     {
       "id": "event-4b5dd5cf",
@@ -294,7 +426,7 @@
       "source": "Terra",
       "publishedAt": "2026-11-13T11:12:00.000Z",
       "firstSeenAt": "2026-11-13T15:22:48.310Z",
-      "lastSeenAt": "2026-11-13T15:22:48.310Z"
+      "lastSeenAt": "2026-11-14T01:39:22.856Z"
     },
     {
       "id": "event-a95f4b22",
@@ -306,7 +438,7 @@
       "source": "Terra",
       "publishedAt": "2026-11-13T10:41:00.000Z",
       "firstSeenAt": "2026-11-13T15:22:48.310Z",
-      "lastSeenAt": "2026-11-13T21:28:55.699Z"
+      "lastSeenAt": "2026-11-14T01:39:22.856Z"
     },
     {
       "id": "event-5e963812",
@@ -343,158 +475,9 @@
       "publishedAt": "2026-11-13T02:34:00.000Z",
       "firstSeenAt": "2026-11-13T07:01:42.106Z",
       "lastSeenAt": "2026-11-13T07:01:42.106Z"
-    },
-    {
-      "id": "event-bbb6ac3e",
-      "category": "europa",
-      "title": "Novas ameaças de bomba na Europa reforçam suspeitas de guerra híbrida - G1",
-      "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxOeERweEltSlN6VFNseTRVX1FmUlhUcjY3RHZHVnhhM1dxaG5MUW0tLXJrN0lqN3VGVnRfV3A3RmlGOUliR2lvRnpSelpkVmJDTjBlTF9odGtaMFZDSEJudlVyUm5Da1FlRnh2R2FvVWhISVFGNXVnbTVtRXNNV2pZN0FNYzk0RnhBODJEQmdzbkFESkFtYVFjVjdhaC1XRE5WN1ZfN0xCLWszQ3h6eENnaFV4cDJWYjFvb05hdXBWZnpHZk1DT3BvZzFlUdIB2gFBVV95cUxPMXhvdEgzbFdRdHdtdG83TVNqeUR3YUpxUGk3MWNOdGdmcGRLTnZrWkpWa21fNDAwWWl4cXRaS3F1X2JwOWdNdWVnYVBYWUVYMHJTVVViT0VFcFF2OUJPNWNVLXN6OTVDR0ZXMTBuVl9aby01YVpFZkc0S2w3UmFvNzBBVU9xazZ3OWJWaGpFaGZoN1E1Z0dEemNTX2ZZSDIzWmY1SVNITnRIeURNYVktRnZieDdGSUp1YlFLRGdJdDdqNE5FTlFmaE9ZRjlheVUyR3VseTE0Z0pZdw",
-      "description": "Novas ameaças de bomba na Europa reforçam suspeitas de guerra híbrida &nbsp;&nbsp; G1",
-      "imageUrl": null,
-      "source": "G1",
-      "publishedAt": "2026-11-13T01:03:43.000Z",
-      "firstSeenAt": "2026-11-13T21:28:55.699Z",
-      "lastSeenAt": "2026-11-13T21:28:55.699Z"
-    },
-    {
-      "id": "event-7204dce9",
-      "category": "brasil",
-      "title": "Senado aprova texto-base de pacote que prevê economia de até R$ 60 bi",
-      "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2026-11/senado-aprova-texto-base-de-pacote-que-preve-economia-de-ate-r-60-bi",
-      "description": "Após quase quatro horas de votação, o Senado aprovou nesta quinta-feira (12) o texto-base do projeto de ajuste fiscal do governo, por 45 votos a 31. A proposta prevê medidas para reduzir despesas e ampliar a arrecadação, com economia estimada entre R$ 50 bilhões e R$ 60 bilhões em 2027, segundo o ministro Bruno Moretti. Notícias relacionadas: Governo anuncia medidas de ajuste para economia de até R$ 60 bilhões . Proposta que facilita transição tributária será enviada ao Congresso. Os destaques ainda serão analisados, provavelmente na terça-feira (17). Depois, o projeto seguirá para a Câmara dos Deputados . Corte de benefícios O texto prevê uma redução linear de 10% nos benefícios tributários, além do corte aprovado no fim de 2025. A medida poderá representar uma redução de até 20% em relação aos valores originais. Entre as exceções estão benefícios relacionados à folha de pagamentos, ao setor de tecnologia da informação, a semicondutores e à isenção de veículos para pessoas com deficiência e autistas. Limite de despesas O projeto também reduz de 2,5% para 2% acima da inflação o limit",
-      "imageUrl": "https://imagens.ebc.com.br/TvOMb2Hb5US1-3Zj1B458fNfYng=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/12/sessao_do_congresso_12-11-26-2_0.jpg?itok=-u9GH371",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-13T00:54:00.000Z",
-      "firstSeenAt": "2026-11-13T07:01:42.106Z",
-      "lastSeenAt": "2026-11-13T07:01:42.106Z"
-    },
-    {
-      "id": "event-a4a2d9a7",
-      "category": "brasil",
-      "title": "STF encerra processo sobre perdas inflacionárias em planos econômicos",
-      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/stf-encerra-processo-sobre-perdas-inflacionarias-em-planos-economicos",
-      "description": "O Supremo Tribunal Federal (STF) confirmou, nesta quinta-feira (12), a validade da decisão que homologou um acordo para encerrar os processos judiciais sobre perdas financeiras de poupadores provocadas por planos econômicos das décadas de 1980 e 1990. O plenário rejeitou três recursos apresentados por entidades sem legitimidade jurídica para contestar a decisão da Corte. Com isso, o Supremo determinou o encerramento definitivo do caso e manteve até junho de 2027 o prazo para adesão ao acordo. Em março de 2018, o STF homologou o acordo final firmado entre a Advocacia-Geral da União (AGU), representantes de bancos e associações de defesa do consumidor para encerrar as ações judiciais sobre o tema. O acordo prevê a correção de aplicações na poupança durante a entrada em vigor dos planos econômicos Bresser (1987), Verão (1989) e Collor 2 (1991).",
-      "imageUrl": "https://cdn.jsdelivr.net/gh/sergiosdlima/assets-ebc@1.0.0/public/thumbs/thumb_1200x600_agbrasil.png",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-13T00:35:00.000Z",
-      "firstSeenAt": "2026-11-13T07:01:42.106Z",
-      "lastSeenAt": "2026-11-13T07:01:42.106Z"
-    },
-    {
-      "id": "event-9f760d2e",
-      "category": "brasil",
-      "title": "PGR é contra revisar condenação de Jair Bolsonaro",
-      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/pgr-e-contra-revisar-condenacao-de-jair-bolsonaro",
-      "description": "O procurador-geral da República, Paulo Gonet, enviou nesta quinta-feira (12) ao Supremo Tribunal Federal (STF) parecer contra o pedido de revisão criminal protocolado pela defesa do ex-presidente Jair Bolsonaro. Na petição, protocolada no mês passado no Supremo, a defesa de Bolsonaro pretende derrubar a decisão da Primeira Turma que condenou o ex-presidente a 27 anos e três meses de prisão no processo que julgou a tentativa de golpe de estado no Brasil . Notícias relacionadas: Justiça Federal rejeita ação de improbidade contra Bolsonaro. Na manifestação, Gonet disse que as provas utilizadas pelo STF demonstraram a estabilidade de uma organização voltada a um fim bem definido. “As dúvidas que a petição inicial, apoiada no parecer técnico, suscita sobre a rastreabilidade de procedimentos técnicos não são capazes de, por si, evidenciar a inocência ou revelar uma causa especial de diminuição de pena”, afirmou. Após receber a manifestação da PGR, o ministro Kassio Nunes Marques, relator do caso, deve liberar o caso para julgamento no plenário da Corte. Kassio se tornou relator da revisão",
-      "imageUrl": "https://imagens.ebc.com.br/VHqamWWvVf5XVvo5Az85TnysiJk=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2025/08/01/01082025-pzzb6496.jpg?itok=69QOLSxC",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-13T00:26:00.000Z",
-      "firstSeenAt": "2026-11-13T07:01:42.106Z",
-      "lastSeenAt": "2026-11-13T07:01:42.106Z"
-    },
-    {
-      "id": "event-e5edcabe",
-      "category": "mundo",
-      "title": "O governo de Donald Trump anunciou nesta quinta-feira (12) que atingiu recorde de detenções e deportações de imigrantes na história dos Estados Unidos no último ano fiscal (que são",
-      "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5aVDd5eDBUMWJjYmtEX2dLZmxaMVNuT2NwVzNPRHBSV002eDhwRVZoNjE2UlVoYVcxQk5qdVZ4VU9NZ2ZXQktSSUlsRTM0UTF4cHc",
-      "description": "O governo de Donald Trump anunciou nesta quinta-feira (12) que atingiu recorde de detenções e deportações de imigrantes na história dos Estados Unidos no último ano fiscal (que são os 12 meses consecutivos contados de outubro de um ano a setembro &nbsp;&nbsp; Instagram",
-      "imageUrl": null,
-      "source": "Instagram",
-      "publishedAt": "2026-11-12T23:39:41.000Z",
-      "firstSeenAt": "2026-11-13T00:19:13.425Z",
-      "lastSeenAt": "2026-11-13T07:01:42.106Z"
-    },
-    {
-      "id": "event-b14f65fd",
-      "category": "brasil",
-      "title": "Professora é demitida de escola em SC após foto em apoio a Lula",
-      "url": "https://agenciabrasil.ebc.com.br/educacao/noticia/2026-11/professora-e-demitida-de-escola-em-sc-apos-foto-em-apoio-lula",
-      "description": "Uma professora foi demitida, nesta semana, do Colégio Unificado, na cidade de Itajaí (SC), após a postagem de uma foto em que ela e outros funcionários faziam o gesto do “L” com as mãos em apoio ao presidente reeleito Luiz Inácio Lula da Silva. O Sindicato dos Professores de Blumenau e Região (Sinpabre) manifestou repúdio à decisão da escola particular tanto em relação à demissão como a denúncias de perseguição política contra outros professores que receberam advertências disciplinares pela manifestação de preferência política durante uma confraternização. Notícias relacionadas: Assédio eleitoral supera 7 mil denúncias, aponta ministério. Governo estuda restringir crédito a empresas por assédio eleitoral. Assédio eleitoral: saiba como denunciar crime mesmo após eleições. “A fotografia foi posteriormente publicada em uma rede social pessoal, sem identificação visual da escola”, argumentou o sindicato. De acordo com a entidade, esse não foi um episódio isolado, já que “multiplicam-se denúncias de trabalhadores ameaçados, constrangidos e dispensados em razão de suas convicções políticas",
-      "imageUrl": "https://cdn.jsdelivr.net/gh/sergiosdlima/assets-ebc@1.0.0/public/thumbs/thumb_1200x600_agbrasil.png",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-12T23:25:00.000Z",
-      "firstSeenAt": "2026-11-13T00:19:13.425Z",
-      "lastSeenAt": "2026-11-13T00:19:13.425Z"
-    },
-    {
-      "id": "event-a56393ec",
-      "category": "brasil",
-      "title": "Caixa Seguridade informa ataque cibernético e vazamento de dados",
-      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/caixa-seguridade-informa-ataque-cibernetico-e-vazamento-de-dados",
-      "description": "A Caixa Seguridade informou, nesta quinta-feira (12), em comunicado ao mercado, que sua subsidiária Caixa Vida e Previdência identificou um ataque cibernético ocorrido em 6 de novembro, que resultou no vazamento de dados dos 7,6 milhões de clientes ativos da companhia. Segundo a empresa, foram copiados clandestinamente CPFs, endereços, telefones, e-mails e datas de nascimento. Dados de ex-clientes também foram vazados. “Com base na apuração preliminar, não há indícios de comprometimento de dados financeiros ou de autenticação, tais como valores de apólices, saldos de previdência, dados bancários ou senhas”, informou a Caixa Seguridade no comunicado. A companhia informou ainda que os titulares dos dados afetados estão sendo comunicados e recebendo recomendações de proteção diante do risco de fraudes. Além disso, será disponibilizado um canal de comunicação por meio de um endereço de e-mail específico para receber dúvidas dos clientes. “Uma vez identificados e bloqueados os mecanismos utilizados durante o ataque, foram implementadas medidas adicionais de proteção e iniciada investigaçã",
-      "imageUrl": "https://imagens.ebc.com.br/YmL5ussvI_uDWM3nDmJmDA13r8g=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/20231025_144832.jpg?itok=OaDpA_2T",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-12T23:06:00.000Z",
-      "firstSeenAt": "2026-11-13T00:19:13.425Z",
-      "lastSeenAt": "2026-11-13T00:19:13.425Z"
-    },
-    {
-      "id": "event-88726187",
-      "category": "brasil",
-      "title": "Dólar dispara 1,58% e fecha a R$ 5,65, maior nível em 17 meses",
-      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/dolar-dispara-158-e-fecha-r-565-maior-nivel-em-17-meses",
-      "description": "Em meio a turbulências nos cenários doméstico e internacional, o dólar disparou frente ao real e fechou acima de R$ 5,65 nesta quinta-feira (12), no maior patamar desde junho de 2025. A moeda foi impulsionada pela insatisfação dos investidores com o pacote fiscal anunciado pelo governo e pelo fortalecimento da divisa estadunidense no exterior. Na bolsa, o Ibovespa recuou, pressionado principalmente pela queda das ações do Banco do Brasil (BB), em meio à queda do lucro no terceiro trimestre . No mercado internacional, o petróleo também encerrou em alta, diante das tensões entre Estados Unidos e Irã. Números do dia • Dólar comercial: R$ 5,6507 (+1,58%); • Ibovespa: 171.324,31 pontos (-0,47%); • Volume financeiro da bolsa: R$ 32,24 bilhões; • Dólar no exterior (DXY): 103,160 pontos (+0,28%); • Petróleo WTI: US$ 88,74 (+2,55%); • Petróleo Brent: US$ 95,82 (+3,30%). Câmbio O dólar comercial encerrou o pregão com valorização de 1,58%, cotado a R$ 5,6507. Foi o maior nível de fechamento da moeda estadunidense desde 2 de junho de 2025. A pressão sobre o câmbio ocorreu após o governo apresent",
-      "imageUrl": "https://imagens.ebc.com.br/qgr1uCa7n_TP2WKn5oQPmLd6V2M=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/07/23/2026-07-23t123806z_1_lynxmpem6m19r_rtroptp_4_usa-trump-tariffs-indonesia.jpg?itok=6u1xpzSK",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-12T22:35:00.000Z",
-      "firstSeenAt": "2026-11-13T00:19:13.425Z",
-      "lastSeenAt": "2026-11-13T00:19:13.425Z"
-    },
-    {
-      "id": "event-e534b6dc",
-      "category": "brasil",
-      "title": "Zanin rejeita ação para determinar segundo turno para o governo do Rio",
-      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/zanin-rejeita-acao-para-determinar-segundo-turno-para-o-governo-do-rio",
-      "description": "O ministro do Supremo Tribunal Federal Cristiano Zanin negou nesta quinta-feira (12) dar andamento ao processo que pediu um segundo turno das eleições para governador do estado do Rio de Janeiro. Por questões processuais, o ministro negou pedido do PSD, partido do candidato Eduardo Paes, de suspender a decisão do Tribunal Superior Eleitoral (TSE) que anulou os votos obtidos pelo candidato Anthony Garotinho (Republicanos) e determinou a retotalização dos votos para o cargo de governador. Notícias relacionadas: STF derruba imunidade para punir violência patrimonial contra mulheres. Dino mantém prazo inicial da 5x2, mas flexibiliza regra de transição. Operação mira suspeitos de fraudar concurso de 2025 da Polícia Federal. A nova contagem de votos permitiu a eleição de Douglas Ruas (PL) no primeiro turno, por ter passado de 49,27% para 50,88% dos votos válidos. Na decisão, o ministro entendeu que a Arguição de Descumprimento de Preceito Fundamental (ADPF), tipo de processo protocolado pelo PSD, não pode ser utilizada para questionar a decisão do TSE. “A arguição de descumprimento de prec",
-      "imageUrl": "https://imagens.ebc.com.br/3xcP4VAl8oUtQxbDlKdjwPr_QI8=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/_supremo_tribunal_federal250620213575.jpg?itok=7-xc0U8V",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-12T22:30:00.000Z",
-      "firstSeenAt": "2026-11-13T00:19:13.425Z",
-      "lastSeenAt": "2026-11-13T00:19:13.425Z"
-    },
-    {
-      "id": "event-9a5b1cf2",
-      "category": "santa-catarina",
-      "title": "Defesa Civil emite alertas de tempestade severa com granizo em Joinville e Norte de SC",
-      "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxNUmVJeDdGSG9zQUtzWTFueFpjV1ItdnpXWEw1NGhRb0RkVE5NNUw0OGZYNnlvM3V1MTFnc3RIWTVWLTlwdDR1cThqZ0pTeHV3dlV0ZnliVlUwdTV3eVZGU1ljR09UMFNseGFzZ0p0LWpjd056ZG1uX05KTU5zYTA2akRDR3RPNy1LWDRFcFFuV201dFppc1Z4MV9YTng0c1ZVYlBOMWprcFRmWGxpdXRDVmdvaWhud2dnZjcyTmJlTnM",
-      "description": "Defesa Civil emite alertas de tempestade severa com granizo em Joinville e Norte de SC &nbsp;&nbsp; TopElegance",
-      "imageUrl": null,
-      "source": "TopElegance",
-      "publishedAt": "2026-11-12T22:02:09.000Z",
-      "firstSeenAt": "2026-11-13T00:19:13.425Z",
-      "lastSeenAt": "2026-11-13T07:01:42.106Z"
-    },
-    {
-      "id": "event-c7db9782",
-      "category": "mundo",
-      "title": "Outlook: falha na Microsoft deixa email fora do ar email e afeta Teams, Microsoft 365 e outras plataformas; o que se sabe",
-      "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE5UeHJuZnpRUDlRQmZfQU9heTJFaFZjMlo2OW1YN0tZREY3RGtJVzZxQ1FFUkhzYlpkLTlTMTBKeU1wZ1IzakZPQzQ2ckJNbTNnQVhld2xaRkh6Y2hKZlZrUDlIONIBaEFVX3lxTE9ndkNIckJLMWZDeHFwV2ozMHpLdEcxczhaa1ZyUnRxYlcwN3pFTHBQSnBBSjAydzJ5bHd3dGZFQkxKVlN0MllDd3UzMV9TaTljVGd4VTdJa0tCamgwRm5mSEFUUVA2aVNr",
-      "description": "Outlook: falha na Microsoft deixa email fora do ar email e afeta Teams, Microsoft 365 e outras plataformas; o que se sabe &nbsp;&nbsp; BBC",
-      "imageUrl": null,
-      "source": "BBC",
-      "publishedAt": "2026-11-12T21:37:12.000Z",
-      "firstSeenAt": "2026-11-13T00:19:13.425Z",
-      "lastSeenAt": "2026-11-13T00:19:13.425Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-13T00:19:13.425Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 15,
-      "newArticles": 14,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "europa",
-        "africa"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-13T07:01:42.106Z",
       "ok": true,
@@ -545,40 +528,32 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-14T01:39:22.856Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 15,
+      "newArticles": 11,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "europa",
+        "africa"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 4,
-  "lastSuccessfulAt": "2026-11-13T21:28:55.699Z",
+  "lastSuccessfulAt": "2026-11-14T01:39:22.856Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-13T21:28:55.699Z",
+      "checkedAt": "2026-11-14T01:39:22.856Z",
       "warnings": [
-        {
-          "id": "56395",
-          "title": "Tempestade",
-          "severity": "Perigo Potencial",
-          "phase": "previsto",
-          "regions": [
-            "DO",
-            "DE"
-          ],
-          "startsAt": "2026-11-14T00:00:00.000Z",
-          "endsAt": "2026-11-14T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
-        },
-        {
-          "id": "56396",
-          "title": "Chuvas Intensas",
-          "severity": "Perigo Potencial",
-          "phase": "previsto",
-          "regions": [],
-          "startsAt": "2026-11-14T00:00:00.000Z",
-          "endsAt": "2026-11-14T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
-        },
         {
           "id": "56397",
           "title": "Tempestade",
@@ -587,20 +562,6 @@
           "regions": [],
           "startsAt": "2026-11-14T00:00:00.000Z",
           "endsAt": "2026-11-15T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
-        },
-        {
-          "id": "56398",
-          "title": "Tempestade",
-          "severity": "Perigo Potencial",
-          "phase": "previsto",
-          "regions": [
-            "DO",
-            "DO"
-          ],
-          "startsAt": "2026-11-14T00:00:00.000Z",
-          "endsAt": "2026-11-14T00:00:00.000Z",
           "source": "INMET",
           "url": "https://avisos.inmet.gov.br/"
         },
@@ -624,7 +585,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-13T21:28:55.699Z",
+      "checkedAt": "2026-11-14T01:39:22.856Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
