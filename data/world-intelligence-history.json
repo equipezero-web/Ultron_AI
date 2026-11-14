@@ -4,10 +4,46 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-14T01:39:22.856Z",
-  "oldestEventAt": "2026-11-13T02:34:00.000Z",
-  "windowStartAt": "2026-11-13T01:39:22.856Z",
+  "updatedAt": "2026-11-14T08:00:23.092Z",
+  "oldestEventAt": "2026-11-13T09:58:00.000Z",
+  "windowStartAt": "2026-11-13T08:00:23.092Z",
   "events": [
+    {
+      "id": "event-cf3c39e0",
+      "category": "brasil",
+      "title": "Estilo Brasil: Roberto Menescal traz a história da bossa nova a Brasília",
+      "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE1zM2NRcTgxSFE3NXg5SXhkN0xqNUIxMnQ3aGFKUU9SYndjampXLWN2cDRkOHFPX1p1UVVlNjJ4UDZGTE50QndUc1FnOHVqUnNYVUFmeEd3U215QVRSUG03elprNHd5MEVyWlloSXVsUV9KX2pONFJCNEd3Z3NnSXc",
+      "description": "Estilo Brasil: Roberto Menescal traz a história da bossa nova a Brasília &nbsp;&nbsp; Metrópoles",
+      "imageUrl": null,
+      "source": "Metrópoles",
+      "publishedAt": "2026-11-14T06:00:00.000Z",
+      "firstSeenAt": "2026-11-14T08:00:23.092Z",
+      "lastSeenAt": "2026-11-14T08:00:23.092Z"
+    },
+    {
+      "id": "event-f5f46559",
+      "category": "mundo",
+      "title": "A Seleção Brasileira reencontra o Japão neste sábado (13), às 7h15 (horário de Brasília), em Singapura, no penúltimo amistoso de 2026. O último confronto ocorreu na Copa do Mundo d",
+      "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE9xUUFGbHVIMmlLUWM4Zk5RU0toVFotWUE5VDRqTzRMX1I4Mmg1S05HSDlvWDdhU1dTc2k3dUNGaXFDaXNQRGJDZkUzanoyT0YzS1E",
+      "description": "A Seleção Brasileira reencontra o Japão neste sábado (13), às 7h15 (horário de Brasília), em Singapura, no penúltimo amistoso de 2026. O último confronto ocorreu na Copa do Mundo deste ano, quando a Amarelinha venceu de virada a equipe asiática (2 a &nbsp;&nbsp; Instagram",
+      "imageUrl": null,
+      "source": "Instagram",
+      "publishedAt": "2026-11-14T05:54:05.000Z",
+      "firstSeenAt": "2026-11-14T08:00:23.092Z",
+      "lastSeenAt": "2026-11-14T08:00:23.092Z"
+    },
+    {
+      "id": "event-f9e5393c",
+      "category": "mundo",
+      "title": "Copa do Mundo Feminina 2027: ingressos começam a ser vendidos em dezembro",
+      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQMFJfR2x4Mk5KQzZKTl81WFpvSFByZ2FZQ0xTM2g1ZkZKeXFkUkcteGptQWl1NXg2eWJqcndOeXlvV0FBR0RLMlNTYVcyZ1lWWXM2Wk1ZWHpCR0FPMmRtTFRsZkR2OUoxWW9lY0RqSzhmajdSbVpNYUlkTXJUdDAtX3ZUZHdXb2l3R3ozMDNFWmppcFBJTGtNcVRsdEVWSEhPOVg0UHpjbzNBUzdx",
+      "description": "Copa do Mundo Feminina 2027: ingressos começam a ser vendidos em dezembro &nbsp;&nbsp; Agita Brasília",
+      "imageUrl": null,
+      "source": "Agita Brasília",
+      "publishedAt": "2026-11-14T03:25:17.000Z",
+      "firstSeenAt": "2026-11-14T08:00:23.092Z",
+      "lastSeenAt": "2026-11-14T08:00:23.092Z"
+    },
     {
       "id": "event-f3655eb9",
       "category": "mundo",
@@ -21,6 +57,18 @@
       "lastSeenAt": "2026-11-14T01:39:22.856Z"
     },
     {
+      "id": "event-47f1a3c3",
+      "category": "brasil",
+      "title": "Brasil terá três meio-campistas em amistoso contra Japão neste sábado",
+      "url": "https://agenciabrasil.ebc.com.br/esportes/noticia/2026-11/brasil-tera-tres-meio-campistas-em-amistoso-contra-japao-neste-sabado",
+      "description": "A seleção brasileira masculina de futebol reencontra o Japão neste sábado (13), às 7h15 (horário de Brasília), em Singapura, no penúltimo amistoso de 2026. O último confronto ocorreu na Copa do Mundo deste ano, quando a Amarelinha venceu de virada a equipe asiática (2 a 1) e avançou às oitavas de final. Durante coletiva nesta sexta (13), o técnico Carlo Ancelotti fez suspense sobre a escalação, mas adiantou que o time terá três jogadores no meio-campo. Notícias relacionadas: Ancelotti convoca seleção para amistosos contra Japão e Singapura. Fifa abre venda de ingressos para Copa Feminina 2027 em 1º de dezembro. Paulistas dominam finalistas do Prêmio TV Brasil Petrobras Para Elas. “Fizemos testes nos treinos para provar os jogadores em posições distintas. Testamos Rayan como meio-campista esquerdo. Ele fez um bom trabalho e mostrou que pode jogar aí. Amanhã vamos jogar com três meio-campistas. Eu tenho na cabeça os nomes, mas não quero dizer hoje”, disse o treinador durante coletiva de imprensa. Ver esse post no Instagram Um post compartilhado por CBF • Seleção Brasileira de Futebol (",
+      "imageUrl": "https://imagens.ebc.com.br/dBr4h0I9o063_RLo9-063_zR0Eg=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/13/brasil_x_japao_houston_copa_do_mundo_2026.jpg?itok=AgHnRb35",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-14T00:55:00.000Z",
+      "firstSeenAt": "2026-11-14T08:00:23.092Z",
+      "lastSeenAt": "2026-11-14T08:00:23.092Z"
+    },
+    {
       "id": "event-54aea976",
       "category": "clima",
       "title": "El Niño deve atingir força máxima até janeiro de 2027",
@@ -31,6 +79,18 @@
       "publishedAt": "2026-11-14T00:47:55.000Z",
       "firstSeenAt": "2026-11-14T01:39:22.856Z",
       "lastSeenAt": "2026-11-14T01:39:22.856Z"
+    },
+    {
+      "id": "event-c3e82189",
+      "category": "brasil",
+      "title": "Brasil busca reverter suspensão de carne suína nas Filipinas",
+      "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxOZDBwdElINDA1enlTTW1rTS1fLTlrdm82Nlh5S3hxSmc2TlRZaGpkN1MxLTJmSHZmWi1yajA4cUI5aTZOYTBGaDRSb3QyMURhWUpha2pIMERQU1ZBcEVOLXVDZ3dJaEZQc0tQM25weGVFRUt1cWNQS2MzTGNkR2dDUWpZZnBja1dnN21pN09EbFo0VkhTY0lwZnhLbw",
+      "description": "Brasil busca reverter suspensão de carne suína nas Filipinas &nbsp;&nbsp; Vero Notícias",
+      "imageUrl": null,
+      "source": "Vero Notícias",
+      "publishedAt": "2026-11-14T00:35:07.000Z",
+      "firstSeenAt": "2026-11-14T08:00:23.092Z",
+      "lastSeenAt": "2026-11-14T08:00:23.092Z"
     },
     {
       "id": "event-9e8e2c4b",
@@ -78,19 +138,19 @@
       "source": "Game Overdrive",
       "publishedAt": "2026-11-13T23:43:22.000Z",
       "firstSeenAt": "2026-11-14T01:39:22.856Z",
-      "lastSeenAt": "2026-11-14T01:39:22.856Z"
+      "lastSeenAt": "2026-11-14T08:00:23.092Z"
     },
     {
       "id": "event-fc2d90a9",
       "category": "brasil",
       "title": "EUA suspendem todos os voos do país por problema em sistemas de comunicação: o que se sabe",
       "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE56YVlrdm14cGsxOVBRNUdFZmpQbHo3UWp2blZZTWR5dGJ5dFhkMVVIUW1XZ1lBSExKcUliYzdUSWJleVdlZTMtT1FQd0liMXVlSzgxNThVT0d6ZzNHQndfVVFDVdIBaEFVX3lxTE5CZE93UWJWTmhCeW1uWTViTzBQLXJkWWpBVXFtbjd2OWRvTnNMM1V2Q1RjMTlHRXlTRHplaEtDMWc0TjhxM1BoUnVWbHNsbWs5Q1FfSi1Jc2tsS1A4c0RSUWl1QzMtcWdQ",
-      "description": "EUA suspendem todos os voos do país por problema em sistemas de comunicação: o que se sabe &nbsp;&nbsp; BBC",
+      "description": "EUA voltam a autorizar decolagens após horas de suspensão por problema em sistema de comunicação: o que se sabe &nbsp;&nbsp; BBC",
       "imageUrl": null,
       "source": "BBC",
       "publishedAt": "2026-11-13T23:42:49.000Z",
       "firstSeenAt": "2026-11-14T01:39:22.856Z",
-      "lastSeenAt": "2026-11-14T01:39:22.856Z"
+      "lastSeenAt": "2026-11-14T08:00:23.092Z"
     },
     {
       "id": "event-6a6a63f1",
@@ -102,7 +162,7 @@
       "source": "Tribuna do Sertão",
       "publishedAt": "2026-11-13T23:33:29.000Z",
       "firstSeenAt": "2026-11-14T01:39:22.856Z",
-      "lastSeenAt": "2026-11-14T01:39:22.856Z"
+      "lastSeenAt": "2026-11-14T08:00:23.092Z"
     },
     {
       "id": "event-2a057a31",
@@ -114,7 +174,19 @@
       "source": "GMC Online",
       "publishedAt": "2026-11-13T23:18:00.000Z",
       "firstSeenAt": "2026-11-14T01:39:22.856Z",
-      "lastSeenAt": "2026-11-14T01:39:22.856Z"
+      "lastSeenAt": "2026-11-14T08:00:23.092Z"
+    },
+    {
+      "id": "event-10b81ca4",
+      "category": "clima",
+      "title": "Mais crédito rural é solução de curto prazo para eventos cli",
+      "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxNRkZzc0w4NUZpTGc4Q2I1UHVpUVRaRXNkdGU1bFdnazFfZmxUQzJzTkpZNk4wNTZOLUIybGFjdFFsa3hQcWFVb1Q2SnVRZjJXZTJWLXFBOHBnTFlEZFlTalZSTHZwNXhtM0VRdEdvWFZjdUI5X1pNelNnaG9nemdNV0FwcFBpWGRiZmtMWEtiZHotVWRoM2ctQ3hyU1VZS1JkbTJHRk1B",
+      "description": "Mais crédito rural é solução de curto prazo para eventos cli &nbsp;&nbsp; O Brasilianista",
+      "imageUrl": null,
+      "source": "O Brasilianista",
+      "publishedAt": "2026-11-13T23:00:00.000Z",
+      "firstSeenAt": "2026-11-14T08:00:23.092Z",
+      "lastSeenAt": "2026-11-14T08:00:23.092Z"
     },
     {
       "id": "event-a9ae8fa5",
@@ -162,7 +234,7 @@
       "source": "No Ponto SC",
       "publishedAt": "2026-11-13T20:36:21.000Z",
       "firstSeenAt": "2026-11-14T01:39:22.856Z",
-      "lastSeenAt": "2026-11-14T01:39:22.856Z"
+      "lastSeenAt": "2026-11-14T08:00:23.092Z"
     },
     {
       "id": "event-9161f8d7",
@@ -258,7 +330,7 @@
       "source": "Santa Catarina em Pauta",
       "publishedAt": "2026-11-13T18:48:00.000Z",
       "firstSeenAt": "2026-11-13T21:28:55.699Z",
-      "lastSeenAt": "2026-11-14T01:39:22.856Z"
+      "lastSeenAt": "2026-11-14T08:00:23.092Z"
     },
     {
       "id": "event-da9c4711",
@@ -282,7 +354,7 @@
       "source": "Jornal de Pomerode",
       "publishedAt": "2026-11-13T17:39:07.000Z",
       "firstSeenAt": "2026-11-13T21:28:55.699Z",
-      "lastSeenAt": "2026-11-14T01:39:22.856Z"
+      "lastSeenAt": "2026-11-14T08:00:23.092Z"
     },
     {
       "id": "event-4b5dd5cf",
@@ -426,7 +498,7 @@
       "source": "Terra",
       "publishedAt": "2026-11-13T11:12:00.000Z",
       "firstSeenAt": "2026-11-13T15:22:48.310Z",
-      "lastSeenAt": "2026-11-14T01:39:22.856Z"
+      "lastSeenAt": "2026-11-14T08:00:23.092Z"
     },
     {
       "id": "event-a95f4b22",
@@ -438,7 +510,7 @@
       "source": "Terra",
       "publishedAt": "2026-11-13T10:41:00.000Z",
       "firstSeenAt": "2026-11-13T15:22:48.310Z",
-      "lastSeenAt": "2026-11-14T01:39:22.856Z"
+      "lastSeenAt": "2026-11-14T08:00:23.092Z"
     },
     {
       "id": "event-5e963812",
@@ -451,50 +523,9 @@
       "publishedAt": "2026-11-13T09:58:00.000Z",
       "firstSeenAt": "2026-11-13T15:22:48.310Z",
       "lastSeenAt": "2026-11-13T15:22:48.310Z"
-    },
-    {
-      "id": "event-51a98046",
-      "category": "santa-catarina",
-      "title": "Previsão do tempo em Santa Catarina indica sol, chuva isolada e temporais",
-      "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxNV2NhUjBzdVlnZlJnOUtsT0ptWXh6N0ZnTG9FWjJhbXFOdjBCVmlDZnN5T2FWRDZEMkNTUDdhMHZEclQyOWQ3czJpWUkwYXl1WVdwLW9Kc3ItTWE5QTF2TWxvZ0JuSDcyTnVERC1SMlhhZHdZenlzQVJRNjQtZXNjT3dxcnFmaVhaOEczREZFT0VpVWJrekZCbEFzLXFBQTZUVkw5VERoaHJSc0ZETjM0by1OVFRKM1FIRnJseFBOcE5lZlVWLWpIS1EtOFpuTW8wcWFMVGdMandfV1U",
-      "description": "Previsão do tempo em Santa Catarina indica sol, chuva isolada e temporais &nbsp;&nbsp; primeira página sc",
-      "imageUrl": null,
-      "source": "primeira página sc",
-      "publishedAt": "2026-11-13T04:11:23.000Z",
-      "firstSeenAt": "2026-11-13T07:01:42.106Z",
-      "lastSeenAt": "2026-11-13T07:01:42.106Z"
-    },
-    {
-      "id": "event-b51c2432",
-      "category": "brasil",
-      "title": "Flávio expõe o que aconteceu no inquérito das fake news",
-      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQMmh1TWpSV0NBd1EzM1NtYkdrVXdKVl96cmhHZW5NRUMyZlY0RWVUbThseFJjeWpUZ0pBY3ZYdEZEdHc4dFpJTFhBM0xtTGpZcVhxTm5mVFk5c1MxcjYtYXlLR3VYUEhSRk1oZksxUFhoWE1ILTQtRWtDZFFWRk10WHpIbW90cEptS1ZIV0VDY29xWG95TUl0Mkxqa09TdTh6dWU4UGpFWQ",
-      "description": "Flávio expõe o que aconteceu no inquérito das fake news &nbsp;&nbsp; Pleno.News",
-      "imageUrl": null,
-      "source": "Pleno.News",
-      "publishedAt": "2026-11-13T02:34:00.000Z",
-      "firstSeenAt": "2026-11-13T07:01:42.106Z",
-      "lastSeenAt": "2026-11-13T07:01:42.106Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-13T07:01:42.106Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 14,
-      "newArticles": 7,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "europa",
-        "africa"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-13T15:22:48.310Z",
       "ok": true,
@@ -545,20 +576,37 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-14T08:00:23.092Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 15,
+      "newArticles": 6,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "europa",
+        "africa"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 4,
-  "lastSuccessfulAt": "2026-11-14T01:39:22.856Z",
+  "lastSuccessfulAt": "2026-11-14T08:00:23.092Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-14T01:39:22.856Z",
+      "checkedAt": "2026-11-14T08:00:23.092Z",
       "warnings": [
         {
           "id": "56397",
           "title": "Tempestade",
           "severity": "Perigo Potencial",
-          "phase": "previsto",
+          "phase": "vigente",
           "regions": [],
           "startsAt": "2026-11-14T00:00:00.000Z",
           "endsAt": "2026-11-15T00:00:00.000Z",
@@ -585,7 +633,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-14T01:39:22.856Z",
+      "checkedAt": "2026-11-14T08:00:23.092Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
