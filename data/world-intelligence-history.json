@@ -4,10 +4,130 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-15T17:31:39.401Z",
-  "oldestEventAt": "2026-11-14T17:48:00.000Z",
-  "windowStartAt": "2026-11-14T17:31:39.401Z",
+  "updatedAt": "2026-11-15T22:05:19.527Z",
+  "oldestEventAt": "2026-11-14T22:26:09.000Z",
+  "windowStartAt": "2026-11-14T22:05:19.527Z",
   "events": [
+    {
+      "id": "event-e742ea9c",
+      "category": "clima",
+      "title": "El Niño atinge pico até janeiro e deve chegar ao fim no outono de 2027",
+      "url": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxPaHBYQ0puZkhnVVVCT19GY19wOU9BTGR1cDk2WXEtdVdqR2dEczctRGtqaW5vZEl0V2RIY3hVcTVhZTE4RUVnOF9IX1pPU251UTZJV2U4RVpRY0R6LVBRTmYzWWdlT3RNT3A1VEdwYjlweHJzdE56S0tyNjVkanBYQUtreW83SjJnSG9RS0V1WFZucEhtNGpURFljcW8tNjZGVlAtMm9YRk9kbnVLUWUwaFQ4UVJfbm1LSHBMUnZsV3poelNhcEhZS0JZZVdOZU1VOWZYRzc4bFhvemRxSE54eENn",
+      "description": "El Niño atinge pico até janeiro e deve chegar ao fim no outono de 2027 &nbsp;&nbsp; UOL Notícias",
+      "imageUrl": null,
+      "source": "UOL Notícias",
+      "publishedAt": "2026-11-15T20:29:53.000Z",
+      "firstSeenAt": "2026-11-15T22:05:19.527Z",
+      "lastSeenAt": "2026-11-15T22:05:19.527Z"
+    },
+    {
+      "id": "event-fc98d2bb",
+      "category": "mundo",
+      "title": "Forças no Iêmen apoiadas por sauditas recuam no mar Vermelho, em vitória para houthis",
+      "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxQa3g2MlFIbFBkR0tacDgxQnRRNUVzQ0FuRHVBSGI0RHY5VXdIUFdhYy1jTXZZZjk2T252WWQzeHItbldodGtNWkQyV3Nndi1McjVwc0hfZ3kxbnBtNWtkOGVZZ3FXOGtpVFRpWWFkellFeG1tNVhkMEk5SVdPYjRIeUUtMWlXLUZhVjhJaHROZHdSeHU0Z3NYUVJ3REV4OUFIbmZIMU1ZQnRRUmtXNHo5aklxNmpqR0JBTF9YU21RUjFFNm40N3VlUENnOTlqVmM",
+      "description": "Forças no Iêmen apoiadas por sauditas recuam no mar Vermelho, em vitória para houthis &nbsp;&nbsp; Folha de S.Paulo",
+      "imageUrl": null,
+      "source": "Folha de S.Paulo",
+      "publishedAt": "2026-11-15T20:03:00.000Z",
+      "firstSeenAt": "2026-11-15T22:05:19.527Z",
+      "lastSeenAt": "2026-11-15T22:05:19.527Z"
+    },
+    {
+      "id": "event-3b61511f",
+      "category": "clima",
+      "title": "Super El Niño deve perder força após atingir pico e tem previsão de enfraquecimento até voltar à neutralidade",
+      "url": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxOQktWUVN5bHhFMHJ4bWFybGJGTEdreFNwcWdubUV1aXV4TUlEdlk1bUhxVlpZR09oZk41Y1ZIanJIOVFTdzE5ZmVnM0ZxUHNkcHgxUW5KVFpib2tCQnFNNUc3WFd4cXhITThiYzdwUVhsUVdWRkNJR0wwb3pPSGtZSFQ4b09UWmpiYWwtZkxxNG56OHBueUNVTnhrc0c4ODVuRk1kZjYxSGNPSkUwbDVwc01nUnNWSHlWU01nbmt1T1NBa3VFZGFkNms1eWYwY3doTHMyNEJQQnVycGJseUVQWjJ0a2_SAeoBQVVfeXFMTjRHLS1KMnZCMm12TzVGZEhNUXU2TUpsNDZkTWdBWG9QVDBlRUtjSEpsY2VrY1NPd0UzV0lQU3I4WmdmTVQta3hmZUtwM2pFMk9xQnQzVFVtRnZlVUNSRU41LXBydHNKR3NmNXBZc1dIQnJ1U0x0TV9NR21WbUctYnpvRklMbGI5WWdfVFI5QnltNjRpQTJsNUdkaE1zZUlnYllDc1lqeFlRQjYzUjFQSUFXMnFRRVdKd2VDZ3hNZC1ESHNfSl9aelpXX0xHbmk5S0EyQi1pUkdmVGxjZmV0dTl1dWpPdnN6dHZR",
+      "description": "Super El Niño deve perder força após atingir pico e tem previsão de enfraquecimento até voltar à neutralidade &nbsp;&nbsp; GMC Online",
+      "imageUrl": null,
+      "source": "GMC Online",
+      "publishedAt": "2026-11-15T19:35:00.000Z",
+      "firstSeenAt": "2026-11-15T22:05:19.527Z",
+      "lastSeenAt": "2026-11-15T22:05:19.527Z"
+    },
+    {
+      "id": "event-e71d6a48",
+      "category": "brasil",
+      "title": "Inmet prevê tempestades no Centro-Sul do país até segunda-feira",
+      "url": "https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-11/inmet-preve-tempestades-no-centro-sul-do-pais-ate-segunda-feira",
+      "description": "Uma chuva forte com queda de granizo atingiu na tarde deste domingo (15) a cidade de Belo Horizonte (MG). Desde as 9h30 da manhã, a capital mineira e outras centenas de cidades do estado estão em alerta amarelo para a ocorrência de tempestades. O alerta amarelo é o de menor gravidade na escala do Instituto Nacional de Meteorologia (Inmet) e indica uma situação de perigo potencial. Notícias relacionadas: Fortes chuvas devem atingir estado de São Paulo neste domingo. Inmet: chuvas e tempestades predominam no país, neste fim de semana. Também foram colocados em situação de alerta todos os municípios dos estados de São Paulo e do Mato Grosso do Sul e grande parte dos estados do Rio de Janeiro, Paraná e Goiás e parte dos estados de Santa Catarina e Mato Grosso. Há um alerta amarelo também para parte dos estados de Tocantins, Pará, Maranhão, Recife e Bahia. O alerta amarelo vale até o final do dia de hoje. O Inmet prevê que os estados localizados na região Centro-Sul do país devem enfrentar tempestades até amanhã (16). Devido à atuação de um cavado meteorológico [nome dado a uma área de in",
+      "imageUrl": "https://imagens.ebc.com.br/znTa6KJm1vEw9On3LoJ6HClroDM=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/09/10/_int9067.jpg?itok=SgyT8Pu6",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-15T19:34:00.000Z",
+      "firstSeenAt": "2026-11-15T22:05:19.527Z",
+      "lastSeenAt": "2026-11-15T22:05:19.527Z"
+    },
+    {
+      "id": "event-d6a54263",
+      "category": "brasil",
+      "title": "Exposição no Rio resgata delicadeza e humanidade de João Cândido",
+      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxQcXdYMHV5Vm8zbE9lNEF3VTA5TUxscmllWm5lYUM0T1FXTHIyZ3NYbGVWNngtMllkUWVuX2lyWjF1akxCV3JlVDUwOEVLZFZ2VGxfUS1KcDI3WnRnNkxLQWdVWU96Vk94Q3VzUEZ1bm9NUmZUaHU4NEF2QW8tUEhvZXF4YlNzUk5aUk1TVDVoWkRIRXREYzFJZWtMYWVYRTJkMlViTjUxM05rVXNTRDVFOTRsc0lYVDVld1BEQlBn",
+      "description": "Exposição no Rio resgata delicadeza e humanidade de João Cândido &nbsp;&nbsp; Agência Brasil",
+      "imageUrl": null,
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-15T19:27:00.000Z",
+      "firstSeenAt": "2026-11-15T22:05:19.527Z",
+      "lastSeenAt": "2026-11-15T22:05:19.527Z"
+    },
+    {
+      "id": "event-4ba54c41",
+      "category": "clima",
+      "title": "El Niño deve perder força em 2027 e pode terminar no outono",
+      "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxPY0Q4UHFLVW1PbTlGLVpLMklQVmVDc1NtbUNhcDZleGpJbTF4NVN4d3IzbzdrRFRWV21jcmtXbEN4eGh6RW1nbUVYQlI2VkEtN2dBaUJXaGhtM2tyNC1jbDlMN3IyczJuSEJOa1JpSTY1WXpqQUhPU2syNHFWYy1QU1M3TnppOWpBR1BNRGktRy10R3R0d3pWTFUzbFNVN3NnZkFrS0didjFNSjQyQTM1czk4R1R2MmJTLTZDbF9hc1E",
+      "description": "El Niño deve perder força em 2027 e pode terminar no outono &nbsp;&nbsp; Diário do Iguaçu",
+      "imageUrl": null,
+      "source": "Diário do Iguaçu",
+      "publishedAt": "2026-11-15T19:22:00.000Z",
+      "firstSeenAt": "2026-11-15T22:05:19.527Z",
+      "lastSeenAt": "2026-11-15T22:05:19.527Z"
+    },
+    {
+      "id": "event-2767a063",
+      "category": "brasil",
+      "title": "COP31: negociações avançam, mas financiamento é desafio para 2ª semana",
+      "url": "https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-11/cop31-negociacoes-avancam-mas-financiamento-e-desafio-para-2a-semana",
+      "description": "A primeira semana da Conferência das Nações Unidas sobre Mudanças Climáticas (COP31), foi concluída oficialmente na manhã deste domingo (15) em Antália, Turquia. O balanço dos especialistas até aqui é de que houve avanços em decisões de caráter mais técnico e procedimental. Porém, questões sobre financiamento, adaptação e redução das emissões permanecem sem consenso. Notícias relacionadas: Cartilha lançada na COP31 orientará indígenas sobre fundo florestal. Lula: nenhum país tem mais autoridade para falar de clima que Brasil . Temas políticos centrais ficaram para a segunda e última semana do evento, que termina na sexta-feira (20). O secretário-geral da ONU, António Guterres, reforçou a urgência do aquecimento global como imperativo para que os países avancem nas negociações e ações concretas. “Um aumento de 1,5 graus na temperatura é agora inevitável. E nossa responsabilidade é mantê-lo o menor possível, pelo menor tempo possível, e trazer as temperaturas de volta para abaixo de 1,5 graus o mais rápido que pudermos. Mas isso exige cortes imediatos e drásticos nas emissões, da ordem",
+      "imageUrl": "https://imagens.ebc.com.br/dqMvzzWDUdJN3giJ-vxZNE7eD6g=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/15/cop31_negociacoes_avancam_mas_financiamento_e_desafio_para_2a_semana01.jpg?itok=RlNcvfjL",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-15T19:09:00.000Z",
+      "firstSeenAt": "2026-11-15T22:05:19.527Z",
+      "lastSeenAt": "2026-11-15T22:05:19.527Z"
+    },
+    {
+      "id": "event-a6621097",
+      "category": "mundo",
+      "title": "Principais notícias do mundo na noite de hoje (15)",
+      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQWkNFdXBmbjRSOEd5VFdfNlVyYkVwckQxTU1pckhIT2VJNDVxVTFRV3R3eUtOT09HZERNN3ozbG0zaUQ4ZzA3MTZDczhibnpaZDBBd3JsTVhBWGdxNWMtRTQtZzRCdV9wVno1b21HcHowT3hGcFk0NHUxbmZOdHpEcTZhS0pBXzZXM1FXb2liRHkzWDJIUzNtUVRRVWlfT095bE9UQWlTS3ZSOHJ5",
+      "description": "Principais notícias do mundo na noite de hoje (15) &nbsp;&nbsp; Tribuna do Sertão",
+      "imageUrl": null,
+      "source": "Tribuna do Sertão",
+      "publishedAt": "2026-11-15T18:40:58.000Z",
+      "firstSeenAt": "2026-11-15T22:05:19.527Z",
+      "lastSeenAt": "2026-11-15T22:05:19.527Z"
+    },
+    {
+      "id": "event-9387cbe",
+      "category": "mundo",
+      "title": "Comandante do Hamas é morto em ataque israelense em Gaza",
+      "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxNa3gyaVBaWkRkdjNJZExKYkpqNlFRMTVNdmJ3SWRPSkQ0QXREVll1a3o5cVdxdW9oNFNVOVdLMnlBVWFJQUFIMHc3elJUdUVNUkNNQ05KcjlRTW8zMVZlV1BjZUZqaEJIWlIxX2JOTFhkTzFYV3IzMnNGZ1lpZGlSODhuZXU0cjVFZVJ3M2ZjSXVnTEJtcjdIMXJnU3hzZw",
+      "description": "Comandante do Hamas é morto em ataque israelense em Gaza &nbsp;&nbsp; SBT News",
+      "imageUrl": null,
+      "source": "SBT News",
+      "publishedAt": "2026-11-15T18:20:44.000Z",
+      "firstSeenAt": "2026-11-15T22:05:19.527Z",
+      "lastSeenAt": "2026-11-15T22:05:19.527Z"
+    },
+    {
+      "id": "event-9a563eda",
+      "category": "santa-catarina",
+      "title": "[VÍDEO] Temporais podem atingir Santa Catarina com granizo e vento forte neste domingo",
+      "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxNVFVXQjllVWwyMDV6MHQzTjJEanBTZ0doaVlkQ0x5Z2wwRy1vYUtwNk5kcGRmUUZGWEtOd0hlS3dHSTBpd3RtSXdoRzJNU1hiTGpJaWNJY1N3Q0xvampUWWt0ODkwQV82bXF0ZU5XTEdlWW1ETHNmUHBVN2JuY2tTRFhoTVRkM2JoanI1NHg3YTdNQkpFVDdybmM2ZUl0bFhEWEFHYVRGZUY3dzJQVFpESTl6SHV6Z2wxQ0lBdmlBVjdRSkRoaGEtWFpTSnM",
+      "description": "[VÍDEO] Temporais podem atingir Santa Catarina com granizo e vento forte neste domingo &nbsp;&nbsp; Folha Regional",
+      "imageUrl": null,
+      "source": "Folha Regional",
+      "publishedAt": "2026-11-15T18:00:33.000Z",
+      "firstSeenAt": "2026-11-15T22:05:19.527Z",
+      "lastSeenAt": "2026-11-15T22:05:19.527Z"
+    },
     {
       "id": "event-4b26cf3d",
       "category": "santa-catarina",
@@ -18,7 +138,7 @@
       "source": "Santa Catarina em Pauta",
       "publishedAt": "2026-11-15T17:00:00.000Z",
       "firstSeenAt": "2026-11-15T17:31:39.401Z",
-      "lastSeenAt": "2026-11-15T17:31:39.401Z"
+      "lastSeenAt": "2026-11-15T22:05:19.527Z"
     },
     {
       "id": "event-7f3810dd",
@@ -30,7 +150,7 @@
       "source": "Brasil Escola",
       "publishedAt": "2026-11-15T16:56:18.000Z",
       "firstSeenAt": "2026-11-15T17:31:39.401Z",
-      "lastSeenAt": "2026-11-15T17:31:39.401Z"
+      "lastSeenAt": "2026-11-15T22:05:19.527Z"
     },
     {
       "id": "event-8ba8dcbc",
@@ -117,6 +237,18 @@
       "lastSeenAt": "2026-11-15T17:31:39.401Z"
     },
     {
+      "id": "event-b417caf8",
+      "category": "asia",
+      "title": "INTELIGÊNCIA ARTIFICIAL | A polícia da Coreia do Sul anunciou neste domingo, 15, que abriu uma investigação após o candidato mais bem colocado em um exame nacional para contadores",
+      "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE8xVFIzVjFlYnVfbFU3clZGR3RKMjJfNTIySDBBRTJSTTllN0htdEFSSUdKRElaMFp4V3k1Z2JmMWh3M1l3OVU4dkZPTkRGd2N1dFE",
+      "description": "INTELIGÊNCIA ARTIFICIAL | A polícia da Coreia do Sul anunciou neste domingo, 15, que abriu uma investigação após o candidato mais bem colocado em um exame nacional para contadores fiscais confessar que usou inteligência artificial para obter as res &nbsp;&nbsp; Instagram",
+      "imageUrl": null,
+      "source": "Instagram",
+      "publishedAt": "2026-11-15T14:12:22.000Z",
+      "firstSeenAt": "2026-11-15T22:05:19.527Z",
+      "lastSeenAt": "2026-11-15T22:05:19.527Z"
+    },
+    {
       "id": "event-85bd3268",
       "category": "mundo",
       "title": "O que encontro histórico de Trump, Putin e Xi marcado para esta semana pode significar para o mundo?",
@@ -138,7 +270,7 @@
       "source": "Diário do Iguaçu",
       "publishedAt": "2026-11-15T13:46:00.000Z",
       "firstSeenAt": "2026-11-15T17:31:39.401Z",
-      "lastSeenAt": "2026-11-15T17:31:39.401Z"
+      "lastSeenAt": "2026-11-15T22:05:19.527Z"
     },
     {
       "id": "event-5be20e00",
@@ -283,182 +415,9 @@
       "publishedAt": "2026-11-14T22:26:09.000Z",
       "firstSeenAt": "2026-11-14T23:35:54.064Z",
       "lastSeenAt": "2026-11-15T03:05:41.446Z"
-    },
-    {
-      "id": "event-c2f141dd",
-      "category": "brasil",
-      "title": "SC anuncia pacote de R$ 1,2 bi para atingidos por eventos climáticos",
-      "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxQZzNvZUhOenByMl9YZkhsM0N5aEdveHdNX3lrZlJmbnlJQ1BEcWlGajBlMy1jMENJc0pNNmRUbXd5T0F0YzhZNE9kbHlxUnl0Sy1SeUhCOExtYlJVajNRMmtrVUMzNUwyd2hDMzZTMUNHT3U0VnQtRUNKYXVtS3BwZldFRThKNGd2NXdFTDhfSDgwYlIweVRrXzN6TnJlSXpuMXdKWnpGUWtzd1ZubEYxWG1zbXMtT3duRVYw",
-      "description": "SC anuncia pacote de R$ 1,2 bi para atingidos por eventos climáticos &nbsp;&nbsp; CNN Brasil",
-      "imageUrl": null,
-      "source": "CNN Brasil",
-      "publishedAt": "2026-11-14T22:03:09.000Z",
-      "firstSeenAt": "2026-11-15T03:05:41.446Z",
-      "lastSeenAt": "2026-11-15T10:48:18.946Z"
-    },
-    {
-      "id": "event-14ec7659",
-      "category": "mundo",
-      "title": "Brasil e Filipinas assinam acordos sobre agro e livre concorrência",
-      "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/brasil-e-filipinas-assinam-acordos-sobre-agro-e-livre-concorrencia",
-      "description": "Brasil e Filipinas assinaram, neste sábado (14), em Manila, dois acordos para facilitar o comércio agrícola e fortalecer o combate a práticas anticoncorrenciais entre os dois países. Os dois memorandos de entendimento foram firmados durante a visita oficial do presidente Luiz Inácio Lula da Silva ao país asiático, após reunião com o presidente filipino, Ferdinand Marcos Júnior. Notícias relacionadas: Lula cita herói anticolonial das Filipinas ao comentar sua reeleição. Lula chega às Filipinas; Brasil quer ser Parceiro de Diálogo da Asean. Nos últimos anos, Brasil e Filipinas vêm aprofundando a agenda de cooperação bilateral. Em 2026, foi anunciada a assistência técnica para o fortalecimento da indústria canavieira filipina. Os dois países também buscam estabelecer novas parcerias em pesquisas agropecuárias. Os negócios entre Brasil e Filipinas movimentam, atualmente, cerca de US$ 3 bilhões. Asean O presidente Lula viajou para as Filipinas a fim de participar, a convite de Ferdinand Marcos Júnior, da Cúpula da Associação de Nações do Sudeste Asiático (Asean). O mandatário brasileiro t",
-      "imageUrl": "https://imagens.ebc.com.br/Plo8oXurV483zPnIQVvZdEmUtFc=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/14/55651844601_faebd07eec_o.jpg?itok=YtUk2CeL",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-14T21:53:00.000Z",
-      "firstSeenAt": "2026-11-14T23:35:54.064Z",
-      "lastSeenAt": "2026-11-15T03:05:41.446Z"
-    },
-    {
-      "id": "event-d381d10e",
-      "category": "brasil",
-      "title": "Como era o mundo quando o primeiro Big Brother Brasil Estreou em 2002? Músicas, filmes e notícias do ano",
-      "url": "https://news.google.com/rss/articles/CBMijwJBVV95cUxQQVZjemMxN01FbGIzTGZLUmJmOVdSOTZYc0RzQlpGVmcwejNGOUF4d0d3QVBlS0U0N3FVNVVXc0V6aHl5ejJHNU40bHZkUmZGVTJiV1BhbEpvTGEyc1BMQzVPS0piSmVzbEJuY2x0NnUxNnhwV3Q1NXlIRzNNNmU2eVh2ZEMxVWtFQUM0SjJmaGdsUFFzOGZINllvdktnVUhrUjVJZENBNElIZ0lLenozd1VtaUNEcmtOT3YxN1BOQnJEVmRDQ3VkYVktczZZUUZhTXdBeEpSUGZCNkhuRkxjVm8wTXQyb2NTSHZCMy1RN01SZE5uYnVpVWRLSDl0WGQtUFQ4cjhPWUVJTHhYQXlj",
-      "description": "Como era o mundo quando o primeiro Big Brother Brasil Estreou em 2002? Músicas, filmes e notícias do ano &nbsp;&nbsp; Terra",
-      "imageUrl": null,
-      "source": "Terra",
-      "publishedAt": "2026-11-14T21:46:00.000Z",
-      "firstSeenAt": "2026-11-14T23:35:54.064Z",
-      "lastSeenAt": "2026-11-15T03:05:41.446Z"
-    },
-    {
-      "id": "event-3804ac04",
-      "category": "clima",
-      "title": "El Niño deve perder força a partir do início de 2027 e chegar ao fim no outono",
-      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxNOUpxMzVLajBZdE5PU3F6T3JHSGt5ektXa1AzVlQyUF9icGtWSlBIU3BLSkoyb2o3eGJJQU82UU1kcXNlQzZWeEY0TE1EZVhoN3ZTV1MzaEtXMTFEZTJzYXBIZEtGRkRab3dSRnF1dzhaR1FoV05zcGd2UmZWQnVpZXhOUnZyWllUVDlKZTEtYk1JUFFnQ0lyOGJMWTlZQ3ZuT2NoQ01STXd3aVR2X1E",
-      "description": "El Niño deve perder força a partir do início de 2027 e chegar ao fim no outono &nbsp;&nbsp; Paraíba dia a dia",
-      "imageUrl": null,
-      "source": "Paraíba dia a dia",
-      "publishedAt": "2026-11-14T21:28:09.000Z",
-      "firstSeenAt": "2026-11-15T03:05:41.446Z",
-      "lastSeenAt": "2026-11-15T10:48:18.946Z"
-    },
-    {
-      "id": "event-271f3061",
-      "category": "brasil",
-      "title": "Circuito Cultural começa no Rio com celebração da Consciência Negra",
-      "url": "https://agenciabrasil.ebc.com.br/cultura/noticia/2026-11/circuito-cultural-comeca-no-rio-com-celebracao-da-consciencia-negra",
-      "description": "A relação entre arte, meio ambiente, sociedade e cidade vai ser o foco dos artistas que participarão das exposições incluídas na programação do Circuito Cultural Instituto 12 – Conexões Criativas. O evento começou neste sábado (14), com vários programas gratuitos entre exposições artísticas, palestras, shows e espetáculos de dança, na sede do Instituto 12, no Leblon, Zona Sul do Rio. A entrada é gratuita, mas como a disponibilidade é limitada à capacidade do espaço, é preciso retirar os ingressos no Sympla , de acordo com os horários de cada sessão. Com curadoria de João Vergara, doutor em Arte e Cultura Contemporânea pela Universidade do Estado do Rio de Janeiro (Uerj), a mostra será dividida em quatro ciclos com os temas: Reconexão, Respiração, Reinvenção e Reconstrução, mobilizando diferentes linguagens. O programa do Instituto, segundo o curador, está focado também para a área de sustentabilidade, visão do futuro e arte nesse contexto. “O pensamento curatorial que a gente imaginou era passar por essas quatro formas de pensar o futuro, que a gente imagina em um mundo tão conflagra",
-      "imageUrl": "https://imagens.ebc.com.br/tT6XQ_ksmo3pUy_5YwPLxg5Y9ao=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2025/11/20/toms0519.jpg?itok=bzCXLvYU",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-14T21:26:00.000Z",
-      "firstSeenAt": "2026-11-14T23:35:54.064Z",
-      "lastSeenAt": "2026-11-15T03:05:41.446Z"
-    },
-    {
-      "id": "event-4edc6c55",
-      "category": "clima",
-      "title": "El Niño pode terminar no outono de 2027, mas há um alerta para o Brasil",
-      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxOd1gyZ016WkI1UE1OLUdvSTctZlJWdmJRQmczNS11a1hPSFRtLU9OMHJpQ3B3ZERMdFo1MnVFRFJ1ZW5WSDl3SVM1TWk4MUt1NFZHZDhpYVgtb3lOVTBWVlRoZmNwcWxxWGM0ZGdOVmJHQW9CUnQ0bWlrTWxUTk1Ed19wWEYzR3JFQ25VbEhnUVF5ZG5IRnJ0NVQ2aElMT0JJQzllUFNwcHphampvOTM3ajhDZkNKN1FXOWZ6S293",
-      "description": "El Niño pode terminar no outono de 2027, mas há um alerta para o Brasil &nbsp;&nbsp; Diário do Pará",
-      "imageUrl": null,
-      "source": "Diário do Pará",
-      "publishedAt": "2026-11-14T21:05:00.000Z",
-      "firstSeenAt": "2026-11-14T23:35:54.064Z",
-      "lastSeenAt": "2026-11-15T10:48:18.946Z"
-    },
-    {
-      "id": "event-c0bb5c0d",
-      "category": "brasil",
-      "title": "REC&#039;n&#039;Play: rede social sem território não vira voto, diz deputado",
-      "url": "https://agenciabrasil.ebc.com.br/cultura/noticia/2026-11/recnplay-rede-social-sem-territorio-nao-vira-voto-diz-deputado",
-      "description": "As últimas eleições presidenciais no país demonstraram a força e a importância da mobilização pelas redes sociais – que ajudaram a construir uma virada histórica para o presidente Luiz Inácio Lula da Silva, no segundo turno, algo que nunca havia ocorrido no país desde a redemocratização. Para o ativista e deputado estadual recém-eleito por Pernambuco Vinicius Castello, essa virada, no entanto, não pode ser creditada unicamente a essa mobilização construída na internet. Notícias relacionadas: REC&#039;n&#039;Play 2026 será palco de tecnologia e criatividade no Recife. Instalação no Rec’n’Play propõe que ruas do Recife celebrem mulheres. “Rede sem território não vira voto”, reforçou ele na palestra O Poder das Redes na Mobilização Popular , ocorrida durante o festival REC’n’Play, que termina neste sábado (14) em Recife. Para ele, apesar das redes sociais agora desempenharem um papel fundamental na constituição política do país, a mobilização ainda precisa ser construída dentro dos territórios, em um contato direto com a população. “O presidente Lula não teria virado [e ganhado o segund",
-      "imageUrl": "https://imagens.ebc.com.br/dU_5B5gx84iDMOSzxrwMfno7j-o=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/02/divulgacao-recnplay.jpeg?itok=sozQ8GHX",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-14T20:55:00.000Z",
-      "firstSeenAt": "2026-11-14T23:35:54.064Z",
-      "lastSeenAt": "2026-11-14T23:35:54.064Z"
-    },
-    {
-      "id": "event-5a4b7f04",
-      "category": "mundo",
-      "title": "Israel reforça alerta para possível ataque surpresa dos EUA ao Irã",
-      "url": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxObEdyY0NQdjFrYVpjVVpnZXJoMXlaU252Wk9qOUdnMU5DVkRWM0ZkOHl2Wm5TOFpQUzhZSUFlaDFqak9ud0szRlJjTDhJb2RIN3FDNDkxRkZtQzg2S2pKc001MHJGVXY0STY3SEk0NzdQM2VGZnpQMldncVZfOHRPcUgyYzFNNlJtcmNmUVhJVzlVbjZZNU9pb3RXOFFDZFVzcmtuZ19EZy1KdnhUSm9mMkl5LUdlZ0tJUjZpYUVIY3pGUjZCRXc3OXZIZ01WWl8tN3VGNFBYNnA",
-      "description": "Israel reforça alerta para possível ataque surpresa dos EUA ao Irã &nbsp;&nbsp; UOL Notícias",
-      "imageUrl": null,
-      "source": "UOL Notícias",
-      "publishedAt": "2026-11-14T20:48:10.000Z",
-      "firstSeenAt": "2026-11-14T23:35:54.064Z",
-      "lastSeenAt": "2026-11-15T03:05:41.446Z"
-    },
-    {
-      "id": "event-b7c89ace",
-      "category": "clima",
-      "title": "El Niño atinge pico no fim do ano e se despede no outono de 2027",
-      "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxQcnd5aVl6RkhjUmZkaHRYdTVnVDVPelV0N2hnejl4UXNtdjZGV3VmV0VPb0JIVkxrVmFIT1RVSmZ3V2k5Nm1TLXExYUdhZGY4aTRrbkxSZmVoQWwxb2Z1NXlRODRUNk51b1JpMXQyd0pvMmEwdUg5VGxMdG1XRG9CVnp4V2RxUHV4ajk3TXJwcmlNcEdJRHQtQVBzUnVlOEp2RFE",
-      "description": "El Niño atinge pico no fim do ano e se despede no outono de 2027 &nbsp;&nbsp; Guararema News",
-      "imageUrl": null,
-      "source": "Guararema News",
-      "publishedAt": "2026-11-14T20:00:00.000Z",
-      "firstSeenAt": "2026-11-14T23:35:54.064Z",
-      "lastSeenAt": "2026-11-14T23:35:54.064Z"
-    },
-    {
-      "id": "event-f5c8bb46",
-      "category": "brasil",
-      "title": "Inmet: chuvas e tempestades predominam no país, neste fim de semana",
-      "url": "https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-11/inmet-chuvas-e-tempestades-predominam-no-pais-neste-fim-de-semana",
-      "description": "O Instituto Nacional de Meteorologia (Inmet) informou que, neste sábado (14), domingo (15) e segunda-feira (16), a previsão é de tempestades no país, com destaque para as regiões Centro-Oeste e Sudeste, além de áreas do Nordeste e Norte. O norte do Pará, partes do litoral do Nordeste e o extremo sul do Brasil devem ter tempo estável. Notícias relacionadas: Governo abre consulta pública sobre enfrentamento ao calor extremo. No sábado (14), as condições meteorológicas favorecem pancadas de chuva fortes, com possibilidade de temporais, especialmente em Santa Catarina, Paraná, Mato Grosso do Sul e áreas do Rio Grande do Sul. Segundo o Inmet, também haverá condições para chuva em parte do interior do Brasil, com destaque para áreas entre a Bahia e o Espírito Santo, onde a convergência de umidade deverá contribuir para a formação de instabilidades. As condições poderão limitar a ocorrência de precipitação em parte de São Paulo, Minas Gerais e do Centro-Oeste, embora o aquecimento do dia e a elevada disponibilidade de umidade ainda favoreçam pancadas isoladas. No extremo norte do país, o Am",
-      "imageUrl": "https://imagens.ebc.com.br/pMQu7ZGPr9aw8v36dbJy7-Pcv3k=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/_mg_9230.jpg?itok=FoVvdnSa",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-14T19:06:00.000Z",
-      "firstSeenAt": "2026-11-14T19:55:21.208Z",
-      "lastSeenAt": "2026-11-14T19:55:21.208Z"
-    },
-    {
-      "id": "event-6e750ab9",
-      "category": "brasil",
-      "title": "Coritiba lança camisa com Enedina Marques em alusão ao 20 de novembro",
-      "url": "https://agenciabrasil.ebc.com.br/direitos-humanos/noticia/2026-11/coritiba-lanca-camisa-com-enedina-marques-em-alusao-ao-20-de-novembro",
-      "description": "Uma camisa para homenagear o dia da Consciência Negra, celebrado em 20 de novembro, foi a forma como o clube de futebol Coritiba resolveu fazer para chamar atenção para a data. A camisa, lançada nessa sexta-feira (13), faz uma homenagem a Enedina Alves Marques, a primeira mulher negra a se formar em engenharia no Brasil. A iniciativa faz parte da coleção Pelo Mundo Vai Brilhar, que valoriza personagens e símbolos da história de Curitiba. Trajetória Enedina nasceu na capital paranaense, em 1913 e teve uma trajetória marcada pelo enfrentamento a barreiras raciais e de gênero. Em 1945, se tornou a primeira mulher negra a se formar em Engenharia Civil no Brasil, pela Universidade Federal do Paraná (UFPR). Enedina morreu em agosto de 1981, aos 68 anos. Sua trajetória fez com que, em janeiro de 2024, ela ganhasse uma estátua no calçadão da Rua XV de Novembro, no Centro de Curitiba. A estátua foi criada pelo artista Rafael Sartori e serviu de inspiração para a camisa do Coritiba. “Histórias que abrem caminhos. Legados que constroem o futuro”, escreveu o clube em sua rede social . O Coritiba",
-      "imageUrl": "https://imagens.ebc.com.br/P7hkIor5SOTh7x4y6O8HAr1VwpI=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/14/camisa_coritiba_consciencia_negra02.jpg?itok=iIlxPk9y",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-14T18:22:00.000Z",
-      "firstSeenAt": "2026-11-14T19:55:21.208Z",
-      "lastSeenAt": "2026-11-14T19:55:21.208Z"
-    },
-    {
-      "id": "event-f0474be8",
-      "category": "mundo",
-      "title": "Principais notícias do mundo na tarde de hoje (14)",
-      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPQjJGYnlDdmZzdXRFeXFXVXY2TUR6bVNKSVNSYjNPQmJGcWIwY2EyTWVzaEkwOHU2N3k1RE8xNnBBc210YjdnZEZSSHhjNThHeUxvQXMtQjgxNnR0YnFSdERpckRjYzZYc3pjXzV3aWZfa0t4bnRrZ2o2bWRWWktORFpydElZRjlkS0VleTl6aDVDZFVsZGdlaFlCTVVMaUdKV0tVN0lHNHduR0tC",
-      "description": "Principais notícias do mundo na tarde de hoje (14) &nbsp;&nbsp; Tribuna do Sertão",
-      "imageUrl": null,
-      "source": "Tribuna do Sertão",
-      "publishedAt": "2026-11-14T18:06:28.000Z",
-      "firstSeenAt": "2026-11-14T19:55:21.208Z",
-      "lastSeenAt": "2026-11-14T19:55:21.208Z"
-    },
-    {
-      "id": "event-5aa189ed",
-      "category": "brasil",
-      "title": "Governo abre consulta pública sobre enfrentamento ao calor extremo",
-      "url": "https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-11/governo-abre-consulta-publica-sobre-enfrentamento-ao-calor-extremo",
-      "description": "O Ministério do Meio Ambiente e Mudança do Clima (MMA) abriu uma consulta pública com objetivo de receber contribuições para o enfrentamento do calor extremo no país e para ampliar o acesso da população a ambientes mais frescos e saudáveis. Aberta nesta sexta-feira (13), a consulta pública ficará disponível na plataforma Brasil Participativo até 23 de novembro. Notícias relacionadas: Estudo prevê até 13,3 mil mortes no Brasil com calor do Super El Niño. As propostas vão ajudar a construir o Plano de Ação pelo Resfriamento e Combate ao Calor Extremo (Pnar Brasil), que reúne medidas para proteger a saúde, reduzir desigualdades e preparar o país para o aumento das temperaturas. Em nota, o MMA ressaltou que o calor extremo afeta a saúde, as condições de trabalho e a qualidade de vida da população, especialmente nas áreas urbanas com pouca vegetação e maior exposição ao sol. “O desafio é encontrar formas de tornar as cidades e os ambientes construídos mais frescos e seguros, sem aumentar desnecessariamente o consumo de energia e as emissões de gases de efeito estufa”, diz a pasta. Com apo",
-      "imageUrl": "https://imagens.ebc.com.br/_i15j7PANiECyWqg8VoFUDFqw_E=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2025/12/26/_d6a4895_01.jpg?itok=Mq8WKdwF",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-14T17:48:00.000Z",
-      "firstSeenAt": "2026-11-14T19:55:21.208Z",
-      "lastSeenAt": "2026-11-14T19:55:21.208Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-14T19:55:21.208Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 13,
-      "newArticles": 9,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "europa",
-        "africa"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-14T23:35:54.064Z",
       "ok": true,
@@ -524,14 +483,31 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-15T22:05:19.527Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 14,
+      "newArticles": 11,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "europa",
+        "asia"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 5,
-  "lastSuccessfulAt": "2026-11-15T17:31:39.401Z",
+  "lastSuccessfulAt": "2026-11-15T22:05:19.527Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-15T17:31:39.401Z",
+      "checkedAt": "2026-11-15T22:05:19.527Z",
       "warnings": [
         {
           "id": "56415",
@@ -591,7 +567,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-15T17:31:39.401Z",
+      "checkedAt": "2026-11-15T22:05:19.527Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
