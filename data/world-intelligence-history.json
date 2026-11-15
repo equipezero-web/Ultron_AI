@@ -4,10 +4,166 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-15T10:48:18.946Z",
-  "oldestEventAt": "2026-11-14T10:49:00.000Z",
-  "windowStartAt": "2026-11-14T10:48:18.946Z",
+  "updatedAt": "2026-11-15T17:31:39.401Z",
+  "oldestEventAt": "2026-11-14T17:48:00.000Z",
+  "windowStartAt": "2026-11-14T17:31:39.401Z",
   "events": [
+    {
+      "id": "event-4b26cf3d",
+      "category": "santa-catarina",
+      "title": "Santa Catarina terá chuva e temporais isolados nos próximos dias, aponta Defesa Civil",
+      "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxOZ3F6YktiVnBldUo5QjBiZXRBV2hfU0dudXBiV3dLOTZCZUJvMkJsc1MzVjgwV3V0TVFyOTROY3pieEEzVVBNQlRhWjJ0clYtLXRlQXVEcWhFSE9ob3lPZC1WMVBnZmR3RzVKTkpKSmx3SG90VXoxd0t6RUR2OHJCRFA5MWxYM3p2ajNLbmpJdGowTjJWVWp6UW40UF9yYi1rZGUydDZvTnFHc2VHOXlTaFBMTDNycEZzcTEwYndUNUVveGl5WklVYVliOFJjYmh5OHc",
+      "description": "Santa Catarina terá chuva e temporais isolados nos próximos dias, aponta Defesa Civil &nbsp;&nbsp; Santa Catarina em Pauta",
+      "imageUrl": null,
+      "source": "Santa Catarina em Pauta",
+      "publishedAt": "2026-11-15T17:00:00.000Z",
+      "firstSeenAt": "2026-11-15T17:31:39.401Z",
+      "lastSeenAt": "2026-11-15T17:31:39.401Z"
+    },
+    {
+      "id": "event-7f3810dd",
+      "category": "brasil",
+      "title": "A Proclamação da República foi um golpe militar? Professor explica evento histórico",
+      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxPNnFhVm1Lc2lsMEpsNUhwVGlVaDNYc1lnZlNlakpuNnUtRlh4MU9oeXR1Smp4OTJkWlBER0dJdTlpM3BCVEk2cjdjMFpRazBDNnMzOGhKWmFMam41VUt0Rml3RVF5V1JPQUpHUEplU2dqcGE2ZmZPdEFxNlFMMlhST3JIa0M2RjVibG9zQjMwZGVSYk1JWnR6VnhyeElwWnlmQS1RQl9CODJna2fSAbABQVVfeXFMUDNJMzZ3VmlZUGxtbEFXaUQyRjgzcFRWS0JKdThXWkNXMW5FRXhiYWdFOTlXNlJxVHhORzY4Q2otLUMwY1RLcndrakRCQi1DcGFGb2JkVnNQVmx0SndtM2RwZHE1bS1sYy14ZWFZOHlObzB6SVQ2cXl6eXNfMVFMaXlxRHFlXzZVeXY0R0lEZTdYS0tfejQzclVCMDN4cWkweG1aVl8wcjNoR05VNTg1aDU",
+      "description": "A Proclamação da República foi um golpe militar? Professor explica evento histórico &nbsp;&nbsp; Brasil Escola",
+      "imageUrl": null,
+      "source": "Brasil Escola",
+      "publishedAt": "2026-11-15T16:56:18.000Z",
+      "firstSeenAt": "2026-11-15T17:31:39.401Z",
+      "lastSeenAt": "2026-11-15T17:31:39.401Z"
+    },
+    {
+      "id": "event-8ba8dcbc",
+      "category": "brasil",
+      "title": "Zezé Motta participa de tributo a Milton Nascimento nesta segunda",
+      "url": "https://agenciabrasil.ebc.com.br/cultura/noticia/2026-11/zeze-motta-participa-de-tributo-milton-nascimento-nesta-segunda",
+      "description": "A obra de um dos maiores artistas brasileiros vai ser homenageada por um encontro de gerações no concerto Raça — Uma homenagem a Milton Nascimento , nesta segunda-feira (16). A apresentação, que também celebra o Mês da Consciência Negra, será às 19h, no Teatro TotalEnergies, na Glória, zona sul do Rio de Janeiro. O show reunirá o Coro Juvenil do Rio de Janeiro (CJRJ) e a Orquestra Sinfônica Juvenil Carioca (OSJC), com regência do maestro Carlos Sarria e a participação especial da cantora e atriz Zezé Motta. Notícias relacionadas: Circuito Cultural começa no Rio com celebração da Consciência Negra. Fachin defende indicação de ministra negra para o STF. Movimento negro reivindica projetos de leis antirracistas para escolas. A presença de Zezé traz para o espetáculo a resistência do povo preto e a batalha pela defesa da ancestralidade e da cultura afro-brasileira . À Agência Brasil , Zezé contou que a sua relação com Mílton é de longa data, vem desde 1976, quando teve a alegria de gravar com ele. Nesse período, a amizade se consolidou, guardando muitas histórias e lembranças inesquecíve",
+      "imageUrl": "https://imagens.ebc.com.br/ZcvjuKrlI8Whlt5Y7ly5NRWqJoM=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/14/concerto_em_homenagem_ao_milton_nascimento01.jpg?itok=eF3Rqu1n",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-15T16:48:00.000Z",
+      "firstSeenAt": "2026-11-15T17:31:39.401Z",
+      "lastSeenAt": "2026-11-15T17:31:39.401Z"
+    },
+    {
+      "id": "event-9f250807",
+      "category": "brasil",
+      "title": "Lula vê oportunidades na Ásia para explorar minerais críticos",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/lula-ve-oportunidades-na-asia-para-explorar-minerais-criticos",
+      "description": "O presidente Luiz Inácio Lula da Silva afirmou neste domingo (15), nas Filipinas, que o Brasil pretende atrair investimentos para a exploração e a industrialização de minerais críticos e terras raras, em uma estratégia que, segundo ele, pode ampliar a inserção do país nas cadeias produtivas ligadas à transição energética. A declaração foi feita após a abertura da Cúpula da Associação das Nações do Sudeste Asiático (Asean), em Manila. “Queremos ser parceiros definitivos da Asean”, diz Lula. Notícias relacionadas: Lula quer ampliar relações comerciais com países da Asean. Brasil e Filipinas assinam acordos sobre agro e livre concorrência . No discurso aos líderes do bloco, o presidente defendeu o aprofundamento das relações entre o Mercosul e os países do Sudeste Asiático , destacando oportunidades de cooperação voltadas ao desenvolvimento sustentável, à redução das desigualdades e ao fortalecimento dos laços entre países em desenvolvimento. “Navegar juntos implica escolher a rota do desenvolvimento sustentável e da redução das desigualdades”, diz Lula na abertura da Cúpula da Asean. A",
+      "imageUrl": "https://imagens.ebc.com.br/c7CJ_DtaldARa_0h1hW34pKpGgw=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/15/55653708043_ab803f594e_o.jpg?itok=TmIwCVFX",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-15T16:30:00.000Z",
+      "firstSeenAt": "2026-11-15T17:31:39.401Z",
+      "lastSeenAt": "2026-11-15T17:31:39.401Z"
+    },
+    {
+      "id": "event-c7499ae5",
+      "category": "brasil",
+      "title": "Festival de futebol feminino de várzea reúne 1,5 mil atletas em SP",
+      "url": "https://agenciabrasil.ebc.com.br/esportes/noticia/2026-11/festival-de-futebol-feminino-de-varzea-reune-15-mil-atletas-em-sp",
+      "description": "Com entrada gratuita, o Festival Feminino de Várzea reúne 1,5 mil atletas neste domingo (15) até as 17h, no Parque Sete Campos, na Zona Sul de São Paulo. Apesar de contar com 96 equipes, o festival é realizado sem patrocinadores. O evento recebe apoio da Federação Paulista de Futebol, que enviou equipes de arbitragem formadas exclusivamente por mulheres. Notícias relacionadas: Prêmio TV Brasil Petrobras Para Elas celebra futebol feminino do país. Congresso muda orçamento em favor da Copa do Mundo de futebol feminino. Livro resgata a história das pioneiras do futebol feminino no Brasil. Além das partidas, o festival ─ organizado pela Liga Feminina de Futebol Amador ─ também oferece atividades culturais e para o público infantil. O evento conta com quatro campos de futebol, além de duas quadras para as disputas de futsal e fut7.",
+      "imageUrl": "https://imagens.ebc.com.br/ss1T-eFIdkO61PnvE1a9KPkKSag=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/15/sao_paulo_recebe_o_festival_de_futebol_de_varzea_feminino.jpg?itok=majEOb_6",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-15T16:17:00.000Z",
+      "firstSeenAt": "2026-11-15T17:31:39.401Z",
+      "lastSeenAt": "2026-11-15T17:31:39.401Z"
+    },
+    {
+      "id": "event-37fb0ff6",
+      "category": "mundo",
+      "title": "Governo de SP vai endurecer regras para destinação de lixo em grandes eventos",
+      "url": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxPeE01OC1fUEtKVEs1d2ZNUF8takpPWXRDSEJKekNVeTFXbE5STzJ6NHdIWFVWVlcyYVBXX1ZLMngwRWtQdUlCcnd0eWJCazYyd2o5bHgxbzFPeDUxS05Hd0NVWnR3MVdaYXFqOVY4WW9iYTE5dW1NS1k4OG9DblhjcDVZYllGbTREQjl6TWpITzlCSGpRZV9IU3VSNFEyTENPNXNpWGRPVWowWWRCOThfYUVXazZ0cTZLT0xOekppNERRcDVJUEJhY1ZYWlM5NzB3QU5ZMWpfYw",
+      "description": "Governo de SP vai endurecer regras para destinação de lixo em grandes eventos &nbsp;&nbsp; Estadão",
+      "imageUrl": null,
+      "source": "Estadão",
+      "publishedAt": "2026-11-15T15:06:06.000Z",
+      "firstSeenAt": "2026-11-15T17:31:39.401Z",
+      "lastSeenAt": "2026-11-15T17:31:39.401Z"
+    },
+    {
+      "id": "event-b89f65d",
+      "category": "clima",
+      "title": "Fábio Mitidieri tem culpa pela atual crise hídrica que Sergipe enfrenta?",
+      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQdlJFNktJZVlmT3JSOWwtS2pnNTRDSnR0b1k1OS02bWVoTzZNMmxETFo3TUhZTkFNd0h3ZmxPUUZ4ekxkWnpJcjNXVkt3QkdlTlQ5SmszYUNfdXozdnhXQVRlZG93emN2dDR5akxJVk9MaGtqZTVqUEhqT3FhZndINl84MHo4TVVhMXZBekpzVzVqbk15b0xSQnBKbl84MFI3bjFBZnBNTQ",
+      "description": "Fábio Mitidieri tem culpa pela atual crise hídrica que Sergipe enfrenta? &nbsp;&nbsp; Fan F1",
+      "imageUrl": null,
+      "source": "Fan F1",
+      "publishedAt": "2026-11-15T14:58:00.000Z",
+      "firstSeenAt": "2026-11-15T17:31:39.401Z",
+      "lastSeenAt": "2026-11-15T17:31:39.401Z"
+    },
+    {
+      "id": "event-72d23dea",
+      "category": "mundo",
+      "title": "Lula quer ampliar relações comerciais com países da Asean",
+      "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/lula-quer-ampliar-relacoes-comerciais-com-paises-da-asean",
+      "description": "O presidente Luiz Inácio Lula da Silva e o primeiro-ministro de Singapura, Lawrence Wong, discutiram uma possível retomada de discussões visando um acordo entre o Mercosul e a Associação de Nações do Sudeste Asiático (Asean). O encontro bilateral entre os dois chefes de Estado foi neste domingo (15), após Lula participar da 49ª Cúpula da Asean, nas Filipinas, onde defendeu o aprofundamento das relações entre o Brasil e o bloco do Sudeste Asiático. Notícias relacionadas: Lula chega às Filipinas; Brasil quer ser Parceiro de Diálogo da Asean. Brasil e Filipinas assinam acordos sobre agro e livre concorrência . Em discurso aos líderes da região, o presidente afirmou que o Brasil quer elevar sua relação com a Asean ao status de Parceiro de Diálogo Pleno. \"Queremos transformar essa convergência em novas vias de engajamento e elevar nossas relações com a Asean a uma Parceria de Diálogo plena\", disse o presidente brasileiro. Os dois líderes examinaram também a implementação do acordo comercial entre o Mercosul e Singapura, oportunidade em que Lawrence Wong sugeriu a retomada da análise de um",
+      "imageUrl": "https://imagens.ebc.com.br/agjbaVJ2gSl_fGtB6EZRm3zs1fk=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/15/55652507317_70fa0fb137_o.jpg?itok=g1Z3HNkB",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-15T14:48:00.000Z",
+      "firstSeenAt": "2026-11-15T17:31:39.401Z",
+      "lastSeenAt": "2026-11-15T17:31:39.401Z"
+    },
+    {
+      "id": "event-21e3fbc3",
+      "category": "santa-catarina",
+      "title": "Defesa Civil alerta para risco de temporais e ventos fortes neste domingo",
+      "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxQbXNEN0hOVGotbkhJSEQyN0NrS29ISFdEelBjS1ZYczJDRGpYR3FzbFNhU1Axa2VGSWFyX2RJRS1ra1E4NnpnT1N5SGpXQmlMcWsxTTNISFoxM2RMZktyRW1rckNyOUJHSENvYm1oRkQ0eXJDYjdRaEo0UUQwT3NFVk9OdG8zS25hd3U2RU45MWhKTmJkZUhMS3JORklhQVhBcE5mZ2pn",
+      "description": "Defesa Civil alerta para risco de temporais e ventos fortes neste domingo &nbsp;&nbsp; Portal TN Sul",
+      "imageUrl": null,
+      "source": "Portal TN Sul",
+      "publishedAt": "2026-11-15T14:39:00.000Z",
+      "firstSeenAt": "2026-11-15T17:31:39.401Z",
+      "lastSeenAt": "2026-11-15T17:31:39.401Z"
+    },
+    {
+      "id": "event-85bd3268",
+      "category": "mundo",
+      "title": "O que encontro histórico de Trump, Putin e Xi marcado para esta semana pode significar para o mundo?",
+      "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE9aVzNiWVFsTGxNaXhhc1V6dURtdGQtQ0xka3AxYUxESmREMlM1c1pFSG9Jamk0bGpfdERNYVB3eVktTW1od1FTQXRha0FJdmJLTFU4dzZHYUlJVlp3WHlfVlRvY9IBaEFVX3lxTFBGc2dHRTdIOHFpVmJCQlZBNWVlMHB5QlpfdExiaHQyOG4yeVdfNFFGcndFM3dHVWJWWW8tMVlVQ1hLN3AwMXdxY3kyNkZKMnlGSnNld0txUmN4NjQ4YU1pcVE5WWJkVjVk",
+      "description": "O que encontro histórico de Trump, Putin e Xi marcado para esta semana pode significar para o mundo? &nbsp;&nbsp; BBC",
+      "imageUrl": null,
+      "source": "BBC",
+      "publishedAt": "2026-11-15T13:56:08.000Z",
+      "firstSeenAt": "2026-11-15T17:31:39.401Z",
+      "lastSeenAt": "2026-11-15T17:31:39.401Z"
+    },
+    {
+      "id": "event-e827dbc1",
+      "category": "santa-catarina",
+      "title": "Semana será de chuva e temporais isolados em Santa Catarina",
+      "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxQdmlfU0NWaWRBWUc5WVRHVkJrR05UTE1EUi1fbFppWmJlNk81RHZ4OEo2ZzVfTFpBSmktYnhnRGR1N25UeC1JaDl2T1ZPc3UtNlVlNTFzTXdYaFp5bmNabHd0aU9zeWQ3bDBqVHhCSVRRaHQ1Y0ZfazJVVms5eWJFaG8zMWpmM0ZicGZpZk1FSm1QeVNxeG0wbW1BWWxPU3BqWEsySFFzS2tNZ081c0VUMG1jbXduQ240OFlCdDdQZUI",
+      "description": "Semana será de chuva e temporais isolados em Santa Catarina &nbsp;&nbsp; Diário do Iguaçu",
+      "imageUrl": null,
+      "source": "Diário do Iguaçu",
+      "publishedAt": "2026-11-15T13:46:00.000Z",
+      "firstSeenAt": "2026-11-15T17:31:39.401Z",
+      "lastSeenAt": "2026-11-15T17:31:39.401Z"
+    },
+    {
+      "id": "event-5be20e00",
+      "category": "clima",
+      "title": "El Niño mais intenso do século ajuda a explicar calor e chuvas acima da média em BH",
+      "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxNbzhvTlZ1NW9jYTg1eGlVUlZabUhGODlQY2R5b1ZRMEw3VGhfSVU2THhERUE2M3hBUlZuMFhJUjBuMWtnNUV6YlVuRzVISmlwWFJoZXp0ckd3aW84OXhfQzlZc1hjUlJCUllXRThZWWhBMXZUMUZXR0tuZE5tM2NKRU9UOFFaYjJJRDNrV2hncG8",
+      "description": "El Niño mais intenso do século ajuda a explicar calor e chuvas acima da média em BH &nbsp;&nbsp; BHAZ",
+      "imageUrl": null,
+      "source": "BHAZ",
+      "publishedAt": "2026-11-15T13:37:00.000Z",
+      "firstSeenAt": "2026-11-15T17:31:39.401Z",
+      "lastSeenAt": "2026-11-15T17:31:39.401Z"
+    },
+    {
+      "id": "event-634f7d68",
+      "category": "clima",
+      "title": "Primavera 2026: confira a previsão para a estação",
+      "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxPdTBNX0o0dVdtODYxRllHMVFsV0M1Q19KS0FqekdfSjFDZ1V3OEVkV29yT0N1Tm5za29SVEdjYVpXZzB2TktZX2Nqd21ZSktvVlhjd2NnSEJBWFdkU255eGFKSVVrT3ktUHVpNG53UnA5N1FPR09BUy1pR3VPZDdKYlN5YVFrZDR5bTd0eXpJaEhvd2h4WkRJdnJ5R1ZZV2RyZXc",
+      "description": "Primavera 2026: confira a previsão para a estação &nbsp;&nbsp; INMET",
+      "imageUrl": null,
+      "source": "INMET",
+      "publishedAt": "2026-11-15T09:36:57.000Z",
+      "firstSeenAt": "2026-11-15T17:31:39.401Z",
+      "lastSeenAt": "2026-11-15T17:31:39.401Z"
+    },
     {
       "id": "event-4175c731",
       "category": "mundo",
@@ -283,194 +439,9 @@
       "publishedAt": "2026-11-14T17:48:00.000Z",
       "firstSeenAt": "2026-11-14T19:55:21.208Z",
       "lastSeenAt": "2026-11-14T19:55:21.208Z"
-    },
-    {
-      "id": "event-14c7850f",
-      "category": "brasil",
-      "title": "TV Brasil apresenta show do Bossacucanova no Cena Musical deste sábado",
-      "url": "https://agenciabrasil.ebc.com.br/cultura/noticia/2026-11/tv-brasil-apresenta-show-do-bossacucanova-no-cena-musical-deste-sabado",
-      "description": "Celebrando 25 anos de trajetória, a banda formada por Marcelinho da Lua e Marcio Menescal apresenta o espetáculo Uma Batida Diferente, em que revisita clássicos da bossa nova, do samba e da MPB, combinando harmonias de violão, melodias consagradas da música brasileira e batidas eletrônicas contemporâneas. O grupo Bossacucanova é a atração do Cena Musical que a TV Brasil exibe neste sábado, às 23h. Notícias relacionadas: Drauzio Varella é novo membro da Academia Brasileira de Letras. 34º Festival MixBrasil reúne cinema, teatro, games e literatura em SP. Mostra “Elas Dirigem” leva filmes premiados do cinema alemão ao DF. A edição integra a nova temporada do programa, apresentado pela jornalista e cantora Bia Aparecida, com direção artística de Waldecir de Oliveira. Reconhecido por criar uma sonoridade própria ao aproximar tradição e modernidade, o Bossacucanova consolidou sua carreira ao reinterpretar referências da música brasileira sob uma perspectiva contemporânea. Ao longo de duas décadas e meia, o grupo conquistou espaço no cenário nacional e internacional ao unir gêneros e influê",
-      "imageUrl": "https://imagens.ebc.com.br/iKFgVoCxkR-d9V3fZBnzmpzNwV0=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/13/copia-de-foto-andre-telles-24-set-2026-bndes-5a-quintas-no-bndes-bosacucanova-7177.jpg?itok=eWNlHhRY",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-14T17:10:00.000Z",
-      "firstSeenAt": "2026-11-14T19:55:21.208Z",
-      "lastSeenAt": "2026-11-14T19:55:21.208Z"
-    },
-    {
-      "id": "event-a5e3f66",
-      "category": "clima",
-      "title": "El Niño deve perder força em 2027 e pode terminar durante o outono",
-      "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxQUEZ4ZTRCdV81bjI3Tkx4a1lMblJzNVdpUGNjSmhMNEx3bDNLd2pRa0VBM2JqTzd0Nkd6UlkyM0JqcGZnZXQ1YVdJRmYyYnBla092UHVPOEVRcF95T2toVFFzaGN1V250dmRPVFZjRlhuV25VMS1pX05SOTBnT2M5NURDYl90TG9MLU8xT2c4NHczWjJ6enlfNTBTRkRNdDBKWXB3M1ZB0gGrAUFVX3lxTFBLeEdzMFdXWXBPY3FHN3A4aERTWXNteU40aWRtQ2wwX3ppNldvTmdwd2tiLUY3Qlh4bURpSU9wX3M1WmR0RzgyTUt3RUtIWm1OZllNY1RPaXJ1Zl9IOHl5VDNHdDM0UGFnTFExRFRYOUg4X013WlZ6d2N5YkFTZlJEYlJTWGdfRnNvUFh4TGdTSVVUdEVXZ0RoTGRKYzVTQVpKTjJZYmVmdDNoMA",
-      "description": "El Niño deve perder força em 2027 e pode terminar durante o outono &nbsp;&nbsp; Costa Norte",
-      "imageUrl": null,
-      "source": "Costa Norte",
-      "publishedAt": "2026-11-14T16:10:00.000Z",
-      "firstSeenAt": "2026-11-14T19:55:21.208Z",
-      "lastSeenAt": "2026-11-14T19:55:21.208Z"
-    },
-    {
-      "id": "event-d0100efe",
-      "category": "mundo",
-      "title": "Romário detona Carlo Ancelotti na Seleção: 'Mete o pé'",
-      "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxOMVJzUlJUWFp6NVVyLXZpX2tpN0RPcTAxR05vYWI5Z2ZHRm1Nb1dmeUdYb1FEU3U3NlJxTUNnRzk0djM1SDljUmxmd3UyOU8xQm5lOU1TdlZ5dmlaaGt2aGpiVUJ1TnVpTm1pX3cyVF9sY2I5SDRubHBlUmtael9nUTk1cmlvQWpDc1FSMU94bkJ6REJvNnVGeTYwSkpoc3E0YVR0b3lWOTFSSVJLZXlqSmRjX0VSUGVSaDFPMlpkbzFGQQ",
-      "description": "Romário detona Carlo Ancelotti na Seleção: 'Mete o pé' &nbsp;&nbsp; LANCE!",
-      "imageUrl": null,
-      "source": "LANCE!",
-      "publishedAt": "2026-11-14T15:07:39.000Z",
-      "firstSeenAt": "2026-11-14T19:55:21.208Z",
-      "lastSeenAt": "2026-11-14T19:55:21.208Z"
-    },
-    {
-      "id": "event-ae72972e",
-      "category": "santa-catarina",
-      "title": "Calor e temporais isolados marcam previsão para o fim de semana em SC",
-      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxQYjItMndFamhHaXhzXzJmYWVubnlXQmg0eFkwdWNpejV4cnQxWmkyOENTdkoxbmU3aXJ0Uy1PVHhVWmZtcHBKRGxxc29lMnBQQ1BEcFdsbm5JN2dydVc4dEFWUHNzQ3dHUjhXQzE1MjZ5aHRaZ2NOd0JXQVNiczlOOUppeTZiemwzTUVrNzQ0Nkp2RmlHNTc3R3NCUC12ZU40QUNwX3JLd3VMY1ZBanc",
-      "description": "Calor e temporais isolados marcam previsão para o fim de semana em SC &nbsp;&nbsp; AJ Notícias",
-      "imageUrl": null,
-      "source": "AJ Notícias",
-      "publishedAt": "2026-11-14T14:59:34.000Z",
-      "firstSeenAt": "2026-11-14T19:55:21.208Z",
-      "lastSeenAt": "2026-11-14T23:35:54.064Z"
-    },
-    {
-      "id": "event-8cdb4933",
-      "category": "brasil",
-      "title": "Em São Paulo, festival Melanina Acentuada tem atrações até domingo",
-      "url": "https://agenciabrasil.ebc.com.br/cultura/noticia/2026-11/festival-melanina-acentuada-tem-atracoes-ate-domingo-em-sao-paulo",
-      "description": "A 8ª edição do Festival Melanina Acentuada termina neste domingo (15) na capital paulista. É a volta do evento baiano e itinerante à cidade após 14 anos. Além de espetáculos teatrais, o evento oferece ao público ateliês de ideias e compartilhamento de poéticas, dando acesso ao processo criativo dos artistas. Toda a programação é gratuita, com exceção dos espetáculos, que têm ingressos vendidos a R$ 30 (inteira) e R$ 15 (meia). As atividades formativas são gratuitas, com retirada de ingresso na bilheteria, uma hora antes do início. Notícias relacionadas: Brasília recebe festival de jogos independentes neste fim de semana. Radialista da Rádio Nacional é finalista do WME Awards 2026. 34º Festival MixBrasil reúne cinema, teatro, games e literatura em SP. Neste sábado (14) à noite, será apresentada a montagem Black Machine (Máquina Negra, em tradução livre), da dramaturga, atriz e roteirista Dione Carlos, vencedora dos prêmios Shell e APCA de Dramaturgia em 2023. A peça muda a substância de um clássico das artes cênicas, Hamlet, do inglês William Shakespeare, \"em embate radical com os cân",
-      "imageUrl": "https://imagens.ebc.com.br/6Bn6mnVK2GRc77S2Ahmb8KmFt5M=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/14/festival_melanina_.jpg?itok=QuSSkOko",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-14T13:11:00.000Z",
-      "firstSeenAt": "2026-11-14T15:01:50.949Z",
-      "lastSeenAt": "2026-11-14T15:01:50.949Z"
-    },
-    {
-      "id": "event-1b6409ab",
-      "category": "brasil",
-      "title": "Mega-Sena sorteia prêmio de R$ 27 milhões neste domingo",
-      "url": "https://agenciabrasil.ebc.com.br/geral/noticia/2026-11/mega-sena-sorteia-premio-de-r-27-milhoes-neste-domingo",
-      "description": "A Mega-Sena sorteia neste domingo (15) prêmio estimado em R$ 27 milhões. As seis dezenas do concurso 3.086 serão sorteadas a partir das 11h (horário de Brasília) no Espaço da Sorte, em São Paulo. As apostas podem ser feitas até as 22h (horário de Brasília) de sábado (14), em qualquer lotérica do país ou pela internet, no site ou aplicativo da Caixa. Notícias relacionadas: Mega da Virada: Caixa anuncia que prêmio deve superar R$ 1 bilhão. A aposta simples, com seis dezenas, custa R$ 6. No último concurso, foram sorteados os números 10 - 27 - 29 - 37 - 39 - 59 e nenhum apostador acertou as seis dezenas.",
-      "imageUrl": "https://imagens.ebc.com.br/iMnJ7QbN8LggBB2qCkwm6mQBy40=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/20230622_183531.jpg?itok=gE1Ie902",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-14T13:04:00.000Z",
-      "firstSeenAt": "2026-11-14T15:01:50.949Z",
-      "lastSeenAt": "2026-11-14T15:01:50.949Z"
-    },
-    {
-      "id": "event-892e7bc3",
-      "category": "brasil",
-      "title": "Com gol no final, Japão vence Brasil pela segunda vez na história",
-      "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPMXVTdGU5VUlOLXd2Y2NreGZxUUxqY2RZOTJNMy05cmJsWXlnSERMaHY0dU05ZzdBY0FObVl4dVdoa25waHVXZENKaUZWcDJ5NkdrbENJdkFtUjd5enBtaUZUaEVxY1dYREJSUDFyNzJxc3hkVWZEWFhSOFhDMTRkQW9TZTkyUFF5TU5Sd0pENU5nMV9XVG5BdThrMGtlYVBuVkVfWDdydGZLQQ",
-      "description": "Com gol no final, Japão vence Brasil pela segunda vez na história &nbsp;&nbsp; CNN Brasil",
-      "imageUrl": null,
-      "source": "CNN Brasil",
-      "publishedAt": "2026-11-14T12:13:43.000Z",
-      "firstSeenAt": "2026-11-14T15:01:50.949Z",
-      "lastSeenAt": "2026-11-14T15:01:50.949Z"
-    },
-    {
-      "id": "event-1787cd46",
-      "category": "santa-catarina",
-      "title": "Fim de semana terá calor e risco de temporais em Pomerode",
-      "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxQWS04NnZuTnNfeVdCeEVZYWJualUtTjMzd3NIYWpQS2RSdm5NdDZQRHRNUEZlSUt4Mm42cVFRamZ0LTVzX0hIRUViNFBrdW5HY25nVDZYbXMxQXM3dER3eXdOcGxqekdRSDUzLU9EYUM1VkhfLVZVaGVKX3BSdEh3OWk5WVk",
-      "description": "Fim de semana terá calor e risco de temporais em Pomerode &nbsp;&nbsp; Testo Notícias",
-      "imageUrl": null,
-      "source": "Testo Notícias",
-      "publishedAt": "2026-11-14T12:05:01.000Z",
-      "firstSeenAt": "2026-11-14T23:35:54.064Z",
-      "lastSeenAt": "2026-11-14T23:35:54.064Z"
-    },
-    {
-      "id": "event-76dcae6d",
-      "category": "clima",
-      "title": "El Niño já tem data para acabar e deve começar a perder força nos próximos 4 meses, aponta NOAA",
-      "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxPSzhTNV9hemFScWdjSUk0T2xndnA2dEpuaGZ3M1ZiMlJZVUZ1V2RhdGIxUjZzSFdNRFk4ejlsa1g0emhlelJmRHBuTWh0cVRranBvRU00cnladmdFRXdLUG5JTlVzQVdSR3hTM0dhSHNZYlZTaUhJSndiaHJkaldxLVdhYTA2bDRFUFpVSWlRb1JTejRva3FVZ0g5eTVPZnJjVVVJTVphNG1PUGZSeWJWdFl2a2Y5MEZqRURLREtUemI4MkdfLUFYVEJRUV9sUQ",
-      "description": "El Niño já tem data para acabar e deve começar a perder força nos próximos 4 meses, aponta NOAA &nbsp;&nbsp; HC Notícias",
-      "imageUrl": null,
-      "source": "HC Notícias",
-      "publishedAt": "2026-11-14T12:04:00.000Z",
-      "firstSeenAt": "2026-11-14T15:01:50.949Z",
-      "lastSeenAt": "2026-11-15T10:48:18.946Z"
-    },
-    {
-      "id": "event-a2f869bb",
-      "category": "brasil",
-      "title": "Enem: confira os horários e o que levar no segundo dia de prova",
-      "url": "https://agenciabrasil.ebc.com.br/educacao/noticia/2026-11/enem-confira-os-horarios-e-o-que-levar-no-segundo-dia-de-prova",
-      "description": "O segundo dia do Exame Nacional do Ensino Médio (Enem) será realizado amanhã (15), com 90 questões de Matemática e Ciências da Natureza. O local de prova, os horários de abertura, os documentos necessários e as regras e procedimentos gerais permanecem os mesmos do primeiro dia de prova. Notícias relacionadas: Enem: publicações da EBC são citadas na prova. Mas no segundo dia de Enem, os estudantes terão 30 minutos a menos para entregar as provas, já que não há prova de redação. É obrigatória a apresentação de documento oficial com foto. Também é imprescindível que o candidato leve caneta esferográfica preta de material transparente. É permitido levar lanches, bebidas e medicamentos, que devem passar por vistoria da equipe de aplicação. No caso de bebidas, elas devem estar armazenadas em garrafas transparentes e preferencialmente sem rótulo. Horários A prova começa às 13h30 e vai até às 18h30. A entrada nos locais de exames só será permitida das 12h às 13h. Depois disso, os portões fecham e ninguém mais pode acessar os locais. A saída definitiva da sala de prova com os materiais de apl",
-      "imageUrl": "https://imagens.ebc.com.br/rmkl9SBGEtL2udUef6AeCzJtaZk=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/08/0d7a3023.jpg.jpeg?itok=36NIkyYQ",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-14T12:03:00.000Z",
-      "firstSeenAt": "2026-11-14T15:01:50.949Z",
-      "lastSeenAt": "2026-11-14T15:01:50.949Z"
-    },
-    {
-      "id": "event-14afde25",
-      "category": "mundo",
-      "title": "Confira os principais destaques do Jornal O Dia deste sábado (14) e domingo (15)",
-      "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxQZUxZSnVLeWZLMGlMLW80OGdOU2J2X19WYVNFR1ZPdXI4R0lLbWVwTDQwRWZuYTJUNzNHZTRBSWQ5NDZtUmFXVVhtazhwb0RPb3BYSDZ6Q3lCaW9OY1RUYVJudU45ZDl6V0ZrdTFfcGFqTVJzc2pGOU1MTi1sa1BRRndSM1hpWTRaZkNKODRMVWRJS1BhcUhoclFNWVoyQXh1VWhHRjFYbGx0S1pUdy0tcmZrTC1idE5xcHhWQnpBZnc0ay1XZkdvQg",
-      "description": "Confira os principais destaques do Jornal O Dia deste sábado (14) e domingo (15) &nbsp;&nbsp; Portal O Dia",
-      "imageUrl": null,
-      "source": "Portal O Dia",
-      "publishedAt": "2026-11-14T11:30:47.000Z",
-      "firstSeenAt": "2026-11-14T15:01:50.949Z",
-      "lastSeenAt": "2026-11-14T19:55:21.208Z"
-    },
-    {
-      "id": "event-571b2b8d",
-      "category": "mundo",
-      "title": "37 anos da Queda do Muro de Berlim: como foi a cobertura do O POVO? Veja curiosidades",
-      "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxOWHpoZ0pfWGh6V1FOT2c4Ry1jbkxCZ3gtVXVzQ0FmX1p2cnZoZ242TEZvVVdxZmNVRkdpV0pKbHVyck90TjlId0tGZld1eDhiVGJxZ01HSGZsM3gyX0dVc2M0dkduNGl4RXNLVTN1YWk0MGI5N0ZyampXMEJvamExdjRoYk96RkxsaVUwai1ZbzNneXgyVC1VbjVrUDgwS0hJLTFTN0NPRVJoVzVLenBqS05nLTAxYkliSWxHbDQ5d3pBT2xvWUlQWG4xeHdRQUhjUTc4amVR",
-      "description": "37 anos da Queda do Muro de Berlim: como foi a cobertura do O POVO? Veja curiosidades &nbsp;&nbsp; O POVO",
-      "imageUrl": null,
-      "source": "O POVO",
-      "publishedAt": "2026-11-14T11:00:00.000Z",
-      "firstSeenAt": "2026-11-14T15:01:50.949Z",
-      "lastSeenAt": "2026-11-14T15:01:50.949Z"
-    },
-    {
-      "id": "event-5271df7e",
-      "category": "santa-catarina",
-      "title": "Oeste de Santa Catarina terá risco de temporais neste fim de semana; veja a previsão para sábado e domingo",
-      "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxONTJCLVV3dXRWUzZHZzMxMHc4aDVkLWMyMUZKR2NTNkk1TGJ4UkZNUnQ4cnU4T0V3eVpNM0toelFmWXBQNS1EdzVRTjc3ZlktVDNhSUlmYjVqYmpFN2otT1JQZG5jOUdkUUp2M1JIelhzM0ctRlFMZmh5bHlKTXdpNk5UbnRYdlBMbGxBVkZRN05EUHFWaWstMUItTE1jMlpiX0VaYlhLQnF4X3A4cmdjejl4bGlDLTVFNWM5ZGt5MFlDeS1BYWdvY2Mwb1VFcTEzcUJMQ2xR",
-      "description": "Oeste de Santa Catarina terá risco de temporais neste fim de semana; veja a previsão para sábado e domingo &nbsp;&nbsp; Canal Ideal",
-      "imageUrl": null,
-      "source": "Canal Ideal",
-      "publishedAt": "2026-11-14T10:57:00.000Z",
-      "firstSeenAt": "2026-11-14T15:01:50.949Z",
-      "lastSeenAt": "2026-11-14T19:55:21.208Z"
-    },
-    {
-      "id": "event-316b13ae",
-      "category": "santa-catarina",
-      "title": "Calor, temporais e pancadas de chuva marcam o fim de semana em SC",
-      "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxOTXlvY01VYXBGcDJkVk5GeFMwMkp0YU9tUzY4N193TTBIUDZmZzVzX1BwUHRrRmdsdGhNeDA3eU9RUlNVSUNwS2ZFTzk2R2RoaGR5SE1SVlltbzJvbE1KUkxqX2dTdHlHNEVyNGlTVndiTWhfcEVjQ2hrek50ZFNZeFc2cW5oVHRKM2s0YVJ5MEhrVjZWQUpyTTRrUUY2OXJKQUE",
-      "description": "Calor, temporais e pancadas de chuva marcam o fim de semana em SC &nbsp;&nbsp; Sul. Agora",
-      "imageUrl": null,
-      "source": "Sul. Agora",
-      "publishedAt": "2026-11-14T10:49:00.000Z",
-      "firstSeenAt": "2026-11-14T19:55:21.208Z",
-      "lastSeenAt": "2026-11-14T19:55:21.208Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-14T15:01:50.949Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 13,
-      "newArticles": 11,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "europa",
-        "africa"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-14T19:55:21.208Z",
       "ok": true,
@@ -537,17 +508,33 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-15T17:31:39.401Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 13,
+      "newArticles": 13,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "europa"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 5,
-  "lastSuccessfulAt": "2026-11-15T10:48:18.946Z",
+  "lastSuccessfulAt": "2026-11-15T17:31:39.401Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-15T10:48:18.946Z",
+      "checkedAt": "2026-11-15T17:31:39.401Z",
       "warnings": [
         {
-          "id": "56410",
+          "id": "56415",
           "title": "Tempestade",
           "severity": "Perigo Potencial",
           "phase": "previsto",
@@ -559,12 +546,52 @@
           "endsAt": "2026-11-16T00:00:00.000Z",
           "source": "INMET",
           "url": "https://avisos.inmet.gov.br/"
+        },
+        {
+          "id": "56418",
+          "title": "Tempestade",
+          "severity": "Perigo Potencial",
+          "phase": "previsto",
+          "regions": [
+            "DO"
+          ],
+          "startsAt": "2026-11-17T00:00:00.000Z",
+          "endsAt": "2026-11-17T00:00:00.000Z",
+          "source": "INMET",
+          "url": "https://avisos.inmet.gov.br/"
+        },
+        {
+          "id": "56419",
+          "title": "Tempestade",
+          "severity": "Perigo Potencial",
+          "phase": "previsto",
+          "regions": [
+            "DO",
+            "DO"
+          ],
+          "startsAt": "2026-11-17T00:00:00.000Z",
+          "endsAt": "2026-11-17T00:00:00.000Z",
+          "source": "INMET",
+          "url": "https://avisos.inmet.gov.br/"
+        },
+        {
+          "id": "56420",
+          "title": "Ventos Costeiros",
+          "severity": "Perigo Potencial",
+          "phase": "previsto",
+          "regions": [
+            "DO"
+          ],
+          "startsAt": "2026-11-16T00:00:00.000Z",
+          "endsAt": "2026-11-17T00:00:00.000Z",
+          "source": "INMET",
+          "url": "https://avisos.inmet.gov.br/"
         }
       ]
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-15T10:48:18.946Z",
+      "checkedAt": "2026-11-15T17:31:39.401Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
