@@ -4,10 +4,70 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-15T03:05:41.446Z",
-  "oldestEventAt": "2026-11-14T03:25:17.000Z",
-  "windowStartAt": "2026-11-14T03:05:41.446Z",
+  "updatedAt": "2026-11-15T10:48:18.946Z",
+  "oldestEventAt": "2026-11-14T10:49:00.000Z",
+  "windowStartAt": "2026-11-14T10:48:18.946Z",
   "events": [
+    {
+      "id": "event-4175c731",
+      "category": "mundo",
+      "title": "Lucas Pinheiro Braathen: qual a importância do título geral da Copa do Mundo de Esqui Alpino?",
+      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxOZDJEQ0wtZXo3ZktodlhJd0U5X3hZT0xzaHhvQWZwVW03R3ZRcUNPaVo2dmI5YVRPVnU1WEVqeXljWkxxaG5VYzhTUUpzdHl3U1I3elpIUlp0c3pCU2tqT3FDRmVWVzljS25HZE5POXlOanhrZ3FTNnltSVhlRDN3RGJCcEZLbHhyQ1RXZ01Qa3RGSlpEWjh4REJUMEdhbUdaVDdVN0pxLW5nZ19sRkE",
+      "description": "Lucas Pinheiro Braathen: qual a importância do título geral da Copa do Mundo de Esqui Alpino? &nbsp;&nbsp; Olympics",
+      "imageUrl": null,
+      "source": "Olympics",
+      "publishedAt": "2026-11-15T09:00:00.000Z",
+      "firstSeenAt": "2026-11-15T10:48:18.946Z",
+      "lastSeenAt": "2026-11-15T10:48:18.946Z"
+    },
+    {
+      "id": "event-20e8da7",
+      "category": "brasil",
+      "title": "Proclamação da República: livros, filmes e séries para viajar pela História do Brasil",
+      "url": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxNVWdkZDZPbTFxTnYyY1M0all1VWJHOVFLT1E1eGZhdm93b1NCY1Rkb1JWZkZqcUNfZ1BzSlZteFhlOE9mZS10cUFDajhaRmdSR1Bod0NBaHV4T0VIeUUxbnVNd2V5dW0teDhhWUowbDBZdVA4Qm5kT1F2ZWdBaU04R3ZoZC1yVTBpU01ObU1ubWtLQ0lfRDNfcWhiNHBiX0RzNXVQUEVINXpXYWotTkpza2xiMEp5SWYzd1pvcDhlSUFvZXNMdlNud0hTaUc3V1pzdE1CaUNqSDLSAecBQVVfeXFMTW1yWTN3bFBEUTJON09qT1NpSkhESFdxTW0yRU9ZblVURVl1TVFWUGhZYlFUcDJuOEhqU1BsYzdVTG92WWI0cUFOTDJPbF9pZjQtU2JWb3R0MXp0cVE0LVl5R3NwTDhTUzFqTGtEYUFaWVh6enlLZDhpQjJCNF9WRGFDbWNSc2pJRWFuXzQwdkVTMUI1SnhUeFEyQ2hTdVBUdmNPTkhFdjNwdzdIVXR3Sk9tRE54eDZwYXFLVlB1bUtSWmJnMVlfb2dnU3hrRmpBVHY5YmFKYWQtZ2tGOEpCNDRNNTZiLTlF",
+      "description": "Proclamação da República: livros, filmes e séries para viajar pela História do Brasil &nbsp;&nbsp; O GLOBO",
+      "imageUrl": null,
+      "source": "O GLOBO",
+      "publishedAt": "2026-11-15T07:00:00.000Z",
+      "firstSeenAt": "2026-11-15T10:48:18.946Z",
+      "lastSeenAt": "2026-11-15T10:48:18.946Z"
+    },
+    {
+      "id": "event-376a23ad",
+      "category": "brasil",
+      "title": "Bosch negocia motores elétricos feitos no Brasil com 7 montadoras",
+      "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxQb0dvSENHVjNzSXlCaWhZLTRsWmtlalFzcm9FV3hVN0M2eHl0Y3kzNVhnM3kySnAwTXlZOWZSbE13bDc3Ym1KU1JiOEFjeTF3LW9mY1dyTlpQMGUxSFJlaFVHamY2ZWFGRHNGTnd2M3lraHJ5b3o5SzZEY1lUT2pyYW9BS2xuZDNDWF9rT2NkWG41enhYMlFHS19iVWlPWG9RS3lzcVN5emxPS3BJdFFrb2k1WE9tNVlzZ1RZM05RRXY5VmhwdXV3bzlLcUxXVEpWSVpuTnlscV8xeVk",
+      "description": "Bosch negocia motores elétricos feitos no Brasil com 7 montadoras &nbsp;&nbsp; Estadão",
+      "imageUrl": null,
+      "source": "Estadão",
+      "publishedAt": "2026-11-15T06:19:36.000Z",
+      "firstSeenAt": "2026-11-15T10:48:18.946Z",
+      "lastSeenAt": "2026-11-15T10:48:18.946Z"
+    },
+    {
+      "id": "event-4caa5374",
+      "category": "mundo",
+      "title": "Este gás invisível e superpoluente é um vilão climático que o mundo não está conseguindo combater",
+      "url": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxQd0o4Y0NRS3RnNGtOZTJTdEFiV1JoTDQ5Ym95UUpXU0hIMVVWNlh3SlZLc3IyUmJEOGNuNjlrSVJvSUdDUlJkdXE5YlhoRnRzN3EwQ0RsT0l4Mkh3TUV5OEY4X2x6Y3BlRTI1N2w0YXBaMExDQzYzcGdWTzNOblRuS3VNa2dRcDVOaThrdnBUVm96cHo2bXAzZzlLbkkyZTdsQTlmOXNxZ2FwRGRJYVNWOG0yQ2FTNHhYcGF6NU9XaW1HcWJQQzQxSHVMeHJYZnVzVm0xaVRDUEU1eXEyZkE",
+      "description": "Este gás invisível e superpoluente é um vilão climático que o mundo não está conseguindo combater &nbsp;&nbsp; R7",
+      "imageUrl": null,
+      "source": "R7",
+      "publishedAt": "2026-11-15T05:00:00.000Z",
+      "firstSeenAt": "2026-11-15T10:48:18.946Z",
+      "lastSeenAt": "2026-11-15T10:48:18.946Z"
+    },
+    {
+      "id": "event-476cf6d",
+      "category": "mundo",
+      "title": "Inauguração de um dos maiores complexos culturais do país atrai multidão no Ceará",
+      "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxQclJyLWFJQi16Nnk5NXRYeUpPWGpleDdXZERjQ1JUaVJVSUpzSnVlOTg5VTJwM2lwSFM1bFhkTkpyWHJ4Slp0QUVTR2E2ZmpXdUZabzJjbWRIdDJqaW1aUzl5S1hoQkRRcWFxVm90OGZFQUpzR0w1X2JmVkktU2NwWl9uQlhUX0ZERElCaDdZVEZfNWkxLXRKVEF3OHhaWHFOX1F6MzR0Y3ZMbWFFeE9mY1JfNEp5eWtXN2JOUUJ0b1VxRFlZVklpV2d2SEtiWnFWV21fbENNUHA1RXPSAeoBQVVfeXFMTlA4c0ZJWGlpcGh4Qk56TDVTZUVUVGNIVDZ4elotd2JnNkhpd3c3TW5xRjBuRU9pY2ZsdWZJLWs0UUpIWHNhZzJSTW9JRHJfOEhqWkdHd3pVQnk4dUpXcUdURnFOaXREdnBjdktOMUdGV0hLRjRvRVFVREkwS0FDb0lwYmFXNmdvdFI3X19IN21sLU5SZ3JpVkxNTmVjbWN6MGtGSnBXNVMweEV6dS1IcDIwWVdZTnE0SGk0VzhYNjRCb2tmTllSUnp5RTFiaERNU0pJdTBmMktLbDU3RTRxSTlOWjk4bVJzZ0t3",
+      "description": "Inauguração de um dos maiores complexos culturais do país atrai multidão no Ceará &nbsp;&nbsp; G1",
+      "imageUrl": null,
+      "source": "G1",
+      "publishedAt": "2026-11-15T01:26:21.000Z",
+      "firstSeenAt": "2026-11-15T10:48:18.946Z",
+      "lastSeenAt": "2026-11-15T10:48:18.946Z"
+    },
     {
       "id": "event-ec35c7b2",
       "category": "santa-catarina",
@@ -18,7 +78,7 @@
       "source": "TopElegance",
       "publishedAt": "2026-11-15T00:59:00.000Z",
       "firstSeenAt": "2026-11-15T03:05:41.446Z",
-      "lastSeenAt": "2026-11-15T03:05:41.446Z"
+      "lastSeenAt": "2026-11-15T10:48:18.946Z"
     },
     {
       "id": "event-7e1cea5b",
@@ -30,7 +90,7 @@
       "source": "Portal Engeplus",
       "publishedAt": "2026-11-15T00:22:00.000Z",
       "firstSeenAt": "2026-11-15T03:05:41.446Z",
-      "lastSeenAt": "2026-11-15T03:05:41.446Z"
+      "lastSeenAt": "2026-11-15T10:48:18.946Z"
     },
     {
       "id": "event-5a72b16b",
@@ -42,7 +102,7 @@
       "source": "Timbó Net",
       "publishedAt": "2026-11-14T23:13:55.000Z",
       "firstSeenAt": "2026-11-14T23:35:54.064Z",
-      "lastSeenAt": "2026-11-15T03:05:41.446Z"
+      "lastSeenAt": "2026-11-15T10:48:18.946Z"
     },
     {
       "id": "event-25ae9f30",
@@ -54,7 +114,7 @@
       "source": "Mercado e Eventos",
       "publishedAt": "2026-11-14T22:39:15.000Z",
       "firstSeenAt": "2026-11-14T23:35:54.064Z",
-      "lastSeenAt": "2026-11-15T03:05:41.446Z"
+      "lastSeenAt": "2026-11-15T10:48:18.946Z"
     },
     {
       "id": "event-e02b46a7",
@@ -78,7 +138,7 @@
       "source": "CNN Brasil",
       "publishedAt": "2026-11-14T22:03:09.000Z",
       "firstSeenAt": "2026-11-15T03:05:41.446Z",
-      "lastSeenAt": "2026-11-15T03:05:41.446Z"
+      "lastSeenAt": "2026-11-15T10:48:18.946Z"
     },
     {
       "id": "event-14ec7659",
@@ -114,7 +174,7 @@
       "source": "Paraíba dia a dia",
       "publishedAt": "2026-11-14T21:28:09.000Z",
       "firstSeenAt": "2026-11-15T03:05:41.446Z",
-      "lastSeenAt": "2026-11-15T03:05:41.446Z"
+      "lastSeenAt": "2026-11-15T10:48:18.946Z"
     },
     {
       "id": "event-271f3061",
@@ -138,7 +198,7 @@
       "source": "Diário do Pará",
       "publishedAt": "2026-11-14T21:05:00.000Z",
       "firstSeenAt": "2026-11-14T23:35:54.064Z",
-      "lastSeenAt": "2026-11-15T03:05:41.446Z"
+      "lastSeenAt": "2026-11-15T10:48:18.946Z"
     },
     {
       "id": "event-c0bb5c0d",
@@ -330,7 +390,7 @@
       "source": "HC Notícias",
       "publishedAt": "2026-11-14T12:04:00.000Z",
       "firstSeenAt": "2026-11-14T15:01:50.949Z",
-      "lastSeenAt": "2026-11-15T03:05:41.446Z"
+      "lastSeenAt": "2026-11-15T10:48:18.946Z"
     },
     {
       "id": "event-a2f869bb",
@@ -391,98 +451,9 @@
       "publishedAt": "2026-11-14T10:49:00.000Z",
       "firstSeenAt": "2026-11-14T19:55:21.208Z",
       "lastSeenAt": "2026-11-14T19:55:21.208Z"
-    },
-    {
-      "id": "event-c02f64cf",
-      "category": "santa-catarina",
-      "title": "Calor de até 35 °C antecede temporais isolados em Santa Catarina",
-      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxNSVBaXzNTUkI2MDlKakpRY2lZRDY4UVFhbzVNU21xcVp4cGp3WnZreE1acG1fR0JrZ3FMcUY3NHpaQlhoMVdiSFBmRzdvRmhKWkI4R0dpZ0ZqWlFWSVpoaGpBbHZ3VnlaTWdGVmxPdU1fZVM4amxFeHAzNWNqMGNWal9sQnQ2ZnZvVEV3aUlzQ2pXVGpUd2JZMFFFSHVsV1ZWa0c4QUx2aExCNGNCZVB5Wnp6c2U1SEU",
-      "description": "Calor de até 35 °C antecede temporais isolados em Santa Catarina &nbsp;&nbsp; Oeste SC Notícias",
-      "imageUrl": null,
-      "source": "Oeste SC Notícias",
-      "publishedAt": "2026-11-14T10:37:00.000Z",
-      "firstSeenAt": "2026-11-14T15:01:50.949Z",
-      "lastSeenAt": "2026-11-14T15:01:50.949Z"
-    },
-    {
-      "id": "event-5cd562c1",
-      "category": "mundo",
-      "title": "Como a inteligência artificial está reinventando a criação de perfumes sem substituir narizes humanos",
-      "url": "https://news.google.com/rss/articles/CBMinwJBVV95cUxNN0ZRSDFiemVKNUFoR19IRkZ2OWdGQ0NtNFY1eHZ2SEF2anZVUVNMMHlEcVBPZF9VMmdWeG5lWTNzbU9Ndkk0RkltSVB6THVjSVRGUDdWZjNmVVh6NW9laThxY09JOVUxTDNOVnpWZ1pCYjdVQmwtSEw5UnJjR1A1akE0QkY2UU5Rd3FncUtoc1NRTlM0bmU2amxmWDktN0pkT2R0M0RiWFNGRnRBN3RtN2N4cnU1T1pvSEpSWWVMdDR1RmNBR3FSLS12RWIyOXhiTjNyUTg1bGs1ZHlhX1FWTHlEUUhGczNnWlQ0Wlh2T2pYbUZLRVp5YjFJOXJ5bDcwb2hRbG5IclV0NEJJdUc2SHRhT29pMGNrU01PTWhuUQ",
-      "description": "Como a inteligência artificial está reinventando a criação de perfumes sem substituir narizes humanos &nbsp;&nbsp; Terra",
-      "imageUrl": null,
-      "source": "Terra",
-      "publishedAt": "2026-11-14T08:37:00.000Z",
-      "firstSeenAt": "2026-11-14T15:01:50.949Z",
-      "lastSeenAt": "2026-11-14T15:01:50.949Z"
-    },
-    {
-      "id": "event-ec4c91c5",
-      "category": "santa-catarina",
-      "title": "Inmet emite alertas de tempestade para várias regiões do Brasil; veja a previsão",
-      "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxNcUFha19HanVhVE16RWhGTkFMbmlqQTZBVnByNFhiZm9MRWNvVng5VXc1Y2xVRzRKMTk1VTZCTGNPbms0SXFHZDdrWFBPalBZSU1oajFZWUdTazJzdHZhOFBqTmxONm9aYzloZjZxN0dZTVBPZERXYXBySFUtR1ZQc2tyOFY2MDRObXMwUnZOalV6M1VTQWltbTZLUElKTGxKR2pzbmxCS1VfZ3dSNkdMSVljU2w",
-      "description": "Inmet emite alertas de tempestade para várias regiões do Brasil; veja a previsão &nbsp;&nbsp; Portal Viu",
-      "imageUrl": null,
-      "source": "Portal Viu",
-      "publishedAt": "2026-11-14T06:23:28.000Z",
-      "firstSeenAt": "2026-11-14T15:01:50.949Z",
-      "lastSeenAt": "2026-11-14T15:01:50.949Z"
-    },
-    {
-      "id": "event-cf3c39e0",
-      "category": "brasil",
-      "title": "Estilo Brasil: Roberto Menescal traz a história da bossa nova a Brasília",
-      "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE1zM2NRcTgxSFE3NXg5SXhkN0xqNUIxMnQ3aGFKUU9SYndjampXLWN2cDRkOHFPX1p1UVVlNjJ4UDZGTE50QndUc1FnOHVqUnNYVUFmeEd3U215QVRSUG03elprNHd5MEVyWlloSXVsUV9KX2pONFJCNEd3Z3NnSXc",
-      "description": "Estilo Brasil: Roberto Menescal traz a história da bossa nova a Brasília &nbsp;&nbsp; Metrópoles",
-      "imageUrl": null,
-      "source": "Metrópoles",
-      "publishedAt": "2026-11-14T06:00:00.000Z",
-      "firstSeenAt": "2026-11-14T08:00:23.092Z",
-      "lastSeenAt": "2026-11-14T08:00:23.092Z"
-    },
-    {
-      "id": "event-f5f46559",
-      "category": "mundo",
-      "title": "A Seleção Brasileira reencontra o Japão neste sábado (13), às 7h15 (horário de Brasília), em Singapura, no penúltimo amistoso de 2026. O último confronto ocorreu na Copa do Mundo d",
-      "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE9xUUFGbHVIMmlLUWM4Zk5RU0toVFotWUE5VDRqTzRMX1I4Mmg1S05HSDlvWDdhU1dTc2k3dUNGaXFDaXNQRGJDZkUzanoyT0YzS1E",
-      "description": "A Seleção Brasileira reencontra o Japão neste sábado (13), às 7h15 (horário de Brasília), em Singapura, no penúltimo amistoso de 2026. O último confronto ocorreu na Copa do Mundo deste ano, quando a Amarelinha venceu de virada a equipe asiática (2 a &nbsp;&nbsp; Instagram",
-      "imageUrl": null,
-      "source": "Instagram",
-      "publishedAt": "2026-11-14T05:54:05.000Z",
-      "firstSeenAt": "2026-11-14T08:00:23.092Z",
-      "lastSeenAt": "2026-11-14T08:00:23.092Z"
-    },
-    {
-      "id": "event-f9e5393c",
-      "category": "mundo",
-      "title": "Copa do Mundo Feminina 2027: ingressos começam a ser vendidos em dezembro",
-      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQMFJfR2x4Mk5KQzZKTl81WFpvSFByZ2FZQ0xTM2g1ZkZKeXFkUkcteGptQWl1NXg2eWJqcndOeXlvV0FBR0RLMlNTYVcyZ1lWWXM2Wk1ZWHpCR0FPMmRtTFRsZkR2OUoxWW9lY0RqSzhmajdSbVpNYUlkTXJUdDAtX3ZUZHdXb2l3R3ozMDNFWmppcFBJTGtNcVRsdEVWSEhPOVg0UHpjbzNBUzdx",
-      "description": "Copa do Mundo Feminina 2027: ingressos começam a ser vendidos em dezembro &nbsp;&nbsp; Agita Brasília",
-      "imageUrl": null,
-      "source": "Agita Brasília",
-      "publishedAt": "2026-11-14T03:25:17.000Z",
-      "firstSeenAt": "2026-11-14T08:00:23.092Z",
-      "lastSeenAt": "2026-11-14T08:00:23.092Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-14T08:00:23.092Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 15,
-      "newArticles": 6,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "europa",
-        "africa"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-14T15:01:50.949Z",
       "ok": true,
@@ -549,14 +520,31 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-15T10:48:18.946Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 13,
+      "newArticles": 5,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "europa",
+        "africa"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 5,
-  "lastSuccessfulAt": "2026-11-15T03:05:41.446Z",
+  "lastSuccessfulAt": "2026-11-15T10:48:18.946Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-15T03:05:41.446Z",
+      "checkedAt": "2026-11-15T10:48:18.946Z",
       "warnings": [
         {
           "id": "56410",
@@ -576,7 +564,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-15T03:05:41.446Z",
+      "checkedAt": "2026-11-15T10:48:18.946Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
