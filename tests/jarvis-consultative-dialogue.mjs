@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import {readFileSync} from "node:fs";
 import {classifyConsultativeTurn,consultativeGuidance} from "../backend/consultative-dialogue.js";
 import {SYSTEM_INSTRUCTION} from "../backend/providers.js";
+import {buildOperationalPlan} from "../backend/planner.js";
 const read=p=>readFileSync(new URL("../"+p,import.meta.url),"utf8");
 const scenario=[
  ["sobre ele faça um para mim: https://www.useautogenius.com/","solution-design"],
@@ -40,6 +41,12 @@ for(const m of ["pronto","sim","pode seguir"]){
    "No history means no invented previous project: "+m);
 }
 assert.equal(classifyConsultativeTurn("Agora vamos fazer o painel",{lastAssistantMessage}).mode,"followup");
+assert.equal(buildOperationalPlan("sobre ele faça um para mim: https://www.useautogenius.com/").intent,"project");
+assert.equal(buildOperationalPlan("vou criar um repositório novo").intent,"project");
+assert.equal(buildOperationalPlan("me ajude com uma estratégia comercial").intent,"project");
+assert.equal(buildOperationalPlan("corrija o erro 500").intent,"troubleshoot");
+assert.equal(buildOperationalPlan("pesquise as novidades desse software").intent,"research");
+
 
 const guidance=consultativeGuidance("solution-design");
 assert.match(guidance,/MODO PROJETO/);
