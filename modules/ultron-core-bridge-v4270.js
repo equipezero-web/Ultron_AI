@@ -37,6 +37,7 @@ function prepareVisual(data) {
 }
 
 function playAudio(base64, mime = "audio/mpeg") {
+  if(document.body.classList.contains("jarvis-voice-output-disabled"))return false;
   try {
     if (!base64) return false;
     const audio = document.getElementById("voice-audio");
@@ -66,7 +67,7 @@ function currentTelemetry() {
   const gesture = window.ULTRON_HAND_GESTURES?.state || {};
   const remoteCamera = window.ULTRON_MOBILE_CAMERA?.state || {};
   return {
-    systemCapabilities:{neuralRing:!!window.ULTRON_NEURAL_RING_3D,earth:!!window.ULTRON_EARTH,visualContext:!!window.ULTRON_NEURAL_ANSWER,liveNews:!!window.ULTRON_INTELLIGENCE,deviceControl:!!window.ULTRON_DEVICES,orchestration:!!window.ULTRON_ORCHESTRATOR,voiceOutput:!!window.ULTRON_VOICE_OUTPUT,voiceInput:!!window.ULTRON_VOICE_INPUT,memory:!!window.ULTRON_MEMORY,vision:!!window.ULTRON_VISION_ROUTER,starkCore:!!window.ULTRON_STARK_CORE,innerMesh:!!window.ULTRON_STARK_MESH},
+    systemCapabilities:{neuralRing:!!window.ULTRON_NEURAL_RING_3D,earth:!!window.ULTRON_EARTH,visualContext:!!window.ULTRON_NEURAL_ANSWER,liveNews:!!window.ULTRON_INTELLIGENCE,deviceControl:!!window.ULTRON_DEVICES,orchestration:!!window.ULTRON_ORCHESTRATOR,voiceOutput:!document.body.classList.contains("jarvis-voice-output-disabled") && !!window.ULTRON_VOICE_OUTPUT,voiceInput:!!window.ULTRON_VOICE_INPUT,memory:!!window.ULTRON_MEMORY,vision:!!window.ULTRON_VISION_ROUTER,starkCore:!!window.ULTRON_STARK_CORE,innerMesh:!!window.ULTRON_STARK_MESH},
     optical: {
       active: Boolean(remoteCamera.active || window.ULTRON_CAMERA_CONTROLLER?.isActive?.()),
       source: remoteCamera.mode || "MOBILE_BRIDGE",
@@ -104,7 +105,7 @@ async function ask(message) {
         message: clean,
         taskContext,
         clientOwnsSpeech:true,
-        preferFastResponse:window.ULTRON_VOICE_OUTPUT?.available===true,
+        preferFastResponse:document.body.classList.contains("jarvis-voice-output-disabled") || window.ULTRON_VOICE_OUTPUT?.available===true,
         memoryKey: window.ULTRON_MEMORY?.getMemoryKey?.() || null,
         conversationId: window.ULTRON_MEMORY?.getConversationId?.() || null,
         telemetry: currentTelemetry()
@@ -120,8 +121,10 @@ async function ask(message) {
     if(data?.text)TASK_CONTEXT?.captureQuestion(clean);
     emit("answer",{text:data.text,visualContext:data.visualContext,webResearch:data.webResearch});
     prepareVisual(data);
-    const played = playAudio(data.audioBase64, data.audioMimeType || "audio/mpeg");
-    if (!played) window.ULTRON_VOICE_OUTPUT?.speak?.(data.text,{reason:"orchestrator-ai",announce:false});
+    if (!document.body.classList.contains("jarvis-voice-output-disabled")) {
+      const played = playAudio(data.audioBase64, data.audioMimeType || "audio/mpeg");
+      if (!played) window.ULTRON_VOICE_OUTPUT?.speak?.(data.text,{reason:"orchestrator-ai",announce:false});
+    }
     return { ok: true, ...data };
   } catch(error) {
     const message=String(error?.message||error);
