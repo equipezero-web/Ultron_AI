@@ -57,6 +57,7 @@ import {
 import { buildOperationalPlan } from "./planner.js";
 import {classifyConsultativeTurn,consultativeGuidance} from "./consultative-dialogue.js";
 import {inspectPublicGitHubRepository,githubInspectionContext,contradictsVerifiedGitHubInspection,verifiedGitHubFallback} from "./github-public-inspector.js";
+import {authorizePrivateGitHub,privateGitHubHeaders,privateGitHubConfig,inspectPrivateGitHub,privateGitHubContext} from "./github-private-inspector.js";
 import { analyzeVisualFrame } from "./vision-analysis.js";
 import { getWebRtcIceServers, webRtcIceHealth } from "./webrtc-ice.js";
 import { loadLiveNewsContext, isGeneralNewsIntent, isLiveNewsIntent } from "./news-context.js";
@@ -930,6 +931,59 @@ async function handleAi(request, env) {
   return json(data);
 }
 
+
+function privateJson(request,env,data,status=200){
+  return new Response(JSON.stringify(data),{status,headers:privateGitHubHeaders(request,env)});
+}
+async function handlePrivateGitHub(request,env){
+  const auth=await authorizePrivateGitHub(request,env);
+  if(!auth.ok)return privateJson(request,env,{ok:false,error:auth.code},auth.status);
+  if(request.method==="GET"){
+    return privateJson(request,env,{ok:true,connected:true,access:"read-only",
+      allowedRepositories:auth.config.repos,writePermission:false});
+  }
+  let body;
+  try{
+    if(Number(request.headers.get("content-length")||0)>6500)
+      return privateJson(request,env,{ok:false,error:"request-too-large"},413);
+    const raw=await request.text();
+    if(raw.length>6500)return privateJson(request,env,{ok:false,error:"request-too-large"},413);
+    body=JSON.parse(raw);
+  }catch{return privateJson(request,env,{ok:false,error:"invalid-json"},400);}
+  const message=String(body?.message||"").trim();
+  if(message.length<5||message.length>3000)
+    return privateJson(request,env,{ok:false,error:"invalid-message"},400);
+  const result=await inspectPrivateGitHub(message,env);
+  if(!result.ok)return privateJson(request,env,{
+    ok:false,error:result.code,githubInspection:{ok:false,code:result.code}
+  },result.status||503);
+  // Authenticated read only. No operator memory, client telemetry, device actions
+  // or untrusted extra context are forwarded into the model.
+  const core=await executeAiCore(env,{
+    message,webResearchContext:privateGitHubContext(result),
+    researchMeta:{active:true,skipLegacyResearch:true},
+    allowUncertaintyResearch:false
+  });
+  if(core.status!==200)return privateJson(request,env,{
+    ok:false,error:"private-ai-provider-unavailable",githubInspection:{ok:true,verified:true}
+  },503);
+  let answer=String(core.data?.text||"").trim();
+  if(contradictsVerifiedGitHubInspection(answer,result)||!answer){
+    answer="O repositório privado "+result.repository+
+      " foi consultado com autenticação válida. Branch: "+result.branch+
+      ". Arquivos e pastas verificados: "+result.files.map(x=>x.path).slice(0,30).join(", ")+
+      ". Recomendações iniciais: revisar fronteiras entre módulos e backend, "+
+      "verificar autorização e erros de rede e ampliar testes automatizados. "+
+      "A estrutura foi inspecionada somente na raiz e no README; nenhum código foi modificado.";
+  }
+  return privateJson(request,env,{
+    ok:true,text:answer,provider:core.data.provider,providerLabel:core.data.providerLabel,
+    model:core.data.model,githubInspection:result,
+    audioBase64:null,audioMimeType:null,
+    voice:{enabled:false,provider:null,nextFallback:null},privateDataPersistent:false
+  });
+}
+
 async function health(env) {
   const providers = getProviderStatus(env, env.AI);
   const [memory, bridge, telemetry] = await Promise.all([
@@ -977,6 +1031,7 @@ async function health(env) {
       internalContextPriority: true,
       webResearchBypassWhenGrounded: true
     },
+    privateGitHub: {enabled:privateGitHubConfig(env).enabled,access:"access-jwt+repo-allowlist",mode:"read-only"},
     webResearch: {
       enabled: true,
       googleSearch: Boolean(env.SERPER_API_KEY),
@@ -1010,6 +1065,16 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     const path = url.pathname;
+
+    if (path === "/api/github/private/ai") {
+      if(request.method==="OPTIONS"){
+        const headers=privateGitHubHeaders(request,env);
+        const allowed=Boolean(headers["Access-Control-Allow-Origin"]);
+        return new Response(null,{status:allowed?204:403,headers});
+      }
+      if(request.method==="GET"||request.method==="POST")return handlePrivateGitHub(request,env);
+      return privateJson(request,env,{ok:false,error:"method-not-allowed"},405);
+    }
 
     if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: corsHeaders() });
     if (path === "/api/health" && request.method === "GET") return health(env);
