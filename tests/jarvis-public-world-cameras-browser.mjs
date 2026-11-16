@@ -111,9 +111,13 @@ try{
  const directories=await page.$$eval(".jarvis-worldcam-catalogs .jarvis-worldcam-catalog-card",cards=>
   cards.map(card=>({title:card.querySelector("strong").textContent,
    urls:[...card.querySelectorAll("a")].map(a=>a.href)})));
- assert.equal(directories.length,2);
+ assert.equal(directories.length,4);
  assert.ok(directories.some(x=>x.title==="SkylineWebcams"&&
    x.urls.includes("https://www.skylinewebcams.com/en/webcam.html")));
+ assert.ok(directories.some(x=>x.title==="Câmeras do Mundo"&&
+   x.urls.includes("https://camerasdomundo.com/live-cams/")));
+ assert.ok(directories.some(x=>x.title==="Africam"&&
+   x.urls.includes("https://africam.com/our-locations/")));
  assert.ok(directories.some(x=>x.title==="Webcamera24"&&
    x.urls.includes("https://webcamera24.com/pt/all-webcams/")));
  const providerOptions=await page.$$eval(".jarvis-worldcam-filters select[aria-label='Filtrar provedor de câmeras'] option",
