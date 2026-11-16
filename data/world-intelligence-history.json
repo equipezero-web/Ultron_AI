@@ -4,10 +4,190 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-16T09:37:07.058Z",
-  "oldestEventAt": "2026-11-15T13:37:00.000Z",
-  "windowStartAt": "2026-11-15T09:37:07.058Z",
+  "updatedAt": "2026-11-16T19:51:49.587Z",
+  "oldestEventAt": "2026-11-15T20:03:00.000Z",
+  "windowStartAt": "2026-11-15T19:51:49.587Z",
   "events": [
+    {
+      "id": "event-92bff8aa",
+      "category": "mundo",
+      "title": "Maior artilheiro da Bélgica, Lukaku anuncia aposentadoria",
+      "url": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxQWDBQM2JuWWpkVUU4dGt6UUNDd1F3WUd6NVpHT3haUXVVRW5Va1RZY25mS3lEMG5jMGd1N2h1THZYZzVINVhFcE9RZ1U3VU5QZVU3bFBVMjU1LUdkS0oyNWgzVnExZGhVZ0RMR0N1Q0dWak1VS3NZdUpxQTloTjJoUFk0THNKcEZ6ZFBXUjdEWG9RSzlGRFVYTERpZ3RzalJpWTg4ZjVqeTJEaWozLW1BTkxBbmlzek11YjN3TW02TWY0eGdjUWl6ZjVFWm84cWwxVXRuLXBYTQ",
+      "description": "Maior artilheiro da Bélgica, Lukaku anuncia aposentadoria &nbsp;&nbsp; LANCE!",
+      "imageUrl": null,
+      "source": "LANCE!",
+      "publishedAt": "2026-11-16T19:08:58.000Z",
+      "firstSeenAt": "2026-11-16T19:51:49.587Z",
+      "lastSeenAt": "2026-11-16T19:51:49.587Z"
+    },
+    {
+      "id": "event-693ff9f1",
+      "category": "brasil",
+      "title": "Anvisa proíbe dois tira-manchas à base de percarbonato de sódio",
+      "url": "https://agenciabrasil.ebc.com.br/saude/noticia/2026-11/anvisa-proibe-dois-tira-manchas-base-de-percarbonato-de-sodio",
+      "description": "A Agência Nacional de Vigilância Sanitária (Anvisa) determinou, nesta segunda-feira (16), a apreensão de todos os lotes de dois alvejantes tira-manchas à base de percarbonato de sódio, Brankissimo Alvejante e Alveclean Tira Manchas em Pó. A decisão foi publicada no Diário Oficial da União . Os produtos são popularizados nas redes sociais e também vendidos pela internet. A comercialização, distribuição, fabricação, propaganda e o uso foram proibidos. Notícias relacionadas: Anvisa manda recolher anestésico por amostra com \"partícula estranha\". Anvisa manda recolher lotes de insumos para canetas emagrecedoras . Anvisa determina apreensão de suplementos alimentares. Ambos os alvejantes, segundo a Anvisa, não têm regularização sanitária e são feitos por empresas sem autorização de funcionamento para a fabricação. Cosmético A resolução da agência também prevê a apreensão de todos os lotes do produto Lace Glue, usado para fixar próteses capilares. Da mesma forma, o cosmético não tem registro e é produzido por empresa sem autorização de funcionamento. >> Siga o canal da Agência Brasil no Wha",
+      "imageUrl": "https://imagens.ebc.com.br/1jAMR8_Xc9yy0LM3LNk4Wtm06s8=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/16/brakissimo.jpg?itok=PpOTGWmW",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-16T19:02:00.000Z",
+      "firstSeenAt": "2026-11-16T19:51:49.587Z",
+      "lastSeenAt": "2026-11-16T19:51:49.587Z"
+    },
+    {
+      "id": "event-fc27fca9",
+      "category": "santa-catarina",
+      "title": "Semana de calor termina com chuva forte em Santa Catarina",
+      "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxOV2RrNWEya3VocDFMNUd2Wm1JRjJ1MmFVS0ZwQkQ5dTNWa0Q3cHhfaUdtVm9aNTh3eThLUnhVZjRZRV9uVWtHVUxaamphN2ZYeWVhOFVnOTlIdkVSUEdJWXlzTXZvSkZpa3BxbmlRMWw5aTdxMTdXRC1FZHhpVmQxVXdCTjVpUVUwVm1hMQ",
+      "description": "Semana de calor termina com chuva forte em Santa Catarina &nbsp;&nbsp; OCP News",
+      "imageUrl": null,
+      "source": "OCP News",
+      "publishedAt": "2026-11-16T19:00:56.000Z",
+      "firstSeenAt": "2026-11-16T19:51:49.587Z",
+      "lastSeenAt": "2026-11-16T19:51:49.587Z"
+    },
+    {
+      "id": "event-cd881e91",
+      "category": "santa-catarina",
+      "title": "Ciclone pode trazer chuva forte em SC entre sexta e sábado",
+      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOZXhUM2FDWE1OcDMtNFpQWFdSUTI4UXhWc1FGd0Y2TURiSDlGdVhwS1NobWNDbDMzNE01NmY2eUxZdDNBQXFsS09XbGtncTVIbzJzNnV5Y1RSc2JsVlRISFo3a1BPRmwtcTlvLVZUZC1MVDNZV3FMLThjc0o5NXpRS0pwV3lvVExpVGVZR0ZNWTczcHl1elpmUWJuRlIydU85LWVSaVBJZC1rZ0k",
+      "description": "Ciclone pode trazer chuva forte em SC entre sexta e sábado &nbsp;&nbsp; Deolhonailha",
+      "imageUrl": null,
+      "source": "Deolhonailha",
+      "publishedAt": "2026-11-16T18:34:15.000Z",
+      "firstSeenAt": "2026-11-16T19:51:49.587Z",
+      "lastSeenAt": "2026-11-16T19:51:49.587Z"
+    },
+    {
+      "id": "event-16a7c951",
+      "category": "santa-catarina",
+      "title": "Próximos três meses terão chuvas frequentes e temperaturas mais altas em Santa Catarina",
+      "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE9tR2hRdVBtUkRFdnlnODY2OFlDOTRGUFItOVBfZ2c3S2pYOXVDQzlFd2JmMk1vM1lCWUM0blFMc3ZWMkFUVHZDcFpfSjV3ekw2cUUtZ0ZsLU9sZHMyQlNYbm5yLTU1YkJkTjlrWFpR",
+      "description": "Próximos três meses terão chuvas frequentes e temperaturas mais altas em Santa Catarina &nbsp;&nbsp; Jornal O Celeiro",
+      "imageUrl": null,
+      "source": "Jornal O Celeiro",
+      "publishedAt": "2026-11-16T18:29:08.000Z",
+      "firstSeenAt": "2026-11-16T19:51:49.587Z",
+      "lastSeenAt": "2026-11-16T19:51:49.587Z"
+    },
+    {
+      "id": "event-2b354852",
+      "category": "brasil",
+      "title": "Economia circular movimenta até R$ 90,7 bilhões no Brasil, aponta CNI",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/economia-circular-movimenta-ate-r-907-bilhoes-no-brasil-aponta-cni",
+      "description": "A economia circular movimenta entre R$ 31 bilhões e R$ 90,7 bilhões no Brasil, segundo levantamento inédito da Confederação Nacional da Indústria (CNI). Apresentado na 31ª Conferência das Nações Unidas sobre Mudança do Clima (COP31), em Antália, na Turquia, o estudo Financiamento para a Economia Circular na Indústria Brasileira, mostra que o país tem um mercado de finanças sustentáveis estimado em R$ 884 bilhões. Segundo a CNI, os recursos destinados diretamente à circularidade representam entre 3,5% e 10,3% desse total. O percentual é superior à média mundial, de aproximadamente 2%. Notícias relacionadas: Quatro em cada 10 brasileiros nunca ouviram falar em economia circular. Comitê vai traçar estratégia financeira para economia circular. Novos títulos verdes financiarão economia circular e saneamento. Apesar do volume de investimentos, a pesquisa identifica um desequilíbrio na distribuição dos recursos. A maior parte do dinheiro está concentrada em iniciativas de reciclagem, gestão de resíduos e recuperação de materiais, enquanto projetos voltados à prevenção do desperdício, ao des",
+      "imageUrl": "https://imagens.ebc.com.br/Xkjujh1dmFAArCZz05s8rL7t5P0=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/_materiais_reciclaveis2807200517.jpg?itok=fRUycUHs",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-16T18:25:00.000Z",
+      "firstSeenAt": "2026-11-16T19:51:49.587Z",
+      "lastSeenAt": "2026-11-16T19:51:49.587Z"
+    },
+    {
+      "id": "event-a7c97223",
+      "category": "clima",
+      "title": "El Niño deve perder força em 2027 e terminar no outono",
+      "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxOQkJnM0g2TVNXNHBsNUFQMUJ2Szg0b3hLdnZ5dVRoSmFjcnd3alVCdEJoVWdFLVhSdnF5dmJJMEpEU3VySDFvc0k1ejdZeF83THhUSWpZdHVaVFRsZjJvVVFSTEN0X0pnQWwyS2VDU05GWkdkZHJJYzZDY3FtVXI1d2hoeGlGbmlrU3RyNll3LW83MGpaOU9aelF3",
+      "description": "El Niño deve perder força em 2027 e terminar no outono &nbsp;&nbsp; Revista Cultivar",
+      "imageUrl": null,
+      "source": "Revista Cultivar",
+      "publishedAt": "2026-11-16T18:16:23.000Z",
+      "firstSeenAt": "2026-11-16T19:51:49.587Z",
+      "lastSeenAt": "2026-11-16T19:51:49.587Z"
+    },
+    {
+      "id": "event-6f258e5f",
+      "category": "brasil",
+      "title": "Fies 2026: chamada para vagas remanescentes sai nesta segunda-feira",
+      "url": "https://agenciabrasil.ebc.com.br/educacao/noticia/2026-11/fies-2026-chamada-para-vagas-remanescentes-sai-nesta-segunda-feira",
+      "description": "O resultado da chamada única para as vagas remanescentes do Fundo de Financiamento Estudantil (Fies) do segundo semestre será divulgado nesta segunda-feira (16) pelo Ministério da Educação (MEC). Os interessados podem consultar a lista dos convocados no Portal Único de Acesso ao Ensino Superior, na parte do Fies . O acesso é com o login da conta Gov.br. Notícias relacionadas: Enem 2026: começa prazo para pedir reaplicação de provas em dezembro. Gabarito do Enem sai na quarta-feira, e resultado em 18 de janeiro. Enem 2026: um a cada cinco participantes faz prova como treineiro. Quem não for pré-selecionado na chamada única será incluído automaticamente na lista de espera, e convocação ocorrerá no período de 25 a 30 de novembro. As vagas remanescentes destinam-se exclusivamente à contratação do financiamento no segundo semestre letivo deste ano, sem possibilidade de extensão do prazo. Os candidatos pré-selecionados devem ter condições de acompanhar as atividades acadêmicas com aproveitamento suficiente para concluir o semestre. >> Siga o canal da Agência Brasil no WhatsApp Classificaçã",
+      "imageUrl": "https://imagens.ebc.com.br/Z2mNsQ5lWQL4xHhftpdFlqEw8ws=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/15/pzzb0527.jpg?itok=LIjqokwH",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-16T18:11:00.000Z",
+      "firstSeenAt": "2026-11-16T19:51:49.587Z",
+      "lastSeenAt": "2026-11-16T19:51:49.587Z"
+    },
+    {
+      "id": "event-e8392bef",
+      "category": "brasil",
+      "title": "Lula e Sánchez defendem união contra o avanço da extrema-direita",
+      "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2026-11/lula-e-sanchez-defendem-uniao-contra-avanco-da-extrema-direita",
+      "description": "O presidente Luiz Inácio Lula da Silva se encontrou, na manhã desta segunda-feira (16), com o presidente do governo da Espanha, Pedro Sánchez, em Madri. Lula parou no país ibérico durante a viagem de volta das Filipinas. Segundo o Palácio do Planalto, Lula e Sánchez trataram de temas como o combate ao discurso de ódio e desinformação da extrema-direita, além da promoção de uma agenda de inclusão social para o fortalecimento da democracia no mundo. Notícias relacionadas: Lula quer ampliar relações comerciais com países da Asean. Brasil e Espanha firmam acordo para estimular taxação de super-ricos. Sánchez foi um dos presidentes que mais celebrou a vitória de Lula nas eleições de outubro. Pelas redes sociais, ele chamou a reeleição do presidente brasileiro de “grande vitória” e afirmou que a Espanha seguiria a mesma tendência nas eleições de seu país. “O que aconteceu no Brasil acontecerá na Espanha. A virada do progressismo global acaba de começar”, disse, na ocasião. O povo espanhol irá às urnas em 29 de novembro para renovar as 350 cadeiras do Congresso. E será o Congresso que decid",
+      "imageUrl": "https://imagens.ebc.com.br/uEtKd4UXQonDNxLIGDrp5QpDumc=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/16/55654857102_fbe1ed24c9_o.jpg?itok=KTRWZTk2",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-16T18:09:00.000Z",
+      "firstSeenAt": "2026-11-16T19:51:49.587Z",
+      "lastSeenAt": "2026-11-16T19:51:49.587Z"
+    },
+    {
+      "id": "event-e8e8d762",
+      "category": "mundo",
+      "title": "Mercado de Transferências",
+      "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBIOU85bnFIVFphUlQxWWc0X0JxOHRabE9iOVpNNzgtX1JKeFFXMU5UeW9FMC1rVEVmMUYwWVRWT1NvYWl5allOUXhFZUxObUQzZFluOXZubzdPLUFJWjJyazVlTmtwQkZjeUI5RW51Yw",
+      "description": "Mercado de Transferências &nbsp;&nbsp; Maisfutebol",
+      "imageUrl": null,
+      "source": "Maisfutebol",
+      "publishedAt": "2026-11-16T17:12:38.000Z",
+      "firstSeenAt": "2026-11-16T19:51:49.587Z",
+      "lastSeenAt": "2026-11-16T19:51:49.587Z"
+    },
+    {
+      "id": "event-54be1c8",
+      "category": "mundo",
+      "title": "Governos na Europa incentivam armazenamento de 'kit de sobrevivência' caseiro em antecipação a crises",
+      "url": "https://news.google.com/rss/articles/CBMinAJBVV95cUxQNV9ES3pnU2NncWRDdDJ6THVPNDBxM0sxb2JmRmhleGZDbVoweXNLNURNU0xuZVZWR2tLcXpoU1hfZWozS3QxUHgxTHFBOE9HN0xrNW9Valc4R25WTVp0ZkkyekpuNDhwa2haaDYzOVh1dHhzRGdyNVp1ZkVkMGZpcFFqMFhMSklFZ3JqUmgxeHZMclNRU0pGYzVTa2xhdlMzbFZ5cktCSFYxNjhYNk9Kc054X2Q4UkNUYk9PbDdsOWJBdV9zQWh5ZVpmNEJxY2V6Mm9XWmlZVzZ1XzFRZnBIMWQ1VktaaklTdnN0dGlqTzg1NG9TZzJQc1l3TUwtMGFFYkxzNTNRcDRVNndnTS1ZMHdKTWU3Mmhfdm0zeA",
+      "description": "Governos na Europa incentivam armazenamento de 'kit de sobrevivência' caseiro em antecipação a crises &nbsp;&nbsp; Terra",
+      "imageUrl": null,
+      "source": "Terra",
+      "publishedAt": "2026-11-16T16:43:00.000Z",
+      "firstSeenAt": "2026-11-16T19:51:49.587Z",
+      "lastSeenAt": "2026-11-16T19:51:49.587Z"
+    },
+    {
+      "id": "event-662f7bed",
+      "category": "clima",
+      "title": "El Niño se aproxima de intensidade máxima e deve perder força no início de 2027, aponta Inmet",
+      "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxQS1Z2c2lEWEdZSG9mS0JINkJTTnl1MFE4ZzVUcGRKaHkwNjZQcF9JVnN1ZFVNUjBDd1JTcjd2M2QtaE1fYW1keHY1aE1uVEw3V2F6OVNieUNlRHNtRmF6aEg0N1BHTmxHUGxfVUlLMEZiU0cteXVjQmpvazFqS0VuajU2TU8wMHlVRlBVZmhYRUU2T0F2dllSdTdCWDZlXzNXVHVCb0JXOWxieVNIV2NhNFFjQ1A3bHItd210RTU2NjY4X1NqTjZkS3Bhbw",
+      "description": "El Niño se aproxima de intensidade máxima e deve perder força no início de 2027, aponta Inmet &nbsp;&nbsp; Saiba Já News",
+      "imageUrl": null,
+      "source": "Saiba Já News",
+      "publishedAt": "2026-11-16T15:28:53.000Z",
+      "firstSeenAt": "2026-11-16T19:51:49.587Z",
+      "lastSeenAt": "2026-11-16T19:51:49.587Z"
+    },
+    {
+      "id": "event-c4d72d16",
+      "category": "asia",
+      "title": "Trump diz que pode se reunir com Kim Jong-un durante viagem à Ásia - Estadão",
+      "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPUjFhT2hSbVV5TG5ISW1HUE5PSjhfVlBZamppbDc2aUY3SkVwTm1xRnFRREc0Y01nNHNaMlBGUDg0bk5DbnNiZC0zOC1wbDg3Y2p0VGhBTHlTdnRvbGdtZlZpNUYxdHZwUy1BTG94TXREeWVmc1BmTERuWUxpSGlMZTJaVG1MVlp1Zk55M3hvZXB0MTdpUXRmS2tWbi1jV2FSTUpIQlZkOEpuZm1IeEJWYmhR0gG3AUFVX3lxTE1XY1hkbzV0LXZZMEhKZTFwWlhzaEJGVlI1aDFsTjE0VzU1NDB3SXlndzdoUlR6V1k0S01TRkhPY3JTTkRzMWZqa240TVB4S3oyeFhIamJuNGtLdm4wWFFaRlJnYkJhZDc4UlRGSXQxMS1iV3VMcGNVeGtoQUh3S09SN2dXeDJXWWVCWTBvVFBMOTBET1h1Q1JsblE0TXpzczl0cjNNMGd1QjNLc3VydFgyVi0yZ1Jjaw",
+      "description": "Trump diz que pode se reunir com Kim Jong-un durante viagem à Ásia &nbsp;&nbsp; Estadão",
+      "imageUrl": null,
+      "source": "Estadão",
+      "publishedAt": "2026-11-16T15:17:56.000Z",
+      "firstSeenAt": "2026-11-16T19:51:49.587Z",
+      "lastSeenAt": "2026-11-16T19:51:49.587Z"
+    },
+    {
+      "id": "event-2161e714",
+      "category": "clima",
+      "title": "Inmet aponta El Niño muito forte no pico de 2026/27",
+      "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBwQjdSbkRqU3d6X3hrR1cwdkcwTndocW4tVi1tTUJXcUduOWJrMXBGYThSU2FRQWtwRE1hTjhHQUxwbmZ6Q2FxUklUbGFiSmFzTndXeEJTaV94bHJyeHVxX3V0X2NpX1VfY3pPWmdJTXBJYzZv",
+      "description": "Inmet aponta El Niño muito forte no pico de 2026/27 &nbsp;&nbsp; SpaceMoney",
+      "imageUrl": null,
+      "source": "SpaceMoney",
+      "publishedAt": "2026-11-16T12:28:00.000Z",
+      "firstSeenAt": "2026-11-16T19:51:49.587Z",
+      "lastSeenAt": "2026-11-16T19:51:49.587Z"
+    },
+    {
+      "id": "event-553afce1",
+      "category": "asia",
+      "title": "Principais Bolsas da Ásia caem à espera de resultados da Nvidia e IPO da Anthropic - Folha de S.Paulo",
+      "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxPeHJKaTBpNFF0S0FTYUpUMTQyaGFCbG9HMk54NVlCYVVCaDM4ZVBtX0hMN0hFV1E4Z0V5TlFYQVlnY0kxazhyczdCY1ROLVVVR1R4V1MyRFRsWjduTk94aGdMOWFrT2RBbTVwSzZpUlVFSlFUWkNQMnpQN2duUW05OHhCTWt3VDV0Yk5fa2JaRWtqYzYycXZGcHlzU2xvWFMtQmphWkZyYy1hWlRyTU4yaFQzd093LUZGc3RndG5vWFQyV1BRdjE0Q1RkZG1GaEU",
+      "description": "Principais Bolsas da Ásia caem à espera de resultados da Nvidia e IPO da Anthropic &nbsp;&nbsp; Folha de S.Paulo",
+      "imageUrl": null,
+      "source": "Folha de S.Paulo",
+      "publishedAt": "2026-11-16T10:24:00.000Z",
+      "firstSeenAt": "2026-11-16T19:51:49.587Z",
+      "lastSeenAt": "2026-11-16T19:51:49.587Z"
+    },
     {
       "id": "event-a7ca74a3",
       "category": "santa-catarina",
@@ -211,306 +391,9 @@
       "publishedAt": "2026-11-15T20:03:00.000Z",
       "firstSeenAt": "2026-11-15T22:05:19.527Z",
       "lastSeenAt": "2026-11-15T22:05:19.527Z"
-    },
-    {
-      "id": "event-3b61511f",
-      "category": "clima",
-      "title": "Super El Niño deve perder força após atingir pico e tem previsão de enfraquecimento até voltar à neutralidade",
-      "url": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxOQktWUVN5bHhFMHJ4bWFybGJGTEdreFNwcWdubUV1aXV4TUlEdlk1bUhxVlpZR09oZk41Y1ZIanJIOVFTdzE5ZmVnM0ZxUHNkcHgxUW5KVFpib2tCQnFNNUc3WFd4cXhITThiYzdwUVhsUVdWRkNJR0wwb3pPSGtZSFQ4b09UWmpiYWwtZkxxNG56OHBueUNVTnhrc0c4ODVuRk1kZjYxSGNPSkUwbDVwc01nUnNWSHlWU01nbmt1T1NBa3VFZGFkNms1eWYwY3doTHMyNEJQQnVycGJseUVQWjJ0a2_SAeoBQVVfeXFMTjRHLS1KMnZCMm12TzVGZEhNUXU2TUpsNDZkTWdBWG9QVDBlRUtjSEpsY2VrY1NPd0UzV0lQU3I4WmdmTVQta3hmZUtwM2pFMk9xQnQzVFVtRnZlVUNSRU41LXBydHNKR3NmNXBZc1dIQnJ1U0x0TV9NR21WbUctYnpvRklMbGI5WWdfVFI5QnltNjRpQTJsNUdkaE1zZUlnYllDc1lqeFlRQjYzUjFQSUFXMnFRRVdKd2VDZ3hNZC1ESHNfSl9aelpXX0xHbmk5S0EyQi1pUkdmVGxjZmV0dTl1dWpPdnN6dHZR",
-      "description": "Super El Niño deve perder força após atingir pico e tem previsão de enfraquecimento até voltar à neutralidade &nbsp;&nbsp; GMC Online",
-      "imageUrl": null,
-      "source": "GMC Online",
-      "publishedAt": "2026-11-15T19:35:00.000Z",
-      "firstSeenAt": "2026-11-15T22:05:19.527Z",
-      "lastSeenAt": "2026-11-16T09:37:07.058Z"
-    },
-    {
-      "id": "event-937a9bca",
-      "category": "clima",
-      "title": "Super El Niño deve perder força após atingir pico e tem previsão de enfraquecimento até voltar à neutralidade",
-      "url": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxOQktWUVN5bHhFMHJ4bWFybGJGTEdreFNwcWdubUV1aXV4TUlEdlk1bUhxVlpZR09oZk41Y1ZIanJIOVFTdzE5ZmVnM0ZxUHNkcHgxUW5KVFpib2tCQnFNNUc3WFd4cXhITThiYzdwUVhsUVdWRkNJR0wwb3pPSGtZSFQ4b09UWmpiYWwtZkxxNG56OHBueUNVTnhrc0c4ODVuRk1kZjYxSGNPSkUwbDVwc01nUnNWSHlWU01nbmt1T1NBa3VFZGFkNms1eWYwY3doTHMyNEJQQnVycGJseUVQWjJ0a28",
-      "description": "Super El Niño deve perder força após atingir pico e tem previsão de enfraquecimento até voltar à neutralidade &nbsp;&nbsp; GMC Online",
-      "imageUrl": null,
-      "source": "GMC Online",
-      "publishedAt": "2026-11-15T19:35:00.000Z",
-      "firstSeenAt": "2026-11-16T02:01:58.651Z",
-      "lastSeenAt": "2026-11-16T02:01:58.651Z"
-    },
-    {
-      "id": "event-e71d6a48",
-      "category": "brasil",
-      "title": "Inmet prevê tempestades no Centro-Sul do país até segunda-feira",
-      "url": "https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-11/inmet-preve-tempestades-no-centro-sul-do-pais-ate-segunda-feira",
-      "description": "Uma chuva forte com queda de granizo atingiu na tarde deste domingo (15) a cidade de Belo Horizonte (MG). Desde as 9h30 da manhã, a capital mineira e outras centenas de cidades do estado estão em alerta amarelo para a ocorrência de tempestades. O alerta amarelo é o de menor gravidade na escala do Instituto Nacional de Meteorologia (Inmet) e indica uma situação de perigo potencial. Notícias relacionadas: Fortes chuvas devem atingir estado de São Paulo neste domingo. Inmet: chuvas e tempestades predominam no país, neste fim de semana. Também foram colocados em situação de alerta todos os municípios dos estados de São Paulo e do Mato Grosso do Sul e grande parte dos estados do Rio de Janeiro, Paraná e Goiás e parte dos estados de Santa Catarina e Mato Grosso. Há um alerta amarelo também para parte dos estados de Tocantins, Pará, Maranhão, Recife e Bahia. O alerta amarelo vale até o final do dia de hoje. O Inmet prevê que os estados localizados na região Centro-Sul do país devem enfrentar tempestades até amanhã (16). Devido à atuação de um cavado meteorológico [nome dado a uma área de in",
-      "imageUrl": "https://imagens.ebc.com.br/znTa6KJm1vEw9On3LoJ6HClroDM=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/09/10/_int9067.jpg?itok=SgyT8Pu6",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-15T19:34:00.000Z",
-      "firstSeenAt": "2026-11-15T22:05:19.527Z",
-      "lastSeenAt": "2026-11-15T22:05:19.527Z"
-    },
-    {
-      "id": "event-d6a54263",
-      "category": "brasil",
-      "title": "Exposição no Rio resgata delicadeza e humanidade de João Cândido",
-      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxQcXdYMHV5Vm8zbE9lNEF3VTA5TUxscmllWm5lYUM0T1FXTHIyZ3NYbGVWNngtMllkUWVuX2lyWjF1akxCV3JlVDUwOEVLZFZ2VGxfUS1KcDI3WnRnNkxLQWdVWU96Vk94Q3VzUEZ1bm9NUmZUaHU4NEF2QW8tUEhvZXF4YlNzUk5aUk1TVDVoWkRIRXREYzFJZWtMYWVYRTJkMlViTjUxM05rVXNTRDVFOTRsc0lYVDVld1BEQlBn",
-      "description": "Exposição no Rio resgata delicadeza e humanidade de João Cândido &nbsp;&nbsp; Agência Brasil",
-      "imageUrl": null,
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-15T19:27:00.000Z",
-      "firstSeenAt": "2026-11-15T22:05:19.527Z",
-      "lastSeenAt": "2026-11-15T22:05:19.527Z"
-    },
-    {
-      "id": "event-4ba54c41",
-      "category": "clima",
-      "title": "El Niño deve perder força em 2027 e pode terminar no outono",
-      "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxPY0Q4UHFLVW1PbTlGLVpLMklQVmVDc1NtbUNhcDZleGpJbTF4NVN4d3IzbzdrRFRWV21jcmtXbEN4eGh6RW1nbUVYQlI2VkEtN2dBaUJXaGhtM2tyNC1jbDlMN3IyczJuSEJOa1JpSTY1WXpqQUhPU2syNHFWYy1QU1M3TnppOWpBR1BNRGktRy10R3R0d3pWTFUzbFNVN3NnZkFrS0didjFNSjQyQTM1czk4R1R2MmJTLTZDbF9hc1E",
-      "description": "El Niño deve perder força em 2027 e pode terminar no outono &nbsp;&nbsp; Diário do Iguaçu",
-      "imageUrl": null,
-      "source": "Diário do Iguaçu",
-      "publishedAt": "2026-11-15T19:22:00.000Z",
-      "firstSeenAt": "2026-11-15T22:05:19.527Z",
-      "lastSeenAt": "2026-11-16T09:37:07.058Z"
-    },
-    {
-      "id": "event-2767a063",
-      "category": "brasil",
-      "title": "COP31: negociações avançam, mas financiamento é desafio para 2ª semana",
-      "url": "https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-11/cop31-negociacoes-avancam-mas-financiamento-e-desafio-para-2a-semana",
-      "description": "A primeira semana da Conferência das Nações Unidas sobre Mudanças Climáticas (COP31), foi concluída oficialmente na manhã deste domingo (15) em Antália, Turquia. O balanço dos especialistas até aqui é de que houve avanços em decisões de caráter mais técnico e procedimental. Porém, questões sobre financiamento, adaptação e redução das emissões permanecem sem consenso. Notícias relacionadas: Cartilha lançada na COP31 orientará indígenas sobre fundo florestal. Lula: nenhum país tem mais autoridade para falar de clima que Brasil . Temas políticos centrais ficaram para a segunda e última semana do evento, que termina na sexta-feira (20). O secretário-geral da ONU, António Guterres, reforçou a urgência do aquecimento global como imperativo para que os países avancem nas negociações e ações concretas. “Um aumento de 1,5 graus na temperatura é agora inevitável. E nossa responsabilidade é mantê-lo o menor possível, pelo menor tempo possível, e trazer as temperaturas de volta para abaixo de 1,5 graus o mais rápido que pudermos. Mas isso exige cortes imediatos e drásticos nas emissões, da ordem",
-      "imageUrl": "https://imagens.ebc.com.br/dqMvzzWDUdJN3giJ-vxZNE7eD6g=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/15/cop31_negociacoes_avancam_mas_financiamento_e_desafio_para_2a_semana01.jpg?itok=RlNcvfjL",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-15T19:09:00.000Z",
-      "firstSeenAt": "2026-11-15T22:05:19.527Z",
-      "lastSeenAt": "2026-11-15T22:05:19.527Z"
-    },
-    {
-      "id": "event-a6621097",
-      "category": "mundo",
-      "title": "Principais notícias do mundo na noite de hoje (15)",
-      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQWkNFdXBmbjRSOEd5VFdfNlVyYkVwckQxTU1pckhIT2VJNDVxVTFRV3R3eUtOT09HZERNN3ozbG0zaUQ4ZzA3MTZDczhibnpaZDBBd3JsTVhBWGdxNWMtRTQtZzRCdV9wVno1b21HcHowT3hGcFk0NHUxbmZOdHpEcTZhS0pBXzZXM1FXb2liRHkzWDJIUzNtUVRRVWlfT095bE9UQWlTS3ZSOHJ5",
-      "description": "Principais notícias do mundo na noite de hoje (15) &nbsp;&nbsp; Tribuna do Sertão",
-      "imageUrl": null,
-      "source": "Tribuna do Sertão",
-      "publishedAt": "2026-11-15T18:40:58.000Z",
-      "firstSeenAt": "2026-11-15T22:05:19.527Z",
-      "lastSeenAt": "2026-11-15T22:05:19.527Z"
-    },
-    {
-      "id": "event-9387cbe",
-      "category": "mundo",
-      "title": "Comandante do Hamas é morto em ataque israelense em Gaza",
-      "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxNa3gyaVBaWkRkdjNJZExKYkpqNlFRMTVNdmJ3SWRPSkQ0QXREVll1a3o5cVdxdW9oNFNVOVdLMnlBVWFJQUFIMHc3elJUdUVNUkNNQ05KcjlRTW8zMVZlV1BjZUZqaEJIWlIxX2JOTFhkTzFYV3IzMnNGZ1lpZGlSODhuZXU0cjVFZVJ3M2ZjSXVnTEJtcjdIMXJnU3hzZw",
-      "description": "Comandante do Hamas é morto em ataque israelense em Gaza &nbsp;&nbsp; SBT News",
-      "imageUrl": null,
-      "source": "SBT News",
-      "publishedAt": "2026-11-15T18:20:44.000Z",
-      "firstSeenAt": "2026-11-15T22:05:19.527Z",
-      "lastSeenAt": "2026-11-15T22:05:19.527Z"
-    },
-    {
-      "id": "event-9a563eda",
-      "category": "santa-catarina",
-      "title": "[VÍDEO] Temporais podem atingir Santa Catarina com granizo e vento forte neste domingo",
-      "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxNVFVXQjllVWwyMDV6MHQzTjJEanBTZ0doaVlkQ0x5Z2wwRy1vYUtwNk5kcGRmUUZGWEtOd0hlS3dHSTBpd3RtSXdoRzJNU1hiTGpJaWNJY1N3Q0xvampUWWt0ODkwQV82bXF0ZU5XTEdlWW1ETHNmUHBVN2JuY2tTRFhoTVRkM2JoanI1NHg3YTdNQkpFVDdybmM2ZUl0bFhEWEFHYVRGZUY3dzJQVFpESTl6SHV6Z2wxQ0lBdmlBVjdRSkRoaGEtWFpTSnM",
-      "description": "[VÍDEO] Temporais podem atingir Santa Catarina com granizo e vento forte neste domingo &nbsp;&nbsp; Folha Regional",
-      "imageUrl": null,
-      "source": "Folha Regional",
-      "publishedAt": "2026-11-15T18:00:33.000Z",
-      "firstSeenAt": "2026-11-15T22:05:19.527Z",
-      "lastSeenAt": "2026-11-16T09:37:07.058Z"
-    },
-    {
-      "id": "event-4b26cf3d",
-      "category": "santa-catarina",
-      "title": "Santa Catarina terá chuva e temporais isolados nos próximos dias, aponta Defesa Civil",
-      "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxOZ3F6YktiVnBldUo5QjBiZXRBV2hfU0dudXBiV3dLOTZCZUJvMkJsc1MzVjgwV3V0TVFyOTROY3pieEEzVVBNQlRhWjJ0clYtLXRlQXVEcWhFSE9ob3lPZC1WMVBnZmR3RzVKTkpKSmx3SG90VXoxd0t6RUR2OHJCRFA5MWxYM3p2ajNLbmpJdGowTjJWVWp6UW40UF9yYi1rZGUydDZvTnFHc2VHOXlTaFBMTDNycEZzcTEwYndUNUVveGl5WklVYVliOFJjYmh5OHc",
-      "description": "Santa Catarina terá chuva e temporais isolados nos próximos dias, aponta Defesa Civil &nbsp;&nbsp; Santa Catarina em Pauta",
-      "imageUrl": null,
-      "source": "Santa Catarina em Pauta",
-      "publishedAt": "2026-11-15T17:00:00.000Z",
-      "firstSeenAt": "2026-11-15T17:31:39.401Z",
-      "lastSeenAt": "2026-11-16T09:37:07.058Z"
-    },
-    {
-      "id": "event-7f3810dd",
-      "category": "brasil",
-      "title": "A Proclamação da República foi um golpe militar? Professor explica evento histórico",
-      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxPNnFhVm1Lc2lsMEpsNUhwVGlVaDNYc1lnZlNlakpuNnUtRlh4MU9oeXR1Smp4OTJkWlBER0dJdTlpM3BCVEk2cjdjMFpRazBDNnMzOGhKWmFMam41VUt0Rml3RVF5V1JPQUpHUEplU2dqcGE2ZmZPdEFxNlFMMlhST3JIa0M2RjVibG9zQjMwZGVSYk1JWnR6VnhyeElwWnlmQS1RQl9CODJna2fSAbABQVVfeXFMUDNJMzZ3VmlZUGxtbEFXaUQyRjgzcFRWS0JKdThXWkNXMW5FRXhiYWdFOTlXNlJxVHhORzY4Q2otLUMwY1RLcndrakRCQi1DcGFGb2JkVnNQVmx0SndtM2RwZHE1bS1sYy14ZWFZOHlObzB6SVQ2cXl6eXNfMVFMaXlxRHFlXzZVeXY0R0lEZTdYS0tfejQzclVCMDN4cWkweG1aVl8wcjNoR05VNTg1aDU",
-      "description": "A Proclamação da República foi um golpe militar? Professor explica evento histórico &nbsp;&nbsp; Brasil Escola",
-      "imageUrl": null,
-      "source": "Brasil Escola",
-      "publishedAt": "2026-11-15T16:56:18.000Z",
-      "firstSeenAt": "2026-11-15T17:31:39.401Z",
-      "lastSeenAt": "2026-11-16T09:37:07.058Z"
-    },
-    {
-      "id": "event-8ba8dcbc",
-      "category": "brasil",
-      "title": "Zezé Motta participa de tributo a Milton Nascimento nesta segunda",
-      "url": "https://agenciabrasil.ebc.com.br/cultura/noticia/2026-11/zeze-motta-participa-de-tributo-milton-nascimento-nesta-segunda",
-      "description": "A obra de um dos maiores artistas brasileiros vai ser homenageada por um encontro de gerações no concerto Raça — Uma homenagem a Milton Nascimento , nesta segunda-feira (16). A apresentação, que também celebra o Mês da Consciência Negra, será às 19h, no Teatro TotalEnergies, na Glória, zona sul do Rio de Janeiro. O show reunirá o Coro Juvenil do Rio de Janeiro (CJRJ) e a Orquestra Sinfônica Juvenil Carioca (OSJC), com regência do maestro Carlos Sarria e a participação especial da cantora e atriz Zezé Motta. Notícias relacionadas: Circuito Cultural começa no Rio com celebração da Consciência Negra. Fachin defende indicação de ministra negra para o STF. Movimento negro reivindica projetos de leis antirracistas para escolas. A presença de Zezé traz para o espetáculo a resistência do povo preto e a batalha pela defesa da ancestralidade e da cultura afro-brasileira . À Agência Brasil , Zezé contou que a sua relação com Mílton é de longa data, vem desde 1976, quando teve a alegria de gravar com ele. Nesse período, a amizade se consolidou, guardando muitas histórias e lembranças inesquecíve",
-      "imageUrl": "https://imagens.ebc.com.br/ZcvjuKrlI8Whlt5Y7ly5NRWqJoM=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/14/concerto_em_homenagem_ao_milton_nascimento01.jpg?itok=eF3Rqu1n",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-15T16:48:00.000Z",
-      "firstSeenAt": "2026-11-15T17:31:39.401Z",
-      "lastSeenAt": "2026-11-15T17:31:39.401Z"
-    },
-    {
-      "id": "event-9f250807",
-      "category": "brasil",
-      "title": "Lula vê oportunidades na Ásia para explorar minerais críticos",
-      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/lula-ve-oportunidades-na-asia-para-explorar-minerais-criticos",
-      "description": "O presidente Luiz Inácio Lula da Silva afirmou neste domingo (15), nas Filipinas, que o Brasil pretende atrair investimentos para a exploração e a industrialização de minerais críticos e terras raras, em uma estratégia que, segundo ele, pode ampliar a inserção do país nas cadeias produtivas ligadas à transição energética. A declaração foi feita após a abertura da Cúpula da Associação das Nações do Sudeste Asiático (Asean), em Manila. “Queremos ser parceiros definitivos da Asean”, diz Lula. Notícias relacionadas: Lula quer ampliar relações comerciais com países da Asean. Brasil e Filipinas assinam acordos sobre agro e livre concorrência . No discurso aos líderes do bloco, o presidente defendeu o aprofundamento das relações entre o Mercosul e os países do Sudeste Asiático , destacando oportunidades de cooperação voltadas ao desenvolvimento sustentável, à redução das desigualdades e ao fortalecimento dos laços entre países em desenvolvimento. “Navegar juntos implica escolher a rota do desenvolvimento sustentável e da redução das desigualdades”, diz Lula na abertura da Cúpula da Asean. A",
-      "imageUrl": "https://imagens.ebc.com.br/c7CJ_DtaldARa_0h1hW34pKpGgw=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/15/55653708043_ab803f594e_o.jpg?itok=TmIwCVFX",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-15T16:30:00.000Z",
-      "firstSeenAt": "2026-11-15T17:31:39.401Z",
-      "lastSeenAt": "2026-11-15T17:31:39.401Z"
-    },
-    {
-      "id": "event-c7499ae5",
-      "category": "brasil",
-      "title": "Festival de futebol feminino de várzea reúne 1,5 mil atletas em SP",
-      "url": "https://agenciabrasil.ebc.com.br/esportes/noticia/2026-11/festival-de-futebol-feminino-de-varzea-reune-15-mil-atletas-em-sp",
-      "description": "Com entrada gratuita, o Festival Feminino de Várzea reúne 1,5 mil atletas neste domingo (15) até as 17h, no Parque Sete Campos, na Zona Sul de São Paulo. Apesar de contar com 96 equipes, o festival é realizado sem patrocinadores. O evento recebe apoio da Federação Paulista de Futebol, que enviou equipes de arbitragem formadas exclusivamente por mulheres. Notícias relacionadas: Prêmio TV Brasil Petrobras Para Elas celebra futebol feminino do país. Congresso muda orçamento em favor da Copa do Mundo de futebol feminino. Livro resgata a história das pioneiras do futebol feminino no Brasil. Além das partidas, o festival ─ organizado pela Liga Feminina de Futebol Amador ─ também oferece atividades culturais e para o público infantil. O evento conta com quatro campos de futebol, além de duas quadras para as disputas de futsal e fut7.",
-      "imageUrl": "https://imagens.ebc.com.br/ss1T-eFIdkO61PnvE1a9KPkKSag=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/15/sao_paulo_recebe_o_festival_de_futebol_de_varzea_feminino.jpg?itok=majEOb_6",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-15T16:17:00.000Z",
-      "firstSeenAt": "2026-11-15T17:31:39.401Z",
-      "lastSeenAt": "2026-11-15T17:31:39.401Z"
-    },
-    {
-      "id": "event-37fb0ff6",
-      "category": "mundo",
-      "title": "Governo de SP vai endurecer regras para destinação de lixo em grandes eventos",
-      "url": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxPeE01OC1fUEtKVEs1d2ZNUF8takpPWXRDSEJKekNVeTFXbE5STzJ6NHdIWFVWVlcyYVBXX1ZLMngwRWtQdUlCcnd0eWJCazYyd2o5bHgxbzFPeDUxS05Hd0NVWnR3MVdaYXFqOVY4WW9iYTE5dW1NS1k4OG9DblhjcDVZYllGbTREQjl6TWpITzlCSGpRZV9IU3VSNFEyTENPNXNpWGRPVWowWWRCOThfYUVXazZ0cTZLT0xOekppNERRcDVJUEJhY1ZYWlM5NzB3QU5ZMWpfYw",
-      "description": "Governo de SP vai endurecer regras para destinação de lixo em grandes eventos &nbsp;&nbsp; Estadão",
-      "imageUrl": null,
-      "source": "Estadão",
-      "publishedAt": "2026-11-15T15:06:06.000Z",
-      "firstSeenAt": "2026-11-15T17:31:39.401Z",
-      "lastSeenAt": "2026-11-15T17:31:39.401Z"
-    },
-    {
-      "id": "event-b89f65d",
-      "category": "clima",
-      "title": "Fábio Mitidieri tem culpa pela atual crise hídrica que Sergipe enfrenta?",
-      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQdlJFNktJZVlmT3JSOWwtS2pnNTRDSnR0b1k1OS02bWVoTzZNMmxETFo3TUhZTkFNd0h3ZmxPUUZ4ekxkWnpJcjNXVkt3QkdlTlQ5SmszYUNfdXozdnhXQVRlZG93emN2dDR5akxJVk9MaGtqZTVqUEhqT3FhZndINl84MHo4TVVhMXZBekpzVzVqbk15b0xSQnBKbl84MFI3bjFBZnBNTQ",
-      "description": "Fábio Mitidieri tem culpa pela atual crise hídrica que Sergipe enfrenta? &nbsp;&nbsp; Fan F1",
-      "imageUrl": null,
-      "source": "Fan F1",
-      "publishedAt": "2026-11-15T14:58:00.000Z",
-      "firstSeenAt": "2026-11-15T17:31:39.401Z",
-      "lastSeenAt": "2026-11-15T17:31:39.401Z"
-    },
-    {
-      "id": "event-72d23dea",
-      "category": "mundo",
-      "title": "Lula quer ampliar relações comerciais com países da Asean",
-      "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/lula-quer-ampliar-relacoes-comerciais-com-paises-da-asean",
-      "description": "O presidente Luiz Inácio Lula da Silva e o primeiro-ministro de Singapura, Lawrence Wong, discutiram uma possível retomada de discussões visando um acordo entre o Mercosul e a Associação de Nações do Sudeste Asiático (Asean). O encontro bilateral entre os dois chefes de Estado foi neste domingo (15), após Lula participar da 49ª Cúpula da Asean, nas Filipinas, onde defendeu o aprofundamento das relações entre o Brasil e o bloco do Sudeste Asiático. Notícias relacionadas: Lula chega às Filipinas; Brasil quer ser Parceiro de Diálogo da Asean. Brasil e Filipinas assinam acordos sobre agro e livre concorrência . Em discurso aos líderes da região, o presidente afirmou que o Brasil quer elevar sua relação com a Asean ao status de Parceiro de Diálogo Pleno. \"Queremos transformar essa convergência em novas vias de engajamento e elevar nossas relações com a Asean a uma Parceria de Diálogo plena\", disse o presidente brasileiro. Os dois líderes examinaram também a implementação do acordo comercial entre o Mercosul e Singapura, oportunidade em que Lawrence Wong sugeriu a retomada da análise de um",
-      "imageUrl": "https://imagens.ebc.com.br/agjbaVJ2gSl_fGtB6EZRm3zs1fk=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/15/55652507317_70fa0fb137_o.jpg?itok=g1Z3HNkB",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-15T14:48:00.000Z",
-      "firstSeenAt": "2026-11-15T17:31:39.401Z",
-      "lastSeenAt": "2026-11-15T17:31:39.401Z"
-    },
-    {
-      "id": "event-21e3fbc3",
-      "category": "santa-catarina",
-      "title": "Defesa Civil alerta para risco de temporais e ventos fortes neste domingo",
-      "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxQbXNEN0hOVGotbkhJSEQyN0NrS29ISFdEelBjS1ZYczJDRGpYR3FzbFNhU1Axa2VGSWFyX2RJRS1ra1E4NnpnT1N5SGpXQmlMcWsxTTNISFoxM2RMZktyRW1rckNyOUJHSENvYm1oRkQ0eXJDYjdRaEo0UUQwT3NFVk9OdG8zS25hd3U2RU45MWhKTmJkZUhMS3JORklhQVhBcE5mZ2pn",
-      "description": "Defesa Civil alerta para risco de temporais e ventos fortes neste domingo &nbsp;&nbsp; Portal TN Sul",
-      "imageUrl": null,
-      "source": "Portal TN Sul",
-      "publishedAt": "2026-11-15T14:39:00.000Z",
-      "firstSeenAt": "2026-11-15T17:31:39.401Z",
-      "lastSeenAt": "2026-11-15T17:31:39.401Z"
-    },
-    {
-      "id": "event-b417caf8",
-      "category": "asia",
-      "title": "INTELIGÊNCIA ARTIFICIAL | A polícia da Coreia do Sul anunciou neste domingo, 15, que abriu uma investigação após o candidato mais bem colocado em um exame nacional para contadores",
-      "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE8xVFIzVjFlYnVfbFU3clZGR3RKMjJfNTIySDBBRTJSTTllN0htdEFSSUdKRElaMFp4V3k1Z2JmMWh3M1l3OVU4dkZPTkRGd2N1dFE",
-      "description": "INTELIGÊNCIA ARTIFICIAL | A polícia da Coreia do Sul anunciou neste domingo, 15, que abriu uma investigação após o candidato mais bem colocado em um exame nacional para contadores fiscais confessar que usou inteligência artificial para obter as res &nbsp;&nbsp; Instagram",
-      "imageUrl": null,
-      "source": "Instagram",
-      "publishedAt": "2026-11-15T14:12:22.000Z",
-      "firstSeenAt": "2026-11-15T22:05:19.527Z",
-      "lastSeenAt": "2026-11-16T02:01:58.651Z"
-    },
-    {
-      "id": "event-85bd3268",
-      "category": "mundo",
-      "title": "O que encontro histórico de Trump, Putin e Xi marcado para esta semana pode significar para o mundo?",
-      "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE9aVzNiWVFsTGxNaXhhc1V6dURtdGQtQ0xka3AxYUxESmREMlM1c1pFSG9Jamk0bGpfdERNYVB3eVktTW1od1FTQXRha0FJdmJLTFU4dzZHYUlJVlp3WHlfVlRvY9IBaEFVX3lxTFBGc2dHRTdIOHFpVmJCQlZBNWVlMHB5QlpfdExiaHQyOG4yeVdfNFFGcndFM3dHVWJWWW8tMVlVQ1hLN3AwMXdxY3kyNkZKMnlGSnNld0txUmN4NjQ4YU1pcVE5WWJkVjVk",
-      "description": "O que encontro histórico de Trump, Putin e Xi marcado para esta semana pode significar para o mundo? &nbsp;&nbsp; BBC",
-      "imageUrl": null,
-      "source": "BBC",
-      "publishedAt": "2026-11-15T13:56:08.000Z",
-      "firstSeenAt": "2026-11-15T17:31:39.401Z",
-      "lastSeenAt": "2026-11-15T17:31:39.401Z"
-    },
-    {
-      "id": "event-e827dbc1",
-      "category": "santa-catarina",
-      "title": "Semana será de chuva e temporais isolados em Santa Catarina",
-      "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxQdmlfU0NWaWRBWUc5WVRHVkJrR05UTE1EUi1fbFppWmJlNk81RHZ4OEo2ZzVfTFpBSmktYnhnRGR1N25UeC1JaDl2T1ZPc3UtNlVlNTFzTXdYaFp5bmNabHd0aU9zeWQ3bDBqVHhCSVRRaHQ1Y0ZfazJVVms5eWJFaG8zMWpmM0ZicGZpZk1FSm1QeVNxeG0wbW1BWWxPU3BqWEsySFFzS2tNZ081c0VUMG1jbXduQ240OFlCdDdQZUI",
-      "description": "Semana será de chuva e temporais isolados em Santa Catarina &nbsp;&nbsp; Diário do Iguaçu",
-      "imageUrl": null,
-      "source": "Diário do Iguaçu",
-      "publishedAt": "2026-11-15T13:46:00.000Z",
-      "firstSeenAt": "2026-11-15T17:31:39.401Z",
-      "lastSeenAt": "2026-11-15T22:05:19.527Z"
-    },
-    {
-      "id": "event-5be20e00",
-      "category": "clima",
-      "title": "El Niño mais intenso do século ajuda a explicar calor e chuvas acima da média em BH",
-      "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxNbzhvTlZ1NW9jYTg1eGlVUlZabUhGODlQY2R5b1ZRMEw3VGhfSVU2THhERUE2M3hBUlZuMFhJUjBuMWtnNUV6YlVuRzVISmlwWFJoZXp0ckd3aW84OXhfQzlZc1hjUlJCUllXRThZWWhBMXZUMUZXR0tuZE5tM2NKRU9UOFFaYjJJRDNrV2hncG8",
-      "description": "El Niño mais intenso do século ajuda a explicar calor e chuvas acima da média em BH &nbsp;&nbsp; BHAZ",
-      "imageUrl": null,
-      "source": "BHAZ",
-      "publishedAt": "2026-11-15T13:37:00.000Z",
-      "firstSeenAt": "2026-11-15T17:31:39.401Z",
-      "lastSeenAt": "2026-11-15T17:31:39.401Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-15T10:48:18.946Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 13,
-      "newArticles": 5,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "europa",
-        "africa"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
-    {
-      "at": "2026-11-15T17:31:39.401Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 13,
-      "newArticles": 13,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "europa"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-15T22:05:19.527Z",
       "ok": true,
@@ -559,18 +442,69 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-16T19:51:49.587Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 15,
+      "newArticles": 15,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "asia"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
-  "checkCount": 5,
-  "lastSuccessfulAt": "2026-11-16T09:37:07.058Z",
+  "checkCount": 4,
+  "lastSuccessfulAt": "2026-11-16T19:51:49.587Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-16T09:37:07.058Z",
+      "checkedAt": "2026-11-16T19:51:49.587Z",
       "warnings": [
         {
-          "id": "56420",
-          "title": "Ventos Costeiros",
+          "id": "56430",
+          "title": "Tempestade",
+          "severity": "Perigo",
+          "phase": "previsto",
+          "regions": [],
+          "startsAt": "2026-11-17T00:00:00.000Z",
+          "endsAt": "2026-11-17T00:00:00.000Z",
+          "source": "INMET",
+          "url": "https://avisos.inmet.gov.br/"
+        },
+        {
+          "id": "56432",
+          "title": "Tempestade",
+          "severity": "Perigo",
+          "phase": "previsto",
+          "regions": [],
+          "startsAt": "2026-11-18T00:00:00.000Z",
+          "endsAt": "2026-11-18T00:00:00.000Z",
+          "source": "INMET",
+          "url": "https://avisos.inmet.gov.br/"
+        },
+        {
+          "id": "56433",
+          "title": "Tempestade",
+          "severity": "Perigo",
+          "phase": "previsto",
+          "regions": [
+            "DO"
+          ],
+          "startsAt": "2026-11-18T00:00:00.000Z",
+          "endsAt": "2026-11-18T00:00:00.000Z",
+          "source": "INMET",
+          "url": "https://avisos.inmet.gov.br/"
+        },
+        {
+          "id": "56425",
+          "title": "Vendaval",
           "severity": "Perigo Potencial",
           "phase": "vigente",
           "regions": [
@@ -582,12 +516,14 @@
           "url": "https://avisos.inmet.gov.br/"
         },
         {
-          "id": "56418",
+          "id": "56428",
           "title": "Tempestade",
           "severity": "Perigo Potencial",
           "phase": "previsto",
           "regions": [
-            "DO"
+            "DO",
+            "DO",
+            "DE"
           ],
           "startsAt": "2026-11-17T00:00:00.000Z",
           "endsAt": "2026-11-17T00:00:00.000Z",
@@ -595,12 +531,11 @@
           "url": "https://avisos.inmet.gov.br/"
         },
         {
-          "id": "56419",
+          "id": "56429",
           "title": "Tempestade",
           "severity": "Perigo Potencial",
           "phase": "previsto",
           "regions": [
-            "DO",
             "DO"
           ],
           "startsAt": "2026-11-17T00:00:00.000Z",
@@ -612,7 +547,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-16T09:37:07.058Z",
+      "checkedAt": "2026-11-16T19:51:49.587Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
