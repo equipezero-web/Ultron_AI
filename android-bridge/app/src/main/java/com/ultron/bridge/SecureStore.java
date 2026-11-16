@@ -168,6 +168,7 @@ public final class SecureStore {
     }
 
     public static void clearPairing(Context context) {
+        RemoteFiles.disable(context);
         prefs(context).edit()
                 .remove(DEVICE_ID)
                 .remove(REMOTE_MIC_TRUSTED)
