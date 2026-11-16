@@ -54,7 +54,10 @@ function install() {
   const label=make("strong","◈  J.A.R.V.I.S.  /  ARQUIVOS DO CELULAR");
   const close=make("button","FECHAR","jarvis-phone-files-ghost");
   close.type="button";
-  close.addEventListener("click",()=>{panel.hidden=true;clearPreview();pin.value="";});
+  // Closing the visual overlay does not revoke an owner-approved session.
+  // The key stays in this tab memory only, never in localStorage, and is
+  // rejected immediately once Android REVOGAR ACESSO REMOTO is pressed.
+  close.addEventListener("click",()=>{panel.hidden=true;clearPreview();});
   header.append(label,close);
   panel.append(header);
   const note=make("p","Exibição sob comando: arquivos compartilhados do Android. Para autorizar, informe a chave e pressione Enter. Nenhum acesso a pastas privadas de outros apps e nenhum envio à IA.");
