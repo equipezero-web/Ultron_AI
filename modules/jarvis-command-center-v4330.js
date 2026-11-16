@@ -482,7 +482,8 @@ if (stage) {
         const pairingActions=[
           {label:'Conectar celular',run:()=>document.getElementById('btn-pair-mobile')?.click()},
           {label:'Conectar computador',run:()=>document.getElementById('btn-pair-desktop')?.click()},
-          {label:'Configurar TV',run:()=>document.getElementById('btn-pair-tv')?.click()}
+          {label:'Configurar TV',run:()=>document.getElementById('btn-pair-tv')?.click()},
+           {label:'Plugins permanentes',run:()=>window.JARVIS_ACCOUNT_PLUGIN_PANEL?.open?.()}
         ];
         if(!api?.listDevices){
           show('CENTRAL DE DISPOSITIVOS','Módulo de dispositivos não carregou. Atualize a página para carregar o controlador corrigido; nenhum pareamento foi presumido.',
@@ -505,7 +506,9 @@ if (stage) {
           const status = device.status !== 'active' ? 'desativado' : device.online === true ? 'online' : device.online === false ? 'offline' : 'estado desconhecido';
           return name + ' (' + (device.deviceType || 'tipo desconhecido') + ') — ' + status;
         }).join(' · ');
-        show('DISPOSITIVOS PAREADOS (' + devices.length + ')', summary, {label:'Atualizar lista',run:()=>actions.devices()});
+        show('DISPOSITIVOS PAREADOS (' + devices.length + ')', summary,
+           [{label:'Atualizar lista',run:()=>actions.devices()},
+            {label:'Plugins permanentes',run:()=>window.JARVIS_ACCOUNT_PLUGIN_PANEL?.open?.()}]);
       } catch (error) {
         show('CENTRAL DE DISPOSITIVOS', 'Não foi possível consultar o gateway: ' + (error?.message || 'falha de comunicação') + '.');
       }
