@@ -122,7 +122,7 @@ public final class RemoteFiles {
         String relative = remotePath.substring(index + 1);
         File root = roots.get(id);
         if (root == null || relative.startsWith("/") || relative.startsWith("\\") ||
-            relative.contains("\\") || relative.contains(":"))
+            relative.contains("\\") || relative.contains(":") || relative.contains("//"))
             throw new SecurityException("Volume não autorizado.");
         for (String segment : relative.split("/", -1)) {
             if ("..".equals(segment) || ".".equals(segment))
@@ -138,6 +138,13 @@ public final class RemoteFiles {
         String base = root.getCanonicalPath();
         if (!(absolute.equals(base) || absolute.startsWith(base + File.separator)))
             throw new SecurityException("Caminho fora do armazenamento autorizado.");
+        String canonicalRelative = absolute.substring(base.length()).toLowerCase(java.util.Locale.ROOT);
+        if (canonicalRelative.equals("/android/data") ||
+            canonicalRelative.startsWith("/android/data/") ||
+            canonicalRelative.equals("/android/obb") ||
+            canonicalRelative.startsWith("/android/obb/")) {
+            throw new SecurityException("Dados privados de outros aplicativos são protegidos.");
+        }
         return target.getCanonicalFile();
     }
 
