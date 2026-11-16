@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import {PUBLIC_WORLD_CAMERAS,validatePublicCamera,publicCameraEmbed,
  findPublicCameras,parseWorldCameraCommand,cameraDirectorySummary,
  WORLD_CAMERAS_SKYLINE_URL,WORLD_CAMERAS_ALTERNATIVE_ID,getWorldCameraAlternative,
+ getWesternWallPlayableAlternative,WESTERN_WALL_EARTHCAM_ID,WESTERN_WALL_EARTHCAM_YOUTUBE_URL,
+ WESTERN_WALL_OFFICIAL_CAMERAS_URL,
  WORLD_CAMERAS_CATALOGS,CAMERA_PROVIDER_NAMES,cameraProvider}
  from "../modules/jarvis-public-world-cameras-model.js";
 assert.ok(PUBLIC_WORLD_CAMERAS.length>=10);
@@ -54,6 +56,26 @@ assert.equal(skyline.name,"Jerusalém — Muro Ocidental");
 assert.equal(skyline.country,"Israel");
 assert.equal(skyline.publisher,"SkylineWebcams");
 assert.equal(skyline.embedId,null,"Live video belongs to webcam host; do not embed");
+const earthcam=getWesternWallPlayableAlternative(skyline);
+assert.ok(earthcam,"The exact Western Wall location should have an alternative view");
+assert.equal(earthcam.id,WESTERN_WALL_EARTHCAM_ID);
+assert.equal(earthcam.country,skyline.country);
+assert.equal(earthcam.city,skyline.city);
+assert.equal(earthcam.publisher,"EarthCam");
+assert.equal(earthcam.sourceUrl,WESTERN_WALL_EARTHCAM_YOUTUBE_URL);
+assert.equal(earthcam.embedId,"77akujLn4k8");
+assert.equal(validatePublicCamera(earthcam),true);
+assert.equal(publicCameraEmbed(earthcam),
+ "https://www.youtube-nocookie.com/embed/77akujLn4k8?autoplay=1&mute=1&playsinline=1&rel=0");
+assert.match(WESTERN_WALL_OFFICIAL_CAMERAS_URL,/^https:\/\/thekotel\.org\//);
+assert.equal(getWesternWallPlayableAlternative(earthcam),null,
+ "Different providers must not be treated as identical feeds");
+assert.equal(getWesternWallPlayableAlternative({id:"skyline-shanghai"}),null);
+assert.equal(validatePublicCamera({...earthcam,sourceUrl:"https://www.youtube.com/watch?v=AAAAAAAAAAA"}),false);
+assert.equal(validatePublicCamera({...earthcam,embedId:"AAAAAAAAAAA"}),false);
+assert.equal(validatePublicCamera({...earthcam,publisher:"SkylineWebcams"}),false);
+assert.equal(validatePublicCamera({...earthcam,id:"untrusted-youtube"}),false);
+
 assert.equal(publicCameraEmbed(skyline),null,"Skyline live video must remain link-only");
 assert.equal(validatePublicCamera(skyline),true);
 assert.equal(findPublicCameras({search:"jerusalem"}).length,1);
