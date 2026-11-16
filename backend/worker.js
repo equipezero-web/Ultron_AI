@@ -59,7 +59,7 @@ import {classifyConsultativeTurn,consultativeGuidance} from "./consultative-dial
 import {inspectPublicGitHubRepository,githubInspectionContext,contradictsVerifiedGitHubInspection,verifiedGitHubFallback} from "./github-public-inspector.js";
 import {authorizePrivateGitHub,privateGitHubHeaders,privateGitHubConfig,inspectPrivateGitHub,privateGitHubContext} from "./github-private-inspector.js";
 import {authorizeJarvisAccount,accountAccessConfig,accountAccessHeaders} from "./jarvis-account-access.js";
-import {accountPluginList,accountPluginInstall,executeAccountPlugin,accountPluginReceipt,accountPluginPairDevice} from "./jarvis-account-plugins.js";
+import {accountPluginList,accountPluginInstall,executeAccountPlugin,accountPluginReceipt,accountPluginPairDevice,revokeAccountPluginDevice} from "./jarvis-account-plugins.js";
 import { analyzeVisualFrame } from "./vision-analysis.js";
 import { getWebRtcIceServers, webRtcIceHealth } from "./webrtc-ice.js";
 import { loadLiveNewsContext, isGeneralNewsIntent, isLiveNewsIntent } from "./news-context.js";
@@ -1018,6 +1018,8 @@ async function handleAccountPlugins(request,env,path){
     data=await accountPluginReceipt(env,auth.accountId,body.commandId);
   else if(path==="/api/account/devices/pair")
     data=await accountPluginPairDevice(env,auth.accountId,body);
+  else if(path==="/api/account/devices/revoke")
+    data=await revokeAccountPluginDevice(env,auth.accountId,body);
   else data={ok:false,error:"unknown-account-route",status:404};
   return accountPluginsJson(request,env,data,data.ok?200:data.status||400);
 }
@@ -1114,7 +1116,8 @@ export default {
         "/api/account/plugins",
         "/api/account/plugins/execute",
         "/api/account/plugins/receipt",
-        "/api/account/devices/pair"
+        "/api/account/devices/pair",
+        "/api/account/devices/revoke"
       ].includes(path))return handleAccountPlugins(request,env,path);
       return accountPluginsJson(request,env,{ok:false,error:"unknown-account-route"},404);
     }
