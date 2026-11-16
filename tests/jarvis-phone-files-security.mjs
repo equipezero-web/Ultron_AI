@@ -34,7 +34,7 @@ assert.doesNotMatch(android,/\.delete\(|\.renameTo\(|FileOutputStream|Runtime\.g
 assert.match(bridge,/case "files.list":/);
 assert.match(bridge,/case "files.read":/);
 assert.match(bridge,/RemoteFiles\.execute\(this, command, payload\)/);
-assert.match(backend,/payload_json = CASE WHEN command LIKE 'files.%' THEN '\{\}'/);
+assert.match(backend,/payload_json = CASE WHEN command LIKE 'files.%' OR command = 'tv.link' THEN '\{\}'/);
 assert.match(gateway,/SET result_json = NULL/);
 assert.match(js,/ARQUIVOS DO CELULAR/);
 assert.match(js,/panel.hidden=true/);
