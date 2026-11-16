@@ -50,14 +50,6 @@ function display(title,message,actions=[]){
   output.scrollTop=output.scrollHeight;
   return true;
 }
-function authError(error){
- const code=short(error?.message||error);
- const auth=/account-login|account-not-allowed|origin-not-allowed|Failed to fetch|NetworkError/i.test(code);
- return auth?
-  "A conta ainda não está autenticada para os plugins. Configure a política Cloudflare Access "+
-  "e entre com o e-mail autorizado. Nenhuma ação foi executada. Diagnóstico: "+code:
-  "Não foi possível validar os plugins desta conta: "+code;
-}
 async function open(){
  const api=accountApi();
  if(!api?.list){display("PLUGINS / MÓDULO INDISPONÍVEL",
@@ -101,9 +93,19 @@ async function open(){
      devices.length+" dispositivo(s) vinculado(s), "+online.length+" online. "+
      "Cada ação exige um dispositivo pareado e permissões válidas. "+
      "Contas diferentes não compartilham acesso a aparelhos.",controls);
- }catch(error){display("PLUGINS / ACESSO NÃO CONFIRMADO",authError(error),[
-   {label:"Tentar novamente",run:open}
- ]);}
+ }catch(error){
+   const [description,status]=await Promise.all([
+     api.explainFailure?.(error)??Promise.resolve(
+       "A operação não foi confirmada; verifique a configuração de autenticação."),
+     api.diagnostics?.()??Promise.resolve(null)
+   ]);
+   const actions=[{label:"Tentar novamente",run:open}];
+   if(status?.accountSettingKnown&&status?.accountConfigured)
+     actions.unshift({label:"Entrar pelo Cloudflare Access",run:()=>api.openLogin?.()});
+   display(status?.accountSettingKnown&&!status.accountConfigured?
+     "PLUGINS / CONFIGURAÇÃO PENDENTE":"PLUGINS / ACESSO NÃO CONFIRMADO",
+     description,actions);
+ }
 }
 async function deviceMenu(id){
  const api=accountApi();
