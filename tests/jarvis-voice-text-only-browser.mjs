@@ -12,7 +12,7 @@ try{
   for (const [name,width,height] of [["phone",390,844],["notebook",1366,768],["tv",1920,1080]]) {
     page=await browser.newPage();
     await page.setViewport({width,height,deviceScaleFactor:1});
-    await page.goto("http://127.0.0.1:"+port+"/index.html",{waitUntil:"domcontentloaded",timeout:40000});
+    await page.goto("http://127.0.0.1:"+port+"/index.html?jarvisVoiceOnly=1",{waitUntil:"domcontentloaded",timeout:40000});
     await page.waitForFunction(()=>window.JARVIS_VOICE_TEXT_ONLY?.active&&
       window.JARVIS_COMMAND_CENTER?.active&&window.ULTRON_ORCHESTRATOR?.execute,
       {timeout:30000});
