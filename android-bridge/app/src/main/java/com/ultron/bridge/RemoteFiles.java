@@ -34,7 +34,7 @@ public final class RemoteFiles {
     private static final String KEY_CODE = "code";
     private static final String KEY_EXPIRES = "expires";
     public static final long SESSION_MS = 10 * 60_000L;
-    public static final int CHUNK_BYTES = 48 * 1024;
+    public static final int CHUNK_BYTES = 80 * 1024;
     private static final int PAGE_LIMIT = 100;
     private static final long MAX_REMOTE_TRANSFER_BYTES = 16L * 1024L * 1024L;
 
