@@ -1,0 +1,39 @@
+name: JARVIS Consultative Dialogue and Context Security
+on:
+  pull_request:
+    paths:
+      - "backend/consultative-dialogue.js"
+      - "backend/providers.js"
+      - "backend/planner.js"
+      - "backend/worker.js"
+      - "tests/jarvis-consultative-dialogue.mjs"
+      - ".github/workflows/jarvis-consultative-dialogue.yml"
+  push:
+    branches: [main]
+    paths:
+      - "backend/consultative-dialogue.js"
+      - "backend/providers.js"
+      - "backend/planner.js"
+      - "backend/worker.js"
+      - "tests/jarvis-consultative-dialogue.mjs"
+      - ".github/workflows/jarvis-consultative-dialogue.yml"
+permissions:
+  contents: read
+jobs:
+  consultative-dialogue:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate dialogue and Worker syntax
+        run: |
+          node --check backend/consultative-dialogue.js
+          node --check backend/providers.js
+          node --check backend/planner.js
+          node --check backend/worker.js
+          node --check tests/jarvis-consultative-dialogue.mjs
+      - name: Consultative continuity, strategy and action honesty contract
+        run: node tests/jarvis-consultative-dialogue.mjs

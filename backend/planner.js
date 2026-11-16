@@ -1,3 +1,5 @@
+import {classifyConsultativeTurn} from "./consultative-dialogue.js";
+
 const TOOL_POLICY = {
   "telemetry.read": { level: "auto", description: "Ler telemetria do próprio Ultron." },
   "memory.read": { level: "auto", description: "Consultar memória operacional autorizada." },
@@ -36,6 +38,12 @@ function step(id, title, tool = null, purpose = "") {
 }
 
 function detectIntent(text) {
+  // Match the same consultative understanding used by the response engine:
+  // a product-reference URL + "faça um para mim" is a PROJECT, not idle chat.
+  const dialogue=classifyConsultativeTurn(text);
+  if(dialogue.mode==="troubleshoot")return "troubleshoot";
+  if(["solution-design","strategy","decision"].includes(dialogue.mode))return "project";
+  if(dialogue.mode==="research")return "research";
   if (/\b(erro|bug|corrija|conserte|nao funciona|travando|falha|diagnostique|investigue)\b/.test(text)) return "troubleshoot";
   if (/\b(noticia|pesquise|pesquisa|fontes|descubra|investigue na internet|atual)\b/.test(text)) return "research";
   if (/\b(tv|televisao|celular|telefone|dispositivo|aplicativo|volume|microfone)\b/.test(text)) return "device";
