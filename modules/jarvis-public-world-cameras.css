@@ -116,3 +116,32 @@ body.jarvis-command-center .jarvis-worldcam-panel :focus-visible{
  body.jarvis-command-center .jarvis-worldcam-results{max-height:20%}
  body.jarvis-command-center .jarvis-worldcam-view{min-height:75px}
 }
+
+/* Opt-in public fallback. SkylineWebcams live video is link-only by publisher
+   policy; never hide provider ownership or treat selection as live verification. */
+body.jarvis-command-center .jarvis-worldcam-info .jarvis-worldcam-fallback{
+ min-height:44px;
+ display:inline-flex;
+ align-items:center;
+ box-sizing:border-box;
+ border:1px solid rgba(250,211,117,.7);
+ background:linear-gradient(110deg,rgba(104,71,19,.56),rgba(29,26,20,.9));
+ color:#ffdf99;
+ padding:8px 11px;
+ border-radius:8px;
+ font-size:11px;
+ font-weight:750;
+ touch-action:manipulation;
+}
+body.jarvis-command-center .jarvis-worldcam-info .jarvis-worldcam-playback-failed{
+ min-height:44px!important;
+ border:1px solid rgba(245,209,132,.7);
+ background:rgba(77,45,22,.87);
+ color:#ffedcc;
+ touch-action:manipulation;
+}
+body.jarvis-command-center .jarvis-worldcam-info .jarvis-worldcam-fallback:focus-visible,
+body.jarvis-command-center .jarvis-worldcam-info .jarvis-worldcam-playback-failed:focus-visible{
+ outline:2px solid #ffe0a2;
+ outline-offset:2px;
+}

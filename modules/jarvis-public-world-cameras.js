@@ -1,5 +1,6 @@
 import {PUBLIC_WORLD_CAMERAS, CAMERA_CATEGORY_NAMES, WORLD_CAMERAS_HOME,
- WORLD_CAMERAS_INTERNATIONAL, findPublicCameras, parseWorldCameraCommand,
+ WORLD_CAMERAS_INTERNATIONAL, WORLD_CAMERAS_ALTERNATIVE_ID,
+ getWorldCameraAlternative, findPublicCameras, parseWorldCameraCommand,
  publicCameraEmbed, cameraDirectorySummary} from "./jarvis-public-world-cameras-model.js";
 
 // Public third-party webcams only. Nothing here activates user/device cameras.
@@ -11,7 +12,7 @@ const make=(tag,cls,txt)=>{
 };
 let panel=null,queryField=null,countryField=null,categoryField=null,regionField=null;
 let results=null,player=null,screen=null,nowPlaying=null,notice=null,summary=null;
-let requested=false,selection=null,playing=false;
+let requested=false,selection=null,playing=false,userReportedFailure=null;
 function say(msg){
  if(!output)return;
  const line=make("p","","> [CÂMERAS MUNDIAIS] "+String(msg).slice(0,370));
@@ -28,12 +29,12 @@ function endPlayback(){
  if(screen)screen.hidden=false;
 }
 function hide(){
- requested=false;selection=null;endPlayback();
+ requested=false;selection=null;userReportedFailure=null;endPlayback();
  if(panel)panel.hidden=true;
  return {handled:true,ok:true,closed:true};
 }
 function choose(camera,{autoPlay=false}={}){
- selection=camera;endPlayback();
+ selection=camera;userReportedFailure=null;endPlayback();
  if(!camera){notice.textContent="Escolha uma câmera pública para consultar a fonte.";return;}
  notice.replaceChildren();
  const meta=make("span","",
@@ -46,8 +47,22 @@ function choose(camera,{autoPlay=false}={}){
   notice.append(action);
  }else{
   notice.append(make("span","jarvis-worldcam-hint",
-   "O catálogo não forneceu um player incorporável confirmado. "+
-   "Abra a fonte para conferir a transmissão; nenhum vídeo será inventado."));
+   camera.id===WORLD_CAMERAS_ALTERNATIVE_ID?
+    "A SkylineWebcams permite compartilhar este link, mas não incorporar "+
+    "seu vídeo ao vivo em sites de terceiros. Abra a página do provedor para assistir.":
+    "O catálogo não forneceu um player incorporável confirmado. "+
+    "Abra a fonte para conferir a transmissão; nenhum vídeo será inventado."));
+ }
+ // When one provider's player is blocked/unavailable, offer an actual
+ // additional public source without silently changing the selected location.
+ const alternative=getWorldCameraAlternative();
+ if(alternative&&camera.id!==alternative.id){
+  const hint=make("span","jarvis-worldcam-hint",
+   "Se esta transmissão falhar, há outra câmera pública em JERUSALÉM "+
+   "(local diferente), hospedada na SkylineWebcams:");
+  const link=safeLink(alternative.sourceUrl,"ALTERNATIVA · JERUSALÉM / MURO OCIDENTAL");
+  link.classList.add("jarvis-worldcam-fallback");
+  notice.append(hint,link);
  }
  if(autoPlay&&camera.embedId)startPlayback(camera);
 }
@@ -57,10 +72,24 @@ function startPlayback(camera){
  if(!url)return {ok:false,reason:"EMBED_UNAVAILABLE"};
  player.src=url;player.title="Webcam de "+camera.name+" · provedor "+camera.publisher;
  player.hidden=false;screen.hidden=true;nowPlaying=camera;playing=true;
+ userReportedFailure=null;
  const n=make("span","jarvis-worldcam-hint",
    " Reprodução solicitada ao provedor. Não é possível comprovar automaticamente "+
    "se o sinal está ao vivo ou se o provedor bloqueou a incorporação.");
- notice.append(n);
+ const failure=make("button","jarvis-worldcam-playback-failed",
+   "VÍDEO FALHOU / INDISPONÍVEL");
+ failure.type="button";
+ failure.addEventListener("click",()=>{
+  if(!selection||camera.id!==selection.id)return;
+  // User report, NOT an automatic determination that the source is offline.
+  userReportedFailure=camera.id;
+  endPlayback();
+  notice.querySelectorAll(".jarvis-worldcam-playback-failed").forEach(node=>node.remove());
+  notice.append(make("span","jarvis-worldcam-hint",
+   "Reprodução encerrada após seu aviso. A disponibilidade do provedor não foi verificada. "+
+   "Você pode abrir a fonte original ou a câmera alternativa de Jerusalém."));
+ });
+ notice.append(n,failure);
  return {ok:true,requested:true,liveVerified:false};
 }
 function optionList(select,entries){
@@ -148,7 +177,8 @@ function render(){
   button.type="button";button.setAttribute("aria-pressed",String(c.id===selection?.id));
   button.append(make("strong","",c.name),
    make("small","",c.city+" · "+c.country+" · "+CAMERA_CATEGORY_NAMES[c.category]),
-   make("small","",c.embedId?"Player publicado no catálogo":"Somente fonte catalogada"));
+   make("small","",c.embedId?"Player publicado no catálogo":
+    c.id===WORLD_CAMERAS_ALTERNATIVE_ID?"SkylineWebcams · acesso no provedor":"Somente fonte catalogada"));
   button.addEventListener("click",()=>{choose(c);render();});
   results.append(button);
  }
@@ -198,7 +228,9 @@ function stop(){
 }
 window.ULTRON_WORLD_CAMERAS={parse,execute,open,search,hide,status,stop,
  get state(){return {open:requested,selected:selection?.id||null,
-  playerRequested:playing,liveVerified:false,playing:nowPlaying?.id||null};}};
+  playerRequested:playing,liveVerified:false,playing:nowPlaying?.id||null,
+  userReportedFailure:userReportedFailure||null,
+  alternativeSource:getWorldCameraAlternative()?.sourceUrl||null};}};
 window.addEventListener("ultron:emergency-stop",stop);
 const strip=document.querySelector(".quick-actions");
 if(strip&&!document.getElementById("btn-world-public-cameras")){

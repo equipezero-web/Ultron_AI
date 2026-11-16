@@ -34,9 +34,47 @@ try{
  }));
  assert.equal(stream.hidden,false);
  assert.equal(stream.src,"https://www.youtube-nocookie.com/embed/ojTrjv9QxM8?autoplay=1&mute=1&playsinline=1&rel=0");
+ const fallback=await page.$eval(".jarvis-worldcam-fallback",a=>({
+   href:a.href,target:a.target,rel:a.rel,label:a.textContent,
+   minHeight:getComputedStyle(a).minHeight
+ }));
+ assert.equal(fallback.href,
+  "https://www.skylinewebcams.com/en/webcam/israel/jerusalem-district/jerusalem/western-wall.html");
+ assert.equal(fallback.target,"_blank");
+ assert.match(fallback.rel,/noopener/);
+ assert.match(fallback.label,/JERUSALÉM/);
+ assert.equal(parseFloat(fallback.minHeight)>=44,true);
+ const failure=await page.$(".jarvis-worldcam-playback-failed");
+ assert.ok(failure,"Users need an explicit failure/unavailable action without fake automatic status");
+ await page.click(".jarvis-worldcam-playback-failed");
+ const failed=await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.state);
+ assert.equal(failed.userReportedFailure,"recife-airport");
+ assert.equal(failed.playerRequested,false);
+ assert.equal(await page.$(".jarvis-worldcam-view iframe[src]"),null,
+  "Failed external stream must immediately stop loading");
+ assert.equal(await page.$eval(".jarvis-worldcam-fallback",a=>a.href),
+  fallback.href,"Jerusalem fallback remains accessible after user-confirmed failure");
+ await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.open({
+  cameraId:"jerusalem-western-wall"
+ }));
+ assert.equal(await page.$(".jarvis-worldcam-view iframe[src]"),null,
+  "SkylineWebcams live feed cannot be embedded by a third-party website");
+ assert.equal(await page.$(".jarvis-worldcam-play"),null,
+  "Do not offer unsupported live player for Skyline source");
+ assert.equal(await page.$eval(".jarvis-worldcam-info .jarvis-worldcam-source",a=>a.href),
+  fallback.href);
+ assert.match(await page.$eval(".jarvis-worldcam-info",n=>n.textContent),
+  /não incorporar/i);
+ assert.equal(await page.$(".jarvis-worldcam-fallback"),null,
+  "The Jerusalem page cannot offer itself as the fallback");
+ const jerusalem=await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.state);
+ assert.equal(jerusalem.selected,"jerusalem-western-wall");
+ assert.equal(jerusalem.playerRequested,false);
+ assert.equal(jerusalem.liveVerified,false);
  const flags=await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.state);
  assert.equal(flags.liveVerified,false,"Never assert playback verifies live availability");
- assert.equal(flags.playerRequested,true);
+ assert.equal(flags.playerRequested,false,
+  "Stream was stopped when user reported playback failure");
  const sourceOnly=await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.open({cameraId:"serra-rastro"}));
  assert.equal(sourceOnly.ok,true);
  assert.equal(await page.$(".jarvis-worldcam-view iframe[src]"),null,

@@ -1,4 +1,6 @@
 // Public-camera index: curated publisher pages and embeddable YouTube streams.
+// SkylineWebcams permits shared links, but only camera hosts may embed live
+// video. Its Jerusalem page must therefore remain source-link-only.
 // A catalog listing is NOT proof the feed is currently on-air.
 // Only official public listing URLs; never RTSP/IP-camera scanning or private feeds.
 const entry=(id,name,city,country,region,category,sourceUrl,publisher,embedId=null)=>Object.freeze({
@@ -33,12 +35,23 @@ export const PUBLIC_WORLD_CAMERAS=Object.freeze([
  entry("tembe-elephants","Tembe Elephant Park — fauna","Emangusi","África do Sul","África","natureza",
   "https://africam.com/lodge/tembe-elephant-park/","Africam"),
  entry("taronga-zoo","Elefantes — Zoológico Taronga","Sydney","Austrália","Oceania","natureza",
-  "https://camerasdomundo.com/elefantes-zoologico-sydney-ao-vivo/","Taronga Zoo")
+  "https://camerasdomundo.com/elefantes-zoologico-sydney-ao-vivo/","Taronga Zoo"),
+ entry("jerusalem-western-wall","Jerusalém — Muro Ocidental","Jerusalém","Israel","Ásia","cidades",
+  "https://www.skylinewebcams.com/en/webcam/israel/jerusalem-district/jerusalem/western-wall.html",
+  "SkylineWebcams")
 ]);
 export const CAMERA_CATEGORY_NAMES=Object.freeze({
  cidades:"Cidades",aeroportos:"Aeroportos",praias:"Praias",
  portos:"Portos",estradas:"Estradas",natureza:"Natureza"
 });
+// Explicit, geographically different alternative. Never auto-substitute
+// Jerusalem for an unavailable camera in another city.
+export const WORLD_CAMERAS_ALTERNATIVE_ID="jerusalem-western-wall";
+export const WORLD_CAMERAS_SKYLINE_URL=
+ "https://www.skylinewebcams.com/en/webcam/israel/jerusalem-district/jerusalem/western-wall.html";
+export const getWorldCameraAlternative=()=>PUBLIC_WORLD_CAMERAS.find(
+ c=>c.id===WORLD_CAMERAS_ALTERNATIVE_ID
+)||null;
 export const WORLD_CAMERAS_HOME="https://camerasdomundo.com/";
 export const WORLD_CAMERAS_INTERNATIONAL="https://camerasdomundo.com/en/";
 const plain=s=>String(s??"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
@@ -51,7 +64,12 @@ export function validatePublicCamera(camera){
   typeof camera.country!=="string"||typeof camera.publisher!=="string")return false;
  try{
   const url=new URL(camera.sourceUrl);
-  if(url.protocol!=="https:"||!["camerasdomundo.com","africam.com"].includes(url.hostname)||
+  const recognized=["camerasdomundo.com","africam.com"].includes(url.hostname);
+  // Exact published Skyline page ONLY, not an arbitrary stream or host path.
+  const skyline=url.href===WORLD_CAMERAS_SKYLINE_URL&&
+   camera.id===WORLD_CAMERAS_ALTERNATIVE_ID&&
+   camera.embedId===null&&camera.publisher==="SkylineWebcams";
+  if(url.protocol!=="https:"||(!recognized&&!skyline)||
    url.username||url.password||url.port)return false;
  }catch{return false;}
  return camera.embedId===null||/^[a-zA-Z0-9_-]{11}$/.test(camera.embedId);
@@ -91,5 +109,5 @@ export function cameraDirectorySummary(){
  const countries=[...new Set(PUBLIC_WORLD_CAMERAS.map(c=>c.country))].sort();
  const regions=[...new Set(PUBLIC_WORLD_CAMERAS.map(c=>c.region))];
  return {indexed:PUBLIC_WORLD_CAMERAS.length,countries,regions,embedded:PUBLIC_WORLD_CAMERAS.filter(c=>c.embedId).length,
-  liveVerified:0,source:"Câmeras do Mundo / Africam — catálogos públicos externos"};
+  liveVerified:0,source:"Câmeras do Mundo / Africam / SkylineWebcams — fontes públicas externas"};
 }
