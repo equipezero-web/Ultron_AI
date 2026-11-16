@@ -1,4 +1,5 @@
 import API_CONFIG from "../config.js";
+import {registerForecast,renderEvidenceDetails} from "./jarvis-data-intelligence.js?v=5.36.0";
 import {SPATIAL_LAYERS,loadSpatialIntensity,spatialSummary} from "./jarvis-spatial-intensity.js?v=4.90.0";
 import {globalWeatherScenario} from "./jarvis-global-weather.js?v=4.82.0";
 import {searchGlobalLocations,loadGlobalWeather} from "../backend/weather-global.js?v=4.74.0";
@@ -812,6 +813,10 @@ if(stage){
      placeInput.value=response.location.label;
      daysChoice.value=String(days);
      placeResults.textContent="Previsão atualizada: "+response.fetchedAt;
+     const evidence=registerForecast(response);
+     const detail=evidence?renderEvidenceDetails(evidence):null;
+     if(detail)placeResults.append(detail);
+     else placeResults.append(document.createTextNode(" · Relatório de origem indisponível; não houve validação da procedência."));
      return result;
    }catch(error){
      if(key===seq)placeResults.textContent=error?.message||"Não foi possível consultar o clima";
