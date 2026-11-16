@@ -250,7 +250,13 @@ function init(){
  }
  panel.append(header,archiveList,detail);
  center.append(panel);
- if(!document.body.classList.contains("jarvis-voice-output-disabled"))makeButton("FALAR","speak",speak);
+ makeButton("FALAR","speak",speak);
+ if(document.body.classList.contains("jarvis-voice-output-disabled")){
+  buttons.speak.dataset.requiresEngine="false";
+  buttons.speak.disabled=true;
+  buttons.speak.title="Voz desativada pelo operador";
+  buttons.speak.setAttribute("aria-disabled","true");
+ }
  makeButton("ÁUDIO VISUAL","microphone",toggleAudio);
  makeButton("SOBRECARGA TÁTICA","overdrive",toggleOverdrive);
  const expand=makeButton("REDOMA & ARQUIVOS","expand",toggleArchive);
