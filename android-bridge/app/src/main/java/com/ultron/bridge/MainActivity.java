@@ -375,6 +375,9 @@ public class MainActivity extends Activity {
                 );
 
                 String deviceId = response.getString("deviceId");
+                // A new pairing may represent a different operator: never carry
+                // permanent Filespace authorization into the new identity.
+                RemoteFiles.disable(this);
                 SecureStore.saveDeviceId(this, deviceId);
 
                 runOnUiThread(() -> {
