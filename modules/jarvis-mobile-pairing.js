@@ -61,15 +61,23 @@ function installVisibleMobilePairing() {
   slot.prepend(panel);
 
   let lastCode = "";
+  let expiresAt = 0;
   let busy = false;
   async function pair() {
     if (busy) return;
+    if (lastCode && Date.now() < expiresAt - 5000) {
+      result.hidden = false;
+      copy.hidden = false;
+      status.textContent = "Código ainda válido. Digite os 6 números no aplicativo e toque em VINCULAR ESTE CELULAR. Não é necessário gerar outro código.";
+      return;
+    }
     busy = true;
     generate.disabled = true;
     result.hidden = true;
     copy.hidden = true;
     lastCode = "";
-    status.textContent = "Consultando gateway e gerando código...";
+    expiresAt = 0;
+    status.textContent = "Consultando gateway e gerando código para recuperar este celular...";
     try {
       const api = window.ULTRON_DEVICES;
       if (typeof api?.startPairing !== "function") {
@@ -80,15 +88,17 @@ function installVisibleMobilePairing() {
       const normalized = /^\d{1,6}$/.test(raw) ? raw.padStart(6, "0") : raw;
       if (!/^\d{6}$/.test(normalized)) throw new Error("Gateway não retornou um código válido.");
       lastCode = normalized;
+      const lifetime = Number(response?.expiresInSeconds) || 600;
+      expiresAt = Date.now() + Math.max(30, Math.min(600, lifetime)) * 1000;
+      window.ULTRON_MOBILE_LINK?.adoptPairingCode?.(normalized, lifetime);
       codeValue.textContent = normalized;
       result.hidden = false;
       copy.hidden = false;
       const minutes = Math.max(1, Math.ceil((Number(response?.expiresInSeconds) || 600) / 60));
       status.textContent = "Válido por aproximadamente " + minutes +
-        " min. No aplicativo Android, insira o código e toque em VINCULAR ESTE CELULAR.";
-      document.getElementById("bridge-session-state")?.replaceChildren(
-        document.createTextNode("CÓDIGO GERADO")
-      );
+        " min. No Android, digite o código em PAREAMENTO e toque em VINCULAR ESTE CELULAR. Depois, verifique a conexão Cloud no aplicativo.";
+      const sessionLabel = document.getElementById("bridge-session-state");
+      if (sessionLabel) sessionLabel.textContent = "CODE " + normalized;
     } catch (error) {
       status.textContent = "Não foi possível parear: " + String(error?.message || error);
     } finally {
@@ -123,6 +133,28 @@ function installVisibleMobilePairing() {
       panel.scrollIntoView({ behavior: "smooth", block: "center" });
       void pair();
     });
+  }
+  // Route clicks on the old COMPUTADOR ↔ CELULAR button through the same
+  // recovery flow. Capture before other modules so stale handlers cannot say
+  // "already paired / offline" and block the operator from getting a code.
+  // Never intercept other buttons or silently create pairing sessions.
+  if (!document.__jarvisLegacyPairingCapture && typeof document.addEventListener === "function") {
+    document.__jarvisLegacyPairingCapture = true;
+    const isLegacy = event => {
+      const target = event?.target;
+      return target?.id === "btn-pair-mobile" ||
+        target?.closest?.("#btn-pair-mobile") != null;
+    };
+    document.addEventListener("pointerdown", event => {
+      if (isLegacy(event)) event.stopImmediatePropagation?.();
+    }, true);
+    document.addEventListener("click", event => {
+      if (!isLegacy(event)) return;
+      event.preventDefault?.();
+      event.stopImmediatePropagation?.();
+      panel.scrollIntoView({ behavior: "smooth", block: "center" });
+      void pair();
+    }, true);
   }
 }
 
