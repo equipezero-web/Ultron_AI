@@ -97,17 +97,24 @@ export async function executeAccountPlugin(env,accountId,input={}){
  ).bind(accountId,input.pluginId).first();
  if(installed?.enabled!==1)return error("plugin-not-installed",403);
  const devices=await listDevices(env,accountId);
- const device=devices.find(d=>d.id===safe.deviceId&&d.deviceType==="mobile"&&
-   d.status==="active"&&d.online);
+ const device=devices.find(d=>d.id===safe.deviceId&&
+   ["mobile","desktop"].includes(d.deviceType)&&d.status==="active"&&d.online);
  if(!device)return error("account-device-offline-or-not-paired",403);
- if(!device.capabilities?.includes(safe.requiredCapability))
+ let command=safe.command,payload=safe.payload,required=safe.requiredCapability;
+ if(device.deviceType==="desktop"){
+   if(input.actionId==="youtube.open")payload={url:"https://www.youtube.com"};
+   else if(input.actionId==="calendar.open")payload={url:"https://calendar.google.com/calendar/u/0/r"};
+   else return error("plugin-action-not-available-on-desktop",409);
+   command="desktop.open.url";required="desktop.open.url";
+ }
+ if(!device.capabilities?.includes(required))
    return error("device-capability-missing-repair-bridge",409);
  const queued=await enqueueControlCommand(env,{operatorId:accountId,deviceId:safe.deviceId,
-   deviceType:"mobile",command:safe.command,payload:safe.payload});
+   deviceType:device.deviceType,command,payload});
  if(!queued.ok)return error("device-queue-rejected",409);
  return {ok:true,status:"queued",commandId:queued.commandId,deviceId:safe.deviceId,
    actionId:input.actionId,
-   note:safe.command==="calendar.create"?
+   note:command==="calendar.create"?
      "O Android exigirá confirmar e salvar o evento na agenda.":
      "O Android pode exigir toque na notificação para abrir o aplicativo."};
 }
