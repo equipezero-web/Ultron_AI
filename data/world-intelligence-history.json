@@ -4,10 +4,82 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-16T02:01:58.651Z",
-  "oldestEventAt": "2026-11-15T05:00:00.000Z",
-  "windowStartAt": "2026-11-15T02:01:58.651Z",
+  "updatedAt": "2026-11-16T09:37:07.058Z",
+  "oldestEventAt": "2026-11-15T13:37:00.000Z",
+  "windowStartAt": "2026-11-15T09:37:07.058Z",
   "events": [
+    {
+      "id": "event-a7ca74a3",
+      "category": "santa-catarina",
+      "title": "Segunda-feira tem variação de nuvens e chuva ocasional no Litoral de SC",
+      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQMl9xWjJlbVVzeE00TjRzc2RNWk93ZXdJM1VfaU9uZHhKell0MkhjUWswUkN2Q21lRnB1OE85MTgxSkt3dXhUSnpaLUZ1UmlsbVNDekpWOHdrVHJRQnBuZ1p5OTYxSWNnY1NJdTFCRTNmUEMzRXlXdS1FcU50bE4zWW4wVEZ1clNtZTdyU3VxMmN3OEdOZ29uNDF4N1l6MVE1U01UWVBsajRoTDc2",
+      "description": "Segunda-feira tem variação de nuvens e chuva ocasional no Litoral de SC &nbsp;&nbsp; No Ponto SC",
+      "imageUrl": null,
+      "source": "No Ponto SC",
+      "publishedAt": "2026-11-16T09:28:51.000Z",
+      "firstSeenAt": "2026-11-16T09:37:07.058Z",
+      "lastSeenAt": "2026-11-16T09:37:07.058Z"
+    },
+    {
+      "id": "event-354b4a3e",
+      "category": "brasil",
+      "title": "O que você precisa saber para começar o dia",
+      "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNY0l4SjEtMXM2aHAzMEFvZ1RaR3NhWldXZWE0SWZMc29EcFdCZS0xeE9XS0YycGh3cnpjWE1ER1J1eUsxd0NUSFFKQ2g3VkZaN05YZ01SdnV0WXh0N0h6RlZPRjVwQk9vZm1DVjNlV0toenZLcDJ0VDhQQ09VM0xGTFlQaERVd2VnZDRxWUxyV2FLZVBKb2FF",
+      "description": "O que você precisa saber para começar o dia &nbsp;&nbsp; Rádio Metrópole",
+      "imageUrl": null,
+      "source": "Rádio Metrópole",
+      "publishedAt": "2026-11-16T09:00:00.000Z",
+      "firstSeenAt": "2026-11-16T09:37:07.058Z",
+      "lastSeenAt": "2026-11-16T09:37:07.058Z"
+    },
+    {
+      "id": "event-306a61c0",
+      "category": "mundo",
+      "title": "Jogos de hoje: quem joga no futebol e onde assistir ao vivo – segunda-feira (16/11/2026)",
+      "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxOYUZ2TzY2YzRabDRNMFBSMmFkMml3TWtEOHV4Smd5eTU3bjlGamw3QXBhRFpWVWhBcXFJR296RzdhRmRBVEJYY2hCX2ZYSU9NSERIYzhIS2ZIckdjbVQ0eE5VMTgxOFRCX0tBd3lTRWhtc2x1S2htbG9xdHJuTEdqa0tXRE5NbnZaOHJURWZzN0pPVkxBNGMyRGhpYnZ5QVBJZWl0SG9hZkdGUmUxMmxYQ2VpLU1PQWZuaU5ldm80UmdpdE5Mcnc",
+      "description": "Jogos de hoje: quem joga no futebol e onde assistir ao vivo – segunda-feira (16/11/2026) &nbsp;&nbsp; LANCE!",
+      "imageUrl": null,
+      "source": "LANCE!",
+      "publishedAt": "2026-11-16T09:00:00.000Z",
+      "firstSeenAt": "2026-11-16T09:37:07.058Z",
+      "lastSeenAt": "2026-11-16T09:37:07.058Z"
+    },
+    {
+      "id": "event-2704556",
+      "category": "mundo",
+      "title": "China confirma encontro trilateral entre Xi, Trump e Putin",
+      "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxNSmZGZHR2N3NHdkY1MTdjb2xSMjdFNEtOZmt6M3cwU3lFZFhRbGdjSno5YnFUVHhfUzhwYVYtMnZSZ052b0YyQXljOHJySGZ1b3ZscVE3SF8wUUIwMXFtZHZSLU81SFN1LTNFWE5nbUY4MGh0MHNkd3NEbm1CUlpNZzQyNjlMVWZUNVhHOGNWLTdjYU52a1lDMFFSZmtMbWc",
+      "description": "China confirma encontro trilateral entre Xi, Trump e Putin &nbsp;&nbsp; SBT News",
+      "imageUrl": null,
+      "source": "SBT News",
+      "publishedAt": "2026-11-16T08:42:11.000Z",
+      "firstSeenAt": "2026-11-16T09:37:07.058Z",
+      "lastSeenAt": "2026-11-16T09:37:07.058Z"
+    },
+    {
+      "id": "event-d164ac9c",
+      "category": "brasil",
+      "title": "A história por trás dos carrés de seda da Hermès, estrelas da coleção de inverno da maison que acaba de chegar ao Brasil",
+      "url": "https://news.google.com/rss/articles/CBMiigJBVV95cUxOUnJ3VnM1SGQzX1NGdm9jekw3ZHlQWi1INENGVVRsendFOVBWRUZaT20xXzJIQ1ZDaURjeTJSX0lTT1BfbDhINmYyTVhSSV9xaDYyaXpVSUctUXZNcWNYRXk0SVhET0VjdnhBVDhTQlB5ZjdqNEZKUXYwWnlxUUYxNlZldW5WS0Qwd25pQWI0ZlhNbDdZRWpfR2V0LTZXXzU4dUdLT1VfanVHUnJNQXp2ZUFzQThFVEJFcTFJVnJJV2g1NUl4a3JVUk1iZkRMRFV1TWVxSzZBay1aMDREck4zbDhKeklhanBaeHR3cWhDU3JhZy0xSjl6Q1VCM09XODVHc2RaLW1wTVRwQdIBmAJBVV95cUxPUUhNSkFJQjdGNEdncVVmcG1fQjlKN1ZWSjdfMlBQMmQ3UlVHYV96eU5SaXVLYUdGVnZnRFgxOWFWVzFwOC05MWVDN3NGRkplU1BMWDU5MXRYQmdyZUlHdUhjaVg1R0lBcjVYb3BuLU5zdXhoeVVFMVZUUW5Mbk9iZDBrRE45aE5IaEtROFdlekljSEEzWlltMkxvb2R5bnB2Z2xVTTFnRHpsMHRqQXEyTWd4SUhMUGxNLVBlTFhSd1UxZzNQdTBTOE5RQkFoSGJIam9pUzZHUUtSSEgxZjRYSnJzOUk2R3AzTDRuZXl6Vng1UzZsU2tqYV9ZVGFiQXpXYktmLVZHQXJiVHpQVThza284bmNJNm9N",
+      "description": "A história por trás dos carrés de seda da Hermès, estrelas da coleção de inverno da maison que acaba de chegar ao Brasil &nbsp;&nbsp; O GLOBO",
+      "imageUrl": null,
+      "source": "O GLOBO",
+      "publishedAt": "2026-11-16T07:00:00.000Z",
+      "firstSeenAt": "2026-11-16T09:37:07.058Z",
+      "lastSeenAt": "2026-11-16T09:37:07.058Z"
+    },
+    {
+      "id": "event-376a23ad",
+      "category": "brasil",
+      "title": "Bosch negocia motores elétricos feitos no Brasil com 7 montadoras",
+      "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxQb0dvSENHVjNzSXlCaWhZLTRsWmtlalFzcm9FV3hVN0M2eHl0Y3kzNVhnM3kySnAwTXlZOWZSbE13bDc3Ym1KU1JiOEFjeTF3LW9mY1dyTlpQMGUxSFJlaFVHamY2ZWFGRHNGTnd2M3lraHJ5b3o5SzZEY1lUT2pyYW9BS2xuZDNDWF9rT2NkWG41enhYMlFHS19iVWlPWG9RS3lzcVN5emxPS3BJdFFrb2k1WE9tNVlzZ1RZM05RRXY5VmhwdXV3bzlLcUxXVEpWSVpuTnlscV8xeVk",
+      "description": "Bosch negocia motores elétricos feitos no Brasil com 7 montadoras &nbsp;&nbsp; Estadão",
+      "imageUrl": null,
+      "source": "Estadão",
+      "publishedAt": "2026-11-16T06:40:44.000Z",
+      "firstSeenAt": "2026-11-16T09:37:07.058Z",
+      "lastSeenAt": "2026-11-16T09:37:07.058Z"
+    },
     {
       "id": "event-234d9e36",
       "category": "santa-catarina",
@@ -54,7 +126,7 @@
       "source": "Tribuna do Sertão",
       "publishedAt": "2026-11-16T00:17:58.000Z",
       "firstSeenAt": "2026-11-16T02:01:58.651Z",
-      "lastSeenAt": "2026-11-16T02:01:58.651Z"
+      "lastSeenAt": "2026-11-16T09:37:07.058Z"
     },
     {
       "id": "event-dc83c878",
@@ -126,7 +198,7 @@
       "source": "UOL Notícias",
       "publishedAt": "2026-11-15T20:29:53.000Z",
       "firstSeenAt": "2026-11-15T22:05:19.527Z",
-      "lastSeenAt": "2026-11-16T02:01:58.651Z"
+      "lastSeenAt": "2026-11-16T09:37:07.058Z"
     },
     {
       "id": "event-fc98d2bb",
@@ -150,7 +222,7 @@
       "source": "GMC Online",
       "publishedAt": "2026-11-15T19:35:00.000Z",
       "firstSeenAt": "2026-11-15T22:05:19.527Z",
-      "lastSeenAt": "2026-11-15T22:05:19.527Z"
+      "lastSeenAt": "2026-11-16T09:37:07.058Z"
     },
     {
       "id": "event-937a9bca",
@@ -198,7 +270,7 @@
       "source": "Diário do Iguaçu",
       "publishedAt": "2026-11-15T19:22:00.000Z",
       "firstSeenAt": "2026-11-15T22:05:19.527Z",
-      "lastSeenAt": "2026-11-16T02:01:58.651Z"
+      "lastSeenAt": "2026-11-16T09:37:07.058Z"
     },
     {
       "id": "event-2767a063",
@@ -246,7 +318,7 @@
       "source": "Folha Regional",
       "publishedAt": "2026-11-15T18:00:33.000Z",
       "firstSeenAt": "2026-11-15T22:05:19.527Z",
-      "lastSeenAt": "2026-11-16T02:01:58.651Z"
+      "lastSeenAt": "2026-11-16T09:37:07.058Z"
     },
     {
       "id": "event-4b26cf3d",
@@ -258,7 +330,7 @@
       "source": "Santa Catarina em Pauta",
       "publishedAt": "2026-11-15T17:00:00.000Z",
       "firstSeenAt": "2026-11-15T17:31:39.401Z",
-      "lastSeenAt": "2026-11-15T22:05:19.527Z"
+      "lastSeenAt": "2026-11-16T09:37:07.058Z"
     },
     {
       "id": "event-7f3810dd",
@@ -270,7 +342,7 @@
       "source": "Brasil Escola",
       "publishedAt": "2026-11-15T16:56:18.000Z",
       "firstSeenAt": "2026-11-15T17:31:39.401Z",
-      "lastSeenAt": "2026-11-15T22:05:19.527Z"
+      "lastSeenAt": "2026-11-16T09:37:07.058Z"
     },
     {
       "id": "event-8ba8dcbc",
@@ -403,85 +475,9 @@
       "publishedAt": "2026-11-15T13:37:00.000Z",
       "firstSeenAt": "2026-11-15T17:31:39.401Z",
       "lastSeenAt": "2026-11-15T17:31:39.401Z"
-    },
-    {
-      "id": "event-634f7d68",
-      "category": "clima",
-      "title": "Primavera 2026: confira a previsão para a estação",
-      "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxPdTBNX0o0dVdtODYxRllHMVFsV0M1Q19KS0FqekdfSjFDZ1V3OEVkV29yT0N1Tm5za29SVEdjYVpXZzB2TktZX2Nqd21ZSktvVlhjd2NnSEJBWFdkU255eGFKSVVrT3ktUHVpNG53UnA5N1FPR09BUy1pR3VPZDdKYlN5YVFrZDR5bTd0eXpJaEhvd2h4WkRJdnJ5R1ZZV2RyZXc",
-      "description": "Primavera 2026: confira a previsão para a estação &nbsp;&nbsp; INMET",
-      "imageUrl": null,
-      "source": "INMET",
-      "publishedAt": "2026-11-15T09:36:57.000Z",
-      "firstSeenAt": "2026-11-15T17:31:39.401Z",
-      "lastSeenAt": "2026-11-15T17:31:39.401Z"
-    },
-    {
-      "id": "event-4175c731",
-      "category": "mundo",
-      "title": "Lucas Pinheiro Braathen: qual a importância do título geral da Copa do Mundo de Esqui Alpino?",
-      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxOZDJEQ0wtZXo3ZktodlhJd0U5X3hZT0xzaHhvQWZwVW03R3ZRcUNPaVo2dmI5YVRPVnU1WEVqeXljWkxxaG5VYzhTUUpzdHl3U1I3elpIUlp0c3pCU2tqT3FDRmVWVzljS25HZE5POXlOanhrZ3FTNnltSVhlRDN3RGJCcEZLbHhyQ1RXZ01Qa3RGSlpEWjh4REJUMEdhbUdaVDdVN0pxLW5nZ19sRkE",
-      "description": "Lucas Pinheiro Braathen: qual a importância do título geral da Copa do Mundo de Esqui Alpino? &nbsp;&nbsp; Olympics",
-      "imageUrl": null,
-      "source": "Olympics",
-      "publishedAt": "2026-11-15T09:00:00.000Z",
-      "firstSeenAt": "2026-11-15T10:48:18.946Z",
-      "lastSeenAt": "2026-11-15T10:48:18.946Z"
-    },
-    {
-      "id": "event-20e8da7",
-      "category": "brasil",
-      "title": "Proclamação da República: livros, filmes e séries para viajar pela História do Brasil",
-      "url": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxNVWdkZDZPbTFxTnYyY1M0all1VWJHOVFLT1E1eGZhdm93b1NCY1Rkb1JWZkZqcUNfZ1BzSlZteFhlOE9mZS10cUFDajhaRmdSR1Bod0NBaHV4T0VIeUUxbnVNd2V5dW0teDhhWUowbDBZdVA4Qm5kT1F2ZWdBaU04R3ZoZC1yVTBpU01ObU1ubWtLQ0lfRDNfcWhiNHBiX0RzNXVQUEVINXpXYWotTkpza2xiMEp5SWYzd1pvcDhlSUFvZXNMdlNud0hTaUc3V1pzdE1CaUNqSDLSAecBQVVfeXFMTW1yWTN3bFBEUTJON09qT1NpSkhESFdxTW0yRU9ZblVURVl1TVFWUGhZYlFUcDJuOEhqU1BsYzdVTG92WWI0cUFOTDJPbF9pZjQtU2JWb3R0MXp0cVE0LVl5R3NwTDhTUzFqTGtEYUFaWVh6enlLZDhpQjJCNF9WRGFDbWNSc2pJRWFuXzQwdkVTMUI1SnhUeFEyQ2hTdVBUdmNPTkhFdjNwdzdIVXR3Sk9tRE54eDZwYXFLVlB1bUtSWmJnMVlfb2dnU3hrRmpBVHY5YmFKYWQtZ2tGOEpCNDRNNTZiLTlF",
-      "description": "Proclamação da República: livros, filmes e séries para viajar pela História do Brasil &nbsp;&nbsp; O GLOBO",
-      "imageUrl": null,
-      "source": "O GLOBO",
-      "publishedAt": "2026-11-15T07:00:00.000Z",
-      "firstSeenAt": "2026-11-15T10:48:18.946Z",
-      "lastSeenAt": "2026-11-15T10:48:18.946Z"
-    },
-    {
-      "id": "event-376a23ad",
-      "category": "brasil",
-      "title": "Bosch negocia motores elétricos feitos no Brasil com 7 montadoras",
-      "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxQb0dvSENHVjNzSXlCaWhZLTRsWmtlalFzcm9FV3hVN0M2eHl0Y3kzNVhnM3kySnAwTXlZOWZSbE13bDc3Ym1KU1JiOEFjeTF3LW9mY1dyTlpQMGUxSFJlaFVHamY2ZWFGRHNGTnd2M3lraHJ5b3o5SzZEY1lUT2pyYW9BS2xuZDNDWF9rT2NkWG41enhYMlFHS19iVWlPWG9RS3lzcVN5emxPS3BJdFFrb2k1WE9tNVlzZ1RZM05RRXY5VmhwdXV3bzlLcUxXVEpWSVpuTnlscV8xeVk",
-      "description": "Bosch negocia motores elétricos feitos no Brasil com 7 montadoras &nbsp;&nbsp; Estadão",
-      "imageUrl": null,
-      "source": "Estadão",
-      "publishedAt": "2026-11-15T06:19:36.000Z",
-      "firstSeenAt": "2026-11-15T10:48:18.946Z",
-      "lastSeenAt": "2026-11-15T10:48:18.946Z"
-    },
-    {
-      "id": "event-4caa5374",
-      "category": "mundo",
-      "title": "Este gás invisível e superpoluente é um vilão climático que o mundo não está conseguindo combater",
-      "url": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxQd0o4Y0NRS3RnNGtOZTJTdEFiV1JoTDQ5Ym95UUpXU0hIMVVWNlh3SlZLc3IyUmJEOGNuNjlrSVJvSUdDUlJkdXE5YlhoRnRzN3EwQ0RsT0l4Mkh3TUV5OEY4X2x6Y3BlRTI1N2w0YXBaMExDQzYzcGdWTzNOblRuS3VNa2dRcDVOaThrdnBUVm96cHo2bXAzZzlLbkkyZTdsQTlmOXNxZ2FwRGRJYVNWOG0yQ2FTNHhYcGF6NU9XaW1HcWJQQzQxSHVMeHJYZnVzVm0xaVRDUEU1eXEyZkE",
-      "description": "Este gás invisível e superpoluente é um vilão climático que o mundo não está conseguindo combater &nbsp;&nbsp; R7",
-      "imageUrl": null,
-      "source": "R7",
-      "publishedAt": "2026-11-15T05:00:00.000Z",
-      "firstSeenAt": "2026-11-15T10:48:18.946Z",
-      "lastSeenAt": "2026-11-15T10:48:18.946Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-15T03:05:41.446Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 13,
-      "newArticles": 4,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "europa"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-15T10:48:18.946Z",
       "ok": true,
@@ -547,15 +543,44 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-16T09:37:07.058Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 13,
+      "newArticles": 6,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "europa"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 5,
-  "lastSuccessfulAt": "2026-11-16T02:01:58.651Z",
+  "lastSuccessfulAt": "2026-11-16T09:37:07.058Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-16T02:01:58.651Z",
+      "checkedAt": "2026-11-16T09:37:07.058Z",
       "warnings": [
+        {
+          "id": "56420",
+          "title": "Ventos Costeiros",
+          "severity": "Perigo Potencial",
+          "phase": "vigente",
+          "regions": [
+            "DO"
+          ],
+          "startsAt": "2026-11-16T00:00:00.000Z",
+          "endsAt": "2026-11-17T00:00:00.000Z",
+          "source": "INMET",
+          "url": "https://avisos.inmet.gov.br/"
+        },
         {
           "id": "56418",
           "title": "Tempestade",
@@ -582,25 +607,12 @@
           "endsAt": "2026-11-17T00:00:00.000Z",
           "source": "INMET",
           "url": "https://avisos.inmet.gov.br/"
-        },
-        {
-          "id": "56420",
-          "title": "Ventos Costeiros",
-          "severity": "Perigo Potencial",
-          "phase": "previsto",
-          "regions": [
-            "DO"
-          ],
-          "startsAt": "2026-11-16T00:00:00.000Z",
-          "endsAt": "2026-11-17T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
         }
       ]
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-16T02:01:58.651Z",
+      "checkedAt": "2026-11-16T09:37:07.058Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
