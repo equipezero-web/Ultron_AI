@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import {PUBLIC_WORLD_CAMERAS,validatePublicCamera,publicCameraEmbed,
- findPublicCameras,parseWorldCameraCommand,cameraDirectorySummary} from "../modules/jarvis-public-world-cameras-model.js";
+ findPublicCameras,parseWorldCameraCommand,cameraDirectorySummary,
+ WORLD_CAMERAS_SKYLINE_URL,WORLD_CAMERAS_ALTERNATIVE_ID,getWorldCameraAlternative}
+ from "../modules/jarvis-public-world-cameras-model.js";
 assert.ok(PUBLIC_WORLD_CAMERAS.length>=10);
 assert.equal(PUBLIC_WORLD_CAMERAS.every(validatePublicCamera),true);
 assert.equal(new Set(PUBLIC_WORLD_CAMERAS.map(c=>c.id)).size,PUBLIC_WORLD_CAMERAS.length);
@@ -8,6 +10,29 @@ const summary=cameraDirectorySummary();
 assert.equal(summary.indexed,PUBLIC_WORLD_CAMERAS.length);
 assert.equal(summary.liveVerified,0,"A published catalog is never evidence of a live signal");
 assert.ok(summary.countries.length>=9);
+const skyline=getWorldCameraAlternative();
+assert.ok(skyline,"A câmera alternativa oficial precisa constar no catálogo");
+assert.equal(skyline.id,WORLD_CAMERAS_ALTERNATIVE_ID);
+assert.equal(skyline.sourceUrl,WORLD_CAMERAS_SKYLINE_URL);
+assert.equal(skyline.name,"Jerusalém — Muro Ocidental");
+assert.equal(skyline.country,"Israel");
+assert.equal(skyline.publisher,"SkylineWebcams");
+assert.equal(skyline.embedId,null,"Live video belongs to webcam host; do not embed");
+assert.equal(publicCameraEmbed(skyline),null,"Skyline live video must remain link-only");
+assert.equal(validatePublicCamera(skyline),true);
+assert.equal(findPublicCameras({search:"jerusalem"}).length,1);
+assert.equal(findPublicCameras({search:"Muro Ocidental"}).length,1);
+assert.equal(findPublicCameras({country:"Israel"}).length,1);
+assert.deepEqual(parseWorldCameraCommand("Jarvis, mostre a câmera de Jerusalém"),
+ {type:"search",term:"jerusalem"});
+assert.equal(validatePublicCamera({...skyline,sourceUrl:
+ "https://www.skylinewebcams.com/en/webcam/israel/jerusalem-district/jerusalem/unrelated.html"}),false,
+ "Skyline must be exact page allowlisted, not a general external embed host");
+assert.equal(validatePublicCamera({...skyline,sourceUrl:
+ "https://www.skylinewebcams.com/en/webcam/israel/jerusalem-district/jerusalem/western-wall.html?redirect=http://127.0.0.1"}),false);
+assert.equal(validatePublicCamera({...skyline,embedId:"ojTrjv9QxM8"}),false,
+ "Never fabricate a YouTube embed for source-link-only page");
+assert.equal(validatePublicCamera({...skyline,id:"arbitrary-other-city"}),false);
 assert.equal(findPublicCameras({search:"Recife"}).length,1);
 assert.equal(findPublicCameras({search:"tóquio"}).length,1);
 assert.ok(findPublicCameras({country:"Japão"}).every(c=>c.country==="Japão"));
