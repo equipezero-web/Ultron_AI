@@ -19,6 +19,8 @@ export function parseLocalCommand(value){
     const folders={download:"Download",downloads:"Download",dcim:"DCIM",documentos:"Documents",
       documents:"Documents",fotos:"Pictures",imagens:"Pictures",pictures:"Pictures",
       videos:"Movies",filmes:"Movies",movies:"Movies",musicas:"Music",music:"Music"};
+    if(!target || ["memoria","armazenamento","arquivos","filespace"].includes(target))
+      return {type:"remote-phone-folder",path:"",folder:"memoria"};
     if(Object.prototype.hasOwnProperty.call(folders,target))
       return {type:"remote-phone-folder",path:"internal:"+folders[target],folder:target};
   }
