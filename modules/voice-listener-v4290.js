@@ -11,7 +11,7 @@ import {
 } from './voice-runtime-policy.js';
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-const WAKE_ALIASES = ['ultron', 'outron', 'utron', 'ultra on', 'ultraon'];
+const WAKE_ALIASES = ['jarvis', 'javis', 'jarves', 'ultron', 'outron', 'utron', 'ultra on', 'ultraon'];
 const IS_ANDROID = /Android/i.test(navigator.userAgent || '');
 const API_BASE = String(API_CONFIG?.backendUrl || '').replace(/\/$/, '');
 
@@ -666,10 +666,8 @@ function exposeVoiceInputApi() {
 }
 
 function initializeVoiceListener() {
-  if (document.body.classList.contains("jarvis-voice-paused")) {
-    setMicState("off");
-    return;
-  }
+  // Voice is available when the operator requests it. Microphone access
+  // still requires an Android/browser permission grant; no silent recording.
   recognition = createRecognition();
   exposeVoiceInputApi();
   bindSpeechPauseResume();
