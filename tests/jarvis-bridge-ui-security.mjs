@@ -11,14 +11,25 @@ const remote = read("android-bridge/app/src/main/java/com/ultron/bridge/RemoteFi
 const service = read("android-bridge/app/src/main/java/com/ultron/bridge/BridgeService.java");
 const icon = read("android-bridge/app/src/main/res/drawable/ic_jarvis_bridge.xml");
 
-assert.match(gradle, /versionCode = 11/);
-assert.ok(gradle.includes('versionName = "0.8.0"'));
+assert.match(gradle, /versionCode = 12/);
+assert.ok(gradle.includes('versionName = "0.9.0"'));
 assert.match(icon, /<vector/);
 assert.match(manifest, /android:icon="@drawable\/ic_jarvis_bridge"/);
 assert.match(manifest, /android:allowBackup="false"/);
 assert.match(manifest, /MANAGE_EXTERNAL_STORAGE/);
 assert.match(manifest, /READ_EXTERNAL_STORAGE/);
 assert.doesNotMatch(manifest, /QUERY_ALL_PACKAGES/);
+assert.match(manifest,/package android:name="com.google.android.youtube"/);
+const tvAuth=read("android-bridge/app/src/main/java/com/ultron/bridge/TvAuthorization.java");
+assert.match(tvAuth,/SecureRandom/);
+assert.match(tvAuth,/CODE_TTL = 10L \* 60_000L/);
+assert.match(tvAuth,/attempts>=5/);
+assert.match(tvAuth,/MessageDigest\.isEqual/);
+assert.match(tvAuth,/clearLgTv\(context\)/);
+assert.match(service,/case "tv.link":/);
+assert.match(service,/case "tv.unlink":/);
+assert.match(service,/TvAuthorization\.isAuthorized\(this\)/);
+assert.match(main,/REVOGAR VÍNCULO PERMANENTE DA TV/);
 
 assert.match(visuals, /public static final int GOLD/);
 assert.match(visuals, /public static final int BACKGROUND/);
@@ -26,7 +37,7 @@ assert.match(visuals, /setMinHeight\(dp\(context, 52\)\)/);
 assert.match(main, /BRIDGE  \/\/  CENTRAL DO CELULAR/);
 assert.match(main, /NÚCLEO DE CONEXÃO/);
 assert.match(main, /CENTRAL DE DISPOSITIVOS/);
-assert.ok(main.includes("J.A.R.V.I.S. BRIDGE v0.8.0"));
+assert.ok(main.includes("J.A.R.V.I.S. BRIDGE v0.9.0"));
 assert.match(main, /serviceStatus\.startsWith\("ONLINE"\)/);
 assert.match(main, /tvDetails\.setVisibility\(android\.view\.View\.GONE\)/);
 

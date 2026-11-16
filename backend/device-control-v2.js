@@ -22,6 +22,8 @@ export const CONTROL_COMMANDS = new Set([
   "tv.input",
   "tv.inputs.list",
   "tv.launch",
+  "tv.link",
+  "tv.unlink",
   "tv.apps.list",
   "tv.toast",
   "tv.cast",
@@ -41,6 +43,7 @@ export const CONTROL_COMMANDS = new Set([
 ]);
 
 const SENSITIVE_COMMANDS = new Set([
+  "tv.unlink",
   "desktop.sleep",
   "desktop.restart",
   "desktop.shutdown"

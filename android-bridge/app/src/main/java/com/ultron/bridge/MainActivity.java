@@ -228,6 +228,17 @@ public class MainActivity extends Activity {
         Button pairTv = JarvisUi.button(this, "PAREAR LG WEBOS", true);
         pairTv.setOnClickListener(v -> pairLgTv());
         tvDetails.addView(pairTv, JarvisUi.width(this, 9));
+        Button revokeTv = JarvisUi.button(this,"REVOGAR VÍNCULO PERMANENTE DA TV",false);
+        revokeTv.setOnClickListener(v -> new android.app.AlertDialog.Builder(this)
+            .setTitle("Revogar acesso à TV?")
+            .setMessage("A chave de controle LG e a autorização remota serão apagadas deste celular. Para conectar outra vez, será necessário aprovar o pareamento na TV e inserir um novo código no J.A.R.V.I.S.")
+            .setNegativeButton("CANCELAR",(dialog,which)->{})
+            .setPositiveButton("REVOGAR",(dialog,which)->{
+                TvAuthorization.revoke(this);
+                statusView.setText("Vínculo permanente da TV revogado. A TV não receberá mais comandos deste Bridge.");
+                refreshStatus();
+            }).show());
+        tvDetails.addView(revokeTv, JarvisUi.width(this, 9));
         Button testTv = JarvisUi.button(this, "TESTAR CONEXÃO LG", false);
         testTv.setOnClickListener(v -> testLgTv());
         tvDetails.addView(testTv, JarvisUi.width(this, 9));
@@ -248,7 +259,7 @@ public class MainActivity extends Activity {
         root.addView(diagCard, JarvisUi.width(this, 14));
 
         root.addView(JarvisUi.caption(this,
-            "J.A.R.V.I.S. BRIDGE v0.8.0  •  Android  •  Controle local e autorizado"),
+            "J.A.R.V.I.S. BRIDGE v0.9.0  •  Android  •  Controle local e autorizado"),
             JarvisUi.width(this, 0));
         ScrollView scroll = new ScrollView(this);
         scroll.setFillViewport(true);
@@ -378,6 +389,7 @@ public class MainActivity extends Activity {
                 // A new pairing may represent a different operator: never carry
                 // permanent Filespace authorization into the new identity.
                 RemoteFiles.disable(this);
+                TvAuthorization.revoke(this);
                 SecureStore.saveDeviceId(this, deviceId);
 
                 runOnUiThread(() -> {
@@ -495,7 +507,10 @@ public class MainActivity extends Activity {
             TvController.Result result = TvController.pairLg(this, host);
             runOnUiThread(() -> {
                 if (result.success) {
-                    statusView.setText("LG webOS pareada com sucesso. O J.A.R.V.I.S já pode enviar comandos de TV pelo Mobile Bridge.\n" + result.payload.toString());
+                    String code=TvAuthorization.createCode(this);
+                    statusView.setText("LG webOS autorizada na TV. CÓDIGO J.A.R.V.I.S. PARA CONEXÃO PERMANENTE: " + code +
+                        "\nVálido por 10 minutos. No J.A.R.V.I.S. web, diga ou digite: 'Jarvis, vincule minha TV com código " + code +
+                        "'. Após confirmar, a TV permanece autorizada até revogar. Não compartilhe este código.");
                 } else {
                     statusView.setText("Falha ao parear LG: " + result.payload.optString("error", "erro desconhecido"));
                 }
@@ -629,6 +644,7 @@ public class MainActivity extends Activity {
         }
 
         status.append("\nLG webOS: ").append(tvHost == null || tvHost.isEmpty() ? DEFAULT_LG_TV_HOST + " (pré-configurado)" : tvHost);
+        status.append("\nTV permanente J.A.R.V.I.S.: ").append(TvAuthorization.isAuthorized(this) ? "AUTORIZADA ATÉ REVOGAÇÃO" : "NÃO AUTORIZADA");
         status.append("\nWake-on-LAN: ").append(tvMac == null || tvMac.isEmpty() ? "MAC NÃO SALVO" : "CONFIGURADO");
         statusView.setText(status.toString());
         if (bridgeBadge != null) {

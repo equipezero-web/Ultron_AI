@@ -119,6 +119,21 @@ function parseSchedule(text) {
 }
 
 function tvIntent(n) {
+  // TV authorization is a one-time six digit code displayed by the
+  // Android Bridge after the webOS native prompt is accepted.
+  const link=n.match(/\b(?:vincule|vincular|conecte|conectar|autorize|autorizar|adicione|adicionar)\b[^.!?]*\b(?:tv|televisao|televisor|lg)\b[^.!?]*\b(?:codigo|code)\s*(\d{6})\b/);
+  if(link)return {deviceType:"mobile",command:"tv.link",payload:{code:link[1]},
+    label:"autorizar vínculo permanente da TV com código do Android"};
+  if (/\b(?:revogue|revogar|desvincule|desvincular|remova|remover|desconecte|desconectar)\b/.test(n)) {
+    const confirm=isConfirmed(n);
+    return {deviceType:"mobile",command:"tv.unlink",payload:{confirm},sensitive:true,
+      label:"revogar vínculo permanente da TV"};
+  }
+  if (/\b(?:parear|pareie|vincular|vincule|conectar|conecte|adicionar|adicione)\b/.test(n) &&
+      !/\b(?:codigo|code)\s*\d{6}\b/.test(n)) {
+    return {deviceType:"mobile",command:"tv.setup.instructions",payload:{},
+      label:"instruções para pareamento LG webOS"};
+  }
   if (!/\b(tv|televisao|televisor|lg)\b/.test(n)) return null;
   let match = n.match(/\bhdmi\s*([1-4])\b/);
   if (match) return { deviceType: "mobile", command: "tv.input", payload: { inputId: `HDMI_${match[1]}` }, label: `TV → HDMI ${match[1]}` };
@@ -375,6 +390,15 @@ export async function routeNaturalLanguage(text, parsedIntent = null, {awaitComp
 
   const intent = parsedIntent || parseDeviceIntent(text);
   if (!intent) return { handled: false };
+  if(intent.command==="tv.setup.instructions") {
+    const text="No aplicativo J.A.R.V.I.S. Bridge do celular: abra LG WEBOS, " +
+      "informe o IP local da TV, toque em PAREAR LG WEBOS e aceite a solicitação na tela da TV. " +
+      "O Bridge exibirá um código J.A.R.V.I.S. de seis dígitos, válido por 10 minutos. " +
+      "Depois diga ou digite 'Jarvis, vincule minha TV com código 123456' (use o código real). " +
+      "A autorização será mantida até revogar no aplicativo Android ou por comando confirmado.";
+    outputLine(text);
+    return {handled:true,ok:true,instructions:true,route:"tv-pair-guide",text};
+  }
   if(signal?.aborted)return {handled:true,ok:false,cancelled:true};
   if (intent.sensitive && !intent.payload?.confirm) {
     outputLine(`CONFIRMAÇÃO NECESSÁRIA: ${intent.label}. Repita incluindo "CONFIRMO".`, true);

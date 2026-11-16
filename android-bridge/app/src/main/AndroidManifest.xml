@@ -14,6 +14,13 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA" />
 
+    <!-- Android 11+ requires explicit package visibility for remote launch targets. -->
+    <queries>
+        <package android:name="com.google.android.youtube" />
+        <package android:name="com.android.chrome" />
+        <package android:name="com.whatsapp" />
+    </queries>
+
     <uses-feature android:name="android.hardware.camera.any" android:required="false" />
 
     <application

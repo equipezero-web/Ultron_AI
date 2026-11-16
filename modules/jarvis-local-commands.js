@@ -10,6 +10,23 @@ export function parseLocalCommand(value){
   // Never interpret an explanation, negation or hypothetical as a command.
   if(/^(?:nao|nunca|se |e se |como (?:eu |posso |faco |faz)|por que|porque)\b/.test(q))return null;
   const plain=q.replace(/[.!?]+$/,"").trim();
+
+  if(/^(?:ative|ativar|habilite|habilitar|ligue|ligar|inicie|iniciar)\s+(?:a\s+)?(?:escuta|microfone|comandos? de voz)(?:\s+(?:do|no)\s+jarvis)?$/.test(plain))
+    return {type:"voice-listening",enabled:true};
+  if(/^(?:desative|desativar|desligue|desligar|pare|parar)\s+(?:a\s+)?(?:escuta|microfone|comandos? de voz)(?:\s+(?:do|no)\s+jarvis)?$/.test(plain))
+    return {type:"voice-listening",enabled:false};
+  if(/^(?:cadastre|cadastrar|registre|registrar)\s+(?:a\s+)?(?:minha\s+)?voz(?:\s+(?:no|para)\s+jarvis)?$/.test(plain))
+    return {type:"voice-enroll"};
+  if(/^(?:parear|pareie|vincular|vincule|conectar|conecte)\s+(?:(?:o|meu)\s+)?(?:celular|telefone|android)(?:\s+(?:ao|com)\s+jarvis)?$/.test(plain))
+    return {type:"mobile-pairing"};
+  if(/^(?:fechar|feche|ocultar|oculte)\s+(?:(?:os|o)\s+)?(?:arquivos?|explorador(?: de arquivos)?)\s+(?:do|de|no)\s+(?:(?:meu)\s+)?(?:celular|telefone|android)$/.test(plain))
+    return {type:"remote-phone-close"};
+  if(/^(?:volte|voltar|suba|subir)\s+(?:uma\s+)?pasta(?:\s+(?:no|do)\s+(?:celular|android))?$/.test(plain))
+    return {type:"remote-phone-parent"};
+  const phoneFile=plain.match(/^(?:abra|abrir|mostre|mostrar|exiba|exibir|leia|ler)\s+(?:o\s+)?arquivo\s+(.+?)\s+(?:do|no|de)\s+(?:(?:meu)\s+)?(?:celular|telefone|android)$/);
+  if(phoneFile && !["download","downloads","dcim","documentos","documents","fotos","imagens","pictures","videos","movies","musicas","music"].includes(phoneFile[1].trim()))
+    return {type:"remote-phone-file",filename:phoneFile[1].trim()};
+
   // Explicit imperative: browse the ANDROID folder inside the Neural Ring,
   // not a Google-search question. Android calls this directory "Download".
   const phoneFolder = plain.match(/^(?:abra|abre|abrir|mostre|mostrar|exiba|exibir|acesse|acessar|entre na|entrar na)\s+(.+?)\s+(?:do|de|no|na)\s+(?:(?:meu|meus|seu|seus)\s+)?(?:celular|telefone|android)(?:\s+(?:no|pelo)\s+jarvis)?$/);
@@ -44,6 +61,50 @@ export function parseLocalCommand(value){
 export async function runLocalCommand(command){
   const intent=parseLocalCommand(command);
   if(!intent)return null;
+  if(intent.type==="voice-listening") {
+    const voice=window.ULTRON_VOICE_INPUT;
+    if(!voice?.enable || !voice?.disable)return {handled:true,ok:false,route:"voice-control",
+      provider:"jarvis-local",text:"Módulo de voz não foi inicializado neste navegador."};
+    const ok=intent.enabled ? await voice.enable({userInitiated:true,persist:true}) :
+      (voice.disable({persist:true,announce:true}),true);
+    return {handled:true,ok,route:"voice-control",provider:"jarvis-local",
+      text:ok?(intent.enabled?"Escuta ativada. Diga 'Jarvis' seguido do comando.":
+        "Escuta desativada. Digite 'Jarvis ativar escuta' para religar.") :
+        "Não foi possível ativar o microfone. Autorize o microfone nas permissões do navegador."};
+  }
+  if(intent.type==="voice-enroll"){
+    const enroll=window.ULTRON_VOICE_MATCH?.enroll;
+    if(!enroll)return {handled:true,ok:false,route:"voice-enroll",provider:"jarvis-local",
+      text:"Voice Match ainda não foi carregado."};
+    try{
+      await enroll();
+      return {handled:true,ok:true,route:"voice-enroll",provider:"jarvis-local",
+        text:"Solicitação de cadastro de voz iniciada. Siga as instruções do Voice Match."};
+    }catch(e){return {handled:true,ok:false,route:"voice-enroll",provider:"jarvis-local",
+      text:"Não foi possível cadastrar a voz: "+String(e?.message||e)};}
+  }
+  if(intent.type==="mobile-pairing"){
+    const start=window.ULTRON_DEVICES?.startPairing;
+    if(!start)return {handled:true,ok:false,route:"mobile-pairing",provider:"jarvis-local",text:"Gateway de dispositivos indisponível."};
+    try{
+      const result=await start("mobile","J.A.R.V.I.S. Mobile Bridge");
+      return {handled:true,ok:Boolean(result?.code),route:"mobile-pairing",provider:"jarvis-local",
+        text:result?.code?"Código de pareamento do celular: "+result.code+
+          ". Digite os seis números no aplicativo J.A.R.V.I.S. Bridge. O código expira em 10 minutos.":
+          "Gateway não retornou código de pareamento."};
+    }catch(e){return {handled:true,ok:false,route:"mobile-pairing",provider:"jarvis-local",
+      text:"Falha ao gerar código do celular: "+String(e?.message||e)};}
+  }
+  if(["remote-phone-close","remote-phone-parent","remote-phone-file"].includes(intent.type)){
+    const files=window.JARVIS_PHONE_FILES;
+    const method=intent.type==="remote-phone-close"?"close":
+      intent.type==="remote-phone-parent"?"parent":"openFile";
+    if(!files?.[method])return {handled:true,ok:false,route:"remote-phone-files",provider:"jarvis-local",
+      text:"Explorador remoto do celular ainda indisponível."};
+    const result=await files[method](intent.filename);
+    return {handled:true,ok:result?.ok===true,route:"remote-phone-files",provider:"jarvis-local",
+      text:result?.message||result?.error||"Comando enviado ao explorador."};
+  }
   if(intent.type==="remote-phone-folder"){
     const manager=window.JARVIS_PHONE_FILES;
     if(!manager?.openFolder) return {ok:false,handled:true,route:"remote-phone-files",

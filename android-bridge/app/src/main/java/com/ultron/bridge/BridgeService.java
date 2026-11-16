@@ -179,13 +179,28 @@ public class BridgeService extends Service {
                     success = result.optBoolean("ok", false);
                     break;
 
+                case "tv.link":
+                    result = TvAuthorization.link(this,payload.optString("code",""));
+                    success = result.optBoolean("ok",false);
+                    break;
+
+                case "tv.unlink":
+                    if (!payload.optBoolean("confirm",false))
+                        throw new SecurityException("Revogação da TV exige confirmação explícita.");
+                    TvAuthorization.revoke(this);
+                    result.put("revoked",true);
+                    success = true;
+                    break;
+
                 case "app.open":
-                    success = openApp(payload.optString("packageName"));
-                    result.put("opened", success);
+                    result = openApp(payload.optString("packageName"));
+                    success = result.optBoolean("ok", false);
                     break;
 
                 default:
                     if (command.startsWith("tv.")) {
+                        if (!TvAuthorization.isAuthorized(this))
+                            throw new SecurityException("TV ainda não autorizada para o J.A.R.V.I.S. Pareie no Bridge Android e vincule o código de seis dígitos.");
                         TvController.Result tvResult = TvController.execute(this, command, payload);
                         success = tvResult.success;
                         result = tvResult.payload;
@@ -362,13 +377,55 @@ public class BridgeService extends Service {
         return true;
     }
 
-    private boolean openApp(String packageName) {
-        if (packageName == null || packageName.trim().isEmpty()) return false;
-        Intent launch = getPackageManager().getLaunchIntentForPackage(packageName.trim());
-        if (launch == null) return false;
+    private JSONObject openApp(String packageName) throws Exception {
+        JSONObject response = new JSONObject();
+        final String target = packageName == null ? "" : packageName.trim();
+        if (!("com.google.android.youtube".equals(target) ||
+              "com.android.chrome".equals(target) ||
+              "com.whatsapp".equals(target))) {
+            return response.put("ok",false).put("error","Aplicativo não autorizado para execução remota.");
+        }
+        Intent launch = getPackageManager().getLaunchIntentForPackage(target);
+        if (launch == null)
+            return response.put("ok",false).put("error","Aplicativo não encontrado ou indisponível neste Android.");
         launch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(launch);
-        return true;
+        // Android 10+ restricts launching activities from a background service.
+        // Do not claim to have opened YouTube when the OS would block the
+        // activity. Foreground app: request launch. Background: notify user.
+        boolean foreground = false;
+        android.app.ActivityManager activityManager =
+            (android.app.ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        if (activityManager != null) {
+            java.util.List<android.app.ActivityManager.RunningAppProcessInfo> processes =
+                activityManager.getRunningAppProcesses();
+            if (processes != null) for (android.app.ActivityManager.RunningAppProcessInfo p : processes) {
+                if (p.pid == android.os.Process.myPid() &&
+                    p.importance == android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND)
+                    foreground = true;
+            }
+        }
+        if (foreground) {
+            startActivity(launch);
+            return response.put("ok",true).put("launchRequested",true)
+                .put("message","Abertura solicitada ao Android. Confirme na tela se o aplicativo apareceu.");
+        }
+        if (Build.VERSION.SDK_INT >= 33 && checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)
+            != PackageManager.PERMISSION_GRANTED)
+            return response.put("ok",false).put("error",
+                "O Android bloqueia a abertura em segundo plano e as notificações não estão autorizadas.");
+        NotificationManager manager = getSystemService(NotificationManager.class);
+        if (manager == null)return response.put("ok",false).put("error","Notificações Android indisponíveis.");
+        PendingIntent pending = PendingIntent.getActivity(this,
+            target.hashCode(),launch,PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);
+        Notification notification = new Notification.Builder(this, CHANNEL_ID)
+            .setSmallIcon(android.R.drawable.ic_media_play)
+            .setContentTitle("J.A.R.V.I.S. • Abrir aplicativo")
+            .setContentText("Toque para abrir " + (target.equals("com.google.android.youtube") ? "YouTube" :
+                target.equals("com.whatsapp") ? "WhatsApp" : "Chrome") + " neste celular.")
+            .setContentIntent(pending).setAutoCancel(true).build();
+        manager.notify(4301,notification);
+        return response.put("ok",false).put("requiresUserTap",true)
+            .put("error","O Android impede a abertura automática em segundo plano. Toque na notificação do J.A.R.V.I.S. para abrir o aplicativo.");
     }
 
     private void createNotificationChannels() {
