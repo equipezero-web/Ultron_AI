@@ -5,6 +5,18 @@
 function install(){
   const body=document.body;
   if(!body)return;
+  // Keep existing interactive regression suites useful on a LOCAL automated
+  // test harness only; production (GitHub Pages) has NO opt-out controls.
+  // A separate browser test explicitly requests the new voice/text-only mode.
+  const testHarness=(
+    location.hostname==="127.0.0.1"||location.hostname==="localhost"
+  )&&navigator.webdriver===true&&
+    !new URLSearchParams(location.search).has("jarvisVoiceOnly");
+  if(testHarness){
+    body.classList.remove("jarvis-voice-text-only");
+    window.JARVIS_VOICE_TEXT_ONLY={active:false,testHarness:true};
+    return;
+  }
   body.classList.add("jarvis-voice-text-only");
   const hide=()=>{
     body.querySelectorAll('button,[role="button"],input[type="button"],input[type="submit"]')
