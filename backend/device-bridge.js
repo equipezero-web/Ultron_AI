@@ -81,6 +81,8 @@ const ALLOWED_COMMANDS = new Set([
   "tv.input",
   "tv.inputs.list",
   "tv.launch",
+  "tv.link",
+  "tv.unlink",
   "tv.apps.list",
   "tv.toast",
   "tv.cast"
@@ -345,6 +347,16 @@ export async function enqueueCommand(
     return { ok: false, error: "Assinatura criptográfica de arquivos obrigatória; não envie a chave ao servidor." };
   }
 
+  if (["tv.link","tv.unlink"].includes(normalizedCommand) && device.device_type !== "mobile") {
+    return { ok: false, error: "O vínculo LG webOS só pode ser autorizado no Android Bridge pareado." };
+  }
+  if (normalizedCommand === "tv.link" &&
+      !/^[0-9]{6}$/.test(String(payload?.code || ""))) {
+    return { ok: false, error: "Código de vinculação da TV inválido. Informe seis dígitos." };
+  }
+  if (normalizedCommand === "tv.unlink" && payload?.confirm !== true) {
+    return { ok: false, error: "Revogação da TV exige confirmação explícita." };
+  }
   if (normalizedCommand.startsWith("tv.") && device.device_type !== "tv" && device.device_type !== "mobile") {
     return { ok: false, error: "Este dispositivo não pode receber comandos de TV." };
   }
@@ -481,7 +493,7 @@ export async function completeCommand(
   const update = await env.ULTRON_DB.prepare(
     `UPDATE device_commands
         SET status = ?, result_json = ?,
-            payload_json = CASE WHEN command LIKE 'files.%' THEN '{}' ELSE payload_json END,
+            payload_json = CASE WHEN command LIKE 'files.%' OR command = 'tv.link' THEN '{}' ELSE payload_json END,
             completed_at = CURRENT_TIMESTAMP
       WHERE id = ? AND device_id = ? AND status = 'claimed'
         AND created_at > datetime('now', ?)`
