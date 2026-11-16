@@ -47,7 +47,7 @@ assert.match(guidance,/NUNCA diga que criou, encontrou repositório/);
 assert.match(guidance,/TESTADO e PUBLICADO/);
 assert.match(guidance,/ferramenta/);
 assert.match(consultativeGuidance("milestone"),/pronto/);
-assert.match(consultativeGuidance("continue"),/nova/i);
+assert.match(consultativeGuidance("continue"),/riscos novos/);
 assert.match(consultativeGuidance("troubleshoot"),/correções/);
 assert.match(consultativeGuidance("ordinary"),/pergunta simples/);
 assert.match(SYSTEM_INSTRUCTION,/consultor técnico-operacional/);
