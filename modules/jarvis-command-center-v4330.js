@@ -50,6 +50,16 @@ if (stage) {
     textComposer.setAttribute('autocapitalize','sentences');
     textComposer.setAttribute('spellcheck','true');
   }
+  if (textComposer && document.body.classList.contains('jarvis-voice-text-only')) {
+    const hint=document.createElement('p');
+    hint.id='jarvis-voice-text-hint';
+    hint.className='jarvis-voice-text-hint';
+    hint.textContent='ENTER → ENVIAR COMANDO   /   SHIFT+ENTER → NOVA LINHA   /   DIGITE "JARVIS ATIVAR ESCUTA" PARA VOZ';
+    textComposer.closest('.command-row')?.after(hint);
+    window.addEventListener('ultron:voice-listening-enabled',()=>{
+      hint.textContent='VOZ ATIVA: DIGA "JARVIS" + COMANDO  /  ENTER PARA DIGITAR';
+    });
+  }
   // All six controls must be reachable without a horizontal swipe.
   // The scrolling quick-actions strip can cancel a click during snap/scroll,
   // so put SYSTEM, AGENDA, CAMERA, DEVICES and FILES into a stable tool grid
