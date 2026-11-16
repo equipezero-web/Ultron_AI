@@ -199,6 +199,16 @@ export async function startPairing(deviceType, deviceName) {
   return postCloud("/api/devices/pair/start", { memoryKey: key, deviceType, deviceName });
 }
 
+export async function sendCommand(deviceId, command, payload = {}) {
+  const key = memoryKey();
+  if (!key) throw new Error("Identidade do operador indisponível.");
+  if (!deviceId || typeof command !== "string")
+    throw new Error("Dispositivo ou comando inválido.");
+  return postCloud("/api/devices/command", {
+    memoryKey: key, deviceId, command, payload
+  });
+}
+
 export async function listDevices() {
   const key = memoryKey();
   if (!key) return [];
@@ -518,6 +528,7 @@ bindDevicePress(document.getElementById("btn-pair-tv"),()=>{void setupTv();});
 
 window.ULTRON_DEVICES = {
   startPairing,
+  sendCommand,
   pairDesktop,
   listDevices,
   showDeviceOverview,
