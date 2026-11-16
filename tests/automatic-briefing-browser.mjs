@@ -161,13 +161,13 @@ try {
   assert.ok(wakeInfo.stories.some(x=>x.includes("Notícia confirmada no Brasil")));
   assert.ok(wakeInfo.stories.some(x=>x.includes("Tempestade monitorada em SC")));
   assert.ok(wakeInfo.wake && wakeInfo.wake===wakeInfo.stored);
-  assert.equal(wakeInfo.voice,true,"Auto narration should be on by default, subject to browser audio policy");
+  assert.equal(wakeInfo.voice,false,"Spoken narration must remain off by default");
+  assert.equal(await page.$eval(".jarvis-intel-controls button",items=>items.length),1,
+    "Only text refresh is available; voice buttons are hidden");
   const initialCalls=calls;
   await page.click(".jarvis-intel-controls button:first-child");
   await page.waitForFunction(()=>window.ULTRON_INTELLIGENCE?.state?.loading===false,{timeout:6000});
   assert.ok(calls>initialCalls,"Manual refresh must call the live backend again");
-  await page.click(".jarvis-intel-controls button:nth-child(3)");
-  assert.equal(await page.$eval(".jarvis-intel-controls button:nth-child(3)",el=>el.getAttribute("aria-pressed")),"false");
   breakFetch=true;fallbackOn=true;
   await page.waitForFunction(()=>!document.querySelector(".jarvis-intel-controls button:first-child")?.disabled,{timeout:6500});
   // Validate the refresh handler independently of animations in the expanded report.
