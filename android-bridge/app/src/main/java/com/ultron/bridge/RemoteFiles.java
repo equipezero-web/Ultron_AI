@@ -87,7 +87,10 @@ public final class RemoteFiles {
     }
 
     public static boolean isPermanent(Context context) {
-        if (!storageGranted(context)) return false;
+        if (!storageGranted(context)) {
+            if (context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getBoolean(KEY_PERSISTENT, false)) disable(context);
+            return false;
+        }
         if (!context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getBoolean(KEY_PERSISTENT, false))
             return false;
         try {
@@ -110,32 +113,44 @@ public final class RemoteFiles {
         return Math.max(0, (expiry - System.currentTimeMillis()) / 1000L);
     }
 
-    private static void authorize(Context context, JSONObject payload) throws Exception {
+    private static void authorize(Context context, String command, JSONObject payload) throws Exception {
         if (!storageGranted(context)) {
             throw new SecurityException("Permissão de armazenamento compartilhado não concedida no Android.");
         }
-        String provided = payload.optString("accessCode", "").trim();
+        String nonce = payload.optString("nonce", "").trim();
+        String provided = payload.optString("accessProof", "").trim();
+        if (!nonce.matches("[a-fA-F0-9]{32}") || !provided.matches("[a-fA-F0-9]{64}"))
+            throw new SecurityException("Autorização criptográfica de arquivos ausente.");
         String expected;
         if (isPermanent(context)) {
-            if (!provided.matches("(?i)[A-F0-9]{32}"))
-                throw new SecurityException("Chave permanente do Filespace inválida.");
             expected = SecureStore.getRemoteFilesKey(context);
-            provided = provided.toUpperCase(java.util.Locale.ROOT);
         } else {
-            if (remainingSeconds(context) == 0) {
+            if (remainingSeconds(context) == 0)
                 throw new SecurityException("Sessão remota expirada. Reative pelo aplicativo do celular.");
-            }
             expected = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
                 .getString(KEY_CODE, "");
-            if (!provided.matches("[0-9]{8}") || expected.length() != 8) {
-                throw new SecurityException("PIN temporário inválido.");
-            }
         }
-        if (expected == null ||
-            !MessageDigest.isEqual(expected.getBytes(java.nio.charset.StandardCharsets.US_ASCII),
-                provided.getBytes(java.nio.charset.StandardCharsets.US_ASCII))) {
+        if (expected == null || !(expected.matches("[0-9]{8}") || expected.matches("[A-F0-9]{32}")))
+            throw new SecurityException("Acesso remoto desativado ou revogado.");
+
+        // Browser never transmits the key. Verify a distinct HMAC for every
+        // command, path, offset, and random nonce. The Cloud only relays proof.
+        String path = payload.optString("path", "");
+        long offset = payload.optLong("offset", 0);
+        String message = "jarvis-files-v1\\n" + command + "\\n" +
+            nonce.toLowerCase(java.util.Locale.ROOT) + "\\n" + path + "\\n" + offset;
+        javax.crypto.Mac mac = javax.crypto.Mac.getInstance("HmacSHA256");
+        mac.init(new javax.crypto.spec.SecretKeySpec(
+            expected.getBytes(java.nio.charset.StandardCharsets.US_ASCII), "HmacSHA256"));
+        byte[] calculated = mac.doFinal(message.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+        byte[] proof = new byte[32];
+        for (int i = 0; i < 32; i++) {
+            int high = Character.digit(provided.charAt(i * 2), 16);
+            int low = Character.digit(provided.charAt(i * 2 + 1), 16);
+            proof[i] = (byte) ((high << 4) | low);
+        }
+        if (!MessageDigest.isEqual(calculated, proof))
             throw new SecurityException("Autorização de arquivos inválida ou revogada.");
-        }
     }
 
     private static Map<String, File> volumes(Context context) throws Exception {
@@ -213,7 +228,7 @@ public final class RemoteFiles {
     public static JSONObject execute(Context context, String command, JSONObject payload) {
         JSONObject response = new JSONObject();
         try {
-            authorize(context, payload);
+            authorize(context, command, payload);
             Map<String, File> roots = volumes(context);
             if ("files.list".equals(command)) {
                 String path = payload.optString("path", "");
