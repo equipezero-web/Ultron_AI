@@ -67,6 +67,9 @@ const stoppable=createParallelTaskCenter({handlers:{
 }});
 const running=stoppable.start(["device-status"]);
 await untilDone.started;
+const overlap=await stoppable.start(["world-cameras"]);
+assert.equal(overlap.ok,false);
+assert.match(overlap.error,/Já existe um lote/,"Overlapping calls must not bypass the concurrency limit");
 stoppable.stop();
 untilDone.finishNow();
 const stopResult=await running;
