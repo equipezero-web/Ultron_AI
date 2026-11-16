@@ -58,6 +58,8 @@ import { buildOperationalPlan } from "./planner.js";
 import {classifyConsultativeTurn,consultativeGuidance} from "./consultative-dialogue.js";
 import {inspectPublicGitHubRepository,githubInspectionContext,contradictsVerifiedGitHubInspection,verifiedGitHubFallback} from "./github-public-inspector.js";
 import {authorizePrivateGitHub,privateGitHubHeaders,privateGitHubConfig,inspectPrivateGitHub,privateGitHubContext} from "./github-private-inspector.js";
+import {authorizeJarvisAccount,accountAccessConfig,accountAccessHeaders} from "./jarvis-account-access.js";
+import {accountPluginList,accountPluginInstall,executeAccountPlugin,accountPluginReceipt,accountPluginPairDevice} from "./jarvis-account-plugins.js";
 import { analyzeVisualFrame } from "./vision-analysis.js";
 import { getWebRtcIceServers, webRtcIceHealth } from "./webrtc-ice.js";
 import { loadLiveNewsContext, isGeneralNewsIntent, isLiveNewsIntent } from "./news-context.js";
@@ -984,6 +986,42 @@ async function handlePrivateGitHub(request,env){
   });
 }
 
+
+function accountPluginsJson(request,env,data,status=200){
+  return new Response(JSON.stringify(data),{status,
+    headers:accountAccessHeaders(request,env)});
+}
+async function handleAccountPlugins(request,env,path){
+  const auth=await authorizeJarvisAccount(request,env);
+  if(!auth.ok)return accountPluginsJson(request,env,{ok:false,error:auth.code},auth.status);
+  if(request.method==="GET"&&path==="/api/account/plugins"){
+    const list=await accountPluginList(env,auth.accountId);
+    return accountPluginsJson(request,env,list,list.ok?200:list.status||503);
+  }
+  if(request.method!=="POST")return accountPluginsJson(request,env,
+    {ok:false,error:"method-not-allowed"},405);
+  let body;
+  try{
+    if(Number(request.headers.get("content-length")||0)>5000)
+      return accountPluginsJson(request,env,{ok:false,error:"request-too-large"},413);
+    const raw=await request.text();
+    if(raw.length>5000)return accountPluginsJson(request,env,{ok:false,error:"request-too-large"},413);
+    body=JSON.parse(raw);
+    if(!body||typeof body!=="object"||Array.isArray(body))throw Error("bad body");
+  }catch{return accountPluginsJson(request,env,{ok:false,error:"invalid-json"},400);}
+  let data;
+  if(path==="/api/account/plugins")
+    data=await accountPluginInstall(env,auth.accountId,body);
+  else if(path==="/api/account/plugins/execute")
+    data=await executeAccountPlugin(env,auth.accountId,body);
+  else if(path==="/api/account/plugins/receipt")
+    data=await accountPluginReceipt(env,auth.accountId,body.commandId);
+  else if(path==="/api/account/devices/pair")
+    data=await accountPluginPairDevice(env,auth.accountId,body);
+  else data={ok:false,error:"unknown-account-route",status:404};
+  return accountPluginsJson(request,env,data,data.ok?200:data.status||400);
+}
+
 async function health(env) {
   const providers = getProviderStatus(env, env.AI);
   const [memory, bridge, telemetry] = await Promise.all([
@@ -1032,6 +1070,7 @@ async function health(env) {
       webResearchBypassWhenGrounded: true
     },
     privateGitHub: {enabled:privateGitHubConfig(env).enabled,access:"access-jwt+repo-allowlist",mode:"read-only"},
+    accountPlugins: {configured:accountAccessConfig(env).enabled,scope:"per-account",authenticated:true,arbitraryCode:false},
     webResearch: {
       enabled: true,
       googleSearch: Boolean(env.SERPER_API_KEY),
@@ -1066,6 +1105,19 @@ export default {
     const url = new URL(request.url);
     const path = url.pathname;
 
+    if(path.startsWith("/api/account/")){
+      if(request.method==="OPTIONS"){
+        const headers=accountAccessHeaders(request,env);
+        return new Response(null,{status:headers["Access-Control-Allow-Origin"]?204:403,headers});
+      }
+      if([
+        "/api/account/plugins",
+        "/api/account/plugins/execute",
+        "/api/account/plugins/receipt",
+        "/api/account/devices/pair"
+      ].includes(path))return handleAccountPlugins(request,env,path);
+      return accountPluginsJson(request,env,{ok:false,error:"unknown-account-route"},404);
+    }
     if (path === "/api/github/private/ai") {
       if(request.method==="OPTIONS"){
         const headers=privateGitHubHeaders(request,env);

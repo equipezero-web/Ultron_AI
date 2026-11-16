@@ -72,6 +72,9 @@ public final class BridgeApi {
         capabilities.put("device.status");
         capabilities.put("notification.push");
         capabilities.put("app.open");
+        capabilities.put("calendar.open");
+        capabilities.put("calendar.create");
+        capabilities.put("storage.diagnostics");
         capabilities.put("microphone.remote");
         capabilities.put("speech.transcript");
         capabilities.put("camera.remote");

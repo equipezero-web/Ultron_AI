@@ -1,0 +1,45 @@
+name: JARVIS Permanent Account Plugin Security
+on:
+  pull_request:
+    paths:
+      - "backend/jarvis-account-access.js"
+      - "backend/jarvis-account-plugins.js"
+      - "backend/jarvis-account-plugin-intents.js"
+      - "backend/device-bridge.js"
+      - "backend/device-control-v2.js"
+      - "backend/worker.js"
+      - "modules/jarvis-account-plugins-client.js"
+      - "tests/jarvis-account-plugins.mjs"
+      - ".github/workflows/jarvis-account-plugins.yml"
+  push:
+    branches: [main]
+    paths:
+      - "backend/jarvis-account-access.js"
+      - "backend/jarvis-account-plugins.js"
+      - "backend/jarvis-account-plugin-intents.js"
+      - "backend/device-bridge.js"
+      - "backend/device-control-v2.js"
+      - "backend/worker.js"
+      - "modules/jarvis-account-plugins-client.js"
+      - "tests/jarvis-account-plugins.mjs"
+permissions:
+  contents: read
+jobs:
+  account-plugin-security:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate module and Worker syntax
+        run: |
+          node --check backend/jarvis-account-access.js
+          node --check backend/jarvis-account-plugins.js
+          node --check backend/jarvis-account-plugin-intents.js
+          node --check backend/worker.js
+          node --check modules/jarvis-account-plugins-client.js
+          node --check tests/jarvis-account-plugins.mjs
+      - name: Enforce account isolation and scoped actions
+        run: node tests/jarvis-account-plugins.mjs

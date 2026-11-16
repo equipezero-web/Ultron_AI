@@ -192,6 +192,13 @@ public class BridgeService extends Service {
                     success = true;
                     break;
 
+                case "calendar.open":
+                case "calendar.create":
+                case "storage.diagnostics":
+                    result = AccountPluginActions.execute(this, command, payload);
+                    success = result.optBoolean("ok", false);
+                    break;
+
                 case "app.open":
                     result = openApp(payload.optString("packageName"));
                     success = result.optBoolean("ok", false);
