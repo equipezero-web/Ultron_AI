@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import {readFileSync} from "node:fs";
-import {extractPublicGitHubRepository,inspectPublicGitHubRepository,githubInspectionContext} from "../backend/github-public-inspector.js";
+import {extractPublicGitHubRepository,inspectPublicGitHubRepository,githubInspectionContext,contradictsVerifiedGitHubInspection,verifiedGitHubFallback} from "../backend/github-public-inspector.js";
 const repo="https://github.com/equipezero-web/Ultron_AI";
 assert.deepEqual(extractPublicGitHubRepository("Jarvis, analise "+repo+"/tree/main"),{
   owner:"equipezero-web",repo:"Ultron_AI",fullName:"equipezero-web/Ultron_AI",url:repo
@@ -66,3 +66,18 @@ assert.match(worker,/inspectPublicGitHubRepository\(message\)/);
 assert.match(worker,/githubInspectionContext\(githubInspection\)/);
 assert.match(worker,/githubInspection:prepared\.githubInspection/);
 console.log("JARVIS PUBLIC GITHUB INSPECTOR PASS: URL allowlist, verified metadata, untrusted README, denied private access, no credentials, partial failure");
+
+assert.equal(contradictsVerifiedGitHubInspection("A telemetria diz que o acesso ao GitHub está bloqueado.",result),true);
+assert.equal(contradictsVerifiedGitHubInspection("Precisamos acessar o GitHub; não temos informações suficientes para entender a arquitetura.",result),true);
+assert.equal(contradictsVerifiedGitHubInspection("No GitHub, encontrei o README e os módulos.",result),false);
+assert.equal(contradictsVerifiedGitHubInspection("Acesso bloqueado.",missing),false);
+const corrected=verifiedGitHubFallback(result);
+assert.match(corrected,/CONFIRMOU o repositório/);
+assert.match(corrected,/backend\//);
+assert.match(corrected,/somente metadados públicos/);
+assert.equal(verifiedGitHubFallback(missing),null);
+const inspectPos=worker.indexOf("await inspectPublicGitHubRepository(message)");
+const privatePos=worker.indexOf("if (laTeamContext||localFilesContext)",inspectPos);
+assert.ok(inspectPos>0&&privatePos>inspectPos,"GitHub should be inspected before private-context early return");
+assert.match(worker,/contradictsVerifiedGitHubInspection\(data.text,prepared.githubInspection\)/);
+console.log("JARVIS GITHUB REGRESSION PASS: local context no longer bypasses explicit URL; verified contradictions repaired.");
