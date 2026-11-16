@@ -25,6 +25,7 @@ export function createParallelTaskCenter({handlers={},maxConcurrent=3,now=()=>ne
  });
  function subscribe(fn){if(typeof fn!=="function")return()=>{};listeners.add(fn);fn(snapshot());return()=>listeners.delete(fn);}
  async function start(names){
+  if(active.size)return {ok:false,error:"Já existe um lote de tarefas em execução."};
   const selected=normalizeTaskSelection(names);
   if(!selected.length)return {ok:false,error:"Selecione tarefas seguras conhecidas."};
   // A second start() could otherwise launch three more workers while the first
