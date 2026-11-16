@@ -10,7 +10,7 @@ const completion=/^(?:(?:ja\s+)?(?:criei|criado|fiz|feito|terminei|finalizei|con
 const continuation=/^(?:pode seguir|pode continuar|prossiga|prosseguir|continue|continuar|siga|avanca|avance|proxima etapa|proxima fase|vamos seguir|pode fazer|pode partir|pode implementar)[.!?\s]*$/;
 const negative=/^(?:nao|n|negativo|agora nao)[.!?\s]*$/;
 const troublesome=/\b(?:erro|bug|falha|travou|travando|nao funciona|nao funcionou|quebrado|crash|problema|corrija|corrigir|conserte|resolver|resolva|investigue|diagnostique|nao abre|nao responde|permission denied|failed|exception|invalid|500|401|403)\b/;
-const project=/\b(?:crie|criar|construa|construir|desenvolva|desenvolver|implemente|implementar|plataforma|sistema|aplicativo|software|app|saas|site|agente de ia|automacao empresarial|dashboard|repositorio|github|projeto|produto digital)\b/;
+const project=/\b(?:crie|criar|cria|construa|construir|desenvolva|desenvolver|implemente|implementar|plataforma|sistema|aplicativo|software|app|saas|site|agente de ia|automacao empresarial|dashboard|repositorio|github|projeto|produto digital|faca um para mim|faz um para mim|monte um para mim|quero algo parecido|quero um semelhante)\b/;
 const design=/\b(?:ideia|ideias|estrategia|estrategias|estrategico|solucao|solucoes|planejamento|plano de negocio|empreender|negocio|nicho|fornecedor|vender|receita|faturamento|concorrente|mercado|precificacao|como posso|o que devo|vale a pena|me recomende|me ajude a escolher)\b/;
 const comparator=/\b(?:compare|comparar|comparacao|melhor|pior|vantagens|desvantagens|qual escolher|alternativas|custo-beneficio)\b/;
 const research=/\b(?:pesquise|pesquisar|busque|buscar|encontre|encontrar|analise o site|analise esse site|veja o site|estude o site|o que faz|sobre essa empresa|tendencias|noticias|hoje|atualizado)\b|https?:\/\//;
@@ -24,7 +24,7 @@ export function classifyConsultativeTurn(message,{lastAssistantMessage="",lastUs
  if(history&&confirmation.test(text))return {mode:negative.test(text)?"decline":"confirm",followup:true,previousTask:true,confidence:"contextual"};
  if(troublesome.test(text))return {mode:"troubleshoot",followup:history,previousTask:history,confidence:"explicit"};
  if(comparator.test(text))return {mode:"decision",followup:history,previousTask:history,confidence:"explicit"};
- if(project.test(text))return {mode:"solution-design",followup:history,previousTask:history,confidence:"explicit"};
+ if(project.test(text)||/https?:\/\/[^\s]+/.test(text)&&/\b(?:faca|faz|monte|crie|criar|semelhante|parecido|igual)\b/.test(text))return {mode:"solution-design",followup:history,previousTask:history,confidence:"explicit"};
  if(design.test(text))return {mode:"strategy",followup:history,previousTask:history,confidence:"explicit"};
  if(research.test(text))return {mode:"research",followup:history,previousTask:history,confidence:"explicit"};
  if(history&&/^(?:e|agora|entao|depois|sobre isso|nesse caso|quanto a isso|faltou|o proximo|qual o proximo)\b/.test(text))
