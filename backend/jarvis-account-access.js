@@ -56,7 +56,14 @@ async function remoteKeys(url,fetchImpl){
     if(raw.length>90000)return {keys:[],error:"access-certs-too-large"};
     const data=JSON.parse(raw);
     return Array.isArray(data?.keys)?{keys:data.keys.slice(0,12),error:null}:{keys:[],error:"access-certs-invalid-json-shape"};
-  }catch(e){return {keys:[],error:e?.name==="AbortError"?"access-certs-timeout":"access-certs-fetch-failed"};}finally{clearTimeout(timer);}
+  }catch(e){
+    // Server-only diagnostics: no JWTs, certificate bodies, emails, or URLs.
+    console.warn("[JARVIS ACCESS] Certificate fetch failed",{
+      type:typeof e?.name==="string"?e.name.slice(0,80):"unknown",
+      causeType:typeof e?.cause?.name==="string"?e.cause.name.slice(0,80):"unknown"
+    });
+    return {keys:[],error:e?.name==="AbortError"?"access-certs-timeout":"access-certs-fetch-failed"};
+  }finally{clearTimeout(timer);}
 }
 async function digest(str){
   const raw=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(str));
