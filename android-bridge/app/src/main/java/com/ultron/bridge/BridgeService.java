@@ -179,6 +179,19 @@ public class BridgeService extends Service {
                     success = result.optBoolean("ok", false);
                     break;
 
+                case "tv.link":
+                    result = TvAuthorization.link(this,payload.optString("code",""));
+                    success = result.optBoolean("ok",false);
+                    break;
+
+                case "tv.unlink":
+                    if (!payload.optBoolean("confirm",false))
+                        throw new SecurityException("Revogação da TV exige confirmação explícita.");
+                    TvAuthorization.revoke(this);
+                    result.put("revoked",true);
+                    success = true;
+                    break;
+
                 case "app.open":
                     success = openApp(payload.optString("packageName"));
                     result.put("opened", success);
@@ -186,6 +199,8 @@ public class BridgeService extends Service {
 
                 default:
                     if (command.startsWith("tv.")) {
+                        if (!TvAuthorization.isAuthorized(this))
+                            throw new SecurityException("TV ainda não autorizada para o J.A.R.V.I.S. Pareie no Bridge Android e vincule o código de seis dígitos.");
                         TvController.Result tvResult = TvController.execute(this, command, payload);
                         success = tvResult.success;
                         result = tvResult.payload;
