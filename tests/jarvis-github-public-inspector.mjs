@@ -73,11 +73,11 @@ assert.equal(contradictsVerifiedGitHubInspection("No GitHub, encontrei o README 
 assert.equal(contradictsVerifiedGitHubInspection("Acesso bloqueado.",missing),false);
 const corrected=verifiedGitHubFallback(result);
 assert.match(corrected,/CONFIRMOU o repositório/);
-assert.match(corrected,/backend\\//);
+assert.match(corrected,/backend\//);
 assert.match(corrected,/somente metadados públicos/);
 assert.equal(verifiedGitHubFallback(missing),null);
 const inspectPos=worker.indexOf("await inspectPublicGitHubRepository(message)");
 const privatePos=worker.indexOf("if (laTeamContext||localFilesContext)",inspectPos);
 assert.ok(inspectPos>0&&privatePos>inspectPos,"GitHub should be inspected before private-context early return");
-assert.match(worker,/contradictsVerifiedGitHubInspection\\(data.text,prepared.githubInspection\\)/);
+assert.match(worker,/contradictsVerifiedGitHubInspection\(data.text,prepared.githubInspection\)/);
 console.log("JARVIS GITHUB REGRESSION PASS: local context no longer bypasses explicit URL; verified contradictions repaired.");
