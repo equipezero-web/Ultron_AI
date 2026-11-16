@@ -4,6 +4,9 @@ export const CONTROL_COMMANDS = new Set([
   "device.status",
   "notification.push",
   "app.open",
+  "calendar.open",
+  "calendar.create",
+  "storage.diagnostics",
   "tv.status",
   "tv.power.on",
   "tv.power.off",
@@ -91,6 +94,9 @@ export function validateControlCommand(command, payload = {}) {
   const normalized = String(command || "").trim();
   if (!CONTROL_COMMANDS.has(normalized)) {
     return { ok: false, error: "Comando não permitido pelo Device Control v2." };
+  }
+  if (normalized === "calendar.create" && payload?.confirm !== true) {
+    return {ok:false,needsConfirmation:true,error:"Evento exige confirmação explícita."};
   }
   if (SENSITIVE_COMMANDS.has(normalized) && payload?.confirm !== true) {
     return {

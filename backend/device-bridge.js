@@ -61,6 +61,9 @@ const ALLOWED_COMMANDS = new Set([
   "device.status",
   "notification.push",
   "app.open",
+  "calendar.open",
+  "calendar.create",
+  "storage.diagnostics",
   "files.list",
   "files.read",
   "tv.status",
@@ -335,6 +338,12 @@ export async function enqueueCommand(
     return { ok: false, error: "Dispositivo não encontrado ou não autorizado." };
   }
 
+  if (["calendar.open","calendar.create","storage.diagnostics"].includes(normalizedCommand) && device.device_type !== "mobile") {
+    return {ok:false,error:"Plugin do aparelho requer Android autorizado."};
+  }
+  if (normalizedCommand === "calendar.create" && payload?.confirm !== true) {
+    return {ok:false,error:"Criação de agenda exige confirmação explícita."};
+  }
   if (normalizedCommand.startsWith("files.") && device.device_type !== "mobile") {
     return { ok: false, error: "Arquivos remotos exigem um celular autorizado." };
   }
