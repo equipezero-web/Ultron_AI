@@ -1,4 +1,5 @@
 import {METEO_VIEWERS,APAC_HOURS,loadApacObservations} from "./jarvis-meteorological-sources.js?v=4.99.0";
+import {registerApac,renderEvidenceDetails} from "./jarvis-data-intelligence.js?v=5.36.0";
 import {analyzeApacRain,APAC_RAIN_BANDS,apacBand,mmLabel,apacProjection,apacInsideMainland,loadApacBoundary} from "./jarvis-rain-understanding.js?v=4.99.0";
 
 const stage=document.querySelector(".jarvis-cc-center");
@@ -212,6 +213,10 @@ if(stage){
    status.remove();
    if(!report.ok){note(report.error+" Nenhum valor fictício será exibido.");reference.append(sourceLink(METEO_VIEWERS.apac,"Consultar serviço oficial APAC"));return;}
    lastReport=report;const analysis=renderApacUnderstanding(report);
+   const evidence=registerApac(report);
+   const detail=evidence?renderEvidenceDetails(evidence):null;
+   if(detail)content.append(detail);
+   else note("A origem das observações não pôde ser validada para o relatório J.A.R.V.I.S.");
    const summary=note("Os pontos mostram medidores de chuva. Clique em um ponto ou nome de estação para ver o total em milímetros.");
    summary.setAttribute("data-meteo-provenance","observed");
    let detail=null;
