@@ -108,6 +108,12 @@ public class MainActivity extends Activity {
         testBridge.setOnClickListener(v -> checkCloudConnection());
         root.addView(testBridge, fullWidth());
 
+        Button scopedFiles = new Button(this);
+        scopedFiles.setText("ARQUIVOS DO CELULAR (ACESSO AUTORIZADO)");
+        scopedFiles.setOnClickListener(v ->
+                startActivity(new Intent(this, MobileFilesActivity.class)));
+        root.addView(scopedFiles, fullWidth());
+
         Button remoteMic = new Button(this);
         remoteMic.setText("USAR ESTE CELULAR COMO MICROFONE");
         remoteMic.setOnClickListener(v -> openRemoteMicrophone());
