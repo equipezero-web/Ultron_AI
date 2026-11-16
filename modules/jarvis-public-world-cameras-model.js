@@ -38,7 +38,9 @@ export const PUBLIC_WORLD_CAMERAS=Object.freeze([
   "https://camerasdomundo.com/elefantes-zoologico-sydney-ao-vivo/","Taronga Zoo"),
  entry("jerusalem-western-wall","Jerusalém — Muro Ocidental","Jerusalém","Israel","Ásia","cidades",
   "https://www.skylinewebcams.com/en/webcam/israel/jerusalem-district/jerusalem/western-wall.html",
-  "SkylineWebcams")  ,entry("webcamera24-elbo-room","Elbo Room Bar — Fort Lauderdale","Fort Lauderdale","Estados Unidos","América do Norte","cidades",
+  "SkylineWebcams"),
+ entry("jerusalem-western-wall-earthcam","Jerusalém — Muro Ocidental · EarthCam","Jerusalém","Israel","Ásia","cidades",
+  "https://www.youtube.com/watch?v=77akujLn4k8","EarthCam","77akujLn4k8")  ,entry("webcamera24-elbo-room","Elbo Room Bar — Fort Lauderdale","Fort Lauderdale","Estados Unidos","América do Norte","cidades",
   "https://webcamera24.com/pt/camera/usa/elboroom-bar-band-cam/","Webcamera24","YWs0HMRVCBY")
   ,entry("webcamera24-osaka-ikuno","Ikuno Korea Town — Osaka","Osaka","Japão","Ásia","cidades",
   "https://webcamera24.com/pt/camera/japan/ikuno-korea-town/","Webcamera24","ztXjQgNxi4o")
@@ -67,6 +69,16 @@ export const CAMERA_CATEGORY_NAMES=Object.freeze({
 export const WORLD_CAMERAS_ALTERNATIVE_ID="jerusalem-western-wall";
 export const WORLD_CAMERAS_SKYLINE_URL=
  "https://www.skylinewebcams.com/en/webcam/israel/jerusalem-district/jerusalem/western-wall.html";
+export const WESTERN_WALL_EARTHCAM_ID="jerusalem-western-wall-earthcam";
+export const WESTERN_WALL_EARTHCAM_YOUTUBE_URL=
+ "https://www.youtube.com/watch?v=77akujLn4k8";
+// A distinct camera of the SAME landmark. Never claim it is the Skyline stream.
+export function getWesternWallPlayableAlternative(camera){
+ if(camera?.id!==WORLD_CAMERAS_ALTERNATIVE_ID)return null;
+ return PUBLIC_WORLD_CAMERAS.find(c=>c.id===WESTERN_WALL_EARTHCAM_ID)||null;
+}
+export const WESTERN_WALL_OFFICIAL_CAMERAS_URL=
+ "https://thekotel.org/en/western-wall/israel-live-cam/";
 export const getWorldCameraAlternative=()=>PUBLIC_WORLD_CAMERAS.find(
  c=>c.id===WORLD_CAMERAS_ALTERNATIVE_ID
 )||null;
@@ -123,7 +135,12 @@ export function validatePublicCamera(camera){
    camera.embedId===null&&camera.publisher==="SkylineWebcams";
   const webcamera24=WEB_CAMERA24_APPROVED.has(url.href)&&
    camera.publisher==="Webcamera24";
-  if(url.protocol!=="https:"||(!recognized&&!skyline&&!webcamera24)||
+  // First-party EarthCam video published on its official YouTube channel.
+  // Exact source+ID pair is required; do not permit arbitrary YouTube videos.
+  const earthcam=url.href===WESTERN_WALL_EARTHCAM_YOUTUBE_URL&&
+   camera.id===WESTERN_WALL_EARTHCAM_ID&&camera.publisher==="EarthCam"&&
+   camera.embedId==="77akujLn4k8";
+  if(url.protocol!=="https:"||(!recognized&&!skyline&&!webcamera24&&!earthcam)||
    url.username||url.password||url.port)return false;
  }catch{return false;}
  return camera.embedId===null||/^[a-zA-Z0-9_-]{11}$/.test(camera.embedId);
