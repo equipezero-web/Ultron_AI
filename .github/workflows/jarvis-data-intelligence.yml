@@ -1,0 +1,59 @@
+name: JARVIS Data Integrity and Source Intelligence
+on:
+  pull_request:
+    paths:
+      - 'modules/jarvis-data-intelligence*'
+      - 'modules/jarvis-geospatial-visual.js'
+      - 'modules/jarvis-meteorological-center.js'
+      - 'modules/jarvis-local-commands.js'
+      - 'index.html'
+      - 'tests/jarvis-data-intelligence*'
+      - '.github/workflows/jarvis-data-intelligence.yml'
+  push:
+    paths:
+      - 'modules/jarvis-data-intelligence*'
+      - 'modules/jarvis-geospatial-visual.js'
+      - 'modules/jarvis-meteorological-center.js'
+      - 'modules/jarvis-local-commands.js'
+      - 'index.html'
+      - 'tests/jarvis-data-intelligence*'
+      - '.github/workflows/jarvis-data-intelligence.yml'
+permissions:
+  contents: read
+jobs:
+  evidence-model:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Static checks and integrity policy
+        run: |
+          node --check modules/jarvis-data-intelligence-model.js
+          node --check modules/jarvis-data-intelligence.js
+          node --check modules/jarvis-local-commands.js
+          node --check modules/jarvis-geospatial-visual.js
+          node --check modules/jarvis-meteorological-center.js
+          node tests/jarvis-data-intelligence-model.mjs
+          node tests/jarvis-global-weather.mjs
+          node tests/jarvis-meteorological-sources.mjs
+          node tests/jarvis-rain-understanding.mjs
+          node tests/jarvis-clear-interface.mjs
+  evidence-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Chrome test harness
+        run: |
+          npm install --no-save --no-package-lock --ignore-scripts puppeteer-core@24.33.0
+          echo "CHROME_BIN=$(command -v google-chrome || command -v chromium || command -v chromium-browser)" >> "$GITHUB_ENV"
+      - name: Check real Neural APAC panel, public data history, JSON export, mobile/desktop
+        run: |
+          python3 -m http.server 8776 --bind 127.0.0.1 >/tmp/jarvis-evidence-http.log 2>&1 &
+          sleep 2
+          node tests/jarvis-data-intelligence-browser.mjs

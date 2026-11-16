@@ -1,0 +1,67 @@
+/* A source ledger inside the existing Neural Jarvis panels — metallic gold theme. */
+body.jarvis-command-center .jarvis-data-evidence{
+ width:100%;max-width:100%;min-width:0;box-sizing:border-box;
+ margin:9px 0 7px;padding:0;
+ border:1px solid rgba(231,186,100,.52);border-radius:10px;
+ background:linear-gradient(145deg,rgba(26,20,9,.97),rgba(5,8,13,.96));
+ color:#f4e4bc;overflow:hidden;overflow-wrap:anywhere;
+ font:normal 12px/1.55 system-ui,sans-serif;
+}
+body.jarvis-command-center .jarvis-data-evidence>summary{
+ display:list-item;cursor:pointer;list-style-position:inside;
+ padding:12px 11px;min-height:44px;box-sizing:border-box;
+ color:#f9d98e;font-size:12px;font-weight:800;letter-spacing:.035em;
+ touch-action:manipulation;
+}
+body.jarvis-command-center .jarvis-data-evidence[open]>summary{
+ border-bottom:1px solid rgba(231,186,100,.3);
+}
+body.jarvis-command-center .jarvis-data-evidence-body{
+ padding:10px 12px 13px;display:grid;gap:9px;min-width:0;
+}
+body.jarvis-command-center .jarvis-data-evidence-body :is(p,h4,ul){
+ margin:0;color:inherit;line-height:1.5;
+}
+body.jarvis-command-center .jarvis-data-evidence-body h4{
+ color:#f7d78b;font:700 11px/1.5 system-ui,sans-serif;
+}
+body.jarvis-command-center .jarvis-data-evidence-origin{
+ color:#ffe7b8!important;font-weight:700;
+}
+body.jarvis-command-center .jarvis-data-evidence-limitations{
+ color:#d9cdb1!important;font-size:11px;
+}
+body.jarvis-command-center .jarvis-data-evidence-metrics{
+ display:grid;gap:5px;padding:0 0 0 17px;
+}
+body.jarvis-command-center .jarvis-data-evidence-metrics li strong{
+ color:#ffdb92;
+}
+body.jarvis-command-center .jarvis-data-evidence-links a{
+ color:#ffe6a8;text-decoration:underline;
+ text-decoration-color:rgba(255,220,146,.5);
+ overflow-wrap:anywhere;
+}
+body.jarvis-command-center .jarvis-data-evidence-export{
+ min-height:44px!important;min-width:0;max-width:100%;width:max-content;
+ border:1px solid rgba(255,215,122,.65);border-radius:7px;
+ padding:9px 12px;background:linear-gradient(110deg,#5f4214,#19150f);
+ color:#fff0c9;font:700 11px/1.25 system-ui,sans-serif;
+ cursor:pointer;touch-action:manipulation;
+}
+body.jarvis-command-center .jarvis-data-evidence-export:focus-visible,
+body.jarvis-command-center .jarvis-data-evidence>summary:focus-visible{
+ outline:2px solid #ffdf96;outline-offset:2px;
+}
+@media(max-width:699px){
+ body.jarvis-command-center .jarvis-data-evidence{
+  font-size:12px;margin-inline:0;
+ }
+ body.jarvis-command-center .jarvis-data-evidence>summary{
+  padding:11px 9px;min-height:46px;white-space:normal!important;
+ }
+ body.jarvis-command-center .jarvis-data-evidence-body{
+  padding:9px;gap:8px;
+ }
+ body.jarvis-command-center .jarvis-data-evidence-export{width:100%;}
+}
