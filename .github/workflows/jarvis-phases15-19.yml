@@ -1,0 +1,55 @@
+name: JARVIS Phases XV-XIX Integrated Intelligence
+on:
+  pull_request:
+    paths:
+      - 'modules/jarvis-integrated-intelligence*'
+      - 'modules/ultron-orchestrator-v4270.js'
+      - 'index.html'
+      - 'tests/jarvis-phases15-19*'
+      - '.github/workflows/jarvis-phases15-19.yml'
+  push:
+    paths:
+      - 'modules/jarvis-integrated-intelligence*'
+      - 'modules/ultron-orchestrator-v4270.js'
+      - 'index.html'
+      - 'tests/jarvis-phases15-19*'
+      - '.github/workflows/jarvis-phases15-19.yml'
+permissions:
+  contents: read
+jobs:
+  model-regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: JS syntax
+        run: |
+          node --check modules/jarvis-integrated-intelligence-model.js
+          node --check modules/jarvis-integrated-intelligence.js
+          node --check modules/ultron-orchestrator-v4270.js
+      - name: Source, privacy, autonomy and previous phase regressions
+        run: |
+          node tests/jarvis-phases15-19-model.mjs
+          node tests/jarvis-phase14-supervised-model.mjs
+          node tests/jarvis-phase13-context-model.mjs
+          node tests/jarvis-phase12-visual-orchestration.mjs
+          node tests/jarvis-mission-safety.mjs
+  browser-mobile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install headless Chrome harness
+        run: |
+          npm install --no-save --no-package-lock --ignore-scripts puppeteer-core@24.33.0
+          echo "CHROME_BIN=$(command -v google-chrome || command -v chromium || command -v chromium-browser)" >> "$GITHUB_ENV"
+      - name: Verify mobile UI and STOP behavior
+        run: |
+          python3 -m http.server 8767 --bind 127.0.0.1 >/tmp/jarvis-xv-xix.log 2>&1 &
+          sleep 2
+          node tests/jarvis-phases15-19-browser.mjs
