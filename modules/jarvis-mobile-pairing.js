@@ -77,8 +77,8 @@ function installVisibleMobilePairing() {
       }
       const response = await api.startPairing("mobile", "Ultron Mobile Bridge");
       const raw = String(response?.code ?? "");
-      const normalized = /^\\d{1,6}$/.test(raw) ? raw.padStart(6, "0") : raw;
-      if (!/^\\d{6}$/.test(normalized)) throw new Error("Gateway não retornou um código válido.");
+      const normalized = /^\d{1,6}$/.test(raw) ? raw.padStart(6, "0") : raw;
+      if (!/^\d{6}$/.test(normalized)) throw new Error("Gateway não retornou um código válido.");
       lastCode = normalized;
       codeValue.textContent = normalized;
       result.hidden = false;
