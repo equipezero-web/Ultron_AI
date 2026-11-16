@@ -41,16 +41,19 @@ public final class JarvisMobileActivity extends Activity {
         input.setTextColor(0xffffffff);
         input.setSingleLine(false);
         input.setMaxLines(3);
-        root.addView(input,new LinearLayout.LayoutParams(-1,-2));
+        input.setImeOptions(android.view.inputmethod.EditorInfo.IME_ACTION_SEND);
+        input.setOnEditorActionListener((v,action,event)->{
+            if(action==android.view.inputmethod.EditorInfo.IME_ACTION_SEND){submitText();return true;}
+            return false;
+        });
         LinearLayout commandRow = new LinearLayout(this);
         commandRow.setOrientation(LinearLayout.HORIZONTAL);
         commandRow.setGravity(Gravity.CENTER_VERTICAL);
-        root.removeView(input);
         commandRow.addView(input,new LinearLayout.LayoutParams(0,-2,1));
         Button send = new Button(this);
         send.setText("➤");
         send.setContentDescription("Enviar comando escrito");
-        send.setOnClickListener(v -> {String message=input.getText().toString().trim();if(!message.isEmpty()){input.setText("");sendCommand(message);}});
+        send.setOnClickListener(v -> submitText());
         commandRow.addView(send,new LinearLayout.LayoutParams(-2,-2));
         Button voice = new Button(this);
         voice.setText("🎙");
@@ -62,6 +65,16 @@ public final class JarvisMobileActivity extends Activity {
         if(SecureStore.getDeviceId(this)==null) showPairing();
         else startBridge();
     }
+    private void submitText(){
+        String message=input.getText().toString().trim();
+        if(message.isEmpty())return;
+        input.setText("");
+        sendCommand(message);
+    }
+    private void notifyError(String message){
+        android.widget.Toast.makeText(this,message,android.widget.Toast.LENGTH_LONG).show();
+        feedback.announceForAccessibility(message);
+    }
     private TextView label(String value,int size,int color){
         TextView view=new TextView(this);view.setText(value);view.setTextSize(size);
         view.setTextColor(color);view.setGravity(Gravity.CENTER);
@@ -69,7 +82,7 @@ public final class JarvisMobileActivity extends Activity {
     }
     private void startBridge(){
         try {startForegroundService(new Intent(this,BridgeService.class));}
-        catch(Exception error){feedback.setText("Conexão não iniciada: "+error.getMessage());}
+        catch(Exception error){notifyError("Conexão não iniciada: "+error.getMessage());}
     }
     private void showPairing(){
         EditText code=new EditText(this);
@@ -81,7 +94,7 @@ public final class JarvisMobileActivity extends Activity {
             .setPositiveButton("CONECTAR",(d,w)->pair(code.getText().toString())).show();
     }
     private void pair(String code){
-        if(!code.matches("[0-9]{6}")){feedback.setText("Código inválido.");return;}
+        if(!code.matches("[0-9]{6}")){notifyError("Código inválido.");return;}
         feedback.setText("Conectando celular...");
         new Thread(()->{
             try{
@@ -91,12 +104,12 @@ public final class JarvisMobileActivity extends Activity {
                 RemoteFiles.disable(this);TvAuthorization.revoke(this);
                 SecureStore.saveDeviceId(this,response.getString("deviceId"));
                 runOnUiThread(()->{feedback.setText("Celular conectado.");startBridge();});
-            }catch(Exception e){runOnUiThread(()->feedback.setText("Falha ao conectar: "+e.getMessage()));}
+            }catch(Exception e){runOnUiThread(()->notifyError("Falha ao conectar: "+e.getMessage()));}
         }).start();
     }
     private void sendCommand(String message){
         String deviceId=SecureStore.getDeviceId(this);
-        if(deviceId==null){showPairing();feedback.setText("Conecte o celular antes de enviar comandos.");return;}
+        if(deviceId==null){showPairing();notifyError("Conecte o celular antes de enviar comandos.");return;}
         feedback.setText("Enviando comando...");
         neuralRing.setActive(true);
         new Thread(()->{
@@ -104,7 +117,7 @@ public final class JarvisMobileActivity extends Activity {
                 JSONObject payload=new JSONObject().put("text",message).put("source","jarvis-mobile");
                 BridgeApi.sendEvent(deviceId,SecureStore.getOrCreateDeviceSecret(this),"speech.transcript",payload);
                 runOnUiThread(()->{neuralRing.setActive(false);feedback.setText("Comando transmitido ao J.A.R.V.I.S.");});
-            }catch(Exception e){runOnUiThread(()->{neuralRing.setActive(false);feedback.setText("Falha de comunicação: "+e.getMessage());});}
+            }catch(Exception e){runOnUiThread(()->{neuralRing.setActive(false);notifyError("Falha de comunicação: "+e.getMessage());});}
         }).start();
     }
     private void startVoice(){
@@ -113,7 +126,7 @@ public final class JarvisMobileActivity extends Activity {
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE,"pt-BR");
             startActivityForResult(intent,VOICE_REQUEST);
-        }catch(Exception e){feedback.setText("Reconhecimento de voz indisponível.");}
+        }catch(Exception e){notifyError("Reconhecimento de voz indisponível.");}
     }
     @Override protected void onActivityResult(int request,int result,Intent data){
         super.onActivityResult(request,result,data);
