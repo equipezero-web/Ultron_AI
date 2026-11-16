@@ -9,7 +9,11 @@ on:
       - "backend/device-control-v2.js"
       - "backend/worker.js"
       - "modules/jarvis-account-plugins-client.js"
+      - "modules/jarvis-account-plugin-panel.js"
+      - "modules/jarvis-account-plugin-panel.css"
+      - "modules/jarvis-command-center-v4330.js"
       - "tests/jarvis-account-plugins.mjs"
+      - "tests/jarvis-account-plugins-lifecycle.mjs"
       - ".github/workflows/jarvis-account-plugins.yml"
   push:
     branches: [main]
@@ -21,7 +25,11 @@ on:
       - "backend/device-control-v2.js"
       - "backend/worker.js"
       - "modules/jarvis-account-plugins-client.js"
+      - "modules/jarvis-account-plugin-panel.js"
+      - "modules/jarvis-account-plugin-panel.css"
+      - "modules/jarvis-command-center-v4330.js"
       - "tests/jarvis-account-plugins.mjs"
+      - "tests/jarvis-account-plugins-lifecycle.mjs"
 permissions:
   contents: read
 jobs:
@@ -40,6 +48,11 @@ jobs:
           node --check backend/jarvis-account-plugin-intents.js
           node --check backend/worker.js
           node --check modules/jarvis-account-plugins-client.js
+          node --check modules/jarvis-account-plugin-panel.js
+          node --check modules/jarvis-command-center-v4330.js
           node --check tests/jarvis-account-plugins.mjs
+          node --check tests/jarvis-account-plugins-lifecycle.mjs
       - name: Enforce account isolation and scoped actions
-        run: node tests/jarvis-account-plugins.mjs
+        run: |
+          node tests/jarvis-account-plugins.mjs
+          node tests/jarvis-account-plugins-lifecycle.mjs
