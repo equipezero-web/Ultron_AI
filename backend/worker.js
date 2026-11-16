@@ -55,6 +55,7 @@ import {
   withSmartProviderOrder
 } from "./smart-router.js";
 import { buildOperationalPlan } from "./planner.js";
+import {classifyConsultativeTurn,consultativeGuidance} from "./consultative-dialogue.js";
 import { analyzeVisualFrame } from "./vision-analysis.js";
 import { getWebRtcIceServers, webRtcIceHealth } from "./webrtc-ice.js";
 import { loadLiveNewsContext, isGeneralNewsIntent, isLiveNewsIntent } from "./news-context.js";
@@ -552,7 +553,7 @@ async function executeAiCore(env, body) {
   if (message.length > 8000) return { status: 413, data: { error: "Mensagem muito longa." } };
 
   const [memoryState, newsState] = await Promise.all([
-    loadMemoryContext(env, { operatorId, conversationId }),
+    loadMemoryContext(env, { operatorId, conversationId, recentLimit: 16 }),
     skipLegacyResearch ? Promise.resolve(emptyNewsState()) : loadLiveNewsContext(message, { limit: 6 })
   ]);
 
@@ -560,6 +561,10 @@ async function executeAiCore(env, body) {
   // not independent greetings. Force explicit conversational continuity.
   const shortReply = /^(?:sim|s|isso|isso mesmo|claro|pode|pode sim|confirmo|confirmado|ok|okay|certo|beleza|nao|não|n|negativo|agora nao|agora não)(?:[.!?\s]*)$/i.test(message);
   const lastAssistant = String(memoryState.lastAssistantMessage || '').trim();
+  const dialogueMode=classifyConsultativeTurn(message,{
+    lastAssistantMessage:lastAssistant,
+    lastUserMessage:memoryState.lastUserMessage||""
+  });
   const continuityInstruction = shortReply
     ? lastAssistant
       ? ['REGRA PRIORITÁRIA DE CONTINUIDADE:', 'A mensagem atual é uma resposta curta do operador à última fala do assistente.', 'Última fala do assistente: ' + lastAssistant.slice(0, 1800), 'Continue a conversa e responda à confirmação ou recusa no contexto. Não cumprimente novamente nem reinicie a conversa.'].join('\n')
@@ -574,9 +579,12 @@ async function executeAiCore(env, body) {
       ". Visualização: "+taskContext.visualization+
       ". A mensagem atual retoma esse assunto. Não invente uma simulação, dados nem execução de ferramentas."
     : "";
+  const consultativeContext=consultativeGuidance(dialogueMode);
+  const dialogueContext=[memoryState.context,continuityInstruction,taskContextInstruction,
+    consultativeContext].filter(Boolean).join("\n\n");
   let aiMessage = buildMemoryAwareMessage(
     message,
-    [memoryState.context, continuityInstruction,taskContextInstruction].filter(Boolean).join("\n\n"),
+    dialogueContext,
     newsState.contextText,
     externalResearchContext,
     localFilesContext,
@@ -609,7 +617,7 @@ async function executeAiCore(env, body) {
     if (fallbackResearch?.results?.length && fallbackResearch?.contextText) {
       aiMessage = buildMemoryAwareMessage(
         message,
-        [memoryState.context, continuityInstruction,taskContextInstruction].filter(Boolean).join("\n\n"),
+        dialogueContext,
         newsState.contextText,
         fallbackResearch.contextText,
         localFilesContext,
@@ -664,6 +672,7 @@ async function executeAiCore(env, body) {
     status: 200,
     data: {
       text: aiResult.text,
+      dialogueMode: {name:dialogueMode.mode,followup:dialogueMode.followup,claimedCompletion:Boolean(dialogueMode.claimedCompletion)},
       provider: aiResult.provider,
       providerLabel: aiResult.providerLabel,
       model: aiResult.model,
