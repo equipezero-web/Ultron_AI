@@ -7,14 +7,18 @@ const files = read("android-bridge/app/src/main/java/com/ultron/bridge/MobileFil
 const visuals = read("android-bridge/app/src/main/java/com/ultron/bridge/JarvisUi.java");
 const manifest = read("android-bridge/app/src/main/AndroidManifest.xml");
 const gradle = read("android-bridge/app/build.gradle.kts");
+const remote = read("android-bridge/app/src/main/java/com/ultron/bridge/RemoteFiles.java");
+const service = read("android-bridge/app/src/main/java/com/ultron/bridge/BridgeService.java");
 const icon = read("android-bridge/app/src/main/res/drawable/ic_jarvis_bridge.xml");
 
-assert.match(gradle, /versionCode = 9/);
+assert.match(gradle, /versionCode = 10/);
 assert.match(gradle, /versionName = "0\.6\.0"/);
 assert.match(icon, /<vector/);
 assert.match(manifest, /android:icon="@drawable\/ic_jarvis_bridge"/);
 assert.match(manifest, /android:allowBackup="false"/);
-assert.doesNotMatch(manifest, /MANAGE_EXTERNAL_STORAGE|READ_EXTERNAL_STORAGE|QUERY_ALL_PACKAGES/);
+assert.match(manifest, /MANAGE_EXTERNAL_STORAGE/);
+assert.match(manifest, /READ_EXTERNAL_STORAGE/);
+assert.doesNotMatch(manifest, /QUERY_ALL_PACKAGES/);
 
 assert.match(visuals, /public static final int GOLD/);
 assert.match(visuals, /public static final int BACKGROUND/);
@@ -36,6 +40,14 @@ assert.match(files, /Intent\.ACTION_OPEN_DOCUMENT/);
 assert.match(files, /SALVAR COM CONFIRMAÇÃO/);
 assert.match(files, /new AlertDialog\.Builder/);
 assert.match(files, /original\.equals\(readText\(uri\)\)/);
-assert.doesNotMatch(main + files, /WebView|setJavaScriptEnabled|MANAGE_EXTERNAL_STORAGE/);
+assert.doesNotMatch(main + files + remote, /WebView|setJavaScriptEnabled/);
+assert.match(remote, /Environment\\.isExternalStorageManager\\(\\)/);
+assert.match(remote, /MessageDigest\\.isEqual/);
+assert.match(remote, /SESSION_MS = 10 \\* 60_000L/);
+assert.match(remote, /MAX_REMOTE_TRANSFER_BYTES = 16L/);
+assert.match(remote, /protectedPath\\.startsWith\\("\\/android\\/data\\/"\\)/);
+assert.match(service, /RemoteFiles\\.execute\\(this, command, payload\\)/);
+assert.match(main, /REVOGAR ACESSO REMOTO/);
+assert.doesNotMatch(remote, /delete\\(|renameTo\\(|FileOutputStream|exec\\(/);
 
 console.log("JARVIS BRIDGE UI + SCOPED FILE CONTRACT PASS: mobile dashboard, existing actions, version and Android storage boundaries.");
