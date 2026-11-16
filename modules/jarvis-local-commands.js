@@ -10,6 +10,10 @@ export function parseLocalCommand(value){
   // Never interpret an explanation, negation or hypothetical as a command.
   if(/^(?:nao|nunca|se |e se |como (?:eu |posso |faco |faz)|por que|porque)\b/.test(q))return null;
   const plain=q.replace(/[.!?]+$/,"").trim();
+  if(/^(?:abra|abrir|mostre|mostrar|ative|ativar) (?:o |as? )?(?:painel de )?multitarefas(?: do jarvis)?$/.test(plain))
+    return {type:"safe-multitask"};
+  if(/^(?:abra|abrir|mostre|mostrar) (?:o |os? )?(?:editor de arquivos|arquivos autorizados|arquivos do celular|meus arquivos)$/.test(plain))
+    return {type:"scoped-file-editor"};
   if(/^(?:(?:o que|que) (?:voce|tu|o jarvis|o ultron) (?:pode|consegue|sabe) fazer|(?:o que|que) (?:voce|tu) faz|quais (?:sao )?(?:as )?(?:suas|tuas) (?:capacidades|habilidades|funcoes|funcionalidades|ferramentas)|quais (?:sao )?(?:as )?funcionalidades (?:do|de) (?:jarvis|ultron)|quem e voce|o que mais voce pode fazer|quais recursos voce tem|me mostre suas funcionalidades)$/.test(plain))return {type:"capabilities"};
   // "Limpar tudo" means the visible command surface, NEVER stored history/data.
   if(/^(?:por favor )?(?:(?:pode|consegue) )?(?:limpar|limpe|limpa|apagar|apague|apaga)\s+(?:tudo|(?:a |o )?(?:tela|painel(?: neural)?|interface(?: do jarvis)?))(?:\s+(?:agora|por favor))?$/.test(plain))return {type:"clear-interface"};
@@ -26,6 +30,19 @@ export function parseLocalCommand(value){
 export async function runLocalCommand(command){
   const intent=parseLocalCommand(command);
   if(!intent)return null;
+  if(intent.type==="safe-multitask"||intent.type==="scoped-file-editor"){
+    const manager=intent.type==="safe-multitask"?
+      window.ULTRON_PARALLEL_TASKS:window.ULTRON_SCOPED_FILES;
+    const result=manager?.open?.()||{ok:false,error:"Módulo ainda não carregado."};
+    const ok=result?.ok===true;
+    return {ok,handled:true,route:intent.type==="safe-multitask"?
+      "local-safe-multitask":"local-scoped-file-editor",
+      provider:"jarvis-local",text:ok?
+      (intent.type==="safe-multitask"?
+       "Painel de consultas independentes aberto no Neural Jarvis. Até três leituras simultâneas, sem ações destrutivas.":
+       "Editor local de arquivos autorizado. Selecione manualmente um documento; acesso remoto ao armazenamento do celular não foi concedido."):
+       String(result?.error||"Módulo não disponível.")};
+  }
   if(intent.type==="clear-interface"){
     const result=clearVisibleInterface();
     return {ok:result.ok,handled:true,quiet:result.ok,cleared:result.cleared,

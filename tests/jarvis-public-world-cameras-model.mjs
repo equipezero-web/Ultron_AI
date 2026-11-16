@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import {PUBLIC_WORLD_CAMERAS,validatePublicCamera,publicCameraEmbed,
  findPublicCameras,parseWorldCameraCommand,cameraDirectorySummary,
  WORLD_CAMERAS_SKYLINE_URL,WORLD_CAMERAS_ALTERNATIVE_ID,getWorldCameraAlternative,
+ getWesternWallPlayableAlternative,WESTERN_WALL_EARTHCAM_ID,WESTERN_WALL_EARTHCAM_YOUTUBE_URL,
+ WESTERN_WALL_OFFICIAL_CAMERAS_URL,
  WORLD_CAMERAS_CATALOGS,CAMERA_PROVIDER_NAMES,cameraProvider}
  from "../modules/jarvis-public-world-cameras-model.js";
 assert.ok(PUBLIC_WORLD_CAMERAS.length>=10);
@@ -9,8 +11,8 @@ assert.equal(PUBLIC_WORLD_CAMERAS.every(validatePublicCamera),true);
 assert.equal(new Set(PUBLIC_WORLD_CAMERAS.map(c=>c.id)).size,PUBLIC_WORLD_CAMERAS.length);
 const summary=cameraDirectorySummary();
 assert.equal(summary.indexed,PUBLIC_WORLD_CAMERAS.length);
-assert.equal(WORLD_CAMERAS_CATALOGS.length,2,"Both worldwide directories are available");
-assert.equal(summary.providerCatalogs,2);
+assert.equal(WORLD_CAMERAS_CATALOGS.length,4,"Both worldwide directories are available");
+assert.equal(summary.providerCatalogs,4);
 assert.ok(WORLD_CAMERAS_CATALOGS.some(p=>p.id==="skyline"&&
  p.all==="https://www.skylinewebcams.com/en/webcam.html"));
 assert.ok(WORLD_CAMERAS_CATALOGS.some(p=>p.id==="webcamera24"&&
@@ -18,6 +20,13 @@ assert.ok(WORLD_CAMERAS_CATALOGS.some(p=>p.id==="webcamera24"&&
  p.countries==="https://webcamera24.com/pt/countries/"&&
  p.categories==="https://webcamera24.com/pt/categories/"));
 assert.equal(CAMERA_PROVIDER_NAMES.webcamera24,"Webcamera24");
+assert.equal(WORLD_CAMERAS_CATALOGS.find(p=>p.id==="camerasdomundo")?.all,
+ "https://camerasdomundo.com/live-cams/");
+assert.equal(WORLD_CAMERAS_CATALOGS.find(p=>p.id==="africam")?.all,
+ "https://africam.com/our-locations/");
+assert.ok(findPublicCameras({provider:"camerasdomundo"}).length>4);
+assert.ok(findPublicCameras({provider:"africam"}).length>=1);
+
 const w24=PUBLIC_WORLD_CAMERAS.filter(c=>cameraProvider(c)==="webcamera24");
 assert.ok(w24.length>=7);
 assert.ok(w24.every(c=>c.publisher==="Webcamera24"));
@@ -54,11 +63,31 @@ assert.equal(skyline.name,"Jerusalém — Muro Ocidental");
 assert.equal(skyline.country,"Israel");
 assert.equal(skyline.publisher,"SkylineWebcams");
 assert.equal(skyline.embedId,null,"Live video belongs to webcam host; do not embed");
+const earthcam=getWesternWallPlayableAlternative(skyline);
+assert.ok(earthcam,"The exact Western Wall location should have an alternative view");
+assert.equal(earthcam.id,WESTERN_WALL_EARTHCAM_ID);
+assert.equal(earthcam.country,skyline.country);
+assert.equal(earthcam.city,skyline.city);
+assert.equal(earthcam.publisher,"EarthCam");
+assert.equal(earthcam.sourceUrl,WESTERN_WALL_EARTHCAM_YOUTUBE_URL);
+assert.equal(earthcam.embedId,"77akujLn4k8");
+assert.equal(validatePublicCamera(earthcam),true);
+assert.equal(publicCameraEmbed(earthcam),
+ "https://www.youtube-nocookie.com/embed/77akujLn4k8?autoplay=1&mute=1&playsinline=1&rel=0");
+assert.match(WESTERN_WALL_OFFICIAL_CAMERAS_URL,/^https:\/\/thekotel\.org\//);
+assert.equal(getWesternWallPlayableAlternative(earthcam),null,
+ "Different providers must not be treated as identical feeds");
+assert.equal(getWesternWallPlayableAlternative({id:"skyline-shanghai"}),null);
+assert.equal(validatePublicCamera({...earthcam,sourceUrl:"https://www.youtube.com/watch?v=AAAAAAAAAAA"}),false);
+assert.equal(validatePublicCamera({...earthcam,embedId:"AAAAAAAAAAA"}),false);
+assert.equal(validatePublicCamera({...earthcam,publisher:"SkylineWebcams"}),false);
+assert.equal(validatePublicCamera({...earthcam,id:"untrusted-youtube"}),false);
+
 assert.equal(publicCameraEmbed(skyline),null,"Skyline live video must remain link-only");
 assert.equal(validatePublicCamera(skyline),true);
-assert.equal(findPublicCameras({search:"jerusalem"}).length,1);
-assert.equal(findPublicCameras({search:"Muro Ocidental"}).length,1);
-assert.equal(findPublicCameras({country:"Israel"}).length,1);
+assert.equal(findPublicCameras({search:"jerusalem"}).length,2);
+assert.equal(findPublicCameras({search:"Muro Ocidental"}).length,2);
+assert.equal(findPublicCameras({country:"Israel"}).length,2);
 assert.deepEqual(parseWorldCameraCommand("Jarvis, mostre a câmera de Jerusalém"),
  {type:"search",term:"jerusalem"});
 assert.equal(validatePublicCamera({...skyline,sourceUrl:

@@ -1,7 +1,9 @@
 import {PUBLIC_WORLD_CAMERAS, CAMERA_CATEGORY_NAMES, CAMERA_PROVIDER_NAMES,
  WORLD_CAMERAS_CATALOGS, cameraProvider, WORLD_CAMERAS_HOME,
  WORLD_CAMERAS_INTERNATIONAL, WORLD_CAMERAS_ALTERNATIVE_ID,
- getWorldCameraAlternative, findPublicCameras, parseWorldCameraCommand,
+ getWorldCameraAlternative, getWesternWallPlayableAlternative,
+ WESTERN_WALL_EARTHCAM_ID,WESTERN_WALL_OFFICIAL_CAMERAS_URL,
+ findPublicCameras, parseWorldCameraCommand,
  publicCameraEmbed, cameraDirectorySummary} from "./jarvis-public-world-cameras-model.js?v=5.38.0";
 
 // Public third-party webcams only. Nothing here activates user/device cameras.
@@ -79,13 +81,31 @@ function choose(camera,{autoPlay=false}={}){
   const action=make("button","jarvis-worldcam-play","REPRODUZIR (FONTE EXTERNA)");
   action.type="button";action.addEventListener("click",()=>startPlayback(camera));
   notice.append(action);
+ }else if(camera.id===WORLD_CAMERAS_ALTERNATIVE_ID){
+  notice.append(make("span","jarvis-worldcam-hint",
+   "Esta câmera pertence à SkylineWebcams; seu vídeo ao vivo não pode ser "+
+   "incorporado aqui. Há outra transmissão do MESMO LOCAL pela EarthCam no YouTube "+
+   "(outra câmera e outro ângulo, não é o vídeo da SkylineWebcams)."));
+  const samePlace=getWesternWallPlayableAlternative(camera);
+  if(samePlace){
+   const button=make("button","jarvis-worldcam-same-place",
+    "ASSISTIR AO MURO OCIDENTAL NO NEURAL · EARTHCAM");
+   button.type="button";
+   button.title="Abrir o player YouTube oficial da EarthCam no Neural Jarvis, inicialmente sem áudio";
+   button.addEventListener("click",()=>{
+    if(!requested||selection?.id!==camera.id)return;
+    choose(samePlace);
+    render();
+    startPlayback(samePlace);
+   });
+   notice.append(button);
+  }
+  notice.append(safeLink(WESTERN_WALL_OFFICIAL_CAMERAS_URL,
+   "Outras câmeras oficiais · Fundação do Muro Ocidental"));
  }else{
   notice.append(make("span","jarvis-worldcam-hint",
-   camera.id===WORLD_CAMERAS_ALTERNATIVE_ID?
-    "A SkylineWebcams permite compartilhar este link, mas não incorporar "+
-    "seu vídeo ao vivo em sites de terceiros. Abra a página do provedor para assistir.":
-    "O catálogo não forneceu um player incorporável confirmado. "+
-    "Abra a fonte para conferir a transmissão; nenhum vídeo será inventado."));
+   "O catálogo não forneceu um player incorporável confirmado. "+
+   "Abra a fonte para conferir a transmissão; nenhum vídeo será inventado."));
  }
  // When one provider's player is blocked/unavailable, offer an actual
  // additional public source without silently changing the selected location.
@@ -110,8 +130,10 @@ function startPlayback(camera){
  syncAudio();
  userReportedFailure=null;
  const n=make("span","jarvis-worldcam-hint",
-   " Reprodução solicitada ao provedor. Não é possível comprovar automaticamente "+
-   "se o sinal está ao vivo ou se o provedor bloqueou a incorporação.");
+   " Reprodução solicitada ao provedor"+
+   (camera.id===WESTERN_WALL_EARTHCAM_ID?" EarthCam / YouTube, outro ângulo do Muro Ocidental. ":" . ")+
+   "Não é possível comprovar automaticamente se o sinal está ao vivo "+
+   "ou se o provedor bloqueou a incorporação.");
  const failure=make("button","jarvis-worldcam-playback-failed",
    "VÍDEO FALHOU / INDISPONÍVEL");
  failure.type="button";
@@ -123,7 +145,12 @@ function startPlayback(camera){
   notice.querySelectorAll(".jarvis-worldcam-playback-failed").forEach(node=>node.remove());
   notice.append(make("span","jarvis-worldcam-hint",
    "Reprodução encerrada após seu aviso. A disponibilidade do provedor não foi verificada. "+
-   "Você pode abrir a fonte original ou a câmera alternativa de Jerusalém."));
+   (camera.id===WESTERN_WALL_EARTHCAM_ID?
+    "Experimente a fonte original no YouTube ou as câmeras da Fundação do Muro Ocidental.":
+    "Você pode abrir a fonte original ou consultar uma câmera alternativa de Jerusalém.")));
+  if(camera.id===WESTERN_WALL_EARTHCAM_ID)
+   notice.append(safeLink(WESTERN_WALL_OFFICIAL_CAMERAS_URL,
+    "Câmeras oficiais do Muro Ocidental"));
  });
  notice.append(n,failure);
  return {ok:true,requested:true,liveVerified:false};
@@ -176,7 +203,7 @@ function build(){
   toolbar.append(el);
  }
  const catalogs=make("details","jarvis-worldcam-catalogs");
- catalogs.append(make("summary","","EXPLORAR TODOS OS CATÁLOGOS · SKYLINE / WEBCAMERA24"));
+ catalogs.append(make("summary","","EXPLORAR TODOS OS PROVEDORES · 4 CATÁLOGOS MUNDIAIS"));
  const directory=make("div","jarvis-worldcam-catalog-grid");
  for(const provider of WORLD_CAMERAS_CATALOGS){
   const card=make("section","jarvis-worldcam-catalog-card");
@@ -237,7 +264,8 @@ function render(){
  const info=cameraDirectorySummary();
  summary.textContent=info.indexed+" câmeras selecionadas ("+
   info.countries.length+" países) · "+info.embedded+
-  " com player divulgado · 2 catálogos mundiais completos via links · "+
+  " com player divulgado · "+info.providerCatalogs+
+  " catálogos completos via links oficiais · "+
   "0 sinais confirmados automaticamente";
  results.replaceChildren();
  for(const c of matches){
@@ -268,8 +296,8 @@ function open({search="",cameraId=null}={}){
  choose(selected);render();
  const count=findPublicCameras({search:queryField.value}).length;
  say("Central exibida dentro do Neural Ring: "+count+
-  " câmeras selecionadas indexadas e links para os catálogos mundiais completos "+
-  "SkylineWebcams / Webcamera24. Áudio Webcamera24 mudo por padrão.");
+  " câmeras selecionadas indexadas e "+WORLD_CAMERAS_CATALOGS.length+
+  " catálogos oficiais navegáveis. Áudio Webcamera24 mudo por padrão.");
  return {handled:true,ok:true,count,selected:selected?.id||null,videoStarted:false};
 }
 function search(term){

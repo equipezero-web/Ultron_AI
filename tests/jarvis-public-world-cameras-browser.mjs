@@ -64,13 +64,46 @@ try{
  assert.equal(await page.$eval(".jarvis-worldcam-info .jarvis-worldcam-source",a=>a.href),
   fallback.href);
  assert.match(await page.$eval(".jarvis-worldcam-info",n=>n.textContent),
-  /não incorporar/i);
+  /não pode ser incorporado/i);
  assert.equal(await page.$(".jarvis-worldcam-fallback"),null,
   "The Jerusalem page cannot offer itself as the fallback");
  const jerusalem=await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.state);
  assert.equal(jerusalem.selected,"jerusalem-western-wall");
  assert.equal(jerusalem.playerRequested,false);
  assert.equal(jerusalem.liveVerified,false);
+ const samePlace=await page.$(".jarvis-worldcam-same-place");
+ assert.ok(samePlace,"Jerusalem must not be a source-link-only dead end");
+ const button=await page.$eval(".jarvis-worldcam-same-place",el=>({
+  text:el.textContent,height:getComputedStyle(el).minHeight
+ }));
+ assert.match(button.text,/EARTHCAM/);
+ assert.equal(parseFloat(button.height)>=44,true);
+ assert.equal(await page.$eval(".jarvis-worldcam-info",el=>
+  el.textContent.includes("outro ângulo")),true,
+  "Alternate view must identify a different broadcaster and camera angle");
+ const foundation=await page.$eval(".jarvis-worldcam-info a[href*='thekotel.org']",
+  a=>({href:a.href,rel:a.rel,target:a.target}));
+ assert.equal(foundation.href,"https://thekotel.org/en/western-wall/israel-live-cam/");
+ assert.match(foundation.rel,/noopener/);
+ assert.equal(foundation.target,"_blank");
+ await page.click(".jarvis-worldcam-same-place");
+ const earthcamPlaying=await page.evaluate(()=>({
+  state:window.ULTRON_WORLD_CAMERAS.state,
+  src:document.querySelector(".jarvis-worldcam-view iframe").getAttribute("src"),
+  originalLink:document.querySelector(".jarvis-worldcam-info a.jarvis-worldcam-source")?.href
+ }));
+ assert.equal(earthcamPlaying.state.selected,"jerusalem-western-wall-earthcam");
+ assert.equal(earthcamPlaying.state.playerRequested,true);
+ assert.equal(earthcamPlaying.state.liveVerified,false);
+ assert.match(earthcamPlaying.src,/youtube-nocookie\.com\/embed\/77akujLn4k8/);
+ assert.match(earthcamPlaying.src,/mute=1/);
+ assert.equal(earthcamPlaying.originalLink,
+  "https://www.youtube.com/watch?v=77akujLn4k8");
+ await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.open({
+  cameraId:"jerusalem-western-wall"
+ }));
+ assert.equal(await page.$(".jarvis-worldcam-view iframe[src]"),null,
+  "Re-select Skyline to stop EarthCam playback and keep its own feed link-only");
  const flags=await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.state);
  assert.equal(flags.liveVerified,false,"Never assert playback verifies live availability");
  assert.equal(flags.playerRequested,false,
@@ -78,9 +111,13 @@ try{
  const directories=await page.$$eval(".jarvis-worldcam-catalogs .jarvis-worldcam-catalog-card",cards=>
   cards.map(card=>({title:card.querySelector("strong").textContent,
    urls:[...card.querySelectorAll("a")].map(a=>a.href)})));
- assert.equal(directories.length,2);
+ assert.equal(directories.length,4);
  assert.ok(directories.some(x=>x.title==="SkylineWebcams"&&
    x.urls.includes("https://www.skylinewebcams.com/en/webcam.html")));
+ assert.ok(directories.some(x=>x.title==="Câmeras do Mundo"&&
+   x.urls.includes("https://camerasdomundo.com/live-cams/")));
+ assert.ok(directories.some(x=>x.title==="Africam"&&
+   x.urls.includes("https://africam.com/our-locations/")));
  assert.ok(directories.some(x=>x.title==="Webcamera24"&&
    x.urls.includes("https://webcamera24.com/pt/all-webcams/")));
  const providerOptions=await page.$$eval(".jarvis-worldcam-filters select[aria-label='Filtrar provedor de câmeras'] option",

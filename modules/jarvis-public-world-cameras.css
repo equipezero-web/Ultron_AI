@@ -222,3 +222,23 @@ body.jarvis-command-center .jarvis-worldcam-catalogs :focus-visible{
 @media(max-height:520px){
  body.jarvis-command-center .jarvis-worldcam-catalogs{max-height:22%}
 }
+
+/* Jerusalem: choose a distinct EarthCam YouTube feed of the same landmark.
+   Skyline's live stream remains link-only; never rehost the provider video. */
+body.jarvis-command-center .jarvis-worldcam-info .jarvis-worldcam-same-place{
+ min-height:48px!important;min-width:0;max-width:100%;
+ display:inline-flex;align-items:center;justify-content:center;flex-wrap:wrap;
+ box-sizing:border-box;border:1px solid #eccb83;border-radius:8px;
+ background:linear-gradient(112deg,#745017,#231b13);
+ color:#ffedc3;font-weight:800;font-size:11px;letter-spacing:.02em;
+ line-height:1.45;padding:9px 12px;cursor:pointer;touch-action:manipulation;
+ white-space:normal;overflow-wrap:anywhere;
+}
+body.jarvis-command-center .jarvis-worldcam-info .jarvis-worldcam-same-place:focus-visible{
+ outline:2px solid #ffdf9b;outline-offset:2px;
+}
+@media(max-width:650px){
+ body.jarvis-command-center .jarvis-worldcam-info .jarvis-worldcam-same-place{
+  width:100%;min-height:48px;font-size:11px;
+ }
+}

@@ -1,0 +1,86 @@
+/* Scoped file editor and bounded multitasks inside the existing Neural Jarvis.
+   Hidden overlays have no effect on mobile document scroll. */
+body.jarvis-command-center .jarvis-scoped-files,
+body.jarvis-command-center .jarvis-parallel-panel{
+ position:absolute;inset:4px;z-index:295;box-sizing:border-box;
+ display:flex;flex-direction:column;gap:10px;
+ padding:12px;border-radius:12px;
+ background:linear-gradient(135deg,rgba(17,20,25,.99),rgba(8,11,16,.99));
+ border:1px solid rgba(236,191,112,.72);color:#ffeed2;
+ font:12px/1.5 system-ui,-apple-system,sans-serif;
+ overflow:auto;overscroll-behavior-y:auto;-webkit-overflow-scrolling:touch;
+ min-width:0;min-height:0;max-height:calc(100% - 8px);
+}
+body.jarvis-command-center .jarvis-scoped-files[hidden],
+body.jarvis-command-center .jarvis-parallel-panel[hidden]{display:none!important}
+body.jarvis-command-center .jarvis-scoped-files-head,
+body.jarvis-command-center .jarvis-parallel-head{
+ flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:8px;
+ color:#f5d79a;font-size:13px;font-weight:800;
+}
+body.jarvis-command-center .jarvis-scoped-files-head button,
+body.jarvis-command-center .jarvis-parallel-head button{
+ width:44px;min-width:44px;height:44px;min-height:44px;cursor:pointer;
+ border:1px solid #c69d56;border-radius:7px;color:#fff;
+ background:rgba(71,47,17,.8);font-size:22px;
+}
+body.jarvis-command-center .jarvis-scoped-files p,
+body.jarvis-command-center .jarvis-parallel-panel p{
+ margin:0;line-height:1.6;color:#d2c6ac;font-size:11px;
+}
+body.jarvis-command-center .jarvis-scoped-files textarea{
+ flex:1 1 auto;min-height:120px;max-height:75%;resize:vertical;
+ background:#0c1016;color:#ffe8c8;border:1px solid rgba(255,207,124,.44);
+ padding:10px;border-radius:8px;box-sizing:border-box;width:100%;min-width:0;
+ font:12px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;
+ touch-action:pan-y;overscroll-behavior-y:auto;
+}
+body.jarvis-command-center .jarvis-scoped-file-actions,
+body.jarvis-command-center .jarvis-parallel-actions{
+ display:flex;flex-wrap:wrap;gap:7px;flex:0 0 auto;
+}
+body.jarvis-command-center .jarvis-scoped-file-actions button,
+body.jarvis-command-center .jarvis-parallel-actions button{
+ min-height:44px;max-width:100%;box-sizing:border-box;
+ border:1px solid rgba(253,213,133,.6);border-radius:7px;
+ background:linear-gradient(120deg,#5c3f16,#1f1b16);
+ color:#ffe1aa;cursor:pointer;font:700 11px/1.35 system-ui,sans-serif;
+ padding:9px 11px;touch-action:manipulation;
+}
+body.jarvis-command-center .jarvis-scoped-file-status,
+body.jarvis-command-center .jarvis-parallel-status{
+ min-height:36px;flex:0 0 auto;font-size:11px;color:#f5dea5!important;
+}
+body.jarvis-command-center .jarvis-parallel-choices{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:8px;padding:8px;border:1px solid rgba(232,188,114,.35);border-radius:8px;
+}
+body.jarvis-command-center .jarvis-parallel-choices label{
+ display:flex;gap:7px;align-items:center;min-height:38px;
+ min-width:0;overflow-wrap:anywhere;
+}
+body.jarvis-command-center .jarvis-parallel-choices input{accent-color:#d1a85e;min-height:22px;min-width:22px;}
+body.jarvis-command-center .jarvis-parallel-results{
+ flex:1 1 auto;min-height:64px;padding-left:22px;margin:0;overflow-y:auto;
+ scrollbar-width:none;overscroll-behavior-y:auto;-webkit-overflow-scrolling:touch;
+}
+body.jarvis-command-center .jarvis-parallel-results li{
+ padding:6px;border-bottom:1px solid rgba(224,191,125,.16);overflow-wrap:anywhere;
+}
+body.jarvis-command-center .jarvis-scoped-files :focus-visible,
+body.jarvis-command-center .jarvis-parallel-panel :focus-visible{
+ outline:2px solid #ffdf9b;outline-offset:2px;
+}
+@media(max-width:620px){
+ body.jarvis-command-center .jarvis-scoped-files,
+ body.jarvis-command-center .jarvis-parallel-panel{
+  inset:3px;padding:8px;gap:7px;max-height:calc(100% - 6px);
+ }
+ body.jarvis-command-center .jarvis-scoped-file-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));}
+ body.jarvis-command-center .jarvis-scoped-file-actions button{width:100%;}
+ body.jarvis-command-center .jarvis-parallel-choices{grid-template-columns:1fr 1fr;}
+}
+@media(max-height:450px){
+ body.jarvis-command-center .jarvis-scoped-files textarea{min-height:75px;}
+ body.jarvis-command-center .jarvis-parallel-results{min-height:35px;}
+}

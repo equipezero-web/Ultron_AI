@@ -1,0 +1,94 @@
+name: JARVIS Parallel & Scoped Android Files
+on:
+  pull_request:
+    paths:
+      - 'modules/jarvis-parallel-readonly*'
+      - 'modules/jarvis-scoped-files*'
+      - 'modules/jarvis-scoped-workspaces.css'
+      - 'modules/jarvis-local-commands.js'
+      - 'modules/jarvis-public-world-cameras*'
+      - 'android-bridge/**'
+      - 'tests/jarvis-scoped-multitask*'
+      - 'tests/jarvis-mobile-saf-security.mjs'
+      - 'index.html'
+      - '.github/workflows/jarvis-parallel-scoped-android.yml'
+  push:
+    paths:
+      - 'modules/jarvis-parallel-readonly*'
+      - 'modules/jarvis-scoped-files*'
+      - 'modules/jarvis-scoped-workspaces.css'
+      - 'modules/jarvis-local-commands.js'
+      - 'modules/jarvis-public-world-cameras*'
+      - 'android-bridge/**'
+      - 'tests/jarvis-scoped-multitask*'
+      - 'tests/jarvis-mobile-saf-security.mjs'
+      - 'index.html'
+      - '.github/workflows/jarvis-parallel-scoped-android.yml'
+permissions:
+  contents: read
+jobs:
+  safe-model:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Safe parallel and phone storage permission tests
+        run: |
+          node --check modules/jarvis-parallel-readonly-model.js
+          node --check modules/jarvis-parallel-readonly-center.js
+          node --check modules/jarvis-scoped-files.js
+          node --check modules/jarvis-scoped-files-model.js
+          node --check modules/jarvis-local-commands.js
+          node tests/jarvis-scoped-multitask-model.mjs
+          node tests/jarvis-mobile-saf-security.mjs
+          node tests/jarvis-public-world-cameras-model.mjs
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser harness
+        run: |
+          npm install --no-save --no-package-lock --ignore-scripts puppeteer-core@24.33.0
+          echo "CHROME_BIN=$(command -v google-chrome || command -v chromium || command -v chromium-browser)" >> "$GITHUB_ENV"
+      - name: Verify responsive in-Neural file and multitask controls
+        run: |
+          python3 -m http.server 8777 --bind 127.0.0.1 >/tmp/jarvis-scoped-http.log 2>&1 &
+          sleep 2
+          node tests/jarvis-scoped-multitask-browser.mjs
+  android-debug-apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Provision Android SDK 36 from runner SDK
+        run: |
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          if [ -d "$ANDROID_HOME/platforms/android-36" ] && [ -d "$ANDROID_HOME/build-tools/36.0.0" ]; then
+            echo "Android SDK 36 already present."
+          else
+            SDKMANAGER="$(find "$ANDROID_HOME/cmdline-tools" -type f -name sdkmanager | sort -V | tail -1)"
+            test -n "$SDKMANAGER"
+            "$SDKMANAGER" --install "platforms;android-36" "build-tools;36.0.0"
+          fi
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.6.0'
+      - name: Build debug Mobile Bridge (scoped SAF)
+        working-directory: android-bridge
+        run: gradle :app:assembleDebug --no-daemon --stacktrace
+      - uses: actions/upload-artifact@v4
+        with:
+          name: jarvis-android-bridge-0.5.0-debug
+          path: android-bridge/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+          retention-days: 7
