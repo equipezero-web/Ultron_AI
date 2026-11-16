@@ -1,0 +1,40 @@
+name: JARVIS GitHub Private Auth Contract
+on:
+  pull_request:
+    paths:
+      - "backend/github-private-inspector.js"
+      - "backend/github-public-inspector.js"
+      - "backend/worker.js"
+      - "modules/jarvis-github-private-bridge.js"
+      - "tests/jarvis-github-private-inspector.mjs"
+      - ".github/workflows/jarvis-github-private-auth.yml"
+  push:
+    branches: [main]
+    paths:
+      - "backend/github-private-inspector.js"
+      - "backend/github-public-inspector.js"
+      - "backend/worker.js"
+      - "modules/jarvis-github-private-bridge.js"
+      - "tests/jarvis-github-private-inspector.mjs"
+permissions:
+  contents: read
+jobs:
+  private-auth:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Check syntax
+        run: |
+          node --check backend/github-private-inspector.js
+          node --check backend/github-public-inspector.js
+          node --check backend/worker.js
+          node --check modules/jarvis-github-private-bridge.js
+          node --check tests/jarvis-github-private-inspector.mjs
+      - name: Verify signature and read-only account boundaries
+        run: node tests/jarvis-github-private-inspector.mjs
+      - name: Verify original public Inspector
+        run: node tests/jarvis-github-public-inspector.mjs
