@@ -65,6 +65,22 @@ async function remoteKeys(url,fetchImpl){
     return {keys:[],error:e?.name==="AbortError"?"access-certs-timeout":"access-certs-fetch-failed"};
   }finally{clearTimeout(timer);}
 }
+// Backup JWKS must be provisioned by an administrator from the trusted Access
+// team endpoint, with an explicit expiry. Never accept keys from requests.
+function backupKeys(env,now){
+  try{
+    const expires=Date.parse(normalize(env.CF_ACCESS_JWKS_BACKUP_EXPIRES));
+    if(!Number.isFinite(expires)||expires<=now()||expires>now()+7*86400000)return [];
+    const raw=normalize(env.CF_ACCESS_JWKS_BACKUP);
+    if(!raw||raw.length>90000)return [];
+    const data=JSON.parse(raw);
+    if(!Array.isArray(data.keys)||data.keys.length>12)return [];
+    return data.keys.filter(k=>k&&typeof k.kid==="string"&&
+      k.kty==="RSA"&&k.alg==="RS256"&&k.use==="sig"&&
+      typeof k.n==="string"&&typeof k.e==="string"&&
+      /^[A-Za-z0-9_-]+$/.test(k.n)&&/^[A-Za-z0-9_-]+$/.test(k.e));
+  }catch{return [];}
+}
 async function digest(str){
   const raw=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(str));
   return [...new Uint8Array(raw)].map(n=>n.toString(16).padStart(2,"0")).join("");
@@ -91,8 +107,9 @@ export async function authorizeJarvisAccount(request,env,{fetchImpl=fetch,now=Da
    const email=normalize(payload.email).toLowerCase();
    if(!config.allowedEmails.includes(email))return result("account-not-allowed");
    const certs=await remoteKeys(config.issuer+"/cdn-cgi/access/certs",fetchImpl);
-   if(certs.error)return result(certs.error,503);
-   const jwk=certs.keys.find(k=>k.kid===header.kid&&k.kty==="RSA"&&k.n&&k.e);
+   const keys=certs.error?backupKeys(env,now):certs.keys;
+   if(certs.error&&!keys.length)return result(certs.error,503);
+   const jwk=keys.find(k=>k.kid===header.kid&&k.kty==="RSA"&&k.n&&k.e);
    if(!jwk)return result("access-certs-key-not-found",503);
    const key=await crypto.subtle.importKey("jwk",
      {kty:"RSA",n:jwk.n,e:jwk.e,alg:"RS256",ext:true,key_ops:["verify"]},
