@@ -13,12 +13,18 @@ const html=read('index.html');
 const workflow=read('.github/workflows/android-bridge.yml');
 const backend=read('backend/device-bridge.js');
 const gateway=read('backend/device-control-v2.js');
+const secure=read('android-bridge/app/src/main/java/com/ultron/bridge/SecureStore.java');
 
 assert.match(manifest,/MANAGE_EXTERNAL_STORAGE/);
 assert.match(android,/Environment\.isExternalStorageManager\(\)/);
 assert.match(android,/MessageDigest\.isEqual/);
 assert.match(android,/String expected/);
 assert.match(android,/SESSION_MS = 10 \* 60_000L/);
+assert.match(android,/enablePermanent\(Context context\)/);
+assert.match(android,/StringBuilder value = new StringBuilder\(32\)/);
+assert.match(android,/SecureStore\.getRemoteFilesKey/);
+assert.match(secure,/AndroidKeyStore/);
+assert.match(secure,/clearRemoteFilesKey/);
 assert.match(android,/MAX_REMOTE_TRANSFER_BYTES = 16L/);
 assert.match(android,/protectedPath\.startsWith\("\/android\/data\/"\)/);
 assert.match(android,/protectedPath\.startsWith\("\/android\/obb\/"\)/);
@@ -35,7 +41,7 @@ assert.match(js,/window\.ULTRON_DEVICES\.sendCommand/);
 assert.match(js,/TRANSFER_MAX = 16 \* 1024 \* 1024/);
 assert.match(js,/const CHUNK_MAX = 80 \* 1024/);
 assert.match(html,/jarvis-phone-files\.js\?v=/);
-assert.match(workflow,/jarvis-bridge-v0\.7\.0-debug/);
+assert.match(workflow,/jarvis-bridge-v0\.8\.0-debug/);
 
 // The D1 endpoint enforces mobile-only file commands and a bounded operator PIN.
 const calls=[];
@@ -59,6 +65,10 @@ assert.match(invalid.error,/PIN/);
 const valid=await enqueueCommand(env,{...base,payload:{accessCode:'12345678',path:''}});
 assert.equal(valid.ok,true);
 assert.ok(valid.commandId);
+const permanent=await enqueueCommand(env,{...base,payload:{accessCode:'A'.repeat(32),path:''}});
+assert.equal(permanent.ok,true,'Keystore-backed key accepted for persistent access');
+const invalidShortKey=await enqueueCommand(env,{...base,payload:{accessCode:'A'.repeat(20),path:''}});
+assert.equal(invalidShortKey.ok,false);
 targetType='desktop';
 const wrong=await enqueueCommand(env,{...base,payload:{accessCode:'12345678'}});
 assert.equal(wrong.ok,false);
