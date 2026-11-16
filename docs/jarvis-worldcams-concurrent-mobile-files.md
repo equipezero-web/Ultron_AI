@@ -1,6 +1,8 @@
 # J.A.R.V.I.S. — câmeras mundiais, multitarefas e arquivos do celular (etapa segura)
 
 ## 1. Catálogos mundiais completos vs. indexação de transmissões
+- Câmeras do Mundo: https://camerasdomundo.com/live-cams/
+- Africam: https://africam.com/our-locations/
 - SkylineWebcams: https://www.skylinewebcams.com/en/webcam.html
 - Webcamera24: https://webcamera24.com/pt/all-webcams/
 
