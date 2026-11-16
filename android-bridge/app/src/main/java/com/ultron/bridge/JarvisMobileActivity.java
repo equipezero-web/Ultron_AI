@@ -17,6 +17,7 @@ import java.util.ArrayList;
 public final class JarvisMobileActivity extends Activity {
     private TextView feedback;
     private EditText input;
+    private NeuralRingView neuralRing;
     private final int VOICE_REQUEST = 4102;
 
     @Override public void onCreate(Bundle state) {
@@ -32,7 +33,8 @@ public final class JarvisMobileActivity extends Activity {
         root.addView(title);
         TextView subtitle = label("NEURAL INTERFACE",12,0xff9ba9bb);
         root.addView(subtitle);
-        View ring = new NeuralRingView(this);
+        NeuralRingView ring = new NeuralRingView(this);
+        neuralRing = ring;
         root.addView(ring,new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0,1));
         feedback = label("Aguardando seu comando.",15,0xffe2ebf4);
         root.addView(feedback);
@@ -91,12 +93,13 @@ public final class JarvisMobileActivity extends Activity {
         String deviceId=SecureStore.getDeviceId(this);
         if(deviceId==null){showPairing();feedback.setText("Conecte o celular antes de enviar comandos.");return;}
         feedback.setText("Enviando comando...");
+        neuralRing.setActive(true);
         new Thread(()->{
             try{
                 JSONObject payload=new JSONObject().put("text",message).put("source","jarvis-mobile");
                 BridgeApi.sendEvent(deviceId,SecureStore.getOrCreateDeviceSecret(this),"speech.transcript",payload);
-                runOnUiThread(()->feedback.setText("Comando transmitido ao J.A.R.V.I.S."));
-            }catch(Exception e){runOnUiThread(()->feedback.setText("Falha de comunicação: "+e.getMessage()));}
+                runOnUiThread(()->{neuralRing.setActive(false);feedback.setText("Comando transmitido ao J.A.R.V.I.S.");});
+            }catch(Exception e){runOnUiThread(()->{neuralRing.setActive(false);feedback.setText("Falha de comunicação: "+e.getMessage());});}
         }).start();
     }
     private void startVoice(){
