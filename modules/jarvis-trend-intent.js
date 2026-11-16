@@ -33,7 +33,7 @@ export function parseTrendIntent(value){
  const subject=/\b(tendencias?|trends|modas?|assuntos? em alta|em alta|assuntos? do dia|buscas? em alta|viralizando|bombando|popularidade)\b/;
  if(!intro.test(q)||!subject.test(q))return null;
  const region=/\b(brasil|brasileir[ao]s?|recife|pernambuco)\b/.test(q)?"br":
-  /\b(mundo|mundial|globais?|internacional|exterior)\b/.test(q)?"world":"all";
+  /\b(mundo|mundial|mundiais|globais?|internacional|exterior)\b/.test(q)?"world":"all";
  const focus=groups.find(([,regex])=>regex.test(q));
  const category=focus?.[0]||(/\b(buscas?|google trends|pesquisas? em alta)\b/.test(q)?"pesquisas":"all");
  // Broad "modas e tendências em todas as áreas" is a request for all topics,
