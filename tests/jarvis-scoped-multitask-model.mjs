@@ -72,4 +72,36 @@ untilDone.finishNow();
 const stopResult=await running;
 assert.equal(stopResult.cancelled,true);
 assert.equal(stopResult.results[0].status,"cancelled");
+// Starting a second batch must never bypass the GLOBAL three-task cap.
+let releaseHeld;
+const holding=new Promise(resolve=>{releaseHeld=resolve;});
+let runningHeld=0,peakHeld=0;
+const guardHandlers=Object.fromEntries([
+ "world-cameras","device-status","meteorology-status","data-intelligence"
+].map(name=>[name,async()=>{
+ runningHeld++;peakHeld=Math.max(peakHeld,runningHeld);
+ await holding;runningHeld--;
+ return {ok:true,summary:name};
+}]));
+const guarded=createParallelTaskCenter({handlers:guardHandlers,maxConcurrent:3});
+const firstBatch=guarded.start([
+ "world-cameras","device-status","meteorology-status","data-intelligence"
+]);
+assert.equal(guarded.state.busy,true);
+assert.equal(guarded.state.running,3);
+const overlap=await guarded.start(["world-cameras","meteorology-status"]);
+assert.equal(overlap.ok,false,"Overlapping start must be rejected globally");
+assert.match(overlap.error,/Outra rodada/);
+assert.equal(peakHeld,3);
+guarded.stop();
+const whileStopping=await guarded.start(["world-cameras"]);
+assert.equal(whileStopping.ok,false,"STOP must fence a new batch until old handlers settle");
+releaseHeld();
+const cancelledBatch=await firstBatch;
+assert.equal(cancelledBatch.cancelled,true);
+assert.equal(guarded.state.busy,false);
+const afterStop=await guarded.start(["world-cameras"]);
+assert.equal(afterStop.ok,true,"New start works once the aborted batch has settled");
+assert.equal(peakHeld,3,"No overlapping task wave exceeded global limit");
+
 console.log("JARVIS SAFE MULTITASK + SCOPED FILES MODEL PASS: bounded concurrency, safe tasks, P0 stop, no path/file rights escalation.");
