@@ -37,13 +37,13 @@ export const CONTROL_COMMANDS = new Set([
   "desktop.media.next",
   "desktop.media.previous",
   "desktop.lock",
-  "tv.unlink",
   "desktop.sleep",
   "desktop.restart",
   "desktop.shutdown"
 ]);
 
 const SENSITIVE_COMMANDS = new Set([
+  "tv.unlink",
   "desktop.sleep",
   "desktop.restart",
   "desktop.shutdown"
