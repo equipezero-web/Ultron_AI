@@ -1,18 +1,44 @@
 import API_CONFIG from "../config.js";
 import {parseAccountPluginCommand} from "../backend/jarvis-account-plugin-intents.js";
+import {explainAccountPluginFailure} from "./jarvis-account-diagnostics.js";
 // Runs in all logged-in browser sessions, but actions require an authenticated
 // Cloudflare Access account and a separately paired Android device.
 const base=String(API_CONFIG?.backendUrl||"").replace(/\/+$/,"");
 const oldFetch=window.fetch.bind(window);
 let selectedDeviceId=null;
 const io=async(path,body)=>{
- const response=await oldFetch(base+path,{method:body?"POST":"GET",
-   credentials:"include",mode:"cors",cache:"no-store",redirect:"error",
-   ...(body?{headers:{"Content-Type":"application/json"},body:JSON.stringify(body)}:{})});
- const data=await response.json().catch(()=>({ok:false,error:"invalid-api-response"}));
+ let response;
+ try{
+   response=await oldFetch(base+path,{method:body?"POST":"GET",
+     credentials:"include",mode:"cors",cache:"no-store",redirect:"error",
+     ...(body?{headers:{"Content-Type":"application/json"},body:JSON.stringify(body)}:{})});
+ }catch{
+   throw Error("account-auth-request-blocked");
+ }
+ const data=await response.json().catch(()=>({ok:false,
+   error:"account-auth-non-json-"+response.status}));
  if(!response.ok||!data.ok)throw Error(data?.error||"HTTP "+response.status);
  return data;
 };
+async function healthStatus(){
+ if(!base)return null;
+ try{
+   const response=await oldFetch(base+"/api/health",{method:"GET",
+     cache:"no-store",mode:"cors",redirect:"error"});
+   if(!response.ok)return null;
+   const data=await response.json();
+   return {accountConfigured:data?.accountPlugins?.configured===true,
+     accountSettingKnown:typeof data?.accountPlugins?.configured==="boolean",
+     memoryReady:data?.memory?.ready===true,
+     backendOnline:data?.status==="online"};
+ }catch{return null;}
+}
+async function diagnoseFailure(error){
+ const status=await healthStatus();
+ const code=status?.accountSettingKnown && !status?.accountConfigured?
+   "account-login-not-configured":String(error?.message||error||"");
+ return explainAccountPluginFailure(code);
+}
 const label=e=>String(e||"").replace(/[\x00-\x1f<>]/g," ").slice(0,140);
 const pretty=bytes=>(Number(bytes)/(1024**3)).toLocaleString("pt-BR",
  {maximumFractionDigits:2})+" GB";
@@ -137,15 +163,20 @@ window.fetch=async function jarvisAccountPluginFetch(input,init={}){
    const text=await process(intent);
    return answer(text,intent);
  }catch(error){
-   const code=String(error?.message||"erro");
-   const text=/account-login-not-configured|account-login-required|account-token-invalid|account-not-allowed|Failed to fetch|NetworkError/i.test(code)?
-     "Não foi possível autenticar a conta de plugins. Configure Cloudflare Access, autorize este e-mail e faça login na sessão. Nenhuma ação foi executada.":
-     "Não foi possível executar o plugin: "+label(code)+". Nenhuma ação foi confirmada.";
-   return answer(text,intent);
+   return answer(await diagnoseFailure(error),intent);
  }
 };
 window.JARVIS_ACCOUNT_PLUGINS={
  get connected(){return Boolean(base);},
+ diagnostics:healthStatus,
+ explainFailure:diagnoseFailure,
+ // Only initiated by the operator clicking a visible login action. Cloudflare
+ // controls the auth redirect; no credentials are read by J.A.R.V.I.S.
+ openLogin(){
+   if(!base)return false;
+   window.open(base+"/api/account/plugins","_blank","noopener,noreferrer");
+   return true;
+ },
  list:getStatus,
  selectDevice(id){selectedDeviceId=String(id||"");return {selected:!!selectedDeviceId};},
  install:id=>io("/api/account/plugins",{action:"install",pluginId:id}),
