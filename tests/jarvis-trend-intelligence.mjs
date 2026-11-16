@@ -119,6 +119,9 @@ const latest=await latestTrendIntelligence(env,{now:()=>now,region:"all"});
 assert.equal(latest.ok,true);
 assert.equal(latest.sampleBased,true);
 assert.equal(latest.exhaustive,false);
+assert.deepEqual(latest.coverage,{observed:12,expected:44,complete:false});
+assert.equal(latest.partial,true);
+assert.equal(latest.items.find(x=>x.kind==="search-trend").observedCycles,1);
 assert.equal(latest.stale,false);
 assert.ok(latest.items.some(x=>x.kind==="search-trend"));
 assert.ok(latest.items.some(x=>x.kind==="news-observation"));
@@ -128,6 +131,7 @@ const br=await latestTrendIntelligence(env,{now:()=>now,region:"br",category:"pe
 assert.equal(br.ok,true);
 assert.equal(br.items.length,1);
 assert.equal(br.items[0].region,"BR");
+assert.deepEqual(br.coverage,{observed:1,expected:1,complete:true});
 const invalid=await latestTrendIntelligence(env,{region:"secret"});
 assert.equal(invalid.status,400);
 assert.equal((await latestTrendIntelligence(env,{now:()=>now+40*3600000})).ok,false);
