@@ -1,0 +1,33 @@
+name: JARVIS Public GitHub Inspection
+on:
+  pull_request:
+    paths:
+      - "backend/github-public-inspector.js"
+      - "backend/worker.js"
+      - "tests/jarvis-github-public-inspector.mjs"
+      - ".github/workflows/jarvis-github-public-inspector.yml"
+  push:
+    branches: [main]
+    paths:
+      - "backend/github-public-inspector.js"
+      - "backend/worker.js"
+      - "tests/jarvis-github-public-inspector.mjs"
+      - ".github/workflows/jarvis-github-public-inspector.yml"
+permissions:
+  contents: read
+jobs:
+  verify-public-readonly:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Check syntax
+        run: |
+          node --check backend/github-public-inspector.js
+          node --check backend/worker.js
+          node --check tests/jarvis-github-public-inspector.mjs
+      - name: Assert read-only GitHub inspection and evidence boundaries
+        run: node tests/jarvis-github-public-inspector.mjs
