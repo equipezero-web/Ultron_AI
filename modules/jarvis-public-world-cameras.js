@@ -203,7 +203,7 @@ function build(){
   toolbar.append(el);
  }
  const catalogs=make("details","jarvis-worldcam-catalogs");
- catalogs.append(make("summary","","EXPLORAR TODOS OS CATÁLOGOS · SKYLINE / WEBCAMERA24"));
+ catalogs.append(make("summary","","EXPLORAR TODOS OS PROVEDORES · 4 CATÁLOGOS MUNDIAIS"));
  const directory=make("div","jarvis-worldcam-catalog-grid");
  for(const provider of WORLD_CAMERAS_CATALOGS){
   const card=make("section","jarvis-worldcam-catalog-card");
@@ -264,7 +264,8 @@ function render(){
  const info=cameraDirectorySummary();
  summary.textContent=info.indexed+" câmeras selecionadas ("+
   info.countries.length+" países) · "+info.embedded+
-  " com player divulgado · 2 catálogos mundiais completos via links · "+
+  " com player divulgado · "+info.providerCatalogs+
+  " catálogos completos via links oficiais · "+
   "0 sinais confirmados automaticamente";
  results.replaceChildren();
  for(const c of matches){
@@ -295,8 +296,8 @@ function open({search="",cameraId=null}={}){
  choose(selected);render();
  const count=findPublicCameras({search:queryField.value}).length;
  say("Central exibida dentro do Neural Ring: "+count+
-  " câmeras selecionadas indexadas e links para os catálogos mundiais completos "+
-  "SkylineWebcams / Webcamera24. Áudio Webcamera24 mudo por padrão.");
+  " câmeras selecionadas indexadas e "+WORLD_CAMERAS_CATALOGS.length+
+  " catálogos oficiais navegáveis. Áudio Webcamera24 mudo por padrão.");
  return {handled:true,ok:true,count,selected:selected?.id||null,videoStarted:false};
 }
 function search(term){
