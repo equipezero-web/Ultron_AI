@@ -162,7 +162,7 @@ try {
   assert.ok(wakeInfo.stories.some(x=>x.includes("Tempestade monitorada em SC")));
   assert.ok(wakeInfo.wake && wakeInfo.wake===wakeInfo.stored);
   assert.equal(wakeInfo.voice,false,"Spoken narration must remain off by default");
-  assert.equal(await page.$eval(".jarvis-intel-controls button",items=>items.length),1,
+  assert.equal(await page.evaluate(()=>document.querySelectorAll(".jarvis-intel-controls button").length),1,
     "Only text refresh is available; voice buttons are hidden");
   const initialCalls=calls;
   await page.click(".jarvis-intel-controls button:first-child");

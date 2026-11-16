@@ -127,3 +127,33 @@ export async function accountPluginPairDevice(env,accountId,{deviceName}={}){
  const name=String(deviceName||"Android J.A.R.V.I.S.").trim().slice(0,70);
  return startPairing(env,{operatorId:accountId,deviceType:"mobile",deviceName:name});
 }
+
+
+/**
+ * Revokes exactly one device owned by the signed account. The Bridge will
+ * reject its existing secret on the next poll/heartbeat. Do not delete audit
+ * timestamps, other users' devices or other accounts' plugin settings.
+ */
+export async function revokeAccountPluginDevice(env,accountId,{deviceId,confirm}={}){
+ if(!accountId||!(await ensure(env)))return error("plugin-database-unavailable",503);
+ if(confirm!==true)return error("device-revocation-confirmation-required",409);
+ const id=String(deviceId||"");
+ if(!/^[0-9a-f-]{36}$/i.test(id))return error("device-id-required");
+ const found=await env.ULTRON_DB.prepare(
+   "SELECT id FROM devices WHERE id=? AND operator_id=? AND status='active' LIMIT 1"
+ ).bind(id,accountId).first();
+ if(!found)return error("account-device-not-found-or-revoked",404);
+ const changes=await env.ULTRON_DB.batch([
+   env.ULTRON_DB.prepare(
+     "UPDATE device_commands SET status='cancelled',payload_json='{}',result_json=NULL,"+
+     "completed_at=CURRENT_TIMESTAMP WHERE device_id=? AND operator_id=? "+
+     "AND status IN ('pending','claimed')"
+   ).bind(id,accountId),
+   env.ULTRON_DB.prepare(
+     "UPDATE devices SET status='revoked' WHERE id=? AND operator_id=? AND status='active'"
+   ).bind(id,accountId)
+ ]);
+ if(!changes?.[1]?.meta?.changes)return error("account-device-not-found-or-revoked",404);
+ return {ok:true,deviceId:id,status:"revoked",credentialsInvalidated:true,
+   pendingCommandsCancelled:true,note:"Repareie este aparelho para permitir novas ações."};
+}

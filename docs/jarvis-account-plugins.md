@@ -41,3 +41,17 @@ Os plugins instalados ficam em `ULTRON_DB.jarvis_account_plugins` (Cloudflare D1
 ## Limites da fase
 
 As capacidades são persistentes **na conta**, mas o Android Bridge, Desktop Bridge e TV precisam de instalações reais/pareamentos e permissão do próprio sistema operacional. TV e outros dispositivos terão plugins adicionais apenas quando houver adaptadores específicos, revisão de permissões e testes. O navegador não consegue obter todas as informações de contas Google/Apple/YouTube sem a autorização OAuth de cada serviço.
+
+## Gerenciamento no próprio Neural Ring
+
+Abra **DISPOSITIVOS → Plugins permanentes**, dentro da área de respostas existente, sem criar nova tela. A central mostra quais plugins estão instalados nesta conta, quais aparelhos estão online e permite instalar/desativar módulos revisados, vincular Android e selecionar dispositivo para abrir YouTube, abrir Agenda ou medir armazenamento.
+
+Cada execução mostra inicialmente **solicitação na fila**, com um botão **Verificar execução**. A interface só relata processamento quando o Bridge confirma; abertura em segundo plano pode exigir interação local. O controle de agenda continua exigindo o botão Salvar no calendário.
+
+### Revogar o acesso de um aparelho
+
+Na central de plugins, escolha o aparelho e toque em **Revogar acesso ao dispositivo**. A confirmação é uma segunda ação independente. O backend verifica que o aparelho pertence à conta autenticada, altera seu status para `revoked`, invalida o segredo do Bridge para novas consultas e cancela comandos pendentes (eliminando também seus payloads). Comandos já executados ou fisicamente em andamento antes da revogação não podem ser desfeitos. Um novo pareamento será necessário.
+
+Por privacidade, o conteúdo de `calendar.create` é apagado do histórico do comando após o seu processamento. O diagnóstico de armazenamento não abre ou envia arquivos do dispositivo.
+
+**Aviso:** configurar Cloudflare Access e autorizar um usuário não instala automaticamente o Bridge no celular, não altera as proteções do Android nem concede acesso às contas YouTube/Google/Apple sem a autorização específica dessas plataformas.

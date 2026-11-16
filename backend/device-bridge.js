@@ -438,7 +438,9 @@ export async function pollCommands(env, { deviceId, deviceSecret } = {}) {
 
   // Never deliver stale commands after a device reconnects hours later.
   await env.ULTRON_DB.prepare(
-    `UPDATE device_commands SET status = 'expired', completed_at = CURRENT_TIMESTAMP
+    `UPDATE device_commands SET status = 'expired', completed_at = CURRENT_TIMESTAMP,
+           payload_json = CASE WHEN command = 'calendar.create' OR command LIKE 'files.%'
+               THEN '{}' ELSE payload_json END
        WHERE device_id = ? AND status IN ('pending', 'claimed')
          AND created_at <= datetime('now', ?)`
   ).bind(device.id, `-${COMMAND_TTL_MINUTES} minutes`).run();
@@ -502,7 +504,7 @@ export async function completeCommand(
   const update = await env.ULTRON_DB.prepare(
     `UPDATE device_commands
         SET status = ?, result_json = ?,
-            payload_json = CASE WHEN command LIKE 'files.%' OR command = 'tv.link' THEN '{}' ELSE payload_json END,
+            payload_json = CASE WHEN command LIKE 'files.%' OR command = 'tv.link' OR command = 'calendar.create' THEN '{}' ELSE payload_json END,
             completed_at = CURRENT_TIMESTAMP
       WHERE id = ? AND device_id = ? AND status = 'claimed'
         AND created_at > datetime('now', ?)`

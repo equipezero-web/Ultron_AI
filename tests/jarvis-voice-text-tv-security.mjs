@@ -45,7 +45,7 @@ assert.match(auth,/CODE_TTL = 10L \* 60_000L/);
 assert.match(auth,/attempts>=5/);
 assert.match(auth,/MessageDigest\.isEqual/);
 assert.match(auth,/SecureStore\.clearLgTv\(context\)/);
-assert.match(backend,/command = 'tv.link' THEN '\{\}'/);
+assert.match(backend,/command = 'tv.link' OR command = 'calendar.create' THEN '\{\}'/);
 assert.equal(validateControlCommand("tv.link",{code:"123456"}).ok,true);
 assert.equal(validateControlCommand("tv.unlink",{confirm:false}).ok,false);
 assert.equal(validateControlCommand("tv.unlink",{confirm:true}).ok,true);
