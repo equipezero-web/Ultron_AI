@@ -11,8 +11,8 @@ const remote = read("android-bridge/app/src/main/java/com/ultron/bridge/RemoteFi
 const service = read("android-bridge/app/src/main/java/com/ultron/bridge/BridgeService.java");
 const icon = read("android-bridge/app/src/main/res/drawable/ic_jarvis_bridge.xml");
 
-assert.match(gradle, /versionCode = 10/);
-assert.ok(gradle.includes('versionName = "0.7.0"'));
+assert.match(gradle, /versionCode = 11/);
+assert.ok(gradle.includes('versionName = "0.8.0"'));
 assert.match(icon, /<vector/);
 assert.match(manifest, /android:icon="@drawable\/ic_jarvis_bridge"/);
 assert.match(manifest, /android:allowBackup="false"/);
@@ -26,7 +26,7 @@ assert.match(visuals, /setMinHeight\(dp\(context, 52\)\)/);
 assert.match(main, /BRIDGE  \/\/  CENTRAL DO CELULAR/);
 assert.match(main, /NÚCLEO DE CONEXÃO/);
 assert.match(main, /CENTRAL DE DISPOSITIVOS/);
-assert.ok(main.includes("J.A.R.V.I.S. BRIDGE v0.7.0"));
+assert.ok(main.includes("J.A.R.V.I.S. BRIDGE v0.8.0"));
 assert.match(main, /serviceStatus\.startsWith\("ONLINE"\)/);
 assert.match(main, /tvDetails\.setVisibility\(android\.view\.View\.GONE\)/);
 
@@ -48,6 +48,13 @@ assert.ok(remote.includes("MAX_REMOTE_TRANSFER_BYTES = 16L"));
 assert.ok(remote.includes("protectedPath.startsWith(\"/android/data/\")"));
 assert.ok(service.includes("RemoteFiles.execute(this, command, payload)"));
 assert.ok(main.includes("REVOGAR ACESSO REMOTO"));
+assert.ok(main.includes("MANTER ACESSO ATÉ EU DESATIVAR"));
+const secure = read("android-bridge/app/src/main/java/com/ultron/bridge/SecureStore.java");
+assert.ok(secure.includes("saveRemoteFilesKey"));
+assert.ok(secure.includes("getRemoteFilesKey"));
+assert.ok(secure.includes("clearRemoteFilesKey"));
+assert.ok(remote.includes("enablePermanent(Context context)"));
+assert.ok(remote.includes("isPermanent(Context context)"));
 assert.doesNotMatch(remote, /\.delete\(|\.renameTo\(|FileOutputStream|Runtime\.getRuntime\(\)/);
 
 console.log("JARVIS BRIDGE UI + SCOPED FILE CONTRACT PASS: mobile dashboard, existing actions, version and Android storage boundaries.");
