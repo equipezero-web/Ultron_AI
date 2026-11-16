@@ -50,59 +50,82 @@ public final class MobileFilesActivity extends Activity {
     @Override
     protected void onCreate(Bundle state) {
         super.onCreate(state);
-        LinearLayout layout = new LinearLayout(this);
-        layout.setOrientation(LinearLayout.VERTICAL);
-        int pad = (int) (16 * getResources().getDisplayMetrics().density);
-        layout.setPadding(pad, pad, pad, pad);
-        TextView title = new TextView(this);
-        title.setText("J.A.R.V.I.S. // ARQUIVOS AUTORIZADOS");
-        title.setTextSize(21);
-        layout.addView(title, fullWidth());
+        JarvisUi.statusBar(this);
+        LinearLayout root = JarvisUi.column(this);
+        root.setBackgroundColor(JarvisUi.BACKGROUND);
+        int pad = JarvisUi.dp(this, 18);
+        root.setPadding(pad, JarvisUi.dp(this, 24), pad, JarvisUi.dp(this, 26));
+        root.addView(JarvisUi.text(this, "◈  J.A.R.V.I.S.  /  FILESPACE",
+            12, JarvisUi.GOLD, true), JarvisUi.width(this, 8));
+        root.addView(JarvisUi.text(this, "Arquivos autorizados",
+            25, JarvisUi.TEXT, true), JarvisUi.width(this, 10));
+        root.addView(JarvisUi.caption(this,
+            "Editor de texto local. O J.A.R.V.I.S. só pode acessar o documento escolhido neste Android. Nada é enviado à nuvem ou à IA."),
+            JarvisUi.width(this, 16));
 
-        TextView policy = new TextView(this);
-        policy.setText(
-            "Acesso somente a documentos escolhidos por você. Nunca autoriza o J.A.R.V.I.S. " +
-            "a examinar todo o celular. Leitura e edição são LOCAIS neste aparelho; " +
-            "o texto não é enviado ao servidor ou à IA. " +
-            "Para salvar, confirme cada alteração. Máximo 512 KiB, texto UTF-8."
-        );
-        layout.addView(policy, fullWidth());
-
-        Button choose = new Button(this);
-        choose.setText("ESCOLHER DOCUMENTO DO CELULAR");
+        LinearLayout pickerCard = JarvisUi.card(this);
+        pickerCard.addView(JarvisUi.heading(this, "01  /  SELECIONAR"),
+            JarvisUi.width(this, 8));
+        pickerCard.addView(JarvisUi.caption(this,
+            "Formatos textuais UTF-8 até 512 KiB. O Android solicita a seleção individual; nunca há varredura do armazenamento."),
+            JarvisUi.width(this, 12));
+        Button choose = JarvisUi.button(this, "ESCOLHER DOCUMENTO", true);
         choose.setOnClickListener(view -> openSystemPicker());
-        layout.addView(choose, fullWidth());
+        pickerCard.addView(choose, JarvisUi.width(this, 0));
+        root.addView(pickerCard, JarvisUi.width(this, 14));
 
+        LinearLayout editorCard = JarvisUi.card(this);
+        editorCard.addView(JarvisUi.heading(this, "02  /  EDIÇÃO LOCAL"),
+            JarvisUi.width(this, 10));
         editor = new EditText(this);
         editor.setInputType(InputType.TYPE_CLASS_TEXT |
             InputType.TYPE_TEXT_FLAG_MULTI_LINE |
             InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-        editor.setMinLines(10);
         editor.setGravity(android.view.Gravity.TOP);
         editor.setSingleLine(false);
+        editor.setTextSize(14);
+        editor.setTextColor(JarvisUi.TEXT);
+        editor.setHintTextColor(JarvisUi.MUTED);
+        editor.setHint("Selecione um documento para editar.");
+        editor.setPadding(JarvisUi.dp(this, 12), JarvisUi.dp(this, 12),
+            JarvisUi.dp(this, 12), JarvisUi.dp(this, 12));
+        editor.setBackground(JarvisUi.panel(this, JarvisUi.BACKGROUND,
+            JarvisUi.OUTLINE, 12));
         editor.setEnabled(false);
-        layout.addView(editor, new LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            (int) (280 * getResources().getDisplayMetrics().density)));
+        LinearLayout.LayoutParams editorBox = new LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT, JarvisUi.dp(this, 270));
+        editorBox.bottomMargin = JarvisUi.dp(this, 11);
+        editorCard.addView(editor, editorBox);
 
-        saveButton = new Button(this);
-        saveButton.setText("SALVAR ALTERAÇÕES (CONFIRMAR)");
+        saveButton = JarvisUi.button(this, "SALVAR COM CONFIRMAÇÃO", true);
         saveButton.setEnabled(false);
         saveButton.setOnClickListener(view -> askSave());
-        layout.addView(saveButton, fullWidth());
-
-        Button disconnect = new Button(this);
-        disconnect.setText("FECHAR ARQUIVO AUTORIZADO");
+        editorCard.addView(saveButton, JarvisUi.width(this, 9));
+        Button disconnect = JarvisUi.button(this, "FECHAR ARQUIVO", false);
         disconnect.setOnClickListener(view -> reset());
-        layout.addView(disconnect, fullWidth());
+        editorCard.addView(disconnect, JarvisUi.width(this, 10));
+        editorCard.addView(JarvisUi.caption(this,
+            "Cada gravação exige confirmação. Faça uma cópia de segurança antes de substituir o original."),
+            JarvisUi.width(this, 0));
+        root.addView(editorCard, JarvisUi.width(this, 14));
 
-        status = new TextView(this);
-        status.setText("Nenhum documento aberto. O Android solicitará sua escolha.");
-        layout.addView(status, fullWidth());
+        LinearLayout diagnostics = JarvisUi.card(this);
+        diagnostics.addView(JarvisUi.heading(this, "STATUS DO DOCUMENTO"),
+            JarvisUi.width(this, 9));
+        status = JarvisUi.caption(this,
+            "Nenhum documento aberto. O Android solicitará sua escolha.");
+        status.setTextIsSelectable(true);
+        diagnostics.addView(status, JarvisUi.width(this, 0));
+        root.addView(diagnostics, JarvisUi.width(this, 12));
+        root.addView(JarvisUi.caption(this,
+            "FILES / ISOLADO POR DOCUMENTO  •  J.A.R.V.I.S. BRIDGE v0.6.0"),
+            JarvisUi.width(this, 0));
 
         ScrollView scroll = new ScrollView(this);
         scroll.setFillViewport(true);
-        scroll.addView(layout);
+        scroll.setVerticalScrollBarEnabled(false);
+        scroll.setBackgroundColor(JarvisUi.BACKGROUND);
+        scroll.addView(root);
         setContentView(scroll);
     }
 

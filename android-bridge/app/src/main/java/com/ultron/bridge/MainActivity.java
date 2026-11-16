@@ -31,6 +31,7 @@ public class MainActivity extends Activity {
     private static final String DEFAULT_LG_TV_HOST = "10.0.0.109";
 
     private TextView statusView;
+    private TextView bridgeBadge;
     private EditText pairingCode;
     private EditText lgTvHost;
     private EditText lgTvMac;
@@ -65,131 +66,162 @@ public class MainActivity extends Activity {
         openRemoteMicrophone();
     }
 
+    // A compact J.A.R.V.I.S. command interface. All existing native actions
+    // are retained; no browser permissions or third-party UI code are loaded.
     private ScrollView buildUi() {
-        int pad = (int) (20 * getResources().getDisplayMetrics().density);
+        JarvisUi.statusBar(this);
+        LinearLayout root = JarvisUi.column(this);
+        root.setBackgroundColor(JarvisUi.BACKGROUND);
+        int side = JarvisUi.dp(this, 18);
+        root.setPadding(side, JarvisUi.dp(this, 22), side, JarvisUi.dp(this, 30));
 
-        LinearLayout root = new LinearLayout(this);
-        root.setOrientation(LinearLayout.VERTICAL);
-        root.setPadding(pad, pad, pad, pad);
+        TextView eyebrow = JarvisUi.text(this,
+            "STARK SYSTEMS  /  MOBILE OPERATIONS", 11, JarvisUi.GOLD, true);
+        root.addView(eyebrow, JarvisUi.width(this, 8));
+        TextView title = JarvisUi.text(this, "J.A.R.V.I.S.", 32, JarvisUi.TEXT, true);
+        root.addView(title, JarvisUi.width(this, 2));
+        root.addView(JarvisUi.text(this, "BRIDGE  //  CENTRAL DO CELULAR",
+            12, JarvisUi.MUTED, true), JarvisUi.width(this, 16));
 
-        TextView title = new TextView(this);
-        title.setText("J.A.R.V.I.S // MOBILE BRIDGE");
-        title.setTextSize(24);
-        root.addView(title, fullWidth());
+        LinearLayout hero = JarvisUi.card(this);
+        hero.addView(JarvisUi.text(this, "◈  NÚCLEO DE CONEXÃO",
+            12, JarvisUi.GOLD, true), JarvisUi.width(this, 8));
+        bridgeBadge = JarvisUi.text(this, "○  VERIFICANDO ESTADO LOCAL",
+            16, JarvisUi.TEXT, true);
+        hero.addView(bridgeBadge, JarvisUi.width(this, 7));
+        hero.addView(JarvisUi.caption(this,
+            "Ponte entre o Android e o J.A.R.V.I.S. O estado online só é mostrado após comunicação recente confirmada."),
+            JarvisUi.width(this, 0));
+        root.addView(hero, JarvisUi.width(this, 14));
 
-        TextView description = new TextView(this);
-        description.setText(
-                "PASSO 1 — No painel web do J.A.R.V.I.S, toque em PAREAR CELULAR. O código de 6 dígitos aparece no terminal do J.A.R.V.I.S, NÃO na TV. Digite esse código abaixo.\n\n" +
-                "PASSO 2 — Toque em INICIAR BRIDGE para manter este celular conectado ao J.A.R.V.I.S Cloud.\n\n" +
-                "MICROFONE — Ao tocar na solicitação do notebook, o app abrirá automaticamente a tela do microfone remoto. Se preferir, use USAR ESTE CELULAR COMO MICROFONE.\n\n" +
-                "TV — Depois de parear o celular, configure sua LG webOS mais abaixo. A TV mostrará apenas uma solicitação de autorização para aceitar com o controle remoto."
-        );
-        description.setTextSize(16);
-        description.setPadding(0, pad / 2, 0, pad);
-        root.addView(description, fullWidth());
-
+        LinearLayout pairCard = JarvisUi.card(this);
+        pairCard.addView(JarvisUi.heading(this, "01  /  PAREAMENTO"),
+            JarvisUi.width(this, 8));
+        pairCard.addView(JarvisUi.caption(this,
+            "No J.A.R.V.I.S. web, toque em PAREAR CELULAR. Insira aqui o código de 6 números exibido no painel."),
+            JarvisUi.width(this, 13));
         pairingCode = new EditText(this);
-        pairingCode.setHint("Código de 6 dígitos exibido no PAINEL WEB do J.A.R.V.I.S");
         pairingCode.setInputType(InputType.TYPE_CLASS_NUMBER);
-        root.addView(pairingCode, fullWidth());
-
-        Button pair = new Button(this);
-        pair.setText("PAREAR CELULAR COM J.A.R.V.I.S");
+        pairingCode.setFilters(new android.text.InputFilter[]{
+            new android.text.InputFilter.LengthFilter(6)});
+        JarvisUi.input(this, pairingCode, "Código de 6 dígitos");
+        pairCard.addView(pairingCode, JarvisUi.width(this, 10));
+        Button pair = JarvisUi.button(this, "VINCULAR ESTE CELULAR", true);
         pair.setOnClickListener(v -> pairDevice());
-        root.addView(pair, fullWidth());
+        pairCard.addView(pair, JarvisUi.width(this, 0));
+        root.addView(pairCard, JarvisUi.width(this, 14));
 
-        Button start = new Button(this);
-        start.setText("INICIAR BRIDGE");
+        LinearLayout linkCard = JarvisUi.card(this);
+        linkCard.addView(JarvisUi.heading(this, "02  /  COMUNICAÇÃO CLOUD"),
+            JarvisUi.width(this, 8));
+        linkCard.addView(JarvisUi.caption(this,
+            "Inicie o serviço e confirme a resposta autenticada. A conexão não é presumida apenas porque o serviço iniciou."),
+            JarvisUi.width(this, 12));
+        Button start = JarvisUi.button(this, "INICIAR J.A.R.V.I.S. BRIDGE", true);
         start.setOnClickListener(v -> startBridge());
-        root.addView(start, fullWidth());
-
-        Button testBridge = new Button(this);
-        testBridge.setText("VERIFICAR CONEXÃO CLOUD");
+        linkCard.addView(start, JarvisUi.width(this, 9));
+        Button testBridge = JarvisUi.button(this, "VERIFICAR CONEXÃO CLOUD", false);
         testBridge.setOnClickListener(v -> checkCloudConnection());
-        root.addView(testBridge, fullWidth());
-
-        Button scopedFiles = new Button(this);
-        scopedFiles.setText("ARQUIVOS DO CELULAR (ACESSO AUTORIZADO)");
-        scopedFiles.setOnClickListener(v ->
-                startActivity(new Intent(this, MobileFilesActivity.class)));
-        root.addView(scopedFiles, fullWidth());
-
-        Button remoteMic = new Button(this);
-        remoteMic.setText("USAR ESTE CELULAR COMO MICROFONE");
-        remoteMic.setOnClickListener(v -> openRemoteMicrophone());
-        root.addView(remoteMic, fullWidth());
-
-        Button notificationSettings = new Button(this);
-        notificationSettings.setText("CONFIGURAR NOTIFICAÇÕES DO J.A.R.V.I.S");
-        notificationSettings.setOnClickListener(v -> openNotificationSettings());
-        root.addView(notificationSettings, fullWidth());
-
-        Button stop = new Button(this);
-        stop.setText("PARAR BRIDGE");
+        linkCard.addView(testBridge, JarvisUi.width(this, 9));
+        Button stop = JarvisUi.button(this, "PARAR CONEXÃO DO BRIDGE", false);
         stop.setOnClickListener(v -> {
             stopService(new Intent(this, BridgeService.class));
             BridgeHealthStore.markStopped(this);
             refreshStatus();
         });
-        root.addView(stop, fullWidth());
+        linkCard.addView(stop, JarvisUi.width(this, 0));
+        root.addView(linkCard, JarvisUi.width(this, 14));
 
-        TextView tvTitle = new TextView(this);
-        tvTitle.setText("\nLG webOS TV // UR8750PSA");
-        tvTitle.setTextSize(20);
-        root.addView(tvTitle, fullWidth());
+        LinearLayout devices = JarvisUi.card(this);
+        devices.addView(JarvisUi.heading(this, "03  /  CENTRAL DE DISPOSITIVOS"),
+            JarvisUi.width(this, 8));
+        devices.addView(JarvisUi.caption(this,
+            "Acesso autorizado aos recursos deste aparelho; cada operação segue as permissões do Android."),
+            JarvisUi.width(this, 13));
+        Button scopedFiles = JarvisUi.button(this, "◈  EDITOR DE ARQUIVOS LOCAIS", false);
+        scopedFiles.setOnClickListener(v ->
+            startActivity(new Intent(this, MobileFilesActivity.class)));
+        devices.addView(scopedFiles, JarvisUi.width(this, 9));
+        Button remoteMic = JarvisUi.button(this, "◈  MICROFONE PARA J.A.R.V.I.S.", false);
+        remoteMic.setOnClickListener(v -> openRemoteMicrophone());
+        devices.addView(remoteMic, JarvisUi.width(this, 9));
+        Button notifications = JarvisUi.button(this, "◈  CONFIGURAR NOTIFICAÇÕES", false);
+        notifications.setOnClickListener(v -> openNotificationSettings());
+        devices.addView(notifications, JarvisUi.width(this, 10));
+        devices.addView(JarvisUi.caption(this,
+            "ARQUIVOS: seleção individual, somente no celular. Não concede leitura remota de todo o armazenamento."),
+            JarvisUi.width(this, 0));
+        root.addView(devices, JarvisUi.width(this, 14));
 
-        TextView tvHelp = new TextView(this);
-        tvHelp.setText(
-                "A LG NÃO usa o código de 6 dígitos. Confira o IP atual da TV antes de parear. Celular e TV devem estar na mesma rede Wi-Fi. Use DIAGNOSTICAR REDE LG para verificar IP e portas 3001/3000. Depois toque em PAREAR LG WEBOS e aceite a autorização na tela da TV."
-        );
-        tvHelp.setPadding(0, pad / 3, 0, pad / 3);
-        root.addView(tvHelp, fullWidth());
+        LinearLayout tvCard = JarvisUi.card(this);
+        tvCard.addView(JarvisUi.heading(this, "04  /  LG WEBOS"),
+            JarvisUi.width(this, 8));
+        tvCard.addView(JarvisUi.caption(this,
+            "Controle de TV via rede local; o código de pareamento do celular não é utilizado pela LG."),
+            JarvisUi.width(this, 10));
+        LinearLayout tvDetails = JarvisUi.column(this);
+        tvDetails.setVisibility(android.view.View.GONE);
+        Button toggleTv = JarvisUi.button(this, "ABRIR CONTROLES DA TV  +", false);
+        toggleTv.setOnClickListener(v -> {
+            boolean opening = tvDetails.getVisibility() != android.view.View.VISIBLE;
+            tvDetails.setVisibility(opening ? android.view.View.VISIBLE : android.view.View.GONE);
+            toggleTv.setText(opening ? "FECHAR CONTROLES DA TV  −" : "ABRIR CONTROLES DA TV  +");
+        });
+        tvCard.addView(toggleTv, JarvisUi.width(this, 7));
+        tvDetails.addView(JarvisUi.caption(this,
+            "Conecte celular e TV ao mesmo Wi-Fi. Confira o IP e aceite a solicitação de autorização na TV."),
+            JarvisUi.width(this, 10));
 
         lgTvHost = new EditText(this);
-        lgTvHost.setHint("IP da LG webOS TV");
         lgTvHost.setInputType(InputType.TYPE_CLASS_TEXT);
+        JarvisUi.input(this, lgTvHost, "IP da LG webOS");
         String savedHost = SecureStore.getLgTvHost(this);
-        lgTvHost.setText(savedHost == null || savedHost.trim().isEmpty() ? DEFAULT_LG_TV_HOST : savedHost);
-        root.addView(lgTvHost, fullWidth());
+        lgTvHost.setText(savedHost == null || savedHost.trim().isEmpty()
+            ? DEFAULT_LG_TV_HOST : savedHost);
+        tvDetails.addView(lgTvHost, JarvisUi.width(this, 9));
 
         lgTvMac = new EditText(this);
-        lgTvMac.setHint("MAC da LG (AA:BB:CC:DD:EE:FF)");
         lgTvMac.setInputType(InputType.TYPE_CLASS_TEXT);
+        JarvisUi.input(this, lgTvMac, "MAC da TV — AA:BB:CC:DD:EE:FF");
         String savedMac = SecureStore.getLgTvMac(this);
         if (savedMac != null && !savedMac.trim().isEmpty()) lgTvMac.setText(savedMac);
-        root.addView(lgTvMac, fullWidth());
+        tvDetails.addView(lgTvMac, JarvisUi.width(this, 12));
 
-        Button diagnoseTv = new Button(this);
-        diagnoseTv.setText("DIAGNOSTICAR REDE LG");
+        Button diagnoseTv = JarvisUi.button(this, "DIAGNOSTICAR REDE LG", false);
         diagnoseTv.setOnClickListener(v -> diagnoseLgNetwork());
-        root.addView(diagnoseTv, fullWidth());
-
-        Button saveWol = new Button(this);
-        saveWol.setText("SALVAR WAKE-ON-LAN");
+        tvDetails.addView(diagnoseTv, JarvisUi.width(this, 9));
+        Button saveWol = JarvisUi.button(this, "SALVAR WAKE-ON-LAN", false);
         saveWol.setOnClickListener(v -> saveWakeOnLan());
-        root.addView(saveWol, fullWidth());
-
-        Button pairTv = new Button(this);
-        pairTv.setText("PAREAR LG WEBOS");
+        tvDetails.addView(saveWol, JarvisUi.width(this, 9));
+        Button pairTv = JarvisUi.button(this, "PAREAR LG WEBOS", true);
         pairTv.setOnClickListener(v -> pairLgTv());
-        root.addView(pairTv, fullWidth());
-
-        Button testTv = new Button(this);
-        testTv.setText("TESTAR CONEXÃO LG");
+        tvDetails.addView(pairTv, JarvisUi.width(this, 9));
+        Button testTv = JarvisUi.button(this, "TESTAR CONEXÃO LG", false);
         testTv.setOnClickListener(v -> testLgTv());
-        root.addView(testTv, fullWidth());
-
-        Button wakeTv = new Button(this);
-        wakeTv.setText("LIGAR TV // WAKE-ON-LAN");
+        tvDetails.addView(testTv, JarvisUi.width(this, 9));
+        Button wakeTv = JarvisUi.button(this, "LIGAR TV  /  WAKE-ON-LAN", false);
         wakeTv.setOnClickListener(v -> wakeLgTv());
-        root.addView(wakeTv, fullWidth());
+        tvDetails.addView(wakeTv, JarvisUi.width(this, 0));
+        tvCard.addView(tvDetails, JarvisUi.width(this, 0));
+        root.addView(tvCard, JarvisUi.width(this, 14));
 
-        statusView = new TextView(this);
-        statusView.setTextSize(15);
-        statusView.setPadding(0, pad, 0, 0);
-        root.addView(statusView, fullWidth());
+        LinearLayout diagCard = JarvisUi.card(this);
+        diagCard.addView(JarvisUi.heading(this, "DIAGNÓSTICO DO SISTEMA"),
+            JarvisUi.width(this, 10));
+        statusView = JarvisUi.text(this, "Aguardando estado local…", 13,
+            JarvisUi.MUTED, false);
+        statusView.setTextIsSelectable(true);
+        statusView.setLineSpacing(JarvisUi.dp(this, 4), 1.0f);
+        diagCard.addView(statusView, JarvisUi.width(this, 0));
+        root.addView(diagCard, JarvisUi.width(this, 14));
 
+        root.addView(JarvisUi.caption(this,
+            "J.A.R.V.I.S. BRIDGE v0.6.0  •  Android  •  Controle local e autorizado"),
+            JarvisUi.width(this, 0));
         ScrollView scroll = new ScrollView(this);
+        scroll.setFillViewport(true);
+        scroll.setVerticalScrollBarEnabled(false);
+        scroll.setBackgroundColor(JarvisUi.BACKGROUND);
         scroll.addView(root);
         return scroll;
     }
@@ -490,6 +522,21 @@ public class MainActivity extends Activity {
         status.append("\nLG webOS: ").append(tvHost == null || tvHost.isEmpty() ? DEFAULT_LG_TV_HOST + " (pré-configurado)" : tvHost);
         status.append("\nWake-on-LAN: ").append(tvMac == null || tvMac.isEmpty() ? "MAC NÃO SALVO" : "CONFIGURADO");
         statusView.setText(status.toString());
+        if (bridgeBadge != null) {
+            String serviceStatus = BridgeHealthStore.readableStatus(this);
+            boolean paired = deviceId != null && !deviceId.isEmpty();
+            if (!paired) {
+                bridgeBadge.setText("○  CELULAR NÃO PAREADO");
+                bridgeBadge.setTextColor(JarvisUi.GOLD);
+            } else if (serviceStatus.startsWith("ONLINE")) {
+                bridgeBadge.setText("●  CLOUD AUTENTICADO / ONLINE");
+                bridgeBadge.setTextColor(JarvisUi.SUCCESS);
+            } else {
+                bridgeBadge.setText("○  " + (serviceStatus.startsWith("PARADO")
+                    ? "BRIDGE PARADO" : "VERIFIQUE A CONEXÃO"));
+                bridgeBadge.setTextColor(JarvisUi.GOLD);
+            }
+        }
     }
 
     private void requestNotificationPermission() {

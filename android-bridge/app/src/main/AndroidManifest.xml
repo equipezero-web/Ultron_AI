@@ -16,6 +16,8 @@
     <application
         android:allowBackup="false"
         android:label="J.A.R.V.I.S Bridge"
+        android:icon="@drawable/ic_jarvis_bridge"
+        android:roundIcon="@drawable/ic_jarvis_bridge"
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@android:style/Theme.Material.NoActionBar">
