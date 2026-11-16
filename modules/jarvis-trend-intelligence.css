@@ -1,0 +1,40 @@
+/* J.A.R.V.I.S. verified public trend evidence, inside the existing Neural stage. */
+.jarvis-cc-center{position:relative}
+.jarvis-trends-panel[hidden]{display:none!important}
+.jarvis-trends-panel{
+ position:absolute;inset:7% 3% 4%;z-index:44;overflow:hidden;
+ border:1px solid rgba(212,165,63,.55);border-radius:13px;
+ background:linear-gradient(138deg,rgba(3,7,16,.98),rgba(12,16,27,.96));
+ box-shadow:0 8px 24px rgba(0,0,0,.45);color:#f7f3e8;display:flex;
+ flex-direction:column;min-height:0;max-width:calc(100% - 10px);
+}
+.jarvis-trends-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
+ gap:6px;padding:11px 13px 6px;border-bottom:1px solid rgba(212,165,63,.21);font:inherit}
+.jarvis-trends-head strong{font-size:clamp(11px,1vw,15px);letter-spacing:.06em;color:#f1d184}
+.jarvis-trends-head small{font-size:10px;color:#afbdce}
+.jarvis-trends-status{margin:0;padding:7px 13px 9px;font:11px/1.5 inherit;color:#e4e9ee;
+ border-bottom:1px solid rgba(212,165,63,.15)}
+.jarvis-trends-feed{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(210px,100%),1fr));
+ gap:9px;overflow:auto;overscroll-behavior:contain;align-content:start;
+ padding:11px 12px 15px;scrollbar-width:none}
+.jarvis-trends-feed::-webkit-scrollbar{display:none}
+.jarvis-trends-entry{display:flex;flex-direction:column;gap:5px;border:1px solid rgba(212,165,63,.16);
+ border-radius:9px;padding:9px;background:rgba(255,255,255,.025);min-width:0}
+.jarvis-trends-entry-top{display:flex;justify-content:space-between;gap:7px;color:#edc66d;font-size:10px}
+.jarvis-trends-title{color:#fff;font-weight:650;line-height:1.4;text-decoration:none;font-size:12px}
+a.jarvis-trends-title:hover,a.jarvis-trends-reference:hover{text-decoration:underline}
+.jarvis-trends-meta{color:#abb8c6;font-size:10px}
+.jarvis-trends-evidence{color:#b8c3ce;font-size:10px;line-height:1.4;margin:0}
+.jarvis-trends-reference{color:#f1d184;text-decoration:none;font-size:10px;overflow-wrap:anywhere}
+.jarvis-trends-disclaimer,.jarvis-trends-empty{font-size:11px;line-height:1.5;color:#cfdae2;padding:7px;
+ grid-column:1/-1}
+@media(max-width:700px){
+ .jarvis-trends-panel{inset:2% 1% 2%;border-radius:9px}
+ .jarvis-trends-feed{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;padding:6px}
+ .jarvis-trends-head{padding:7px 8px 5px}
+ .jarvis-trends-status{padding:6px 8px;font-size:10px}
+ .jarvis-trends-entry{padding:7px;gap:4px}
+ .jarvis-trends-title{font-size:11px}
+ .jarvis-trends-evidence{font-size:9px}
+}
+@media(max-width:360px){.jarvis-trends-feed{grid-template-columns:1fr}}

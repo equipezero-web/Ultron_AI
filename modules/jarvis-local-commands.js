@@ -2,6 +2,7 @@ import { JARVIS_CAPABILITIES } from "../backend/jarvis-capabilities.js?v=4.67.0"
 import {clearVisibleInterface} from "./jarvis-clear-interface.js?v=4.98.0";
 import {parseMeteoIntent} from "./jarvis-meteorological-sources.js?v=4.98.0";
 import {parseGlobalIntelligenceIntent} from "./jarvis-global-intelligence-intent.js?v=5.10.0";
+import {parseTrendIntent} from "./jarvis-trend-intent.js?v=1.0.0";
 
 export const normalizeCommand=value=>String(value||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim().replace(/^(?:(?:ei|ola|hey)\s+)?(?:jarvis|j\.a\.r\.v\.i\.s\.?|ultron)[, :!?\s]+/,"").replace(/^(?:por favor[, ]+|me diga[, ]+|me fale[, ]+|eu quero que voce\s+|quero que voce\s+)+/,"").replace(/\s+/g," ").trim();
 
@@ -50,6 +51,8 @@ export function parseLocalCommand(value){
   if(/^(?:por favor )?(?:(?:pode|consegue) )?(?:limpar|limpe|limpa|apagar|apague|apaga)\s+(?:tudo|(?:a |o )?(?:tela|painel(?: neural)?|interface(?: do jarvis)?))(?:\s+(?:agora|por favor))?$/.test(plain))return {type:"clear-interface"};
   if(/^(?:(?:(?:mostre|mostrar|exiba|exibir|ver|consulte|consultar)\s+(?:as? |os? )?)|(?:quais (?:sao )?(?:as |os )?))?(?:fontes? (?:dos? )?dados|origem (?:dos? )?dados|relatorio de origem|relatorio de fontes|rastreabilidade dos dados|fontes utilizadas)$/.test(plain))
     return {type:"data-evidence"};
+  const trendIntent=parseTrendIntent(plain);
+  if(trendIntent)return trendIntent;
   const globalIntent=parseGlobalIntelligenceIntent(plain);
   if(globalIntent)return globalIntent;
   const meteo=parseMeteoIntent(plain);
@@ -155,6 +158,23 @@ export async function runLocalCommand(command){
       }});
     return {ok:!!evidence,handled:true,quiet:false,route:"local-data-evidence",
       provider:"jarvis-evidence",text};
+  }
+  if(intent.type==="trend-intelligence"||intent.type==="trend-intelligence-close"){
+    if(!window.JARVIS_TREND_INTELLIGENCE?.open)
+      await import("./jarvis-trend-intelligence.js?v=1.0.0");
+    const module=window.JARVIS_TREND_INTELLIGENCE;
+    if(intent.type==="trend-intelligence-close"){
+      const result=module?.close?.();
+      return {handled:true,ok:result?.ok===true,route:"local-trend-intelligence",
+        provider:"jarvis-sourced-trends",text:result?.message||"Painel de tendências indisponível."};
+    }
+    const result=await module?.open?.({region:intent.region,category:intent.category,refresh:intent.refresh});
+    const ok=result?.ok===true;
+    const message=ok?result.message:
+      "Tendências indisponíveis: "+String(result?.error||"monitor de fontes não respondeu").slice(0,185);
+    if(ok)window.ULTRON_VOICE_OUTPUT?.speak?.(message,{reason:"trend-briefing",announce:false});
+    return {ok,handled:true,route:"local-trend-intelligence",
+      provider:"jarvis-sourced-trends",text:message};
   }
   if(intent.type==="global-intelligence"){
     if(!window.ULTRON_GLOBAL_INTELLIGENCE?.open)

@@ -6,6 +6,7 @@ import {searchGlobalLocations,loadGlobalWeather} from "./weather-global.js";
 import {loadWeatherInsight} from "./weather-intelligence.js";
 import {pollWeatherMonitor,latestWeatherMonitor} from "./weather-monitor.js";
 import {pollGlobalIntelligence,latestGlobalIntelligence,collectGlobalIntelligence} from "./global-intelligence-monitor.js";
+import {pollTrendIntelligence,latestTrendIntelligence} from "./trend-intelligence.js";
 import {buildContinuityStatus} from "./continuity-status.js";
 import {configureWeatherWatch,listWeatherWatches,pollPersonalWeatherWatches} from "./weather-watchlist.js";
 import {ACTIONS,parsePlanText,isActionRequest} from "./action-catalog.js";
@@ -1083,6 +1084,17 @@ export default {
        headers:{...corsHeaders(),"Cache-Control":result.ok?"public, max-age=300":"no-store",
         "X-Content-Type-Options":"nosniff"}});
     }
+    if(path==="/api/intelligence/trends"&&request.method==="GET"){
+      const result=await latestTrendIntelligence(env,{
+        region:url.searchParams.get("region")||"all",
+        category:url.searchParams.get("category")||"all"
+      });
+      return new Response(JSON.stringify(result),{
+        status:result.ok?200:result.status||503,
+        headers:{...corsHeaders(),"Cache-Control":result.ok?"public, max-age=180":"no-store",
+          "X-Content-Type-Options":"nosniff"}
+      });
+    }
     if(path==="/api/geo/locations"&&request.method==="GET"){
       const result=await searchGlobalLocations(url.searchParams.get("q"));
       return new Response(JSON.stringify(result),{status:result.ok?200:result.status||503,headers:{
@@ -1533,6 +1545,8 @@ export default {
     ctx.waitUntil(pollWeatherMonitor(env).catch(error=>console.warn("JARVIS weather monitor unavailable",String(error?.message||error))));
     ctx.waitUntil(pollGlobalIntelligence(env).catch(error=>
       console.warn("JARVIS global intelligence collection failed",String(error?.message||error))));
+    ctx.waitUntil(pollTrendIntelligence(env).catch(error=>
+      console.warn("JARVIS public trend monitoring unavailable",String(error?.message||error))));
     ctx.waitUntil(pollPersonalWeatherWatches(env).catch(error=>console.warn("JARVIS personal weather watch failed",String(error?.message||error))));
   }
 };

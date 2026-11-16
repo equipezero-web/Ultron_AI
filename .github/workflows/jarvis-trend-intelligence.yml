@@ -1,0 +1,65 @@
+name: JARVIS Public Worldwide Trend Intelligence
+on:
+  pull_request:
+    paths:
+      - "backend/trend-intelligence.js"
+      - "backend/worker.js"
+      - "modules/jarvis-trend-intent.js"
+      - "modules/jarvis-trend-intelligence.js"
+      - "modules/jarvis-trend-intelligence.css"
+      - "modules/jarvis-local-commands.js"
+      - "index.html"
+      - "tests/jarvis-trend-intelligence.mjs"
+      - "tests/jarvis-trend-intelligence-browser.mjs"
+      - ".github/workflows/jarvis-trend-intelligence.yml"
+  push:
+    branches: [main]
+    paths:
+      - "backend/trend-intelligence.js"
+      - "backend/worker.js"
+      - "modules/jarvis-trend-intent.js"
+      - "modules/jarvis-trend-intelligence.js"
+      - "modules/jarvis-trend-intelligence.css"
+      - "modules/jarvis-local-commands.js"
+      - "index.html"
+      - "tests/jarvis-trend-intelligence.mjs"
+      - "tests/jarvis-trend-intelligence-browser.mjs"
+      - ".github/workflows/jarvis-trend-intelligence.yml"
+permissions:
+  contents: read
+jobs:
+  sourced-trends-security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Syntax validation
+        run: |
+          node --check backend/trend-intelligence.js
+          node --check backend/worker.js
+          node --check modules/jarvis-trend-intent.js
+          node --check modules/jarvis-trend-intelligence.js
+          node --check modules/jarvis-local-commands.js
+          node --check tests/jarvis-trend-intelligence.mjs
+      - name: Verified public trends and privacy contract
+        run: node tests/jarvis-trend-intelligence.mjs
+
+  neural-ring-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install Chrome test harness
+        run: |
+          npm install --no-save --no-package-lock --ignore-scripts puppeteer-core@24.33.0
+          echo "CHROME_BIN=$(command -v google-chrome || command -v chromium || command -v chromium-browser)" >> "$GITHUB_ENV"
+      - name: Grounded trends rendered in original Neural Ring, mobile and desktop
+        run: |
+          python3 -m http.server 8772 --bind 127.0.0.1 >/tmp/jarvis-trends-browser.log 2>&1 &
+          sleep 2
+          node tests/jarvis-trend-intelligence-browser.mjs
