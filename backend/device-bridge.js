@@ -338,9 +338,9 @@ export async function enqueueCommand(
   }
 
   if (normalizedCommand.startsWith("files.") &&
-      (!/^[0-9]{8}$/.test(String(payload?.accessCode || "")) ||
+      (!/^(?:[0-9]{8}|[a-fA-F0-9]{32})$/.test(String(payload?.accessCode || "")) ||
        !["files.list","files.read"].includes(normalizedCommand))) {
-    return { ok: false, error: "PIN temporário de arquivos obrigatório." };
+    return { ok: false, error: "PIN temporário ou chave permanente de arquivos obrigatório." };
   }
 
   if (normalizedCommand.startsWith("tv.") && device.device_type !== "tv" && device.device_type !== "mobile") {
