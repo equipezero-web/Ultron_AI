@@ -28,6 +28,7 @@ try{
    const url=req.url();
    if(url.includes("geoportal.apac.pe.gov.br/")&&url.includes("/4/query")){
     req.respond({status:200,contentType:"application/json",
+     headers:{"Access-Control-Allow-Origin":"*","Cache-Control":"no-store"},
      body:JSON.stringify(sample)}).catch(()=>{});
    }else if(url.startsWith(base))req.continue().catch(()=>{});
    else req.abort("blockedbyclient").catch(()=>{});
