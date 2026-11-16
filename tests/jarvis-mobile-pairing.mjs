@@ -54,6 +54,8 @@ topbar.append(live);
 const session = new FakeElement("strong");
 session.id = "bridge-session-state";
 const document = {
+  listeners: {},
+  addEventListener(name, callback) { this.listeners[name] = callback; },
   readyState: "complete",
   getElementById: id => elements.get(id) || null,
   querySelector: selector => selector === ".jarvis-cc-top" ? topbar : null,
@@ -62,14 +64,20 @@ const document = {
 };
 let calls = 0;
 let copied = "";
-const window = { ULTRON_DEVICES: { startPairing: async (type, name) => {
-  calls++;
-  assert.equal(type, "mobile");
-  assert.equal(name, "Ultron Mobile Bridge");
-  return { code: "004321", expiresInSeconds: 600 };
-}}};
+let adoptedCode = null;
+let clock = 1000000;
+class FakeDate extends Date { static now() { return clock; } }
+const window = {
+  ULTRON_MOBILE_LINK: { adoptPairingCode(code, ttl) { adoptedCode = {code, ttl}; } },
+  ULTRON_DEVICES: { startPairing: async (type, name) => {
+    calls++;
+    assert.equal(type, "mobile");
+    assert.equal(name, "Ultron Mobile Bridge");
+    return { code: "004321", expiresInSeconds: 600 };
+  }}
+};
 const navigator = { clipboard: { writeText: async value => { copied = value; } } };
-vm.runInNewContext(source, { document, window, navigator });
+vm.runInNewContext(source, { document, window, navigator, Date: FakeDate });
 
 const card = document.getElementById("jarvis-mobile-pair-card");
 const primary = document.getElementById("btn-jarvis-pair-mobile");
@@ -82,7 +90,19 @@ assert.match(style, /min-height:44px/);
 
 await primary.listeners.click();
 assert.equal(calls, 1);
+assert.deepEqual(adoptedCode, {code: "004321", ttl: 600});
 assert.equal(document.getElementById("jarvis-mobile-pair-code").textContent, "004321");
+// Repeated clicks reuse the same unexpired code (avoid 11 ghost records).
+await primary.listeners.click();
+assert.equal(calls, 1);
+const legacy = new FakeElement("button");
+legacy.id = "btn-pair-mobile";
+let intercepted = false;
+document.listeners.pointerdown({target:legacy,stopImmediatePropagation(){intercepted = true;}});
+assert.equal(intercepted, true);
+await document.listeners.click({target:legacy,preventDefault(){intercepted = true;},stopImmediatePropagation(){intercepted = true;}});
+assert.equal(intercepted, true);
+assert.equal(calls, 1, "Old CONNECT CELULAR must not spawn competing sessions");
 const result = card.children.find(x => x.className === "jarvis-mobile-pair-result");
 assert.equal(result.hidden, false);
 const actions = card.children.find(x => x.className === "jarvis-mobile-pair-actions");
@@ -91,12 +111,14 @@ await copyButton.listeners.click();
 assert.equal(copied, "004321");
 assert.match(document.getElementById("jarvis-mobile-pair-status").textContent, /copiado/i);
 
+// After expiration, a real new pairing request is permitted.
+clock += 11 * 60 * 1000;
 window.ULTRON_DEVICES.startPairing = async () => { throw new Error("Gateway indisponível"); };
 await primary.listeners.click();
 assert.equal(result.hidden, true);
 assert.match(document.getElementById("jarvis-mobile-pair-status").textContent, /Gateway indisponível/);
 assert.equal(copyButton.hidden, true);
 
-vm.runInNewContext(source, { document, window, navigator });
+vm.runInNewContext(source, { document, window, navigator, Date: FakeDate });
 assert.equal(slot.children.filter(x => x.id === "jarvis-mobile-pair-card").length, 1);
 console.log("JARVIS mobile pairing PASS: visible buttons, valid six-digit code, copy, offline error, no duplicate UI.");

@@ -137,6 +137,20 @@ async function connect() {
   }
 }
 
+// Share one valid pairing session between the prominent recovery panel and
+// the legacy mobile button. The code is kept only in this page's memory.
+function adoptPairingCode(code, expiresInSeconds=600) {
+  const normalized=String(code??'');
+  if(!/^\d{6}$/.test(normalized))return false;
+  const ttl=Number(expiresInSeconds);
+  activePairingCode=normalized;
+  pairingDeadlineAt=Date.now()+(Number.isFinite(ttl)?Math.max(30,Math.min(600,ttl)):600)*1000;
+  lastResult={...lastResult,status:'pairing',online:false,label:'PAIRING',session:'CODE '+normalized};
+  setText('bridge-link-state','PAIRING');
+  setText('bridge-session-state',lastResult.session);
+  return true;
+}
+
 let lastMobilePointerAt=0;
 button?.addEventListener('pointerdown',event=>{
   if(event.button!==0)return;
@@ -166,4 +180,4 @@ window.addEventListener('ultron:remote-camera-ice-recovery', (event) => {
 setTimeout(refresh, 900);
 setInterval(refresh, 7000);
 
-window.ULTRON_MOBILE_LINK = { connect, refresh, version: '5.40.1', get state(){ return lastResult; } };
+window.ULTRON_MOBILE_LINK = { connect, refresh, adoptPairingCode, version: '5.41.0', get state(){ return lastResult; } };
