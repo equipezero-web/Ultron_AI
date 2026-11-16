@@ -9,6 +9,11 @@ const browser=await puppeteer.launch({
 try{
  for(const width of [390,1366]){
   const page=await browser.newPage();
+  const pageErrors=[];
+  page.on("pageerror",error=>{pageErrors.push(error.message);console.log("EVIDENCE PAGE ERROR",error.message);});
+  page.on("console",message=>{
+   if(message.type()==="error")console.log("EVIDENCE BROWSER CONSOLE",message.text().slice(0,220));
+  });
   await page.setViewport({width,height:width<600?844:768,
    isMobile:width<600,hasTouch:width<600,deviceScaleFactor:1});
   await page.setRequestInterception(true);
@@ -28,9 +33,22 @@ try{
    else req.abort("blockedbyclient").catch(()=>{});
   });
   await page.goto(base,{waitUntil:"domcontentloaded",timeout:35000});
-  await page.waitForFunction(()=>Boolean(
-   window.ULTRON_METEO_CENTER?.open&&window.ULTRON_GEO_VISUAL?.open&&
-   window.ULTRON_DATA_INTELLIGENCE?.state),{timeout:25000});
+  try{
+   await page.waitForFunction(()=>Boolean(
+    window.ULTRON_METEO_CENTER?.open&&window.ULTRON_GEO_VISUAL?.open&&
+    window.ULTRON_DATA_INTELLIGENCE?.state),{timeout:25000});
+  }catch(error){
+   const diag=await page.evaluate(()=>({
+    dom:document.readyState,meteo:!!window.ULTRON_METEO_CENTER,
+    geo:!!window.ULTRON_GEO_VISUAL,
+    evidence:!!window.ULTRON_DATA_INTELLIGENCE,
+    center:!!window.JARVIS_COMMAND_CENTER,
+    main:!!document.querySelector(".jarvis-cc-center"),
+    modules:[...document.querySelectorAll('script[src]')].slice(-15).map(e=>e.src)
+   }));
+   throw Error("Evidence browser bootstrap missing "+JSON.stringify({diag,pageErrors})+
+    " / "+error.message);
+  }
   const result=await page.evaluate(()=>window.ULTRON_METEO_CENTER.open({
    tab:"apac",view:"2d",refresh:true
   }));
