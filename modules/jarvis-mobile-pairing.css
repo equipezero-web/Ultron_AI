@@ -1,0 +1,67 @@
+/* Visible, accessible mobile pairing inside the existing Neural J.A.R.V.I.S. */
+body.jarvis-command-center .jarvis-mobile-pair-card{
+  width:100%;min-width:0;box-sizing:border-box;padding:12px 14px;margin:0 0 10px;
+  border:1px solid #c6a65f;border-radius:12px;
+  background:linear-gradient(125deg,rgba(22,31,47,.96),rgba(8,14,26,.98));
+  box-shadow:inset 0 1px rgba(249,212,128,.14);color:#f7f1df;
+  font:13px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;letter-spacing:normal;
+}
+body.jarvis-command-center .jarvis-mobile-pair-header{
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px 12px;
+}
+body.jarvis-command-center .jarvis-mobile-pair-header strong{
+  color:#f2cc80;font-size:14px;font-weight:750;letter-spacing:.06em;
+}
+body.jarvis-command-center .jarvis-mobile-pair-header span{
+  color:#b9c3cc;font:10px/1.4 ui-monospace,monospace;letter-spacing:.07em;
+}
+body.jarvis-command-center .jarvis-mobile-pair-help,
+body.jarvis-command-center .jarvis-mobile-pair-status{
+  margin:9px 0;color:#dce4ea;font-size:12px;line-height:1.5;overflow-wrap:anywhere;
+}
+body.jarvis-command-center .jarvis-mobile-pair-actions{
+  display:flex;flex-wrap:wrap;gap:8px;align-items:center;
+}
+body.jarvis-command-center .jarvis-mobile-pair-actions button,
+body.jarvis-command-center #btn-jarvis-mobile-pair-top{
+  cursor:pointer;touch-action:manipulation;
+  font:750 12px/1.2 system-ui,-apple-system,Segoe UI,sans-serif;
+  border:1px solid #dcb768;border-radius:9px;min-height:44px;padding:9px 14px;
+}
+body.jarvis-command-center .jarvis-mobile-pair-primary,
+body.jarvis-command-center #btn-jarvis-mobile-pair-top{
+  color:#09111c!important;background:#e6bc65!important;
+}
+body.jarvis-command-center .jarvis-mobile-pair-copy{
+  color:#f4d99f!important;background:#1a293a!important;
+}
+body.jarvis-command-center .jarvis-mobile-pair-actions button:disabled{
+  opacity:.65;cursor:wait;
+}
+body.jarvis-command-center .jarvis-mobile-pair-result{
+  margin-top:12px;display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;
+  border-top:1px solid rgba(219,185,105,.4);padding-top:10px;
+}
+body.jarvis-command-center .jarvis-mobile-pair-result span{
+  font:11px ui-monospace,monospace;color:#c7d2dc;
+}
+body.jarvis-command-center #jarvis-mobile-pair-code{
+  font:750 clamp(23px,6vw,34px)/1.1 ui-monospace,Consolas,monospace;
+  letter-spacing:.20em;color:#f9d58e;font-variant-numeric:tabular-nums;user-select:all;
+}
+body.jarvis-command-center .jarvis-mobile-pair-result[hidden],
+body.jarvis-command-center .jarvis-mobile-pair-copy[hidden]{
+  display:none!important;
+}
+body.jarvis-command-center .jarvis-cc-top #btn-jarvis-mobile-pair-top{
+  flex:0 0 auto;min-height:34px;padding:5px 12px;font-size:11px;
+  box-shadow:0 0 12px rgba(228,183,98,.13);
+}
+@media(max-width:560px){
+ body.jarvis-command-center .jarvis-cc-top{gap:5px!important;padding-inline:8px!important;}
+ body.jarvis-command-center .jarvis-cc-top #btn-jarvis-mobile-pair-top{
+   padding:7px 9px;font-size:10px;min-height:40px;
+ }
+ body.jarvis-command-center .jarvis-cc-top .jarvis-cc-clock{display:none!important;}
+ body.jarvis-command-center .jarvis-mobile-pair-card{padding:10px;margin-bottom:8px;}
+}

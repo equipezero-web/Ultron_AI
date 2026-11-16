@@ -1,0 +1,30 @@
+name: JARVIS Visible Mobile Pairing
+on:
+  push:
+    paths:
+      - "index.html"
+      - "modules/jarvis-mobile-pairing.js"
+      - "modules/jarvis-mobile-pairing.css"
+      - "tests/jarvis-mobile-pairing.mjs"
+      - ".github/workflows/jarvis-visible-mobile-pairing.yml"
+  pull_request:
+    paths:
+      - "index.html"
+      - "modules/jarvis-mobile-pairing.js"
+      - "modules/jarvis-mobile-pairing.css"
+      - "tests/jarvis-mobile-pairing.mjs"
+      - ".github/workflows/jarvis-visible-mobile-pairing.yml"
+permissions:
+  contents: read
+jobs:
+  pairing-ui:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Syntax and end-to-end simulated pairing interaction
+        run: |
+          node --check modules/jarvis-mobile-pairing.js
+          node tests/jarvis-mobile-pairing.mjs
