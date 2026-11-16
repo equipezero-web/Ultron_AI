@@ -78,7 +78,7 @@ assert.equal(validatePublicCamera({...earthcam,id:"untrusted-youtube"}),false);
 
 assert.equal(publicCameraEmbed(skyline),null,"Skyline live video must remain link-only");
 assert.equal(validatePublicCamera(skyline),true);
-assert.equal(findPublicCameras({search:"jerusalem"}).length,1);
+assert.equal(findPublicCameras({search:"jerusalem"}).length,2);
 assert.equal(findPublicCameras({search:"Muro Ocidental"}).length,2);
 assert.equal(findPublicCameras({country:"Israel"}).length,2);
 assert.deepEqual(parseWorldCameraCommand("Jarvis, mostre a câmera de Jerusalém"),
