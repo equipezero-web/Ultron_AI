@@ -98,6 +98,7 @@ function install() {
   let previewUrl=null;
   let startedAt=0;
   let requestedPath="";
+  let visibleEntries=[];
 
   function setStatus(text,alert=false) {
     status.textContent=String(text||"");
@@ -200,19 +201,17 @@ function install() {
       const data=await cloudCommand("files.list",{path:safe,offset});
       if(offset===0)listing.replaceChildren();
       const entries=Array.isArray(data.entries)?data.entries:[];
+      if(offset===0)visibleEntries=[];
+      visibleEntries.push(...entries);
       for(const item of entries) {
         if(!item||typeof item.name!=="string")continue;
         let itemPath;
         try{itemPath=safePath(item.path);}catch{continue;}
-        const row=make("button",null,"jarvis-phone-files-entry");
-        row.type="button";
+        const row=make("div",null,"jarvis-phone-files-entry");
         const name=make("strong",(item.directory?"📁  ":"📄  ")+item.name);
         const meta=make("span",item.directory?"PASTA":prettySize(item.size));
         row.append(name,meta);
-        row.addEventListener("click",()=>{
-          if(item.directory)void listFolder(itemPath);
-          else void retrieve(itemPath,item);
-        });
+        // Readable listing; navigation is initiated by voice/text only.
         listing.append(row);
       }
       path=safe;
@@ -269,8 +268,10 @@ function install() {
         const img=make("img");img.src=previewUrl;img.alt="Pré-visualização de "+filenameSafe;
         preview.append(img);
       }
-      setStatus("Arquivo disponível para pré-visualização ou download. Conteúdo não enviado à IA.");
-    }catch(error){setStatus(error?.message||String(error),true);}
+      setStatus("Arquivo exibido sob comando. Conteúdo não enviado à IA.");
+      return {ok:true,message:"Arquivo "+filenameSafe+" exibido no Neural Ring."};
+    }catch(error){setStatus(error?.message||String(error),true);
+      return {ok:false,error:String(error?.message||error)};}
     finally{busy=false;}
   }
   pin.addEventListener("keydown",event=>{
@@ -304,7 +305,24 @@ function install() {
       return {ok:false,error:String(error?.message||error)};
     }
   }
-  window.JARVIS_PHONE_FILES={open,openFolder,get state(){return{visible:!panel.hidden,device:device?.deviceName||null,
+  function close(){
+    panel.hidden=true;clearPreview();
+    return {ok:true,message:"Explorador do celular fechado. Autorização preservada até a revogação no Android."};
+  }
+  async function parent(){
+    if(panel.hidden)return {ok:false,error:"Peça primeiro para abrir os arquivos do celular."};
+    const result=await openFolder(getParent(path));
+    return {...result,message:result.ok?"Pasta anterior exibida.":result.error};
+  }
+  async function openFile(filename){
+    if(panel.hidden||!pin.value.trim())return {ok:false,error:"Primeiro abra a pasta do celular e autorize o acesso."};
+    const item=visibleEntries.find(e=>e&&e.name?.toLocaleLowerCase("pt-BR")===
+      String(filename||"").trim().toLocaleLowerCase("pt-BR"));
+    if(!item)return {ok:false,error:"Arquivo não encontrado na pasta exibida: "+String(filename||"")};
+    if(item.directory)return openFolder(safePath(item.path));
+    return retrieve(safePath(item.path),item);
+  }
+  window.JARVIS_PHONE_FILES={open,openFolder,close,parent,openFile,get state(){return{visible:!panel.hidden,device:device?.deviceName||null,
     path,readOnly:true,maxTransferBytes:TRANSFER_MAX,persistentSupported:true};}};
 }
 
