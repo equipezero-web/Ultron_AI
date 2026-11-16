@@ -51,12 +51,12 @@ async function remoteKeys(url,fetchImpl){
   try{
     const res=await fetchImpl(url,{method:"GET",signal:controller.signal,redirect:"error",
       headers:{"Accept":"application/json"}});
-    if(!res.ok||Number(res.headers?.get?.("content-length")||0)>90000)return [];
+    if(!res.ok)return {keys:[],error:"access-certs-http-error"};
     const raw=await res.text();
-    if(raw.length>90000)return [];
+    if(raw.length>90000)return {keys:[],error:"access-certs-too-large"};
     const data=JSON.parse(raw);
-    return Array.isArray(data?.keys)?data.keys.slice(0,12):[];
-  }catch{return [];}finally{clearTimeout(timer);}
+    return Array.isArray(data?.keys)?{keys:data.keys.slice(0,12),error:null}:{keys:[],error:"access-certs-invalid-json-shape"};
+  }catch(e){return {keys:[],error:e?.name==="AbortError"?"access-certs-timeout":"access-certs-fetch-failed"};}finally{clearTimeout(timer);}
 }
 async function digest(str){
   const raw=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(str));
@@ -83,9 +83,10 @@ export async function authorizeJarvisAccount(request,env,{fetchImpl=fetch,now=Da
       return result("account-token-invalid",401);
    const email=normalize(payload.email).toLowerCase();
    if(!config.allowedEmails.includes(email))return result("account-not-allowed");
-   const keys=await remoteKeys(config.issuer+"/cdn-cgi/access/certs",fetchImpl);
-   const jwk=keys.find(k=>k.kid===header.kid&&k.kty==="RSA"&&k.n&&k.e);
-   if(!jwk)return result("access-keys-unavailable",503);
+   const certs=await remoteKeys(config.issuer+"/cdn-cgi/access/certs",fetchImpl);
+   if(certs.error)return result(certs.error,503);
+   const jwk=certs.keys.find(k=>k.kid===header.kid&&k.kty==="RSA"&&k.n&&k.e);
+   if(!jwk)return result("access-certs-key-not-found",503);
    const key=await crypto.subtle.importKey("jwk",
      {kty:"RSA",n:jwk.n,e:jwk.e,alg:"RS256",ext:true,key_ops:["verify"]},
      {name:"RSASSA-PKCS1-v1_5",hash:"SHA-256"},false,["verify"]);
