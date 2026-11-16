@@ -819,43 +819,12 @@ async function handleAi(request, env) {
     data.visualContext=null;
   }
 
-  if (data.text) {
-    if (originalBody?.clientOwnsSpeech===true && originalBody?.preferFastResponse===true && !data.audioBase64) {
-      data.voice={provider:null,providerLabel:null,nextFallback:'browser-tts',deferred:true};
-    } else if (data.audioBase64) {
-      data.voice = {
-        provider: "elevenlabs",
-        providerLabel: "ElevenLabs",
-        source: "worker.js",
-        nextFallback: null
-      };
-    } else {
-      const voiceStartedAt = Date.now();
-      const voice = await generateCloudVoice(env, data.text, { skipEleven: true });
-      if (voice.audioBase64) {
-        data.audioBase64 = voice.audioBase64;
-        data.audioMimeType = voice.audioMimeType;
-        data.voice = {
-          provider: voice.provider,
-          providerLabel: voice.providerLabel,
-          voice: voice.voice,
-          attempts: voice.attempts,
-          nextFallback: null
-        };
-      } else {
-        data.voice = {
-          provider: null,
-          providerLabel: null,
-          attempts: voice.attempts,
-          nextFallback: "browser-tts"
-        };
-      }
-      data.performance = {
-        ...(data.performance || {}),
-        fallbackVoiceMs: Date.now() - voiceStartedAt
-      };
-    }
-  }
+  // Text-only mode: do not generate cloud voice or trigger browser TTS fallbacks.
+  // Microphone input is a separate feature and remains available on permission.
+  data.audioBase64=null;
+  data.audioMimeType=null;
+  data.voice={enabled:false,provider:null,providerLabel:null,nextFallback:null,
+    disabledReason:"operator-requested-text-only"};
 
   if (prepared.active) {
     const {
@@ -979,7 +948,8 @@ async function health(env) {
     providers,
     providerOrder: String(env.AI_PROVIDER_ORDER || "groq,gemini,cloudflare,openrouter,cohere")
       .split(",").map((item) => item.trim()).filter(Boolean),
-    elevenlabs: Boolean(env.ELEVENLABS_API_KEY && env.ELEVENLABS_VOICE_ID),
+    elevenlabs: false, // Speech output intentionally disabled
+    voiceOutputEnabled: false,
     memory,
     memoryVersion: "1.2",
     deviceBridge: Boolean(bridge?.ready),
