@@ -82,7 +82,8 @@ public final class MobileFilesActivity extends Activity {
         editor.setSingleLine(false);
         editor.setEnabled(false);
         layout.addView(editor, new LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            (int) (280 * getResources().getDisplayMetrics().density)));
 
         saveButton = new Button(this);
         saveButton.setText("SALVAR ALTERAÇÕES (CONFIRMAR)");
