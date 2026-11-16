@@ -141,7 +141,13 @@ function build(){
  save.addEventListener("click",()=>{void saveDirect();});
  const download=el("button","EXPORTAR CÓPIA REVISADA");download.type="button";
  download.addEventListener("click",exportCopy);
- actions.append(select,save,download);
+ const pair=el("button","PAREAR CELULAR");pair.type="button";
+ pair.addEventListener("click",()=>{
+  const existing=document.getElementById("btn-pair-mobile");
+  if(existing)existing.click();
+  else status.textContent="O módulo de pareamento não está disponível nesta página.";
+ });
+ actions.append(select,save,download,pair);
  fileInput=el("input");fileInput.type="file";fileInput.multiple=false;
  fileInput.hidden=true;fileInput.accept=".txt,.md,.json,.csv,.html,.css,.js,.mjs,.xml,.yaml,.yml,.log";
  fileInput.setAttribute("aria-label","Selecionar arquivo de texto no dispositivo");
