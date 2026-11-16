@@ -24,8 +24,8 @@ export function classifyConsultativeTurn(message,{lastAssistantMessage="",lastUs
  if(history&&confirmation.test(text))return {mode:negative.test(text)?"decline":"confirm",followup:true,previousTask:true,confidence:"contextual"};
  if(troublesome.test(text))return {mode:"troubleshoot",followup:history,previousTask:history,confidence:"explicit"};
  if(comparator.test(text))return {mode:"decision",followup:history,previousTask:history,confidence:"explicit"};
- if(/^(?:pesquise|pesquisar|busque|buscar|encontre|encontrar|analise|analisar|veja|verifique|consulte|consultar|atualize|atualizar)\\b/.test(text)&&
-   !/\\b(?:faca|crie|construa|implemente)\\b/.test(text))
+ if(/^(?:pesquise|pesquisar|busque|buscar|encontre|encontrar|analise|analisar|veja|verifique|consulte|consultar|atualize|atualizar)\b/.test(text)&&
+   !/\b(?:faca|crie|construa|implemente)\b/.test(text))
   return {mode:"research",followup:history,previousTask:history,confidence:"explicit"};
  if(project.test(text)||/https?:\/\/[^\s]+/.test(text)&&/\b(?:faca|faz|monte|crie|criar|semelhante|parecido|igual)\b/.test(text))return {mode:"solution-design",followup:history,previousTask:history,confidence:"explicit"};
  if(design.test(text))return {mode:"strategy",followup:history,previousTask:history,confidence:"explicit"};
