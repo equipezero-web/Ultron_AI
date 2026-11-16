@@ -600,6 +600,14 @@ public class MainActivity extends Activity {
         status.append("\nArquivos compartilhados: ").append(RemoteFiles.storageGranted(this) ? "PERMISSÃO ATIVA" : "SEM PERMISSÃO");
         status.append("\nSessão remota: ").append(RemoteFiles.isPermanent(this) ? "ATIVA ATÉ REVOGAÇÃO" :
             RemoteFiles.remainingSeconds(this) > 0 ? "ATIVA (temporária)" : "DESATIVADA");
+        if (remoteFilesPinView != null) {
+            final String currentLabel = String.valueOf(remoteFilesPinView.getText());
+            if (RemoteFiles.isPermanent(this) && !currentLabel.startsWith("CHAVE PERMANENTE: ")) {
+                remoteFilesPinView.setText("ACESSO PERMANENTE ATIVO  /  CHAVE NÃO REEXIBIDA");
+            } else if (!RemoteFiles.isPermanent(this) && RemoteFiles.remainingSeconds(this) <= 0) {
+                remoteFilesPinView.setText("PIN REMOTO: DESATIVADO");
+            }
+        }
 
         if (Build.VERSION.SDK_INT >= 33) {
             status.append("\nNotificações: ")
