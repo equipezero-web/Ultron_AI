@@ -2,6 +2,7 @@ import API_CONFIG from "../config.js";
 
 const output = document.getElementById("output-box");
 const synth = window.speechSynthesis || null;
+const muted = () => document.body?.classList.contains("jarvis-voice-output-disabled") === true;
 const nativeFetch = window.fetch.bind(window);
 const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
 
@@ -56,7 +57,7 @@ function updateIndicator(label) {
 }
 
 function playBase64Audio(base64, mime = "audio/wav", providerLabel = "XTTS v2") {
-  if (document.body.classList.contains("jarvis-voice-paused")) return false;
+  if (muted() || document.body.classList.contains("jarvis-voice-paused")) return false;
   if (!base64) return false;
 
   try {
@@ -93,7 +94,7 @@ function playBase64Audio(base64, mime = "audio/wav", providerLabel = "XTTS v2") 
 }
 
 export async function speakWithXtts(text, { announce = true } = {}) {
-  if (document.body.classList.contains("jarvis-voice-paused")) return false;
+  if (muted() || document.body.classList.contains("jarvis-voice-paused")) return false;
   const clean = String(text || "").replace(/\s+/g, " ").trim();
   if (!clean || !API_BASE || xttsBusy) return false;
 
@@ -123,7 +124,7 @@ export async function speakWithXtts(text, { announce = true } = {}) {
 }
 
 export function speakWithBrowser(text, { reason = "fallback", announce = true } = {}) {
-  if (document.body.classList.contains("jarvis-voice-paused")) return false;
+  if (muted() || document.body.classList.contains("jarvis-voice-paused")) return false;
   const clean = String(text || "").replace(/\s+/g, " ").trim();
   if (!clean) return false;
 
@@ -215,13 +216,13 @@ window.fetch = async function ultronVoiceFallbackFetch(input, init = {}) {
 
     let clientOwnsSpeech=false;
     try{clientOwnsSpeech=JSON.parse(init?.body||"{}")?.clientOwnsSpeech===true;}catch{}
-    if (isAi && !clientOwnsSpeech && response.ok && data?.text && !data?.audioBase64) {
+    if (!muted() && isAi && !clientOwnsSpeech && response.ok && data?.text && !data?.audioBase64) {
       speakWithBrowser(data.text, {
         reason: looksLikeQuotaError(data?.voice?.attempts) ? "quota" : "fallback"
       });
     }
 
-    if (isVoice && !response.ok && fallbackText) {
+    if (!muted() && isVoice && !response.ok && fallbackText) {
       speakWithBrowser(fallbackText, {
         reason: looksLikeQuotaError(data) ? "quota" : "fallback"
       });
@@ -235,9 +236,9 @@ window.ULTRON_VOICE_OUTPUT = {
   speak: speakWithBrowser,
   speakWithXtts,
   get speaking() {
-    return speaking || Boolean(synth?.speaking);
+    return !muted() && (speaking || Boolean(synth?.speaking));
   },
   get available() {
-    return Boolean(synth && typeof SpeechSynthesisUtterance !== "undefined");
+    return !muted() && Boolean(synth && typeof SpeechSynthesisUtterance !== "undefined");
   }
 };
