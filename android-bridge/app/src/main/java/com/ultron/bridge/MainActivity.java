@@ -389,6 +389,7 @@ public class MainActivity extends Activity {
                 // A new pairing may represent a different operator: never carry
                 // permanent Filespace authorization into the new identity.
                 RemoteFiles.disable(this);
+                TvAuthorization.revoke(this);
                 SecureStore.saveDeviceId(this, deviceId);
 
                 runOnUiThread(() -> {
