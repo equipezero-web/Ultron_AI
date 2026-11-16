@@ -18,10 +18,12 @@ export function parseAccountPluginCommand(input){
    return {kind:"pair"};
  if(/^(?:adicionar|adicione|cadastrar|cadastre)\s+(?:nova\s+)?conta(?:\s+ao\s+jarvis)?[.!?]?$/.test(value))
    return {kind:"account-help"};
- if(/^(?:abra|abrir|abre|inicie|iniciar)\s+(?:o\s+)?youtube\s+(?:no|do|pelo)\s+(?:meu\s+)?(?:celular|android)[.!?]?$/.test(value))
-   return {kind:"execute",pluginId:"youtube",actionId:"youtube.open"};
- if(/^(?:abra|abrir|abre|mostre|mostrar)\s+(?:a\s+)?(?:agenda|calendario)\s+(?:no|do|pelo)\s+(?:meu\s+)?(?:celular|android)[.!?]?$/.test(value))
-   return {kind:"execute",pluginId:"agenda",actionId:"calendar.open"};
+ const select=value.match(/^(?:selecione|selecionar|use|usar)\s+(?:o\s+)?(?:dispositivo|celular|android|computador|notebook)\s+(.{2,70})[.!?]?$/);
+ if(select)return {kind:"select-device",name:select[1].trim()};
+ const yt=value.match(/^(?:abra|abrir|abre|inicie|iniciar)\s+(?:o\s+)?youtube\s+(?:no|do|pelo)\s+(?:meu\s+)?(celular|android|computador|notebook|pc)[.!?]?$/);
+ if(yt)return {kind:"execute",pluginId:"youtube",actionId:"youtube.open",preferredType:/celular|android/.test(yt[1])?"mobile":"desktop"};
+ const cal=value.match(/^(?:abra|abrir|abre|mostre|mostrar)\s+(?:a\s+)?(?:agenda|calendario)\s+(?:no|do|pelo)\s+(?:meu\s+)?(celular|android|computador|notebook|pc)[.!?]?$/);
+ if(cal)return {kind:"execute",pluginId:"agenda",actionId:"calendar.open",preferredType:/celular|android/.test(cal[1])?"mobile":"desktop"};
  if(/^(?:faca|fazer|mostre|mostrar|verifique|verificar|execute|executar)\s+(?:um\s+|o\s+)?(?:diagnostico|diagnosticar|estado)\s+(?:do\s+)?armazenamento\s+(?:no|do|pelo)\s+(?:meu\s+)?(?:celular|android)[.!?]?$/.test(value))
    return {kind:"execute",pluginId:"armazenamento",actionId:"storage.diagnostics"};
  // Event creation is a high-impact write: require title, offset-aware times,
