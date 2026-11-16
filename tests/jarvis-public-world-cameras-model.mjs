@@ -11,8 +11,8 @@ assert.equal(PUBLIC_WORLD_CAMERAS.every(validatePublicCamera),true);
 assert.equal(new Set(PUBLIC_WORLD_CAMERAS.map(c=>c.id)).size,PUBLIC_WORLD_CAMERAS.length);
 const summary=cameraDirectorySummary();
 assert.equal(summary.indexed,PUBLIC_WORLD_CAMERAS.length);
-assert.equal(WORLD_CAMERAS_CATALOGS.length,2,"Both worldwide directories are available");
-assert.equal(summary.providerCatalogs,2);
+assert.equal(WORLD_CAMERAS_CATALOGS.length,4,"Both worldwide directories are available");
+assert.equal(summary.providerCatalogs,4);
 assert.ok(WORLD_CAMERAS_CATALOGS.some(p=>p.id==="skyline"&&
  p.all==="https://www.skylinewebcams.com/en/webcam.html"));
 assert.ok(WORLD_CAMERAS_CATALOGS.some(p=>p.id==="webcamera24"&&
@@ -20,6 +20,13 @@ assert.ok(WORLD_CAMERAS_CATALOGS.some(p=>p.id==="webcamera24"&&
  p.countries==="https://webcamera24.com/pt/countries/"&&
  p.categories==="https://webcamera24.com/pt/categories/"));
 assert.equal(CAMERA_PROVIDER_NAMES.webcamera24,"Webcamera24");
+assert.equal(WORLD_CAMERAS_CATALOGS.find(p=>p.id==="camerasdomundo")?.all,
+ "https://camerasdomundo.com/live-cams/");
+assert.equal(WORLD_CAMERAS_CATALOGS.find(p=>p.id==="africam")?.all,
+ "https://africam.com/our-locations/");
+assert.ok(findPublicCameras({provider:"camerasdomundo"}).length>4);
+assert.ok(findPublicCameras({provider:"africam"}).length>=1);
+
 const w24=PUBLIC_WORLD_CAMERAS.filter(c=>cameraProvider(c)==="webcamera24");
 assert.ok(w24.length>=7);
 assert.ok(w24.every(c=>c.publisher==="Webcamera24"));
