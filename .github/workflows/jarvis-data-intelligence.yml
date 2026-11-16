@@ -37,7 +37,8 @@ jobs:
           node --check modules/jarvis-meteorological-center.js
           node tests/jarvis-data-intelligence-model.mjs
           node tests/jarvis-global-weather.mjs
-          node tests/jarvis-meteorological-center.mjs
+          node tests/jarvis-meteorological-sources.mjs
+          node tests/jarvis-rain-understanding.mjs
           node tests/jarvis-clear-interface.mjs
   evidence-browser:
     runs-on: ubuntu-latest
