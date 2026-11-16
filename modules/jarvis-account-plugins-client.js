@@ -55,6 +55,16 @@ async function process(intent){
      ". Dispositivos pareados: "+(devices||"nenhum")+
      ". Para habilitar: Jarvis instale plugin agenda/youtube/armazenamento.";
  }
+ if(intent.kind==="select-device"){
+   const data=await getStatus();
+   const matches=data.devices.filter(d=>d.name.toLowerCase()===intent.name.toLowerCase()||
+     d.id.startsWith(intent.name));
+   if(matches.length!==1)return "Seleção ambígua ou dispositivo não encontrado. "+
+     data.devices.map(d=>label(d.name)+" ("+d.id.slice(0,8)+")").join("; ");
+   selectedDeviceId=matches[0].id;
+   return "Dispositivo selecionado: "+label(matches[0].name)+
+     ". Esta preferência vale nesta sessão; cada execução será validada pela conta.";
+ }
  if(intent.kind==="install"||intent.kind==="uninstall"){
    const d=await io("/api/account/plugins",{action:intent.kind,pluginId:intent.pluginId});
    return "Plugin "+label(d.pluginId)+(d.installed?
@@ -66,17 +76,22 @@ async function process(intent){
    const plugin=data.plugins.find(p=>p.id===intent.pluginId);
    if(!plugin?.installed)return "Plugin "+intent.pluginId+
      " não está instalado nesta conta. Use: Jarvis instale plugin "+intent.pluginId+".";
-   const compatible=data.devices.filter(d=>d.type==="mobile"&&d.online&&
-     d.capabilities.includes(plugin.actions.length===1&&intent.pluginId==="youtube"?
-       "app.open":intent.actionId));
-   // For calendar.create this version requires the updated Android Bridge.
-   if(!compatible.length)return "Nenhum Android pareado e online tem a permissão "+
-     intent.actionId+". Atualize o Bridge, pareie o celular na conta e autorize notificações.";
+   const compatible=data.devices.filter(d=>{
+     if(!d.online||!["mobile","desktop"].includes(d.type))return false;
+     if(intent.preferredType&&d.type!==intent.preferredType)return false;
+     if(d.type==="desktop")
+       return ["youtube.open","calendar.open"].includes(intent.actionId)&&
+         d.capabilities.includes("desktop.open.url");
+     return d.capabilities.includes(intent.actionId==="youtube.open"?
+       "app.open":intent.actionId);
+   });
+   if(!compatible.length)return "Nenhum dispositivo autorizado e online possui a capacidade "+
+     intent.actionId+". Atualize o Bridge e pareie o aparelho na conta.";
    const target=compatible.length===1?compatible[0]:
      compatible.find(d=>d.id===selectedDeviceId);
-   if(!target)return "Há vários celulares disponíveis: "+
+   if(!target)return "Há vários dispositivos disponíveis: "+
      compatible.map(d=>label(d.name)+" ("+d.id.slice(0,8)+")").join("; ")+
-     ". Use o seletor de dispositivo da conta antes da execução.";
+     ". Escolha um com: Jarvis selecione dispositivo NOME_EXATO.";
    const queued=await io("/api/account/plugins/execute",{
      pluginId:intent.pluginId,actionId:intent.actionId,
      deviceId:target.id,payload:intent.payload||{}
@@ -96,17 +111,17 @@ async function process(intent){
        return "Armazenamento de "+label(target.name)+": total "+pretty(result.totalBytes)+
          ", usado "+pretty(result.usedBytes)+", livre "+pretty(result.freeBytes)+
          ". Diagnóstico LOCAL, sem ler seus arquivos nem serviços de nuvem.";
-     return "Comando "+intent.actionId+" processado no Android "+label(target.name)+
+     return "Comando "+intent.actionId+" processado no dispositivo "+label(target.name)+
        ". "+label(result.message||"Confira o resultado na tela do aparelho.")+
        (intent.actionId==="calendar.create"?
          " O evento não foi salvo automaticamente; confirme no aplicativo de agenda.":"");
    }
    if(state==="failed"){
-     return "O Android não confirmou execução de "+intent.actionId+": "+
+     return "O dispositivo não confirmou execução de "+intent.actionId+": "+
        label(result.error||result.message||"falha do aplicativo")+
        (result.requiresUserTap?" Toque na notificação do J.A.R.V.I.S. no celular.":"");
    }
-   return "Plugin "+intent.actionId+" enviado ao Android "+label(target.name)+
+   return "Plugin "+intent.actionId+" enviado ao dispositivo "+label(target.name)+
      " (solicitação "+queued.commandId.slice(0,8)+"). Estado: "+state+
      ". A execução ainda não foi confirmada; confira o Bridge ou a notificação.";
  }
