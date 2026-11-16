@@ -4,10 +4,118 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-15T22:05:19.527Z",
-  "oldestEventAt": "2026-11-14T22:26:09.000Z",
-  "windowStartAt": "2026-11-14T22:05:19.527Z",
+  "updatedAt": "2026-11-16T02:01:58.651Z",
+  "oldestEventAt": "2026-11-15T05:00:00.000Z",
+  "windowStartAt": "2026-11-15T02:01:58.651Z",
   "events": [
+    {
+      "id": "event-234d9e36",
+      "category": "santa-catarina",
+      "title": "Chuva causa alagamentos e deixa família desabrigada no Sul de SC",
+      "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxOZUFFUmRDUXM1Zjc4UmlYX3NWT1pHZ1h5a3BoaktvV2haZ0xOYnloLVRFWXBkUmlldFE2RjJVcmFBeHA4TngxSjBvR2VjZTRBMlVNNE5mdjRwV0ZEM1RYZlRXclVudm5WbjJPRzJIcFZaSC1WaHBIenBzeHZyaEVVckViNGxHbWNBV3RiMlBUSjFvZlJzbEhySzZfYXk",
+      "description": "Chuva causa alagamentos e deixa família desabrigada no Sul de SC &nbsp;&nbsp; Portal Engeplus",
+      "imageUrl": null,
+      "source": "Portal Engeplus",
+      "publishedAt": "2026-11-16T01:09:00.000Z",
+      "firstSeenAt": "2026-11-16T02:01:58.651Z",
+      "lastSeenAt": "2026-11-16T02:01:58.651Z"
+    },
+    {
+      "id": "event-d3aa8b4",
+      "category": "mundo",
+      "title": "Caso Nvidia põe governo Trump sob pressão por venda de chips à China",
+      "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxPSTVZYXZGY0ZRTEpxQlg1Mlh0bjFVRzdXa1E0c2xnUGFNYjVVN1d0cE9xY3MxX1hBVFlSMUp2YUg0QldjU1R5NmJQWnFDQ0F6b3I3Sk9nSHhSYmJaS3prM2taWi1SRUFBZk80NVUyQ3huVmJ6ZGpZbnJ2TWtlN0RmanR2ejZlanBZSV9RbUtVd0xuQ3lNenRLbTdJeFVVWkVWX2pJMXFaTVBVNmx5RmtybDJNVXJVYzRXamQ5Unl5dkZNYXgwaVZFa2hTVmdnNVBTcE9sbTFJZzZGUVk",
+      "description": "Caso Nvidia põe governo Trump sob pressão por venda de chips à China &nbsp;&nbsp; UOL Notícias",
+      "imageUrl": null,
+      "source": "UOL Notícias",
+      "publishedAt": "2026-11-16T01:03:06.000Z",
+      "firstSeenAt": "2026-11-16T02:01:58.651Z",
+      "lastSeenAt": "2026-11-16T02:01:58.651Z"
+    },
+    {
+      "id": "event-633179ee",
+      "category": "mundo",
+      "title": "IA fora de controle: agentes da OpenAI invadiram sistemas de outras empresas durante testes",
+      "url": "https://news.google.com/rss/articles/CBMi7wFBVV95cUxOVG4yYnBIMU16b0t3UVN1TEFDMDJfLVl6S1pMYWNFUkxHS1FzcW5XNTdjMGE4Z3hEejhyeUp6R2ZsWVdJbXQ0YkFsUUtpTnZRVnB6ajhXRGlzOHJKOWttWDlPcnJxZ2RhbFc3Si0xMzkzcHh4b0JOMG5xMElueFJxeUlfXzl1WDl6WlNkNXp5TnZrSDgwQ29jb2JGSHRDM1ZTd2ZmcDJYd1JDTGE2WWJwOHJxakd0SUlOQzQ1U29NZV9mOXRTTGRrZ0NKbW1kdE56N1FlcWFlWjV1MTI2dlNSNEk0aDI0UWttWUpnNy1xUdIB7wFBVV95cUxOVG4yYnBIMU16b0t3UVN1TEFDMDJfLVl6S1pMYWNFUkxHS1FzcW5XNTdjMGE4Z3hEejhyeUp6R2ZsWVdJbXQ0YkFsUUtpTnZRVnB6ajhXRGlzOHJKOWttWDlPcnJxZ2RhbFc3Si0xMzkzcHh4b0JOMG5xMElueFJxeUlfXzl1WDl6WlNkNXp5TnZrSDgwQ29jb2JGSHRDM1ZTd2ZmcDJYd1JDTGE2WWJwOHJxakd0SUlOQzQ1U29NZV9mOXRTTGRrZ0NKbW1kdE56N1FlcWFlWjV1MTI2dlNSNEk0aDI0UWttWUpnNy1xUQ",
+      "description": "IA fora de controle: agentes da OpenAI invadiram sistemas de outras empresas durante testes &nbsp;&nbsp; G1",
+      "imageUrl": null,
+      "source": "G1",
+      "publishedAt": "2026-11-16T00:28:40.000Z",
+      "firstSeenAt": "2026-11-16T02:01:58.651Z",
+      "lastSeenAt": "2026-11-16T02:01:58.651Z"
+    },
+    {
+      "id": "event-2ccdc44a",
+      "category": "mundo",
+      "title": "Principais notícias do mundo na noite de hoje (15)",
+      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQTzEwLTI5RFV0enFFdW0xbHF0QU90VVRWZjJTZm5Sa25QQWxxUG9QSGdBcFB3b1VGNXgzV2prNlhTZ21mQXh2STB1aHlsOEFqX2NCT0RnSTJLczMyN3hVYmdBb0dieDUzX0wtU3hsdnBiWFh6cFl6ODRTbS1SUkFleFpaUEltaEtjVWU1dzNrbWxFbnl5TENpbXNYQllzQmZhRTU2S1ZNTUNZWHFH",
+      "description": "Principais notícias do mundo na noite de hoje (15) &nbsp;&nbsp; Tribuna do Sertão",
+      "imageUrl": null,
+      "source": "Tribuna do Sertão",
+      "publishedAt": "2026-11-16T00:17:58.000Z",
+      "firstSeenAt": "2026-11-16T02:01:58.651Z",
+      "lastSeenAt": "2026-11-16T02:01:58.651Z"
+    },
+    {
+      "id": "event-dc83c878",
+      "category": "santa-catarina",
+      "title": "Defesa Civil alerta para temporais isolados no Oeste e Meio-Oeste de SC",
+      "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxNV29KMXFoU2dSalNVOXN6N19xTFRpME5wNXUwei1fV0lvaG50OU9vcjRyekE2ckpDdWJBRGdqTVE3eE9jZVFLTDM4eDN3YWZiT3ZvSU1hSXltNWxycXdpRnlvME84TlVQU3lUNVlSUUppb2ZXeFNJeVkxZGlCV2NaWXRpZ3NMeExWLWxoQi1lblpsRVltRF9KWnZfM00zbVpPZmRlUS1yUjlwbnlLX2hYMkJkQ0t2aWdFX3FubWprNDdHUF9rY052LWVHX2tTRGQt",
+      "description": "Defesa Civil alerta para temporais isolados no Oeste e Meio-Oeste de SC &nbsp;&nbsp; Diário do Iguaçu",
+      "imageUrl": null,
+      "source": "Diário do Iguaçu",
+      "publishedAt": "2026-11-15T23:48:00.000Z",
+      "firstSeenAt": "2026-11-16T02:01:58.651Z",
+      "lastSeenAt": "2026-11-16T02:01:58.651Z"
+    },
+    {
+      "id": "event-723bf4a1",
+      "category": "brasil",
+      "title": "Gabarito do Enem sai na quarta-feira, e resultado em 18 de janeiro",
+      "url": "https://agenciabrasil.ebc.com.br/educacao/noticia/2026-11/gabarito-do-enem-sai-na-quarta-feira-e-resultado-em-18-de-janeiro",
+      "description": "O gabarito oficial do Exame Nacional do Ensino Médio (Enem) de 2026 será publicado na próxima quarta-feira (18). Já o resultado do exame está previsto para ser divulgado pelo Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (Inep) no dia 18 de janeiro de 2027 . O segundo dia da aplicação da prova do Enem de 2026 terminou sem intercorrências graves neste domingo (15). Foi um “imenso sucesso”, avaliou o ministro da Educação, Leonardo Barchini. A prova contou com 90 questões de matemática e ciências da natureza. Notícias relacionadas: Alckmin destaca alcance do Enem e desafio logístico para a aplicação. Ao vivo: professores comentam 2º dia de prova na live Resenha do Enem. Enem 2026: um a cada cinco participantes faz prova como treineiro. “Tivemos um dia realmente de muita tranquilidade na aplicação do Enem, como deve ser, e parabenizo os funcionários do Inep”, destacou Barchini na coletiva de imprensa após a aplicação das provas. O ministro da Educação ainda comentou a repercussão do comentário que fez durante visita do vice-presidente Geraldo Alckmin, neste domin",
+      "imageUrl": "https://imagens.ebc.com.br/Knn4ZnRpdtilHhzFmdV6ItFbNQY=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/15/pzzb0368.jpg?itok=tr3TFdVu",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-15T23:43:00.000Z",
+      "firstSeenAt": "2026-11-16T02:01:58.651Z",
+      "lastSeenAt": "2026-11-16T02:01:58.651Z"
+    },
+    {
+      "id": "event-14c26503",
+      "category": "brasil",
+      "title": "Clubes, Ministério e FPF repudiam agressões em final Sub-20 feminina",
+      "url": "https://agenciabrasil.ebc.com.br/esportes/noticia/2026-11/clubes-ministerio-e-fpf-repudiam-agressoes-em-final-sub-20-feminina",
+      "description": "Horas após o término da decisão do Campeonato Paulista F Sub-20 Petrobras, que teve vitória da Ferroviária sobre o Corinthians, por 2 a 0 , os dois clubes e a Federação Paulista de Futebol (FPF) se manifestaram sobre a briga generalizada que aconteceu aos 31 minutos do segundo tempo . As agressões resultaram nas expulsões da atacante Miga, da Ferroviária, e da técnica Júlia Passero, do Corinthians. Soco em adversárias Notícias relacionadas: Inter conquista Copa do Brasil de futebol feminino sobre o Flamengo. Ferroviária bate Corinthians e é campeã do Paulista F Sub-20 Petrobras. Prêmio TV Brasil Petrobras Para Elas celebra futebol feminino do país. O lance começou em uma disputa de bola entre a atleta da Ferroviária e Gabi Jordi, do Timão. Miga acertou um soco na adversária. Depois, atletas dos dois times começaram um tumulto, até que a árbitra Jéssica Aparecida Milani apareceu para tentar conter os ânimos. Após se afastar da confusão, Miga ainda desferiu um soco na corinthiana Mel, que caiu no chão. &#039;Inadmissível&#039; Por meio das suas redes sociais, o Corinthians manifestou r",
+      "imageUrl": "https://imagens.ebc.com.br/nKd8DV0onkc7JKUjfG10IGL3Nyo=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/15/corinthiansxferroviaria03.jpg?itok=PyJxOSWP",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-15T22:14:00.000Z",
+      "firstSeenAt": "2026-11-16T02:01:58.651Z",
+      "lastSeenAt": "2026-11-16T02:01:58.651Z"
+    },
+    {
+      "id": "event-d4e762f8",
+      "category": "brasil",
+      "title": "Brasil encerra Grand Prix de Judô em 1º lugar no quadro de medalhas",
+      "url": "https://agenciabrasil.ebc.com.br/esportes/noticia/2026-11/brasil-encerra-grand-prix-de-judo-em-1o-lugar-no-quadro-de-medalhas",
+      "description": "Beatriz Souza (foto) e Guilherme Schmidt coroaram a participação do Brasil no Grand Prix de Judô de Zagreb, na Croácia, com mais dois ouros neste domingo (15), último dia da competição. No total, os brasileiros levaram cinco medalhas no Grand Prix, sendo quatro ouros e um bronze. Com os resultados, o Brasil terminou em primeiro no quadro de medalhas da competição. Notícias relacionadas: Morre Chiaki Ishii, primeiro medalhista olímpico do judô brasileiro . Brasil conquista bronze nos mundiais paralímpicos de judô e triatlo. Brasil é campeão geral do Grand Prix de judô no Peru com 11 medalhas. A campeã olímpica foi a melhor na categoria pesado (mais de 78 kg), enquanto Guilherme alcançou o mesmo feito na categoria médio (até 90 kg). No primeiro dia de competições, na sexta-feira (13), Ronald Lima foi vice-campeão na categoria meio-leve (até 66 kg). No mesmo dia, Shirlen Nascimento foi ouro (até 57kg) na categoria leve. No sábado, quem trouxe o ouro para o Brasil foi Nauana Silva, da categoria médio (até 70 kg).",
+      "imageUrl": "https://imagens.ebc.com.br/tlMdUzanvHvqJzos-zQMAYRH8kw=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/15/brasil_fecha_grand_prix_de_zagreb_de_judo_com_quatro_ouros.jpg?itok=pPu6OItm",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-15T21:55:00.000Z",
+      "firstSeenAt": "2026-11-16T02:01:58.651Z",
+      "lastSeenAt": "2026-11-16T02:01:58.651Z"
+    },
+    {
+      "id": "event-dfe8b6d1",
+      "category": "brasil",
+      "title": "Inter conquista Copa do Brasil de futebol feminino sobre o Flamengo",
+      "url": "https://agenciabrasil.ebc.com.br/esportes/noticia/2026-11/inter-conquista-copa-do-brasil-de-futebol-feminino-sobre-o-flamengo",
+      "description": "Nesta tarde ensolarada de domingo (15) no Beira-Rio, o torcedor do Internacional soltou o grito de \"é campeão!\" da Copa do Brasil de futebol feminino, com mais uma vitória sobre o Flamengo, por 1 a 0. A equipe já havia derrotado o adversário por 3 a 1, na partida de ida, e confirmou o primeiro título nacional da equipe feminina colorada . Notícias relacionadas: Festival de futebol feminino de várzea reúne 1,5 mil atletas em SP. Ferroviária bate Corinthians e é campeã do Paulista F Sub-20 Petrobras. Prêmio TV Brasil Petrobras Para Elas celebra futebol feminino do país. Pati Llanos, no segundo tempo, marcou o gol que não deixou dúvidas sobre quem sairia campeã. Público de 20 mil pessoas Com pouco mais de 20 mil pessoas presentes ao estádio, a atmosfera era muito positiva para as Gurias Coloradas. Em um primeiro tempo tenso, o Flamengo ameaçou primeiro. Jucinara recebeu próxima à marca do pênalti e chutou, para grande defesa de Gabi Barbieri. Na reta final, com os nervos mais controlados, o Internacional assumiu as rédeas da partida e chegou a marcar com Sole James, após bola levantada",
+      "imageUrl": "https://imagens.ebc.com.br/mi96baychNXr9JSIHt8y6BRrwVw=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/15/internacional_vence_flamengo_outra_vez_e_conquista_a_copa_do_brasil.jpg?itok=yUE5w_JK",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-15T21:42:00.000Z",
+      "firstSeenAt": "2026-11-16T02:01:58.651Z",
+      "lastSeenAt": "2026-11-16T02:01:58.651Z"
+    },
     {
       "id": "event-e742ea9c",
       "category": "clima",
@@ -18,7 +126,7 @@
       "source": "UOL Notícias",
       "publishedAt": "2026-11-15T20:29:53.000Z",
       "firstSeenAt": "2026-11-15T22:05:19.527Z",
-      "lastSeenAt": "2026-11-15T22:05:19.527Z"
+      "lastSeenAt": "2026-11-16T02:01:58.651Z"
     },
     {
       "id": "event-fc98d2bb",
@@ -43,6 +151,18 @@
       "publishedAt": "2026-11-15T19:35:00.000Z",
       "firstSeenAt": "2026-11-15T22:05:19.527Z",
       "lastSeenAt": "2026-11-15T22:05:19.527Z"
+    },
+    {
+      "id": "event-937a9bca",
+      "category": "clima",
+      "title": "Super El Niño deve perder força após atingir pico e tem previsão de enfraquecimento até voltar à neutralidade",
+      "url": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxOQktWUVN5bHhFMHJ4bWFybGJGTEdreFNwcWdubUV1aXV4TUlEdlk1bUhxVlpZR09oZk41Y1ZIanJIOVFTdzE5ZmVnM0ZxUHNkcHgxUW5KVFpib2tCQnFNNUc3WFd4cXhITThiYzdwUVhsUVdWRkNJR0wwb3pPSGtZSFQ4b09UWmpiYWwtZkxxNG56OHBueUNVTnhrc0c4ODVuRk1kZjYxSGNPSkUwbDVwc01nUnNWSHlWU01nbmt1T1NBa3VFZGFkNms1eWYwY3doTHMyNEJQQnVycGJseUVQWjJ0a28",
+      "description": "Super El Niño deve perder força após atingir pico e tem previsão de enfraquecimento até voltar à neutralidade &nbsp;&nbsp; GMC Online",
+      "imageUrl": null,
+      "source": "GMC Online",
+      "publishedAt": "2026-11-15T19:35:00.000Z",
+      "firstSeenAt": "2026-11-16T02:01:58.651Z",
+      "lastSeenAt": "2026-11-16T02:01:58.651Z"
     },
     {
       "id": "event-e71d6a48",
@@ -78,7 +198,7 @@
       "source": "Diário do Iguaçu",
       "publishedAt": "2026-11-15T19:22:00.000Z",
       "firstSeenAt": "2026-11-15T22:05:19.527Z",
-      "lastSeenAt": "2026-11-15T22:05:19.527Z"
+      "lastSeenAt": "2026-11-16T02:01:58.651Z"
     },
     {
       "id": "event-2767a063",
@@ -126,7 +246,7 @@
       "source": "Folha Regional",
       "publishedAt": "2026-11-15T18:00:33.000Z",
       "firstSeenAt": "2026-11-15T22:05:19.527Z",
-      "lastSeenAt": "2026-11-15T22:05:19.527Z"
+      "lastSeenAt": "2026-11-16T02:01:58.651Z"
     },
     {
       "id": "event-4b26cf3d",
@@ -246,7 +366,7 @@
       "source": "Instagram",
       "publishedAt": "2026-11-15T14:12:22.000Z",
       "firstSeenAt": "2026-11-15T22:05:19.527Z",
-      "lastSeenAt": "2026-11-15T22:05:19.527Z"
+      "lastSeenAt": "2026-11-16T02:01:58.651Z"
     },
     {
       "id": "event-85bd3268",
@@ -343,98 +463,9 @@
       "publishedAt": "2026-11-15T05:00:00.000Z",
       "firstSeenAt": "2026-11-15T10:48:18.946Z",
       "lastSeenAt": "2026-11-15T10:48:18.946Z"
-    },
-    {
-      "id": "event-476cf6d",
-      "category": "mundo",
-      "title": "Inauguração de um dos maiores complexos culturais do país atrai multidão no Ceará",
-      "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxQclJyLWFJQi16Nnk5NXRYeUpPWGpleDdXZERjQ1JUaVJVSUpzSnVlOTg5VTJwM2lwSFM1bFhkTkpyWHJ4Slp0QUVTR2E2ZmpXdUZabzJjbWRIdDJqaW1aUzl5S1hoQkRRcWFxVm90OGZFQUpzR0w1X2JmVkktU2NwWl9uQlhUX0ZERElCaDdZVEZfNWkxLXRKVEF3OHhaWHFOX1F6MzR0Y3ZMbWFFeE9mY1JfNEp5eWtXN2JOUUJ0b1VxRFlZVklpV2d2SEtiWnFWV21fbENNUHA1RXPSAeoBQVVfeXFMTlA4c0ZJWGlpcGh4Qk56TDVTZUVUVGNIVDZ4elotd2JnNkhpd3c3TW5xRjBuRU9pY2ZsdWZJLWs0UUpIWHNhZzJSTW9JRHJfOEhqWkdHd3pVQnk4dUpXcUdURnFOaXREdnBjdktOMUdGV0hLRjRvRVFVREkwS0FDb0lwYmFXNmdvdFI3X19IN21sLU5SZ3JpVkxNTmVjbWN6MGtGSnBXNVMweEV6dS1IcDIwWVdZTnE0SGk0VzhYNjRCb2tmTllSUnp5RTFiaERNU0pJdTBmMktLbDU3RTRxSTlOWjk4bVJzZ0t3",
-      "description": "Inauguração de um dos maiores complexos culturais do país atrai multidão no Ceará &nbsp;&nbsp; G1",
-      "imageUrl": null,
-      "source": "G1",
-      "publishedAt": "2026-11-15T01:26:21.000Z",
-      "firstSeenAt": "2026-11-15T10:48:18.946Z",
-      "lastSeenAt": "2026-11-15T10:48:18.946Z"
-    },
-    {
-      "id": "event-ec35c7b2",
-      "category": "santa-catarina",
-      "title": "Defesa Civil alerta: domingo terá temporais com granizo e risco alto no Litoral Norte",
-      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxNZ0phWElfVWtncDRxalU2amsxRHdhblI2c01wWFh1bmdhYmpBbkxRQ2ZqWFBrUDNIdVlFQ1F6LUl1ZklGWUtzQ05mOEJ4WXhPb1BXN3dWN01LcHgwTmtqYnJQTWNXamZTbmdSZGVGc0phd2JmUDdFRlJBbHR1YTFwYUhKZGR6cTRNQUJDTTVRc1c1ejhDUjdsTXZid2lBSEFISEtxaEp4clFMVGswQlBMYnBkbmZ6RFhyUGhiN1Rn",
-      "description": "Defesa Civil alerta: domingo terá temporais com granizo e risco alto no Litoral Norte &nbsp;&nbsp; TopElegance",
-      "imageUrl": null,
-      "source": "TopElegance",
-      "publishedAt": "2026-11-15T00:59:00.000Z",
-      "firstSeenAt": "2026-11-15T03:05:41.446Z",
-      "lastSeenAt": "2026-11-15T10:48:18.946Z"
-    },
-    {
-      "id": "event-7e1cea5b",
-      "category": "santa-catarina",
-      "title": "Defesa Civil emite alerta amarelo para temporais no Sul de SC",
-      "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxQNWlkcTRiajF1dGN3NFF3eHEyYWh5ckg1eEZUSXJfMWpDVE1FRVBYM3NzbEdjMWFEbTVvbFZMWURDVk5PN3pFbDJnaTVWSEVJV3JNQnU3RkkxOTdpYkFoejRvMG81U2VtX1g5TVNCZ2ZzNVd6X0x1TUlMVEl3U2Y5UDQ0WnJFTGxUMW1kMzE0dmFYVV9aeFd0VQ",
-      "description": "Defesa Civil emite alerta amarelo para temporais no Sul de SC &nbsp;&nbsp; Portal Engeplus",
-      "imageUrl": null,
-      "source": "Portal Engeplus",
-      "publishedAt": "2026-11-15T00:22:00.000Z",
-      "firstSeenAt": "2026-11-15T03:05:41.446Z",
-      "lastSeenAt": "2026-11-15T10:48:18.946Z"
-    },
-    {
-      "id": "event-5a72b16b",
-      "category": "santa-catarina",
-      "title": "Vale do Itajaí tem risco alto de temporais com granizo no domingo",
-      "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxNekdoekV0V1l5VTZDdWJBcFUtVVk3Tm0wSHJDM1pJSFR3clNtWF83dlFuZ2dRZXhrSUQ1Q0J6cFM1RjRpZndpRG9FYnlxQmJTbjNUdWVkaWFaR0w5RFhwZ1N3Zi1wTXNMRzNhR2locVlGR1ZLb1pLZy1jQXd6eENtV2JwYzFPNzk3TUZQdW5qVGZ3QlFlU0tqLTZ4TEpOdw",
-      "description": "Vale do Itajaí tem risco alto de temporais com granizo no domingo &nbsp;&nbsp; Timbó Net",
-      "imageUrl": null,
-      "source": "Timbó Net",
-      "publishedAt": "2026-11-14T23:13:55.000Z",
-      "firstSeenAt": "2026-11-14T23:35:54.064Z",
-      "lastSeenAt": "2026-11-15T10:48:18.946Z"
-    },
-    {
-      "id": "event-25ae9f30",
-      "category": "brasil",
-      "title": "Unedestinos fecha parceria com ICCA para fortalecer captação de eventos no Brasil",
-      "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxNUU1NUmFKeS0yR3A4SzR3Y3dLOE9pZ3NkZlhmRDRyT3laeE9QNDkxbS14dDVOT3ZjRnMwcmIzRlp5b2liMmh1MVZKZHpfTXlFU2lqSjdNM0loLXZTM0FaSmRvVk5feTh4OWR2NjVQVy1STHZOZ3dMcE1ucVI4c1JjdDJpc1hvTU40eFdpZkYzNVJCRWhRZk56ejlWM2FNdVc4a0pZM1NNV3loTF9TblVENUUxbkNzUnp2QXVRVUh5RXNKNDlTTUtnbXM4WUxraDQ",
-      "description": "Unedestinos fecha parceria com ICCA para fortalecer captação de eventos no Brasil &nbsp;&nbsp; Mercado e Eventos",
-      "imageUrl": null,
-      "source": "Mercado e Eventos",
-      "publishedAt": "2026-11-14T22:39:15.000Z",
-      "firstSeenAt": "2026-11-14T23:35:54.064Z",
-      "lastSeenAt": "2026-11-15T10:48:18.946Z"
-    },
-    {
-      "id": "event-e02b46a7",
-      "category": "mundo",
-      "title": "Entre rondadas, rajadas e correntes: os desafios da Baía de Guanabara na Copa do Mundo da Vela",
-      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxOWjRTbm1qR3dZU05UTUxBTWdzc3Yxb0xkR25JMkMwZXBJMEtrdDRRX1oydWJYZzZUUTVHVXJ0aUZYcnlCUnJtVnlXVTRCTEIwLWQzRFdndkthSDVIRzR3MTlZY1Z5S1YxOXZzbHhqdkdjbi0yZkdHUjFVZWtGOVhNUE9IODBVQ1pXdnRuSUJJRXBJNVlCd3VEOFh5VDFyVE5wWlVPYTFhMGhxekRpNDhMQTRJMF9YaVE",
-      "description": "Entre rondadas, rajadas e correntes: os desafios da Baía de Guanabara na Copa do Mundo da Vela &nbsp;&nbsp; Náutica",
-      "imageUrl": null,
-      "source": "Náutica",
-      "publishedAt": "2026-11-14T22:26:09.000Z",
-      "firstSeenAt": "2026-11-14T23:35:54.064Z",
-      "lastSeenAt": "2026-11-15T03:05:41.446Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-14T23:35:54.064Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 13,
-      "newArticles": 11,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "europa",
-        "africa"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-15T03:05:41.446Z",
       "ok": true,
@@ -500,29 +531,31 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-16T02:01:58.651Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 14,
+      "newArticles": 10,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "asia"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 5,
-  "lastSuccessfulAt": "2026-11-15T22:05:19.527Z",
+  "lastSuccessfulAt": "2026-11-16T02:01:58.651Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-15T22:05:19.527Z",
+      "checkedAt": "2026-11-16T02:01:58.651Z",
       "warnings": [
-        {
-          "id": "56415",
-          "title": "Tempestade",
-          "severity": "Perigo Potencial",
-          "phase": "previsto",
-          "regions": [
-            "DO",
-            "DE"
-          ],
-          "startsAt": "2026-11-16T00:00:00.000Z",
-          "endsAt": "2026-11-16T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
-        },
         {
           "id": "56418",
           "title": "Tempestade",
@@ -567,7 +600,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-15T22:05:19.527Z",
+      "checkedAt": "2026-11-16T02:01:58.651Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
