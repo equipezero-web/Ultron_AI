@@ -29,6 +29,7 @@
 <link rel="stylesheet" href="modules/jarvis-data-intelligence.css?v=5.36.0">
 <link rel="stylesheet" href="modules/jarvis-scoped-workspaces.css?v=5.39.0">
 <link rel="stylesheet" href="modules/jarvis-mobile-native-scroll.css?v=5.35.0">
+<link rel="stylesheet" href="modules/jarvis-mobile-pairing.css?v=5.40.0">
 </head>
 <body class="jarvis-command-center jarvis-voice-paused">
 <div class="hud-bg" aria-hidden="true">
@@ -104,14 +105,14 @@
 
       <section class="hud-panel bridge-link-panel">
         <div class="panel-heading"><div><span class="panel-index">03</span><h2>COMPUTADOR ↔ CELULAR</h2></div><b id="bridge-link-state">OFFLINE</b></div>
-        <button id="btn-pair-mobile" class="hud-button primary">CONECTAR CELULAR</button>
+        <button id="btn-pair-mobile" class="hud-button primary">PAREAR CELULAR</button>
         <div class="link-grid" style="margin-top:7px">
           <div><span>DISPOSITIVO</span><strong id="bridge-device-name">NÃO CONECTADO</strong></div>
           <div><span>BRIDGE</span><strong id="bridge-session-state">AGUARDANDO</strong></div>
           <div><span>CAMERA LINK</span><strong id="bridge-camera-state">STANDBY</strong></div>
           <div><span>TURN</span><strong id="turn-state">AUTO</strong></div>
         </div>
-        <p class="spatial-help">Um botão. Se o celular já estiver pareado, o J.A.R.V.I.S reconecta sozinho. Se for o primeiro uso, o código de pareamento aparece no terminal.</p>
+        <p class="spatial-help">Para parear pela primeira vez, use PAREAR CELULAR no topo ou no terminal e digite o código de 6 dígitos no aplicativo J.A.R.V.I.S. Bridge. Um dispositivo já pareado pode reconectar com suas credenciais existentes.</p>
       </section>
     </aside>
 
@@ -221,6 +222,7 @@
 <script type="module" src="modules/ultron-orchestrator-v4270.js?v=4.101.9"></script>
 <script type="module" src="modules/neural-priority-core-v4300.js?v=4.30.0"></script>
 <script type="module" src="modules/device-control-v4260.js?v=4.67.5"></script>
+<script type="module" src="modules/jarvis-mobile-pairing.js?v=5.40.0"></script>
 <script type="module" src="modules/orchestrator-device-verify-v4270.js?v=4.27.0"></script>
 <script type="module" src="modules/voice-match-v4290.js?v=4.31.0"></script>
 <script type="module" src="modules/mobile-mic-client.js?v=4.21.1"></script>
