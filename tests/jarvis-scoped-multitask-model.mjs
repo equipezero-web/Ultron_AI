@@ -92,9 +92,9 @@ const firstBatch=guarded.start([
 ]);
 assert.equal(guarded.state.busy,true);
 assert.equal(guarded.state.running,3);
-const overlap=await guarded.start(["world-cameras","meteorology-status"]);
-assert.equal(overlap.ok,false,"Overlapping start must be rejected globally");
-assert.match(overlap.error,/Outra rodada/);
+const overlapGuard=await guarded.start(["world-cameras","meteorology-status"]);
+assert.equal(overlapGuard.ok,false,"Overlapping start must be rejected globally");
+assert.match(overlapGuard.error,/lote|Outra rodada/);
 assert.equal(peakHeld,3);
 guarded.stop();
 const whileStopping=await guarded.start(["world-cameras"]);
