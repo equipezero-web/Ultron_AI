@@ -38,6 +38,8 @@ function render(data,{region="all",category="all"}={}){
  }
  status.textContent=headings[region]+" • "+(category==="all"?"TODOS OS SETORES":category.toUpperCase())+
   " • COLETA "+date(data.checkedAt)+(data.stale?" • DADOS DEFASADOS":"")+
+  (data.coverage?" • SETORES/FEEDS: "+data.coverage.observed+"/"+data.coverage.expected:"")+
+  (data.partial?" • COBERTURA PARCIAL":"")+
   " • AMOSTRA PÚBLICA, NÃO COBERTURA TOTAL";
  const signals=(Array.isArray(data.items)?data.items:[])
   .filter(x=>x?.kind==="search-trend"||x?.kind==="news-observation").slice(0,45);
@@ -56,7 +58,8 @@ function render(data,{region="all",category="all"}={}){
   if(url){title.href=url;title.target="_blank";title.rel="noopener noreferrer";}
   const stats=element("small","jarvis-trends-meta",
    clean(item.source,55)+" · "+date(item.observedAt)+
-   (item.approximateSearches?" · BUSCAS APROX. "+clean(item.approximateSearches,20):""));
+   (item.approximateSearches?" · BUSCAS APROX. "+clean(item.approximateSearches,20):"")+
+   (item.observedCycles>=2?" · PRESENTE EM "+item.observedCycles+" COLETAS":""));
   const explanation=element("p","jarvis-trends-evidence",clean(item.evidence,220));
   article.append(top,title,stats,explanation);
   const verifiedReferences=(Array.isArray(item.newsReferences)?item.newsReferences:[])
