@@ -14,6 +14,7 @@ on:
       - "modules/device-control-v4260.js"
       - "modules/jarvis-voice-text-only.js"
       - "modules/jarvis-voice-text-only.css"
+      - "tests/jarvis-voice-text-only-browser.mjs"
       - "modules/jarvis-local-commands.js"
       - ".github/workflows/jarvis-remote-phone-files.yml"
   pull_request:
@@ -49,3 +50,21 @@ jobs:
           node tests/jarvis-phone-files-security.mjs
           node tests/jarvis-phone-folder-commands.mjs
           node tests/jarvis-voice-text-tv-security.mjs
+
+  voice-text-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install browser test harness
+        run: |
+          npm install --no-save --no-package-lock --ignore-scripts puppeteer-core@24.33.0
+          echo "CHROME_BIN=$(command -v google-chrome || command -v chromium || command -v chromium-browser)" >> "$GITHUB_ENV"
+      - name: No-buttons voice and Enter navigation on phone/notebook/TV
+        run: |
+          python3 -m http.server 8772 --bind 127.0.0.1 >/tmp/jarvis-voice-text-only.log 2>&1 &
+          sleep 2
+          node tests/jarvis-voice-text-only-browser.mjs
