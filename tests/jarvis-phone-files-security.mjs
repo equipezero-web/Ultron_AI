@@ -47,7 +47,7 @@ assert.doesNotMatch(js,/accessCode:currentPin\(\)/);
 assert.match(js,/TRANSFER_MAX = 16 \* 1024 \* 1024/);
 assert.match(js,/const CHUNK_MAX = 80 \* 1024/);
 assert.match(html,/jarvis-phone-files\.js\?v=/);
-assert.match(workflow,/jarvis-bridge-v0\.8\.0-debug/);
+assert.match(workflow,/jarvis-bridge-v0\.9\.0-debug/);
 
 // The D1 endpoint enforces mobile-only file commands and a bounded operator PIN.
 const calls=[];
