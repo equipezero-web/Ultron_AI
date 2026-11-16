@@ -2,7 +2,7 @@ import {PUBLIC_WORLD_CAMERAS, CAMERA_CATEGORY_NAMES, CAMERA_PROVIDER_NAMES,
  WORLD_CAMERAS_CATALOGS, cameraProvider, WORLD_CAMERAS_HOME,
  WORLD_CAMERAS_INTERNATIONAL, WORLD_CAMERAS_ALTERNATIVE_ID,
  getWorldCameraAlternative, findPublicCameras, parseWorldCameraCommand,
- publicCameraEmbed, cameraDirectorySummary} from "./jarvis-public-world-cameras-model.js";
+ publicCameraEmbed, cameraDirectorySummary} from "./jarvis-public-world-cameras-model.js?v=5.38.0";
 
 // Public third-party webcams only. Nothing here activates user/device cameras.
 // Playing a listed stream is NOT proof that its owner is currently broadcasting.
