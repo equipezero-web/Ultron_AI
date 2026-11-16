@@ -13,7 +13,7 @@ export function parseLocalCommand(value){
   if(/^(?:(?:o que|que) (?:voce|tu|o jarvis|o ultron) (?:pode|consegue|sabe) fazer|(?:o que|que) (?:voce|tu) faz|quais (?:sao )?(?:as )?(?:suas|tuas) (?:capacidades|habilidades|funcoes|funcionalidades|ferramentas)|quais (?:sao )?(?:as )?funcionalidades (?:do|de) (?:jarvis|ultron)|quem e voce|o que mais voce pode fazer|quais recursos voce tem|me mostre suas funcionalidades)$/.test(plain))return {type:"capabilities"};
   // "Limpar tudo" means the visible command surface, NEVER stored history/data.
   if(/^(?:por favor )?(?:(?:pode|consegue) )?(?:limpar|limpe|limpa|apagar|apague|apaga)\s+(?:tudo|(?:a |o )?(?:tela|painel(?: neural)?|interface(?: do jarvis)?))(?:\s+(?:agora|por favor))?$/.test(plain))return {type:"clear-interface"};
-  if(/^(?:(?:mostre|mostrar|exiba|exibir|ver|consulte|consultar|quais (?:sao )?)\s+(?:as? |os? )?)?(?:fontes? (?:dos? )?dados|origem (?:dos? )?dados|relatorio de origem|relatorio de fontes|rastreabilidade dos dados|fontes utilizadas)$/.test(plain))
+  if(/^(?:(?:(?:mostre|mostrar|exiba|exibir|ver|consulte|consultar)\s+(?:as? |os? )?)|(?:quais (?:sao )?(?:as |os )?))?(?:fontes? (?:dos? )?dados|origem (?:dos? )?dados|relatorio de origem|relatorio de fontes|rastreabilidade dos dados|fontes utilizadas)$/.test(plain))
     return {type:"data-evidence"};
   const globalIntent=parseGlobalIntelligenceIntent(plain);
   if(globalIntent)return globalIntent;
