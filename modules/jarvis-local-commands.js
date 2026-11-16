@@ -12,10 +12,10 @@ export function parseLocalCommand(value){
   const plain=q.replace(/[.!?]+$/,"").trim();
   // Explicit imperative: browse the ANDROID folder inside the Neural Ring,
   // not a Google-search question. Android calls this directory "Download".
-  const phoneFolder = plain.match(/^(?:abra|abre|abrir|mostre|mostrar|exiba|exibir|acesse|acessar|entre na|entrar na)\\s+(.+?)\\s+(?:do|de|no|na)\\s+(?:(?:meu|meus|seu|seus)\\s+)?(?:celular|telefone|android)(?:\\s+(?:no|pelo)\\s+jarvis)?$/);
+  const phoneFolder = plain.match(/^(?:abra|abre|abrir|mostre|mostrar|exiba|exibir|acesse|acessar|entre na|entrar na)\s+(.+?)\s+(?:do|de|no|na)\s+(?:(?:meu|meus|seu|seus)\s+)?(?:celular|telefone|android)(?:\s+(?:no|pelo)\s+jarvis)?$/);
   if(phoneFolder){
-    const target=phoneFolder[1].replace(/^(?:(?:a|o|as|os|minha|minhas|meu|meus)\\s+)+/,"")
-      .replace(/^(?:arquivos?\\s+(?:da\\s+)?pasta|pasta|diretorio|arquivos?)\\s+(?:(?:de|da|do|dos)\\s+)?/,"").trim();
+    const target=phoneFolder[1].replace(/^(?:(?:a|o|as|os|minha|minhas|meu|meus)\s+)+/,"")
+      .replace(/^(?:arquivos?\s+(?:da\s+)?pasta|pasta|diretorio|arquivos?)\s+(?:(?:de|da|do|dos)\s+)?/,"").trim();
     const folders={download:"Download",downloads:"Download",dcim:"DCIM",documentos:"Documents",
       documents:"Documents",fotos:"Pictures",imagens:"Pictures",pictures:"Pictures",
       videos:"Movies",filmes:"Movies",movies:"Movies",musicas:"Music",music:"Music"};
