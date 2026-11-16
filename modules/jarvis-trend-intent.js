@@ -30,7 +30,7 @@ export function parseTrendIntent(value){
  if(/^(?:feche|fechar|oculte|ocultar|encerre|encerrar)\s+(?:o painel de |as? )?(?:tendencias|trends|assuntos em alta)(?:\s+(?:do|no) jarvis)?$/.test(q))
   return {type:"trend-intelligence-close"};
  const intro=/^(?:(?:por favor )?(?:me )?(?:mostre|mostrar|mostra|exiba|exibir|abra|abrir|resuma|resumir|apresente|apresentar|informe|informar|atualize|atualizar|analise|analisar)|quero (?:ver|saber|acompanhar)|(?:quais|qual) (?:sao |e )?(?:as |a |os |o )?|o que (?:esta|ta) (?:em alta|bombando)|o que esta acontecendo com)\b/;
- const subject=/\b(tendencias?|trends|modas?|assuntos? em alta|assuntos? do dia|buscas? em alta|viralizando|bombando|popularidade)\b/;
+ const subject=/\b(tendencias?|trends|modas?|assuntos? em alta|em alta|assuntos? do dia|buscas? em alta|viralizando|bombando|popularidade)\b/;
  if(!intro.test(q)||!subject.test(q))return null;
  const region=/\b(brasil|brasileir[ao]s?|recife|pernambuco)\b/.test(q)?"br":
   /\b(mundo|mundial|globais?|internacional|exterior)\b/.test(q)?"world":"all";
