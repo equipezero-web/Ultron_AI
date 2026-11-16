@@ -1,0 +1,38 @@
+name: JARVIS Account and Memory Diagnostics
+on:
+  pull_request:
+    paths:
+      - "modules/jarvis-account-diagnostics.js"
+      - "modules/memory-client.js"
+      - "modules/jarvis-account-plugins-client.js"
+      - "modules/jarvis-account-plugin-panel.js"
+      - "tests/jarvis-auth-memory-diagnostics.mjs"
+      - ".github/workflows/jarvis-auth-memory-diagnostics.yml"
+  push:
+    branches: [main]
+    paths:
+      - "modules/jarvis-account-diagnostics.js"
+      - "modules/memory-client.js"
+      - "modules/jarvis-account-plugins-client.js"
+      - "modules/jarvis-account-plugin-panel.js"
+      - "tests/jarvis-auth-memory-diagnostics.mjs"
+permissions:
+  contents: read
+jobs:
+  diagnostics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate syntax
+        run: |
+          node --check modules/jarvis-account-diagnostics.js
+          node --check modules/memory-client.js
+          node --check modules/jarvis-account-plugins-client.js
+          node --check modules/jarvis-account-plugin-panel.js
+          node --check tests/jarvis-auth-memory-diagnostics.mjs
+      - name: Validate account and memory diagnostic behavior
+        run: node tests/jarvis-auth-memory-diagnostics.mjs
