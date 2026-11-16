@@ -13,11 +13,12 @@ export function normalizeTaskSelection(value){
 export function createParallelTaskCenter({handlers={},maxConcurrent=3,now=()=>new Date().toISOString()}={}){
  const limit=Math.min(3,Math.max(1,Number(maxConcurrent)||2));
  const active=new Map(),history=[],listeners=new Set();
- let sequence=0,controller=null;
+ let sequence=0,controller=null,batchInFlight=false;
  const notify=()=>{for(const fn of [...listeners])try{fn(snapshot());}catch{}};
  const bounded=s=>String(s??"").replace(/[\r\n<>]/g," ").slice(0,380);
  const snapshot=()=>({
   running:active.size,
+  busy:batchInFlight,
   maxConcurrent:limit,
   recent:history.slice(0,12).map(x=>({...x})),
   tasks:[...active.values()].map(x=>({...x}))
@@ -26,6 +27,10 @@ export function createParallelTaskCenter({handlers={},maxConcurrent=3,now=()=>ne
  async function start(names){
   const selected=normalizeTaskSelection(names);
   if(!selected.length)return {ok:false,error:"Selecione tarefas seguras conhecidas."};
+  // A second start() could otherwise launch three more workers while the first
+  // batch is still active, violating the global concurrency cap and P0 fence.
+  if(batchInFlight)return {ok:false,error:"Outra rodada de consultas está em execução. Use PARAR MULTITAREFAS ou aguarde a conclusão."};
+  batchInFlight=true;notify();
   const duplicates=selected.filter(x=>active.has(x));
   if(duplicates.length)return {ok:false,error:"Uma tarefa já está em execução: "+duplicates.join(", ")};
   const pending=[...selected],results=[];
@@ -59,8 +64,12 @@ export function createParallelTaskCenter({handlers={},maxConcurrent=3,now=()=>ne
     finishedAt:now(),message:"Não iniciada após parada."});
    history.length=Math.min(history.length,12);notify();
   }
-  return {ok:results.length>0&&results.every(r=>r.status==="completed")&&!signal.aborted,
+  const outcome={ok:results.length>0&&results.every(r=>r.status==="completed")&&!signal.aborted,
     results,cancelled:signal.aborted};
+  // Release only after all active handlers settle; P0 must not allow a new
+  // batch to overlap an old one whose asynchronous read has not returned.
+  batchInFlight=false;notify();
+  return outcome;
  }
  function stop(){controller?.abort();notify();return {ok:true,stopping:true};}
  return {start,stop,subscribe,snapshot,get state(){return snapshot();}};
