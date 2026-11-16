@@ -90,10 +90,10 @@ export function cameraProvider(camera){
  if(source.startsWith("https://webcamera24.com/"))return "webcamera24";
  return "independent";
 }
-const SKYLINE_APPROVED=new Set([
- WORLD_CAMERAS_SKYLINE_URL,
- "https://www.skylinewebcams.com/en/webcam/china/shanghai/shanghai/skyline-of-shanghai.html",
- "https://www.skylinewebcams.com/en/webcam/united-states/new-york/new-york/times-square.html"
+const SKYLINE_APPROVED=new Map([
+ [WORLD_CAMERAS_SKYLINE_URL,WORLD_CAMERAS_ALTERNATIVE_ID],
+ ["https://www.skylinewebcams.com/en/webcam/china/shanghai/shanghai/skyline-of-shanghai.html","skyline-shanghai"],
+ ["https://www.skylinewebcams.com/en/webcam/united-states/new-york/new-york/times-square.html","skyline-times-square"]
 ]);
 const WEB_CAMERA24_APPROVED=new Set([
  "https://webcamera24.com/pt/camera/usa/elboroom-bar-band-cam/",
@@ -119,7 +119,7 @@ export function validatePublicCamera(camera){
   const recognized=["camerasdomundo.com","africam.com"].includes(url.hostname);
   // Strict curated page allowlists: no arbitrary user URL or IP camera scanning.
   // Skyline live videos are link-only, according to its embedding policy.
-  const skyline=SKYLINE_APPROVED.has(url.href)&&
+  const skyline=SKYLINE_APPROVED.get(url.href)===camera.id&&
    camera.embedId===null&&camera.publisher==="SkylineWebcams";
   const webcamera24=WEB_CAMERA24_APPROVED.has(url.href)&&
    camera.publisher==="Webcamera24";
