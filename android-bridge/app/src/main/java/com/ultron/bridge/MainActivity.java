@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.net.Uri;
 import android.provider.Settings;
 import android.text.InputType;
 import android.view.ViewGroup;
@@ -32,6 +34,7 @@ public class MainActivity extends Activity {
 
     private TextView statusView;
     private TextView bridgeBadge;
+    private TextView remoteFilesPinView;
     private EditText pairingCode;
     private EditText lgTvHost;
     private EditText lgTvMac;
@@ -142,6 +145,31 @@ public class MainActivity extends Activity {
         scopedFiles.setOnClickListener(v ->
             startActivity(new Intent(this, MobileFilesActivity.class)));
         devices.addView(scopedFiles, JarvisUi.width(this, 9));
+
+        devices.addView(JarvisUi.heading(this, "EXPLORADOR REMOTO  /  ARMAZENAMENTO"),
+            JarvisUi.width(this, 9));
+        devices.addView(JarvisUi.caption(this,
+            "Para consultar pastas do celular pelo computador, habilite o acesso especial no Android e inicie uma sessão temporária. O PIN vale 10 minutos. Fotos, Downloads, Documentos e outras pastas compartilhadas; áreas privadas de apps continuam bloqueadas."),
+            JarvisUi.width(this, 11));
+        Button storagePermission = JarvisUi.button(this,
+            "1  /  AUTORIZAR ACESSO A TODOS OS ARQUIVOS", false);
+        storagePermission.setOnClickListener(v -> openStorageSettings());
+        devices.addView(storagePermission, JarvisUi.width(this, 9));
+        Button remoteFilesStart = JarvisUi.button(this,
+            "2  /  ATIVAR EXPLORADOR REMOTO  (10 MIN)", true);
+        remoteFilesStart.setOnClickListener(v -> enableRemoteFileAccess());
+        devices.addView(remoteFilesStart, JarvisUi.width(this, 9));
+        remoteFilesPinView = JarvisUi.text(this,
+            "PIN REMOTO: DESATIVADO", 18, JarvisUi.GOLD, true);
+        remoteFilesPinView.setTextIsSelectable(true);
+        devices.addView(remoteFilesPinView, JarvisUi.width(this, 9));
+        Button remoteFilesStop = JarvisUi.button(this, "REVOGAR ACESSO REMOTO", false);
+        remoteFilesStop.setOnClickListener(v -> {
+            RemoteFiles.disable(this);
+            remoteFilesPinView.setText("PIN REMOTO: DESATIVADO");
+            refreshStatus();
+        });
+        devices.addView(remoteFilesStop, JarvisUi.width(this, 9));
         Button remoteMic = JarvisUi.button(this, "◈  MICROFONE PARA J.A.R.V.I.S.", false);
         remoteMic.setOnClickListener(v -> openRemoteMicrophone());
         devices.addView(remoteMic, JarvisUi.width(this, 9));
@@ -149,7 +177,7 @@ public class MainActivity extends Activity {
         notifications.setOnClickListener(v -> openNotificationSettings());
         devices.addView(notifications, JarvisUi.width(this, 10));
         devices.addView(JarvisUi.caption(this,
-            "ARQUIVOS: seleção individual, somente no celular. Não concede leitura remota de todo o armazenamento."),
+            "Editor local: seleção individual. Explorador remoto: leitura de pastas compartilhadas e arquivos por autorização temporária; sem exclusão nem gravação remota."),
             JarvisUi.width(this, 0));
         root.addView(devices, JarvisUi.width(this, 14));
 
@@ -216,7 +244,7 @@ public class MainActivity extends Activity {
         root.addView(diagCard, JarvisUi.width(this, 14));
 
         root.addView(JarvisUi.caption(this,
-            "J.A.R.V.I.S. BRIDGE v0.6.0  •  Android  •  Controle local e autorizado"),
+            "J.A.R.V.I.S. BRIDGE v0.7.0  •  Android  •  Controle local e autorizado"),
             JarvisUi.width(this, 0));
         ScrollView scroll = new ScrollView(this);
         scroll.setFillViewport(true);
@@ -355,6 +383,41 @@ public class MainActivity extends Activity {
                 );
             }
         }).start();
+    }
+
+    private void openStorageSettings() {
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION,
+                    Uri.parse("package:" + getPackageName()));
+                startActivity(intent);
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) !=
+                    PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1002);
+            }
+        } catch (Exception error) {
+            try {
+                startActivity(new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION));
+            } catch (Exception ignored) {
+                statusView.setText("Abra Configurações do Android > Acesso especial > Acesso a todos os arquivos > J.A.R.V.I.S. Bridge.");
+            }
+        }
+    }
+
+    private void enableRemoteFileAccess() {
+        if (SecureStore.getDeviceId(this) == null) {
+            statusView.setText("Primeiro vincule o celular ao J.A.R.V.I.S. e inicie a conexão Cloud.");
+            return;
+        }
+        try {
+            String pin = RemoteFiles.enable(this);
+            remoteFilesPinView.setText("PIN REMOTO: " + pin + "  /  10 MIN");
+            statusView.setText("Acesso remoto à memória compartilhada ativado por 10 minutos. " +
+                "Digite o PIN na seção ARQUIVOS DO CELULAR do J.A.R.V.I.S. Não compartilhe este código.");
+        } catch (Exception error) {
+            statusView.setText("Acesso remoto não ativado: " + error.getMessage());
+        }
     }
 
     private void openRemoteMicrophone() {
@@ -502,6 +565,8 @@ public class MainActivity extends Activity {
         StringBuilder status = new StringBuilder();
         status.append(deviceId == null ? "Pareamento: NÃO PAREADO" : "Pareamento: REGISTRADO\nDevice ID: " + deviceId);
         status.append("\nConexão Cloud: ").append(BridgeHealthStore.readableStatus(this));
+        status.append("\nArquivos compartilhados: ").append(RemoteFiles.storageGranted(this) ? "PERMISSÃO ATIVA" : "SEM PERMISSÃO");
+        status.append("\nSessão remota: ").append(RemoteFiles.remainingSeconds(this) > 0 ? "ATIVA (temporária)" : "DESATIVADA");
 
         if (Build.VERSION.SDK_INT >= 33) {
             status.append("\nNotificações: ")
@@ -549,7 +614,7 @@ public class MainActivity extends Activity {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 1001) {
+        if (requestCode == 1001 || requestCode == 1002) {
             refreshStatus();
         }
     }
