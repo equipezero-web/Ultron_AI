@@ -38,6 +38,9 @@ assert.match(backend,/payload_json = CASE WHEN command LIKE 'files.%' THEN '\{\}
 assert.match(gateway,/SET result_json = NULL/);
 assert.match(js,/ARQUIVOS DO CELULAR/);
 assert.match(js,/window\.ULTRON_DEVICES\.sendCommand/);
+assert.match(js,/crypto\.subtle\.sign\("HMAC"/);
+assert.match(android,/javax\.crypto\.Mac\.getInstance\("HmacSHA256"\)/);
+assert.doesNotMatch(js,/accessCode:currentPin\(\)/);
 assert.match(js,/TRANSFER_MAX = 16 \* 1024 \* 1024/);
 assert.match(js,/const CHUNK_MAX = 80 \* 1024/);
 assert.match(html,/jarvis-phone-files\.js\?v=/);
@@ -59,22 +62,25 @@ const env={ULTRON_DB:{prepare(sql){
   };
 }}};
 const base={operatorId:'op',deviceId:'dev123',command:'files.list'};
-const invalid=await enqueueCommand(env,{...base,payload:{accessCode:'bad',path:''}});
+// Browser sends only a per-request HMAC proof, NEVER the actual PIN or
+// persistent Keystore key into the D1 queue.
+const proof={path:"internal:Download",offset:0,nonce:"a".repeat(32),accessProof:"b".repeat(64)};
+const invalid=await enqueueCommand(env,{...base,payload:{accessCode:"12345678"}});
 assert.equal(invalid.ok,false);
-assert.match(invalid.error,/PIN/);
-const valid=await enqueueCommand(env,{...base,payload:{accessCode:'12345678',path:''}});
+assert.match(invalid.error,/chave/);
+const valid=await enqueueCommand(env,{...base,payload:proof});
 assert.equal(valid.ok,true);
 assert.ok(valid.commandId);
-const permanent=await enqueueCommand(env,{...base,payload:{accessCode:'A'.repeat(32),path:''}});
-assert.equal(permanent.ok,true,'Keystore-backed key accepted for persistent access');
-const invalidShortKey=await enqueueCommand(env,{...base,payload:{accessCode:'A'.repeat(20),path:''}});
-assert.equal(invalidShortKey.ok,false);
+const invalidProof=await enqueueCommand(env,{...base,payload:{...proof,accessProof:"bad"}});
+assert.equal(invalidProof.ok,false);
+const rawPermanent=await enqueueCommand(env,{...base,payload:{...proof,accessCode:"A".repeat(32)}});
+assert.equal(rawPermanent.ok,false,"Raw permanent key must never enter Cloud/D1");
 targetType='desktop';
-const wrong=await enqueueCommand(env,{...base,payload:{accessCode:'12345678'}});
+const wrong=await enqueueCommand(env,{...base,payload:proof});
 assert.equal(wrong.ok,false);
 assert.match(wrong.error,/celular/);
-const removed=await enqueueCommand(env,{...base,command:'files.delete',payload:{accessCode:'12345678'}});
-assert.equal(removed.ok,false,'Remote file deletion is not an allowed command');
+const removed=await enqueueCommand(env,{...base,command:"files.delete",payload:proof});
+assert.equal(removed.ok,false,"Remote file deletion is not an allowed command");
 assert.equal(calls.some(x=>/INSERT INTO device_commands/.test(x.sql)),true);
 assert.equal(backend.includes('"files.write"'),false);
-console.log('JARVIS REMOTE PHONE STORAGE PASS: permission, PIN, path boundaries, read-only commands, expiring session, result scrubbing.');
+console.log('JARVIS REMOTE PHONE STORAGE PASS: permission, HMAC nonce proof, no raw PIN on server, read-only access, optional persistent Keystore, revocation.');
