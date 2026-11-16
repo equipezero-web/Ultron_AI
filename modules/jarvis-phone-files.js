@@ -57,7 +57,7 @@ function install() {
   close.addEventListener("click",()=>{panel.hidden=true;clearPreview();pin.value="";});
   header.append(label,close);
   panel.append(header);
-  const note=make("p","Acesso a pastas compartilhadas do Android, mediante permissão especial e PIN de 8 dígitos gerado no aplicativo. Não abrange áreas privadas de outros apps. Arquivos não são enviados à IA.");
+  const note=make("p","Exibição sob comando: arquivos compartilhados do Android. Para autorizar, informe a chave e pressione Enter. Nenhum acesso a pastas privadas de outros apps e nenhum envio à IA.");
   panel.append(note);
   const auth=make("div",null,"jarvis-phone-files-auth");
   const pin=make("input");
@@ -65,9 +65,9 @@ function install() {
   pin.type="password";pin.maxLength=32;pin.autocomplete="off";pin.autocapitalize="off";pin.spellcheck=false;
   pin.placeholder="PIN de 8 números ou chave permanente de 32 caracteres";
   pin.setAttribute("aria-label","PIN temporário ou chave permanente do celular");
-  const browse=make("button","ABRIR MEMÓRIA DO CELULAR","jarvis-phone-files-primary");
-  browse.type="button";
-  auth.append(pin,browse);
+  // No extra button: authorize the requested command by entering the PIN/key
+  // and pressing Enter. Existing file rows are shown only after a command.
+  auth.append(pin);
   panel.append(auth);
   const status=make("p","No J.A.R.V.I.S. Bridge v0.8.0, autorize o armazenamento e escolha o modo temporário ou MANTER ACESSO ATÉ EU DESATIVAR. Depois insira a chave mostrada pelo telefone.","jarvis-phone-files-status");
   status.setAttribute("role","status");
@@ -107,7 +107,7 @@ function install() {
   function open() {
     panel.hidden=false;
     panel.scrollIntoView({behavior:"smooth",block:"start"});
-    pin.focus({preventScroll:true});
+    if(!pin.value.trim())pin.focus({preventScroll:true});
   }
   function currentPin() {
     const value=String(pin.value||"").trim();
@@ -189,7 +189,6 @@ function install() {
     if(busy)return;
     busy=true;
     clearPreview();
-    browse.disabled=true;
     more.disabled=true;
     try{
       const safe=safePath(next);
@@ -222,11 +221,11 @@ function install() {
       return {ok:true,opened:true,path:safe,items:entries.length};
     }catch(error){setStatus(error?.message||String(error),true);
       return {ok:false,error:String(error?.message||error)};}
-    finally{busy=false;browse.disabled=false;more.disabled=false;}
+    finally{busy=false;more.disabled=false;}
   }
   async function retrieve(filename,entry) {
     if(busy)return;
-    busy=true;clearPreview();browse.disabled=true;
+    busy=true;clearPreview();
     const size=Number(entry.size)||0;
     const label=entry.name||"arquivo";
     try {
@@ -269,43 +268,27 @@ function install() {
       }
       setStatus("Arquivo disponível para pré-visualização ou download. Conteúdo não enviado à IA.");
     }catch(error){setStatus(error?.message||String(error),true);}
-    finally{busy=false;browse.disabled=false;}
+    finally{busy=false;}
   }
-  browse.addEventListener("click",async()=>{
+  pin.addEventListener("keydown",event=>{
+    if(event.key!=="Enter")return;
+    event.preventDefault();
     if(busy)return;
-    try{device=null;startedAt=Date.now();await chooseDevice();await listFolder(requestedPath||"");}
-    catch(e){setStatus(e?.message||String(e),true);}
+    void openFolder(requestedPath||"");
   });
   root.addEventListener("click",()=>{void listFolder("");});
   up.addEventListener("click",()=>{void listFolder(getParent(path));});
   more.addEventListener("click",()=>{void listFolder(path,nextOffset);});
 
-  // Preserve the existing ARQUIVOS / Local Core action.
-  // Provide a separate, always visible Android remote-files control.
-  const quick=document.querySelector(".jarvis-cc-tool-actions");
-  if(quick&&!document.getElementById("btn-remote-phone-files")){
-    const button=make("button","ARQUIVOS DO CELULAR");
-    button.id="btn-remote-phone-files";
-    button.type="button";
-    button.setAttribute("aria-label","Explorar a memória compartilhada do celular");
-    let lastPress=0;
-    button.addEventListener("pointerdown",event=>{
-      if(event.button!==0)return;
-      lastPress=Date.now();open();
-    });
-    button.addEventListener("click",()=>{
-      if(Date.now()-lastPress<850)return;
-      open();
-    });
-    quick.append(button);
-  }
+  // Deliberately NO permanent toolbar controls. Only a spoken/written
+  // command may open this initially hidden in-Neural folder overlay.
   async function openFolder(target) {
     try {
       requestedPath=safePath(target);
       open();
       if(!pin.value.trim()) {
         setStatus("Comando entendido: abrir "+(requestedPath||"volumes")+
-          ". Digite o PIN ou chave de autorização do celular e toque em ABRIR MEMÓRIA DO CELULAR.");
+          ". Digite o PIN ou chave autorizada e pressione Enter. Depois poderá pedir outras pastas por voz ou texto.");
         return {ok:true,waitingAuthorization:true,path:requestedPath};
       }
       currentPin();
