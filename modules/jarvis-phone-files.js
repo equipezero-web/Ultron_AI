@@ -132,8 +132,22 @@ function install() {
     if(!device?.online)throw Error("O celular precisa estar ONLINE no J.A.R.V.I.S.");
     if(currentPin().length===8 && Date.now()-startedAt>10*60_000)
       throw Error("Sessão temporária expirada. Ative uma nova sessão no celular.");
+    // Proof of authorization is specific to this read-only request.
+    // The PIN/long-lived key never travels through the Cloud command queue.
+    const secret=currentPin();
+    const nonceBytes=new Uint8Array(16);
+    crypto.getRandomValues(nonceBytes);
+    const nonce=Array.from(nonceBytes,b=>b.toString(16).padStart(2,"0")).join("");
+    const material=["jarvis-files-v1",command,nonce,
+      String(payload.path??""),String(Number(payload.offset??0))].join("\n");
+    const hmacKey=await crypto.subtle.importKey("raw",
+      new TextEncoder().encode(secret),{name:"HMAC",hash:"SHA-256"},false,["sign"]);
+    const proofBuffer=await crypto.subtle.sign("HMAC",hmacKey,
+      new TextEncoder().encode(material));
+    const accessProof=Array.from(new Uint8Array(proofBuffer),b=>
+      b.toString(16).padStart(2,"0")).join("");
     const issued=await window.ULTRON_DEVICES.sendCommand(device.id,command,{
-      accessCode:currentPin(),...payload
+      ...payload,nonce,accessProof
     });
     if(!issued?.commandId)throw Error("Gateway não gerou uma ordem autenticada.");
     for(let tries=0;tries<45;tries++){
