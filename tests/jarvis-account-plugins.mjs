@@ -20,7 +20,7 @@ const jwt=o=>{const msg=enc({alg:"RS256",kid:key.kid})+"."+enc(o);
  return msg+"."+rsaSign("RSA-SHA256",Buffer.from(msg),privateKey).toString("base64url");};
 const now=Date.parse("2026-11-16T19:00:00Z"),time=Math.floor(now/1000);
 const claims=sub=>({iss:"https://demo.cloudflareaccess.com",aud:"jarvis-accounts-aud",
- sub,email:sub==="one"?"first@example.org":"second@example.org",
+ sub:"signed-"+sub,email:sub==="one"?"first@example.org":"second@example.org",
  exp:time+1200,iat:time-60});
 const req=token=>new Request("https://worker.example/api/account/plugins",{headers:{
  Origin:"https://equipezero-web.github.io","Cf-Access-Jwt-Assertion":token||""
