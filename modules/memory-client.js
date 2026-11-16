@@ -1,4 +1,5 @@
 import API_CONFIG from "../config.js";
+import {memoryReplyDiagnosis} from "./jarvis-account-diagnostics.js";
 
 const MEMORY_KEY_STORAGE = "ultron_memory_key_v1";
 const CONVERSATION_STORAGE = "ultron_conversation_id_v1";
@@ -71,10 +72,18 @@ function reportMemoryResult(data) {
   const memory = data?.memory;
 
   if (!memory) {
-    appendDiagnostic(
-      "API sem diagnóstico de memória. O Worker publicado está desatualizado.",
-      true
-    );
+    // /api/ai may be intercepted by account plugins or authenticated bridges.
+    // Their responses do not have a memory envelope and do not prove the
+    // deployed Worker is old. The authoritative D1 health is /api/health.
+    const classification = memoryReplyDiagnosis(data);
+    if (classification === "local-or-private-operation") return;
+    if (classification === "api-error-without-memory") {
+      appendDiagnostic("Resposta da IA com erro, sem telemetria de memória. "+
+        "A integridade do banco deve ser verificada em /api/health.", true);
+      return;
+    }
+    appendDiagnostic("Resposta sem telemetria de memória; "+
+      "isso não comprova Worker desatualizado. Consulte /api/health.", true);
     return;
   }
 
