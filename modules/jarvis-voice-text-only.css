@@ -45,7 +45,8 @@ body.jarvis-command-center.jarvis-voice-text-only #jarvis-cc-input-slot .command
 body.jarvis-command-center.jarvis-voice-text-only #command-input {
   display: block !important;
   width: 100%;
-  min-height: 62px;
+  min-height: 62px !important;
+  height: auto !important;
   box-sizing: border-box;
   touch-action: manipulation;
   border-color: #b59048 !important;
