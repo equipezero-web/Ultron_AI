@@ -24,6 +24,11 @@ for(const query of [
   assert.notEqual(parseLocalCommand(query)?.type,"remote-phone-folder",query);
 }
 assert.deepEqual(parseLocalCommand("Jarvis, abra o editor de arquivos"),{type:"scoped-file-editor"});
+for(const query of ["Jarvis, mostre os arquivos do celular","abra os arquivos do celular","abra a memória do meu celular"]){
+  const intent=parseLocalCommand(query);
+  assert.equal(intent?.type,"remote-phone-folder",query);
+  assert.equal(intent?.path,"",query);
+}
 const original=globalThis.window;
 try{
   const calls=[];
@@ -37,6 +42,8 @@ try{
   assert.equal(pending.handled,true);
   assert.equal(pending.route,"remote-phone-files");
   assert.match(pending.text,/digite o PIN temporário ou a chave permanente/i);
+  assert.match(pending.text,/pressione Enter/i);
+  assert.doesNotMatch(pending.text,/toque em ABRIR MEMÓRIA/i);
   assert.doesNotMatch(pending.text,/pasta download do celular aberta/i);
   assert.deepEqual(calls,["internal:Download"]);
   globalThis.window.JARVIS_PHONE_FILES.openFolder=async path=>({ok:true,opened:true,path});
