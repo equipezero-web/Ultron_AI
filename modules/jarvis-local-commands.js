@@ -24,7 +24,8 @@ export function parseLocalCommand(value){
   if(/^(?:volte|voltar|suba|subir)\s+(?:uma\s+)?pasta(?:\s+(?:no|do)\s+(?:celular|android))?$/.test(plain))
     return {type:"remote-phone-parent"};
   const phoneFile=plain.match(/^(?:abra|abrir|mostre|mostrar|exiba|exibir|leia|ler)\s+(?:o\s+)?arquivo\s+(.+?)\s+(?:do|no|de)\s+(?:(?:meu)\s+)?(?:celular|telefone|android)$/);
-  if(phoneFile)return {type:"remote-phone-file",filename:phoneFile[1].trim()};
+  if(phoneFile && !["download","downloads","dcim","documentos","documents","fotos","imagens","pictures","videos","movies","musicas","music"].includes(phoneFile[1].trim()))
+    return {type:"remote-phone-file",filename:phoneFile[1].trim()};
 
   // Explicit imperative: browse the ANDROID folder inside the Neural Ring,
   // not a Google-search question. Android calls this directory "Download".
