@@ -195,6 +195,19 @@ export async function latestTrendIntelligence(env,{region="all",category="all",n
    "SELECT snapshot_json,observed_at FROM jarvis_trend_samples WHERE observed_at>=? ORDER BY observed_at DESC LIMIT 260"
   ).bind(new Date(now()-30*HOUR).toISOString()).all();
   const result=[],seen=new Set(),health=[],categories=new Set();let newest=null;
+  // Persistence of a searched term is measured ONLY by actual consecutive
+  // collected RSS snapshots. We do not invent velocity, reach or market share.
+  const searchHistory=new Map();
+  for(const row of rows?.results||[]){
+   let sample;try{sample=JSON.parse(row.snapshot_json);}catch{continue;}
+   if(sample?.category!=="pesquisas"||!Array.isArray(sample.signals)||!sample.geo)continue;
+   for(const item of sample.signals){
+    if(item?.kind!=="search-trend"||!item.title)continue;
+    const key=sample.geo+"|"+stableKey(item.title);
+    if(!searchHistory.has(key))searchHistory.set(key,new Set());
+    searchHistory.get(key).add(sample.checkedAt);
+   }
+  }
   for(const row of rows?.results||[]){
    let sample;try{sample=JSON.parse(row.snapshot_json);}catch{continue;}
    if(!sample?.checkedAt||!Array.isArray(sample.signals)||!sample.region||!sample.category)continue;
@@ -209,15 +222,27 @@ export async function latestTrendIntelligence(env,{region="all",category="all",n
    if(!newest||sample.checkedAt>newest)newest=sample.checkedAt;
    for(const item of sample.signals.slice(0,10)){
     if(!item?.title||!safeUrl(item.url)||!item.observedAt)continue;
-    result.push({...item,checkedAt:sample.checkedAt,stale});
+    const cycles=item.kind==="search-trend"?
+     [...(searchHistory.get(sample.geo+"|"+stableKey(item.title))||[])].sort():[];
+    result.push({...item,checkedAt:sample.checkedAt,stale,
+     ...(item.kind==="search-trend"?{
+       observedCycles:cycles.length,firstObservedAt:cycles[0]||sample.checkedAt,
+       persistence:cycles.length>=2?"observado-em-multiplas-coletas":"nova-observacao-no-monitor"
+     }:{})});
    }
   }
   if(!health.length)return {ok:false,status:503,error:"Ainda não há tendências verificadas nas últimas 30 horas. O monitor tentará novas consultas.",region,category};
   result.sort((a,b)=>Number(a.stale)-Number(b.stale)||
     Number(b.region==="br")-Number(a.region==="br")||
     Date.parse(b.observedAt)-Date.parse(a.observedAt));
-  return {ok:true,version:"1.0",region,category,checkedAt:newest,
-   sampleBased:true,exhaustive:false,stale:health.every(x=>x.stale),
+  const scopeCount=region==="all"?2:1;
+  const trendFeeds=region==="all"?TREND_RSS_REGIONS.length:region==="br"?1:3;
+  const expected=category==="all"?TREND_DOMAINS.length*scopeCount+trendFeeds:
+    category==="pesquisas"?trendFeeds:scopeCount;
+  const coverage={observed:health.length,expected,complete:health.length>=expected};
+  return {ok:true,version:"1.1",region,category,checkedAt:newest,
+   sampleBased:true,exhaustive:false,partial:!coverage.complete,coverage,
+   stale:health.every(x=>x.stale),
    freshness:"Coletas por setor distribuídas em ciclos de até 5 horas; indisponibilidades podem atrasar setores.",
    interpretation:"Google Trends mede buscas em alta; manchetes apenas indicam cobertura jornalística, não comprovam popularidade nem verdade do relato.",
    privacy:"Somente fontes públicas. Nenhum comando, arquivo, câmera, conversa ou dado pessoal é enviado aos feeds.",
