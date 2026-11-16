@@ -34,6 +34,7 @@ try{
         paused:document.body.classList.contains("jarvis-voice-paused")
       };
     });
+    console.log("VOICE-ONLY UI STATE",name,JSON.stringify(state));
     assert.ok(state.ready,name+": voice input API should be available");
     assert.ok(state.textWidth>200&&state.textHeight>=40,name+": visible text composer");
     assert.ok(state.totalControls>10&&state.allHidden,name+": no visible buttons, but listeners remain");
