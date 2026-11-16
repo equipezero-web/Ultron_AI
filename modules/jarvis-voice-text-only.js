@@ -14,6 +14,7 @@ function install(){
     !new URLSearchParams(location.search).has("jarvisVoiceOnly");
   if(testHarness){
     body.classList.remove("jarvis-voice-text-only");
+    document.getElementById("jarvis-voice-text-hint")?.remove();
     window.JARVIS_VOICE_TEXT_ONLY={active:false,testHarness:true};
     return;
   }
