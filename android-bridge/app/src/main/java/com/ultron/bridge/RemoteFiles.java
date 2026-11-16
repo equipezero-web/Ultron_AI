@@ -137,8 +137,8 @@ public final class RemoteFiles {
         // command, path, offset, and random nonce. The Cloud only relays proof.
         String path = payload.optString("path", "");
         long offset = payload.optLong("offset", 0);
-        String message = "jarvis-files-v1\\n" + command + "\\n" +
-            nonce.toLowerCase(java.util.Locale.ROOT) + "\\n" + path + "\\n" + offset;
+        String message = "jarvis-files-v1\n" + command + "\n" +
+            nonce.toLowerCase(java.util.Locale.ROOT) + "\n" + path + "\n" + offset;
         javax.crypto.Mac mac = javax.crypto.Mac.getInstance("HmacSHA256");
         mac.init(new javax.crypto.spec.SecretKeySpec(
             expected.getBytes(java.nio.charset.StandardCharsets.US_ASCII), "HmacSHA256"));
