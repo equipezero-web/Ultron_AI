@@ -90,24 +90,8 @@ app.post("/api/ai", async (req, res) => {
       telemetry
     );
 
-    let audioBase64 = null;
-    let audioMimeType = null;
-
-    if (
-      elevenLabsConfigured &&
-      process.env.ELEVENLABS_AUTOSPEAK !== "false"
-    ) {
-      try {
-        const audio = await elevenLabsTTS(aiResult.text);
-        audioBase64 = audio.base64;
-        audioMimeType = audio.mimeType;
-      } catch (error) {
-        console.error(
-          "[ULTRON AI] ElevenLabs TTS:",
-          error.message
-        );
-      }
-    }
+    // Text-only JARVIS on local backend: no audio generation.
+    const audioBase64=null, audioMimeType=null;
 
     return res.json({
       text: aiResult.text,
@@ -163,6 +147,7 @@ app.post("/api/vision/analyze", async (req, res) => {
 });
 
 app.post("/api/voice", async (req, res) => {
+  return res.status(503).json({error:"Voz do J.A.R.V.I.S. desativada pelo operador."});
   try {
     if (!elevenLabsConfigured) {
       return res.status(503).json({
