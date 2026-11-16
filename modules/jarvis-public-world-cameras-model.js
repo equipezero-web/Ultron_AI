@@ -83,6 +83,18 @@ export const getWorldCameraAlternative=()=>PUBLIC_WORLD_CAMERAS.find(
  c=>c.id===WORLD_CAMERAS_ALTERNATIVE_ID
 )||null;
 export const WORLD_CAMERAS_CATALOGS=Object.freeze([
+ Object.freeze({id:"camerasdomundo",label:"Câmeras do Mundo",
+  home:"https://camerasdomundo.com/",
+  all:"https://camerasdomundo.com/live-cams/",
+  countries:"https://camerasdomundo.com/en/",
+  categories:"https://camerasdomundo.com/",
+  note:"Diretório brasileiro e internacional; centenas de páginas públicas navegáveis no provedor."}),
+ Object.freeze({id:"africam",label:"Africam",
+  home:"https://africam.com/",
+  all:"https://africam.com/our-locations/",
+  countries:"https://africam.com/our-locations/",
+  categories:"https://africam.com/our-locations/",
+  note:"Câmeras de fauna em reservas africanas; alguns vídeos exigem conta/assinatura no site."}),
  Object.freeze({id:"skyline",label:"SkylineWebcams",home:"https://www.skylinewebcams.com/en/webcam.html",
   all:"https://www.skylinewebcams.com/en/webcam.html",
   countries:"https://www.skylinewebcams.com/en/webcam.html",
@@ -94,12 +106,16 @@ export const WORLD_CAMERAS_CATALOGS=Object.freeze([
   categories:"https://webcamera24.com/pt/categories/",
   note:"Diretório mundial; players YouTube selecionados iniciam sem áudio no J.A.R.V.I.S."})
 ]);
-export const CAMERA_PROVIDER_NAMES=Object.freeze({all:"Todos os provedores",skyline:"SkylineWebcams",
- webcamera24:"Webcamera24",independent:"Outros catálogos"});
+export const CAMERA_PROVIDER_NAMES=Object.freeze({
+ all:"Todos os provedores",skyline:"SkylineWebcams",webcamera24:"Webcamera24",
+ camerasdomundo:"Câmeras do Mundo",africam:"Africam"
+});
 export function cameraProvider(camera){
  const source=String(camera?.sourceUrl||"");
  if(source.startsWith("https://www.skylinewebcams.com/"))return "skyline";
  if(source.startsWith("https://webcamera24.com/"))return "webcamera24";
+ if(source.startsWith("https://camerasdomundo.com/"))return "camerasdomundo";
+ if(source.startsWith("https://africam.com/"))return "africam";
  return "independent";
 }
 const SKYLINE_APPROVED=new Map([
