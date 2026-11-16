@@ -75,7 +75,7 @@ try{
  assert.equal(flags.liveVerified,false,"Never assert playback verifies live availability");
  assert.equal(flags.playerRequested,false,
   "Stream was stopped when user reported playback failure");
- const directories=await page.$eval(".jarvis-worldcam-catalogs .jarvis-worldcam-catalog-card",cards=>
+ const directories=await page.$$eval(".jarvis-worldcam-catalogs .jarvis-worldcam-catalog-card",cards=>
   cards.map(card=>({title:card.querySelector("strong").textContent,
    urls:[...card.querySelectorAll("a")].map(a=>a.href)})));
  assert.equal(directories.length,2);
@@ -83,7 +83,7 @@ try{
    x.urls.includes("https://www.skylinewebcams.com/en/webcam.html")));
  assert.ok(directories.some(x=>x.title==="Webcamera24"&&
    x.urls.includes("https://webcamera24.com/pt/all-webcams/")));
- const providerOptions=await page.$eval(".jarvis-worldcam-filters select[aria-label='Filtrar provedor de câmeras'] option",
+ const providerOptions=await page.$$eval(".jarvis-worldcam-filters select[aria-label='Filtrar provedor de câmeras'] option",
   opts=>opts.map(o=>o.textContent));
  assert.ok(providerOptions.includes("Webcamera24"));
  assert.ok(providerOptions.includes("SkylineWebcams"));
