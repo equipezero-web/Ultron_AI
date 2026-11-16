@@ -502,7 +502,7 @@ export async function completeCommand(
   const update = await env.ULTRON_DB.prepare(
     `UPDATE device_commands
         SET status = ?, result_json = ?,
-            payload_json = CASE WHEN command LIKE 'files.%' OR command = 'tv.link' THEN '{}' ELSE payload_json END,
+            payload_json = CASE WHEN command LIKE 'files.%' OR command = 'tv.link' OR command = 'calendar.create' THEN '{}' ELSE payload_json END,
             completed_at = CURRENT_TIMESTAMP
       WHERE id = ? AND device_id = ? AND status = 'claimed'
         AND created_at > datetime('now', ?)`
