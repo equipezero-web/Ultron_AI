@@ -263,26 +263,25 @@ function install() {
   up.addEventListener("click",()=>{void listFolder(getParent(path));});
   more.addEventListener("click",()=>{void listFolder(path,nextOffset);});
 
-  // The original ARQUIVOS button opened the computer's Local Core.
-  // Make ARQUIVOS point at the phone explorer; the separate EDITAR ARQUIVOS
-  // control retains the device-local editor. Capture prevents duplicate actions.
-  let lastPress=0;
-  const isFilesButton=event=>event.target?.closest?.('[data-cc="files"]');
-  document.addEventListener("pointerdown",event=>{
-    if(!isFilesButton(event)||event.button!==0)return;
-    lastPress=Date.now();
-    event.stopImmediatePropagation();
-    open();
-  },true);
-  document.addEventListener("click",event=>{
-    if(!isFilesButton(event))return;
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    if(Date.now()-lastPress<850)return;
-    open();
-  },true);
-  const quick=document.querySelector(".jarvis-cc-tool-actions [data-cc='files']");
-  if(quick)quick.textContent="ARQUIVOS DO CELULAR";
+  // Preserve the existing ARQUIVOS / Local Core action.
+  // Provide a separate, always visible Android remote-files control.
+  const quick=document.querySelector(".jarvis-cc-tool-actions");
+  if(quick&&!document.getElementById("btn-remote-phone-files")){
+    const button=make("button","ARQUIVOS DO CELULAR");
+    button.id="btn-remote-phone-files";
+    button.type="button";
+    button.setAttribute("aria-label","Explorar a memória compartilhada do celular");
+    let lastPress=0;
+    button.addEventListener("pointerdown",event=>{
+      if(event.button!==0)return;
+      lastPress=Date.now();open();
+    });
+    button.addEventListener("click",()=>{
+      if(Date.now()-lastPress<850)return;
+      open();
+    });
+    quick.append(button);
+  }
   window.JARVIS_PHONE_FILES={open,get state(){return{visible:!panel.hidden,device:device?.deviceName||null,
     path,readOnly:true,maxTransferBytes:TRANSFER_MAX,sessionScoped:true};}};
 }
