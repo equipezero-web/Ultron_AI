@@ -107,7 +107,7 @@ export function githubInspectionContext(result){
  * summary of verified repository metadata. No pretend code execution.
  */
 const normalizeReply=v=>String(v||"").normalize("NFD")
-  .replace(/[\\u0300-\\u036f]/g,"").toLowerCase();
+  .replace(/[\u0300-\u036f]/g,"").toLowerCase();
 export function contradictsVerifiedGitHubInspection(text,inspection){
   if(!inspection?.ok||inspection.verified!==true)return false;
   const answer=normalizeReply(text);
@@ -144,5 +144,5 @@ export function verifiedGitHubFallback(inspection){
     advice.map((v,i)=>(i+1)+") "+v).join(" "));
   lines.push("Limite desta análise: somente metadados públicos, a raiz e parte do README; "+
     "não houve acesso a arquivos privados, execução do projeto, auditoria completa nem deploy.");
-  return lines.join("\\n\\n");
+  return lines.join("\n\n");
 }
