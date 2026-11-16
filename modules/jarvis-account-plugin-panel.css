@@ -1,0 +1,31 @@
+/* J.A.R.V.I.S account plugins: a compact in-terminal result, not a new page. */
+.jarvis-account-plugin-result{
+ display:flex;flex-direction:column;gap:8px;max-width:100%;
+ box-sizing:border-box;overflow-wrap:anywhere;
+ border-color:rgba(218,174,76,.58)!important;
+}
+.jarvis-account-plugin-result>strong{
+ color:#efd38a;font-weight:700;font-size:12px;letter-spacing:.05em;
+}
+.jarvis-account-plugin-result>p{white-space:normal;line-height:1.55;margin:0;color:#f0eadb;}
+.jarvis-account-plugin-actions{
+ display:flex;flex-wrap:wrap;align-items:stretch;gap:7px;
+ max-width:100%;box-sizing:border-box;
+}
+.jarvis-account-plugin-actions>button{
+ appearance:none;border:1px solid rgba(217,171,70,.45);
+ border-radius:6px;background:rgba(15,21,34,.94);
+ color:#f2e2be;padding:9px 12px;min-height:38px;
+ max-width:100%;white-space:normal;overflow-wrap:anywhere;
+ font:600 11px/1.35 system-ui,sans-serif;cursor:pointer;
+}
+.jarvis-account-plugin-actions>button:hover,
+.jarvis-account-plugin-actions>button:focus-visible{
+ outline:2px solid #d8ae52;outline-offset:1px;
+}
+.jarvis-account-plugin-actions>button:disabled{opacity:.5;cursor:wait;}
+@media(max-width:480px){
+ .jarvis-account-plugin-result{padding:10px!important}
+ .jarvis-account-plugin-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));}
+ .jarvis-account-plugin-actions>button{min-width:0;padding:8px 5px;font-size:10px;}
+}
