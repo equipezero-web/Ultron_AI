@@ -8,6 +8,8 @@ on:
       - "backend/device-bridge.js"
       - "backend/device-control-v2.js"
       - "tests/jarvis-phone-files-security.mjs"
+      - "tests/jarvis-phone-folder-commands.mjs"
+      - "modules/jarvis-local-commands.js"
       - ".github/workflows/jarvis-remote-phone-files.yml"
   pull_request:
     paths:
@@ -31,7 +33,10 @@ jobs:
       - name: Check frontend and backend syntax
         run: |
           node --check modules/jarvis-phone-files.js
+          node --check modules/jarvis-local-commands.js
           node --check backend/device-bridge.js
           node --check backend/device-control-v2.js
       - name: File access authorization and security contract
-        run: node tests/jarvis-phone-files-security.mjs
+        run: |
+          node tests/jarvis-phone-files-security.mjs
+          node tests/jarvis-phone-folder-commands.mjs

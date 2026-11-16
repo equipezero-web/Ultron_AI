@@ -338,9 +338,11 @@ export async function enqueueCommand(
   }
 
   if (normalizedCommand.startsWith("files.") &&
-      (!/^[0-9]{8}$/.test(String(payload?.accessCode || "")) ||
-       !["files.list","files.read"].includes(normalizedCommand))) {
-    return { ok: false, error: "PIN temporário de arquivos obrigatório." };
+      (!["files.list","files.read"].includes(normalizedCommand) ||
+       !/^[a-fA-F0-9]{32}$/.test(String(payload?.nonce || "")) ||
+       !/^[a-fA-F0-9]{64}$/.test(String(payload?.accessProof || "")) ||
+       Object.prototype.hasOwnProperty.call(payload || {}, "accessCode"))) {
+    return { ok: false, error: "Assinatura criptográfica de arquivos obrigatória; não envie a chave ao servidor." };
   }
 
   if (normalizedCommand.startsWith("tv.") && device.device_type !== "tv" && device.device_type !== "mobile") {

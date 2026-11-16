@@ -10,6 +10,20 @@ export function parseLocalCommand(value){
   // Never interpret an explanation, negation or hypothetical as a command.
   if(/^(?:nao|nunca|se |e se |como (?:eu |posso |faco |faz)|por que|porque)\b/.test(q))return null;
   const plain=q.replace(/[.!?]+$/,"").trim();
+  // Explicit imperative: browse the ANDROID folder inside the Neural Ring,
+  // not a Google-search question. Android calls this directory "Download".
+  const phoneFolder = plain.match(/^(?:abra|abre|abrir|mostre|mostrar|exiba|exibir|acesse|acessar|entre na|entrar na)\s+(.+?)\s+(?:do|de|no|na)\s+(?:(?:meu|meus|seu|seus)\s+)?(?:celular|telefone|android)(?:\s+(?:no|pelo)\s+jarvis)?$/);
+  if(phoneFolder){
+    const target=phoneFolder[1].replace(/^(?:(?:a|o|as|os|minha|minhas|meu|meus)\s+)+/,"")
+      .replace(/^(?:arquivos?\s+(?:da\s+)?pasta|pasta|diretorio|arquivos?)\s+(?:(?:de|da|do|dos)\s+)?/,"").trim();
+    const folders={download:"Download",downloads:"Download",dcim:"DCIM",documentos:"Documents",
+      documents:"Documents",fotos:"Pictures",imagens:"Pictures",pictures:"Pictures",
+      videos:"Movies",filmes:"Movies",movies:"Movies",musicas:"Music",music:"Music"};
+    if(!target || ["memoria","armazenamento","arquivos","filespace"].includes(target))
+      return {type:"remote-phone-folder",path:"",folder:"memoria"};
+    if(Object.prototype.hasOwnProperty.call(folders,target))
+      return {type:"remote-phone-folder",path:"internal:"+folders[target],folder:target};
+  }
   if(/^(?:abra|abrir|mostre|mostrar|ative|ativar) (?:o |as? )?(?:painel de )?multitarefas(?: do jarvis)?$/.test(plain))
     return {type:"safe-multitask"};
   if(/^(?:abra|abrir|mostre|mostrar) (?:o |os? )?(?:editor de arquivos|arquivos autorizados|arquivos do celular|meus arquivos)$/.test(plain))
@@ -30,6 +44,24 @@ export function parseLocalCommand(value){
 export async function runLocalCommand(command){
   const intent=parseLocalCommand(command);
   if(!intent)return null;
+  if(intent.type==="remote-phone-folder"){
+    const manager=window.JARVIS_PHONE_FILES;
+    if(!manager?.openFolder) return {ok:false,handled:true,route:"remote-phone-files",
+      provider:"jarvis-local",text:"Explorador remoto do celular ainda não carregado. Verifique o J.A.R.V.I.S. Bridge."};
+    try{
+      const result=await manager.openFolder(intent.path);
+      const ok=result?.ok===true;
+      return {ok,handled:true,route:"remote-phone-files",provider:"jarvis-local",
+        text:ok?(result?.waitingAuthorization?
+          "Explorador do celular aberto. Para entrar em "+intent.path.split(":")[1]+
+          ", digite o PIN temporário ou a chave permanente e pressione Enter.":
+          "Pasta "+intent.path.split(":")[1]+" do celular aberta no Neural Ring.") :
+          String(result?.error||"Não foi possível abrir a pasta do celular.")};
+    }catch(error){
+      return {ok:false,handled:true,route:"remote-phone-files",provider:"jarvis-local",
+        text:"Falha ao abrir a pasta do celular: "+String(error?.message||error).slice(0,180)};
+    }
+  }
   if(intent.type==="safe-multitask"||intent.type==="scoped-file-editor"){
     const manager=intent.type==="safe-multitask"?
       window.ULTRON_PARALLEL_TASKS:window.ULTRON_SCOPED_FILES;

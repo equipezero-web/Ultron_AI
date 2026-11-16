@@ -118,7 +118,7 @@ public final class MobileFilesActivity extends Activity {
         diagnostics.addView(status, JarvisUi.width(this, 0));
         root.addView(diagnostics, JarvisUi.width(this, 12));
         root.addView(JarvisUi.caption(this,
-            "FILES / ISOLADO POR DOCUMENTO  •  J.A.R.V.I.S. BRIDGE v0.7.0"),
+            "FILES / ISOLADO POR DOCUMENTO  •  J.A.R.V.I.S. BRIDGE v0.8.0"),
             JarvisUi.width(this, 0));
 
         ScrollView scroll = new ScrollView(this);

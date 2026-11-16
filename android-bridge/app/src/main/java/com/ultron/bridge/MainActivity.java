@@ -149,7 +149,7 @@ public class MainActivity extends Activity {
         devices.addView(JarvisUi.heading(this, "EXPLORADOR REMOTO  /  ARMAZENAMENTO"),
             JarvisUi.width(this, 9));
         devices.addView(JarvisUi.caption(this,
-            "Para consultar pastas do celular pelo computador, habilite o acesso especial no Android e inicie uma sessão temporária. O PIN vale 10 minutos. Fotos, Downloads, Documentos e outras pastas compartilhadas; áreas privadas de apps continuam bloqueadas."),
+            "No celular, escolha acesso temporário de 10 minutos ou acesso permanente até você revogar. A autorização do Android é necessária. Pastas privadas de outros aplicativos continuam protegidas."),
             JarvisUi.width(this, 11));
         Button storagePermission = JarvisUi.button(this,
             "1  /  AUTORIZAR ACESSO A TODOS OS ARQUIVOS", false);
@@ -159,6 +159,10 @@ public class MainActivity extends Activity {
             "2  /  ATIVAR EXPLORADOR REMOTO  (10 MIN)", true);
         remoteFilesStart.setOnClickListener(v -> enableRemoteFileAccess());
         devices.addView(remoteFilesStart, JarvisUi.width(this, 9));
+        Button remoteFilesPermanent = JarvisUi.button(this,
+            "3  /  MANTER ACESSO ATÉ EU DESATIVAR", false);
+        remoteFilesPermanent.setOnClickListener(v -> enablePermanentFileAccess());
+        devices.addView(remoteFilesPermanent, JarvisUi.width(this, 9));
         remoteFilesPinView = JarvisUi.text(this,
             "PIN REMOTO: DESATIVADO", 18, JarvisUi.GOLD, true);
         remoteFilesPinView.setTextIsSelectable(true);
@@ -244,7 +248,7 @@ public class MainActivity extends Activity {
         root.addView(diagCard, JarvisUi.width(this, 14));
 
         root.addView(JarvisUi.caption(this,
-            "J.A.R.V.I.S. BRIDGE v0.7.0  •  Android  •  Controle local e autorizado"),
+            "J.A.R.V.I.S. BRIDGE v0.8.0  •  Android  •  Controle local e autorizado"),
             JarvisUi.width(this, 0));
         ScrollView scroll = new ScrollView(this);
         scroll.setFillViewport(true);
@@ -371,6 +375,9 @@ public class MainActivity extends Activity {
                 );
 
                 String deviceId = response.getString("deviceId");
+                // A new pairing may represent a different operator: never carry
+                // permanent Filespace authorization into the new identity.
+                RemoteFiles.disable(this);
                 SecureStore.saveDeviceId(this, deviceId);
 
                 runOnUiThread(() -> {
@@ -418,6 +425,34 @@ public class MainActivity extends Activity {
         } catch (Exception error) {
             statusView.setText("Acesso remoto não ativado: " + error.getMessage());
         }
+    }
+
+    private void enablePermanentFileAccess() {
+        if (SecureStore.getDeviceId(this) == null) {
+            statusView.setText("Pareie o celular e inicie o J.A.R.V.I.S. Bridge antes de autorizar os arquivos.");
+            return;
+        }
+        if (!RemoteFiles.storageGranted(this)) {
+            statusView.setText("Autorize primeiro o acesso especial aos arquivos nas configurações do Android.");
+            return;
+        }
+        new android.app.AlertDialog.Builder(this)
+            .setTitle("Acesso permanente aos arquivos?")
+            .setMessage("O J.A.R.V.I.S. poderá consultar arquivos do armazenamento compartilhado enquanto esta autorização existir. " +
+                "A chave será exibida apenas agora no celular. No painel web, será necessário inserir a chave ao abrir uma sessão. " +
+                "Você pode revogar a autorização imediatamente no botão REVOGAR ACESSO REMOTO. Não concede acesso aos dados privados de outros aplicativos.")
+            .setNegativeButton("CANCELAR", (dialog, which) -> {})
+            .setPositiveButton("ATIVAR", (dialog, which) -> {
+                try {
+                    String key = RemoteFiles.enablePermanent(this);
+                    remoteFilesPinView.setText("CHAVE PERMANENTE: " + key);
+                    statusView.setText("ACESSO REMOTO PERMANENTE ATIVADO. Copie esta chave de 32 caracteres para o " +
+                        "J.A.R.V.I.S. web. A chave não expira, mas deixa de funcionar ao tocar em REVOGAR ACESSO REMOTO. " +
+                        "Não compartilhe a chave.");
+                } catch (Exception error) {
+                    statusView.setText("Falha ao ativar: " + error.getMessage());
+                }
+            }).show();
     }
 
     private void openRemoteMicrophone() {
@@ -566,7 +601,16 @@ public class MainActivity extends Activity {
         status.append(deviceId == null ? "Pareamento: NÃO PAREADO" : "Pareamento: REGISTRADO\nDevice ID: " + deviceId);
         status.append("\nConexão Cloud: ").append(BridgeHealthStore.readableStatus(this));
         status.append("\nArquivos compartilhados: ").append(RemoteFiles.storageGranted(this) ? "PERMISSÃO ATIVA" : "SEM PERMISSÃO");
-        status.append("\nSessão remota: ").append(RemoteFiles.remainingSeconds(this) > 0 ? "ATIVA (temporária)" : "DESATIVADA");
+        status.append("\nSessão remota: ").append(RemoteFiles.isPermanent(this) ? "ATIVA ATÉ REVOGAÇÃO" :
+            RemoteFiles.remainingSeconds(this) > 0 ? "ATIVA (temporária)" : "DESATIVADA");
+        if (remoteFilesPinView != null) {
+            final String currentLabel = String.valueOf(remoteFilesPinView.getText());
+            if (RemoteFiles.isPermanent(this) && !currentLabel.startsWith("CHAVE PERMANENTE: ")) {
+                remoteFilesPinView.setText("ACESSO PERMANENTE ATIVO  /  CHAVE NÃO REEXIBIDA");
+            } else if (!RemoteFiles.isPermanent(this) && RemoteFiles.remainingSeconds(this) <= 0) {
+                remoteFilesPinView.setText("PIN REMOTO: DESATIVADO");
+            }
+        }
 
         if (Build.VERSION.SDK_INT >= 33) {
             status.append("\nNotificações: ")

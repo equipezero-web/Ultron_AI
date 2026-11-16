@@ -1,6 +1,6 @@
 import API_CONFIG from "../config.js";
 
-// J.A.R.V.I.S. // Remote Shared Storage v0.7.
+// J.A.R.V.I.S. // Remote Shared Storage v0.8.
 // Never opens whole Android app-private data. All operations require a PIN
 // created by a deliberate touch on the paired phone and a real Cloud heartbeat.
 // No auto-scanning, no remote writes/deletes, no AI tool ingestion.
@@ -54,22 +54,25 @@ function install() {
   const label=make("strong","◈  J.A.R.V.I.S.  /  ARQUIVOS DO CELULAR");
   const close=make("button","FECHAR","jarvis-phone-files-ghost");
   close.type="button";
-  close.addEventListener("click",()=>{panel.hidden=true;clearPreview();pin.value="";});
+  // Closing the visual overlay does not revoke an owner-approved session.
+  // The key stays in this tab memory only, never in localStorage, and is
+  // rejected immediately once Android REVOGAR ACESSO REMOTO is pressed.
+  close.addEventListener("click",()=>{panel.hidden=true;clearPreview();});
   header.append(label,close);
   panel.append(header);
-  const note=make("p","Acesso a pastas compartilhadas do Android, mediante permissão especial e PIN de 8 dígitos gerado no aplicativo. Não abrange áreas privadas de outros apps. Arquivos não são enviados à IA.");
+  const note=make("p","Exibição sob comando: arquivos compartilhados do Android. Para autorizar, informe a chave e pressione Enter. Nenhum acesso a pastas privadas de outros apps e nenhum envio à IA.");
   panel.append(note);
   const auth=make("div",null,"jarvis-phone-files-auth");
   const pin=make("input");
   pin.id="jarvis-phone-files-pin";
-  pin.type="password";pin.inputMode="numeric";pin.maxLength=8;
-  pin.autocomplete="off";pin.placeholder="PIN do celular (8 dígitos)";
-  pin.setAttribute("aria-label","Código temporário de 8 dígitos exibido no celular");
-  const browse=make("button","ABRIR MEMÓRIA DO CELULAR","jarvis-phone-files-primary");
-  browse.type="button";
-  auth.append(pin,browse);
+  pin.type="password";pin.maxLength=32;pin.autocomplete="off";pin.autocapitalize="off";pin.spellcheck=false;
+  pin.placeholder="PIN de 8 números ou chave permanente de 32 caracteres";
+  pin.setAttribute("aria-label","PIN temporário ou chave permanente do celular");
+  // No extra button: authorize the requested command by entering the PIN/key
+  // and pressing Enter. Existing file rows are shown only after a command.
+  auth.append(pin);
   panel.append(auth);
-  const status=make("p","No J.A.R.V.I.S. Bridge v0.7.0 do celular: autorize o armazenamento e toque em ATIVAR EXPLORADOR REMOTO.","jarvis-phone-files-status");
+  const status=make("p","No J.A.R.V.I.S. Bridge v0.8.0, autorize o armazenamento e escolha o modo temporário ou MANTER ACESSO ATÉ EU DESATIVAR. Depois insira a chave mostrada pelo telefone.","jarvis-phone-files-status");
   status.setAttribute("role","status");
   status.setAttribute("aria-live","polite");
   panel.append(status);
@@ -94,6 +97,7 @@ function install() {
   let busy=false;
   let previewUrl=null;
   let startedAt=0;
+  let requestedPath="";
 
   function setStatus(text,alert=false) {
     status.textContent=String(text||"");
@@ -106,13 +110,13 @@ function install() {
   function open() {
     panel.hidden=false;
     panel.scrollIntoView({behavior:"smooth",block:"start"});
-    pin.focus({preventScroll:true});
+    if(!pin.value.trim())pin.focus({preventScroll:true});
   }
   function currentPin() {
     const value=String(pin.value||"").trim();
-    if(!/^\d{8}$/.test(value))
-      throw Error("Digite o PIN temporário de 8 números mostrado no Android.");
-    return value;
+    if(!/^(?:\d{8}|[a-fA-F0-9]{32})$/.test(value))
+      throw Error("Digite o PIN temporário de 8 números ou a chave permanente de 32 caracteres.");
+    return value.length===32?value.toUpperCase():value;
   }
   async function post(path,body) {
     const resp=await fetch(API_BASE+path,{
@@ -129,10 +133,24 @@ function install() {
     const key=window.ULTRON_MEMORY?.getMemoryKey?.();
     if(!key)throw Error("Identidade do J.A.R.V.I.S. ainda indisponível.");
     if(!device?.online)throw Error("O celular precisa estar ONLINE no J.A.R.V.I.S.");
-    if(Date.now()-startedAt>10*60_000)
+    if(currentPin().length===8 && Date.now()-startedAt>10*60_000)
       throw Error("Sessão temporária expirada. Ative uma nova sessão no celular.");
+    // Proof of authorization is specific to this read-only request.
+    // The PIN/long-lived key never travels through the Cloud command queue.
+    const secret=currentPin();
+    const nonceBytes=new Uint8Array(16);
+    crypto.getRandomValues(nonceBytes);
+    const nonce=Array.from(nonceBytes,b=>b.toString(16).padStart(2,"0")).join("");
+    const material=["jarvis-files-v1",command,nonce,
+      String(payload.path??""),String(Number(payload.offset??0))].join("\n");
+    const hmacKey=await crypto.subtle.importKey("raw",
+      new TextEncoder().encode(secret),{name:"HMAC",hash:"SHA-256"},false,["sign"]);
+    const proofBuffer=await crypto.subtle.sign("HMAC",hmacKey,
+      new TextEncoder().encode(material));
+    const accessProof=Array.from(new Uint8Array(proofBuffer),b=>
+      b.toString(16).padStart(2,"0")).join("");
     const issued=await window.ULTRON_DEVICES.sendCommand(device.id,command,{
-      accessCode:currentPin(),...payload
+      ...payload,nonce,accessProof
     });
     if(!issued?.commandId)throw Error("Gateway não gerou uma ordem autenticada.");
     for(let tries=0;tries<45;tries++){
@@ -174,7 +192,6 @@ function install() {
     if(busy)return;
     busy=true;
     clearPreview();
-    browse.disabled=true;
     more.disabled=true;
     try{
       const safe=safePath(next);
@@ -203,13 +220,15 @@ function install() {
       nextOffset=Number(data.nextOffset)||0;
       more.hidden=!data.hasMore;
       setStatus(entries.length+" item(ns) carregado(s) • "+
-        (device.deviceName||"Android")+" • Sessão temporária ativa");
-    }catch(error){setStatus(error?.message||String(error),true);}
-    finally{busy=false;browse.disabled=false;more.disabled=false;}
+        (device.deviceName||"Android")+" • Acesso autenticado");
+      return {ok:true,opened:true,path:safe,items:entries.length};
+    }catch(error){setStatus(error?.message||String(error),true);
+      return {ok:false,error:String(error?.message||error)};}
+    finally{busy=false;more.disabled=false;}
   }
   async function retrieve(filename,entry) {
     if(busy)return;
-    busy=true;clearPreview();browse.disabled=true;
+    busy=true;clearPreview();
     const size=Number(entry.size)||0;
     const label=entry.name||"arquivo";
     try {
@@ -252,38 +271,41 @@ function install() {
       }
       setStatus("Arquivo disponível para pré-visualização ou download. Conteúdo não enviado à IA.");
     }catch(error){setStatus(error?.message||String(error),true);}
-    finally{busy=false;browse.disabled=false;}
+    finally{busy=false;}
   }
-  browse.addEventListener("click",async()=>{
+  pin.addEventListener("keydown",event=>{
+    if(event.key!=="Enter")return;
+    event.preventDefault();
     if(busy)return;
-    try{device=null;startedAt=Date.now();await chooseDevice();await listFolder("");}
-    catch(e){setStatus(e?.message||String(e),true);}
+    void openFolder(requestedPath||"");
   });
   root.addEventListener("click",()=>{void listFolder("");});
   up.addEventListener("click",()=>{void listFolder(getParent(path));});
   more.addEventListener("click",()=>{void listFolder(path,nextOffset);});
 
-  // Preserve the existing ARQUIVOS / Local Core action.
-  // Provide a separate, always visible Android remote-files control.
-  const quick=document.querySelector(".jarvis-cc-tool-actions");
-  if(quick&&!document.getElementById("btn-remote-phone-files")){
-    const button=make("button","ARQUIVOS DO CELULAR");
-    button.id="btn-remote-phone-files";
-    button.type="button";
-    button.setAttribute("aria-label","Explorar a memória compartilhada do celular");
-    let lastPress=0;
-    button.addEventListener("pointerdown",event=>{
-      if(event.button!==0)return;
-      lastPress=Date.now();open();
-    });
-    button.addEventListener("click",()=>{
-      if(Date.now()-lastPress<850)return;
+  // Deliberately NO permanent toolbar controls. Only a spoken/written
+  // command may open this initially hidden in-Neural folder overlay.
+  async function openFolder(target) {
+    try {
+      requestedPath=safePath(target);
       open();
-    });
-    quick.append(button);
+      if(!pin.value.trim()) {
+        setStatus("Comando entendido: abrir "+(requestedPath||"volumes")+
+          ". Digite o PIN ou chave autorizada e pressione Enter. Depois poderá pedir outras pastas por voz ou texto.");
+        return {ok:true,waitingAuthorization:true,path:requestedPath};
+      }
+      currentPin();
+      startedAt=Date.now();
+      device=null;
+      await chooseDevice();
+      return await listFolder(requestedPath);
+    }catch(error) {
+      setStatus(error?.message||String(error),true);
+      return {ok:false,error:String(error?.message||error)};
+    }
   }
-  window.JARVIS_PHONE_FILES={open,get state(){return{visible:!panel.hidden,device:device?.deviceName||null,
-    path,readOnly:true,maxTransferBytes:TRANSFER_MAX,sessionScoped:true};}};
+  window.JARVIS_PHONE_FILES={open,openFolder,get state(){return{visible:!panel.hidden,device:device?.deviceName||null,
+    path,readOnly:true,maxTransferBytes:TRANSFER_MAX,persistentSupported:true};}};
 }
 
 if(document.readyState==="loading"){

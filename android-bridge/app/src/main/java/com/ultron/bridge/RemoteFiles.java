@@ -23,7 +23,7 @@ import java.util.Map;
  * Remote file explorer for USER-GRANTED shared storage, not private app data.
  *
  * Explicit Android "All files access" permission + a short phone-generated
- * access PIN are both required. This bridge exposes only list/read; it never
+ * access PIN or locally encrypted permanent key are both required. This bridge exposes only list/read; it never
  * deletes, edits, uploads, or executes files.
  *
  * Files are relayed in bounded chunks through the authenticated Bridge command
@@ -33,6 +33,7 @@ public final class RemoteFiles {
     private static final String PREFS = "jarvis_remote_files_v070";
     private static final String KEY_CODE = "code";
     private static final String KEY_EXPIRES = "expires";
+    private static final String KEY_PERSISTENT = "persistent";
     public static final long SESSION_MS = 10 * 60_000L;
     public static final int CHUNK_BYTES = 80 * 1024;
     private static final int PAGE_LIMIT = 100;
@@ -57,14 +58,52 @@ public final class RemoteFiles {
         long value = ((bytes[0] & 255L) << 24) | ((bytes[1] & 255L) << 16)
                 | ((bytes[2] & 255L) << 8) | (bytes[3] & 255L);
         String pin = String.format(java.util.Locale.ROOT, "%08d", value % 100_000_000L);
+        SecureStore.clearRemoteFilesKey(context);
         context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit()
+            .putBoolean(KEY_PERSISTENT, false)
             .putString(KEY_CODE, pin).putLong(KEY_EXPIRES, System.currentTimeMillis() + SESSION_MS)
-            .apply();
+            .commit();
         return pin;
     }
 
+    // One-time display only. Protected by Android Keystore until explicitly revoked.
+    // The 128-bit key grants READ-ONLY access to shared storage.
+    public static String enablePermanent(Context context) throws Exception {
+        if (!storageGranted(context)) {
+            throw new IllegalStateException("Autorize o acesso especial aos arquivos nas configurações Android.");
+        }
+        byte[] random = new byte[16];
+        new SecureRandom().nextBytes(random);
+        StringBuilder value = new StringBuilder(32);
+        for (byte item : random)
+            value.append(String.format(java.util.Locale.ROOT, "%02X", item & 255));
+        String key = value.toString();
+        SecureStore.saveRemoteFilesKey(context, key);
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit()
+            .remove(KEY_CODE).remove(KEY_EXPIRES)
+            .putBoolean(KEY_PERSISTENT, true)
+            .commit();
+        return key;
+    }
+
+    public static boolean isPermanent(Context context) {
+        if (!storageGranted(context)) {
+            if (context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getBoolean(KEY_PERSISTENT, false)) disable(context);
+            return false;
+        }
+        if (!context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getBoolean(KEY_PERSISTENT, false))
+            return false;
+        try {
+            String key = SecureStore.getRemoteFilesKey(context);
+            return key != null && key.matches("[A-F0-9]{32}");
+        } catch (Exception error) { return false; }
+    }
+
+    // Explicit revocation invalidates the access key immediately. Commands
+    // already queued will fail when the phone validates them.
     public static void disable(Context context) {
-        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().clear().apply();
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().clear().commit();
+        SecureStore.clearRemoteFilesKey(context);
     }
 
     public static long remainingSeconds(Context context) {
@@ -74,21 +113,44 @@ public final class RemoteFiles {
         return Math.max(0, (expiry - System.currentTimeMillis()) / 1000L);
     }
 
-    private static void authorize(Context context, JSONObject payload) {
+    private static void authorize(Context context, String command, JSONObject payload) throws Exception {
         if (!storageGranted(context)) {
             throw new SecurityException("Permissão de armazenamento compartilhado não concedida no Android.");
         }
-        if (remainingSeconds(context) == 0) {
-            throw new SecurityException("Sessão remota expirada. Reative pelo aplicativo do celular.");
+        String nonce = payload.optString("nonce", "").trim();
+        String provided = payload.optString("accessProof", "").trim();
+        if (!nonce.matches("[a-fA-F0-9]{32}") || !provided.matches("[a-fA-F0-9]{64}"))
+            throw new SecurityException("Autorização criptográfica de arquivos ausente.");
+        String expected;
+        if (isPermanent(context)) {
+            expected = SecureStore.getRemoteFilesKey(context);
+        } else {
+            if (remainingSeconds(context) == 0)
+                throw new SecurityException("Sessão remota expirada. Reative pelo aplicativo do celular.");
+            expected = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+                .getString(KEY_CODE, "");
         }
-        String expected = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
-            .getString(KEY_CODE, "");
-        String provided = payload.optString("accessCode", "");
-        if (!provided.matches("[0-9]{8}") || expected.length() != 8 ||
-            !MessageDigest.isEqual(expected.getBytes(java.nio.charset.StandardCharsets.US_ASCII),
-                provided.getBytes(java.nio.charset.StandardCharsets.US_ASCII))) {
-            throw new SecurityException("Código temporário do acesso remoto inválido.");
+        if (expected == null || !(expected.matches("[0-9]{8}") || expected.matches("[A-F0-9]{32}")))
+            throw new SecurityException("Acesso remoto desativado ou revogado.");
+
+        // Browser never transmits the key. Verify a distinct HMAC for every
+        // command, path, offset, and random nonce. The Cloud only relays proof.
+        String path = payload.optString("path", "");
+        long offset = payload.optLong("offset", 0);
+        String message = "jarvis-files-v1\n" + command + "\n" +
+            nonce.toLowerCase(java.util.Locale.ROOT) + "\n" + path + "\n" + offset;
+        javax.crypto.Mac mac = javax.crypto.Mac.getInstance("HmacSHA256");
+        mac.init(new javax.crypto.spec.SecretKeySpec(
+            expected.getBytes(java.nio.charset.StandardCharsets.US_ASCII), "HmacSHA256"));
+        byte[] calculated = mac.doFinal(message.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+        byte[] proof = new byte[32];
+        for (int i = 0; i < 32; i++) {
+            int high = Character.digit(provided.charAt(i * 2), 16);
+            int low = Character.digit(provided.charAt(i * 2 + 1), 16);
+            proof[i] = (byte) ((high << 4) | low);
         }
+        if (!MessageDigest.isEqual(calculated, proof))
+            throw new SecurityException("Autorização de arquivos inválida ou revogada.");
     }
 
     private static Map<String, File> volumes(Context context) throws Exception {
@@ -166,7 +228,7 @@ public final class RemoteFiles {
     public static JSONObject execute(Context context, String command, JSONObject payload) {
         JSONObject response = new JSONObject();
         try {
-            authorize(context, payload);
+            authorize(context, command, payload);
             Map<String, File> roots = volumes(context);
             if ("files.list".equals(command)) {
                 String path = payload.optString("path", "");
