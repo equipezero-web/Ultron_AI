@@ -192,6 +192,7 @@ public class BridgeService extends Service {
                     success = true;
                     break;
 
+                case "youtube.open":
                 case "calendar.open":
                 case "calendar.create":
                 case "storage.diagnostics":

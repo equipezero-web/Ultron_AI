@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Environment;
 import android.os.StatFs;
 import android.provider.CalendarContract;
+import android.net.Uri;
 
 import org.json.JSONObject;
 
@@ -37,7 +38,13 @@ public final class AccountPluginActions {
                 .put("readPersonalFiles",false).put("readCloudAccountStorage",false);
         }
         final Intent intent;
-        if ("calendar.open".equals(command)) {
+        if ("youtube.open".equals(command)) {
+            intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/"));
+            intent.setPackage("com.google.android.youtube");
+            if (intent.resolveActivity(context.getPackageManager()) == null) {
+                intent.setPackage(null);
+            }
+        } else if ("calendar.open".equals(command)) {
             intent = new Intent(Intent.ACTION_MAIN);
             intent.addCategory(Intent.CATEGORY_APP_CALENDAR);
         } else if ("calendar.create".equals(command)) {
@@ -63,9 +70,9 @@ public final class AccountPluginActions {
                 context.startActivity(intent);
                 return reply.put("ok",true).put("launchRequested",true)
                     .put("eventSaved",false).put("requiresCalendarSave",creating)
-                    .put("message",creating?"Revise e salve o evento na agenda do Android.":"Abertura da agenda solicitada.");
+                    .put("message",creating?"Revise e salve o evento na agenda do Android.":"Abertura do aplicativo solicitada.");
             } catch (Exception error) {
-                return reply.put("ok",false).put("error","Nenhum aplicativo de calendário disponível.");
+                return reply.put("ok",false).put("error","Nenhum aplicativo compatível disponível.");
             }
         }
         // Android 10+ background activity-start restrictions: do NOT claim open.
@@ -79,8 +86,8 @@ public final class AccountPluginActions {
             creating?4501:4502,intent,PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);
         Notification note=new Notification.Builder(context,CHANNEL)
             .setSmallIcon(android.R.drawable.ic_menu_my_calendar)
-            .setContentTitle(creating?"J.A.R.V.I.S. • Confirmar compromisso":"J.A.R.V.I.S. • Abrir agenda")
-            .setContentText(creating?"Toque para revisar o evento e salvar na sua agenda.":"Toque para abrir a agenda deste Android.")
+            .setContentTitle(creating?"J.A.R.V.I.S. • Confirmar compromisso":("youtube.open".equals(command)?"J.A.R.V.I.S. • Abrir YouTube":"J.A.R.V.I.S. • Abrir agenda"))
+            .setContentText(creating?"Toque para revisar o evento e salvar na sua agenda.":"Toque para abrir o aplicativo neste Android.")
             .setContentIntent(pending).setAutoCancel(true).build();
         manager.notify(creating?4501:4502,note);
         return reply.put("ok",false).put("requiresUserTap",true)
