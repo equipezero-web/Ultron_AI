@@ -12,7 +12,7 @@ const service = read("android-bridge/app/src/main/java/com/ultron/bridge/BridgeS
 const icon = read("android-bridge/app/src/main/res/drawable/ic_jarvis_bridge.xml");
 
 assert.match(gradle, /versionCode = 10/);
-assert.match(gradle, /versionName = "0\.6\.0"/);
+assert.ok(gradle.includes('versionName = "0.7.0"'));
 assert.match(icon, /<vector/);
 assert.match(manifest, /android:icon="@drawable\/ic_jarvis_bridge"/);
 assert.match(manifest, /android:allowBackup="false"/);
@@ -26,7 +26,7 @@ assert.match(visuals, /setMinHeight\(dp\(context, 52\)\)/);
 assert.match(main, /BRIDGE  \/\/  CENTRAL DO CELULAR/);
 assert.match(main, /NÚCLEO DE CONEXÃO/);
 assert.match(main, /CENTRAL DE DISPOSITIVOS/);
-assert.match(main, /J\.A\.R\.V\.I\.S\. BRIDGE v0\.6\.0/);
+assert.ok(main.includes("J.A.R.V.I.S. BRIDGE v0.7.0"));
 assert.match(main, /serviceStatus\.startsWith\("ONLINE"\)/);
 assert.match(main, /tvDetails\.setVisibility\(android\.view\.View\.GONE\)/);
 
@@ -41,13 +41,13 @@ assert.match(files, /SALVAR COM CONFIRMAÇÃO/);
 assert.match(files, /new AlertDialog\.Builder/);
 assert.match(files, /original\.equals\(readText\(uri\)\)/);
 assert.doesNotMatch(main + files + remote, /WebView|setJavaScriptEnabled/);
-assert.match(remote, /Environment\\.isExternalStorageManager\\(\\)/);
-assert.match(remote, /MessageDigest\\.isEqual/);
-assert.match(remote, /SESSION_MS = 10 \\* 60_000L/);
-assert.match(remote, /MAX_REMOTE_TRANSFER_BYTES = 16L/);
-assert.match(remote, /protectedPath\\.startsWith\\("\\/android\\/data\\/"\\)/);
-assert.match(service, /RemoteFiles\\.execute\\(this, command, payload\\)/);
-assert.match(main, /REVOGAR ACESSO REMOTO/);
-assert.doesNotMatch(remote, /delete\\(|renameTo\\(|FileOutputStream|exec\\(/);
+assert.ok(remote.includes("Environment.isExternalStorageManager()"));
+assert.ok(remote.includes("MessageDigest.isEqual"));
+assert.ok(remote.includes("SESSION_MS = 10 * 60_000L"));
+assert.ok(remote.includes("MAX_REMOTE_TRANSFER_BYTES = 16L"));
+assert.ok(remote.includes("protectedPath.startsWith(\"/android/data/\")"));
+assert.ok(service.includes("RemoteFiles.execute(this, command, payload)"));
+assert.ok(main.includes("REVOGAR ACESSO REMOTO"));
+assert.doesNotMatch(remote, /\.delete\(|\.renameTo\(|FileOutputStream|Runtime\.getRuntime\(\)/);
 
 console.log("JARVIS BRIDGE UI + SCOPED FILE CONTRACT PASS: mobile dashboard, existing actions, version and Android storage boundaries.");
