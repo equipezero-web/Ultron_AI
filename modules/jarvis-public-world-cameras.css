@@ -145,3 +145,80 @@ body.jarvis-command-center .jarvis-worldcam-info .jarvis-worldcam-playback-faile
  outline:2px solid #ffe0a2;
  outline-offset:2px;
 }
+
+/* Global directories + Webcamera24 opt-in audio (v5.38).
+   All provider pages are ordinary links, not site-frame republishing. */
+body.jarvis-command-center .jarvis-worldcam-filters{
+ grid-template-columns:minmax(130px,1.5fr) repeat(4,minmax(72px,1fr));
+}
+body.jarvis-command-center .jarvis-worldcam-catalogs{
+ flex:0 0 auto;min-height:0;max-height:33%;overflow-y:auto;
+ background:linear-gradient(105deg,rgba(46,33,13,.96),rgba(8,15,22,.96));
+ border:1px solid rgba(244,197,112,.54);border-radius:10px;
+ color:#f7dda4;overscroll-behavior-y:auto;
+ -webkit-overflow-scrolling:touch;
+}
+body.jarvis-command-center .jarvis-worldcam-catalogs[open]{flex:0 1 auto;}
+body.jarvis-command-center .jarvis-worldcam-catalogs>summary{
+ min-height:44px;padding:10px;box-sizing:border-box;
+ cursor:pointer;font-size:11px;font-weight:800;letter-spacing:.02em;
+ line-height:1.35;touch-action:manipulation;list-style-position:inside;
+}
+body.jarvis-command-center .jarvis-worldcam-catalog-grid{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;
+ padding:7px;
+}
+body.jarvis-command-center .jarvis-worldcam-catalog-card{
+ display:flex;flex-direction:column;gap:5px;min-width:0;padding:8px;
+ background:rgba(17,26,31,.95);border:1px solid rgba(232,181,82,.38);border-radius:8px;
+}
+body.jarvis-command-center .jarvis-worldcam-catalog-card>strong{
+ color:#ffe2a0;font-size:11px;
+}
+body.jarvis-command-center .jarvis-worldcam-catalog-card>small{
+ color:#d5c9a9;font-size:10px;line-height:1.35;
+}
+body.jarvis-command-center .jarvis-worldcam-catalog-links{
+ display:flex;flex-wrap:wrap;gap:7px;
+}
+body.jarvis-command-center .jarvis-worldcam-catalog-links a{
+ color:#ffdea3;font-size:10px;min-height:44px;display:inline-flex;
+ align-items:center;box-sizing:border-box;padding:5px 7px;
+ border:1px solid rgba(249,214,142,.5);border-radius:6px;
+ touch-action:manipulation;
+}
+body.jarvis-command-center .jarvis-worldcam-audio{
+ flex:0 0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:7px;
+ font-size:11px;line-height:1.35;color:#f7ddad;
+}
+body.jarvis-command-center .jarvis-worldcam-audio[hidden]{display:none!important}
+body.jarvis-command-center .jarvis-worldcam-audio-toggle{
+ min-width:115px;min-height:44px;border-radius:7px;cursor:pointer;
+ font-size:11px;font-weight:800;padding:6px 9px;touch-action:manipulation;
+ background:linear-gradient(110deg,#6a4e18,#151a1c);
+ color:#fdf1d2;border:1px solid #e4c07c;
+}
+body.jarvis-command-center .jarvis-worldcam-audio-toggle[aria-pressed="true"]{
+ background:linear-gradient(110deg,#815118,#28211b);
+}
+body.jarvis-command-center .jarvis-worldcam-audio :focus-visible,
+body.jarvis-command-center .jarvis-worldcam-catalogs :focus-visible{
+ outline:2px solid #ffdfa0;outline-offset:2px;
+}
+@media(max-width:650px){
+ body.jarvis-command-center .jarvis-worldcam-filters{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+ }
+ body.jarvis-command-center .jarvis-worldcam-filters input{grid-column:1/-1}
+ body.jarvis-command-center .jarvis-worldcam-catalogs{max-height:28%}
+ body.jarvis-command-center .jarvis-worldcam-catalog-grid{grid-template-columns:1fr}
+ body.jarvis-command-center .jarvis-worldcam-audio-toggle{
+  min-width:110px;font-size:11px;
+ }
+ body.jarvis-command-center .jarvis-worldcam-summary{
+  font-size:10px;
+ }
+}
+@media(max-height:520px){
+ body.jarvis-command-center .jarvis-worldcam-catalogs{max-height:22%}
+}
