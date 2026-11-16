@@ -153,6 +153,7 @@ function toggleOverdrive(){
  return {ok:true,active:overdrive};
 }
 function speak(){
+ if(document.body.classList.contains("jarvis-voice-output-disabled"))return {ok:false,reason:"VOICE_OUTPUT_DISABLED"};
  if(!engine()?.active)return {ok:false,reason:"ENGINE_INACTIVE"};
  if(!("speechSynthesis"in window)){
   report("Síntese de voz indisponível neste navegador.");
@@ -249,7 +250,7 @@ function init(){
  }
  panel.append(header,archiveList,detail);
  center.append(panel);
- makeButton("FALAR","speak",speak);
+ if(!document.body.classList.contains("jarvis-voice-output-disabled"))makeButton("FALAR","speak",speak);
  makeButton("ÁUDIO VISUAL","microphone",toggleAudio);
  makeButton("SOBRECARGA TÁTICA","overdrive",toggleOverdrive);
  const expand=makeButton("REDOMA & ARQUIVOS","expand",toggleArchive);
