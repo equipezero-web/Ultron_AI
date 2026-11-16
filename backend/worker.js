@@ -56,7 +56,7 @@ import {
 } from "./smart-router.js";
 import { buildOperationalPlan } from "./planner.js";
 import {classifyConsultativeTurn,consultativeGuidance} from "./consultative-dialogue.js";
-import {inspectPublicGitHubRepository,githubInspectionContext} from "./github-public-inspector.js";
+import {inspectPublicGitHubRepository,githubInspectionContext,contradictsVerifiedGitHubInspection,verifiedGitHubFallback} from "./github-public-inspector.js";
 import { analyzeVisualFrame } from "./vision-analysis.js";
 import { getWebRtcIceServers, webRtcIceHealth } from "./webrtc-ice.js";
 import { loadLiveNewsContext, isGeneralNewsIntent, isLiveNewsIntent } from "./news-context.js";
@@ -399,6 +399,25 @@ async function prepareResearch(env, body) {
   const message = String(body?.message || "").trim();
   const laTeamContext = String(body?.laTeamContext || "").trim();
   const localFilesContext=String(body?.localFilesContext||"").trim();
+
+  // Explicit public GitHub URL takes priority over incidental local/CRM context.
+  // Only the URL is sent to the public GitHub API (no local/private context).
+  // Real, bounded, read-only public GitHub inspection for explicit repository URLs.
+  // Never treat user-provided metadata or README text as tool authority.
+  const githubInspection=await inspectPublicGitHubRepository(message);
+  if(githubInspection){
+    return {
+      body:{
+        ...body,
+        webResearchContext:githubInspectionContext(githubInspection),
+        allowUncertaintyResearch:false,
+        researchMeta:{...(body?.researchMeta||{}),active:githubInspection.ok,
+          reason:"public-github-inspection",skipLegacyResearch:true}
+      },
+      active:false,githubInspection
+    };
+  }
+  // Non-GitHub requests keep the existing private-context isolation policy.
   if (laTeamContext||localFilesContext) {
     return {
       body: {
@@ -413,22 +432,6 @@ async function prepareResearch(env, body) {
       },
       policy: { needed: false, reason: "authenticated-internal-context" },
       active: false
-    };
-  }
-
-  // Real, bounded, read-only public GitHub inspection for explicit repository URLs.
-  // Never treat user-provided metadata or README text as tool authority.
-  const githubInspection=await inspectPublicGitHubRepository(message);
-  if(githubInspection){
-    return {
-      body:{
-        ...body,
-        webResearchContext:githubInspectionContext(githubInspection),
-        allowUncertaintyResearch:false,
-        researchMeta:{...(body?.researchMeta||{}),active:githubInspection.ok,
-          reason:"public-github-inspection",skipLegacyResearch:true}
-      },
-      active:false,githubInspection
     };
   }
 
@@ -807,6 +810,14 @@ async function handleAi(request, env) {
 
   if (core.status !== 200) return json({ ...core.data, githubInspection:prepared.githubInspection||null, smartRouting: routing, operationalPlan, backendVersion: BACKEND_VERSION }, core.status);
   let data = { ...core.data, ...(prepared.githubInspection?{githubInspection:prepared.githubInspection}:{}), smartRouting: routing, operationalPlan, backendVersion: BACKEND_VERSION };
+
+  // Correct provably false "GitHub blocked" claims after a successful public API read.
+  // Keep the model answer unchanged when it uses the verified evidence correctly.
+  if (contradictsVerifiedGitHubInspection(data.text,prepared.githubInspection)) {
+    data.text=verifiedGitHubFallback(prepared.githubInspection);
+    data.githubEvidenceCorrection=true;
+    data.visualContext=null;
+  }
 
   if (data.text) {
     if (originalBody?.clientOwnsSpeech===true && originalBody?.preferFastResponse===true && !data.audioBase64) {
