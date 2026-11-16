@@ -35,12 +35,16 @@ jobs:
         with:
           gradle-version: "9.6.0"
 
+      - name: JARVIS UI and permission safety contract
+        run: node ../tests/jarvis-bridge-ui-security.mjs
+
       - name: Build debug APK
         run: gradle :app:assembleDebug --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: ultron-mobile-bridge-debug
+          name: jarvis-bridge-v0.6.0-debug
           path: android-bridge/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
+          retention-days: 14
