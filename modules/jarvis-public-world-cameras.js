@@ -175,8 +175,25 @@ function build(){
   el.addEventListener("input",render);
   toolbar.append(el);
  }
+ const catalogs=make("details","jarvis-worldcam-catalogs");
+ catalogs.append(make("summary","","EXPLORAR TODOS OS CATÁLOGOS · SKYLINE / WEBCAMERA24"));
+ const directory=make("div","jarvis-worldcam-catalog-grid");
+ for(const provider of WORLD_CAMERAS_CATALOGS){
+  const card=make("section","jarvis-worldcam-catalog-card");
+  card.append(make("strong","",provider.label),make("small","",provider.note));
+  const links=make("div","jarvis-worldcam-catalog-links");
+  for(const [name,url] of [["TODAS AS CÂMERAS",provider.all],
+   ["PAÍSES",provider.countries],["CATEGORIAS",provider.categories]]){
+   const link=safeLink(url,name);
+   link.dataset.catalogProvider=provider.id;
+   link.dataset.catalogSection=name;
+   links.append(link);
+  }
+  card.append(links);directory.append(card);
+ }
+ catalogs.append(directory);
  results=make("div","jarvis-worldcam-results");
- results.setAttribute("aria-label","Câmeras públicas catalogadas");
+ results.setAttribute("aria-label","Seleção local de câmeras públicas catalogadas");
  const videoArea=make("div","jarvis-worldcam-view");
  screen=make("div","jarvis-worldcam-placeholder",
   "Selecione um local. A câmera será reproduzida somente após o seu clique.");
@@ -187,6 +204,18 @@ function build(){
  player.loading="lazy";
  player.setAttribute("sandbox","allow-scripts allow-same-origin allow-presentation allow-popups");
  videoArea.append(screen,player);
+ player.addEventListener("load",()=>{
+  if(playing&&cameraProvider(nowPlaying)==="webcamera24"&&!audioRequested)
+   sendYouTubeSound("mute");
+ });
+ audioBar=make("div","jarvis-worldcam-audio");audioBar.hidden=true;
+ audioButton=make("button","jarvis-worldcam-audio-toggle","ATIVAR ÁUDIO");
+ audioButton.type="button";audioButton.setAttribute("aria-label",
+  "Ativar ou desativar manualmente o áudio de um player Webcamera24");
+ audioButton.setAttribute("aria-pressed","false");
+ audioButton.addEventListener("click",toggleAudio);
+ audioLabel=make("span","jarvis-worldcam-audio-label","Áudio desativado por padrão.");
+ audioBar.append(audioButton,audioLabel);
  notice=make("div","jarvis-worldcam-info");
  notice.setAttribute("aria-live","polite");
  const footer=make("footer","jarvis-worldcam-footer");
@@ -195,7 +224,7 @@ function build(){
   "Não afirmamos sinal ao vivo sem confirmação."),
   safeLink(WORLD_CAMERAS_HOME,"Catálogo Brasil"),
   safeLink(WORLD_CAMERAS_INTERNATIONAL,"Catálogo internacional"));
- panel.append(head,summary,toolbar,results,videoArea,notice,footer);
+ panel.append(head,summary,toolbar,catalogs,results,videoArea,audioBar,notice,footer);
  stage.append(panel);
  return true;
 }
@@ -203,20 +232,21 @@ function render(){
  if(!panel)return;
  const matches=findPublicCameras({
   search:queryField.value,country:countryField.value,
-  category:categoryField.value,region:regionField.value
+  category:categoryField.value,region:regionField.value,provider:providerField.value
  });
  const info=cameraDirectorySummary();
- summary.textContent=info.indexed+" pontos públicos catalogados ("+
+ summary.textContent=info.indexed+" câmeras selecionadas ("+
   info.countries.length+" países) · "+info.embedded+
-  " com player divulgado · 0 sinais confirmados ao vivo automaticamente";
+  " com player divulgado · 2 catálogos mundiais completos via links · "+
+  "0 sinais confirmados automaticamente";
  results.replaceChildren();
  for(const c of matches){
   const button=make("button","jarvis-worldcam-item");
   button.type="button";button.setAttribute("aria-pressed",String(c.id===selection?.id));
   button.append(make("strong","",c.name),
    make("small","",c.city+" · "+c.country+" · "+CAMERA_CATEGORY_NAMES[c.category]),
-   make("small","",c.embedId?"Player publicado no catálogo":
-    c.id===WORLD_CAMERAS_ALTERNATIVE_ID?"SkylineWebcams · acesso no provedor":"Somente fonte catalogada"));
+   make("small","",CAMERA_PROVIDER_NAMES[cameraProvider(c)]+" · "+
+    (c.embedId?"Player divulgado (mudo ao iniciar)":"Vídeo na página do provedor")));
   button.addEventListener("click",()=>{choose(c);render();});
   results.append(button);
  }
@@ -229,7 +259,7 @@ function open({search="",cameraId=null}={}){
  if(!build())return {handled:true,ok:false,reason:"RING_UNAVAILABLE"};
  requested=true;panel.hidden=false;
  if(search){queryField.value=search;countryField.value="";
-  regionField.value="";categoryField.value="";}
+  regionField.value="";categoryField.value="";providerField.value="";}
  let selected=cameraId?PUBLIC_WORLD_CAMERAS.find(x=>x.id===cameraId):null;
  if(!selected&&search){
   const matches=findPublicCameras({search});
@@ -237,8 +267,9 @@ function open({search="",cameraId=null}={}){
  }
  choose(selected);render();
  const count=findPublicCameras({search:queryField.value}).length;
- say("Central exibida dentro do Neural Ring. "+count+
-  " resultado(s) no catálogo verificado. Reproduzir depende de seleção manual e do provedor.");
+ say("Central exibida dentro do Neural Ring: "+count+
+  " câmeras selecionadas indexadas e links para os catálogos mundiais completos "+
+  "SkylineWebcams / Webcamera24. Áudio Webcamera24 mudo por padrão.");
  return {handled:true,ok:true,count,selected:selected?.id||null,videoStarted:false};
 }
 function search(term){
@@ -264,9 +295,12 @@ function stop(){
  hide();say("STOP: reprodução de câmeras externas encerrada no Neural Ring.");
  return {ok:true,stopped:true};
 }
-window.ULTRON_WORLD_CAMERAS={parse,execute,open,search,hide,status,stop,
+window.ULTRON_WORLD_CAMERAS={parse,execute,open,search,hide,status,stop,toggleAudio,
  get state(){return {open:requested,selected:selection?.id||null,
   playerRequested:playing,liveVerified:false,playing:nowPlaying?.id||null,
+  audioRequested:audioRequested,audioVerified:false,
+  managedAudio:playing&&cameraProvider(nowPlaying)==="webcamera24",
+  globalCatalogs:WORLD_CAMERAS_CATALOGS.length,
   userReportedFailure:userReportedFailure||null,
   alternativeSource:getWorldCameraAlternative()?.sourceUrl||null};}};
 window.addEventListener("ultron:emergency-stop",stop);
