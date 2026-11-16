@@ -4,6 +4,7 @@ import {
 } from "../modules/jarvis-data-intelligence-model.js";
 import {normalizeGlobalForecast,normalizeGlobalLocation} from "../modules/jarvis-global-weather.js";
 import {normalizeApacResponse} from "../modules/jarvis-meteorological-sources.js";
+import {parseLocalCommand,runLocalCommand} from "../modules/jarvis-local-commands.js";
 
 const now=()=> "2026-11-16T10:00:00.000Z";
 const city=normalizeGlobalLocation({
@@ -77,4 +78,27 @@ assert.equal(apacEvidence({...apac,type:"confirmed-storm-warning"},{now}),null);
 assert.equal(apacEvidence({...apac,stations:[]},{now}),null);
 const missingRead=apacEvidence({...apac,stations:apac.stations.map(s=>({...s,lastReading:""}))},{now});
 assert.equal(missingRead.observations[0].dataTime,"não informado");
+assert.deepEqual(parseLocalCommand("Jarvis, mostre a origem dos dados"),{type:"data-evidence"});
+assert.deepEqual(parseLocalCommand("Jarvis, quais as fontes dos dados"),{type:"data-evidence"});
+assert.equal(parseLocalCommand("Como o Jarvis obtém dados?"),null,
+ "An explanatory question is not a direct command");
+const oldWindow=globalThis.window;
+let presentation=null;
+try{
+ globalThis.window={
+  ULTRON_DATA_INTELLIGENCE:{latest:observed},
+  ULTRON_NEURAL_ANSWER:{show:(text,opts)=>{presentation={text,opts};}}
+ };
+ const command=await runLocalCommand("Jarvis, mostre a origem dos dados");
+ assert.equal(command.ok,true);
+ assert.equal(command.route,"local-data-evidence");
+ assert.match(command.text,/APAC/);
+ assert.equal(presentation.opts.webResearch.sources[0].url,
+  "https://geoportal.apac.pe.gov.br/server/rest/services/met_monitoramento_chuvas_pe/MapServer");
+ globalThis.window.ULTRON_DATA_INTELLIGENCE.latest=null;
+ const missing=await runLocalCommand("Jarvis, mostre a origem dos dados");
+ assert.equal(missing.ok,false);
+ assert.match(missing.text,/Não há relatório/);
+}finally{if(oldWindow===undefined)delete globalThis.window;
+ else globalThis.window=oldWindow;}
 console.log("JARVIS EVIDENCE MODEL PASS: attributed external observations/forecast, bounded valid values, time provenance, own arithmetic, staleness, no fabricated confirmation or alerts");
