@@ -1,0 +1,37 @@
+name: JARVIS Remote Android Filespace
+on:
+  push:
+    paths:
+      - "modules/jarvis-phone-files.js"
+      - "modules/jarvis-phone-files.css"
+      - "index.html"
+      - "backend/device-bridge.js"
+      - "backend/device-control-v2.js"
+      - "tests/jarvis-phone-files-security.mjs"
+      - ".github/workflows/jarvis-remote-phone-files.yml"
+  pull_request:
+    paths:
+      - "modules/jarvis-phone-files.js"
+      - "modules/jarvis-phone-files.css"
+      - "index.html"
+      - "backend/device-bridge.js"
+      - "backend/device-control-v2.js"
+      - "tests/jarvis-phone-files-security.mjs"
+      - ".github/workflows/jarvis-remote-phone-files.yml"
+permissions:
+  contents: read
+jobs:
+  remote-files-security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Check frontend and backend syntax
+        run: |
+          node --check modules/jarvis-phone-files.js
+          node --check backend/device-bridge.js
+          node --check backend/device-control-v2.js
+      - name: File access authorization and security contract
+        run: node tests/jarvis-phone-files-security.mjs
