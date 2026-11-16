@@ -8,7 +8,7 @@ const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
 const TRANSFER_MAX = 16 * 1024 * 1024;
 const PREVIEW_MAX = 256 * 1024;
 const IMAGE_MAX = 4 * 1024 * 1024;
-const CHUNK_MAX = 48 * 1024;
+const CHUNK_MAX = 80 * 1024;
 const forbidden = /^(?:internal|sd\d+):(?:Android\/(?:data|obb)(?:\/|$))/i;
 
 function make(tag, text, className) {
@@ -159,10 +159,10 @@ function install() {
     const online=(devices||[]).filter(d=>d.deviceType==="mobile"&&
       d.status==="active"&&d.online===true);
     if(!online.length)throw Error("Nenhum celular ONLINE. Inicie o Bridge e verifique o Cloud.");
-    const available=online.filter(d=>(d.capabilities||[]).includes("files.list"));
-    if(!available.length)
-      throw Error("O celular está conectado, mas utiliza uma versão antiga do Bridge. Instale v0.7.0.");
-    device=available[0];
+    // Existing paired devices may retain their v0.6.0 capability snapshot
+    // after an APK update. Let the v0.7 Android service itself accept/reject
+    // the command instead of forcing yet another pairing.
+    device=online[0];
     return device;
   }
   function getParent(p) {
