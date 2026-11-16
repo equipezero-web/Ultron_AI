@@ -153,7 +153,9 @@ try{
  const neuralButtons=await page.evaluate(()=>[...document.querySelectorAll(".neural-jarvis-control")]
   .map(b=>({text:b.textContent,disabled:b.disabled,width:b.getBoundingClientRect().width})));
  assert.equal(neuralButtons.length,4);
- assert.ok(neuralButtons.every(b=>b.width>40&&!b.disabled),JSON.stringify(neuralButtons));
+ assert.ok(neuralButtons.every(b=>b.width>40),JSON.stringify(neuralButtons));
+ assert.equal(neuralButtons.find(b=>b.text==="FALAR")?.disabled,true,"Speech control disabled in text-only mode");
+ assert.ok(neuralButtons.filter(b=>b.text!=="FALAR").every(b=>!b.disabled),"Other controls remain enabled");
  await page.click('.neural-jarvis-control[aria-controls="neural-jarvis-archive"]');
  assert.equal(await page.$eval(".neural-jarvis-archive",e=>e.hidden),false);
  await page.click(".neural-jarvis-archive-head button");

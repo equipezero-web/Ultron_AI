@@ -1,0 +1,50 @@
+name: JARVIS Silent Output Contract
+on:
+  pull_request:
+    paths:
+      - "index.html"
+      - "script.js"
+      - "backend/worker.js"
+      - "backend/server.js"
+      - "modules/voice-fallback.js"
+      - "modules/ultron-intelligence-briefing.js"
+      - "modules/ultron-core-bridge-v4270.js"
+      - "modules/jarvis-neural-jarvis-hud.js"
+      - "tests/jarvis-voice-output-muted.mjs"
+      - ".github/workflows/jarvis-voice-output-muted.yml"
+  push:
+    branches: [main]
+    paths:
+      - "index.html"
+      - "script.js"
+      - "backend/worker.js"
+      - "backend/server.js"
+      - "modules/voice-fallback.js"
+      - "modules/ultron-intelligence-briefing.js"
+      - "modules/ultron-core-bridge-v4270.js"
+      - "modules/jarvis-neural-jarvis-hud.js"
+      - "tests/jarvis-voice-output-muted.mjs"
+      - ".github/workflows/jarvis-voice-output-muted.yml"
+permissions:
+  contents: read
+jobs:
+  silent-output:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate syntax
+        run: |
+          node --check backend/worker.js
+          node --check backend/server.js
+          node --check modules/voice-fallback.js
+          node --check modules/ultron-intelligence-briefing.js
+          node --check modules/ultron-core-bridge-v4270.js
+          node --check modules/jarvis-neural-jarvis-hud.js
+          node --check script.js
+          node --check tests/jarvis-voice-output-muted.mjs
+      - name: Assert JARVIS stays in text-only mode
+        run: node tests/jarvis-voice-output-muted.mjs

@@ -13,7 +13,7 @@ const auth=read("android-bridge/app/src/main/java/com/ultron/bridge/TvAuthorizat
 const manifest=read("android-bridge/app/src/main/AndroidManifest.xml");
 const backend=read("backend/device-bridge.js");
 const deviceModule=read("modules/device-control-v4260.js");
-assert.match(html,/class="jarvis-command-center jarvis-voice-text-only"/);
+assert.match(html,/class="jarvis-command-center jarvis-voice-text-only jarvis-voice-output-disabled"/);
 assert.match(html,/jarvis-voice-text-only\.css\?v=/);
 assert.match(html,/jarvis-voice-text-only\.js\?v=/);
 assert.doesNotMatch(html,/<body[^>]*jarvis-voice-paused/);
