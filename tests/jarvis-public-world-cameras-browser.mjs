@@ -75,6 +75,63 @@ try{
  assert.equal(flags.liveVerified,false,"Never assert playback verifies live availability");
  assert.equal(flags.playerRequested,false,
   "Stream was stopped when user reported playback failure");
+ const directories=await page.$$eval(".jarvis-worldcam-catalogs .jarvis-worldcam-catalog-card",cards=>
+  cards.map(card=>({title:card.querySelector("strong").textContent,
+   urls:[...card.querySelectorAll("a")].map(a=>a.href)})));
+ assert.equal(directories.length,2);
+ assert.ok(directories.some(x=>x.title==="SkylineWebcams"&&
+   x.urls.includes("https://www.skylinewebcams.com/en/webcam.html")));
+ assert.ok(directories.some(x=>x.title==="Webcamera24"&&
+   x.urls.includes("https://webcamera24.com/pt/all-webcams/")));
+ const providerOptions=await page.$$eval(".jarvis-worldcam-filters select[aria-label='Filtrar provedor de câmeras'] option",
+  opts=>opts.map(o=>o.textContent));
+ assert.ok(providerOptions.includes("Webcamera24"));
+ assert.ok(providerOptions.includes("SkylineWebcams"));
+ const w24selected=await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.open({
+  cameraId:"webcamera24-patong-nanai"
+ }));
+ assert.equal(w24selected.ok,true);
+ assert.equal(w24selected.selected,"webcamera24-patong-nanai");
+ assert.equal(await page.$(".jarvis-worldcam-view iframe[src]"),null);
+ assert.equal(await page.$(".jarvis-worldcam-audio:not([hidden])"),null);
+ await page.click(".jarvis-worldcam-play");
+ const w24stream=await page.$eval(".jarvis-worldcam-view iframe",el=>el.getAttribute("src"));
+ assert.match(w24stream,/youtube-nocookie\.com\/embed\/uEkJjuAjWa0/);
+ assert.match(w24stream,/mute=1/);
+ assert.match(w24stream,/enablejsapi=1/);
+ assert.equal(await page.$eval(".jarvis-worldcam-audio",el=>el.hidden),false);
+ const defaultAudio=await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.state);
+ assert.equal(defaultAudio.audioRequested,false);
+ assert.equal(defaultAudio.audioVerified,false);
+ assert.equal(defaultAudio.managedAudio,true);
+ assert.equal(await page.$eval(".jarvis-worldcam-audio-toggle",el=>el.textContent),"ATIVAR ÁUDIO");
+ await page.click(".jarvis-worldcam-audio-toggle");
+ assert.equal((await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.state)).audioRequested,true);
+ assert.equal(await page.$eval(".jarvis-worldcam-audio-toggle",el=>el.getAttribute("aria-pressed")),"true");
+ await page.click(".jarvis-worldcam-audio-toggle");
+ assert.equal((await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.state)).audioRequested,false);
+ // Clicking a different webcam MUST always reset to muted, even after an unmute.
+ await page.click(".jarvis-worldcam-audio-toggle");
+ assert.equal((await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.state)).audioRequested,true);
+ const switched=await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.open({
+  cameraId:"webcamera24-osaka-ikuno"
+ }));
+ assert.equal(switched.selected,"webcamera24-osaka-ikuno");
+ const afterSwitch=await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.state);
+ assert.equal(afterSwitch.audioRequested,false,"No audio permission may carry between cams");
+ assert.equal(afterSwitch.playerRequested,false);
+ assert.equal(await page.$eval(".jarvis-worldcam-audio",el=>el.hidden),true);
+ await page.click(".jarvis-worldcam-play");
+ assert.equal((await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.state)).audioRequested,false);
+ assert.match(await page.$eval(".jarvis-worldcam-view iframe",el=>el.getAttribute("src")),
+  /mute=1/);
+ const noEmbed=await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.open({
+  cameraId:"skyline-shanghai"
+ }));
+ assert.equal(noEmbed.selected,"skyline-shanghai");
+ assert.equal(await page.$(".jarvis-worldcam-play"),null);
+ assert.equal(await page.$(".jarvis-worldcam-view iframe[src]"),null);
+ assert.equal(await page.$eval(".jarvis-worldcam-audio",el=>el.hidden),true);
  const sourceOnly=await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.open({cameraId:"serra-rastro"}));
  assert.equal(sourceOnly.ok,true);
  assert.equal(await page.$(".jarvis-worldcam-view iframe[src]"),null,

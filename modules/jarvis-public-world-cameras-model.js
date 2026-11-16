@@ -38,7 +38,25 @@ export const PUBLIC_WORLD_CAMERAS=Object.freeze([
   "https://camerasdomundo.com/elefantes-zoologico-sydney-ao-vivo/","Taronga Zoo"),
  entry("jerusalem-western-wall","Jerusalém — Muro Ocidental","Jerusalém","Israel","Ásia","cidades",
   "https://www.skylinewebcams.com/en/webcam/israel/jerusalem-district/jerusalem/western-wall.html",
-  "SkylineWebcams")
+  "SkylineWebcams")  ,entry("webcamera24-elbo-room","Elbo Room Bar — Fort Lauderdale","Fort Lauderdale","Estados Unidos","América do Norte","cidades",
+  "https://webcamera24.com/pt/camera/usa/elboroom-bar-band-cam/","Webcamera24","YWs0HMRVCBY")
+  ,entry("webcamera24-osaka-ikuno","Ikuno Korea Town — Osaka","Osaka","Japão","Ásia","cidades",
+  "https://webcamera24.com/pt/camera/japan/ikuno-korea-town/","Webcamera24","ztXjQgNxi4o")
+  ,entry("webcamera24-patong-nanai","Nanai Road — Patong","Patong","Tailândia","Ásia","estradas",
+  "https://webcamera24.com/pt/camera/thailand/nanai-road-cam/","Webcamera24","uEkJjuAjWa0")
+  ,entry("webcamera24-kenya-rhino","Porini Rhino Camp — Bebedouro","Ol Pejeta","Quênia","África","natureza",
+  "https://webcamera24.com/pt/camera/kenya/porini-rhino-camp-waterhole-ol-pejeta/","Webcamera24","5dhmXmUD1ZE")
+  ,entry("webcamera24-florida-bar","Interior de bar — Fort Lauderdale","Fort Lauderdale","Estados Unidos","América do Norte","cidades",
+  "https://webcamera24.com/pt/camera/usa/fort-lauderdale-beach-bar-interior/","Webcamera24","wVNt3l657X0")
+  ,entry("webcamera24-kyiv-maidan","Maidan Nezalezhnosti — Kiev","Kiev","Ucrânia","Europa","cidades",
+  "https://webcamera24.com/pt/camera/ukraine/maidan-nezalezhnosti/","Webcamera24")
+  ,entry("webcamera24-oppdal-ski","Área de esqui Vangslia — Oppdal","Oppdal","Noruega","Europa","natureza",
+  "https://webcamera24.com/pt/camera/norway/vangslia-oppdal/","Webcamera24")
+  ,entry("skyline-shanghai","Skyline de Xangai","Xangai","China","Ásia","cidades",
+  "https://www.skylinewebcams.com/en/webcam/china/shanghai/shanghai/skyline-of-shanghai.html","SkylineWebcams")
+  ,entry("skyline-times-square","Times Square — SkylineWebcams","Nova York","Estados Unidos","América do Norte","cidades",
+  "https://www.skylinewebcams.com/en/webcam/united-states/new-york/new-york/times-square.html","SkylineWebcams")
+
 ]);
 export const CAMERA_CATEGORY_NAMES=Object.freeze({
  cidades:"Cidades",aeroportos:"Aeroportos",praias:"Praias",
@@ -52,6 +70,40 @@ export const WORLD_CAMERAS_SKYLINE_URL=
 export const getWorldCameraAlternative=()=>PUBLIC_WORLD_CAMERAS.find(
  c=>c.id===WORLD_CAMERAS_ALTERNATIVE_ID
 )||null;
+export const WORLD_CAMERAS_CATALOGS=Object.freeze([
+ Object.freeze({id:"skyline",label:"SkylineWebcams",home:"https://www.skylinewebcams.com/en/webcam.html",
+  all:"https://www.skylinewebcams.com/en/webcam.html",
+  countries:"https://www.skylinewebcams.com/en/webcam.html",
+  categories:"https://www.skylinewebcams.com/en/categories.html",
+  note:"Catálogo global por países/categorias; transmissões ao vivo apenas na página do provedor."}),
+ Object.freeze({id:"webcamera24",label:"Webcamera24",home:"https://webcamera24.com/pt/",
+  all:"https://webcamera24.com/pt/all-webcams/",
+  countries:"https://webcamera24.com/pt/countries/",
+  categories:"https://webcamera24.com/pt/categories/",
+  note:"Diretório mundial; players YouTube selecionados iniciam sem áudio no J.A.R.V.I.S."})
+]);
+export const CAMERA_PROVIDER_NAMES=Object.freeze({all:"Todos os provedores",skyline:"SkylineWebcams",
+ webcamera24:"Webcamera24",independent:"Outros catálogos"});
+export function cameraProvider(camera){
+ const source=String(camera?.sourceUrl||"");
+ if(source.startsWith("https://www.skylinewebcams.com/"))return "skyline";
+ if(source.startsWith("https://webcamera24.com/"))return "webcamera24";
+ return "independent";
+}
+const SKYLINE_APPROVED=new Map([
+ [WORLD_CAMERAS_SKYLINE_URL,WORLD_CAMERAS_ALTERNATIVE_ID],
+ ["https://www.skylinewebcams.com/en/webcam/china/shanghai/shanghai/skyline-of-shanghai.html","skyline-shanghai"],
+ ["https://www.skylinewebcams.com/en/webcam/united-states/new-york/new-york/times-square.html","skyline-times-square"]
+]);
+const WEB_CAMERA24_APPROVED=new Set([
+ "https://webcamera24.com/pt/camera/usa/elboroom-bar-band-cam/",
+ "https://webcamera24.com/pt/camera/japan/ikuno-korea-town/",
+ "https://webcamera24.com/pt/camera/thailand/nanai-road-cam/",
+ "https://webcamera24.com/pt/camera/kenya/porini-rhino-camp-waterhole-ol-pejeta/",
+ "https://webcamera24.com/pt/camera/usa/fort-lauderdale-beach-bar-interior/",
+ "https://webcamera24.com/pt/camera/ukraine/maidan-nezalezhnosti/",
+ "https://webcamera24.com/pt/camera/norway/vangslia-oppdal/"
+]);
 export const WORLD_CAMERAS_HOME="https://camerasdomundo.com/";
 export const WORLD_CAMERAS_INTERNATIONAL="https://camerasdomundo.com/en/";
 const plain=s=>String(s??"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
@@ -65,11 +117,13 @@ export function validatePublicCamera(camera){
  try{
   const url=new URL(camera.sourceUrl);
   const recognized=["camerasdomundo.com","africam.com"].includes(url.hostname);
-  // Exact published Skyline page ONLY, not an arbitrary stream or host path.
-  const skyline=url.href===WORLD_CAMERAS_SKYLINE_URL&&
-   camera.id===WORLD_CAMERAS_ALTERNATIVE_ID&&
+  // Strict curated page allowlists: no arbitrary user URL or IP camera scanning.
+  // Skyline live videos are link-only, according to its embedding policy.
+  const skyline=SKYLINE_APPROVED.get(url.href)===camera.id&&
    camera.embedId===null&&camera.publisher==="SkylineWebcams";
-  if(url.protocol!=="https:"||(!recognized&&!skyline)||
+  const webcamera24=WEB_CAMERA24_APPROVED.has(url.href)&&
+   camera.publisher==="Webcamera24";
+  if(url.protocol!=="https:"||(!recognized&&!skyline&&!webcamera24)||
    url.username||url.password||url.port)return false;
  }catch{return false;}
  return camera.embedId===null||/^[a-zA-Z0-9_-]{11}$/.test(camera.embedId);
@@ -77,14 +131,16 @@ export function validatePublicCamera(camera){
 export function publicCameraEmbed(camera){
  if(!validatePublicCamera(camera)||!camera.embedId)return null;
  return "https://www.youtube-nocookie.com/embed/"+camera.embedId+
-  "?autoplay=1&mute=1&playsinline=1&rel=0";
+  (cameraProvider(camera)==="webcamera24"?
+   "?autoplay=1&mute=1&playsinline=1&rel=0&enablejsapi=1":
+   "?autoplay=1&mute=1&playsinline=1&rel=0");
 }
-export function findPublicCameras({search="",country="",category="",region=""}={}){
+export function findPublicCameras({search="",country="",category="",region="",provider=""}={}){
  const term=normalizeCameraText(search),nation=plain(country);
  return PUBLIC_WORLD_CAMERAS.filter(c=>validatePublicCamera(c)&&
   (!term||normalizeCameraText([c.name,c.city,c.country,c.region,c.category,c.publisher].join(" ")).includes(term))&&
   (!nation||plain(c.country)===nation)&&(!category||c.category===category)&&
-  (!region||c.region===region));
+  (!region||c.region===region)&&(!provider||cameraProvider(c)===provider));
 }
 export function parseWorldCameraCommand(message){
  const s=normalizeCameraText(message).replace(/^(?:jarvis|ultron)[ ,:.-]+/,"").replace(/[.!?]+$/,"").trim();
@@ -109,5 +165,6 @@ export function cameraDirectorySummary(){
  const countries=[...new Set(PUBLIC_WORLD_CAMERAS.map(c=>c.country))].sort();
  const regions=[...new Set(PUBLIC_WORLD_CAMERAS.map(c=>c.region))];
  return {indexed:PUBLIC_WORLD_CAMERAS.length,countries,regions,embedded:PUBLIC_WORLD_CAMERAS.filter(c=>c.embedId).length,
-  liveVerified:0,source:"Câmeras do Mundo / Africam / SkylineWebcams — fontes públicas externas"};
+  liveVerified:0,providerCatalogs:WORLD_CAMERAS_CATALOGS.length,
+  source:"Câmeras do Mundo / Africam / SkylineWebcams / Webcamera24 — fontes públicas externas"};
 }

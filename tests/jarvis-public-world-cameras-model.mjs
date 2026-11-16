@@ -1,13 +1,49 @@
 import assert from "node:assert/strict";
 import {PUBLIC_WORLD_CAMERAS,validatePublicCamera,publicCameraEmbed,
  findPublicCameras,parseWorldCameraCommand,cameraDirectorySummary,
- WORLD_CAMERAS_SKYLINE_URL,WORLD_CAMERAS_ALTERNATIVE_ID,getWorldCameraAlternative}
+ WORLD_CAMERAS_SKYLINE_URL,WORLD_CAMERAS_ALTERNATIVE_ID,getWorldCameraAlternative,
+ WORLD_CAMERAS_CATALOGS,CAMERA_PROVIDER_NAMES,cameraProvider}
  from "../modules/jarvis-public-world-cameras-model.js";
 assert.ok(PUBLIC_WORLD_CAMERAS.length>=10);
 assert.equal(PUBLIC_WORLD_CAMERAS.every(validatePublicCamera),true);
 assert.equal(new Set(PUBLIC_WORLD_CAMERAS.map(c=>c.id)).size,PUBLIC_WORLD_CAMERAS.length);
 const summary=cameraDirectorySummary();
 assert.equal(summary.indexed,PUBLIC_WORLD_CAMERAS.length);
+assert.equal(WORLD_CAMERAS_CATALOGS.length,2,"Both worldwide directories are available");
+assert.equal(summary.providerCatalogs,2);
+assert.ok(WORLD_CAMERAS_CATALOGS.some(p=>p.id==="skyline"&&
+ p.all==="https://www.skylinewebcams.com/en/webcam.html"));
+assert.ok(WORLD_CAMERAS_CATALOGS.some(p=>p.id==="webcamera24"&&
+ p.all==="https://webcamera24.com/pt/all-webcams/"&&
+ p.countries==="https://webcamera24.com/pt/countries/"&&
+ p.categories==="https://webcamera24.com/pt/categories/"));
+assert.equal(CAMERA_PROVIDER_NAMES.webcamera24,"Webcamera24");
+const w24=PUBLIC_WORLD_CAMERAS.filter(c=>cameraProvider(c)==="webcamera24");
+assert.ok(w24.length>=7);
+assert.ok(w24.every(c=>c.publisher==="Webcamera24"));
+assert.equal(findPublicCameras({provider:"webcamera24"}).length,w24.length);
+assert.ok(findPublicCameras({provider:"skyline"}).length>=3);
+assert.ok(findPublicCameras({search:"Osaka",provider:"webcamera24"}).length>=1);
+assert.ok(findPublicCameras({search:"Quênia",provider:"webcamera24"}).length>=1);
+assert.equal(findPublicCameras({search:"Quênia",provider:"skyline"}).length,0);
+const playable=w24.filter(c=>c.embedId);
+assert.ok(playable.length>=4);
+for(const cam of playable){
+ const url=publicCameraEmbed(cam);
+ assert.match(url,/^https:\/\/www\.youtube-nocookie\.com\/embed\/[a-zA-Z0-9_-]{11}\?/);
+ assert.ok(url.includes("mute=1"),"Every Webcamera24 player starts muted");
+ assert.ok(url.includes("enablejsapi=1"),"Manual YouTube sound control is available");
+ assert.ok(url.includes("playsinline=1"));
+}
+assert.equal(w24.filter(c=>!c.embedId).every(c=>publicCameraEmbed(c)===null),true);
+assert.equal(PUBLIC_WORLD_CAMERAS.filter(c=>cameraProvider(c)==="skyline")
+ .every(c=>publicCameraEmbed(c)===null),true);
+assert.equal(validatePublicCamera({...w24[0],sourceUrl:
+ "https://webcamera24.com/pt/camera/usa/invented-stream/"}),false,
+ "Provider host itself is NOT enough to allow arbitrary streams");
+assert.equal(validatePublicCamera({...w24[0],sourceUrl:
+ "http://webcamera24.com/pt/camera/usa/elboroom-bar-band-cam/"}),false);
+
 assert.equal(summary.liveVerified,0,"A published catalog is never evidence of a live signal");
 assert.ok(summary.countries.length>=9);
 const skyline=getWorldCameraAlternative();
