@@ -100,3 +100,49 @@ export function githubInspectionContext(result){
     "Esta inspeção NÃO clonou, executou, editou, implantou nem testou o projeto; escrita NÃO autorizada."
   ].join("\n");
 }
+
+/**
+ * A provider may ignore verified GitHub evidence and hallucinate "blocked".
+ * Replace ONLY demonstrably contradictory refusals with a bounded, factual
+ * summary of verified repository metadata. No pretend code execution.
+ */
+const normalizeReply=v=>String(v||"").normalize("NFD")
+  .replace(/[\\u0300-\\u036f]/g,"").toLowerCase();
+export function contradictsVerifiedGitHubInspection(text,inspection){
+  if(!inspection?.ok||inspection.verified!==true)return false;
+  const answer=normalizeReply(text);
+  return /(?:github|repositorio|repo)(?:.{0,100})(?:bloquead|indisponiv|inacessiv|sem acesso|nao consigo acessar|nao foi possivel acessar)/s.test(answer)
+    || /(?:nao (?:tenho|temos) acesso ao github|acesso ao github (?:esta )?bloqueado|precisamos acessar o github|nao (?:ha|temos) informacoes suficientes (?:para|sobre) (?:entender|analisar)|nao consigo acessar (?:o )?repositorio)/s.test(answer);
+}
+export function verifiedGitHubFallback(inspection){
+  if(!inspection?.ok||inspection.verified!==true)return null;
+  const names=new Set((inspection.files||[]).map(f=>f.path));
+  const layers=[];
+  if(["index.html","script.js","style.css"].some(p=>names.has(p)))
+    layers.push("Interface web: "+["index.html","script.js","style.css"].filter(x=>names.has(x)).join(", "));
+  if(names.has("modules"))layers.push("Módulos de interface e integração: pasta modules/");
+  if(names.has("backend"))layers.push("Servidor e APIs: pasta backend/");
+  if(names.has("android-bridge"))layers.push("Integração Android: pasta android-bridge/");
+  if(names.has("tests"))layers.push("Testes: pasta tests/");
+  if(names.has(".github"))layers.push("Automação de CI/CD: pasta .github/");
+  const advice=[
+    "Centralizar contratos entre frontend, backend e dispositivos, com erros de rede identificáveis.",
+    "Separar autenticação e permissões de dados não confiáveis, como respostas de IA e arquivos.",
+    "Adicionar testes de integração para comandos, visualizações e fluxos de falha no celular."
+  ];
+  const lines=[
+    "A consulta pública à API do GitHub CONFIRMOU o repositório "+inspection.repository+
+    " ("+inspection.url+"). Não há evidência de acesso bloqueado nesta leitura.",
+    "Branch padrão: "+(inspection.defaultBranch||"não informada")+
+      ". Última atualização registrada: "+(inspection.pushedAt||"não informada")+"."
+  ];
+  if(inspection.rootStatus==="verified")lines.push("Estrutura identificada na raiz: "+
+    ((inspection.files||[]).map(x=>x.path).slice(0,35).join(", ")||"nenhum arquivo listado")+".");
+  else lines.push("O GitHub confirmou o repositório, mas a listagem da raiz não pôde ser verificada.");
+  if(layers.length)lines.push("Arquitetura aparente: "+layers.join("; ")+".");
+  lines.push("Melhorias prioritárias a validar após leitura aprofundada: "+
+    advice.map((v,i)=>(i+1)+") "+v).join(" "));
+  lines.push("Limite desta análise: somente metadados públicos, a raiz e parte do README; "+
+    "não houve acesso a arquivos privados, execução do projeto, auditoria completa nem deploy.");
+  return lines.join("\\n\\n");
+}
