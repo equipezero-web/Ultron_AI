@@ -113,10 +113,10 @@ try{
   assert.match(derived.text,/NÃO é|NÃO corroborad|Não há confirmação/i);
   assert.equal(derived.state.ownSensorsConnected,false);
   assert.equal(derived.state.backendVerified,false);
-  assert.equal(derived.json.reports.length,2);
+  assert.equal(derived.json.reports.length,proof.count+1);
   await page.reload({waitUntil:"domcontentloaded"});
   await page.waitForFunction(()=>window.ULTRON_DATA_INTELLIGENCE?.state);
-  assert.equal(await page.evaluate(()=>window.ULTRON_DATA_INTELLIGENCE.history().length),2);
+  assert.equal(await page.evaluate(()=>window.ULTRON_DATA_INTELLIGENCE.history().length),proof.count+1);
   assert.equal(await page.evaluate(()=>window.ULTRON_DATA_INTELLIGENCE.latest.kind),"numerical-forecast");
   assert.equal(await page.evaluate(()=>document.querySelector(".jarvis-data-evidence")?.isConnected||false),false,
    "Prior report must not appear as live data on a fresh page");
