@@ -305,7 +305,7 @@ function install() {
       return {ok:false,error:String(error?.message||error)};
     }
   }
-  function close(){
+  function closeExplorer(){
     panel.hidden=true;clearPreview();
     return {ok:true,message:"Explorador do celular fechado. Autorização preservada até a revogação no Android."};
   }
@@ -322,7 +322,7 @@ function install() {
     if(item.directory)return openFolder(safePath(item.path));
     return retrieve(safePath(item.path),item);
   }
-  window.JARVIS_PHONE_FILES={open,openFolder,close,parent,openFile,get state(){return{visible:!panel.hidden,device:device?.deviceName||null,
+  window.JARVIS_PHONE_FILES={open,openFolder,close:closeExplorer,parent,openFile,get state(){return{visible:!panel.hidden,device:device?.deviceName||null,
     path,readOnly:true,maxTransferBytes:TRANSFER_MAX,persistentSupported:true};}};
 }
 
