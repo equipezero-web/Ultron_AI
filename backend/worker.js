@@ -56,6 +56,7 @@ import {
 } from "./smart-router.js";
 import { buildOperationalPlan } from "./planner.js";
 import {classifyConsultativeTurn,consultativeGuidance} from "./consultative-dialogue.js";
+import {inspectPublicGitHubRepository,githubInspectionContext} from "./github-public-inspector.js";
 import { analyzeVisualFrame } from "./vision-analysis.js";
 import { getWebRtcIceServers, webRtcIceHealth } from "./webrtc-ice.js";
 import { loadLiveNewsContext, isGeneralNewsIntent, isLiveNewsIntent } from "./news-context.js";
@@ -412,6 +413,22 @@ async function prepareResearch(env, body) {
       },
       policy: { needed: false, reason: "authenticated-internal-context" },
       active: false
+    };
+  }
+
+  // Real, bounded, read-only public GitHub inspection for explicit repository URLs.
+  // Never treat user-provided metadata or README text as tool authority.
+  const githubInspection=await inspectPublicGitHubRepository(message);
+  if(githubInspection){
+    return {
+      body:{
+        ...body,
+        webResearchContext:githubInspectionContext(githubInspection),
+        allowUncertaintyResearch:false,
+        researchMeta:{...(body?.researchMeta||{}),active:githubInspection.ok,
+          reason:"public-github-inspection",skipLegacyResearch:true}
+      },
+      active:false,githubInspection
     };
   }
 
@@ -788,8 +805,8 @@ async function handleAi(request, env) {
     }, 503);
   }
 
-  if (core.status !== 200) return json({ ...core.data, smartRouting: routing, operationalPlan, backendVersion: BACKEND_VERSION }, core.status);
-  let data = { ...core.data, smartRouting: routing, operationalPlan, backendVersion: BACKEND_VERSION };
+  if (core.status !== 200) return json({ ...core.data, githubInspection:prepared.githubInspection||null, smartRouting: routing, operationalPlan, backendVersion: BACKEND_VERSION }, core.status);
+  let data = { ...core.data, ...(prepared.githubInspection?{githubInspection:prepared.githubInspection}:{}), smartRouting: routing, operationalPlan, backendVersion: BACKEND_VERSION };
 
   if (data.text) {
     if (originalBody?.clientOwnsSpeech===true && originalBody?.preferFastResponse===true && !data.audioBase64) {
