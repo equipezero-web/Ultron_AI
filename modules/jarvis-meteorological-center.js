@@ -214,8 +214,8 @@ if(stage){
    if(!report.ok){note(report.error+" Nenhum valor fictício será exibido.");reference.append(sourceLink(METEO_VIEWERS.apac,"Consultar serviço oficial APAC"));return;}
    lastReport=report;const analysis=renderApacUnderstanding(report);
    const evidence=registerApac(report);
-   const detail=evidence?renderEvidenceDetails(evidence):null;
-   if(detail)content.append(detail);
+   const evidencePanel=evidence?renderEvidenceDetails(evidence):null;
+   if(evidencePanel)content.append(evidencePanel);
    else note("A origem das observações não pôde ser validada para o relatório J.A.R.V.I.S.");
    const summary=note("Os pontos mostram medidores de chuva. Clique em um ponto ou nome de estação para ver o total em milímetros.");
    summary.setAttribute("data-meteo-provenance","observed");
