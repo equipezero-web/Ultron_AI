@@ -173,6 +173,12 @@ public class BridgeService extends Service {
                     result.put("action", action);
                     break;
 
+                case "files.list":
+                case "files.read":
+                    result = RemoteFiles.execute(this, command, payload);
+                    success = result.optBoolean("ok", false);
+                    break;
+
                 case "app.open":
                     success = openApp(payload.optString("packageName"));
                     result.put("opened", success);

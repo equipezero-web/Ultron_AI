@@ -61,6 +61,8 @@ const ALLOWED_COMMANDS = new Set([
   "device.status",
   "notification.push",
   "app.open",
+  "files.list",
+  "files.read",
   "tv.status",
   "tv.power.on",
   "tv.power.off",
@@ -331,6 +333,16 @@ export async function enqueueCommand(
     return { ok: false, error: "Dispositivo não encontrado ou não autorizado." };
   }
 
+  if (normalizedCommand.startsWith("files.") && device.device_type !== "mobile") {
+    return { ok: false, error: "Arquivos remotos exigem um celular autorizado." };
+  }
+
+  if (normalizedCommand.startsWith("files.") &&
+      (!/^[0-9]{8}$/.test(String(payload?.accessCode || "")) ||
+       !["files.list","files.read"].includes(normalizedCommand))) {
+    return { ok: false, error: "PIN temporário de arquivos obrigatório." };
+  }
+
   if (normalizedCommand.startsWith("tv.") && device.device_type !== "tv" && device.device_type !== "mobile") {
     return { ok: false, error: "Este dispositivo não pode receber comandos de TV." };
   }
@@ -466,7 +478,9 @@ export async function completeCommand(
   const finalStatus = ["completed", "failed"].includes(status) ? status : "failed";
   const update = await env.ULTRON_DB.prepare(
     `UPDATE device_commands
-        SET status = ?, result_json = ?, completed_at = CURRENT_TIMESTAMP
+        SET status = ?, result_json = ?,
+            payload_json = CASE WHEN command LIKE 'files.%' THEN '{}' ELSE payload_json END,
+            completed_at = CURRENT_TIMESTAMP
       WHERE id = ? AND device_id = ? AND status = 'claimed'
         AND created_at > datetime('now', ?)`
   )

@@ -1,0 +1,83 @@
+/* J.A.R.V.I.S. // Android remote files integrated into the Neural terminal */
+body.jarvis-command-center .jarvis-phone-files{
+ box-sizing:border-box;width:100%;min-width:0;margin:0 0 12px;padding:13px;
+ border:1px solid rgba(236,196,119,.56);border-radius:13px;
+ background:linear-gradient(145deg,#0d1828,#050a14);color:#f5e9cc;
+ font:13px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;
+}
+body.jarvis-command-center .jarvis-phone-files[hidden],
+body.jarvis-command-center .jarvis-phone-files-preview[hidden],
+body.jarvis-command-center .jarvis-phone-files-nav button[hidden]{
+ display:none!important;
+}
+body.jarvis-command-center .jarvis-phone-files-head{
+ display:flex;align-items:center;justify-content:space-between;
+ gap:8px;flex-wrap:wrap;border-bottom:1px solid #765f3e;padding:0 0 10px;
+}
+body.jarvis-command-center .jarvis-phone-files-head strong{
+ font-size:14px;color:#f4cb76;letter-spacing:.05em;
+}
+body.jarvis-command-center .jarvis-phone-files p{
+ margin:10px 0;color:#d7e0e9;line-height:1.5;font-size:12px;
+}
+body.jarvis-command-center .jarvis-phone-files-auth,
+body.jarvis-command-center .jarvis-phone-files-nav{
+ display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0;
+}
+body.jarvis-command-center .jarvis-phone-files-auth input{
+ flex:1 1 175px;min-width:0;box-sizing:border-box;
+ border:1px solid #a78c5c;border-radius:8px;
+ background:#101b2b;color:#fff1d6;padding:12px;font-size:16px;min-height:44px;
+}
+body.jarvis-command-center .jarvis-phone-files button{
+ min-height:44px;cursor:pointer;touch-action:manipulation;
+ padding:10px 12px;border:1px solid #9d8052;
+ border-radius:8px;background:#17253a;color:#f2e5c7;font-weight:650;
+}
+body.jarvis-command-center .jarvis-phone-files button:disabled{
+ opacity:.55;cursor:wait;
+}
+body.jarvis-command-center .jarvis-phone-files .jarvis-phone-files-primary{
+ background:#e5bd72;color:#0b1622;border-color:#e5bd72;
+}
+body.jarvis-command-center .jarvis-phone-files-status[data-error="true"]{
+ color:#ffd2b9;
+}
+body.jarvis-command-center .jarvis-phone-files-crumb{
+ color:#f5d79b;overflow-wrap:anywhere;flex:1 1 100%;font:11px/1.4 monospace;
+}
+body.jarvis-command-center .jarvis-phone-files-list{
+ max-height:360px;overflow-y:auto;overscroll-behavior:contain;
+ display:grid;gap:5px;padding:6px 0;
+}
+body.jarvis-command-center .jarvis-phone-files .jarvis-phone-files-entry{
+ width:100%;display:flex;justify-content:space-between;gap:8px;
+ align-items:center;text-align:left;word-break:break-word;border-color:#3d4f62;
+ background:#0c1626;min-height:46px;
+}
+body.jarvis-command-center .jarvis-phone-files-entry strong{
+ font-size:12px;font-weight:600;color:#faf3e2;
+}
+body.jarvis-command-center .jarvis-phone-files-entry span{
+ color:#b9c8d4;white-space:nowrap;font-size:11px;
+}
+body.jarvis-command-center .jarvis-phone-files-preview{
+ border-top:1px solid #665333;margin-top:9px;padding-top:12px;
+ display:grid;gap:11px;overflow-wrap:anywhere;
+}
+body.jarvis-command-center .jarvis-phone-files-download{
+ color:#f6d08c;text-decoration:underline;font-weight:700;
+}
+body.jarvis-command-center .jarvis-phone-files-text{
+ max-height:320px;overflow:auto;white-space:pre-wrap;
+ background:#050b14;border:1px solid #293a4b;border-radius:7px;
+ color:#e8e8e8;padding:12px;font-size:12px;
+}
+body.jarvis-command-center .jarvis-phone-files-preview img{
+ display:block;max-width:100%;max-height:380px;object-fit:contain;margin:auto;
+}
+@media(max-width:560px){
+ body.jarvis-command-center .jarvis-phone-files{padding:10px;}
+ body.jarvis-command-center .jarvis-phone-files-auth button{width:100%;}
+ body.jarvis-command-center .jarvis-phone-files-list{max-height:50svh;}
+}

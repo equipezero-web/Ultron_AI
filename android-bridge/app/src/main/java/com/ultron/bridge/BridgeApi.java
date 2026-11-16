@@ -76,6 +76,8 @@ public final class BridgeApi {
         capabilities.put("speech.transcript");
         capabilities.put("camera.remote");
         capabilities.put("camera.webrtc");
+        capabilities.put("files.list");
+        capabilities.put("files.read");
         capabilities.put("tv.status");
         capabilities.put("tv.power.toggle");
         capabilities.put("tv.volume.set");

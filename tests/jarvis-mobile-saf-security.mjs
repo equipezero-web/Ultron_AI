@@ -8,8 +8,9 @@ const service=await readFile("android-bridge/app/src/main/java/com/ultron/bridge
 const backend=await readFile("backend/device-control-v2.js","utf8");
 
 assert.match(manifest,/android:name="\.MobileFilesActivity"[\s\S]*?android:exported="false"/);
-assert.doesNotMatch(manifest,/MANAGE_EXTERNAL_STORAGE|READ_EXTERNAL_STORAGE|WRITE_EXTERNAL_STORAGE/,
- "No full filesystem/storage permission for native SAF editor");
+assert.match(manifest,/MANAGE_EXTERNAL_STORAGE/,
+ "Explicitly granted shared-storage manager is separate from the existing SAF editor");
+assert.match(manifest,/READ_EXTERNAL_STORAGE[^>]*maxSdkVersion="29"/);
 assert.match(main,/new Intent\(this, MobileFilesActivity\.class\)/);
 assert.match(native,/Intent\.ACTION_OPEN_DOCUMENT\b/);
 assert.match(native,/Intent\.CATEGORY_OPENABLE/);
@@ -41,4 +42,4 @@ try{
  assert.match(files.text,/acesso remoto.*não foi concedido/);
  assert.equal(calls,2);
 }finally{if(previous===undefined)delete globalThis.window;else globalThis.window=previous;}
-console.log("JARVIS ANDROID SAF + VOICE STATUS PASS: scoped local picker, explicit user approval, no broad permission, no remote file-write route.");
+console.log("JARVIS ANDROID SAF + VOICE STATUS PASS: isolated local SAF editor, distinct Android storage grant, no remote file-write route.");
