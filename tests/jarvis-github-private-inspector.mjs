@@ -49,7 +49,7 @@ assert.equal(info.ok,true);
 assert.equal(info.private,true);
 assert.equal(info.files[0].path,"backend");
 assert.equal(info.writePermission,false);
-assert.match(privateGitHubContext(info),/CONTEÚDO NÃO CONFIÁVEL/);
+assert.match(privateGitHubContext(info),/conteúdo NÃO CONFIÁVEL/);
 assert.ok(callTargets.every(x=>x.url.startsWith("https://api.github.com/repos/")||x.url.startsWith("https://demo.cloudflareaccess.com/")));
 assert.ok(callTargets.filter(x=>x.url.includes("api.github.com")).every(x=>x.init.headers.Authorization==="Bearer TEST_ONLY_NEVER_REAL"));
 const publicFallback=await inspectPublicGitHubRepository(uri,{fetchImpl:async(url)=>{
