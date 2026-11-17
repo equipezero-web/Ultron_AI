@@ -4,10 +4,118 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-16T19:51:49.587Z",
-  "oldestEventAt": "2026-11-15T20:03:00.000Z",
-  "windowStartAt": "2026-11-15T19:51:49.587Z",
+  "updatedAt": "2026-11-17T02:44:10.581Z",
+  "oldestEventAt": "2026-11-16T06:40:44.000Z",
+  "windowStartAt": "2026-11-16T02:44:10.581Z",
   "events": [
+    {
+      "id": "event-7f53432",
+      "category": "clima",
+      "title": "El Niño se aproxima do pico e Inmet aponta quando fenômeno deve começar a perder força",
+      "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxQLWtqMl9pTjJuQnJRNHI1bUZCRmlYQ1Z2TjVpY0pGSEw3MG12T0JfRlpuWmw3eUJ5TUdZdFl5dFdONlgzcUZYT0l4QnQ5NWVaeVd5U2JvLWR0NGtYNGRET1VwcmZBYlJLVUQ1bXFZcmdqdC0ybmstVFlobm0wYUJVdm9DVHNQTlEzTGc4MERpdGRYXzVWTmJmWVFkSUVpVDcyX1ExTU4zb2hLRnk4ampWUHBRcUxVZ0c2Yy1Ydg",
+      "description": "El Niño se aproxima do pico e Inmet aponta quando fenômeno deve começar a perder força &nbsp;&nbsp; NSC Total",
+      "imageUrl": null,
+      "source": "NSC Total",
+      "publishedAt": "2026-11-16T23:56:29.000Z",
+      "firstSeenAt": "2026-11-17T02:44:10.581Z",
+      "lastSeenAt": "2026-11-17T02:44:10.581Z"
+    },
+    {
+      "id": "event-cd7a5c27",
+      "category": "brasil",
+      "title": "Brasil assina na COP31 pacto global por IA sustentável e empregos",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/brasil-assina-na-cop-31-pacto-global-por-ia-sustentavel-e-empregos",
+      "description": "O Brasil aderiu, nesta segunda-feira (16), durante a COP31, em Antália, na Turquia, a um compromisso internacional para promover o desenvolvimento sustentável da inteligência artificial (IA). O acordo busca equilibrar inovação tecnológica, preservação ambiental e proteção dos empregos diante dos impactos da automação. O país oficializou sua participação no Compromisso de Antália sobre Inteligência Artificial (Antalya Pledge on Artificial Intelligence, em inglês), iniciativa lançada pela Presidência turca em parceria com a União Internacional de Telecomunicações (UIT) e a Organização das Nações Unidas para a Educação, a Ciência e a Cultura (Unesco). Notícias relacionadas: COP31: negociações avançam, mas financiamento é desafio para 2ª semana. Regulação de big techs pode reduzir custos em até R$ 50 bilhões. O pacto prevê o incentivo ao uso responsável da tecnologia, com atenção aos impactos ambientais dos centros de processamento de dados, especialmente o consumo de energia e água, e às mudanças provocadas pela automação no mercado de trabalho. Proteção ao trabalhador Representando o B",
+      "imageUrl": "https://imagens.ebc.com.br/GLj8-I0nD8Og3lmI5sug5ufbegM=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/15/cop31_negociacoes_avancam_mas_financiamento_e_desafio_para_2a_semana02.jpg?itok=XiuCKwDv",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-16T23:45:00.000Z",
+      "firstSeenAt": "2026-11-17T02:44:10.581Z",
+      "lastSeenAt": "2026-11-17T02:44:10.581Z"
+    },
+    {
+      "id": "event-a7ba546",
+      "category": "mundo",
+      "title": "Principais notícias do mundo na noite de hoje (16)",
+      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxOc3A0eXVkQzgydUZlbWZMZmxTNkE0cFNOcE5LaWJmNVlCZ1J1YXFERFZfbkJ4QmF6U1R6UzNyODltUjhtMzhRU05lVTluYmNvamZRbm0xdVI3bWo2QlUzakpHRlZyb0ZSYkdKT25jUTJFbl91aktTSWI3OVIzTjFLS0dsWjBUYU82TW96dzhXZk4wQWRyWE1RQUxBVjF1d2l0SnBpS2dzdlN5X0NZ",
+      "description": "Principais notícias do mundo na noite de hoje (16) &nbsp;&nbsp; Tribuna do Sertão",
+      "imageUrl": null,
+      "source": "Tribuna do Sertão",
+      "publishedAt": "2026-11-16T23:32:00.000Z",
+      "firstSeenAt": "2026-11-17T02:44:10.581Z",
+      "lastSeenAt": "2026-11-17T02:44:10.581Z"
+    },
+    {
+      "id": "event-427a22ba",
+      "category": "brasil",
+      "title": "Dólar sobe para R$ 5,77 e fecha no maior valor desde abril de 2025",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/dolar-sobe-para-r-577-e-fecha-no-maior-valor-desde-abril-de-2025",
+      "description": "O mercado financeiro brasileiro teve uma segunda-feira (16) de forte pressão sobre os ativos. O dólar subiu mais de 2%, aproximou-se de R$ 5,80 e fechou no maior nível em cerca de um ano e meio. Na bolsa, o Ibovespa recuou quase 2%, aos 169 mil pontos, enquanto o petróleo registrou perdas superiores a 3% no mercado internacional. Notícias relacionadas: Mercado reduz projeções para inflação e crescimento econômico em 2026. A expectativa em relação à política fiscal brasileira, a indefinição da equipe econômica do próximo mandato e o cenário externo desfavorável marcaram o desempenho dos mercados. Números do dia Dólar comercial: R$ 5,778 (+2,17%); Dólar em novembro: alta acumulada de 6,12%. Dólar em 2026: valorização de 5,26%. Ibovespa: 169.295,41 pontos (-1,83%); Volume financeiro da B3: R$ 27,43 bilhões; Petróleo tipo Brent: US$ 92,44 o barril (-3,55%); Petróleo tipo WTI: US$ 85,72 o barril (-3,21%). Câmbio O dólar comercial avançou 2,17% nesta segunda-feira, encerrando a sessão cotado a R$ 5,778. Pouco antes das 16h, a moeda estadunidense chegou a R$ 5,794, aproximando-se da marca d",
+      "imageUrl": "https://imagens.ebc.com.br/qgr1uCa7n_TP2WKn5oQPmLd6V2M=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/07/23/2026-07-23t123806z_1_lynxmpem6m19r_rtroptp_4_usa-trump-tariffs-indonesia.jpg?itok=6u1xpzSK",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-16T23:06:00.000Z",
+      "firstSeenAt": "2026-11-17T02:44:10.581Z",
+      "lastSeenAt": "2026-11-17T02:44:10.581Z"
+    },
+    {
+      "id": "event-f6f888c0",
+      "category": "brasil",
+      "title": "Regulação de big techs pode reduzir custos em até R$ 50 bilhões",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/regulacao-de-big-techs-pode-reduzir-custos-em-ate-r-50-bilhoes",
+      "description": "A regulação concorrencial das big techs , grandes plataformas digitais, pode gerar uma redução de custos entre R$ 15,3 bilhões e R$ 50,6 bilhões por ano no Brasil, segundo estudo da Secretaria de Reformas Econômicas do Ministério da Fazenda divulgado nesta segunda-feira (16). A estimativa considera os efeitos da ampliação da concorrência sobre preços e taxas cobrados por empresas de tecnologia. A proposta, que mira gigantes como Google, Meta, Amazon e Microsoft, está em tramitação na Câmara dos Deputados e pode ser votada ainda neste ano. Impacto econômico Notícias relacionadas: Eleitores dos EUA derrotam big techs e ações de IA despencam. Big techs descumprem regras eleitorais no dia da votação, diz estudo. Elaborado pela Secretaria de Reformas Econômicas, o estudo analisa o Projeto de Lei 4.675/2025 , de iniciativa do governo federal. A projeção representa um benefício equivalente a 0,1% a 0,4% do Produto Interno Bruto (PIB), ou entre R$ 70 e R$ 240 por habitante ao ano. O levantamento considera 13 segmentos com maior exposição a riscos concorrenciais, dentro de um universo de plat",
+      "imageUrl": "https://imagens.ebc.com.br/VC_z2TCWWJP7a1EfRpj74KQwdWM=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/fachada-ministerio_mcamgo_abr_100420231818-28.jpg?itok=nkeYQSLB",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-16T22:59:00.000Z",
+      "firstSeenAt": "2026-11-17T02:44:10.581Z",
+      "lastSeenAt": "2026-11-17T02:44:10.581Z"
+    },
+    {
+      "id": "event-168091a3",
+      "category": "santa-catarina",
+      "title": "Calor de até 35°C antecede temporais e chuva forte em Santa Catarina no fim da semana",
+      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxNa1hmOTdiOS1XSVpGcUtMN0JBX3dOSHE3OVZvanZiel84ZVNzVHBqbTcxQ3haSElRMkNMV1l1UzE3cTZBNVRyUHRMRGFUSFNmLTlWYUhldTFPTXFMYk5tLVpoUnZaUkdhNVJMY1F4a2FaTlhDN2ExNU9MUEVBVlZnSmxyYVRhZERPb0VZSEZZVllnRkRLRGVXUC10a1VxdUxuYmMzQ3dwRUprY2xDX2oxRzFWQ3FOcnFxNWRuSDF3",
+      "description": "Calor de até 35°C antecede temporais e chuva forte em Santa Catarina no fim da semana &nbsp;&nbsp; No Ponto SC",
+      "imageUrl": null,
+      "source": "No Ponto SC",
+      "publishedAt": "2026-11-16T22:38:34.000Z",
+      "firstSeenAt": "2026-11-17T02:44:10.581Z",
+      "lastSeenAt": "2026-11-17T02:44:10.581Z"
+    },
+    {
+      "id": "event-ced36b94",
+      "category": "brasil",
+      "title": "CDH do Senado pede federalização do desaparecimento de crianças no MA",
+      "url": "https://agenciabrasil.ebc.com.br/direitos-humanos/noticia/2026-11/cdh-do-senado-pede-federalizacao-do-desaparecimento-de-criancas-no-ma",
+      "description": "A Comissão de Direitos Humanos (CDH) do Senado vai pedir a federalização das investigações sobre o desaparecimento de duas crianças, em 4 de janeiro de 2026, no quilombo São Sebastião dos Pretos, em Bacabal, no Maranhão . A informação foi dada por representantes do colegiado que participaram de uma diligência sobre o caso no final de semana, quando ouviram autoridades que estão envolvidas nas investigações e também Clarice Cardoso, a mãe das crianças Ágatha Isabelly, de 6 anos, e Allan Michael, de 4 anos. Notícias relacionadas: Bullying: após morte, família e especialistas pedem rigor de escolas. Coritiba lança camisa com Enedina Marques em alusão ao 20 de novembro. Apoio social, cultura e educação levaram jovem a abandonar crime. Durante a diligência, a presidente da CDH, senadora Damares Alves (Republicanos-DF), disse que a comissão vai se reunir, ainda esta semana, com o ministro da Justiça e Segurança Pública, Wellington César Lima e Silva, para pedir a federalização do caso. O mecanismo, chamado de Incidente de Deslocamento de Competência (IDC), é um instrumento previsto na Cons",
+      "imageUrl": "https://imagens.ebc.com.br/oNPRFtcnQ55uqdnMnxTAKpIePoM=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/16/hxqzeymxuaauc10.jpg?itok=bv02Gwe_",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-16T21:55:00.000Z",
+      "firstSeenAt": "2026-11-17T02:44:10.581Z",
+      "lastSeenAt": "2026-11-17T02:44:10.581Z"
+    },
+    {
+      "id": "event-e56e720f",
+      "category": "mundo",
+      "title": "Embaixada dos EUA alerta contra possíveis atentados na Europa durante festas de fim de ano",
+      "url": "https://news.google.com/rss/articles/CBMikAJBVV95cUxNYWZpSUNuUlY2UGd0LXp2c1IydGVyNzdiRGQ0T0J4UVdvdG1WX1lwVmY2RVJ4Snhvby15RVBiY3VFaU1oR3pheGszYV9fVFhTVk8tVHZIOXR3cTM4UktXdkpDX0xnek9iSFNuUjZyVGo3REdqRDRVczVwTjE0OGd1VHl5N05Dd0FPSEtIb2E4ekdDYzgtcTlDaGNnUzlDR2xJWXBOenBlNzhsZ0ppWk9WOV84aUVzcTE5cUxMQ2pGeHAxVWRZbVBCalRMODhSOEpUMlA4WUV4RXNraDdncmFKSk5xVkRSSm1KUVJWM3JabXVKa0VTN2Q0Vms1VWpXRS1wX0FMNjEtU2hWWEh1VUxjUw",
+      "description": "Embaixada dos EUA alerta contra possíveis atentados na Europa durante festas de fim de ano &nbsp;&nbsp; Terra",
+      "imageUrl": null,
+      "source": "Terra",
+      "publishedAt": "2026-11-16T21:04:00.000Z",
+      "firstSeenAt": "2026-11-17T02:44:10.581Z",
+      "lastSeenAt": "2026-11-17T02:44:10.581Z"
+    },
+    {
+      "id": "event-ea5e2466",
+      "category": "mundo",
+      "title": "Falha técnica afeta serviços de grandes bancos dos Estados Unidos",
+      "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxPTFB1ZnFQdld0Wm9zUHZEZHBTbWEzc2Vkb21fNnRreFRqYW9pcDFrVWdOUXAyUGxUOWtJUzVZWFp5b1QtZ19HRklpcWNMRWpIcXM2emlfeWZaTzBKQkUzOUVrdmlsTGJNLXMtUm5malZlcmczeEduaG9LSjVPdUN3dlVod2JHTU9RSXlDYUJTaEkzOGxHRkE4aFZwckRxQ2RzeHcwQUFrRFMxOExmaFB5eEdjT1MtSUtiMkNfS1diNTNHMFhM0gHTAUFVX3lxTE9nYmlVWTNnUG1VdTJXcDUxTW96dWZ2TExTazR3ckdUaEJoeDI4OGJYVEljWjBjdFQtbjE1Mk0tNl9kUHlYUVBDa18zWkdTcEZOSmJpNENodDMyRWNFTm16X294U2EyTnlSRWlJSFF1TXNIc0JhV2d5Ul83OWZlU0Q4eUxMR0ZnaWhQOVNXS0VibnFTUFR3Q1BVd2pvQVc4cG00VEZ6bjNacU1ocXF5dXBXZ3VLUUdRXzFwYlI3LUVDc0RhNkRkLUhXN04wYTlFTmVhOWc",
+      "description": "Falha técnica afeta serviços de grandes bancos dos Estados Unidos &nbsp;&nbsp; G1",
+      "imageUrl": null,
+      "source": "G1",
+      "publishedAt": "2026-11-16T20:48:14.000Z",
+      "firstSeenAt": "2026-11-17T02:44:10.581Z",
+      "lastSeenAt": "2026-11-17T02:44:10.581Z"
+    },
     {
       "id": "event-92bff8aa",
       "category": "mundo",
@@ -54,7 +162,7 @@
       "source": "Deolhonailha",
       "publishedAt": "2026-11-16T18:34:15.000Z",
       "firstSeenAt": "2026-11-16T19:51:49.587Z",
-      "lastSeenAt": "2026-11-16T19:51:49.587Z"
+      "lastSeenAt": "2026-11-17T02:44:10.581Z"
     },
     {
       "id": "event-16a7c951",
@@ -90,7 +198,7 @@
       "source": "Revista Cultivar",
       "publishedAt": "2026-11-16T18:16:23.000Z",
       "firstSeenAt": "2026-11-16T19:51:49.587Z",
-      "lastSeenAt": "2026-11-16T19:51:49.587Z"
+      "lastSeenAt": "2026-11-17T02:44:10.581Z"
     },
     {
       "id": "event-6f258e5f",
@@ -103,6 +211,18 @@
       "publishedAt": "2026-11-16T18:11:00.000Z",
       "firstSeenAt": "2026-11-16T19:51:49.587Z",
       "lastSeenAt": "2026-11-16T19:51:49.587Z"
+    },
+    {
+      "id": "event-cd21a75e",
+      "category": "santa-catarina",
+      "title": "Defesa Civil prevê temporais e chuva intensa no Extremo-Oeste entre terça e quarta",
+      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxQODZ6a19Td04tUnBWUEVrWWwzd1dRUXdfaWxpbXY5U3p3bnBkcUJEaWFvVGNJOVdvZW8zYzdFcXZZbUNlMkprNDBqcFUwZjJONmFaSDZLOE9TVHdCdVpySUdTQnYycnFZeFpOTHIyOGJVQmFHc1oxX204b0FOdEhvX0d2ZTJJZDR2WS1OUS1ZUUotZjRDSUlKV0hhS290TmlscUVySFRWSGY5VkgxamU2di0tVS1tOWJXM3RZSGFn",
+      "description": "Defesa Civil prevê temporais e chuva intensa no Extremo-Oeste entre terça e quarta &nbsp;&nbsp; Rede Peperi",
+      "imageUrl": null,
+      "source": "Rede Peperi",
+      "publishedAt": "2026-11-16T18:09:42.000Z",
+      "firstSeenAt": "2026-11-17T02:44:10.581Z",
+      "lastSeenAt": "2026-11-17T02:44:10.581Z"
     },
     {
       "id": "event-e8392bef",
@@ -150,7 +270,7 @@
       "source": "Saiba Já News",
       "publishedAt": "2026-11-16T15:28:53.000Z",
       "firstSeenAt": "2026-11-16T19:51:49.587Z",
-      "lastSeenAt": "2026-11-16T19:51:49.587Z"
+      "lastSeenAt": "2026-11-17T02:44:10.581Z"
     },
     {
       "id": "event-c4d72d16",
@@ -162,7 +282,7 @@
       "source": "Estadão",
       "publishedAt": "2026-11-16T15:17:56.000Z",
       "firstSeenAt": "2026-11-16T19:51:49.587Z",
-      "lastSeenAt": "2026-11-16T19:51:49.587Z"
+      "lastSeenAt": "2026-11-17T02:44:10.581Z"
     },
     {
       "id": "event-2161e714",
@@ -186,7 +306,7 @@
       "source": "Folha de S.Paulo",
       "publishedAt": "2026-11-16T10:24:00.000Z",
       "firstSeenAt": "2026-11-16T19:51:49.587Z",
-      "lastSeenAt": "2026-11-16T19:51:49.587Z"
+      "lastSeenAt": "2026-11-17T02:44:10.581Z"
     },
     {
       "id": "event-a7ca74a3",
@@ -199,6 +319,18 @@
       "publishedAt": "2026-11-16T09:28:51.000Z",
       "firstSeenAt": "2026-11-16T09:37:07.058Z",
       "lastSeenAt": "2026-11-16T09:37:07.058Z"
+    },
+    {
+      "id": "event-5354a58b",
+      "category": "europa",
+      "title": "Europa: novas rotas aéreas anunciadas para viagens em 2027 - Euronews",
+      "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNSlN1UVlKTzgtMjBIeDlKTHZYZk1LejZUQ2NLdlh6cmhSZjM2Ry10UkRWc2d0YVZ1cEFrcHhrckNqQm9sbG10S0F1emhJMHN1MzZpcTRYUHhlR1RncWlpeUF2TDZBSEVuR3J3aVpRZERySmpsWnMtdy1lQXBjZy1IVjExMUc4RzhKZDZMaHhraS1OY1VIeHdB",
+      "description": "Europa: novas rotas aéreas anunciadas para viagens em 2027 &nbsp;&nbsp; Euronews",
+      "imageUrl": null,
+      "source": "Euronews",
+      "publishedAt": "2026-11-16T09:24:33.000Z",
+      "firstSeenAt": "2026-11-17T02:44:10.581Z",
+      "lastSeenAt": "2026-11-17T02:44:10.581Z"
     },
     {
       "id": "event-354b4a3e",
@@ -259,174 +391,9 @@
       "publishedAt": "2026-11-16T06:40:44.000Z",
       "firstSeenAt": "2026-11-16T09:37:07.058Z",
       "lastSeenAt": "2026-11-16T09:37:07.058Z"
-    },
-    {
-      "id": "event-234d9e36",
-      "category": "santa-catarina",
-      "title": "Chuva causa alagamentos e deixa família desabrigada no Sul de SC",
-      "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxOZUFFUmRDUXM1Zjc4UmlYX3NWT1pHZ1h5a3BoaktvV2haZ0xOYnloLVRFWXBkUmlldFE2RjJVcmFBeHA4TngxSjBvR2VjZTRBMlVNNE5mdjRwV0ZEM1RYZlRXclVudm5WbjJPRzJIcFZaSC1WaHBIenBzeHZyaEVVckViNGxHbWNBV3RiMlBUSjFvZlJzbEhySzZfYXk",
-      "description": "Chuva causa alagamentos e deixa família desabrigada no Sul de SC &nbsp;&nbsp; Portal Engeplus",
-      "imageUrl": null,
-      "source": "Portal Engeplus",
-      "publishedAt": "2026-11-16T01:09:00.000Z",
-      "firstSeenAt": "2026-11-16T02:01:58.651Z",
-      "lastSeenAt": "2026-11-16T02:01:58.651Z"
-    },
-    {
-      "id": "event-d3aa8b4",
-      "category": "mundo",
-      "title": "Caso Nvidia põe governo Trump sob pressão por venda de chips à China",
-      "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxPSTVZYXZGY0ZRTEpxQlg1Mlh0bjFVRzdXa1E0c2xnUGFNYjVVN1d0cE9xY3MxX1hBVFlSMUp2YUg0QldjU1R5NmJQWnFDQ0F6b3I3Sk9nSHhSYmJaS3prM2taWi1SRUFBZk80NVUyQ3huVmJ6ZGpZbnJ2TWtlN0RmanR2ejZlanBZSV9RbUtVd0xuQ3lNenRLbTdJeFVVWkVWX2pJMXFaTVBVNmx5RmtybDJNVXJVYzRXamQ5Unl5dkZNYXgwaVZFa2hTVmdnNVBTcE9sbTFJZzZGUVk",
-      "description": "Caso Nvidia põe governo Trump sob pressão por venda de chips à China &nbsp;&nbsp; UOL Notícias",
-      "imageUrl": null,
-      "source": "UOL Notícias",
-      "publishedAt": "2026-11-16T01:03:06.000Z",
-      "firstSeenAt": "2026-11-16T02:01:58.651Z",
-      "lastSeenAt": "2026-11-16T02:01:58.651Z"
-    },
-    {
-      "id": "event-633179ee",
-      "category": "mundo",
-      "title": "IA fora de controle: agentes da OpenAI invadiram sistemas de outras empresas durante testes",
-      "url": "https://news.google.com/rss/articles/CBMi7wFBVV95cUxOVG4yYnBIMU16b0t3UVN1TEFDMDJfLVl6S1pMYWNFUkxHS1FzcW5XNTdjMGE4Z3hEejhyeUp6R2ZsWVdJbXQ0YkFsUUtpTnZRVnB6ajhXRGlzOHJKOWttWDlPcnJxZ2RhbFc3Si0xMzkzcHh4b0JOMG5xMElueFJxeUlfXzl1WDl6WlNkNXp5TnZrSDgwQ29jb2JGSHRDM1ZTd2ZmcDJYd1JDTGE2WWJwOHJxakd0SUlOQzQ1U29NZV9mOXRTTGRrZ0NKbW1kdE56N1FlcWFlWjV1MTI2dlNSNEk0aDI0UWttWUpnNy1xUdIB7wFBVV95cUxOVG4yYnBIMU16b0t3UVN1TEFDMDJfLVl6S1pMYWNFUkxHS1FzcW5XNTdjMGE4Z3hEejhyeUp6R2ZsWVdJbXQ0YkFsUUtpTnZRVnB6ajhXRGlzOHJKOWttWDlPcnJxZ2RhbFc3Si0xMzkzcHh4b0JOMG5xMElueFJxeUlfXzl1WDl6WlNkNXp5TnZrSDgwQ29jb2JGSHRDM1ZTd2ZmcDJYd1JDTGE2WWJwOHJxakd0SUlOQzQ1U29NZV9mOXRTTGRrZ0NKbW1kdE56N1FlcWFlWjV1MTI2dlNSNEk0aDI0UWttWUpnNy1xUQ",
-      "description": "IA fora de controle: agentes da OpenAI invadiram sistemas de outras empresas durante testes &nbsp;&nbsp; G1",
-      "imageUrl": null,
-      "source": "G1",
-      "publishedAt": "2026-11-16T00:28:40.000Z",
-      "firstSeenAt": "2026-11-16T02:01:58.651Z",
-      "lastSeenAt": "2026-11-16T02:01:58.651Z"
-    },
-    {
-      "id": "event-2ccdc44a",
-      "category": "mundo",
-      "title": "Principais notícias do mundo na noite de hoje (15)",
-      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQTzEwLTI5RFV0enFFdW0xbHF0QU90VVRWZjJTZm5Sa25QQWxxUG9QSGdBcFB3b1VGNXgzV2prNlhTZ21mQXh2STB1aHlsOEFqX2NCT0RnSTJLczMyN3hVYmdBb0dieDUzX0wtU3hsdnBiWFh6cFl6ODRTbS1SUkFleFpaUEltaEtjVWU1dzNrbWxFbnl5TENpbXNYQllzQmZhRTU2S1ZNTUNZWHFH",
-      "description": "Principais notícias do mundo na noite de hoje (15) &nbsp;&nbsp; Tribuna do Sertão",
-      "imageUrl": null,
-      "source": "Tribuna do Sertão",
-      "publishedAt": "2026-11-16T00:17:58.000Z",
-      "firstSeenAt": "2026-11-16T02:01:58.651Z",
-      "lastSeenAt": "2026-11-16T09:37:07.058Z"
-    },
-    {
-      "id": "event-dc83c878",
-      "category": "santa-catarina",
-      "title": "Defesa Civil alerta para temporais isolados no Oeste e Meio-Oeste de SC",
-      "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxNV29KMXFoU2dSalNVOXN6N19xTFRpME5wNXUwei1fV0lvaG50OU9vcjRyekE2ckpDdWJBRGdqTVE3eE9jZVFLTDM4eDN3YWZiT3ZvSU1hSXltNWxycXdpRnlvME84TlVQU3lUNVlSUUppb2ZXeFNJeVkxZGlCV2NaWXRpZ3NMeExWLWxoQi1lblpsRVltRF9KWnZfM00zbVpPZmRlUS1yUjlwbnlLX2hYMkJkQ0t2aWdFX3FubWprNDdHUF9rY052LWVHX2tTRGQt",
-      "description": "Defesa Civil alerta para temporais isolados no Oeste e Meio-Oeste de SC &nbsp;&nbsp; Diário do Iguaçu",
-      "imageUrl": null,
-      "source": "Diário do Iguaçu",
-      "publishedAt": "2026-11-15T23:48:00.000Z",
-      "firstSeenAt": "2026-11-16T02:01:58.651Z",
-      "lastSeenAt": "2026-11-16T02:01:58.651Z"
-    },
-    {
-      "id": "event-723bf4a1",
-      "category": "brasil",
-      "title": "Gabarito do Enem sai na quarta-feira, e resultado em 18 de janeiro",
-      "url": "https://agenciabrasil.ebc.com.br/educacao/noticia/2026-11/gabarito-do-enem-sai-na-quarta-feira-e-resultado-em-18-de-janeiro",
-      "description": "O gabarito oficial do Exame Nacional do Ensino Médio (Enem) de 2026 será publicado na próxima quarta-feira (18). Já o resultado do exame está previsto para ser divulgado pelo Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (Inep) no dia 18 de janeiro de 2027 . O segundo dia da aplicação da prova do Enem de 2026 terminou sem intercorrências graves neste domingo (15). Foi um “imenso sucesso”, avaliou o ministro da Educação, Leonardo Barchini. A prova contou com 90 questões de matemática e ciências da natureza. Notícias relacionadas: Alckmin destaca alcance do Enem e desafio logístico para a aplicação. Ao vivo: professores comentam 2º dia de prova na live Resenha do Enem. Enem 2026: um a cada cinco participantes faz prova como treineiro. “Tivemos um dia realmente de muita tranquilidade na aplicação do Enem, como deve ser, e parabenizo os funcionários do Inep”, destacou Barchini na coletiva de imprensa após a aplicação das provas. O ministro da Educação ainda comentou a repercussão do comentário que fez durante visita do vice-presidente Geraldo Alckmin, neste domin",
-      "imageUrl": "https://imagens.ebc.com.br/Knn4ZnRpdtilHhzFmdV6ItFbNQY=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/15/pzzb0368.jpg?itok=tr3TFdVu",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-15T23:43:00.000Z",
-      "firstSeenAt": "2026-11-16T02:01:58.651Z",
-      "lastSeenAt": "2026-11-16T02:01:58.651Z"
-    },
-    {
-      "id": "event-14c26503",
-      "category": "brasil",
-      "title": "Clubes, Ministério e FPF repudiam agressões em final Sub-20 feminina",
-      "url": "https://agenciabrasil.ebc.com.br/esportes/noticia/2026-11/clubes-ministerio-e-fpf-repudiam-agressoes-em-final-sub-20-feminina",
-      "description": "Horas após o término da decisão do Campeonato Paulista F Sub-20 Petrobras, que teve vitória da Ferroviária sobre o Corinthians, por 2 a 0 , os dois clubes e a Federação Paulista de Futebol (FPF) se manifestaram sobre a briga generalizada que aconteceu aos 31 minutos do segundo tempo . As agressões resultaram nas expulsões da atacante Miga, da Ferroviária, e da técnica Júlia Passero, do Corinthians. Soco em adversárias Notícias relacionadas: Inter conquista Copa do Brasil de futebol feminino sobre o Flamengo. Ferroviária bate Corinthians e é campeã do Paulista F Sub-20 Petrobras. Prêmio TV Brasil Petrobras Para Elas celebra futebol feminino do país. O lance começou em uma disputa de bola entre a atleta da Ferroviária e Gabi Jordi, do Timão. Miga acertou um soco na adversária. Depois, atletas dos dois times começaram um tumulto, até que a árbitra Jéssica Aparecida Milani apareceu para tentar conter os ânimos. Após se afastar da confusão, Miga ainda desferiu um soco na corinthiana Mel, que caiu no chão. &#039;Inadmissível&#039; Por meio das suas redes sociais, o Corinthians manifestou r",
-      "imageUrl": "https://imagens.ebc.com.br/nKd8DV0onkc7JKUjfG10IGL3Nyo=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/15/corinthiansxferroviaria03.jpg?itok=PyJxOSWP",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-15T22:14:00.000Z",
-      "firstSeenAt": "2026-11-16T02:01:58.651Z",
-      "lastSeenAt": "2026-11-16T02:01:58.651Z"
-    },
-    {
-      "id": "event-d4e762f8",
-      "category": "brasil",
-      "title": "Brasil encerra Grand Prix de Judô em 1º lugar no quadro de medalhas",
-      "url": "https://agenciabrasil.ebc.com.br/esportes/noticia/2026-11/brasil-encerra-grand-prix-de-judo-em-1o-lugar-no-quadro-de-medalhas",
-      "description": "Beatriz Souza (foto) e Guilherme Schmidt coroaram a participação do Brasil no Grand Prix de Judô de Zagreb, na Croácia, com mais dois ouros neste domingo (15), último dia da competição. No total, os brasileiros levaram cinco medalhas no Grand Prix, sendo quatro ouros e um bronze. Com os resultados, o Brasil terminou em primeiro no quadro de medalhas da competição. Notícias relacionadas: Morre Chiaki Ishii, primeiro medalhista olímpico do judô brasileiro . Brasil conquista bronze nos mundiais paralímpicos de judô e triatlo. Brasil é campeão geral do Grand Prix de judô no Peru com 11 medalhas. A campeã olímpica foi a melhor na categoria pesado (mais de 78 kg), enquanto Guilherme alcançou o mesmo feito na categoria médio (até 90 kg). No primeiro dia de competições, na sexta-feira (13), Ronald Lima foi vice-campeão na categoria meio-leve (até 66 kg). No mesmo dia, Shirlen Nascimento foi ouro (até 57kg) na categoria leve. No sábado, quem trouxe o ouro para o Brasil foi Nauana Silva, da categoria médio (até 70 kg).",
-      "imageUrl": "https://imagens.ebc.com.br/tlMdUzanvHvqJzos-zQMAYRH8kw=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/15/brasil_fecha_grand_prix_de_zagreb_de_judo_com_quatro_ouros.jpg?itok=pPu6OItm",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-15T21:55:00.000Z",
-      "firstSeenAt": "2026-11-16T02:01:58.651Z",
-      "lastSeenAt": "2026-11-16T02:01:58.651Z"
-    },
-    {
-      "id": "event-dfe8b6d1",
-      "category": "brasil",
-      "title": "Inter conquista Copa do Brasil de futebol feminino sobre o Flamengo",
-      "url": "https://agenciabrasil.ebc.com.br/esportes/noticia/2026-11/inter-conquista-copa-do-brasil-de-futebol-feminino-sobre-o-flamengo",
-      "description": "Nesta tarde ensolarada de domingo (15) no Beira-Rio, o torcedor do Internacional soltou o grito de \"é campeão!\" da Copa do Brasil de futebol feminino, com mais uma vitória sobre o Flamengo, por 1 a 0. A equipe já havia derrotado o adversário por 3 a 1, na partida de ida, e confirmou o primeiro título nacional da equipe feminina colorada . Notícias relacionadas: Festival de futebol feminino de várzea reúne 1,5 mil atletas em SP. Ferroviária bate Corinthians e é campeã do Paulista F Sub-20 Petrobras. Prêmio TV Brasil Petrobras Para Elas celebra futebol feminino do país. Pati Llanos, no segundo tempo, marcou o gol que não deixou dúvidas sobre quem sairia campeã. Público de 20 mil pessoas Com pouco mais de 20 mil pessoas presentes ao estádio, a atmosfera era muito positiva para as Gurias Coloradas. Em um primeiro tempo tenso, o Flamengo ameaçou primeiro. Jucinara recebeu próxima à marca do pênalti e chutou, para grande defesa de Gabi Barbieri. Na reta final, com os nervos mais controlados, o Internacional assumiu as rédeas da partida e chegou a marcar com Sole James, após bola levantada",
-      "imageUrl": "https://imagens.ebc.com.br/mi96baychNXr9JSIHt8y6BRrwVw=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/15/internacional_vence_flamengo_outra_vez_e_conquista_a_copa_do_brasil.jpg?itok=yUE5w_JK",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-15T21:42:00.000Z",
-      "firstSeenAt": "2026-11-16T02:01:58.651Z",
-      "lastSeenAt": "2026-11-16T02:01:58.651Z"
-    },
-    {
-      "id": "event-e742ea9c",
-      "category": "clima",
-      "title": "El Niño atinge pico até janeiro e deve chegar ao fim no outono de 2027",
-      "url": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxPaHBYQ0puZkhnVVVCT19GY19wOU9BTGR1cDk2WXEtdVdqR2dEczctRGtqaW5vZEl0V2RIY3hVcTVhZTE4RUVnOF9IX1pPU251UTZJV2U4RVpRY0R6LVBRTmYzWWdlT3RNT3A1VEdwYjlweHJzdE56S0tyNjVkanBYQUtreW83SjJnSG9RS0V1WFZucEhtNGpURFljcW8tNjZGVlAtMm9YRk9kbnVLUWUwaFQ4UVJfbm1LSHBMUnZsV3poelNhcEhZS0JZZVdOZU1VOWZYRzc4bFhvemRxSE54eENn",
-      "description": "El Niño atinge pico até janeiro e deve chegar ao fim no outono de 2027 &nbsp;&nbsp; UOL Notícias",
-      "imageUrl": null,
-      "source": "UOL Notícias",
-      "publishedAt": "2026-11-15T20:29:53.000Z",
-      "firstSeenAt": "2026-11-15T22:05:19.527Z",
-      "lastSeenAt": "2026-11-16T09:37:07.058Z"
-    },
-    {
-      "id": "event-fc98d2bb",
-      "category": "mundo",
-      "title": "Forças no Iêmen apoiadas por sauditas recuam no mar Vermelho, em vitória para houthis",
-      "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxQa3g2MlFIbFBkR0tacDgxQnRRNUVzQ0FuRHVBSGI0RHY5VXdIUFdhYy1jTXZZZjk2T252WWQzeHItbldodGtNWkQyV3Nndi1McjVwc0hfZ3kxbnBtNWtkOGVZZ3FXOGtpVFRpWWFkellFeG1tNVhkMEk5SVdPYjRIeUUtMWlXLUZhVjhJaHROZHdSeHU0Z3NYUVJ3REV4OUFIbmZIMU1ZQnRRUmtXNHo5aklxNmpqR0JBTF9YU21RUjFFNm40N3VlUENnOTlqVmM",
-      "description": "Forças no Iêmen apoiadas por sauditas recuam no mar Vermelho, em vitória para houthis &nbsp;&nbsp; Folha de S.Paulo",
-      "imageUrl": null,
-      "source": "Folha de S.Paulo",
-      "publishedAt": "2026-11-15T20:03:00.000Z",
-      "firstSeenAt": "2026-11-15T22:05:19.527Z",
-      "lastSeenAt": "2026-11-15T22:05:19.527Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-15T22:05:19.527Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 14,
-      "newArticles": 11,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "europa",
-        "asia"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
-    {
-      "at": "2026-11-16T02:01:58.651Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 14,
-      "newArticles": 10,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "asia"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-16T09:37:07.058Z",
       "ok": true,
@@ -458,26 +425,32 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-17T02:44:10.581Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 16,
+      "newArticles": 11,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "europa",
+        "asia"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
-  "checkCount": 4,
-  "lastSuccessfulAt": "2026-11-16T19:51:49.587Z",
+  "checkCount": 3,
+  "lastSuccessfulAt": "2026-11-17T02:44:10.581Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-16T19:51:49.587Z",
+      "checkedAt": "2026-11-17T02:44:10.581Z",
       "warnings": [
-        {
-          "id": "56430",
-          "title": "Tempestade",
-          "severity": "Perigo",
-          "phase": "previsto",
-          "regions": [],
-          "startsAt": "2026-11-17T00:00:00.000Z",
-          "endsAt": "2026-11-17T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
-        },
         {
           "id": "56432",
           "title": "Tempestade",
@@ -503,20 +476,7 @@
           "url": "https://avisos.inmet.gov.br/"
         },
         {
-          "id": "56425",
-          "title": "Vendaval",
-          "severity": "Perigo Potencial",
-          "phase": "vigente",
-          "regions": [
-            "DO"
-          ],
-          "startsAt": "2026-11-16T00:00:00.000Z",
-          "endsAt": "2026-11-17T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
-        },
-        {
-          "id": "56428",
+          "id": "56431",
           "title": "Tempestade",
           "severity": "Perigo Potencial",
           "phase": "previsto",
@@ -525,21 +485,8 @@
             "DO",
             "DE"
           ],
-          "startsAt": "2026-11-17T00:00:00.000Z",
-          "endsAt": "2026-11-17T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
-        },
-        {
-          "id": "56429",
-          "title": "Tempestade",
-          "severity": "Perigo Potencial",
-          "phase": "previsto",
-          "regions": [
-            "DO"
-          ],
-          "startsAt": "2026-11-17T00:00:00.000Z",
-          "endsAt": "2026-11-17T00:00:00.000Z",
+          "startsAt": "2026-11-18T00:00:00.000Z",
+          "endsAt": "2026-11-18T00:00:00.000Z",
           "source": "INMET",
           "url": "https://avisos.inmet.gov.br/"
         }
@@ -547,7 +494,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-16T19:51:49.587Z",
+      "checkedAt": "2026-11-17T02:44:10.581Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
