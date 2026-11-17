@@ -213,7 +213,7 @@ function explicitMemoryCandidate(message) {
 
 export async function loadMemoryContext(
   env,
-  { operatorId, conversationId, recentLimit = DEFAULT_RECENT_MESSAGES } = {}
+  { operatorId, conversationId, query = "", recentLimit = DEFAULT_RECENT_MESSAGES } = {}
 ) {
   if (!hasMemoryDatabase(env) || !operatorId || !conversationId) {
     return {
@@ -261,7 +261,7 @@ export async function loadMemoryContext(
       ? [...messageResult.results].reverse()
       : [];
     const recentUserMessage = [...messages].reverse().find((item) => item.role === "user")?.content || "";
-    const memories = rankMemories(memoryResult?.results, recentUserMessage, { limit: DEFAULT_MEMORIES });
+    const memories = rankMemories(memoryResult?.results, query || recentUserMessage, { limit: DEFAULT_MEMORIES });
 
     const sections = [];
 
