@@ -180,6 +180,17 @@ try{
  const empty=await page.$eval(".jarvis-worldcam-empty",node=>node.textContent);
  assert.match(empty,/Nenhuma câmera/);
  await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.open({cameraId:"tokyo-rainbow"}));
+ const closedByVoice=await run("Jarvis, sair das câmeras mundiais");
+ assert.equal(closedByVoice.ok,true);
+ assert.equal(await page.$(".jarvis-worldcam-panel:not([hidden])"),null,
+   "Spoken command must actually dismiss public camera panel");
+ assert.equal(await page.$(".jarvis-worldcam-view iframe[src]"),null,
+   "Close must release remote iframe playback");
+ await run("Jarvis, abra câmeras do mundo");
+ const closedByShort=await run("fechar câmeras");
+ assert.equal(closedByShort.ok,true);
+ assert.equal(await page.$(".jarvis-worldcam-panel:not([hidden])"),null);
+ await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.open({cameraId:"tokyo-rainbow"}));
  await page.evaluate(()=>window.dispatchEvent(new CustomEvent("ultron:emergency-stop",{detail:{epoch:501}})));
  const after=await page.evaluate(()=>({
   state:window.ULTRON_WORLD_CAMERAS.state,
