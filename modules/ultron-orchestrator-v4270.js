@@ -409,9 +409,44 @@ async function routeSingle(command, run, index = 0, {signal,awaitCompletion=fals
   return { route: "ai-core", ok, result };
 }
 
+function isRingHomeCommand(message) {
+  const n=normalize(message).replace(/^(?:jarvis|ultron)[, :]+/,"").replace(/[.!?]+$/,"").trim();
+  return /^(?:voltar|volte|retornar|retorne) (?:ao |para o )?(?:neural|neural ring|anel neural|inicio|inicio do jarvis)(?: jarvis)?$/.test(n) ||
+    /^(?:ativar|ative|abrir|abra) (?:o )?(?:neural ring|anel neural)$/.test(n) ||
+    /^continuar (?:a )?conversa (?:no|pelo) (?:neural ring|anel neural)$/.test(n);
+}
+
 async function executeMessage(message, source = "terminal", approvedMission = false) {
   const clean = String(message || "").trim();
   if (!clean) return null;
+  // Local navigation never invokes a model, provider, or public web lookup.
+  if(isRingHomeCommand(clean)) {
+    try {
+      const closed=window.ULTRON_EARTH?.close?.();
+      window.JARVIS_COMMAND_CENTER?.setVisualMode?.("ring");
+      const ok=Boolean(window.JARVIS_COMMAND_CENTER?.setVisualMode || closed?.ok);
+      const message=ok?"NEURAL RING // modo restaurado no painel atual.":
+        "NEURAL RING // interface de navegação ainda indisponível.";
+      log(message,!ok);
+      state.lastRoute="local-neural-ring";
+      return {ok,status:ok?"completed":"failed",results:[
+        {route:"local-neural-ring",ok,result:{text:message}}]};
+    }catch(error) {
+      const message="NEURAL RING // Não foi possível restaurar o painel: "+
+        String(error?.message||error).slice(0,100);
+      log(message,true);
+      return {ok:false,status:"failed",results:[{route:"local-neural-ring",ok:false,result:{text:message}}]};
+    }
+  }
+  // Clear the visible interface without deleting stored conversations or keys.
+  if(parseLocalCommand(clean)?.type==="clear-interface"){
+    const result=await runLocalCommand(clean);
+    if(!result?.quiet)log(result?.text||"Falha ao limpar o terminal",!result?.ok);
+    state.lastRoute="local-clear-interface";
+    return {ok:result?.ok===true,status:result?.ok?"completed":"failed",results:[
+      {route:"local-clear-interface",ok:result?.ok===true,result}]};
+  }
+
   // Account pairing and legacy memory-key pairing are separate identities.
   // Use the authenticated account's live device registry for read-only Android
   // status instead of assuming a matching device in the memory-key registry.
@@ -793,6 +828,14 @@ window.addEventListener("ultron:emergency-stop",event=>{
   cancelP0Operations("priority-core",event?.detail?.epoch);
 });
 function enqueue(message, source = "terminal", approvedMission = false) {
+  // Critical local UI commands bypass generic knowledge and media routers.
+  if(isRingHomeCommand(message)||parseLocalCommand(message)?.type==="clear-interface"){
+    const generation=queueGeneration;
+    queue=queue.catch(()=>null).then(()=>generation!==queueGeneration
+      ? {ok:false,status:"cancelled",route:"p0-stop"}:
+      executeMessage(message,source,approvedMission));
+    return queue;
+  }
   // Device diagnostics must never be intercepted by general knowledge or visual routers.
   const pluginIntent=parseAccountPluginCommand(message);
   const statusIntent=window.ULTRON_DEVICES?.parseDeviceIntent?.(message);
