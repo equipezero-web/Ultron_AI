@@ -75,16 +75,7 @@ public final class AccountPluginActions {
                 return reply.put("ok",false).put("error","Nenhum aplicativo compatível disponível.");
             }
         }
-        // User-enabled assistant service can request launch from background.
-        if (JarvisAssistantService.launch(intent)) {
-            return reply.put("ok",true).put("launchRequested",true)
-                .put("delivery","assistant-service")
-                .put("eventSaved",false).put("requiresCalendarSave",creating)
-                .put("message",creating
-                    ? "Agenda aberta para revisão; confirme e salve o evento."
-                    : "Abertura solicitada pelo Assistente Android.");
-        }
-        // Respect Android background activity-start restrictions if unavailable.
+        // Never use Accessibility to bypass Android background launch protections.
         NotificationManager manager=(NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         if(manager==null)return reply.put("ok",false).put("error","Notificações indisponíveis.");
         if(android.os.Build.VERSION.SDK_INT>=33 &&
