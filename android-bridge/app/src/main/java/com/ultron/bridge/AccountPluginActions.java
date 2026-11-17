@@ -67,9 +67,16 @@ public final class AccountPluginActions {
         if ("youtube.open".equals(command) &&
             !ApprovedApps.allowed(context, "com.google.android.youtube"))
             return reply.put("ok",false).put("error","Autorize YouTube em Gerenciar aplicativos autorizados.");
-        if ("calendar.open".equals(command) || "calendar.create".equals(command))
-            return reply.put("ok",false).put("error",
-                "Por segurança, use app.open com o aplicativo de agenda autorizado. A criação de eventos requer integração específica.");
+        if ("calendar.open".equals(command) || "calendar.create".equals(command)) {
+            android.content.pm.ResolveInfo target = context.getPackageManager()
+                .resolveActivity(intent, android.content.pm.PackageManager.MATCH_DEFAULT_ONLY);
+            String targetPackage = target != null && target.activityInfo != null
+                ? target.activityInfo.packageName : "";
+            if (!ApprovedApps.allowed(context, targetPackage))
+                return reply.put("ok",false).put("error",
+                    "Autorize o aplicativo de agenda em Gerenciar aplicativos autorizados.");
+            intent.setPackage(targetPackage);
+        }
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         final boolean creating="calendar.create".equals(command);
         if (isForeground(context)) {
