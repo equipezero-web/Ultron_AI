@@ -1,6 +1,6 @@
 import { JARVIS_CAPABILITIES } from "../backend/jarvis-capabilities.js?v=4.67.0";
 import {clearVisibleInterface} from "./jarvis-clear-interface.js?v=4.98.0";
-import {parseMeteoIntent} from "./jarvis-meteorological-sources.js?v=4.98.1";
+import {parseMeteoIntent} from "./jarvis-meteorological-sources.js?v=4.99.1";
 import {parseGlobalIntelligenceIntent} from "./jarvis-global-intelligence-intent.js?v=5.10.0";
 import {parseTrendIntent} from "./jarvis-trend-intent.js?v=1.0.0";
 
@@ -195,7 +195,7 @@ export async function runLocalCommand(command){
       String(result?.error||"sem coleta válida").slice(0,150)};
   }
   if(intent.type==="meteorological-center"){
-    if(!window.ULTRON_METEO_CENTER?.open)await import("./jarvis-meteorological-center.js?v=4.98.0");
+    if(!window.ULTRON_METEO_CENTER?.open)await import("./jarvis-meteorological-center.js?v=4.99.1");
     const result=await window.ULTRON_METEO_CENTER?.open?.({tab:intent.tab,view:intent.view});
     const ok=result?.ok===true&&result.visible===true;
     return {ok,handled:true,route:"local-meteorological-center",provider:"jarvis-local",
