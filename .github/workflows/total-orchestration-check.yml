@@ -19,6 +19,8 @@ on:
       - 'modules/jarvis-local-commands.js'
       - 'modules/jarvis-clear-interface.js'
       - 'tests/jarvis-meteorological-sources.mjs'
+      - 'tests/jarvis-meteorological-forecast.mjs'
+      - 'modules/jarvis-meteorological-forecast.js'
       - 'modules/jarvis-meteorological-center.css'
       - 'modules/jarvis-meteorological-sources.js'
       - 'modules/jarvis-rain-understanding.js'
@@ -94,6 +96,8 @@ on:
       - 'modules/jarvis-local-commands.js'
       - 'modules/jarvis-clear-interface.js'
       - 'tests/jarvis-meteorological-sources.mjs'
+      - 'tests/jarvis-meteorological-forecast.mjs'
+      - 'modules/jarvis-meteorological-forecast.js'
       - 'modules/jarvis-meteorological-center.css'
       - 'modules/jarvis-meteorological-sources.js'
       - 'modules/jarvis-rain-understanding.js'
@@ -178,6 +182,7 @@ jobs:
           node --check modules/jarvis-clear-interface.js
           node tests/jarvis-clear-interface.mjs
           node tests/jarvis-meteorological-sources.mjs
+          node tests/jarvis-meteorological-forecast.mjs
           node tests/jarvis-global-intelligence.mjs
           node --check modules/jarvis-global-intelligence-ring.js
           node --check backend/global-intelligence-monitor.js
