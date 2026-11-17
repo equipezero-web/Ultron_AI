@@ -1,6 +1,6 @@
 import { JARVIS_CAPABILITIES } from "../backend/jarvis-capabilities.js?v=4.67.0";
 import {clearVisibleInterface} from "./jarvis-clear-interface.js?v=4.98.0";
-import {parseMeteoIntent} from "./jarvis-meteorological-sources.js?v=4.98.1";
+import {parseMeteoIntent} from "./jarvis-meteorological-sources.js?v=4.99.1";
 import {parseGlobalIntelligenceIntent} from "./jarvis-global-intelligence-intent.js?v=5.10.0";
 import {parseTrendIntent} from "./jarvis-trend-intent.js?v=1.0.0";
 
@@ -46,7 +46,7 @@ export function parseLocalCommand(value){
     return {type:"safe-multitask"};
   if(/^(?:abra|abrir|mostre|mostrar) (?:o |os? )?(?:editor de arquivos|arquivos autorizados|arquivos do celular|meus arquivos)$/.test(plain))
     return {type:"scoped-file-editor"};
-  if(/^(?:(?:o que|que) (?:voce|tu|o jarvis|o ultron) (?:pode|consegue|sabe) fazer|(?:o que|que) (?:voce|tu) faz|quais (?:sao )?(?:as )?(?:suas|tuas) (?:capacidades|habilidades|funcoes|funcionalidades|ferramentas)|quais (?:sao )?(?:as )?funcionalidades (?:do|de) (?:jarvis|ultron)|quem e voce|o que mais voce pode fazer|quais recursos voce tem|me mostre suas funcionalidades)$/.test(plain))return {type:"capabilities"};
+  if(/^(?:(?:o que|que) (?:voce|tu|o jarvis|o ultron) (?:pode|consegue|sabe) fazer|(?:o que|que) (?:voce|tu) faz|quais (?:sao )?(?:as )?(?:suas|tuas) (?:capacidades|habilidades|funcoes|funcionalidades|ferramentas)|quais (?:sao )?(?:as )?funcionalidades (?:do|de) (?:jarvis|ultron)|quem e voce|o que mais voce pode fazer|quais recursos voce tem|me mostre suas funcionalidades|mostre suas funcionalidades|mostrar minhas funcionalidades|liste suas funcionalidades)$/.test(plain))return {type:"capabilities"};
   // Terminal-only cleanup is local and never clears memory, stored chats or accounts.
   if(/^(?:clear|cls|limpar terminal|limpe terminal|limpar o terminal|limpe o terminal|apagar terminal|apague terminal|apagar o terminal|apague o terminal)$/.test(plain))
     return {type:"clear-interface"};
@@ -195,7 +195,7 @@ export async function runLocalCommand(command){
       String(result?.error||"sem coleta válida").slice(0,150)};
   }
   if(intent.type==="meteorological-center"){
-    if(!window.ULTRON_METEO_CENTER?.open)await import("./jarvis-meteorological-center.js?v=4.98.0");
+    if(!window.ULTRON_METEO_CENTER?.open)await import("./jarvis-meteorological-center.js?v=4.99.1");
     const result=await window.ULTRON_METEO_CENTER?.open?.({tab:intent.tab,view:intent.view});
     const ok=result?.ok===true&&result.visible===true;
     return {ok,handled:true,route:"local-meteorological-center",provider:"jarvis-local",

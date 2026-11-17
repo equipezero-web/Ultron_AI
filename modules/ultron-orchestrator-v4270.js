@@ -2,7 +2,7 @@ import {TASK_CONTEXT} from "./jarvis-task-context.js?v=4.69.0";
 import {planAgents} from "../backend/intelligent-task-hub.js";
 import {classifyOperatorTurn,splitOperatorSteps} from "./jarvis-intent-engine.js?v=4.69.0";
 import {directPlan,resolveActionPlan,runActionPlan} from "./jarvis-action-engine.js?v=4.101.1";
-import {parseLocalCommand,runLocalCommand} from "./jarvis-local-commands.js?v=5.12.1";
+import {parseLocalCommand,runLocalCommand} from "./jarvis-local-commands.js?v=5.12.2";
 import {parseMissionControl,assessCompoundMission,createMissionGate} from "./jarvis-mission-safety.js";
 import {inspectMissionDependencies,missionStepOutcome,createMissionJournal} from "./jarvis-mission-diagnostics.js";
 import {createRecoveryEngine} from "./jarvis-recovery-engine.js";
@@ -268,7 +268,7 @@ function parseEarthIntent(command) {
   target = target.replace(/^(?:a|o|na|no|para|de)\s+/, '').trim();
   if (!target || geoAliases.test(target)) return { place: '' };
   if (/^(?:meu|minha|meus|minhas|produto|produtos|pedido|pedidos|loja|vendas|relatorio|relatorios|mensagens|arquivos|arquivo|foto|fotos|fotografia|fotografias|imagem|imagens|documento|video|camera|sensor|sistema|status|painel|agenda|historico|clima|tempo|previsao|noticia|noticias|resultado|resultados)(?:\b|\s)/.test(target)) return null;
-  if (/^(?:camera|sensor|arquivo|foto|imagem|documento|video|sistema|status|painel|agenda|historico|meus dados)/.test(target)) return null;
+  if (/^(?:camera|sensor|arquivo|foto|imagem|documento|video|sistema|status|painel|agenda|historico|meus dados|suas funcionalidades|suas funcoes|suas capacidades|funcionalidades|habilidades|ferramentas)/.test(target)) return null;
   return { place: target };
 }
 // Report real Earth module state instead of asking the cloud AI to infer visual status.
@@ -832,7 +832,7 @@ window.addEventListener("ultron:emergency-stop",event=>{
 });
 function enqueue(message, source = "terminal", approvedMission = false) {
   // Critical local UI commands bypass generic knowledge and media routers.
-  if(isRingHomeCommand(message)||parseLocalCommand(message)?.type==="clear-interface"){
+  if(isRingHomeCommand(message)||["clear-interface","capabilities"].includes(parseLocalCommand(message)?.type)){
     const generation=queueGeneration;
     queue=queue.catch(()=>null).then(()=>generation!==queueGeneration
       ? {ok:false,status:"cancelled",route:"p0-stop"}:

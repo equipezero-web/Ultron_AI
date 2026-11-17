@@ -1,4 +1,5 @@
-import {METEO_VIEWERS,APAC_HOURS,loadApacObservations} from "./jarvis-meteorological-sources.js?v=4.99.0";
+import {METEO_VIEWERS,APAC_HOURS,loadApacObservations} from "./jarvis-meteorological-sources.js?v=4.99.1";
+import {FORECAST_CITIES,fetchForecast} from "./jarvis-meteorological-forecast.js?v=1.0.0";
 import {registerApac,renderEvidenceDetails} from "./jarvis-data-intelligence.js?v=5.36.0";
 import {analyzeApacRain,APAC_RAIN_BANDS,apacBand,mmLabel,apacProjection,apacInsideMainland,loadApacBoundary} from "./jarvis-rain-understanding.js?v=4.99.0";
 
@@ -257,16 +258,61 @@ if(stage){
    disclaimer.textContent="Sem iframe: evita erros 410 Gone e conexão recusada. Cobertura e atualização devem ser conferidas na fonte.";
    reference.append(disclaimer);
  }
- function showForecast(){
-   meta.textContent=METEO_VIEWERS.forecast.description;
-   note("Previsão numérica não é radar nem precipitação medida. A camada de modelo está separada do monitoramento oficial.");
-   const button=document.createElement("button");button.type="button";button.className="jarvis-meteo-forecast-button";
-   button.textContent="Mostrar previsão no mapa 2D (Recife)";
-   button.addEventListener("click",async()=>{
-     close();await window.ULTRON_ORCHESTRATOR?.execute?.("Mostre a previsão do tempo em Recife no mapa 2D","meteorological-center");
-   });content.append(button);
-   reference.append(sourceLink(METEO_VIEWERS.forecast,"Documentação do modelo Open-Meteo"));
+ async function showForecast(token){
+   meta.textContent="PREVISÃO NUMÉRICA · Open-Meteo · 7 dias · localidades selecionáveis";
+   const tools=document.createElement("div");tools.className="jarvis-meteo-native-tools";
+   const city=document.createElement("select");city.setAttribute("aria-label","Cidade da previsão");
+   for(const item of FORECAST_CITIES){
+     const option=document.createElement("option");option.value=item.id;option.textContent=item.label;
+     city.append(option);
+   }
+   const selected=citySearch||"recife";
+   city.value=FORECAST_CITIES.some(x=>x.id===selected)?selected:"recife";
+   const refreshButton=document.createElement("button");refreshButton.type="button";
+   refreshButton.textContent="↻ Atualizar previsão";
+   const forecastArea=document.createElement("div");forecastArea.className="jarvis-meteo-forecast-results";
+   const status=document.createElement("p");status.className="jarvis-meteo-note";
+   status.textContent="Consultando previsão numérica real, sem valores fictícios.";
+   tools.append(city,refreshButton);content.append(tools,status,forecastArea);
+   reference.append(sourceLink(METEO_VIEWERS.forecast,"Metodologia e fonte: Open-Meteo"));
+   const render=async()=>{
+     citySearch=city.value;
+     const run=++loadToken;
+     forecastArea.replaceChildren();
+     status.textContent="Consultando previsão de "+city.options[city.selectedIndex].text+"…";
+     const controller=new AbortController();
+     const timeout=setTimeout(()=>controller.abort(),12000);
+     let result;
+     try{result=await fetchForecast(city.value,{signal:controller.signal});}
+     finally{clearTimeout(timeout);}
+     if(run!==loadToken||panel.hidden||current!=="forecast")return;
+     if(!result?.ok){
+       status.textContent=String(result?.error||"Serviço indisponível.")+
+         " Nenhum valor fictício foi apresentado.";
+       return;
+     }
+     status.textContent=result.city+" · horário local: "+result.timezone+
+       " · consulta: "+new Date(result.checkedAt).toLocaleString("pt-BR")+
+       ". Modelo numérico, não medição ou alerta oficial.";
+     const list=document.createElement("div");list.className="jarvis-meteo-forecast-days";
+     for(const day of result.days){
+       const item=document.createElement("article");item.className="jarvis-meteo-forecast-day";
+       const title=document.createElement("strong");title.textContent=day.date;
+       const detail=document.createElement("p");detail.textContent=
+         "Temperatura "+day.min.toFixed(1)+"–"+day.max.toFixed(1)+" °C · "+
+         "chuva prevista "+day.rain.toFixed(1)+" mm · probabilidade máx. "+
+         Math.round(day.chance)+"% · vento máx. "+day.wind.toFixed(0)+" km/h";
+       item.append(title,detail);list.append(item);
+     }
+     forecastArea.append(list);
+     const foot=document.createElement("small");foot.textContent=result.note;
+     forecastArea.append(foot);
+   };
+   city.addEventListener("change",()=>void render());
+   refreshButton.addEventListener("click",()=>void render());
+   await render();
  }
+
  async function open({tab="radar",view:desiredView="2d",refresh=false}={}){
    if(!Object.hasOwn(METEO_VIEWERS,tab))return {ok:false,error:"Fonte desconhecida."};
    const token=++loadToken;current=tab;view=desiredView==="3d"?"3d":"2d";
@@ -278,7 +324,7 @@ if(stage){
    const src=METEO_VIEWERS[tab];
    meta.textContent=src.title+" · "+src.description;
    if(tab==="apac")await apacView(token,{refresh});
-   else if(tab==="forecast")showForecast();
+   else if(tab==="forecast")await showForecast(token);
    else showRemoteViewer(tab);
    return {ok:true,tab,view,visible:!panel.hidden,source:src.url,observed:tab==="apac"};
  }
