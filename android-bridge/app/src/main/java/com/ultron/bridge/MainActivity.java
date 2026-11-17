@@ -380,7 +380,7 @@ public class MainActivity extends Activity {
 
         new Thread(() -> {
             try {
-                String secret = SecureStore.getOrCreateDeviceSecret(this);
+                String secret = SecureStore.newPairingSecret();
                 String name = Build.MANUFACTURER + " " + Build.MODEL;
                 String platform = "Android " + Build.VERSION.RELEASE + " / SDK " + Build.VERSION.SDK_INT;
 
@@ -401,7 +401,7 @@ public class MainActivity extends Activity {
                 SecureStore.setRemoteCameraTrusted(this, false);
                 stopService(new Intent(this, RemoteMicService.class));
                 stopService(new Intent(this, RemoteCameraService.class));
-                SecureStore.saveDeviceId(this, deviceId);
+                SecureStore.saveNewPairing(this, deviceId, secret);
 
                 runOnUiThread(() -> {
                     statusView.setText("Celular pareado com sucesso. Device ID: " + deviceId);
