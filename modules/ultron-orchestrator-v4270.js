@@ -426,7 +426,7 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
       const candidates=(status.devices||[]).filter(d=>
         d.online && d.type===(accountIntent.preferredType||"mobile") &&
         (accountIntent.actionId==="youtube.open"
-          ? d.capabilities?.includes(d.type==="desktop"?"desktop.open.url":"app.open")
+          ? (d.capabilities?.includes("youtube.open")||d.capabilities?.includes("app.open"))
           : d.capabilities?.includes(accountIntent.actionId)));
       if(candidates.length!==1)
         throw Error(candidates.length?"Mais de um dispositivo compatível; selecione um dispositivo":"Nenhum dispositivo compatível online");
@@ -446,7 +446,8 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
         }
       }
       const resultStatus=receipt?.command?.status||"pending";
-      const success=resultStatus==="completed";
+      const delivered=receipt?.command?.result||{};
+      const success=resultStatus==="completed" && delivered?.requiresUserTap!==true;
       if(isStorage){
         const diagnostic=receipt?.command?.result||{};
         const rendered=showStorageDiagnostic({deviceName:target.name,status:resultStatus,result:diagnostic});
@@ -456,7 +457,9 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
           return {ok:false,status:"failed",results:[{route:"account-plugin-execute",ok:false,result:{text:warning}}]};
         }
       }
-      const message=success
+      const message=delivered?.requiresUserTap===true
+        ?"Comando entregue ao Android, mas o Android 15 exige tocar na notificação para abrir o aplicativo. A abertura automática em segundo plano não foi confirmada."
+        :success
         ?(isStorage?"Diagnóstico do armazenamento exibido no Neural Ring para "+target.name+".":"Plugin "+accountIntent.actionId+" confirmado pelo celular "+target.name+".")
         :resultStatus==="pending"||resultStatus==="claimed"
           ?"Comando "+accountIntent.actionId+" enviado ao celular "+target.name+
