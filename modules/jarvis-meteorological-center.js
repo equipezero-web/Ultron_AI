@@ -3,8 +3,14 @@ import {FORECAST_CITIES,fetchForecast} from "./jarvis-meteorological-forecast.js
 import {registerApac,renderEvidenceDetails} from "./jarvis-data-intelligence.js?v=5.36.0";
 import {analyzeApacRain,APAC_RAIN_BANDS,apacBand,mmLabel,apacProjection,apacInsideMainland,loadApacBoundary} from "./jarvis-rain-understanding.js?v=4.99.0";
 
-const stage=document.querySelector(".jarvis-cc-center");
-if(stage){
+// One controller per mounted Neural Ring. A second import URL must not
+// create another panel or overwrite the native meteorology bridge.
+function installMeteorologicalCenter(){
+ const stage=document.querySelector(".jarvis-cc-center");
+ if(!stage)return false;
+ const existing=stage.querySelector(".jarvis-meteo-center");
+ if(existing?.isConnected)return Boolean(window.ULTRON_METEO_CENTER?.open);
+ {
  const panel=document.createElement("section");
  panel.className="jarvis-meteo-center";panel.hidden=true;
  panel.setAttribute("aria-label","Centro meteorológico JARVIS dentro do Neural Jarvis");
@@ -339,4 +345,13 @@ if(stage){
  }
  window.ULTRON_METEO_CENTER={open,close,get state(){return {visible:!panel.hidden,tab:current,view,hours,
    stationCount:lastReport?.count||0,source:METEO_VIEWERS[current].url};}};
+ window.dispatchEvent(new Event("ultron:meteo-center-ready"));
+ }
+ return true;
+}
+if(!installMeteorologicalCenter()){
+ let attempts=0;
+ const timer=setInterval(()=>{
+   if(installMeteorologicalCenter()||++attempts>=200)clearInterval(timer);
+ },100);
 }
