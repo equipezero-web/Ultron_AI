@@ -229,5 +229,9 @@ function install(){
 }
 if(!install()){
  const timer=setInterval(()=>{if(install())clearInterval(timer);},100);
- setTimeout(()=>clearInterval(timer),12000);
+ // Late-mounted Neural Ring must not leave the weather controller unenhanced.
+ window.addEventListener("ultron:meteo-center-ready",()=>{
+   if(install())clearInterval(timer);
+ },{once:true});
+ setTimeout(()=>clearInterval(timer),22000);
 }
