@@ -2,7 +2,7 @@ import {TASK_CONTEXT} from "./jarvis-task-context.js?v=4.69.0";
 import {planAgents} from "../backend/intelligent-task-hub.js";
 import {classifyOperatorTurn,splitOperatorSteps} from "./jarvis-intent-engine.js?v=4.69.0";
 import {directPlan,resolveActionPlan,runActionPlan} from "./jarvis-action-engine.js?v=4.101.1";
-import {parseLocalCommand,runLocalCommand} from "./jarvis-local-commands.js?v=5.12.1";
+import {parseLocalCommand,runLocalCommand} from "./jarvis-local-commands.js?v=5.12.2";
 import {parseMissionControl,assessCompoundMission,createMissionGate} from "./jarvis-mission-safety.js";
 import {inspectMissionDependencies,missionStepOutcome,createMissionJournal} from "./jarvis-mission-diagnostics.js";
 import {createRecoveryEngine} from "./jarvis-recovery-engine.js";
@@ -832,7 +832,7 @@ window.addEventListener("ultron:emergency-stop",event=>{
 });
 function enqueue(message, source = "terminal", approvedMission = false) {
   // Critical local UI commands bypass generic knowledge and media routers.
-  if(isRingHomeCommand(message)||parseLocalCommand(message)?.type==="clear-interface"){
+  if(isRingHomeCommand(message)||["clear-interface","capabilities"].includes(parseLocalCommand(message)?.type)){
     const generation=queueGeneration;
     queue=queue.catch(()=>null).then(()=>generation!==queueGeneration
       ? {ok:false,status:"cancelled",route:"p0-stop"}:
