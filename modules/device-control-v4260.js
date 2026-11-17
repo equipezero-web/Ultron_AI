@@ -124,12 +124,12 @@ function tvIntent(n) {
   const link=n.match(/\b(?:vincule|vincular|conecte|conectar|autorize|autorizar|adicione|adicionar)\b[^.!?]*\b(?:tv|televisao|televisor|lg)\b[^.!?]*\b(?:codigo|code)\s*(\d{6})\b/);
   if(link)return {deviceType:"mobile",command:"tv.link",payload:{code:link[1]},
     label:"autorizar vínculo permanente da TV com código do Android"};
-  if (/\b(?:revogue|revogar|desvincule|desvincular|remova|remover|desconecte|desconectar)\b/.test(n)) {
+  if (/\b(?:tv|televisao|televisor|lg)\b/.test(n) &&\n      /\b(?:revogue|revogar|desvincule|desvincular|remova|remover|desconecte|desconectar)\b/.test(n)) {
     const confirm=isConfirmed(n);
     return {deviceType:"mobile",command:"tv.unlink",payload:{confirm},sensitive:true,
       label:"revogar vínculo permanente da TV"};
   }
-  if (/\b(?:parear|pareie|vincular|vincule|conectar|conecte|adicionar|adicione)\b/.test(n) &&
+  if (/\b(?:tv|televisao|televisor|lg)\b/.test(n) &&\n      /\b(?:parear|pareie|vincular|vincule|conectar|conecte|adicionar|adicione)\b/.test(n) &&
       !/\b(?:codigo|code)\s*\d{6}\b/.test(n)) {
     return {deviceType:"mobile",command:"tv.setup.instructions",payload:{},
       label:"instruções para pareamento LG webOS"};
