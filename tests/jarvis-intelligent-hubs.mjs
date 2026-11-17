@@ -35,4 +35,17 @@ const audit=sanitizeTrajectory({runId:"a",stepId:"b",agent:"research",status:"co
 assert.equal(audit.secret,undefined);
 assert.equal(audit.prompt,undefined);
 assert.equal(audit.durationMs,20);
+
+// HTTP endpoints must remain read-only and operator-scoped.
+const {readFileSync}=await import("node:fs");
+const worker=readFileSync(new URL("../backend/worker.js",import.meta.url),"utf8");
+for (const route of ["/api/hubs/plan","/api/hubs/skills","/api/hubs/trajectories"]) {
+  const offset=worker.indexOf('if (path === "'+route+'" && request.method === "POST")');
+  assert.ok(offset>0,route+" should be a POST endpoint");
+  const scope=worker.slice(offset,offset+330);
+  assert.match(scope,/const operatorId = await operatorFrom\(body\)/);
+  assert.match(scope,/if \(!operatorId\) return missingOperator\(\)/);
+}
+assert.doesNotMatch(worker,/\/api\/hubs\/activate|\/api\/hubs\/execute/);
+
 console.log("JARVIS HUBS PASS: declarative skills, allowlisted agents, cancellation, minimal trajectory");
