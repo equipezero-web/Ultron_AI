@@ -72,6 +72,7 @@ public final class BridgeApi {
         capabilities.put("device.status");
         capabilities.put("notification.push");
         capabilities.put("app.open");
+        capabilities.put("app.list");
         capabilities.put("calendar.open");
         capabilities.put("calendar.create");
         capabilities.put("storage.diagnostics");
