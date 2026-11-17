@@ -96,6 +96,8 @@ public final class RemoteCameraBridge {
     }
 
     private static boolean sendServiceAction(Service service, String serviceAction, JSONObject payload) {
+        // Signaling must not create a fresh camera service in the background.
+        if (!RemoteCameraServiceV2.isLocalSessionActive()) return false;
         Intent intent = new Intent(service, RemoteCameraService.class);
         intent.setAction(serviceAction);
 
