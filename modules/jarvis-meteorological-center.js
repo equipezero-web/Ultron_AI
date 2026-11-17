@@ -1,4 +1,4 @@
-import {METEO_VIEWERS,APAC_HOURS,loadApacObservations} from "./jarvis-meteorological-sources.js?v=4.99.1";
+import {METEO_VIEWERS,APAC_HOURS,loadApacObservations} from "./jarvis-meteorological-sources.js?v=4.99.2";
 import {FORECAST_CITIES,fetchForecast} from "./jarvis-meteorological-forecast.js?v=1.0.0";
 import {registerApac,renderEvidenceDetails} from "./jarvis-data-intelligence.js?v=5.36.0";
 import {analyzeApacRain,APAC_RAIN_BANDS,apacBand,mmLabel,apacProjection,apacInsideMainland,loadApacBoundary} from "./jarvis-rain-understanding.js?v=4.99.0";
