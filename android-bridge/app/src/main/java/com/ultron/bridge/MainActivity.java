@@ -146,12 +146,9 @@ public class MainActivity extends Activity {
             startActivity(new Intent(this, MobileFilesActivity.class)));
         devices.addView(scopedFiles, JarvisUi.width(this, 9));
 
-        Button assistant = JarvisUi.button(this, "◈  ATIVAR ASSISTENTE ANDROID 15", false);
-        assistant.setOnClickListener(v -> {
-            statusView.setText("Ative J.A.R.V.I.S. Bridge em Acessibilidade. O serviço não lê a tela.");
-            startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
-        });
-        devices.addView(assistant, JarvisUi.width(this, 9));
+        devices.addView(JarvisUi.caption(this,
+            "SEGURANÇA ANDROID 15: não é necessário ativar Acessibilidade. A abertura de apps em segundo plano respeita as proteções do Android."),
+            JarvisUi.width(this, 9));
         devices.addView(JarvisUi.heading(this, "EXPLORADOR REMOTO  /  ARMAZENAMENTO"),
             JarvisUi.width(this, 9));
         devices.addView(JarvisUi.caption(this,
