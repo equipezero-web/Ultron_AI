@@ -4,6 +4,7 @@ export const CONTROL_COMMANDS = new Set([
   "device.status",
   "notification.push",
   "app.open",
+  "app.list",
   "calendar.open",
   "calendar.create",
   "storage.diagnostics",
