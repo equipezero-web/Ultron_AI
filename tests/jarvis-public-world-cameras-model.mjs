@@ -122,4 +122,10 @@ for(const cmd of ["abrir câmera","abrir câmera do celular","mostre a câmera d
  "mostrar senha das câmeras","abrir o globo","cancelar plano"]){
  assert.equal(parseWorldCameraCommand(cmd),null,cmd);
 }
+for(const phrase of ["abrir câmeras","Jarvis, abra as câmeras","mostrar webcams"]){
+ assert.deepEqual(parseWorldCameraCommand(phrase),{type:"open"},phrase);
+}
+for(const phrase of ["abrir câmera do celular","abra minha câmera","abrir câmera local"]){
+ assert.equal(parseWorldCameraCommand(phrase),null,phrase);
+}
 console.log("JARVIS PUBLIC WORLD CAMERAS MODEL PASS: curated real links, strict whitelist, source guard, no fake live status.");

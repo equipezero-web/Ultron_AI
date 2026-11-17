@@ -4,7 +4,7 @@ import {readFileSync} from "node:fs";
 import {authorizeJarvisAccount,accountAccessHeaders,accountAccessConfig} from "../backend/jarvis-account-access.js";
 import {parseAccountPluginCommand} from "../backend/jarvis-account-plugin-intents.js";
 import {accountPluginInstall,accountPluginList,executeAccountPlugin,
-  validateAccountPluginExecution} from "../backend/jarvis-account-plugins.js";
+  validateAccountPluginExecution,accountAndroidStatus} from "../backend/jarvis-account-plugins.js";
 
 const env={CF_ACCESS_TEAM_DOMAIN:"https://demo.cloudflareaccess.com",
  CF_ACCESS_AUD:"jarvis-accounts-aud",
@@ -44,6 +44,25 @@ assert.deepEqual(parseAccountPluginCommand("Jarvis abra agenda no computador"),
  {kind:"execute",pluginId:"agenda",actionId:"calendar.open",preferredType:"desktop"});
 assert.deepEqual(parseAccountPluginCommand("Jarvis faça diagnóstico do armazenamento no meu celular"),
  {kind:"execute",pluginId:"armazenamento",actionId:"storage.diagnostics"});
+const storageIntent={kind:"execute",pluginId:"armazenamento",actionId:"storage.diagnostics"};
+for(const input of [
+  "jarvis consulte a memória do meu celular",
+  "jarvis qual o meu armazenamento?",
+  "jarvis veja meu armazenamento do celular motorola moto g 06"
+]) {
+  assert.deepEqual(parseAccountPluginCommand(input),storageIntent,input);
+}
+for(const input of ["liste meus plugins","liste meu plugins","jarvis liste meus plugins"]) {
+  assert.deepEqual(parseAccountPluginCommand(input),{kind:"list"},input);
+}
+assert.equal(parseAccountPluginCommand("não consulte a memória do meu celular"),null);
+assert.equal(parseAccountPluginCommand("como verificar a memória do meu celular?"),null);
+const orchestratorCode=readFileSync(new URL("../modules/ultron-orchestrator-v4270.js",import.meta.url),"utf8");
+assert.match(orchestratorCode,/accountIntent\?\.kind==="list"/);
+assert.match(orchestratorCode,/Catálogo não confirmado pela conta/);
+assert.match(orchestratorCode,/intent\?\.kind==="list"/);
+assert.match(orchestratorCode,/requestedDevice\.command==="device\.status"/);
+assert.match(orchestratorCode,/account-device-status/);
 assert.equal(parseAccountPluginCommand("Não abra YouTube no celular"),null);
 assert.equal(parseAccountPluginCommand("Como abrir YouTube no celular?"),null);
 assert.equal(validateAccountPluginExecution({pluginId:"agenda",actionId:"calendar.create",
@@ -77,7 +96,7 @@ const mockDB={
     if(query.includes("FROM devices d"))
       return {results:values[0]===one.accountId?[
        {id:androidId,deviceType:"mobile",deviceName:"Android pessoal",status:"active",lastSeenAt:lastSeen,
-        capabilitiesJson:JSON.stringify(["app.open","calendar.open","calendar.create","storage.diagnostics"])},
+        capabilitiesJson:JSON.stringify(["device.status","app.list","app.open","calendar.open","calendar.create","storage.diagnostics"])},
        {id:desktopId,deviceType:"desktop",deviceName:"Notebook pessoal",status:"active",lastSeenAt:lastSeen,
         capabilitiesJson:JSON.stringify(["desktop.open.url"])}
       ]:[]};
@@ -91,6 +110,20 @@ assert.equal((await accountPluginList(appEnv,one.accountId)).plugins[0].installe
 assert.equal((await accountPluginInstall(appEnv,one.accountId,{pluginId:"youtube",action:"install"})).installed,true);
 assert.equal((await accountPluginList(appEnv,two.accountId)).plugins[0].installed,false);
 assert.equal((await executeAccountPlugin(appEnv,two.accountId,{pluginId:"youtube",actionId:"youtube.open",deviceId:androidId})).ok,false);
+assert.equal((await accountAndroidStatus(appEnv,two.accountId,{deviceId:androidId})).ok,false);
+assert.equal((await accountAndroidStatus(appEnv,one.accountId,{deviceId:desktopId})).ok,false);
+assert.equal((await accountAndroidStatus(appEnv,one.accountId,{deviceId:androidId})).ok,true);
+assert.equal(queued.at(-1).command,"device.status");
+assert.equal((await accountAndroidStatus(appEnv,one.accountId,{deviceId:androidId,command:"app.list"})).ok,true);
+assert.equal(queued.at(-1).command,"app.list");
+assert.equal((await accountAndroidStatus(appEnv,one.accountId,{deviceId:androidId,command:"files.read"})).ok,false);
+
+const workerText=readFileSync(new URL("../backend/worker.js",import.meta.url),"utf8");
+assert.match(workerText,/path==="\/api\/account\/devices\/status"/);
+assert.match(workerText,/accountAndroidStatus\(env,auth.accountId,body\)/);
+assert.match(orchestratorCode,/api\.status\(device.id\)/);
+assert.match(orchestratorCode,/actual.bridge==="online"/);
+assert.match(orchestratorCode,/approved-launcher-apps-only/);
 let sent=await executeAccountPlugin(appEnv,one.accountId,{pluginId:"youtube",actionId:"youtube.open",deviceId:androidId});
 assert.equal(sent.ok,true);
 assert.equal(queued.at(-1).command,"app.open");

@@ -23,7 +23,7 @@ export function parseMeteoIntent(command){
   const trigger=/^(?:por favor )?(?:me )?(?:mostre|mostra|mostrar|abra|abrir|ative|ativar|acesse|acessar|exiba|exibir|visualize|visualizar|acompanhe|acompanhar|compare|comparar|quero ver|quero acompanhar)\b/;
   if(!trigger.test(q))return null;
   const view=/\b(?:3d|globo)\b/.test(q)?"3d":"2d";
-  if(/\b(?:central meteorologica|centro meteorologico|painel meteorologico)\b/.test(q))return {tab:"radar",view};
+  if(/\b(?:central meteorologica|centro meteorologico|painel meteorologico|informacoes meteorologicas|informacao meteorologica)\b/.test(q))return {tab:"radar",view};
   if(/\bapac\b/.test(q)||(/\bpernambuco\b/.test(q)&&/\b(?:chuvas?|precipitacao|monitoramento|estacoes|acumulado)\b/.test(q)))return {tab:"apac",view};
   if(/\binmet\b/.test(q))return {tab:"inmet",view:"2d"};
   if(/\b(?:satelite|goes|nuvens)\b/.test(q))return {tab:"satellite",view:"2d"};

@@ -1,5 +1,5 @@
 import API_CONFIG from "../config.js";
-import {parseAccountPluginCommand} from "../backend/jarvis-account-plugin-intents.js";
+import {parseAccountPluginCommand} from "../backend/jarvis-account-plugin-intents.js?v=1.1.0";
 import {explainAccountPluginFailure} from "./jarvis-account-diagnostics.js";
 // Runs in all logged-in browser sessions, but actions require an authenticated
 // Cloudflare Access account and a separately paired Android device.
@@ -183,6 +183,7 @@ window.JARVIS_ACCOUNT_PLUGINS={
  uninstall:id=>io("/api/account/plugins",{action:"uninstall",pluginId:id}),
  execute:input=>io("/api/account/plugins/execute",input),
  receipt:commandId=>io("/api/account/plugins/receipt",{commandId}),
+ status:(deviceId,command="device.status")=>io("/api/account/devices/status",{deviceId,command}),
  revoke:(deviceId,confirm)=>io("/api/account/devices/revoke",{deviceId,confirm:confirm===true}),
  pair:()=>io("/api/account/devices/pair",{deviceName:"Android J.A.R.V.I.S."})
 };

@@ -1,6 +1,6 @@
 import { JARVIS_CAPABILITIES } from "../backend/jarvis-capabilities.js?v=4.67.0";
 import {clearVisibleInterface} from "./jarvis-clear-interface.js?v=4.98.0";
-import {parseMeteoIntent} from "./jarvis-meteorological-sources.js?v=4.98.0";
+import {parseMeteoIntent} from "./jarvis-meteorological-sources.js?v=4.98.1";
 import {parseGlobalIntelligenceIntent} from "./jarvis-global-intelligence-intent.js?v=5.10.0";
 import {parseTrendIntent} from "./jarvis-trend-intent.js?v=1.0.0";
 
@@ -47,6 +47,9 @@ export function parseLocalCommand(value){
   if(/^(?:abra|abrir|mostre|mostrar) (?:o |os? )?(?:editor de arquivos|arquivos autorizados|arquivos do celular|meus arquivos)$/.test(plain))
     return {type:"scoped-file-editor"};
   if(/^(?:(?:o que|que) (?:voce|tu|o jarvis|o ultron) (?:pode|consegue|sabe) fazer|(?:o que|que) (?:voce|tu) faz|quais (?:sao )?(?:as )?(?:suas|tuas) (?:capacidades|habilidades|funcoes|funcionalidades|ferramentas)|quais (?:sao )?(?:as )?funcionalidades (?:do|de) (?:jarvis|ultron)|quem e voce|o que mais voce pode fazer|quais recursos voce tem|me mostre suas funcionalidades)$/.test(plain))return {type:"capabilities"};
+  // Terminal-only cleanup is local and never clears memory, stored chats or accounts.
+  if(/^(?:clear|cls|limpar terminal|limpe terminal|limpar o terminal|limpe o terminal|apagar terminal|apague terminal|apagar o terminal|apague o terminal)$/.test(plain))
+    return {type:"clear-interface"};
   // "Limpar tudo" means the visible command surface, NEVER stored history/data.
   if(/^(?:por favor )?(?:(?:pode|consegue) )?(?:limpar|limpe|limpa|apagar|apague|apaga)\s+(?:tudo|(?:a |o )?(?:tela|painel(?: neural)?|interface(?: do jarvis)?))(?:\s+(?:agora|por favor))?$/.test(plain))return {type:"clear-interface"};
   if(/^(?:(?:(?:mostre|mostrar|exiba|exibir|ver|consulte|consultar)\s+(?:as? |os? )?)|(?:quais (?:sao )?(?:as |os )?))?(?:fontes? (?:dos? )?dados|origem (?:dos? )?dados|relatorio de origem|relatorio de fontes|rastreabilidade dos dados|fontes utilizadas)$/.test(plain))

@@ -1,12 +1,12 @@
 import {TASK_CONTEXT} from "./jarvis-task-context.js?v=4.69.0";
 import {classifyOperatorTurn,splitOperatorSteps} from "./jarvis-intent-engine.js?v=4.69.0";
 import {directPlan,resolveActionPlan,runActionPlan} from "./jarvis-action-engine.js?v=4.101.1";
-import {parseLocalCommand,runLocalCommand} from "./jarvis-local-commands.js?v=5.12.0";
+import {parseLocalCommand,runLocalCommand} from "./jarvis-local-commands.js?v=5.12.1";
 import {parseMissionControl,assessCompoundMission,createMissionGate} from "./jarvis-mission-safety.js";
 import {inspectMissionDependencies,missionStepOutcome,createMissionJournal} from "./jarvis-mission-diagnostics.js";
 import {createRecoveryEngine} from "./jarvis-recovery-engine.js";
 import {probeRecoveryHealth} from "./jarvis-recovery-probes.js";
-import {parseAccountPluginCommand} from "../backend/jarvis-account-plugin-intents.js";
+import {parseAccountPluginCommand} from "../backend/jarvis-account-plugin-intents.js?v=1.1.0";
 import API_CONFIG from "../config.js";
 import {showStorageDiagnostic} from "./jarvis-storage-neural.js?v=1.0.1";
 
@@ -409,12 +409,134 @@ async function routeSingle(command, run, index = 0, {signal,awaitCompletion=fals
   return { route: "ai-core", ok, result };
 }
 
+function isRingHomeCommand(message) {
+  const n=normalize(message).replace(/^(?:jarvis|ultron)[, :]+/,"").replace(/[.!?]+$/,"").trim();
+  return /^(?:voltar|volte|retornar|retorne) (?:ao |para o )?(?:neural|neural ring|anel neural|inicio|inicio do jarvis)(?: jarvis)?$/.test(n) ||
+    /^(?:ativar|ative|abrir|abra) (?:o )?(?:neural ring|anel neural)$/.test(n) ||
+    /^continuar (?:a )?conversa (?:no|pelo) (?:neural ring|anel neural)$/.test(n);
+}
+
 async function executeMessage(message, source = "terminal", approvedMission = false) {
   const clean = String(message || "").trim();
   if (!clean) return null;
+  // Local navigation never invokes a model, provider, or public web lookup.
+  if(isRingHomeCommand(clean)) {
+    try {
+      const closed=window.ULTRON_EARTH?.close?.();
+      window.JARVIS_COMMAND_CENTER?.setVisualMode?.("ring");
+      const ok=Boolean(window.JARVIS_COMMAND_CENTER?.setVisualMode || closed?.ok);
+      const message=ok?"NEURAL RING // modo restaurado no painel atual.":
+        "NEURAL RING // interface de navegação ainda indisponível.";
+      log(message,!ok);
+      state.lastRoute="local-neural-ring";
+      return {ok,status:ok?"completed":"failed",results:[
+        {route:"local-neural-ring",ok,result:{text:message}}]};
+    }catch(error) {
+      const message="NEURAL RING // Não foi possível restaurar o painel: "+
+        String(error?.message||error).slice(0,100);
+      log(message,true);
+      return {ok:false,status:"failed",results:[{route:"local-neural-ring",ok:false,result:{text:message}}]};
+    }
+  }
+  // Clear the visible interface without deleting stored conversations or keys.
+  if(parseLocalCommand(clean)?.type==="clear-interface"){
+    const result=await runLocalCommand(clean);
+    if(!result?.quiet)log(result?.text||"Falha ao limpar o terminal",!result?.ok);
+    state.lastRoute="local-clear-interface";
+    return {ok:result?.ok===true,status:result?.ok?"completed":"failed",results:[
+      {route:"local-clear-interface",ok:result?.ok===true,result}]};
+  }
+
+  // Account pairing and legacy memory-key pairing are separate identities.
+  // Use the authenticated account's live device registry for read-only Android
+  // status instead of assuming a matching device in the memory-key registry.
+  const requestedDevice=window.ULTRON_DEVICES?.parseDeviceIntent?.(clean);
+  if(requestedDevice?.deviceType==="mobile"&&["device.status","app.list"].includes(requestedDevice.command)){
+    try{
+      const api=window.JARVIS_ACCOUNT_PLUGINS;
+      if(typeof api?.list!=="function")throw Error("Catálogo autenticado de dispositivos indisponível");
+      const status=await api.list();
+      if(status?.ok!==true||!Array.isArray(status.devices))throw Error("Consulta da conta não confirmada");
+      const mobiles=status.devices.filter(d=>d.type==="mobile"&&d.status==="active");
+      const online=mobiles.filter(d=>d.online===true);
+      if(online.length!==1){
+        const message=online.length>1
+          ? "BRIDGE ANDROID // Vários celulares estão online nesta conta. Selecione o dispositivo exato no painel de plugins antes de consultar os detalhes."
+          : mobiles.length
+            ? "BRIDGE ANDROID // Celular pareado, mas sem comunicação recente. Abra o Bridge e toque em INICIAR BRIDGE."
+            : "BRIDGE ANDROID // Nenhum celular pareado nesta conta autenticada.";
+        log(message,true);
+        return {ok:false,status:"failed",results:[{route:"account-device-status",ok:false,result:{text:message}}]};
+      }
+      if(typeof api.status!=="function"||typeof api.receipt!=="function")
+        throw Error("Módulo de status autenticado não carregado");
+      const device=online[0];
+      const queued=await api.status(device.id,requestedDevice.command);
+      if(!queued?.ok||!queued.commandId)throw Error("Servidor recusou consulta do Android");
+      let receipt=null;
+      for(let attempt=0;attempt<8;attempt++){
+        await new Promise(resolve=>setTimeout(resolve,1000));
+        receipt=await api.receipt(queued.commandId);
+        if(["completed","failed","expired","cancelled"].includes(receipt?.command?.status))break;
+      }
+      const resultStatus=receipt?.command?.status||"pending";
+      const actual=receipt?.command?.result||{};
+      const listing=requestedDevice.command==="app.list";
+      const verified=resultStatus==="completed"&&(listing
+        ? actual.ok===true&&Array.isArray(actual.apps)&&actual.scope==="approved-launcher-apps-only"
+        : actual.bridge==="online"&&typeof actual.model==="string"&&actual.model.length>0);
+      const message=verified&&listing
+        ? "APLICATIVOS AUTORIZADOS NO ANDROID // "+
+          (actual.apps.length?actual.apps.slice(0,30).map(app=>String(app.label||"Aplicativo").slice(0,60)).join("; "):"nenhum. Autorize aplicativos na lista do Bridge.")+
+          ". Esta é a lista aprovada no aparelho, não uma lista inventada."
+        :verified
+        ? "BRIDGE ANDROID CONFIRMADO // "+String(actual.manufacturer||"Android").slice(0,40)+
+          " "+String(actual.model).slice(0,65)+
+          " // Android "+String(actual.androidRelease||"não informado").slice(0,24)+
+          " // SDK "+String(actual.sdk||"não informado").slice(0,8)+
+          ". Confirmação recebida diretamente do aplicativo pareado."
+        : "BRIDGE ANDROID // "+
+          (resultStatus==="pending"||resultStatus==="claimed"
+            ? "Consulta enviada, mas o celular ainda não confirmou o comando."
+            : "Consulta não confirmada pelo celular: "+String(actual.error||resultStatus).slice(0,90));
+      log(message,!verified);
+      state.lastRoute="account-device-status";
+      return {ok:verified,status:verified?"completed":
+        resultStatus==="pending"||resultStatus==="claimed"?"submitted":"failed",results:[
+        {route:"account-device-status",ok:verified,result:{text:message,commandStatus:resultStatus,
+          verified,commandId:queued.commandId}}]};
+    }catch(error){
+      const message="BRIDGE ANDROID // Falha na consulta autenticada: "+
+        String(error?.message||error).slice(0,150)+
+        ". Confira o login da conta; não foi realizada pesquisa na web.";
+      log(message,true);
+      return {ok:false,status:"failed",results:[{route:"account-device-status",ok:false,result:{text:message}}]};
+    }
+  }
   // Explicit account-plugin actions take precedence over EARTH place detection and TV routing.
   // Report device execution only after an authenticated receipt confirms completion.
   const accountIntent=parseAccountPluginCommand(clean);
+  // Account-scoped plugin lists must use the authenticated catalog, not generic AI/web search.
+  if(accountIntent?.kind==="list") {
+    try {
+      const api=window.JARVIS_ACCOUNT_PLUGINS;
+      if(typeof api?.list!=="function")throw Error("Catálogo de plugins indisponível");
+      const status=await api.list();
+      if(status?.ok!==true||!Array.isArray(status.plugins))throw Error("Catálogo não confirmado pela conta");
+      const detail=status.plugins.map(p=>String(p.name||p.id).slice(0,50)+
+        ": "+(p.installed?"INSTALADO":"não instalado")).join("; ");
+      const message="PLUGINS DA CONTA // "+(detail||"nenhum plugin disponível")+
+        ". Esta lista é do servidor autenticado, não de uma pesquisa pública.";
+      log(message);
+      state.lastRoute="account-plugin-list";
+      return {ok:true,status:"completed",results:[{route:"account-plugin-list",ok:true,result:{text:message}}]};
+    }catch(error) {
+      const message="Não foi possível consultar os plugins reais: "+String(error?.message||error).slice(0,160)+
+        ". Confira o login Cloudflare Access; nenhuma lista foi presumida.";
+      log(message,true);
+      return {ok:false,status:"failed",results:[{route:"account-plugin-list",ok:false,result:{text:message}}]};
+    }
+  }
   if(accountIntent?.kind==="execute") {
     const api=window.JARVIS_ACCOUNT_PLUGINS;
     try {
@@ -706,10 +828,27 @@ window.addEventListener("ultron:emergency-stop",event=>{
   cancelP0Operations("priority-core",event?.detail?.epoch);
 });
 function enqueue(message, source = "terminal", approvedMission = false) {
+  // Critical local UI commands bypass generic knowledge and media routers.
+  if(isRingHomeCommand(message)||parseLocalCommand(message)?.type==="clear-interface"){
+    const generation=queueGeneration;
+    queue=queue.catch(()=>null).then(()=>generation!==queueGeneration
+      ? {ok:false,status:"cancelled",route:"p0-stop"}:
+      executeMessage(message,source,approvedMission));
+    return queue;
+  }
   // Device diagnostics must never be intercepted by general knowledge or visual routers.
   const pluginIntent=parseAccountPluginCommand(message);
-  if(pluginIntent?.kind==="execute"&&pluginIntent.actionId==="storage.diagnostics"){
-    log("DEVICE // Diagnóstico solicitado ao Bridge Android; resposta da IA genérica desativada para este comando.");
+  const statusIntent=window.ULTRON_DEVICES?.parseDeviceIntent?.(message);
+  if(statusIntent?.deviceType==="mobile"&&["device.status","app.list"].includes(statusIntent.command)){
+    const generation=queueGeneration;
+    queue=queue.catch(()=>null).then(()=>generation!==queueGeneration
+      ? {ok:false,status:"cancelled",route:"p0-stop"}
+      :executeMessage(message,source,approvedMission));
+    return queue;
+  }
+
+  if(pluginIntent?.kind==="list" || (pluginIntent?.kind==="execute"&&pluginIntent.actionId==="storage.diagnostics")){
+    log(pluginIntent.kind==="list" ? "PLUGINS // Catálogo autenticado; pesquisa genérica desativada." : "DEVICE // Diagnóstico solicitado ao Bridge Android; resposta da IA genérica desativada para este comando.");
     const generation=queueGeneration;
     queue=queue.catch(()=>null).then(()=>generation!==queueGeneration
       ? {ok:false,status:"cancelled",route:"p0-stop"}
@@ -984,10 +1123,10 @@ function captureAndroidDiagnostic(event){
   else if(event.key!=="Enter"||event.shiftKey||!input?.contains(event.target))return;
   const command=String(input?.value||"").trim();
   const intent=parseAccountPluginCommand(command);
-  if(intent?.kind!=="execute"||intent.actionId!=="storage.diagnostics")return;
+  if(!(intent?.kind==="list" || (intent?.kind==="execute"&&intent.actionId==="storage.diagnostics")))return;
   event.preventDefault();event.stopImmediatePropagation();event.stopPropagation();
   if(input)input.value="";
-  log("DEVICE // Comando de diagnóstico capturado antes do roteador de IA.");
+  log(intent.kind==="list" ? "PLUGINS // Lista capturada antes do roteador de IA." : "DEVICE // Diagnóstico capturado antes do roteador de IA.");
   void enqueue(command,"terminal");
 }
 document.addEventListener("click",captureAndroidDiagnostic,true);
