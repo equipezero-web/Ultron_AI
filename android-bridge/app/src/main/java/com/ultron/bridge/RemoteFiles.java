@@ -69,34 +69,11 @@ public final class RemoteFiles {
     // One-time display only. Protected by Android Keystore until explicitly revoked.
     // The 128-bit key grants READ-ONLY access to shared storage.
     public static String enablePermanent(Context context) throws Exception {
-        if (!storageGranted(context)) {
-            throw new IllegalStateException("Autorize o acesso especial aos arquivos nas configurações Android.");
-        }
-        byte[] random = new byte[16];
-        new SecureRandom().nextBytes(random);
-        StringBuilder value = new StringBuilder(32);
-        for (byte item : random)
-            value.append(String.format(java.util.Locale.ROOT, "%02X", item & 255));
-        String key = value.toString();
-        SecureStore.saveRemoteFilesKey(context, key);
-        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit()
-            .remove(KEY_CODE).remove(KEY_EXPIRES)
-            .putBoolean(KEY_PERSISTENT, true)
-            .commit();
-        return key;
+        throw new SecurityException("Acesso permanente desativado por segurança. Use uma sessão de 10 minutos.");
     }
 
     public static boolean isPermanent(Context context) {
-        if (!storageGranted(context)) {
-            if (context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getBoolean(KEY_PERSISTENT, false)) disable(context);
-            return false;
-        }
-        if (!context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getBoolean(KEY_PERSISTENT, false))
-            return false;
-        try {
-            String key = SecureStore.getRemoteFilesKey(context);
-            return key != null && key.matches("[A-F0-9]{32}");
-        } catch (Exception error) { return false; }
+        return false;
     }
 
     // Explicit revocation invalidates the access key immediately. Commands
@@ -122,9 +99,7 @@ public final class RemoteFiles {
         if (!nonce.matches("[a-fA-F0-9]{32}") || !provided.matches("[a-fA-F0-9]{64}"))
             throw new SecurityException("Autorização criptográfica de arquivos ausente.");
         String expected;
-        if (isPermanent(context)) {
-            expected = SecureStore.getRemoteFilesKey(context);
-        } else {
+        {
             if (remainingSeconds(context) == 0)
                 throw new SecurityException("Sessão remota expirada. Reative pelo aplicativo do celular.");
             expected = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
