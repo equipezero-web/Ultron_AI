@@ -8,6 +8,9 @@ for(const phrase of [
 ]){
   assert.equal(parseLocalCommand(phrase)?.type,"clear-interface",phrase);
 }
+for(const phrase of ["limpar terminal","Jarvis, limpar o terminal","clear","cls"]){
+ assert.equal(parseLocalCommand(phrase)?.type,"clear-interface",phrase);
+}
 for(const phrase of [
   "Como limpar tudo?","Não limpe tudo","Se eu limpar tudo, perco dados?",
   "Limpe o histórico do navegador","Apague meus arquivos",
