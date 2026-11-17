@@ -35,6 +35,8 @@ public class RemoteMicService extends Service {
     private static final String CHANNEL_ID = "ultron_remote_mic_service";
     private static final int FOREGROUND_ID = 4201;
 
+    private static volatile boolean localSessionActive = false;
+    public static boolean isLocalSessionActive() { return localSessionActive; }
     private final Handler handler = new Handler(Looper.getMainLooper());
     private SpeechRecognizer recognizer;
     private Intent recognizerIntent;
@@ -59,8 +61,7 @@ public class RemoteMicService extends Service {
         }
 
         prepareRecognizer();
-        publishStatus("active", "Microfone remoto autorizado e disponível para o Ultron.");
-        startListeningNow();
+        publishStatus("ready", "Microfone aguarda ativação explícita no celular.");
     }
 
     @Override
@@ -71,18 +72,24 @@ public class RemoteMicService extends Service {
             stopRemoteMicrophone(true);
             return START_NOT_STICKY;
         }
-
-        if (ACTION_PAUSE.equals(action)) {
-            pauseForUltronSpeech();
-            return START_STICKY;
-        }
-
-        if (ACTION_RESUME.equals(action) || ACTION_START.equals(action) || action == null) {
+        if (ACTION_START.equals(action) &&
+                SecureStore.isRemoteMicTrusted(this) &&
+                checkSelfPermission(android.Manifest.permission.RECORD_AUDIO) ==
+                    android.content.pm.PackageManager.PERMISSION_GRANTED) {
+            localSessionActive = true;
             resumeAfterUltronSpeech();
-            return START_STICKY;
+            return START_NOT_STICKY;
         }
-
-        return START_STICKY;
+        // A restarted service or a remote command cannot re-enable listening
+        // unless a locally started microphone session is still alive.
+        if (!localSessionActive) {
+            stopForeground(STOP_FOREGROUND_REMOVE);
+            stopSelf();
+            return START_NOT_STICKY;
+        }
+        if (ACTION_PAUSE.equals(action)) pauseForUltronSpeech();
+        if (ACTION_RESUME.equals(action)) resumeAfterUltronSpeech();
+        return START_NOT_STICKY;
     }
 
     @Override
@@ -294,6 +301,7 @@ public class RemoteMicService extends Service {
     }
 
     private void stopRemoteMicrophone(boolean publish) {
+        localSessionActive = false;
         listeningEnabled = false;
         systemPaused = false;
         restarting = false;
@@ -368,6 +376,7 @@ public class RemoteMicService extends Service {
 
     @Override
     public void onDestroy() {
+        localSessionActive = false;
         listeningEnabled = false;
         handler.removeCallbacksAndMessages(null);
 
