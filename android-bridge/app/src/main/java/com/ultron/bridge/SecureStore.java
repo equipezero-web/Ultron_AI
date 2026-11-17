@@ -94,6 +94,22 @@ public final class SecureStore {
         return secret;
     }
 
+    // Prepare an independent secret before pairing; persist it only after the
+    // server accepts the new pairing code. Old credentials are never reused.
+    public static String newPairingSecret() {
+        byte[] random = new byte[32];
+        new SecureRandom().nextBytes(random);
+        return Base64.encodeToString(random, Base64.NO_WRAP | Base64.URL_SAFE);
+    }
+
+    public static synchronized void saveNewPairing(Context context, String deviceId, String secret)
+            throws Exception {
+        if (deviceId == null || deviceId.trim().isEmpty() || secret == null || secret.length() < 32)
+            throw new IllegalArgumentException("Pareamento inválido.");
+        encrypt(context, SECRET_VALUE, SECRET_IV, secret);
+        prefs(context).edit().putString(DEVICE_ID, deviceId).commit();
+    }
+
     public static void saveDeviceId(Context context, String deviceId) {
         prefs(context).edit().putString(DEVICE_ID, deviceId).apply();
     }
