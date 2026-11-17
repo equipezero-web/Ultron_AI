@@ -1,6 +1,6 @@
 import API_CONFIG from "../config.js";
 
-// J.A.R.V.I.S. // Remote Shared Storage v0.8.
+// J.A.R.V.I.S. // Scoped Android SAF Remote Folder v0.9.1.
 // Never opens whole Android app-private data. All operations require a PIN
 // created by a deliberate touch on the paired phone and a real Cloud heartbeat.
 // No auto-scanning, no remote writes/deletes, no AI tool ingestion.
@@ -72,7 +72,7 @@ function install() {
   // and pressing Enter. Existing file rows are shown only after a command.
   auth.append(pin);
   panel.append(auth);
-  const status=make("p","No J.A.R.V.I.S. Bridge v0.8.0, autorize o armazenamento e escolha o modo temporário ou MANTER ACESSO ATÉ EU DESATIVAR. Depois insira a chave mostrada pelo telefone.","jarvis-phone-files-status");
+  const status=make("p","No J.A.R.V.I.S. Bridge v0.9.1, escolha uma pasta autorizada no Android e ative uma sessão temporária de 10 minutos. Depois digite o PIN de 8 números mostrado no telefone.","jarvis-phone-files-status");
   status.setAttribute("role","status");
   status.setAttribute("aria-live","polite");
   panel.append(status);
@@ -292,7 +292,7 @@ function install() {
       open();
       if(!pin.value.trim()) {
         setStatus("Comando entendido: abrir "+(requestedPath||"volumes")+
-          ". Digite o PIN ou chave autorizada e pressione Enter. Depois poderá pedir outras pastas por voz ou texto.");
+          ". Digite o PIN temporário de 8 números e pressione Enter. Depois poderá pedir outras pastas por voz ou texto.");
         return {ok:true,waitingAuthorization:true,path:requestedPath};
       }
       currentPin();
