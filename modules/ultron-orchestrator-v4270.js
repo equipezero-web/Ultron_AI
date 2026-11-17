@@ -268,7 +268,7 @@ function parseEarthIntent(command) {
   target = target.replace(/^(?:a|o|na|no|para|de)\s+/, '').trim();
   if (!target || geoAliases.test(target)) return { place: '' };
   if (/^(?:meu|minha|meus|minhas|produto|produtos|pedido|pedidos|loja|vendas|relatorio|relatorios|mensagens|arquivos|arquivo|foto|fotos|fotografia|fotografias|imagem|imagens|documento|video|camera|sensor|sistema|status|painel|agenda|historico|clima|tempo|previsao|noticia|noticias|resultado|resultados)(?:\b|\s)/.test(target)) return null;
-  if (/^(?:camera|sensor|arquivo|foto|imagem|documento|video|sistema|status|painel|agenda|historico|meus dados)/.test(target)) return null;
+  if (/^(?:camera|sensor|arquivo|foto|imagem|documento|video|sistema|status|painel|agenda|historico|meus dados|suas funcionalidades|suas funcoes|suas capacidades|funcionalidades|habilidades|ferramentas)/.test(target)) return null;
   return { place: target };
 }
 // Report real Earth module state instead of asking the cloud AI to infer visual status.
