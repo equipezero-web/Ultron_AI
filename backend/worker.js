@@ -59,7 +59,7 @@ import {classifyConsultativeTurn,consultativeGuidance} from "./consultative-dial
 import {inspectPublicGitHubRepository,githubInspectionContext,contradictsVerifiedGitHubInspection,verifiedGitHubFallback} from "./github-public-inspector.js";
 import {authorizePrivateGitHub,privateGitHubHeaders,privateGitHubConfig,inspectPrivateGitHub,privateGitHubContext} from "./github-private-inspector.js";
 import {authorizeJarvisAccount,accountAccessConfig,accountAccessHeaders} from "./jarvis-account-access.js";
-import {accountPluginList,accountPluginInstall,executeAccountPlugin,accountPluginReceipt,accountPluginPairDevice,revokeAccountPluginDevice} from "./jarvis-account-plugins.js";
+import {accountPluginList,accountPluginInstall,executeAccountPlugin,accountPluginReceipt,accountPluginPairDevice,accountAndroidStatus,revokeAccountPluginDevice} from "./jarvis-account-plugins.js";
 import { analyzeVisualFrame } from "./vision-analysis.js";
 import { getWebRtcIceServers, webRtcIceHealth } from "./webrtc-ice.js";
 import { loadLiveNewsContext, isGeneralNewsIntent, isLiveNewsIntent } from "./news-context.js";
@@ -1016,6 +1016,8 @@ async function handleAccountPlugins(request,env,path){
     data=await executeAccountPlugin(env,auth.accountId,body);
   else if(path==="/api/account/plugins/receipt")
     data=await accountPluginReceipt(env,auth.accountId,body.commandId);
+  else if(path==="/api/account/devices/status")
+    data=await accountAndroidStatus(env,auth.accountId,body);
   else if(path==="/api/account/devices/pair")
     data=await accountPluginPairDevice(env,auth.accountId,body);
   else if(path==="/api/account/devices/revoke")
@@ -1116,6 +1118,7 @@ export default {
         "/api/account/plugins",
         "/api/account/plugins/execute",
         "/api/account/plugins/receipt",
+        "/api/account/devices/status",
         "/api/account/devices/pair",
         "/api/account/devices/revoke"
       ].includes(path))return handleAccountPlugins(request,env,path);
