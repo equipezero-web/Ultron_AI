@@ -10,7 +10,6 @@ const API_BASE = String(API_CONFIG?.backendUrl || '').replace(/\/$/, '');
 if (opticalPanel && video) {
   const BRIDGE_AUTH_KEY = 'ultron_remote_camera_authorized_v1';
   // Online threshold is shared with the Cloud gateway (45 seconds).
-  const AUTO_CONNECT_SESSION_KEY = 'ultron_mobile_camera_auto_v4250';
 
   let mode = 'automatic';
   let bridgeDeviceId = null;
@@ -42,7 +41,7 @@ if (opticalPanel && video) {
   ui.className = 'mobile-camera-source-v420';
   ui.innerHTML = `
     <button type="button" class="hud-button primary" data-mobile-camera-bridge>CONECTAR CÂMERA DO CELULAR</button>
-    <small data-mobile-camera-status>Ultron Bridge é a fonte principal. Após o primeiro pareamento, a reconexão é automática.</small>
+    <small data-mobile-camera-status>Ultron Bridge é a fonte principal. A câmera só inicia após ação no celular. O pareamento não autoriza gravação automática.</small>
   `;
 
   const controls = opticalPanel.querySelector('.controls');
@@ -256,7 +255,7 @@ if (opticalPanel && video) {
 
       if (state === 'ready') {
         localStorage.setItem(BRIDGE_AUTH_KEY, 'yes');
-        setStatus('PERMISSÃO SALVA // CONECTANDO');
+        setStatus('SESSÃO AUTORIZADA NO CELULAR // CONECTANDO');
         beginBridgePeer().catch((error) => {
           peerStarting = false;
           closeBridgePeer();
@@ -264,7 +263,7 @@ if (opticalPanel && video) {
           log(error?.message || String(error), true);
         });
       } else if (state === 'blocked') {
-        setStatus('AUTORIZE A CÂMERA UMA ÚNICA VEZ NO CELULAR', true);
+        setStatus('ABRA O BRIDGE E AUTORIZE A SESSÃO DE CÂMERA NO CELULAR', true);
       } else if (state === 'active') {
         setStatus(`CÂMERA ONLINE // ${iceMode}`);
       } else if (state === 'error') {
@@ -330,13 +329,13 @@ if (opticalPanel && video) {
     startBridgePolling();
 
     const remembered = localStorage.getItem(BRIDGE_AUTH_KEY) === 'yes';
-    setStatus(remembered ? 'RECONECTANDO CÂMERA DO CELULAR' : 'PRIMEIRO USO // AUTORIZE NO CELULAR');
+    setStatus(remembered ? 'SOLICITANDO NOVA AUTORIZAÇÃO NO CELULAR' : 'SOLICITANDO AUTORIZAÇÃO NO CELULAR');
     setText('bridge-session-state', 'CONNECTING');
     setText('bridge-camera-state', 'CONNECTING');
 
     await sendBridgeAction('camera.request', {
       title: 'Ultron Optical Sensor',
-      text: remembered ? 'Reconectando câmera remota.' : 'Autorize a câmera uma única vez para o Optical Sensor.'
+      text: 'Abra o Ultron Bridge e autorize esta sessão de câmera no celular.'
     });
 
     log(`Conectando ${device.deviceName || 'Ultron Bridge'} ao Optical Sensor.`);
@@ -353,7 +352,7 @@ if (opticalPanel && video) {
         setStatus(`PAREAMENTO: DIGITE ${result.code} NO APP ULTRON BRIDGE`);
         setText('bridge-link-state', 'PAIRING');
         setText('bridge-session-state', `CODE ${result.code}`);
-        if (!silent) log(`Primeiro uso: digite ${result.code} no Ultron Bridge. Depois toque em INICIAR BRIDGE; a câmera conectará automaticamente.`);
+        if (!silent) log(`Primeiro uso: digite ${result.code} no Ultron Bridge. Depois toque em INICIAR BRIDGE e autorize a câmera no celular quando solicitar.`);
         return false;
       }
       setStatus(message, true);
@@ -402,8 +401,4 @@ if (opticalPanel && video) {
     }
   };
 
-  if (localStorage.getItem(BRIDGE_AUTH_KEY) === 'yes' && !sessionStorage.getItem(AUTO_CONNECT_SESSION_KEY)) {
-    sessionStorage.setItem(AUTO_CONNECT_SESSION_KEY, '1');
-    setTimeout(() => smartConnect({ silent: true }).catch(() => {}), 1400);
-  }
 }
