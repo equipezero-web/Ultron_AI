@@ -83,14 +83,14 @@ public final class AccountPluginActions {
                android.content.pm.PackageManager.PERMISSION_GRANTED)
             return reply.put("ok",false).put("error","Ative notificações para abrir agenda pelo Bridge.");
         PendingIntent pending=PendingIntent.getActivity(context,
-            creating?4501:4502,intent,PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);
+            creating?4501:("youtube.open".equals(command)?4502:4503),intent,PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);
         Notification note=new Notification.Builder(context,CHANNEL)
             .setSmallIcon(android.R.drawable.ic_menu_my_calendar)
             .setContentTitle(creating?"J.A.R.V.I.S. • Confirmar compromisso":("youtube.open".equals(command)?"J.A.R.V.I.S. • Abrir YouTube":"J.A.R.V.I.S. • Abrir agenda"))
             .setContentText(creating?"Toque para revisar o evento e salvar na sua agenda.":"Toque para abrir o aplicativo neste Android.")
             .setContentIntent(pending).setAutoCancel(true).build();
-        manager.notify(creating?4501:4502,note);
-        return reply.put("ok",false).put("requiresUserTap",true)
+        manager.notify(creating?4501:("youtube.open".equals(command)?4502:4503),note);
+        return reply.put("ok",true).put("delivery","notification").put("requiresUserTap",true)
             .put("eventSaved",false).put("requiresCalendarSave",creating)
             .put("message","O Android exige um toque na notificação.");
     }
