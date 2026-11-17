@@ -172,6 +172,12 @@ public final class RemoteFiles {
         String rootId=DocumentsContract.getTreeDocumentId(tree);
         Doc current=new Doc(rootId,"Pasta autorizada",DocumentsContract.Document.MIME_TYPE_DIR,0,0);
         if(relative.isEmpty())return current;
+        // Commands referring to Downloads should also resolve when the user
+        // selected Downloads itself (rather than its parent) in the SAF picker.
+        String selectedName=rootId.substring(Math.max(rootId.lastIndexOf('/'),rootId.lastIndexOf(':'))+1);
+        if(!selectedName.isEmpty() && relative.equalsIgnoreCase(selectedName))return current;
+        if(!selectedName.isEmpty() && relative.regionMatches(true,0,selectedName+"/",0,selectedName.length()+1))
+            relative=relative.substring(selectedName.length()+1);
         if(relative.startsWith("/")||relative.endsWith("/")||relative.contains("//") ||
             relative.indexOf('\\')>=0||relative.indexOf(':')>=0||relative.indexOf('\0')>=0)
             throw new SecurityException("Caminho inválido.");
