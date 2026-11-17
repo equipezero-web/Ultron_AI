@@ -4,10 +4,118 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-17T02:44:10.581Z",
-  "oldestEventAt": "2026-11-16T06:40:44.000Z",
-  "windowStartAt": "2026-11-16T02:44:10.581Z",
+  "updatedAt": "2026-11-17T11:13:33.267Z",
+  "oldestEventAt": "2026-11-16T12:28:00.000Z",
+  "windowStartAt": "2026-11-16T11:13:33.267Z",
   "events": [
+    {
+      "id": "event-d597f160",
+      "category": "mundo",
+      "title": "Próximo Golden Boy? Lennart Karl, promessa do Bayern de Munique, pode seguir os passos de Lamine Yamal, diz Hamann",
+      "url": "https://news.google.com/rss/articles/CBMi8wFBVV95cUxOQjJPZkZMUjFHVjRPeUw4YmFsWS0tUEU0VmJodEJYQmIxUmNiUTljWWtNQTItWjlWX3VpUlppb1NZUXNaQTdzSTBFV1I5VWstSHR5dmZIaklCZ0l6anVlSV9lSzZZYlRkbUZ0M0pWSmFaU3pWVkc4QnVDS0ZXdm1OTDloRzdUMXpfNWItWUh6Rk4xVHFPVXhsY0h1alRjNHpzM0prWGtpdkFheEY5QnhucEpmLTFBZmx5ZEpZdmZDMXRvYVNWNEgxNk1uZ3Fvb1JmbkMzR2R3MGplY1BMcHFtWnQ4WUdmSl96OEVRRlBTR1JFaXM",
+      "description": "Próximo Golden Boy? Lennart Karl, promessa do Bayern de Munique, pode seguir os passos de Lamine Yamal, diz Hamann &nbsp;&nbsp; Goal.com",
+      "imageUrl": null,
+      "source": "Goal.com",
+      "publishedAt": "2026-11-17T11:12:48.000Z",
+      "firstSeenAt": "2026-11-17T11:13:33.267Z",
+      "lastSeenAt": "2026-11-17T11:13:33.267Z"
+    },
+    {
+      "id": "event-ec0197f8",
+      "category": "mundo",
+      "title": "Confira os principais destaques do Jornal O Dia desta terça (17)",
+      "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxOZ0EzRlFNMGN2WnZPcEotSnFac1RYZjJUc0NMN215UVF6c1dhTmtxNVRDQm5EYkhFSGNTRzZ2MnljWTJ6YjUtcmF4OG9KdUZPcF81SGdfRXFPR0ZsMnFmYm5scm1GRGtubTJOZkNqT3liY0NYRVZxSU5QZ0dIaTNpSVU3T1ltSURrRFl3R1hyUWt4WnZ2Y1otYmdILXJ5bGIwSUhVNzdobi00NWV6RU8yZjZyQW85dw",
+      "description": "Confira os principais destaques do Jornal O Dia desta terça (17) &nbsp;&nbsp; Portal O Dia",
+      "imageUrl": null,
+      "source": "Portal O Dia",
+      "publishedAt": "2026-11-17T10:51:00.000Z",
+      "firstSeenAt": "2026-11-17T11:13:33.267Z",
+      "lastSeenAt": "2026-11-17T11:13:33.267Z"
+    },
+    {
+      "id": "event-c9007501",
+      "category": "mundo",
+      "title": "Lula diz que Irã não tem bomba nuclear e que EUA “inventam história”",
+      "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxOSUlHLTh3S1B5U2kxdVpKWGdVZHN6bUJmNUpWNnAtYTFkdFhOZHpILWZ1SE1PekhXVWRfVVNpRnh3VnZ6X1p4di1QNlc4bW4tSnAzT1hmRC0tV1ZCNkNReTY2VFVkY2UzaVdZNGRHREx5RDJWV0lwcHhiektvNVJRNDBrc2RtNVNjUUk1M09yUnAwbmN3end0cg",
+      "description": "Lula diz que Irã não tem bomba nuclear e que EUA “inventam história” &nbsp;&nbsp; Portal Diário do RN",
+      "imageUrl": null,
+      "source": "Portal Diário do RN",
+      "publishedAt": "2026-11-17T10:43:07.000Z",
+      "firstSeenAt": "2026-11-17T11:13:33.267Z",
+      "lastSeenAt": "2026-11-17T11:13:33.267Z"
+    },
+    {
+      "id": "event-65c2e0ed",
+      "category": "brasil",
+      "title": "Mega-Sena sorteia prêmio de R$ 34 milhões nesta terça-feira",
+      "url": "https://agenciabrasil.ebc.com.br/geral/noticia/2026-11/mega-sena-sorteia-premio-de-r-34-milhoes-nesta-terca-feira",
+      "description": "A Mega-Sena sorteia nesta terça-feira (17) prêmio estimado em R$ 34 milhões. As seis dezenas do concurso 3.087 serão sorteadas a partir das 21h (horário de Brasília) no Espaço da Sorte, em São Paulo. As apostas podem ser feitas até às 20h (horário de Brasília) em casas lotéricas credenciadas pela Caixa em todo o país ou pela internet, no site ou aplicativo da Caixa. A aposta simples, com seis dezenas, custa R$ 6. Notícias relacionadas: Mega da Virada: Caixa anuncia que prêmio deve superar R$ 1 bilhão. No último concurso, foram sorteados os números 03 - 20 - 35 - 38 - 43 - 46 e nenhuma aposta acertou as seis dezenas .",
+      "imageUrl": "https://imagens.ebc.com.br/eaq4pCwPiYFX28fNjurwQSR142w=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/mcamg_abr_08052019_8614_1.jpg?itok=uZbHSt8t",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-17T10:20:00.000Z",
+      "firstSeenAt": "2026-11-17T11:13:33.267Z",
+      "lastSeenAt": "2026-11-17T11:13:33.267Z"
+    },
+    {
+      "id": "event-7b57c593",
+      "category": "clima",
+      "title": "El Niño se aproxima do pico e deve provocar efeitos no Brasil até 2027",
+      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQczEzRlJ6MHRzbGUzOG5HZk81bGVNV05iMzJCOHluNUpkRXRfY05GMUY0Y2xIVFZiWE9mOWhhVXBLVmZmbEdENG4wV25MWmpUN3EzLWNqd3lQSFhtTnFHTnI2Yk9rTVJaY2Q0Z0N2NFVaTmx4YkdEVTBaZUs4bnlsbEpyVmxPbGk3ZW1zbmFqdVo3RWR1WndwOVVrYkFTVTVLQTR0SDJNOA",
+      "description": "El Niño se aproxima do pico e deve provocar efeitos no Brasil até 2027 &nbsp;&nbsp; ncnews.com.br",
+      "imageUrl": null,
+      "source": "ncnews.com.br",
+      "publishedAt": "2026-11-17T10:16:05.000Z",
+      "firstSeenAt": "2026-11-17T11:13:33.267Z",
+      "lastSeenAt": "2026-11-17T11:13:33.267Z"
+    },
+    {
+      "id": "event-1ee1c779",
+      "category": "brasil",
+      "title": "Durigan explica no Senado alíquota de 11,3% da CBS",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/durigan-explica-no-senado-aliquota-de-113-da-cbs",
+      "description": "Em meio a questionamentos sobre a reforma tributária, o ministro da Fazenda, Dario Durigan, participa nesta terça-feira (17), às 10h, de audiência pública na Comissão de Assuntos Econômicos (CAE) do Senado para discutir a alíquota de referência da Contribuição sobre Bens e Serviços (CBS). Criado pela reforma, o tributo está previsto para entrar em vigor em 2027. O percentual de 11,3% recomendado pelo Tribunal de Contas da União (TCU) provocou questionamentos de parlamentares e representantes do setor produtivo, que pedem esclarecimentos sobre os critérios utilizados no cálculo e discutem a necessidade de adiar a implementação do novo tributo. Notícias relacionadas: Durigan diz que é preciso dar condições para a queda dos juros. Governo buscará cumprir meta fiscal com diálogo, diz Durigan. Previsão de superávit no Orçamento de 2027 está mantida, diz Durigan. Além de Durigan, participam da audiência o presidente do Tribunal de Contas da União (TCU), Vital do Rêgo Filho, e o secretário especial da Receita Federal, Robinson Barreirinhas. O debate foi solicitado pelo senador Izalci Lucas",
+      "imageUrl": "https://imagens.ebc.com.br/5URJCKWHwpMld8W09ucQsgZKSv8=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/16/pzzb0645.jpg?itok=eT88qKmn",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-17T10:15:00.000Z",
+      "firstSeenAt": "2026-11-17T11:13:33.267Z",
+      "lastSeenAt": "2026-11-17T11:13:33.267Z"
+    },
+    {
+      "id": "event-945ca982",
+      "category": "brasil",
+      "title": "Beneficiários com NIS de final 2 recebem Bolsa Família de novembro",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/beneficiarios-com-nis-de-final-2-recebem-bolsa-familia-de-novembro",
+      "description": "A Caixa Econômica Federal paga nesta terça-feira (17) a parcela de outubro do Bolsa Família aos beneficiários com Número de Inscrição Social (NIS) de final 2. Neste mês, 19,07 milhões de família serão beneficiadas, com o valor médio do benefício em R$ 783,63, com gasto de R$ 14,88 bilhões. Os moradores de 112 municípios de oito estados receberam o crédito na segunda-feira (16), independentemente do número final do NIS. O pagamento unificado beneficiou localidades em situação de emergência ou em estado de calamidade pública nos seguintes estados: Amazonas (23), Minas Gerais (uma), Piauí (22), Paraná (41), Rio Grande do Norte (dez), Roraima (seis), São Paulo (quatro) e Sergipe (cinco). Notícias relacionadas: Caixa começa a pagar parcela do Bolsa Família de novembro. Bolsa Família é reajustado em 15%; medida vale a partir de outubro. A lista dos municípios com pagamento unificado está disponível aqui . No modelo tradicional do Bolsa Família, o pagamento ocorre nos últimos dez dias úteis de cada mês. No entanto, por causa do fenômeno climático El Niño, o governo concentrou os dias de pag",
+      "imageUrl": "https://imagens.ebc.com.br/qv1-RBHp0M3IaFURJMkSMNEHorA=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/real_moeda_dinheiro_mcajr_2904223667.jpg?itok=orCy-svv",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-17T10:02:00.000Z",
+      "firstSeenAt": "2026-11-17T11:13:33.267Z",
+      "lastSeenAt": "2026-11-17T11:13:33.267Z"
+    },
+    {
+      "id": "event-41d56d90",
+      "category": "santa-catarina",
+      "title": "Temporais retornam a Santa Catarina nesta terça-feira com risco de alagamentos e ventos fortes",
+      "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxQa2xCbGVBWDN3MlJzdjNqbzlhQUJOWVVRRF9fUGlWUUwxX2VEeElCYkJSQW1JS0pJTkhobVM3X2NuVVNPSXJyaHZvaVJJYkhOYXo4Um1aM1MycVZ4cVJTOGNhczRsZ2RFYzZVY2lmenFsRkpTSDk0cUFMUFlyczV0ejJCbFE1eW9jUXo5QkpPWDY1SXFFVF9VVU5sSnVpcUY4NV9vel9peFg5RjBFcUVDTE5qTlctSVVSd1BsbnREcXdzVnB0VzZLRURBNA",
+      "description": "Temporais retornam a Santa Catarina nesta terça-feira com risco de alagamentos e ventos fortes &nbsp;&nbsp; No Ponto SC",
+      "imageUrl": null,
+      "source": "No Ponto SC",
+      "publishedAt": "2026-11-17T09:26:34.000Z",
+      "firstSeenAt": "2026-11-17T11:13:33.267Z",
+      "lastSeenAt": "2026-11-17T11:13:33.267Z"
+    },
+    {
+      "id": "event-a688e049",
+      "category": "brasil",
+      "title": "17 de novembro terá apagão mundial?",
+      "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE5jbnNuSkRFenVWS19IQnhNRktNOGNua3pFUU85a1JRdjNfdW1EOWFlQjNybk1KMU5OUnZNT3hkYldlZzVxbFZKODBZelFnVEVWYkhzS0pGM0RXYk9wSDFj",
+      "description": "17 de novembro terá apagão mundial? &nbsp;&nbsp; BBC",
+      "imageUrl": null,
+      "source": "BBC",
+      "publishedAt": "2026-11-17T02:55:37.000Z",
+      "firstSeenAt": "2026-11-17T11:13:33.267Z",
+      "lastSeenAt": "2026-11-17T11:13:33.267Z"
+    },
     {
       "id": "event-7f53432",
       "category": "clima",
@@ -18,7 +126,7 @@
       "source": "NSC Total",
       "publishedAt": "2026-11-16T23:56:29.000Z",
       "firstSeenAt": "2026-11-17T02:44:10.581Z",
-      "lastSeenAt": "2026-11-17T02:44:10.581Z"
+      "lastSeenAt": "2026-11-17T11:13:33.267Z"
     },
     {
       "id": "event-cd7a5c27",
@@ -117,6 +225,18 @@
       "lastSeenAt": "2026-11-17T02:44:10.581Z"
     },
     {
+      "id": "event-a6af1bf8",
+      "category": "santa-catarina",
+      "title": "Semana de calor termina com chuva forte em Santa Catarina",
+      "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxNUFEtSjBxNjJKclVpZjhQempvTTlOeW04UFo5eEQ5ZFF4TXR6U2dLZkt1TnhIcldiWl9IcGpVZ0ZkWkp1TDVub3cyb2NwZEQ1YUpuOVpIMzJNeG1mT1VsZXo4ZFBIajZ5MnZFX2c5VHhLbm11UVZHbDUtTzVrSXZYemFHR0FQZ3Yyckhjai1paUdNLTl2VGdOWg",
+      "description": "Semana de calor termina com chuva forte em Santa Catarina &nbsp;&nbsp; Jornal do Comércio",
+      "imageUrl": null,
+      "source": "Jornal do Comércio",
+      "publishedAt": "2026-11-16T19:59:14.000Z",
+      "firstSeenAt": "2026-11-17T11:13:33.267Z",
+      "lastSeenAt": "2026-11-17T11:13:33.267Z"
+    },
+    {
       "id": "event-92bff8aa",
       "category": "mundo",
       "title": "Maior artilheiro da Bélgica, Lukaku anuncia aposentadoria",
@@ -162,7 +282,7 @@
       "source": "Deolhonailha",
       "publishedAt": "2026-11-16T18:34:15.000Z",
       "firstSeenAt": "2026-11-16T19:51:49.587Z",
-      "lastSeenAt": "2026-11-17T02:44:10.581Z"
+      "lastSeenAt": "2026-11-17T11:13:33.267Z"
     },
     {
       "id": "event-16a7c951",
@@ -198,7 +318,7 @@
       "source": "Revista Cultivar",
       "publishedAt": "2026-11-16T18:16:23.000Z",
       "firstSeenAt": "2026-11-16T19:51:49.587Z",
-      "lastSeenAt": "2026-11-17T02:44:10.581Z"
+      "lastSeenAt": "2026-11-17T11:13:33.267Z"
     },
     {
       "id": "event-6f258e5f",
@@ -282,7 +402,7 @@
       "source": "Estadão",
       "publishedAt": "2026-11-16T15:17:56.000Z",
       "firstSeenAt": "2026-11-16T19:51:49.587Z",
-      "lastSeenAt": "2026-11-17T02:44:10.581Z"
+      "lastSeenAt": "2026-11-17T11:13:33.267Z"
     },
     {
       "id": "event-2161e714",
@@ -295,121 +415,9 @@
       "publishedAt": "2026-11-16T12:28:00.000Z",
       "firstSeenAt": "2026-11-16T19:51:49.587Z",
       "lastSeenAt": "2026-11-16T19:51:49.587Z"
-    },
-    {
-      "id": "event-553afce1",
-      "category": "asia",
-      "title": "Principais Bolsas da Ásia caem à espera de resultados da Nvidia e IPO da Anthropic - Folha de S.Paulo",
-      "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxPeHJKaTBpNFF0S0FTYUpUMTQyaGFCbG9HMk54NVlCYVVCaDM4ZVBtX0hMN0hFV1E4Z0V5TlFYQVlnY0kxazhyczdCY1ROLVVVR1R4V1MyRFRsWjduTk94aGdMOWFrT2RBbTVwSzZpUlVFSlFUWkNQMnpQN2duUW05OHhCTWt3VDV0Yk5fa2JaRWtqYzYycXZGcHlzU2xvWFMtQmphWkZyYy1hWlRyTU4yaFQzd093LUZGc3RndG5vWFQyV1BRdjE0Q1RkZG1GaEU",
-      "description": "Principais Bolsas da Ásia caem à espera de resultados da Nvidia e IPO da Anthropic &nbsp;&nbsp; Folha de S.Paulo",
-      "imageUrl": null,
-      "source": "Folha de S.Paulo",
-      "publishedAt": "2026-11-16T10:24:00.000Z",
-      "firstSeenAt": "2026-11-16T19:51:49.587Z",
-      "lastSeenAt": "2026-11-17T02:44:10.581Z"
-    },
-    {
-      "id": "event-a7ca74a3",
-      "category": "santa-catarina",
-      "title": "Segunda-feira tem variação de nuvens e chuva ocasional no Litoral de SC",
-      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQMl9xWjJlbVVzeE00TjRzc2RNWk93ZXdJM1VfaU9uZHhKell0MkhjUWswUkN2Q21lRnB1OE85MTgxSkt3dXhUSnpaLUZ1UmlsbVNDekpWOHdrVHJRQnBuZ1p5OTYxSWNnY1NJdTFCRTNmUEMzRXlXdS1FcU50bE4zWW4wVEZ1clNtZTdyU3VxMmN3OEdOZ29uNDF4N1l6MVE1U01UWVBsajRoTDc2",
-      "description": "Segunda-feira tem variação de nuvens e chuva ocasional no Litoral de SC &nbsp;&nbsp; No Ponto SC",
-      "imageUrl": null,
-      "source": "No Ponto SC",
-      "publishedAt": "2026-11-16T09:28:51.000Z",
-      "firstSeenAt": "2026-11-16T09:37:07.058Z",
-      "lastSeenAt": "2026-11-16T09:37:07.058Z"
-    },
-    {
-      "id": "event-5354a58b",
-      "category": "europa",
-      "title": "Europa: novas rotas aéreas anunciadas para viagens em 2027 - Euronews",
-      "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNSlN1UVlKTzgtMjBIeDlKTHZYZk1LejZUQ2NLdlh6cmhSZjM2Ry10UkRWc2d0YVZ1cEFrcHhrckNqQm9sbG10S0F1emhJMHN1MzZpcTRYUHhlR1RncWlpeUF2TDZBSEVuR3J3aVpRZERySmpsWnMtdy1lQXBjZy1IVjExMUc4RzhKZDZMaHhraS1OY1VIeHdB",
-      "description": "Europa: novas rotas aéreas anunciadas para viagens em 2027 &nbsp;&nbsp; Euronews",
-      "imageUrl": null,
-      "source": "Euronews",
-      "publishedAt": "2026-11-16T09:24:33.000Z",
-      "firstSeenAt": "2026-11-17T02:44:10.581Z",
-      "lastSeenAt": "2026-11-17T02:44:10.581Z"
-    },
-    {
-      "id": "event-354b4a3e",
-      "category": "brasil",
-      "title": "O que você precisa saber para começar o dia",
-      "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNY0l4SjEtMXM2aHAzMEFvZ1RaR3NhWldXZWE0SWZMc29EcFdCZS0xeE9XS0YycGh3cnpjWE1ER1J1eUsxd0NUSFFKQ2g3VkZaN05YZ01SdnV0WXh0N0h6RlZPRjVwQk9vZm1DVjNlV0toenZLcDJ0VDhQQ09VM0xGTFlQaERVd2VnZDRxWUxyV2FLZVBKb2FF",
-      "description": "O que você precisa saber para começar o dia &nbsp;&nbsp; Rádio Metrópole",
-      "imageUrl": null,
-      "source": "Rádio Metrópole",
-      "publishedAt": "2026-11-16T09:00:00.000Z",
-      "firstSeenAt": "2026-11-16T09:37:07.058Z",
-      "lastSeenAt": "2026-11-16T09:37:07.058Z"
-    },
-    {
-      "id": "event-306a61c0",
-      "category": "mundo",
-      "title": "Jogos de hoje: quem joga no futebol e onde assistir ao vivo – segunda-feira (16/11/2026)",
-      "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxOYUZ2TzY2YzRabDRNMFBSMmFkMml3TWtEOHV4Smd5eTU3bjlGamw3QXBhRFpWVWhBcXFJR296RzdhRmRBVEJYY2hCX2ZYSU9NSERIYzhIS2ZIckdjbVQ0eE5VMTgxOFRCX0tBd3lTRWhtc2x1S2htbG9xdHJuTEdqa0tXRE5NbnZaOHJURWZzN0pPVkxBNGMyRGhpYnZ5QVBJZWl0SG9hZkdGUmUxMmxYQ2VpLU1PQWZuaU5ldm80UmdpdE5Mcnc",
-      "description": "Jogos de hoje: quem joga no futebol e onde assistir ao vivo – segunda-feira (16/11/2026) &nbsp;&nbsp; LANCE!",
-      "imageUrl": null,
-      "source": "LANCE!",
-      "publishedAt": "2026-11-16T09:00:00.000Z",
-      "firstSeenAt": "2026-11-16T09:37:07.058Z",
-      "lastSeenAt": "2026-11-16T09:37:07.058Z"
-    },
-    {
-      "id": "event-2704556",
-      "category": "mundo",
-      "title": "China confirma encontro trilateral entre Xi, Trump e Putin",
-      "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxNSmZGZHR2N3NHdkY1MTdjb2xSMjdFNEtOZmt6M3cwU3lFZFhRbGdjSno5YnFUVHhfUzhwYVYtMnZSZ052b0YyQXljOHJySGZ1b3ZscVE3SF8wUUIwMXFtZHZSLU81SFN1LTNFWE5nbUY4MGh0MHNkd3NEbm1CUlpNZzQyNjlMVWZUNVhHOGNWLTdjYU52a1lDMFFSZmtMbWc",
-      "description": "China confirma encontro trilateral entre Xi, Trump e Putin &nbsp;&nbsp; SBT News",
-      "imageUrl": null,
-      "source": "SBT News",
-      "publishedAt": "2026-11-16T08:42:11.000Z",
-      "firstSeenAt": "2026-11-16T09:37:07.058Z",
-      "lastSeenAt": "2026-11-16T09:37:07.058Z"
-    },
-    {
-      "id": "event-d164ac9c",
-      "category": "brasil",
-      "title": "A história por trás dos carrés de seda da Hermès, estrelas da coleção de inverno da maison que acaba de chegar ao Brasil",
-      "url": "https://news.google.com/rss/articles/CBMiigJBVV95cUxOUnJ3VnM1SGQzX1NGdm9jekw3ZHlQWi1INENGVVRsendFOVBWRUZaT20xXzJIQ1ZDaURjeTJSX0lTT1BfbDhINmYyTVhSSV9xaDYyaXpVSUctUXZNcWNYRXk0SVhET0VjdnhBVDhTQlB5ZjdqNEZKUXYwWnlxUUYxNlZldW5WS0Qwd25pQWI0ZlhNbDdZRWpfR2V0LTZXXzU4dUdLT1VfanVHUnJNQXp2ZUFzQThFVEJFcTFJVnJJV2g1NUl4a3JVUk1iZkRMRFV1TWVxSzZBay1aMDREck4zbDhKeklhanBaeHR3cWhDU3JhZy0xSjl6Q1VCM09XODVHc2RaLW1wTVRwQdIBmAJBVV95cUxPUUhNSkFJQjdGNEdncVVmcG1fQjlKN1ZWSjdfMlBQMmQ3UlVHYV96eU5SaXVLYUdGVnZnRFgxOWFWVzFwOC05MWVDN3NGRkplU1BMWDU5MXRYQmdyZUlHdUhjaVg1R0lBcjVYb3BuLU5zdXhoeVVFMVZUUW5Mbk9iZDBrRE45aE5IaEtROFdlekljSEEzWlltMkxvb2R5bnB2Z2xVTTFnRHpsMHRqQXEyTWd4SUhMUGxNLVBlTFhSd1UxZzNQdTBTOE5RQkFoSGJIam9pUzZHUUtSSEgxZjRYSnJzOUk2R3AzTDRuZXl6Vng1UzZsU2tqYV9ZVGFiQXpXYktmLVZHQXJiVHpQVThza284bmNJNm9N",
-      "description": "A história por trás dos carrés de seda da Hermès, estrelas da coleção de inverno da maison que acaba de chegar ao Brasil &nbsp;&nbsp; O GLOBO",
-      "imageUrl": null,
-      "source": "O GLOBO",
-      "publishedAt": "2026-11-16T07:00:00.000Z",
-      "firstSeenAt": "2026-11-16T09:37:07.058Z",
-      "lastSeenAt": "2026-11-16T09:37:07.058Z"
-    },
-    {
-      "id": "event-376a23ad",
-      "category": "brasil",
-      "title": "Bosch negocia motores elétricos feitos no Brasil com 7 montadoras",
-      "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxQb0dvSENHVjNzSXlCaWhZLTRsWmtlalFzcm9FV3hVN0M2eHl0Y3kzNVhnM3kySnAwTXlZOWZSbE13bDc3Ym1KU1JiOEFjeTF3LW9mY1dyTlpQMGUxSFJlaFVHamY2ZWFGRHNGTnd2M3lraHJ5b3o5SzZEY1lUT2pyYW9BS2xuZDNDWF9rT2NkWG41enhYMlFHS19iVWlPWG9RS3lzcVN5emxPS3BJdFFrb2k1WE9tNVlzZ1RZM05RRXY5VmhwdXV3bzlLcUxXVEpWSVpuTnlscV8xeVk",
-      "description": "Bosch negocia motores elétricos feitos no Brasil com 7 montadoras &nbsp;&nbsp; Estadão",
-      "imageUrl": null,
-      "source": "Estadão",
-      "publishedAt": "2026-11-16T06:40:44.000Z",
-      "firstSeenAt": "2026-11-16T09:37:07.058Z",
-      "lastSeenAt": "2026-11-16T09:37:07.058Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-16T09:37:07.058Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 13,
-      "newArticles": 6,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "europa"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-16T19:51:49.587Z",
       "ok": true,
@@ -442,14 +450,31 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-17T11:13:33.267Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 14,
+      "newArticles": 10,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "europa",
+        "asia"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 3,
-  "lastSuccessfulAt": "2026-11-17T02:44:10.581Z",
+  "lastSuccessfulAt": "2026-11-17T11:13:33.267Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-17T02:44:10.581Z",
+      "checkedAt": "2026-11-17T11:13:33.267Z",
       "warnings": [
         {
           "id": "56432",
@@ -494,7 +519,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-17T02:44:10.581Z",
+      "checkedAt": "2026-11-17T11:13:33.267Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
