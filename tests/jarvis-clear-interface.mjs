@@ -53,4 +53,14 @@ assert.equal(direct.ok,true);
 assert.equal(direct.route,"local-clear-interface");
 assert.equal(direct.quiet,true);
 assert.equal(direct.provider,"jarvis-local");
+// Regression: these UI commands must not be sent to Cloud AI as generic text.
+const {readFileSync}=await import("node:fs");
+const orchestration=readFileSync(new URL("../modules/ultron-orchestrator-v4270.js",import.meta.url),"utf8");
+assert.match(orchestration,/function isRingHomeCommand\(message\)/);
+assert.match(orchestration,/isRingHomeCommand\(clean\)/);
+assert.match(orchestration,/isRingHomeCommand\(message\)/);
+assert.match(orchestration,/state\.lastRoute="local-neural-ring"/);
+assert.match(orchestration,/parseLocalCommand\(message\)\?\.type==="clear-interface"/);
+assert.match(orchestration,/executeMessage\(message,source,approvedMission\)/);
+
 console.log("VISIBLE CLEAR PASS: exact local voice intent, visual reset, idempotency, no external research and no stored data deletion");
