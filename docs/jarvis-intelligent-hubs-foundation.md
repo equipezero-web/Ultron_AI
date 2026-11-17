@@ -13,7 +13,7 @@
 5. `tests/jarvis-intelligent-hubs.mjs` and CI workflow: regression checks for strict skill allowlists, plans, cancellation and sanitized audit records.
 
 ## Important limitations and next integration work
-- No authenticated HTTP routes expose the Skill Hub or Trajectory Hub yet; the server-side stores are libraries, not a live panel feature.
+- Operator-scoped, read-only POST endpoints now expose `/api/hubs/plan`, `/api/hubs/skills` and `/api/hubs/trajectories`. They reuse the existing memoryKey-derived operator identity, which is not a substitute for a stronger server-authenticated session model. No HTTP route can register, validate, activate or execute skills.
 - D1 persistence requires the existing `ULTRON_DB` binding; database operations require deployed environment integration testing.
 - Skill validation currently checks specification shape, not the observed success of a real-world procedure.
 - These agents are routing profiles, not independent language models. Provider selection and multimodal generation remain in the existing system.
@@ -22,7 +22,7 @@
 - Physical Android 15 camera, notifications, files and app-control verification is still necessary.
 
 ## Recommended production acceptance sequence
-1. Review and merge PR with passing CI.
+1. Review and merge PR only after all relevant CI passes and checks for access-control weaknesses.
 2. Configure authenticated server endpoints for skill drafts, locally verified validation, explicit activation and revocation; never trust an approval Boolean supplied by a browser.
 3. Add server-validated operator scoped trajectory writes on real orchestrated steps.
 4. Connect approved agent adapters to existing weather/research/device-read APIs; verify results and show status in Neural Ring.
