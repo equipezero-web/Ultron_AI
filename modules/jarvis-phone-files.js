@@ -1,6 +1,6 @@
 import API_CONFIG from "../config.js";
 
-// J.A.R.V.I.S. // Remote Shared Storage v0.8.
+// J.A.R.V.I.S. // Scoped Android SAF Remote Folder v0.9.1.
 // Never opens whole Android app-private data. All operations require a PIN
 // created by a deliberate touch on the paired phone and a real Cloud heartbeat.
 // No auto-scanning, no remote writes/deletes, no AI tool ingestion.
@@ -60,19 +60,19 @@ function install() {
   close.addEventListener("click",()=>{panel.hidden=true;clearPreview();});
   header.append(label,close);
   panel.append(header);
-  const note=make("p","Exibição sob comando: arquivos compartilhados do Android. Para autorizar, informe a chave e pressione Enter. Nenhum acesso a pastas privadas de outros apps e nenhum envio à IA.");
+  const note=make("p","Exibição sob comando: arquivos compartilhados do Android. Para autorizar, selecione uma pasta no celular, ative uma sessão de 10 minutos e digite o PIN. Nenhum acesso a pastas privadas de outros apps e nenhum envio à IA.");
   panel.append(note);
   const auth=make("div",null,"jarvis-phone-files-auth");
   const pin=make("input");
   pin.id="jarvis-phone-files-pin";
-  pin.type="password";pin.maxLength=32;pin.autocomplete="off";pin.autocapitalize="off";pin.spellcheck=false;
-  pin.placeholder="PIN de 8 números ou chave permanente de 32 caracteres";
-  pin.setAttribute("aria-label","PIN temporário ou chave permanente do celular");
+  pin.type="password";pin.maxLength=8;pin.autocomplete="off";pin.autocapitalize="off";pin.spellcheck=false;
+  pin.placeholder="PIN temporário de 8 números";
+  pin.setAttribute("aria-label","PIN temporário do celular");
   // No extra button: authorize the requested command by entering the PIN/key
   // and pressing Enter. Existing file rows are shown only after a command.
   auth.append(pin);
   panel.append(auth);
-  const status=make("p","No J.A.R.V.I.S. Bridge v0.8.0, autorize o armazenamento e escolha o modo temporário ou MANTER ACESSO ATÉ EU DESATIVAR. Depois insira a chave mostrada pelo telefone.","jarvis-phone-files-status");
+  const status=make("p","No J.A.R.V.I.S. Bridge v0.9.1, escolha uma pasta autorizada no Android e ative uma sessão temporária de 10 minutos. Depois digite o PIN de 8 números mostrado no telefone.","jarvis-phone-files-status");
   status.setAttribute("role","status");
   status.setAttribute("aria-live","polite");
   panel.append(status);
@@ -115,9 +115,9 @@ function install() {
   }
   function currentPin() {
     const value=String(pin.value||"").trim();
-    if(!/^(?:\d{8}|[a-fA-F0-9]{32})$/.test(value))
-      throw Error("Digite o PIN temporário de 8 números ou a chave permanente de 32 caracteres.");
-    return value.length===32?value.toUpperCase():value;
+    if(!/^\d{8}$/.test(value))
+      throw Error("Digite o PIN temporário de 8 números exibido no celular.");
+    return value;
   }
   async function post(path,body) {
     const resp=await fetch(API_BASE+path,{
@@ -292,7 +292,7 @@ function install() {
       open();
       if(!pin.value.trim()) {
         setStatus("Comando entendido: abrir "+(requestedPath||"volumes")+
-          ". Digite o PIN ou chave autorizada e pressione Enter. Depois poderá pedir outras pastas por voz ou texto.");
+          ". Digite o PIN temporário de 8 números e pressione Enter. Depois poderá pedir outras pastas por voz ou texto.");
         return {ok:true,waitingAuthorization:true,path:requestedPath};
       }
       currentPin();

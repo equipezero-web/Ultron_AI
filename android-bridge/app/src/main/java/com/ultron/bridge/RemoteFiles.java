@@ -1,293 +1,274 @@
 package com.ultron.bridge;
 
 import android.content.Context;
-import android.os.Build;
-import android.os.Environment;
+import android.content.Intent;
+import android.content.UriPermission;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.DocumentsContract;
 import android.util.Base64;
-import android.webkit.MimeTypeMap;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.io.File;
-import java.io.RandomAccessFile;
+import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 
 /**
- * Remote file explorer for USER-GRANTED shared storage, not private app data.
- *
- * Explicit Android "All files access" permission + a short phone-generated
- * access PIN or locally encrypted permanent key are both required. This bridge exposes only list/read; it never
- * deletes, edits, uploads, or executes files.
- *
- * Files are relayed in bounded chunks through the authenticated Bridge command
- * channel, not to a model or external AI provider.
+ * Read-only remote explorer for a SINGLE user-selected SAF folder.
+ * Android's document provider enforces subtree boundaries; no all-files
+ * permission, no private app data, no write/delete operations.
+ * Each remote access session requires a fresh, short-lived HMAC PIN.
  */
 public final class RemoteFiles {
-    private static final String PREFS = "jarvis_remote_files_v070";
-    private static final String KEY_CODE = "code";
-    private static final String KEY_EXPIRES = "expires";
-    private static final String KEY_PERSISTENT = "persistent";
-    public static final long SESSION_MS = 10 * 60_000L;
-    public static final int CHUNK_BYTES = 80 * 1024;
-    private static final int PAGE_LIMIT = 100;
-    private static final long MAX_REMOTE_TRANSFER_BYTES = 16L * 1024L * 1024L;
+    private static final String PREFS="jarvis_remote_files_v091";
+    private static final String TREE="tree_uri";
+    private static final String PIN="pin";
+    private static final String EXPIRES="expires";
+    public static final long SESSION_MS=10*60_000L;
+    public static final int CHUNK_BYTES=80*1024;
+    private static final int PAGE_LIMIT=100;
+    private static final int MAX_DOCUMENTS_PER_FOLDER=3000;
+    private static final long MAX_REMOTE_TRANSFER_BYTES=16L*1024L*1024L;
+    private static final String[] PROJECTION={
+        DocumentsContract.Document.COLUMN_DOCUMENT_ID,
+        DocumentsContract.Document.COLUMN_DISPLAY_NAME,
+        DocumentsContract.Document.COLUMN_MIME_TYPE,
+        DocumentsContract.Document.COLUMN_SIZE,
+        DocumentsContract.Document.COLUMN_LAST_MODIFIED
+    };
 
     private RemoteFiles() {}
-
-    public static boolean storageGranted(Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            return Environment.isExternalStorageManager();
-        }
-        return context.checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE)
-            == android.content.pm.PackageManager.PERMISSION_GRANTED;
+    private static android.content.SharedPreferences prefs(Context context) {
+        return context.getSharedPreferences(PREFS,Context.MODE_PRIVATE);
     }
-
-    public static String enable(Context context) {
-        if (!storageGranted(context)) {
-            throw new IllegalStateException("Autorize 'Gerenciar todos os arquivos' nas configurações do Android.");
+    private static Uri storedTree(Context context) {
+        String raw=prefs(context).getString(TREE,"");
+        try { return raw.isEmpty()?null:Uri.parse(raw); } catch(Exception ex){ return null; }
+    }
+    private static Uri activeTree(Context context) {
+        Uri tree=storedTree(context);
+        if(tree==null)return null;
+        for(UriPermission grant:context.getContentResolver().getPersistedUriPermissions()) {
+            if(tree.equals(grant.getUri()) && grant.isReadPermission()) return tree;
         }
-        byte[] bytes = new byte[4];
-        new SecureRandom().nextBytes(bytes);
-        long value = ((bytes[0] & 255L) << 24) | ((bytes[1] & 255L) << 16)
-                | ((bytes[2] & 255L) << 8) | (bytes[3] & 255L);
-        String pin = String.format(java.util.Locale.ROOT, "%08d", value % 100_000_000L);
+        return null;
+    }
+    public static boolean storageGranted(Context context) { return activeTree(context)!=null; }
+
+    /** Called only by the visible Android folder picker result. */
+    public static void selectTree(Context context,Uri selected) {
+        if(selected==null || !"content".equals(selected.getScheme()) ||
+            !DocumentsContract.isTreeUri(selected))
+            throw new SecurityException("Selecione uma pasta válida pelo Android.");
+        Uri previous=storedTree(context);
+        context.getContentResolver().takePersistableUriPermission(
+            selected, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        if(previous!=null && !previous.equals(selected)) {
+            try { context.getContentResolver().releasePersistableUriPermission(
+                previous,Intent.FLAG_GRANT_READ_URI_PERMISSION); }catch(Exception ignored){}
+        }
+        prefs(context).edit().putString(TREE,selected.toString())
+            .remove(PIN).remove(EXPIRES).commit();
         SecureStore.clearRemoteFilesKey(context);
-        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit()
-            .putBoolean(KEY_PERSISTENT, false)
-            .putString(KEY_CODE, pin).putLong(KEY_EXPIRES, System.currentTimeMillis() + SESSION_MS)
-            .commit();
+    }
+    public static String enable(Context context) {
+        if(!storageGranted(context))
+            throw new SecurityException("Escolha primeiro uma pasta no seletor seguro do Android.");
+        byte[] random=new byte[4];
+        new SecureRandom().nextBytes(random);
+        long n=((random[0]&255L)<<24)|((random[1]&255L)<<16)|
+            ((random[2]&255L)<<8)|(random[3]&255L);
+        String pin=String.format(java.util.Locale.ROOT,"%08d",n%100_000_000L);
+        prefs(context).edit().putString(PIN,pin)
+            .putLong(EXPIRES,System.currentTimeMillis()+SESSION_MS).commit();
         return pin;
     }
-
-    // One-time display only. Protected by Android Keystore until explicitly revoked.
-    // The 128-bit key grants READ-ONLY access to shared storage.
-    public static String enablePermanent(Context context) throws Exception {
-        throw new SecurityException("Acesso permanente desativado por segurança. Use uma sessão de 10 minutos.");
+    public static String enablePermanent(Context context) {
+        throw new SecurityException("Acesso permanente desativado. Use sessão de 10 minutos.");
     }
-
-    public static boolean isPermanent(Context context) {
-        return false;
-    }
-
-    // Explicit revocation invalidates the access key immediately. Commands
-    // already queued will fail when the phone validates them.
-    public static void disable(Context context) {
-        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().clear().commit();
-        SecureStore.clearRemoteFilesKey(context);
-    }
-
+    public static boolean isPermanent(Context context) { return false; }
     public static long remainingSeconds(Context context) {
-        if (!storageGranted(context)) return 0;
-        long expiry = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
-            .getLong(KEY_EXPIRES, 0);
-        return Math.max(0, (expiry - System.currentTimeMillis()) / 1000L);
+        if(!storageGranted(context))return 0;
+        return Math.max(0,(prefs(context).getLong(EXPIRES,0)-System.currentTimeMillis())/1000);
     }
-
-    private static void authorize(Context context, String command, JSONObject payload) throws Exception {
-        if (!storageGranted(context)) {
-            throw new SecurityException("Permissão de armazenamento compartilhado não concedida no Android.");
-        }
-        String nonce = payload.optString("nonce", "").trim();
-        String provided = payload.optString("accessProof", "").trim();
-        if (!nonce.matches("[a-fA-F0-9]{32}") || !provided.matches("[a-fA-F0-9]{64}"))
-            throw new SecurityException("Autorização criptográfica de arquivos ausente.");
-        String expected;
-        {
-            if (remainingSeconds(context) == 0)
-                throw new SecurityException("Sessão remota expirada. Reative pelo aplicativo do celular.");
-            expected = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
-                .getString(KEY_CODE, "");
-        }
-        if (expected == null || !(expected.matches("[0-9]{8}") || expected.matches("[A-F0-9]{32}")))
-            throw new SecurityException("Acesso remoto desativado ou revogado.");
-
-        // Browser never transmits the key. Verify a distinct HMAC for every
-        // command, path, offset, and random nonce. The Cloud only relays proof.
-        String path = payload.optString("path", "");
-        long offset = payload.optLong("offset", 0);
-        String message = "jarvis-files-v1\n" + command + "\n" +
-            nonce.toLowerCase(java.util.Locale.ROOT) + "\n" + path + "\n" + offset;
-        javax.crypto.Mac mac = javax.crypto.Mac.getInstance("HmacSHA256");
-        mac.init(new javax.crypto.spec.SecretKeySpec(
-            expected.getBytes(java.nio.charset.StandardCharsets.US_ASCII), "HmacSHA256"));
-        byte[] calculated = mac.doFinal(message.getBytes(java.nio.charset.StandardCharsets.UTF_8));
-        byte[] proof = new byte[32];
-        for (int i = 0; i < 32; i++) {
-            int high = Character.digit(provided.charAt(i * 2), 16);
-            int low = Character.digit(provided.charAt(i * 2 + 1), 16);
-            proof[i] = (byte) ((high << 4) | low);
-        }
-        if (!MessageDigest.isEqual(calculated, proof))
-            throw new SecurityException("Autorização de arquivos inválida ou revogada.");
+    /** Revokes both PIN and the Android persisted SAF read grant. */
+    public static void disable(Context context) {
+        Uri uri=storedTree(context);
+        prefs(context).edit().clear().commit();
+        SecureStore.clearRemoteFilesKey(context);
+        if(uri!=null)try {
+            context.getContentResolver().releasePersistableUriPermission(
+                uri,Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        }catch(Exception ignored){}
     }
-
-    private static Map<String, File> volumes(Context context) throws Exception {
-        Map<String, File> result = new LinkedHashMap<>();
-        File primary = Environment.getExternalStorageDirectory().getCanonicalFile();
-        result.put("internal", primary);
-
-        File[] external = context.getExternalFilesDirs(null);
-        if (external != null) {
-            int count = 0;
-            for (File dir : external) {
-                if (dir == null) continue;
-                String p = dir.getCanonicalPath();
-                int marker = p.indexOf("/Android/data/");
-                if (marker < 0) continue;
-                File root = new File(p.substring(0, marker)).getCanonicalFile();
-                if (root.equals(primary) || !root.isDirectory()) continue;
-                if (result.containsValue(root)) continue;
-                result.put("sd" + (++count), root);
+    private static void authorize(Context context,String command,JSONObject payload)throws Exception {
+        if(!storageGranted(context))throw new SecurityException("Pasta remota não autorizada no Android.");
+        if(remainingSeconds(context)==0)
+            throw new SecurityException("Sessão expirada; autorize novamente no celular.");
+        String nonce=payload.optString("nonce","").trim();
+        String proof=payload.optString("accessProof","").trim();
+        String key=prefs(context).getString(PIN,"");
+        if(!nonce.matches("[a-fA-F0-9]{32}") || !proof.matches("[a-fA-F0-9]{64}") ||
+           !key.matches("[0-9]{8}"))
+            throw new SecurityException("Autorização criptográfica ausente.");
+        String path=payload.optString("path","");
+        long offset=payload.optLong("offset",0);
+        String message="jarvis-files-v1\n"+command+"\n"+
+            nonce.toLowerCase(java.util.Locale.ROOT)+"\n"+path+"\n"+offset;
+        Mac mac=Mac.getInstance("HmacSHA256");
+        mac.init(new SecretKeySpec(key.getBytes(java.nio.charset.StandardCharsets.US_ASCII),"HmacSHA256"));
+        byte[] expected=mac.doFinal(message.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+        byte[] actual=new byte[32];
+        for(int i=0;i<32;i++) actual[i]=(byte)((Character.digit(proof.charAt(i*2),16)<<4)|
+                Character.digit(proof.charAt(i*2+1),16));
+        if(!MessageDigest.isEqual(expected,actual))
+            throw new SecurityException("Prova criptográfica inválida.");
+    }
+    private static final class Doc {
+        String id,name,mime;long size,modified;
+        Doc(String i,String n,String m,long s,long t){id=i;name=n;mime=m;size=s;modified=t;}
+        boolean dir(){return DocumentsContract.Document.MIME_TYPE_DIR.equals(mime);}
+    }
+    private static String column(Cursor c,String name){
+        int i=c.getColumnIndex(name);return i<0||c.isNull(i)?"":c.getString(i);
+    }
+    private static long number(Cursor c,String name){
+        int i=c.getColumnIndex(name);return i<0||c.isNull(i)?-1:c.getLong(i);
+    }
+    private static Doc doc(Cursor c) {
+        return new Doc(column(c,DocumentsContract.Document.COLUMN_DOCUMENT_ID),
+            column(c,DocumentsContract.Document.COLUMN_DISPLAY_NAME),
+            column(c,DocumentsContract.Document.COLUMN_MIME_TYPE),
+            number(c,DocumentsContract.Document.COLUMN_SIZE),
+            number(c,DocumentsContract.Document.COLUMN_LAST_MODIFIED));
+    }
+    private static ArrayList<Doc> children(Context ctx,Uri tree,String parent)throws Exception {
+        Uri uri=DocumentsContract.buildChildDocumentsUriUsingTree(tree,parent);
+        ArrayList<Doc> result=new ArrayList<>();
+        try(Cursor cursor=ctx.getContentResolver().query(uri,PROJECTION,null,null,null)) {
+            if(cursor==null)throw new SecurityException("Provedor de documentos indisponível.");
+            while(cursor.moveToNext()){
+                if(result.size()>=MAX_DOCUMENTS_PER_FOLDER)
+                    throw new SecurityException("Pasta com muitos documentos; selecione uma subpasta menor.");
+                Doc child=doc(cursor);
+                if(!child.id.isEmpty()&&!child.name.isEmpty() &&
+                    child.name.indexOf('/')<0 && child.name.indexOf('\\')<0 &&
+                    child.name.indexOf(':')<0 && !child.name.equals(".") &&
+                    !child.name.equals(".."))result.add(child);
             }
         }
+        result.sort(Comparator.comparing((Doc a)->!a.dir())
+            .thenComparing(a->a.name,String.CASE_INSENSITIVE_ORDER));
         return result;
     }
-
-    private static File resolve(Map<String, File> roots, String remotePath) throws Exception {
-        if (remotePath == null || remotePath.length() > 700 || remotePath.indexOf('\0') >= 0)
+    private static Doc resolve(Context ctx,Uri tree,String path)throws Exception {
+        if(path==null||path.length()>700||!path.startsWith("internal:"))
+            throw new SecurityException("Caminho remoto inválido.");
+        String relative=path.substring("internal:".length());
+        String rootId=DocumentsContract.getTreeDocumentId(tree);
+        Doc current=new Doc(rootId,"Pasta autorizada",DocumentsContract.Document.MIME_TYPE_DIR,0,0);
+        if(relative.isEmpty())return current;
+        // Commands referring to Downloads should also resolve when the user
+        // selected Downloads itself (rather than its parent) in the SAF picker.
+        String selectedName=rootId.substring(Math.max(rootId.lastIndexOf('/'),rootId.lastIndexOf(':'))+1);
+        if(!selectedName.isEmpty() && relative.equalsIgnoreCase(selectedName))return current;
+        if(!selectedName.isEmpty() && relative.regionMatches(true,0,selectedName+"/",0,selectedName.length()+1))
+            relative=relative.substring(selectedName.length()+1);
+        if(relative.startsWith("/")||relative.endsWith("/")||relative.contains("//") ||
+            relative.indexOf('\\')>=0||relative.indexOf(':')>=0||relative.indexOf('\0')>=0)
             throw new SecurityException("Caminho inválido.");
-        int index = remotePath.indexOf(':');
-        if (index < 1) throw new SecurityException("Selecione uma pasta válida.");
-        String id = remotePath.substring(0, index);
-        String relative = remotePath.substring(index + 1);
-        File root = roots.get(id);
-        if (root == null || relative.startsWith("/") || relative.startsWith("\\") ||
-            relative.contains("\\") || relative.contains(":") || relative.contains("//"))
-            throw new SecurityException("Volume não autorizado.");
-        for (String segment : relative.split("/", -1)) {
-            if ("..".equals(segment) || ".".equals(segment))
-                throw new SecurityException("Travessia de pastas bloqueada.");
+        for(String segment:relative.split("/")){
+            if(segment.isEmpty()||segment.equals(".")||segment.equals("..")||
+                !current.dir())throw new SecurityException("Caminho não autorizado.");
+            Doc next=null;
+            for(Doc candidate:children(ctx,tree,current.id))
+                if(candidate.name.equals(segment)){ next=candidate;break; }
+            if(next==null)throw new SecurityException("Documento não encontrado na pasta autorizada.");
+            current=next;
         }
-        String protectedPath = "/" + relative.toLowerCase(java.util.Locale.ROOT) + "/";
-        if (protectedPath.startsWith("/android/data/") ||
-            protectedPath.startsWith("/android/obb/")) {
-            throw new SecurityException("Pastas privadas de aplicativos são protegidas pelo Android.");
-        }
-        File target = relative.isEmpty() ? root : new File(root, relative);
-        String absolute = target.getCanonicalPath();
-        String base = root.getCanonicalPath();
-        if (!(absolute.equals(base) || absolute.startsWith(base + File.separator)))
-            throw new SecurityException("Caminho fora do armazenamento autorizado.");
-        String canonicalRelative = absolute.substring(base.length()).toLowerCase(java.util.Locale.ROOT);
-        if (canonicalRelative.equals("/android/data") ||
-            canonicalRelative.startsWith("/android/data/") ||
-            canonicalRelative.equals("/android/obb") ||
-            canonicalRelative.startsWith("/android/obb/")) {
-            throw new SecurityException("Dados privados de outros aplicativos são protegidos.");
-        }
-        return target.getCanonicalFile();
+        return current;
     }
-
-    private static String childPath(String base, String name) {
-        return base.endsWith(":") ? base + name : base + "/" + name;
+    private static JSONObject entry(Doc d,String path)throws Exception{
+        return new JSONObject().put("name",d.name).put("path",path)
+            .put("directory",d.dir()).put("size",Math.max(0,d.size))
+            .put("modifiedAt",Math.max(0,d.modified)).put("readable",true);
     }
-
-    private static JSONObject entry(String name, String path, File file) throws Exception {
-        JSONObject obj = new JSONObject();
-        obj.put("name", name);
-        obj.put("path", path);
-        obj.put("directory", file.isDirectory());
-        obj.put("size", file.isFile() ? file.length() : 0);
-        obj.put("modifiedAt", file.lastModified());
-        obj.put("readable", file.canRead());
-        return obj;
-    }
-
-    public static JSONObject execute(Context context, String command, JSONObject payload) {
-        JSONObject response = new JSONObject();
+    public static JSONObject execute(Context ctx,String command,JSONObject payload) {
+        JSONObject response=new JSONObject();
         try {
-            authorize(context, command, payload);
-            Map<String, File> roots = volumes(context);
-            if ("files.list".equals(command)) {
-                String path = payload.optString("path", "");
-                JSONArray entries = new JSONArray();
-                if (path.isEmpty()) {
-                    for (Map.Entry<String, File> root : roots.entrySet()) {
-                        String label = "internal".equals(root.getKey())
-                            ? "Armazenamento interno" : "Cartão SD / " + root.getKey();
-                        entries.put(entry(label, root.getKey() + ":", root.getValue()));
+            authorize(ctx,command,payload);
+            Uri tree=activeTree(ctx);
+            if(tree==null)throw new SecurityException("Permissão de pasta revogada.");
+            if("files.list".equals(command)){
+                String path=payload.optString("path","");
+                JSONArray result=new JSONArray();
+                if(path.isEmpty()){
+                    result.put(entry(resolve(ctx,tree,"internal:"),"internal:"));
+                    response.put("path","").put("hasMore",false);
+                }else{
+                    Doc folder=resolve(ctx,tree,path);
+                    if(!folder.dir())throw new SecurityException("Selecione uma pasta válida.");
+                    ArrayList<Doc> docs=children(ctx,tree,folder.id);
+                    int offset=payload.optInt("offset",0);
+                    if(offset<0||offset>docs.size())
+                        throw new SecurityException("Deslocamento inválido.");
+                    int end=Math.min(docs.size(),offset+PAGE_LIMIT);
+                    for(int i=offset;i<end;i++){
+                        Doc d=docs.get(i);
+                        String next=path+d.name;
+                        if(!path.endsWith(":"))next=path+"/"+d.name;
+                        result.put(entry(d,next));
                     }
-                    response.put("path", "");
-                    response.put("entries", entries);
-                    response.put("hasMore", false);
-                } else {
-                    File folder = resolve(roots, path);
-                    if (!folder.isDirectory() || !folder.canRead())
-                        throw new IllegalArgumentException("Pasta inexistente ou inacessível.");
-                    File[] children = folder.listFiles();
-                    if (children == null) throw new SecurityException("Não foi possível listar esta pasta.");
-                    Arrays.sort(children, Comparator.comparing(File::isDirectory).reversed()
-                        .thenComparing(File::getName, String.CASE_INSENSITIVE_ORDER));
-                    int requested = payload.optInt("offset", 0);
-                    if (requested < 0 || requested > 100_000) throw new IllegalArgumentException("Página inválida.");
-                    int end = Math.min(children.length, requested + PAGE_LIMIT);
-                    for (int i = requested; i < end; i++) {
-                        File child = children[i];
-                        String nextPath = childPath(path, child.getName());
-                        if (path.equalsIgnoreCase("internal:Android") &&
-                            (child.getName().equalsIgnoreCase("data") ||
-                             child.getName().equalsIgnoreCase("obb"))) continue;
-                        // Avoid exposing symbolic links that leave shared storage.
-                        try {
-                            File verified = resolve(roots, nextPath);
-                            entries.put(entry(child.getName(), nextPath, verified));
-                        } catch (SecurityException ignored) {}
+                    response.put("path",path).put("offset",offset)
+                        .put("nextOffset",end).put("hasMore",end<docs.size());
+                }
+                return response.put("ok",true).put("scope","user-selected-folder")
+                    .put("entries",result);
+            }
+            if("files.read".equals(command)){
+                String path=payload.optString("path","");
+                Doc d=resolve(ctx,tree,path);
+                if(d.dir()||d.size<0||d.size>MAX_REMOTE_TRANSFER_BYTES)
+                    throw new SecurityException("Arquivo indisponível ou maior que 16 MiB.");
+                long offset=payload.optLong("offset",-1);
+                if(offset<0||offset>d.size)
+                    throw new SecurityException("Deslocamento inválido.");
+                int count=(int)Math.min(CHUNK_BYTES,d.size-offset);
+                byte[] buf=new byte[count];
+                Uri fileUri=DocumentsContract.buildDocumentUriUsingTree(tree,d.id);
+                try(InputStream input=ctx.getContentResolver().openInputStream(fileUri)){
+                    if(input==null)throw new SecurityException("Arquivo indisponível.");
+                    byte[] discard=new byte[4096];
+                    long skipped=0;
+                    while(skipped<offset){
+                        int n=input.read(discard,0,(int)Math.min(discard.length,offset-skipped));
+                        if(n<0)throw new SecurityException("Arquivo alterado durante a leitura.");
+                        skipped+=n;
                     }
-                    response.put("path", path);
-                    response.put("offset", requested);
-                    response.put("nextOffset", end);
-                    response.put("hasMore", end < children.length);
-                    response.put("entries", entries);
+                    int read=0;
+                    while(read<count){
+                        int n=input.read(buf,read,count-read);
+                        if(n<0)throw new SecurityException("Arquivo alterado durante a leitura.");
+                        read+=n;
+                    }
                 }
-                response.put("ok", true);
-                return response;
+                return response.put("ok",true).put("path",path)
+                    .put("scope","user-selected-folder").put("size",d.size)
+                    .put("offset",offset).put("nextOffset",offset+count)
+                    .put("done",offset+count>=d.size)
+                    .put("base64",Base64.encodeToString(buf,Base64.NO_WRAP))
+                    .put("name",d.name).put("mime",d.mime.isEmpty()?"application/octet-stream":d.mime);
             }
-            if ("files.read".equals(command)) {
-                String path = payload.optString("path", "");
-                File file = resolve(roots, path);
-                if (!file.isFile() || !file.canRead())
-                    throw new IllegalArgumentException("Arquivo inexistente ou inacessível.");
-                long size = file.length();
-                if (size > MAX_REMOTE_TRANSFER_BYTES)
-                    throw new IllegalArgumentException("Transferência acima de 16 MiB; use conexão local para arquivos grandes.");
-                long offset = payload.optLong("offset", -1);
-                if (offset < 0 || offset > size)
-                    throw new IllegalArgumentException("Deslocamento inválido.");
-                int amount = (int) Math.min(CHUNK_BYTES, size - offset);
-                byte[] buffer = new byte[amount];
-                try (RandomAccessFile raf = new RandomAccessFile(file, "r")) {
-                    raf.seek(offset);
-                    raf.readFully(buffer);
-                }
-                response.put("ok", true);
-                response.put("path", path);
-                response.put("size", size);
-                response.put("offset", offset);
-                response.put("nextOffset", offset + amount);
-                response.put("done", offset + amount >= size);
-                response.put("base64", Base64.encodeToString(buffer, Base64.NO_WRAP));
-                response.put("name", file.getName());
-                String extension = MimeTypeMap.getFileExtensionFromUrl(file.getName());
-                String mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(
-                    extension.toLowerCase(java.util.Locale.ROOT));
-                response.put("mime", mime == null ? "application/octet-stream" : mime);
-                return response;
-            }
-            throw new SecurityException("Operação remota não permitida.");
-        } catch (Exception e) {
+            throw new SecurityException("Operação não permitida.");
+        }catch(Exception error){
             try {
-                response.put("ok", false);
-                response.put("error", String.valueOf(e.getMessage()).substring(
-                    0, Math.min(180, String.valueOf(e.getMessage()).length())));
-            } catch (Exception ignored) {}
-            return response;
+                String msg=String.valueOf(error.getMessage());
+                return response.put("ok",false).put("error",msg.substring(0,Math.min(180,msg.length())));
+            }catch(Exception ignored){return new JSONObject();}
         }
     }
 }

@@ -187,6 +187,9 @@ function desktopIntent(n, raw) {
 
 function mobileIntent(n) {
   if (!/\b(celular|telefone|android)\b/.test(n)) return null;
+  if (/\b(apps|aplicativos|aplicacoes)\b/.test(n) &&
+      /\b(listar|liste|mostrar|mostre|quais|ver)\b/.test(n))
+    return {deviceType:"mobile",command:"app.list",payload:{},label:"listar aplicativos autorizados do celular"};
   if (/\b(status|estado|online)\b/.test(n)) return { deviceType: "mobile", command: "device.status", payload: {}, label: "status do celular" };
   const apps = [
     ["youtube", "com.google.android.youtube"],
@@ -197,6 +200,13 @@ function mobileIntent(n) {
   if (match && /\b(abra|abrir|inicie|iniciar)\b/.test(n)) {
     return { deviceType: "mobile", command: "app.open", payload: { packageName: match[1] }, label: `abrir ${match[0]} no celular` };
   }
+  // Any other locally approved launcher app can be resolved from the live
+  // Android inventory; never guess a package ID or bypass local consent.
+  const direct=n.replace(/^(?:jarvis|ultron)[, :]+/,"");
+  const request=direct.match(/^(?:abra|abrir|inicie|iniciar)\s+(?:(?:o|a)\s+)?(?:(?:app|aplicativo)\s+)?(.+?)\s+(?:no|na)\s+(?:meu\s+)?(?:celular|telefone|android)(?:\s+agora)?[.!]*$/);
+  if(request && request[1] && request[1].length<=65)
+    return {deviceType:"mobile",command:"app.resolve",
+      payload:{appName:request[1].trim()},label:"localizar aplicativo autorizado no Android"};
   return null;
 }
 
@@ -204,7 +214,9 @@ export function parseDeviceIntent(text) {
   const n = normalizeSpeech(text);
   if (!n) return null;
   const direct=n.replace(/^(?:jarvis|ultron)[, :]+/,"").replace(/^por favor[, ]+/,"");
-  if(/^(?:nao|nunca|como|por que|porque|e se|se eu|o que|quais|qual|voce pode|voce consegue|eu posso)\b/.test(direct)&&!/\b(status|estado|online)\b/.test(direct))return null;
+  if(/^(?:nao|nunca|como|por que|porque|e se|se eu|o que|quais|qual|voce pode|voce consegue|eu posso)\b/.test(direct) &&
+     !/\b(status|estado|online)\b/.test(direct) &&
+     !(/\bquais\b/.test(direct) && /\b(apps|aplicativos|aplicacoes)\b/.test(direct))) return null;
   return tvIntent(n) || desktopIntent(n, text) || mobileIntent(n);
 }
 
@@ -390,6 +402,31 @@ export async function routeNaturalLanguage(text, parsedIntent = null, {awaitComp
 
   const intent = parsedIntent || parseDeviceIntent(text);
   if (!intent) return { handled: false };
+  if(intent.command==="app.resolve") {
+    if(signal?.aborted)return {handled:true,ok:false,cancelled:true};
+    try {
+      outputLine("Consultando apenas os aplicativos autorizados no celular...");
+      const query=await sendControl({deviceType:"mobile",command:"app.list",payload:{},label:"listar apps autorizados"});
+      const receipt=query.commandId ? await monitorCommand(query.commandId,{signal}) : null;
+      if(receipt?.status!=="completed")throw new Error("O celular não confirmou o catálogo de aplicativos.");
+      const apps=Array.isArray(receipt?.result?.apps)?receipt.result.apps:[];
+      const requested=normalizeSpeech(intent.payload.appName);
+      const matches=apps.filter(a=>normalizeSpeech(a.label)===requested ||
+          normalizeSpeech(a.packageName)===requested);
+      if(matches.length!==1){
+        outputLine(matches.length?"Nome ambíguo. Informe o nome completo do aplicativo.":
+          "Aplicativo não autorizado ou não encontrado. No Bridge do celular, abra GERENCIAR APLICATIVOS AUTORIZADOS.",true);
+        return {handled:true,ok:false,needsLocalApproval:!matches.length};
+      }
+      const item=matches[0];
+      intent.command="app.open";
+      intent.payload={packageName:item.packageName};
+      intent.label="abrir "+String(item.label||"aplicativo")+" no celular";
+    }catch(error){
+      outputLine("Não foi possível consultar os apps: "+String(error?.message||error),true);
+      return {handled:true,ok:false,error};
+    }
+  }
   if(intent.command==="tv.setup.instructions") {
     const text="No aplicativo J.A.R.V.I.S. Bridge do celular: abra LG WEBOS, " +
       "informe o IP local da TV, toque em PAREAR LG WEBOS e aceite a solicitação na tela da TV. " +
@@ -422,8 +459,13 @@ export async function routeNaturalLanguage(text, parsedIntent = null, {awaitComp
       return {handled:true,ok:false,cancelled:true,commandStatus:cancellation?.status||"unknown",intent,result};
     }
     outputLine(`FILA: ${result.commandId?.slice(0, 8) || "OK"} → ${result.device?.deviceName || intent.deviceType}.`);
-    if (awaitCompletion && result.commandId) {
+    if ((awaitCompletion || intent.command === "app.list") && result.commandId) {
       const remote = await monitorCommand(result.commandId,{signal});
+      if(intent.command==="app.list" && remote?.status==="completed") {
+        const apps=Array.isArray(remote?.result?.apps) ? remote.result.apps : [];
+        outputLine(apps.length ? "APLICATIVOS AUTORIZADOS DO CELULAR ("+apps.length+")" : "Nenhum aplicativo autorizado. Abra o Bridge > GERENCIAR APLICATIVOS AUTORIZADOS.");
+        apps.forEach(app=>outputLine(String(app.label||"App")+" // "+String(app.packageName||"")));
+      }
       return {handled:true,...interpretDeviceReceipt(remote,{aborted:signal?.aborted}),intent,result};
     }
     if(result.commandId)void monitorCommand(result.commandId);
@@ -475,6 +517,15 @@ function injectControls() {
     button.textContent = "DISPOSITIVOS";
     bindDevicePress(button, () => { void showDeviceOverview(); });
     actions.appendChild(button);
+  }
+  if (!document.getElementById("btn-approved-android-apps")) {
+    const appsButton=document.createElement("button");
+    appsButton.id="btn-approved-android-apps";
+    appsButton.type="button";
+    appsButton.textContent="APPS CELULAR";
+    bindDevicePress(appsButton,()=>routeNaturalLanguage("mostrar aplicativos do celular").catch(
+      error=>outputLine(error?.message||"Falha ao consultar aplicativos.",true)));
+    actions.appendChild(appsButton);
   }
   if (!document.getElementById("btn-automations")) {
     const button = document.createElement("button");

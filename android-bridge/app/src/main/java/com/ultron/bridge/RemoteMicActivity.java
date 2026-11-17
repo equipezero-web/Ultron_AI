@@ -67,8 +67,8 @@ public class RemoteMicActivity extends Activity {
 
         TextView explanation = new TextView(this);
         explanation.setText(
-                "Autorize o microfone uma única vez. Depois disso, o Ultron Bridge mantém um serviço visível " +
-                "em primeiro plano para que a escuta remota possa ser pausada e retomada sem novo pedido de permissão. " +
+                "Inicie a escuta nesta tela. O serviço só pode retomar uma sessão que você iniciou localmente e que ainda está ativa. " +
+                "Ao parar, será necessária uma nova ativação nesta tela. " +
                 "O Android continuará mostrando uma notificação enquanto o serviço estiver disponível. " +
                 "Somente a transcrição reconhecida no aparelho é enviada ao Ultron Cloud; o áudio bruto não é enviado."
         );
@@ -77,7 +77,7 @@ public class RemoteMicActivity extends Activity {
         root.addView(explanation, fullWidth());
 
         Button start = new Button(this);
-        start.setText("AUTORIZAR UMA VEZ E DEIXAR DISPONÍVEL");
+        start.setText("INICIAR SESSÃO DO MICROFONE");
         start.setOnClickListener(v -> beginAuthorization());
         root.addView(start, fullWidth());
 

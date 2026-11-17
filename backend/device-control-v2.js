@@ -4,6 +4,7 @@ export const CONTROL_COMMANDS = new Set([
   "device.status",
   "notification.push",
   "app.open",
+  "app.list",
   "calendar.open",
   "calendar.create",
   "storage.diagnostics",
@@ -200,11 +201,12 @@ export async function getCommandStatus(env, operatorId, commandId) {
   let result = null;
   try { result = row.resultJson ? JSON.parse(row.resultJson) : null; } catch { result = null; }
 
-  // Remote file contents must not remain in the D1 command history after they
+  // Sensitive command results (file content and approved app inventory) must not
+  // remain in the D1 command history after they
   // have been delivered once to the paired operator. The response below still
   // carries this single consumed result; a lost response can be re-requested
   // as a new, explicitly authorized read.
-  if (String(row.command).startsWith("files.") &&
+  if ((String(row.command).startsWith("files.") || row.command === "app.list") &&
       ["completed", "failed"].includes(row.status) && row.resultJson) {
     await env.ULTRON_DB.prepare(
       "UPDATE device_commands SET result_json = NULL WHERE id = ? AND operator_id = ? AND status IN ('completed','failed')"

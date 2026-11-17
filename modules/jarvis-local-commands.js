@@ -118,7 +118,7 @@ export async function runLocalCommand(command){
       return {ok,handled:true,route:"remote-phone-files",provider:"jarvis-local",
         text:ok?(result?.waitingAuthorization?
           "Explorador do celular aberto. Para entrar em "+intent.path.split(":")[1]+
-          ", digite o PIN temporário ou a chave permanente e pressione Enter.":
+          ", selecione a pasta no celular, ative a sessão de 10 minutos e digite o PIN de 8 números, depois pressione Enter.":
           "Pasta "+intent.path.split(":")[1]+" do celular aberta no Neural Ring.") :
           String(result?.error||"Não foi possível abrir a pasta do celular.")};
     }catch(error){
