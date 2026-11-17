@@ -1,6 +1,6 @@
 import { JARVIS_CAPABILITIES } from "../backend/jarvis-capabilities.js?v=4.67.0";
 import {clearVisibleInterface} from "./jarvis-clear-interface.js?v=4.98.0";
-import {parseMeteoIntent} from "./jarvis-meteorological-sources.js?v=4.98.0";
+import {parseMeteoIntent} from "./jarvis-meteorological-sources.js?v=4.98.1";
 import {parseGlobalIntelligenceIntent} from "./jarvis-global-intelligence-intent.js?v=5.10.0";
 import {parseTrendIntent} from "./jarvis-trend-intent.js?v=1.0.0";
 
