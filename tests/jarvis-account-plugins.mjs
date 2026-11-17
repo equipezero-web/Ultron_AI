@@ -50,7 +50,6 @@ for(const input of [
   "jarvis qual o meu armazenamento?",
   "jarvis veja meu armazenamento do celular motorola moto g 06"
 ]) {
-  if(input.includes("motorola"))continue; // Device model qualifiers require a separate verified-device selection.
   assert.deepEqual(parseAccountPluginCommand(input),storageIntent,input);
 }
 for(const input of ["liste meus plugins","liste meu plugins","jarvis liste meus plugins"]) {
@@ -62,6 +61,8 @@ const orchestratorCode=readFileSync(new URL("../modules/ultron-orchestrator-v427
 assert.match(orchestratorCode,/accountIntent\?\.kind==="list"/);
 assert.match(orchestratorCode,/Catálogo não confirmado pela conta/);
 assert.match(orchestratorCode,/intent\?\.kind==="list"/);
+assert.match(orchestratorCode,/requestedDevice\.command==="device\.status"/);
+assert.match(orchestratorCode,/account-device-status/);
 assert.equal(parseAccountPluginCommand("Não abra YouTube no celular"),null);
 assert.equal(parseAccountPluginCommand("Como abrir YouTube no celular?"),null);
 assert.equal(validateAccountPluginExecution({pluginId:"agenda",actionId:"calendar.create",
