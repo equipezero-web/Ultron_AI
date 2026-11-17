@@ -143,14 +143,17 @@ public class BridgeService extends Service {
                     }
 
                     if ("microphone.pause".equals(action)) {
-                        success = controlPersistentRemoteMic(RemoteMicService.ACTION_PAUSE, false);
+                        success = RemoteMicService.isLocalSessionActive() &&
+                            controlPersistentRemoteMic(RemoteMicService.ACTION_PAUSE, false);
                         result.put("delivered", success);
                         result.put("action", action);
                         break;
                     }
 
                     if ("microphone.resume".equals(action)) {
-                        success = controlPersistentRemoteMic(RemoteMicService.ACTION_RESUME, true);
+                        // Resume an existing, locally started session only.
+                        success = RemoteMicService.isLocalSessionActive() &&
+                            controlPersistentRemoteMic(RemoteMicService.ACTION_RESUME, false);
                         result.put("delivered", success);
                         result.put("action", action);
                         break;
