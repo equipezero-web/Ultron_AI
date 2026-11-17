@@ -973,6 +973,22 @@ function injectRecoveryButton(){
   actions.appendChild(button);
 }
 
+// Capture diagnostic commands at document level before legacy command handlers.
+// A terminal command must not fall through to the generic /api/ai search pipeline.
+function captureAndroidDiagnostic(event){
+  const isClick=event.type==="click";
+  if(isClick){if(!sendButton||!sendButton.contains(event.target))return;}
+  else if(event.key!=="Enter"||event.shiftKey||!input?.contains(event.target))return;
+  const command=String(input?.value||"").trim();
+  const intent=parseAccountPluginCommand(command);
+  if(intent?.kind!=="execute"||intent.actionId!=="storage.diagnostics")return;
+  event.preventDefault();event.stopImmediatePropagation();event.stopPropagation();
+  if(input)input.value="";
+  log("DEVICE // Comando de diagnóstico capturado antes do roteador de IA.");
+  void enqueue(command,"terminal");
+}
+document.addEventListener("click",captureAndroidDiagnostic,true);
+document.addEventListener("keydown",captureAndroidDiagnostic,true);
 sendButton?.addEventListener("click", (event) => intercept(event, "terminal"), true);
 input?.addEventListener("keydown", (event) => {
   if (event.key !== "Enter" || event.shiftKey) return;
