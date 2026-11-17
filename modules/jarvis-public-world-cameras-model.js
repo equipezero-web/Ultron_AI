@@ -182,7 +182,7 @@ export function parseWorldCameraCommand(message){
   return {type:"open"};
  if(/^(?:cameras? (?:do mundo|mundiais|publicas do mundo)|monitoramento visual mundial|ativar cameras do mundo|ative as cameras do mundo|ativar monitoramento visual mundial|abrir cameras do mundo|abra cameras do mundo|mostre cameras do mundo|mostrar cameras do mundo|exibir webcams mundiais)$/.test(s))
   return {type:"open"};
- if(/^(?:fechar|feche|ocultar|oculte) (?:cameras do mundo|cameras mundiais|monitoramento visual mundial)$/.test(s))
+ if(/^(?:fechar|feche|ocultar|oculte|sair (?:das|de)|remover|remova|retirar|retire) (?:as |os )?(?:cameras|webcams|cameras do mundo|cameras mundiais|monitoramento visual mundial)$/.test(s))
   return {type:"close"};
  if(/^(?:status|estado) (?:das cameras mundiais|do monitoramento visual mundial)$/.test(s))
   return {type:"status"};
