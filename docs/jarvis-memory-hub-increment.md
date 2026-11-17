@@ -17,7 +17,7 @@
 - HOT/WARM/COLD are dynamically scored labels, not storage migrations.
 - This is lexical ranking, not embedding-based semantic retrieval or model learning.
 - No raw conversations are shared with external agents.
-- The recall query uses the last persisted message rather than the current request. Future backend integration should pass the current request explicitly.
+- The Worker now passes the current request into contextual recall. Legacy callers without a query fall back to the last persisted user message.
 - Tests are static/unit-level; runtime verification of the deployed D1 environment remains necessary.
 - External reference projects are architecture inspiration only; no third-party code was copied.
 
