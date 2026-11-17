@@ -95,7 +95,7 @@ const globalModule=readFileSync(new URL("../modules/jarvis-global-intelligence-r
 const meteoBridge=readFileSync(new URL("../modules/jarvis-meteo-ring-bridge.js",import.meta.url),"utf8");
 for(const [module,version] of [
  ["jarvis-meteorological-center.js","4.99.3"],
- ["jarvis-global-intelligence-ring.js","5.25.1"]
+ ["jarvis-global-intelligence-ring.js","5.25.2"]
 ]){
  assert.ok(pageHtml.includes(module+"?v="+version),"Indexed module must be cache-busted");
  assert.ok(localSource.includes("./"+module+"?v="+version),"Dynamic import must match static script URL");
@@ -105,7 +105,17 @@ assert.match(meteoModule,/existing\?\.isConnected/);
 assert.match(meteoModule,/ultron:meteo-center-ready/);
 assert.match(globalModule,/function installGlobalIntelligence\(\)/);
 assert.match(globalModule,/existing\?\.isConnected/);
-assert.ok(globalModule.includes('jarvis-geospatial-visual.js?v=4.96.0'),
+const geoModule=readFileSync(new URL("../modules/jarvis-geospatial-visual.js",import.meta.url),"utf8");
+const actionModule=readFileSync(new URL("../modules/jarvis-action-engine.js",import.meta.url),"utf8");
+const contextualMap=readFileSync(new URL("../modules/jarvis-contextual-map.js",import.meta.url),"utf8");
+assert.match(geoModule,/function installGeospatialVisual\(\)/);
+assert.match(geoModule,/existing\?\.isConnected/);
+for(const [label,source] of [
+ ["index",pageHtml],["action",actionModule],["contextual",contextualMap],["global",globalModule]
+])assert.ok(source.includes("jarvis-geospatial-visual.js?v=4.96.1"),label+
+ " must use canonical geospatial module URL to prevent scene replacement");
+
+assert.ok(globalModule.includes('jarvis-geospatial-visual.js?v=4.96.1'),
  "Global map must use the same geospatial module URL as the host page");
 assert.match(meteoBridge,/ultron:meteo-center-ready/);
 
