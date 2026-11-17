@@ -1,0 +1,23 @@
+name: JARVIS contextual memory regression
+on:
+  pull_request:
+    paths:
+      - 'backend/memory.js'
+      - 'backend/memory-relevance.js'
+      - 'tests/jarvis-memory-relevance.mjs'
+      - '.github/workflows/jarvis-memory-relevance.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'backend/memory.js'
+      - 'backend/memory-relevance.js'
+      - 'tests/jarvis-memory-relevance.mjs'
+jobs:
+  memory-relevance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node tests/jarvis-memory-relevance.mjs
