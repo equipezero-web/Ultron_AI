@@ -207,7 +207,9 @@ export function parseDeviceIntent(text) {
   const n = normalizeSpeech(text);
   if (!n) return null;
   const direct=n.replace(/^(?:jarvis|ultron)[, :]+/,"").replace(/^por favor[, ]+/,"");
-  if(/^(?:nao|nunca|como|por que|porque|e se|se eu|o que|quais|qual|voce pode|voce consegue|eu posso)\b/.test(direct)&&!/\b(status|estado|online)\b/.test(direct))return null;
+  if(/^(?:nao|nunca|como|por que|porque|e se|se eu|o que|quais|qual|voce pode|voce consegue|eu posso)\b/.test(direct) &&
+     !/\b(status|estado|online)\b/.test(direct) &&
+     !(/\bquais\b/.test(direct) && /\b(apps|aplicativos|aplicacoes)\b/.test(direct))) return null;
   return tvIntent(n) || desktopIntent(n, text) || mobileIntent(n);
 }
 
@@ -483,6 +485,15 @@ function injectControls() {
     button.textContent = "DISPOSITIVOS";
     bindDevicePress(button, () => { void showDeviceOverview(); });
     actions.appendChild(button);
+  }
+  if (!document.getElementById("btn-approved-android-apps")) {
+    const appsButton=document.createElement("button");
+    appsButton.id="btn-approved-android-apps";
+    appsButton.type="button";
+    appsButton.textContent="APPS CELULAR";
+    bindDevicePress(appsButton,()=>routeNaturalLanguage("mostrar aplicativos do celular").catch(
+      error=>outputLine(error?.message||"Falha ao consultar aplicativos.",true)));
+    actions.appendChild(appsButton);
   }
   if (!document.getElementById("btn-automations")) {
     const button = document.createElement("button");
