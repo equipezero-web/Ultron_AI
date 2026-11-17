@@ -6,6 +6,7 @@ import {parseMissionControl,assessCompoundMission,createMissionGate} from "./jar
 import {inspectMissionDependencies,missionStepOutcome,createMissionJournal} from "./jarvis-mission-diagnostics.js";
 import {createRecoveryEngine} from "./jarvis-recovery-engine.js";
 import {probeRecoveryHealth} from "./jarvis-recovery-probes.js";
+import {parseAccountPluginCommand} from "../backend/jarvis-account-plugin-intents.js";
 import API_CONFIG from "../config.js";
 
 const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
@@ -410,6 +411,27 @@ async function routeSingle(command, run, index = 0, {signal,awaitCompletion=fals
 async function executeMessage(message, source = "terminal", approvedMission = false) {
   const clean = String(message || "").trim();
   if (!clean) return null;
+  // Account-scoped Android pairing must not fall through to the LG webOS device router.
+  // The authenticated account API generates the code; this is not a TV pairing code.
+  if (parseAccountPluginCommand(clean)?.kind === "pair") {
+    try {
+      const api=window.JARVIS_ACCOUNT_PLUGINS;
+      if(typeof api?.pair!=="function")throw Error("Módulo de conta indisponível");
+      const response=await api.pair();
+      if(!response?.ok||!response?.code)throw Error("Código não confirmado pela API");
+      const message="Código de pareamento Android: "+response.code+
+        ". Válido por "+Math.round((response.expiresInSeconds||600)/60)+
+        " minutos. Abra o Ultron Bridge no celular e informe esse código. Não compartilhe o código.";
+      log(message);
+      state.lastRoute="account-android-pair";
+      return {ok:true,status:"completed",results:[{route:"account-android-pair",ok:true,result:{text:message}}]};
+    } catch(error) {
+      const message="Pareamento Android não iniciado: "+String(error?.message||"falha de autenticação")+
+        ". Confira a sessão Cloudflare Access e tente novamente.";
+      log(message,true);
+      return {ok:false,status:"failed",results:[{route:"account-android-pair",ok:false,result:{text:message}}]};
+    }
+  }
   const controller = new AbortController();
   activeController = controller;
   const signal = controller.signal;
