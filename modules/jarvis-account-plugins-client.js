@@ -183,6 +183,7 @@ window.JARVIS_ACCOUNT_PLUGINS={
  uninstall:id=>io("/api/account/plugins",{action:"uninstall",pluginId:id}),
  execute:input=>io("/api/account/plugins/execute",input),
  receipt:commandId=>io("/api/account/plugins/receipt",{commandId}),
+ status:deviceId=>io("/api/account/devices/status",{deviceId}),
  revoke:(deviceId,confirm)=>io("/api/account/devices/revoke",{deviceId,confirm:confirm===true}),
  pair:()=>io("/api/account/devices/pair",{deviceName:"Android J.A.R.V.I.S."})
 };
