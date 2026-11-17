@@ -123,21 +123,9 @@ public class BridgeService extends Service {
                         boolean trusted = SecureStore.isRemoteMicTrusted(this);
                         boolean permissionGranted = hasRecordAudioPermission();
 
-                        if (trusted && permissionGranted) {
-                            success = controlPersistentRemoteMic(RemoteMicService.ACTION_RESUME, true);
-                            if (success) {
-                                publishMicrophoneStatus(
-                                        deviceId,
-                                        secret,
-                                        "active",
-                                        "Permissão já salva. Microfone remoto retomado automaticamente."
-                                );
-                            }
-                        }
-
-                        if (!success) {
-                            success = showRemoteNotification(payload);
-                        }
+                        // A cloud command must never silently resume the microphone.
+                        // Always require a fresh user action in the Android UI.
+                        success = showRemoteNotification(payload);
 
                         result.put("delivered", success);
                         result.put("action", action);

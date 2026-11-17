@@ -58,14 +58,9 @@ public final class RemoteCameraBridge {
             result.put("permissionRemembered", trusted && permissionGranted);
 
             if ("camera.request".equals(normalized)) {
-                boolean started = false;
-                if (trusted && permissionGranted) {
-                    started = sendServiceAction(service, RemoteCameraService.ACTION_START, payload);
-                }
-
-                if (!started) {
-                    started = showAuthorizationNotification(service, trusted && permissionGranted);
-                }
+                // Never activate camera remotely merely because consent was saved.
+                // Android 15 requires a fresh user-initiated foreground activation.
+                boolean started = showAuthorizationNotification(service, trusted && permissionGranted);
 
                 result.put("delivered", started);
                 return new Result(true, started, result);
