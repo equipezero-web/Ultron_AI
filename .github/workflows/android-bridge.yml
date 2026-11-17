@@ -1,4 +1,5 @@
 name: Build Ultron Mobile Bridge
+# Android 15 assistant APK rebuild requested 2026-11-17
 
 on:
   workflow_dispatch:
