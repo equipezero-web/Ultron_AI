@@ -703,6 +703,16 @@ window.addEventListener("ultron:emergency-stop",event=>{
   cancelP0Operations("priority-core",event?.detail?.epoch);
 });
 function enqueue(message, source = "terminal", approvedMission = false) {
+  // Device diagnostics must never be intercepted by general knowledge or visual routers.
+  const pluginIntent=parseAccountPluginCommand(message);
+  if(pluginIntent?.kind==="execute"&&pluginIntent.actionId==="storage.diagnostics"){
+    log("DEVICE // Diagnóstico solicitado ao Bridge Android; resposta da IA genérica desativada para este comando.");
+    const generation=queueGeneration;
+    queue=queue.catch(()=>null).then(()=>generation!==queueGeneration
+      ? {ok:false,status:"cancelled",route:"p0-stop"}
+      : executeMessage(message,source,approvedMission));
+    return queue;
+  }
   // Public world webcams: whitelisted text/voice commands, never private device video.
   const worldCameraIntent=window.ULTRON_WORLD_CAMERAS?.parse?.(message);
   if(worldCameraIntent)return window.ULTRON_WORLD_CAMERAS.execute(message,{source});
