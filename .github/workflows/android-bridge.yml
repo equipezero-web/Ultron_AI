@@ -7,6 +7,10 @@ on:
     branches: [main]
     paths:
       - "android-bridge/**"
+      - "backend/device-bridge.js"
+      - "backend/device-control-v2.js"
+      - "tests/jarvis-bridge-pairing-contract.mjs"
+      - "tests/jarvis-bridge-ui-security.mjs"
       - ".github/workflows/android-bridge.yml"
   pull_request:
     branches: [main]
@@ -38,6 +42,9 @@ jobs:
 
       - name: JARVIS UI and permission safety contract
         run: node ../tests/jarvis-bridge-ui-security.mjs
+
+      - name: JARVIS pairing and backend compatibility contract
+        run: node ../tests/jarvis-bridge-pairing-contract.mjs
 
       - name: Build debug APK
         run: gradle :app:assembleDebug --stacktrace
