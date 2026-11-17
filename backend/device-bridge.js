@@ -339,7 +339,7 @@ export async function enqueueCommand(
     return { ok: false, error: "Dispositivo não encontrado ou não autorizado." };
   }
 
-  if (["calendar.open","calendar.create","storage.diagnostics"].includes(normalizedCommand) && device.device_type !== "mobile") {
+  if (["app.list","app.open","calendar.open","calendar.create","storage.diagnostics"].includes(normalizedCommand) && device.device_type !== "mobile") {
     return {ok:false,error:"Plugin do aparelho requer Android autorizado."};
   }
   if (normalizedCommand === "calendar.create" && payload?.confirm !== true) {
