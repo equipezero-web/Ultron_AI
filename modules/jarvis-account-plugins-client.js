@@ -1,5 +1,5 @@
 import API_CONFIG from "../config.js";
-import {parseAccountPluginCommand} from "../backend/jarvis-account-plugin-intents.js";
+import {parseAccountPluginCommand} from "../backend/jarvis-account-plugin-intents.js?v=1.1.0";
 import {explainAccountPluginFailure} from "./jarvis-account-diagnostics.js";
 // Runs in all logged-in browser sessions, but actions require an authenticated
 // Cloudflare Access account and a separately paired Android device.
