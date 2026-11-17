@@ -149,6 +149,9 @@ public class MainActivity extends Activity {
         devices.addView(JarvisUi.caption(this,
             "SEGURANÇA ANDROID 15: não é necessário ativar Acessibilidade. A abertura de apps em segundo plano respeita as proteções do Android."),
             JarvisUi.width(this, 9));
+        Button apps = JarvisUi.button(this, "◈  GERENCIAR APLICATIVOS AUTORIZADOS", false);
+        apps.setOnClickListener(v -> ApprovedApps.showPicker(this));
+        devices.addView(apps, JarvisUi.width(this, 9));
         devices.addView(JarvisUi.heading(this, "EXPLORADOR REMOTO  /  ARMAZENAMENTO"),
             JarvisUi.width(this, 9));
         devices.addView(JarvisUi.caption(this,
