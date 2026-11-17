@@ -98,11 +98,11 @@ public final class JarvisMobileActivity extends Activity {
         feedback.setText("Conectando celular...");
         new Thread(()->{
             try{
-                String secret=SecureStore.getOrCreateDeviceSecret(this);
+                String secret=SecureStore.newPairingSecret();
                 JSONObject response=BridgeApi.claimPairing(code,secret,
                     Build.MANUFACTURER+" "+Build.MODEL,"Android "+Build.VERSION.RELEASE);
                 RemoteFiles.disable(this);TvAuthorization.revoke(this);
-                SecureStore.saveDeviceId(this,response.getString("deviceId"));
+                SecureStore.saveNewPairing(this,response.getString("deviceId"),secret);
                 runOnUiThread(()->{feedback.setText("Celular conectado.");startBridge();});
             }catch(Exception e){runOnUiThread(()->notifyError("Falha ao conectar: "+e.getMessage()));}
         }).start();
