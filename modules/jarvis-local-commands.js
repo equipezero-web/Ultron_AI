@@ -183,7 +183,11 @@ export async function runLocalCommand(command){
   }
   if(intent.type==="global-intelligence"){
     if(!window.ULTRON_GLOBAL_INTELLIGENCE?.open)
-      await import("./jarvis-global-intelligence-ring.js?v=5.13.0");
+      await import("./jarvis-global-intelligence-ring.js?v=5.25.1");
+    // The module may load before the command center mounts on mobile.
+    // Wait for its singleton instead of re-importing a second URL.
+    for(let i=0;!window.ULTRON_GLOBAL_INTELLIGENCE?.open&&i<35;i++)
+      await new Promise(resolve=>setTimeout(resolve,100));
     const result=await window.ULTRON_GLOBAL_INTELLIGENCE?.open?.({
       view:intent.view,region:intent.region,category:intent.category
     });
@@ -213,7 +217,9 @@ export async function runLocalCommand(command){
         "Falha ao fechar meteorologia. Verifique o botão X do painel."};
   }
   if(intent.type==="meteorological-center"){
-    if(!window.ULTRON_METEO_CENTER?.open)await import("./jarvis-meteorological-center.js?v=4.99.1");
+    if(!window.ULTRON_METEO_CENTER?.open)await import("./jarvis-meteorological-center.js?v=4.99.3");
+    for(let i=0;!window.ULTRON_METEO_CENTER?.open&&i<35;i++)
+      await new Promise(resolve=>setTimeout(resolve,100));
     const result=await window.ULTRON_METEO_CENTER?.open?.({tab:intent.tab,view:intent.view});
     const ok=result?.ok===true&&result.visible===true;
     return {ok,handled:true,route:"local-meteorological-center",provider:"jarvis-local",
