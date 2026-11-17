@@ -6,7 +6,7 @@ import {parseMissionControl,assessCompoundMission,createMissionGate} from "./jar
 import {inspectMissionDependencies,missionStepOutcome,createMissionJournal} from "./jarvis-mission-diagnostics.js";
 import {createRecoveryEngine} from "./jarvis-recovery-engine.js";
 import {probeRecoveryHealth} from "./jarvis-recovery-probes.js";
-import {parseAccountPluginCommand} from "../backend/jarvis-account-plugin-intents.js";
+import {parseAccountPluginCommand} from "../backend/jarvis-account-plugin-intents.js?v=1.1.0";
 import API_CONFIG from "../config.js";
 import {showStorageDiagnostic} from "./jarvis-storage-neural.js?v=1.0.1";
 
