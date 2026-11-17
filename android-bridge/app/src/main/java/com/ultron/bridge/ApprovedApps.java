@@ -41,9 +41,9 @@ public final class ApprovedApps {
             item.put("packageName",pkg);
             item.put("label",String.valueOf(info.loadLabel(pm)));
             item.put("approved",allowed(context,pkg));
-            array.put(item);
+            if (allowed(context,pkg)) array.put(item);
         }
-        return new JSONObject().put("ok",true).put("apps",array).put("scope","launcher-apps-only");
+        return new JSONObject().put("ok",true).put("apps",array).put("scope","approved-launcher-apps-only");
     }
     public static void showPicker(Activity activity){
         PackageManager pm=activity.getPackageManager();
