@@ -63,4 +63,7 @@ assert.match(orchestration,/state\.lastRoute="local-neural-ring"/);
 assert.match(orchestration,/parseLocalCommand\(message\)\?\.type==="clear-interface"/);
 assert.match(orchestration,/executeMessage\(message,source,approvedMission\)/);
 
+for(const cmd of ["Jarvis, mostre suas funcionalidades.","mostre suas funcionalidades"]){
+ assert.equal(parseLocalCommand(cmd)?.type,"capabilities",cmd);
+}
 console.log("VISIBLE CLEAR PASS: exact local voice intent, visual reset, idempotency, no external research and no stored data deletion");
