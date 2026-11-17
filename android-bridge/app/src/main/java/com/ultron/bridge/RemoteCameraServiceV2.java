@@ -73,6 +73,8 @@ public class RemoteCameraServiceV2 extends Service {
             {640, 480, 20},
             {320, 240, 15}
     };
+    private static volatile boolean localSessionActive = false;
+    public static boolean isLocalSessionActive() { return localSessionActive; }
     private static final long FIRST_FRAME_TIMEOUT_MS = 4500L;
     private static final long ICE_GATHER_TIMEOUT_MS = 4500L;
 
@@ -115,6 +117,7 @@ public class RemoteCameraServiceV2 extends Service {
         String action = intent == null ? ACTION_START : String.valueOf(intent.getAction());
 
         if (ACTION_STOP.equals(action)) {
+            localSessionActive = false;
             worker.execute(() -> {
                 publishStatus("stopped", "Câmera remota desativada pelo operador.");
                 releaseAll();
@@ -127,6 +130,21 @@ public class RemoteCameraServiceV2 extends Service {
         if (!hasCameraPermission() || !SecureStore.isRemoteCameraTrusted(this)) {
             worker.execute(() -> {
                 publishStatus("blocked", "A câmera precisa ser autorizada no Ultron Bridge.");
+                releaseAll();
+                stopForeground(STOP_FOREGROUND_REMOVE);
+                stopSelf();
+            });
+            return START_NOT_STICKY;
+        }
+
+        if (ACTION_START.equals(action)) {
+            // Only the private in-app camera Activity sends ACTION_START.
+            localSessionActive = true;
+            return START_NOT_STICKY;
+        }
+        if (!localSessionActive) {
+            worker.execute(() -> {
+                publishStatus("blocked", "Abra o Bridge no celular e ative a câmera.");
                 releaseAll();
                 stopForeground(STOP_FOREGROUND_REMOVE);
                 stopSelf();
@@ -704,6 +722,7 @@ public class RemoteCameraServiceV2 extends Service {
 
     @Override
     public void onDestroy() {
+        localSessionActive = false;
         releaseAll();
         worker.shutdownNow();
         network.shutdownNow();
