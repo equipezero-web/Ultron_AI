@@ -34,12 +34,12 @@ public final class ApprovedApps {
         PackageManager pm=context.getPackageManager();
         Set<String> seen=new java.util.HashSet<>();
         for(ResolveInfo info:launcherApps(context)){
-            if(info.activityInfo==null)continue;
+            if(info.activityInfo==null || array.length() >= 100)continue;
             String pkg=info.activityInfo.packageName;
             if(!seen.add(pkg))continue;
             JSONObject item=new JSONObject();
             item.put("packageName",pkg);
-            item.put("label",String.valueOf(info.loadLabel(pm)));
+            item.put("label",String.valueOf(info.loadLabel(pm)).substring(0,Math.min(60,String.valueOf(info.loadLabel(pm)).length())));
             item.put("approved",allowed(context,pkg));
             if (allowed(context,pkg)) array.put(item);
         }
