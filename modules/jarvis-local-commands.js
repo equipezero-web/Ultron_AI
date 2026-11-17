@@ -183,7 +183,7 @@ export async function runLocalCommand(command){
   }
   if(intent.type==="global-intelligence"){
     if(!window.ULTRON_GLOBAL_INTELLIGENCE?.open)
-      await import("./jarvis-global-intelligence-ring.js?v=5.25.1");
+      await import("./jarvis-global-intelligence-ring.js?v=5.25.2");
     // The module may load before the command center mounts on mobile.
     // Wait for its singleton instead of re-importing a second URL.
     for(let i=0;!window.ULTRON_GLOBAL_INTELLIGENCE?.open&&i<35;i++)
