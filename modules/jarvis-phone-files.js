@@ -60,14 +60,14 @@ function install() {
   close.addEventListener("click",()=>{panel.hidden=true;clearPreview();});
   header.append(label,close);
   panel.append(header);
-  const note=make("p","Exibição sob comando: arquivos compartilhados do Android. Para autorizar, informe a chave e pressione Enter. Nenhum acesso a pastas privadas de outros apps e nenhum envio à IA.");
+  const note=make("p","Exibição sob comando: arquivos compartilhados do Android. Para autorizar, selecione uma pasta no celular, ative uma sessão de 10 minutos e digite o PIN. Nenhum acesso a pastas privadas de outros apps e nenhum envio à IA.");
   panel.append(note);
   const auth=make("div",null,"jarvis-phone-files-auth");
   const pin=make("input");
   pin.id="jarvis-phone-files-pin";
-  pin.type="password";pin.maxLength=32;pin.autocomplete="off";pin.autocapitalize="off";pin.spellcheck=false;
-  pin.placeholder="PIN de 8 números ou chave permanente de 32 caracteres";
-  pin.setAttribute("aria-label","PIN temporário ou chave permanente do celular");
+  pin.type="password";pin.maxLength=8;pin.autocomplete="off";pin.autocapitalize="off";pin.spellcheck=false;
+  pin.placeholder="PIN temporário de 8 números";
+  pin.setAttribute("aria-label","PIN temporário do celular");
   // No extra button: authorize the requested command by entering the PIN/key
   // and pressing Enter. Existing file rows are shown only after a command.
   auth.append(pin);
@@ -115,9 +115,9 @@ function install() {
   }
   function currentPin() {
     const value=String(pin.value||"").trim();
-    if(!/^(?:\d{8}|[a-fA-F0-9]{32})$/.test(value))
-      throw Error("Digite o PIN temporário de 8 números ou a chave permanente de 32 caracteres.");
-    return value.length===32?value.toUpperCase():value;
+    if(!/^\d{8}$/.test(value))
+      throw Error("Digite o PIN temporário de 8 números exibido no celular.");
+    return value;
   }
   async function post(path,body) {
     const resp=await fetch(API_BASE+path,{
