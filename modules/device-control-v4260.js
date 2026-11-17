@@ -187,6 +187,9 @@ function desktopIntent(n, raw) {
 
 function mobileIntent(n) {
   if (!/\b(celular|telefone|android)\b/.test(n)) return null;
+  if (/\b(apps|aplicativos|aplicacoes)\b/.test(n) &&
+      /\b(listar|liste|mostrar|mostre|quais|ver)\b/.test(n))
+    return {deviceType:"mobile",command:"app.list",payload:{},label:"listar aplicativos autorizados do celular"};
   if (/\b(status|estado|online)\b/.test(n)) return { deviceType: "mobile", command: "device.status", payload: {}, label: "status do celular" };
   const apps = [
     ["youtube", "com.google.android.youtube"],
@@ -422,8 +425,13 @@ export async function routeNaturalLanguage(text, parsedIntent = null, {awaitComp
       return {handled:true,ok:false,cancelled:true,commandStatus:cancellation?.status||"unknown",intent,result};
     }
     outputLine(`FILA: ${result.commandId?.slice(0, 8) || "OK"} → ${result.device?.deviceName || intent.deviceType}.`);
-    if (awaitCompletion && result.commandId) {
+    if ((awaitCompletion || intent.command === "app.list") && result.commandId) {
       const remote = await monitorCommand(result.commandId,{signal});
+      if(intent.command==="app.list" && remote?.status==="completed") {
+        const apps=Array.isArray(remote?.result?.apps) ? remote.result.apps : [];
+        outputLine(apps.length ? "APLICATIVOS AUTORIZADOS DO CELULAR ("+apps.length+")" : "Nenhum aplicativo autorizado. Abra o Bridge > GERENCIAR APLICATIVOS AUTORIZADOS.");
+        apps.forEach(app=>outputLine(String(app.label||"App")+" // "+String(app.packageName||"")));
+      }
       return {handled:true,...interpretDeviceReceipt(remote,{aborted:signal?.aborted}),intent,result};
     }
     if(result.commandId)void monitorCommand(result.commandId);
