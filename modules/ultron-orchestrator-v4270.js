@@ -423,16 +423,47 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
       const status=await api.list();
       if(status?.ok!==true||!Array.isArray(status.devices))throw Error("Consulta da conta não confirmada");
       const mobiles=status.devices.filter(d=>d.type==="mobile"&&d.status==="active");
-      const message=mobiles.length
-        ? "BRIDGE ANDROID // "+mobiles.map(d=>
-            String(d.name||"Celular").slice(0,70)+" // "+(d.online?"ONLINE":"OFFLINE")+
-            " // recursos anunciados: "+(Array.isArray(d.capabilities)?d.capabilities.join(", "):"nenhum")).join("; ")+
-          ". ONLINE significa comunicação recente do serviço; não comprova execução de um comando."
-        : "BRIDGE ANDROID // Nenhum celular pareado nesta conta autenticada. Verifique se o pareamento foi feito na mesma conta.";
-      log(message,!mobiles.length);
+      const online=mobiles.filter(d=>d.online===true);
+      if(online.length!==1){
+        const message=online.length>1
+          ? "BRIDGE ANDROID // Vários celulares estão online nesta conta. Selecione o dispositivo exato no painel de plugins antes de consultar os detalhes."
+          : mobiles.length
+            ? "BRIDGE ANDROID // Celular pareado, mas sem comunicação recente. Abra o Bridge e toque em INICIAR BRIDGE."
+            : "BRIDGE ANDROID // Nenhum celular pareado nesta conta autenticada.";
+        log(message,true);
+        return {ok:false,status:"failed",results:[{route:"account-device-status",ok:false,result:{text:message}}]};
+      }
+      if(typeof api.status!=="function"||typeof api.receipt!=="function")
+        throw Error("Módulo de status autenticado não carregado");
+      const device=online[0];
+      const queued=await api.status(device.id);
+      if(!queued?.ok||!queued.commandId)throw Error("Servidor recusou consulta do Android");
+      let receipt=null;
+      for(let attempt=0;attempt<8;attempt++){
+        await new Promise(resolve=>setTimeout(resolve,1000));
+        receipt=await api.receipt(queued.commandId);
+        if(["completed","failed","expired","cancelled"].includes(receipt?.command?.status))break;
+      }
+      const resultStatus=receipt?.command?.status||"pending";
+      const actual=receipt?.command?.result||{};
+      const verified=resultStatus==="completed"&&actual.bridge==="online" &&
+        typeof actual.model==="string"&&actual.model.length>0;
+      const message=verified
+        ? "BRIDGE ANDROID CONFIRMADO // "+String(actual.manufacturer||"Android").slice(0,40)+
+          " "+String(actual.model).slice(0,65)+
+          " // Android "+String(actual.androidRelease||"não informado").slice(0,24)+
+          " // SDK "+String(actual.sdk||"não informado").slice(0,8)+
+          ". Confirmação recebida diretamente do aplicativo pareado."
+        : "BRIDGE ANDROID // "+
+          (resultStatus==="pending"||resultStatus==="claimed"
+            ? "Consulta enviada, mas o celular ainda não confirmou o comando."
+            : "Consulta não confirmada pelo celular: "+String(actual.error||resultStatus).slice(0,90));
+      log(message,!verified);
       state.lastRoute="account-device-status";
-      return {ok:mobiles.length>0,status:mobiles.length?"completed":"failed",results:[
-        {route:"account-device-status",ok:mobiles.length>0,result:{text:message,online:mobiles.some(d=>d.online)}}]};
+      return {ok:verified,status:verified?"completed":
+        resultStatus==="pending"||resultStatus==="claimed"?"submitted":"failed",results:[
+        {route:"account-device-status",ok:verified,result:{text:message,commandStatus:resultStatus,
+          verified,commandId:queued.commandId}}]};
     }catch(error){
       const message="BRIDGE ANDROID // Falha na consulta autenticada: "+
         String(error?.message||error).slice(0,150)+
