@@ -96,7 +96,7 @@ const mockDB={
     if(query.includes("FROM devices d"))
       return {results:values[0]===one.accountId?[
        {id:androidId,deviceType:"mobile",deviceName:"Android pessoal",status:"active",lastSeenAt:lastSeen,
-        capabilitiesJson:JSON.stringify(["device.status","app.open","calendar.open","calendar.create","storage.diagnostics"])},
+        capabilitiesJson:JSON.stringify(["device.status","app.list","app.open","calendar.open","calendar.create","storage.diagnostics"])},
        {id:desktopId,deviceType:"desktop",deviceName:"Notebook pessoal",status:"active",lastSeenAt:lastSeen,
         capabilitiesJson:JSON.stringify(["desktop.open.url"])}
       ]:[]};
@@ -114,11 +114,16 @@ assert.equal((await accountAndroidStatus(appEnv,two.accountId,{deviceId:androidI
 assert.equal((await accountAndroidStatus(appEnv,one.accountId,{deviceId:desktopId})).ok,false);
 assert.equal((await accountAndroidStatus(appEnv,one.accountId,{deviceId:androidId})).ok,true);
 assert.equal(queued.at(-1).command,"device.status");
+assert.equal((await accountAndroidStatus(appEnv,one.accountId,{deviceId:androidId,command:"app.list"})).ok,true);
+assert.equal(queued.at(-1).command,"app.list");
+assert.equal((await accountAndroidStatus(appEnv,one.accountId,{deviceId:androidId,command:"files.read"})).ok,false);
+
 const workerText=readFileSync(new URL("../backend/worker.js",import.meta.url),"utf8");
 assert.match(workerText,/path==="\/api\/account\/devices\/status"/);
 assert.match(workerText,/accountAndroidStatus\(env,auth.accountId,body\)/);
 assert.match(orchestratorCode,/api\.status\(device.id\)/);
 assert.match(orchestratorCode,/actual.bridge==="online"/);
+assert.match(orchestratorCode,/approved-launcher-apps-only/);
 let sent=await executeAccountPlugin(appEnv,one.accountId,{pluginId:"youtube",actionId:"youtube.open",deviceId:androidId});
 assert.equal(sent.ok,true);
 assert.equal(queued.at(-1).command,"app.open");
