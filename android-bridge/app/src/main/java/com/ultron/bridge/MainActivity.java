@@ -30,6 +30,7 @@ public class MainActivity extends Activity {
     public static final String ACTION_OPEN_REMOTE_MIC = "com.ultron.bridge.OPEN_REMOTE_MIC";
     public static final String EXTRA_REQUEST_MIC = "requestMic";
 
+    private static final int REQUEST_REMOTE_TREE = 1017;
     private static final String DEFAULT_LG_TV_HOST = "10.0.0.109";
 
     private TextView statusView;
@@ -155,10 +156,10 @@ public class MainActivity extends Activity {
         devices.addView(JarvisUi.heading(this, "EXPLORADOR REMOTO  /  ARMAZENAMENTO"),
             JarvisUi.width(this, 9));
         devices.addView(JarvisUi.caption(this,
-            "No celular, escolha acesso temporário de 10 minutos ou acesso permanente até você revogar. A autorização do Android é necessária. Pastas privadas de outros aplicativos continuam protegidas."),
+            "Selecione uma pasta pelo Android. Apenas essa pasta pode ser lida remotamente durante uma sessão autorizada de 10 minutos; sem acesso a outras pastas ou apps."),
             JarvisUi.width(this, 11));
         Button storagePermission = JarvisUi.button(this,
-            "1  /  AUTORIZAR ACESSO A TODOS OS ARQUIVOS", false);
+            "1  /  ESCOLHER PASTA AUTORIZADA", false);
         storagePermission.setOnClickListener(v -> openStorageSettings());
         devices.addView(storagePermission, JarvisUi.width(this, 9));
         Button remoteFilesStart = JarvisUi.button(this,
@@ -186,7 +187,7 @@ public class MainActivity extends Activity {
         notifications.setOnClickListener(v -> openNotificationSettings());
         devices.addView(notifications, JarvisUi.width(this, 10));
         devices.addView(JarvisUi.caption(this,
-            "Editor local: seleção individual. Explorador remoto: leitura de pastas compartilhadas e arquivos por autorização temporária; sem exclusão nem gravação remota."),
+            "Editor local: escolha arquivos individualmente. Explorador remoto: somente a pasta selecionada, leitura por 10 minutos e revogação no celular."),
             JarvisUi.width(this, 0));
         root.addView(devices, JarvisUi.width(this, 14));
 
@@ -410,22 +411,31 @@ public class MainActivity extends Activity {
     }
 
     private void openStorageSettings() {
+        // Android Storage Access Framework. Never ask for access to all files.
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION,
-                    Uri.parse("package:" + getPackageName()));
-                startActivity(intent);
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) !=
-                    PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1002);
-            }
+            Intent picker = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+            picker.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION |
+                Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+            startActivityForResult(picker, REQUEST_REMOTE_TREE);
         } catch (Exception error) {
-            try {
-                startActivity(new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION));
-            } catch (Exception ignored) {
-                statusView.setText("Abra Configurações do Android > Acesso especial > Acesso a todos os arquivos > J.A.R.V.I.S. Bridge.");
-            }
+            statusView.setText("O seletor seguro de pastas não está disponível: " + error.getMessage());
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode != REQUEST_REMOTE_TREE) return;
+        if (resultCode != RESULT_OK || data == null || data.getData() == null) {
+            statusView.setText("Nenhuma pasta autorizada.");
+            return;
+        }
+        try {
+            RemoteFiles.selectTree(this, data.getData());
+            remoteFilesPinView.setText("PIN REMOTO: AGUARDANDO ATIVAÇÃO");
+            statusView.setText("Pasta selecionada. Toque em ATIVAR EXPLORADOR REMOTO (10 MIN).");
+        } catch (Exception error) {
+            statusView.setText("Não foi possível autorizar a pasta: " + error.getMessage());
         }
     }
 
@@ -437,39 +447,11 @@ public class MainActivity extends Activity {
         try {
             String pin = RemoteFiles.enable(this);
             remoteFilesPinView.setText("PIN REMOTO: " + pin + "  /  10 MIN");
-            statusView.setText("Acesso remoto à memória compartilhada ativado por 10 minutos. " +
+            statusView.setText("Acesso remoto à pasta selecionada ativado por 10 minutos. " +
                 "Digite o PIN na seção ARQUIVOS DO CELULAR do J.A.R.V.I.S. Não compartilhe este código.");
         } catch (Exception error) {
             statusView.setText("Acesso remoto não ativado: " + error.getMessage());
         }
-    }
-
-    private void enablePermanentFileAccess() {
-        if (SecureStore.getDeviceId(this) == null) {
-            statusView.setText("Pareie o celular e inicie o J.A.R.V.I.S. Bridge antes de autorizar os arquivos.");
-            return;
-        }
-        if (!RemoteFiles.storageGranted(this)) {
-            statusView.setText("Autorize primeiro o acesso especial aos arquivos nas configurações do Android.");
-            return;
-        }
-        new android.app.AlertDialog.Builder(this)
-            .setTitle("Acesso permanente aos arquivos?")
-            .setMessage("O J.A.R.V.I.S. poderá consultar arquivos do armazenamento compartilhado enquanto esta autorização existir. " +
-                "A chave será exibida apenas agora no celular. No painel web, será necessário inserir a chave ao abrir uma sessão. " +
-                "Você pode revogar a autorização imediatamente no botão REVOGAR ACESSO REMOTO. Não concede acesso aos dados privados de outros aplicativos.")
-            .setNegativeButton("CANCELAR", (dialog, which) -> {})
-            .setPositiveButton("ATIVAR", (dialog, which) -> {
-                try {
-                    String key = RemoteFiles.enablePermanent(this);
-                    remoteFilesPinView.setText("CHAVE PERMANENTE: " + key);
-                    statusView.setText("ACESSO REMOTO PERMANENTE ATIVADO. Copie esta chave de 32 caracteres para o " +
-                        "J.A.R.V.I.S. web. A chave não expira, mas deixa de funcionar ao tocar em REVOGAR ACESSO REMOTO. " +
-                        "Não compartilhe a chave.");
-                } catch (Exception error) {
-                    statusView.setText("Falha ao ativar: " + error.getMessage());
-                }
-            }).show();
     }
 
     private void openRemoteMicrophone() {
