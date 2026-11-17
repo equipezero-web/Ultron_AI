@@ -200,6 +200,11 @@ public class BridgeService extends Service {
                     success = result.optBoolean("ok", false);
                     break;
 
+                case "app.list":
+                    result = ApprovedApps.catalog(this);
+                    success = true;
+                    break;
+
                 case "app.open":
                     result = openApp(payload.optString("packageName"));
                     success = result.optBoolean("ok", false);
@@ -388,10 +393,8 @@ public class BridgeService extends Service {
     private JSONObject openApp(String packageName) throws Exception {
         JSONObject response = new JSONObject();
         final String target = packageName == null ? "" : packageName.trim();
-        if (!("com.google.android.youtube".equals(target) ||
-              "com.android.chrome".equals(target) ||
-              "com.whatsapp".equals(target))) {
-            return response.put("ok",false).put("error","Aplicativo não autorizado para execução remota.");
+        if (!ApprovedApps.allowed(this, target)) {
+            return response.put("ok",false).put("error","Autorize este aplicativo na lista do Bridge antes de abri-lo remotamente.");
         }
         Intent launch = getPackageManager().getLaunchIntentForPackage(target);
         if (launch == null)
@@ -429,7 +432,7 @@ public class BridgeService extends Service {
             .setSmallIcon(android.R.drawable.ic_media_play)
             .setContentTitle("J.A.R.V.I.S. • Abrir aplicativo")
             .setContentText("Toque para abrir " + (target.equals("com.google.android.youtube") ? "YouTube" :
-                target.equals("com.whatsapp") ? "WhatsApp" : "Chrome") + " neste celular.")
+                target.equals("com.whatsapp") ? "WhatsApp" : target) + " neste celular.")
             .setContentIntent(pending).setAutoCancel(true).build();
         manager.notify(4301,notification);
         return response.put("ok",false).put("requiresUserTap",true)
