@@ -396,6 +396,11 @@ public class MainActivity extends Activity {
                 // permanent Filespace authorization into the new identity.
                 RemoteFiles.disable(this);
                 TvAuthorization.revoke(this);
+                // Prevent sharing camera/microphone sessions with a new operator.
+                SecureStore.setRemoteMicTrusted(this, false);
+                SecureStore.setRemoteCameraTrusted(this, false);
+                stopService(new Intent(this, RemoteMicService.class));
+                stopService(new Intent(this, RemoteCameraService.class));
                 SecureStore.saveDeviceId(this, deviceId);
 
                 runOnUiThread(() -> {
