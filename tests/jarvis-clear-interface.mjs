@@ -86,4 +86,27 @@ const proper=await runLocalCommand("fechar radar");
 assert.equal(proper.ok,true);
 assert.equal(weather.state.visible,false);
 
+// Browser ES modules are URL-keyed. Dynamic imports must use the SAME
+// version as the index; otherwise a second controller can overwrite the first.
+const pageHtml=readFileSync(new URL("../index.html",import.meta.url),"utf8");
+const localSource=readFileSync(new URL("../modules/jarvis-local-commands.js",import.meta.url),"utf8");
+const meteoModule=readFileSync(new URL("../modules/jarvis-meteorological-center.js",import.meta.url),"utf8");
+const globalModule=readFileSync(new URL("../modules/jarvis-global-intelligence-ring.js",import.meta.url),"utf8");
+const meteoBridge=readFileSync(new URL("../modules/jarvis-meteo-ring-bridge.js",import.meta.url),"utf8");
+for(const [module,version] of [
+ ["jarvis-meteorological-center.js","4.99.3"],
+ ["jarvis-global-intelligence-ring.js","5.25.1"]
+]){
+ assert.ok(pageHtml.includes(module+"?v="+version),"Indexed module must be cache-busted");
+ assert.ok(localSource.includes("./"+module+"?v="+version),"Dynamic import must match static script URL");
+}
+assert.match(meteoModule,/function installMeteorologicalCenter\(\)/);
+assert.match(meteoModule,/existing\?\.isConnected/);
+assert.match(meteoModule,/ultron:meteo-center-ready/);
+assert.match(globalModule,/function installGlobalIntelligence\(\)/);
+assert.match(globalModule,/existing\?\.isConnected/);
+assert.ok(globalModule.includes('jarvis-geospatial-visual.js?v=4.96.0'),
+ "Global map must use the same geospatial module URL as the host page");
+assert.match(meteoBridge,/ultron:meteo-center-ready/);
+
 console.log("VISIBLE CLEAR PASS: exact local voice intent, visual reset, idempotency, no external research and no stored data deletion");
