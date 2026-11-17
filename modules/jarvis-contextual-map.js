@@ -45,7 +45,7 @@ async function open({view="2d",focusKey=null}={}){
  }
  try{
   if(!window.ULTRON_GEO_VISUAL){
-   await import("./jarvis-geospatial-visual.js?v=5.24.0");
+   await import("./jarvis-geospatial-visual.js?v=4.96.1");
   }
   if(serial!==requestId)return {ok:false,error:"Visualização substituída"};
   const map=window.ULTRON_GEO_VISUAL;
