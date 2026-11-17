@@ -55,6 +55,9 @@ import {
   withSmartProviderOrder
 } from "./smart-router.js";
 import { buildOperationalPlan } from "./planner.js";
+import { planAgents } from "./intelligent-task-hub.js";
+import { listSkills } from "./skill-hub.js";
+import { listTrajectories } from "./trajectory-hub.js";
 import {classifyConsultativeTurn,consultativeGuidance} from "./consultative-dialogue.js";
 import {inspectPublicGitHubRepository,githubInspectionContext,contradictsVerifiedGitHubInspection,verifiedGitHubFallback} from "./github-public-inspector.js";
 import {authorizePrivateGitHub,privateGitHubHeaders,privateGitHubConfig,inspectPrivateGitHub,privateGitHubContext} from "./github-private-inspector.js";
@@ -1597,6 +1600,32 @@ export default {
       if (!operatorId) return missingOperator();
       const result = await runAutomationNow(env, operatorId, body?.id);
       return json(result, result?.ok === false ? 400 : 200);
+    }
+
+    // Read-only operator-scoped hub endpoints. No skill activation or agent execution via HTTP.
+    if (path === "/api/hubs/plan" && request.method === "POST") {
+      const body = await bodyOf(request);
+      const operatorId = await operatorFrom(body);
+      if (!operatorId) return missingOperator();
+      const message = String(body?.message || "").slice(0, 2000);
+      if (!message.trim()) return json({ok:false,error:"Comando vazio."},400);
+      return json({ok:true,plan:planAgents(message)});
+    }
+
+    if (path === "/api/hubs/skills" && request.method === "POST") {
+      const body = await bodyOf(request);
+      const operatorId = await operatorFrom(body);
+      if (!operatorId) return missingOperator();
+      if (!env?.ULTRON_DB) return json({ok:false,error:"D1 não configurado."},503);
+      return json({ok:true,skills:await listSkills(env,{operatorId,limit:body?.limit})});
+    }
+
+    if (path === "/api/hubs/trajectories" && request.method === "POST") {
+      const body = await bodyOf(request);
+      const operatorId = await operatorFrom(body);
+      if (!operatorId) return missingOperator();
+      if (!env?.ULTRON_DB) return json({ok:false,error:"D1 não configurado."},503);
+      return json({ok:true,trajectories:await listTrajectories(env,{operatorId,limit:body?.limit})});
     }
 
     if (path === "/api/orchestrator/start" && request.method === "POST") {

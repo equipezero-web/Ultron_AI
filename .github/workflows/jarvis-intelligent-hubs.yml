@@ -1,0 +1,21 @@
+name: JARVIS intelligent hubs
+on:
+  pull_request:
+    paths:
+      - 'backend/skill-hub.js'
+      - 'backend/intelligent-task-hub.js'
+      - 'backend/trajectory-hub.js'
+      - 'modules/ultron-orchestrator-v4270.js'
+      - 'tests/jarvis-intelligent-hubs.mjs'
+      - '.github/workflows/jarvis-intelligent-hubs.yml'
+  push:
+    branches: [main]
+jobs:
+  hubs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node tests/jarvis-intelligent-hubs.mjs
