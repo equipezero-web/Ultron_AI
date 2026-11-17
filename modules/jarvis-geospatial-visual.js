@@ -8,8 +8,13 @@ import {insightScenario,insightSummary,monitorSummary,WEATHER_INSIGHT_LABELS} fr
 import {GEO_SCENARIOS,GEO_PALETTE,geoFrame,validateGeoScenario,BRAZIL_OUTLINE_URL,WORLD_OUTLINE_URL,brazilXY,worldXY,geoJSONPaths} from "./jarvis-geospatial-model.js?v=4.96.0";
 
 // The visualization remains INSIDE the Neural Ring stage, no new page or pop-up.
-const stage=document.querySelector(".jarvis-cc-center");
-if(stage){
+// Shared geospatial controller; a second import URL cannot replace its scene.
+function installGeospatialVisual(){
+ const stage=document.querySelector(".jarvis-cc-center");
+ if(!stage)return false;
+ const existing=stage.querySelector("#jarvis-geo-visual");
+ if(existing?.isConnected)return Boolean(window.ULTRON_GEO_VISUAL?.open);
+ {
  const panel=document.createElement("section");panel.className="jarvis-geo-visual";panel.id="jarvis-geo-visual";
  panel.setAttribute("aria-label","Visualização geográfica do JARVIS");
  panel.hidden=true;
@@ -986,4 +991,12 @@ if(stage){
      gridCount:intensityReport?.ok?intensityReport.sampledCount:0,
      topic:dataset?.theme?.topic||null,countryCount:dataset?.theme?.countryValues?Object.keys(dataset.theme.countryValues).length:0};}
  };
+ }
+ return true;
+}
+if(!installGeospatialVisual()){
+ let attempts=0;
+ const timer=setInterval(()=>{
+   if(installGeospatialVisual()||++attempts>=200)clearInterval(timer);
+ },100);
 }
