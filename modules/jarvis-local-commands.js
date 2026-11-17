@@ -46,7 +46,7 @@ export function parseLocalCommand(value){
     return {type:"safe-multitask"};
   if(/^(?:abra|abrir|mostre|mostrar) (?:o |os? )?(?:editor de arquivos|arquivos autorizados|arquivos do celular|meus arquivos)$/.test(plain))
     return {type:"scoped-file-editor"};
-  if(/^(?:(?:o que|que) (?:voce|tu|o jarvis|o ultron) (?:pode|consegue|sabe) fazer|(?:o que|que) (?:voce|tu) faz|quais (?:sao )?(?:as )?(?:suas|tuas) (?:capacidades|habilidades|funcoes|funcionalidades|ferramentas)|quais (?:sao )?(?:as )?funcionalidades (?:do|de) (?:jarvis|ultron)|quem e voce|o que mais voce pode fazer|quais recursos voce tem|me mostre suas funcionalidades)$/.test(plain))return {type:"capabilities"};
+  if(/^(?:(?:o que|que) (?:voce|tu|o jarvis|o ultron) (?:pode|consegue|sabe) fazer|(?:o que|que) (?:voce|tu) faz|quais (?:sao )?(?:as )?(?:suas|tuas) (?:capacidades|habilidades|funcoes|funcionalidades|ferramentas)|quais (?:sao )?(?:as )?funcionalidades (?:do|de) (?:jarvis|ultron)|quem e voce|o que mais voce pode fazer|quais recursos voce tem|me mostre suas funcionalidades|mostre suas funcionalidades|mostrar minhas funcionalidades|liste suas funcionalidades)$/.test(plain))return {type:"capabilities"};
   // Terminal-only cleanup is local and never clears memory, stored chats or accounts.
   if(/^(?:clear|cls|limpar terminal|limpe terminal|limpar o terminal|limpe o terminal|apagar terminal|apague terminal|apagar o terminal|apague o terminal)$/.test(plain))
     return {type:"clear-interface"};
