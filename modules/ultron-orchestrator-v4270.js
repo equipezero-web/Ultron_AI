@@ -425,6 +425,12 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
   // Local navigation never invokes a model, provider, or public web lookup.
   if(isRingHomeCommand(clean)) {
     try {
+      // Returning home also dismisses overlapping visual panels and stops
+      // remote camera playback; it never accesses device cameras.
+      if(window.ULTRON_WORLD_CAMERAS?.state?.open)
+        window.ULTRON_WORLD_CAMERAS.hide?.();
+      if(window.ULTRON_METEO_CENTER?.state?.visible)
+        window.ULTRON_METEO_CENTER.close?.();
       const closed=window.ULTRON_EARTH?.close?.();
       window.JARVIS_COMMAND_CENTER?.setVisualMode?.("ring");
       const ok=Boolean(window.JARVIS_COMMAND_CENTER?.setVisualMode || closed?.ok);
