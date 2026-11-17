@@ -1,3 +1,4 @@
+import { rankMemories } from "./memory-relevance.js";
 const MAX_CONTEXT_CHARS = 14000;
 const DEFAULT_RECENT_MESSAGES = 24;
 const DEFAULT_MEMORIES = 10;
@@ -246,22 +247,21 @@ export async function loadMemoryContext(
         .all(),
       env.ULTRON_DB
         .prepare(
-          `SELECT category, content, importance, updated_at
+          `SELECT category, content, importance, updated_at, use_count
            FROM memories
            WHERE operator_id = ?
            ORDER BY importance DESC, updated_at DESC
            LIMIT ?`
         )
-        .bind(operatorId, DEFAULT_MEMORIES)
+        .bind(operatorId, 40)
         .all()
     ]);
 
     const messages = Array.isArray(messageResult?.results)
       ? [...messageResult.results].reverse()
       : [];
-    const memories = Array.isArray(memoryResult?.results)
-      ? memoryResult.results
-      : [];
+    const recentUserMessage = [...messages].reverse().find((item) => item.role === "user")?.content || "";
+    const memories = rankMemories(memoryResult?.results, recentUserMessage, { limit: DEFAULT_MEMORIES });
 
     const sections = [];
 
@@ -269,7 +269,7 @@ export async function loadMemoryContext(
       sections.push(
         "MEMÓRIAS PERSISTENTES RELEVANTES:",
         ...memories.map(
-          (item) => `- [${item.category || "memória"}] ${clip(item.content, 1200)}`
+          (item) => `- [${item.retrieval.tier} / ${item.category || "memória"}] ${clip(item.content, 1200)}`
         )
       );
     }
