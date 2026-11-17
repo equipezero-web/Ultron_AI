@@ -441,6 +441,14 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
       return {ok:false,status:"failed",results:[{route:"local-neural-ring",ok:false,result:{text:message}}]};
     }
   }
+  // Exact meteorology close commands cannot be geocoded or routed to device control.
+  if(parseLocalCommand(clean)?.type==="meteorological-close"){
+    const result=await runLocalCommand(clean);
+    log(result?.text||"Falha ao fechar meteorologia",!result?.ok);
+    state.lastRoute="local-meteorological-close";
+    return {ok:result?.ok===true,status:result?.ok?"completed":"failed",results:[
+      {route:"local-meteorological-close",ok:result?.ok===true,result}]};
+  }
   // Clear the visible interface without deleting stored conversations or keys.
   if(parseLocalCommand(clean)?.type==="clear-interface"){
     const result=await runLocalCommand(clean);
@@ -831,8 +839,8 @@ window.addEventListener("ultron:emergency-stop",event=>{
   cancelP0Operations("priority-core",event?.detail?.epoch);
 });
 function enqueue(message, source = "terminal", approvedMission = false) {
-  // Critical local UI commands bypass generic knowledge and media routers.
-  if(isRingHomeCommand(message)||["clear-interface","capabilities"].includes(parseLocalCommand(message)?.type)){
+  // Critical local UI commands bypass generic knowledge, media and TV routers.
+  if(isRingHomeCommand(message)||["clear-interface","capabilities","meteorological-close"].includes(parseLocalCommand(message)?.type)){
     const generation=queueGeneration;
     queue=queue.catch(()=>null).then(()=>generation!==queueGeneration
       ? {ok:false,status:"cancelled",route:"p0-stop"}:
