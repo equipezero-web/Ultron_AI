@@ -24,10 +24,10 @@ export function parseMeteoIntent(command){
   if(!trigger.test(q))return null;
   const view=/\b(?:3d|globo)\b/.test(q)?"3d":"2d";
   if(/\b(?:central meteorologica|centro meteorologico|painel meteorologico|informacoes meteorologicas|informacao meteorologica)\b/.test(q))return {tab:"radar",view};
+  if(/\b(?:previsao|prognostico|proximos 7 dias|sete dias)\b/.test(q)&&/\b(?:meteorologic[ao]s?|tempo|clima|chuva|semanal|7 dias)\b/.test(q))return {tab:"forecast",view:"2d"};
   if(/\bapac\b/.test(q)||(/\bpernambuco\b/.test(q)&&/\b(?:chuvas?|precipitacao|monitoramento|estacoes|acumulado)\b/.test(q)))return {tab:"apac",view};
   if(/\binmet\b/.test(q))return {tab:"inmet",view:"2d"};
   if(/\b(?:satelite|goes|nuvens)\b/.test(q))return {tab:"satellite",view:"2d"};
-  if(/\b(?:previsao|prognostico|proximos 7 dias|sete dias)\b/.test(q)&&/\b(?:meteorologic[ao]s?|tempo|clima|chuva|semanal|7 dias)\b/.test(q))return {tab:"forecast",view:"2d"};
  if(/\b(?:radar|chuvas? em tempo real|chuva observada)\b/.test(q))return {tab:"radar",view};
   return null;
 }
