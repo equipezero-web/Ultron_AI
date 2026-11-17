@@ -1,4 +1,5 @@
 import {TASK_CONTEXT} from "./jarvis-task-context.js?v=4.69.0";
+import {planAgents} from "../backend/intelligent-task-hub.js";
 import {classifyOperatorTurn,splitOperatorSteps} from "./jarvis-intent-engine.js?v=4.69.0";
 import {directPlan,resolveActionPlan,runActionPlan} from "./jarvis-action-engine.js?v=4.101.1";
 import {parseLocalCommand,runLocalCommand} from "./jarvis-local-commands.js?v=5.12.0";
@@ -90,6 +91,8 @@ function localRunId() {
 }
 
 async function beginRun(message) {
+  const advisory = planAgents(message);
+  if (advisory.steps.length > 1) log(`AGENTES SUGERIDOS // ${advisory.steps.map(step=>step.agent).join(" + ")} // planejamento, sem execução automática.`);
   let telemetry = null;
   try { telemetry = await window.ULTRON_TELEMETRY?.snapshot?.({ event: "orchestrator-start" }); } catch {}
   try {
@@ -1014,6 +1017,7 @@ window.addEventListener("ultron:voice-command", (event) => {
 window.ULTRON_ORCHESTRATOR = {
   version: "4.69.0",
   understand:classifyOperatorTurn,
+  previewAgents:planAgents,
   get taskContext(){return TASK_CONTEXT?.snapshot()||null;},
   get pendingMission(){return missionGate.snapshot();},
   stop(){return enqueue("PARE","operator");},
