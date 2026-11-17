@@ -12,7 +12,7 @@ export function parseAccountPluginCommand(input){
  if(m)return {kind:"install",pluginId:names[m[1]]};
  m=value.match(/^(?:desinstale|desinstalar|remova|remover|desative|desativar)\s+(?:o\s+)?(?:plugin\s+)?(youtube|agenda|calendario|armazenamento)[.!?]?$/);
  if(m)return {kind:"uninstall",pluginId:names[m[1]]};
- if(/^(?:liste|listar|mostre|mostrar|ver|exiba|exibir)\s+(?:os\s+)?(?:meus\s+)?plugins(?:\s+(?:da|minha)\s+conta)?[.!?]?$/.test(value))
+ if(/^(?:liste|listar|mostre|mostrar|ver|exiba|exibir)\s+(?:os?\s+)?(?:meus?\s+)?plugins(?:\s+(?:da|minha)\s+conta)?[.!?]?$/.test(value))
    return {kind:"list"};
  if(/^(?:pareie|parear|conecte|conectar|adicione|adicionar|vincule|vincular)\s+(?:(?:o|meu)\s+)?(?:celular|android)(?:\s+(?:na|a|minha|ao)\s+(?:conta|jarvis))?[.!?]?$/.test(value))
    return {kind:"pair"};
@@ -27,6 +27,10 @@ export function parseAccountPluginCommand(input){
  if(/^(?:faca|fazer|mostre|mostrar|exiba|exibir|verifique|verificar|execute|executar)\s+(?:um\s+|o\s+)?diagnostico\s+(?:completo\s+)?(?:do\s+)?(?:meu\s+)?(?:celular|android)(?:\s+(?:no|pelo)\s+(?:painel\s+)?neural(?:\s+ring)?)?[.!?]?$/.test(value))
    return {kind:"execute",pluginId:"armazenamento",actionId:"storage.diagnostics"};
  if(/^(?:faca|fazer|mostre|mostrar|verifique|verificar|execute|executar)\s+(?:um\s+|o\s+)?(?:diagnostico|diagnosticar|estado)\s+(?:do\s+)?armazenamento\s+(?:no|do|pelo)\s+(?:meu\s+)?(?:celular|android)[.!?]?$/.test(value))
+   return {kind:"execute",pluginId:"armazenamento",actionId:"storage.diagnostics"};
+ // Read-only local Android storage information. This is NOT RAM,
+ // a remote file read or authorization to access private documents.
+ if(/^(?:(?:qual|quanto) (?:e |eh |tenho )?(?:o |de )?(?:meu |de )?(?:armazenamento|espaco (?:livre|disponivel)|memoria)(?: (?:interna|do meu celular|do celular|no meu celular|no celular|do android|no android))?|(?:consulte|consultar|verifique|verificar|veja|ver|mostre|mostrar) (?:o |a )?(?:meu |minha )?(?:armazenamento|memoria|espaco livre)(?: (?:interno|interna|do meu celular|do celular|no meu celular|no celular|do android|no android))?)[.!?]?$/.test(value))
    return {kind:"execute",pluginId:"armazenamento",actionId:"storage.diagnostics"};
  // Event creation is a high-impact write: require title, offset-aware times,
  // and an explicit "confirmo". The Android calendar still requires Save.
