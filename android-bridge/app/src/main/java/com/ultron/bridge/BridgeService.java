@@ -435,8 +435,8 @@ public class BridgeService extends Service {
                 target.equals("com.whatsapp") ? "WhatsApp" : target) + " neste celular.")
             .setContentIntent(pending).setAutoCancel(true).build();
         manager.notify(4301,notification);
-        return response.put("ok",false).put("requiresUserTap",true)
-            .put("error","O Android impede a abertura automática em segundo plano. Toque na notificação do J.A.R.V.I.S. para abrir o aplicativo.");
+        return response.put("ok",true).put("delivery","notification").put("requiresUserTap",true)
+            .put("message","O Android exige um toque na notificação para abrir o aplicativo.");
     }
 
     private void createNotificationChannels() {
