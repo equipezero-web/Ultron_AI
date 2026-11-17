@@ -66,7 +66,13 @@ jobs:
           assert.ok(worldForecast.json?.days?.length>=15&&worldForecast.json?.days?.length<=16);
           assert.equal(worldForecast.json?.partialForecast,worldForecast.json?.days.length<16);
           const pageHtml=page.text;
-          assert.match(pageHtml,/ultron-intelligence-briefing[.]js[?]v=4[.]76[.]0/);
+          // Validate the deployed asset reference, not a stale hard-coded cache version.
+          const briefing=pageHtml.match(/modules\/(ultron-intelligence-briefing[.]js[?]v=4[.]76[.][0-9]+)/);
+          assert.ok(briefing,'Published J.A.R.V.I.S. weather briefing script missing');
+          const deployedBriefing=await get('deployed-briefing',site+'modules/'+briefing[1]);
+          assert.equal(deployedBriefing.status,200,'Referenced briefing asset is not accessible on GitHub Pages');
+          assert.match(deployedBriefing.text,/briefing|weather|clima|meteorolog/i,
+            'Referenced asset is not the expected weather briefing module');
           assert.match(pageHtml,/jarvis-weather-wake[.]css[?]v=4[.]76[.]0/);
           // Diagnostic only: network/provider failures must not be hidden or
           // mistaken for valid weather, but should not break unrelated UI CI.
