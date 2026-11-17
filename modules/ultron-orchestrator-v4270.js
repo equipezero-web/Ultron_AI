@@ -8,6 +8,7 @@ import {createRecoveryEngine} from "./jarvis-recovery-engine.js";
 import {probeRecoveryHealth} from "./jarvis-recovery-probes.js";
 import {parseAccountPluginCommand} from "../backend/jarvis-account-plugin-intents.js";
 import API_CONFIG from "../config.js";
+import {showStorageDiagnostic} from "./jarvis-storage-neural.js?v=1.0.0";
 
 const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
 const output = document.getElementById("output-box");
@@ -434,6 +435,8 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
         actionId:accountIntent.actionId,deviceId:target.id,
         payload:accountIntent.payload||{}});
       if(!queued?.ok||!queued?.commandId)throw Error("Comando não aceito pela conta");
+      const isStorage=accountIntent.actionId==="storage.diagnostics";
+      if(isStorage)showStorageDiagnostic({deviceName:target.name,status:"pending"});
       let receipt=null;
       if(typeof api.receipt==="function"){
         for(let attempt=0;attempt<5;attempt++){
@@ -444,8 +447,17 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
       }
       const resultStatus=receipt?.command?.status||"pending";
       const success=resultStatus==="completed";
+      if(isStorage){
+        const diagnostic=receipt?.command?.result||{};
+        const rendered=showStorageDiagnostic({deviceName:target.name,status:resultStatus,result:diagnostic});
+        if(success&&!rendered){
+          const warning="Bridge concluiu o comando, mas não retornou medidas válidas de armazenamento.";
+          log(warning,true);
+          return {ok:false,status:"failed",results:[{route:"account-plugin-execute",ok:false,result:{text:warning}}]};
+        }
+      }
       const message=success
-        ?"Plugin "+accountIntent.actionId+" confirmado pelo celular "+target.name+"."
+        ?(isStorage?"Diagnóstico do armazenamento exibido no Neural Ring para "+target.name+".":"Plugin "+accountIntent.actionId+" confirmado pelo celular "+target.name+".")
         :resultStatus==="pending"||resultStatus==="claimed"
           ?"Comando "+accountIntent.actionId+" enviado ao celular "+target.name+
             "; aguardando confirmação do Android. Confira a notificação no aparelho."
@@ -459,6 +471,7 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
           commandId:queued.commandId,commandStatus:resultStatus}}]};
     }catch(error){
       const message="Comando do plugin não executado: "+String(error?.message||error);
+      if(accountIntent.actionId==="storage.diagnostics")showStorageDiagnostic({status:"failed",message});
       log(message,true);
       return {ok:false,status:"failed",results:[{route:"account-plugin-execute",
         ok:false,result:{text:message}}]};
