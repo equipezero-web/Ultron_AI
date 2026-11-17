@@ -165,10 +165,9 @@ public class MainActivity extends Activity {
             "2  /  ATIVAR EXPLORADOR REMOTO  (10 MIN)", true);
         remoteFilesStart.setOnClickListener(v -> enableRemoteFileAccess());
         devices.addView(remoteFilesStart, JarvisUi.width(this, 9));
-        Button remoteFilesPermanent = JarvisUi.button(this,
-            "3  /  MANTER ACESSO ATÉ EU DESATIVAR", false);
-        remoteFilesPermanent.setOnClickListener(v -> enablePermanentFileAccess());
-        devices.addView(remoteFilesPermanent, JarvisUi.width(this, 9));
+        devices.addView(JarvisUi.caption(this,
+            "Acesso remoto permanente desativado por segurança. A sessão expira após 10 minutos."),
+            JarvisUi.width(this, 9));
         remoteFilesPinView = JarvisUi.text(this,
             "PIN REMOTO: DESATIVADO", 18, JarvisUi.GOLD, true);
         remoteFilesPinView.setTextIsSelectable(true);
