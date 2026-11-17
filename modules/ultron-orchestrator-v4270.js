@@ -415,6 +415,27 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
   // Explicit account-plugin actions take precedence over EARTH place detection and TV routing.
   // Report device execution only after an authenticated receipt confirms completion.
   const accountIntent=parseAccountPluginCommand(clean);
+  // Account-scoped plugin lists must use the authenticated catalog, not generic AI/web search.
+  if(accountIntent?.kind==="list") {
+    try {
+      const api=window.JARVIS_ACCOUNT_PLUGINS;
+      if(typeof api?.list!=="function")throw Error("Catálogo de plugins indisponível");
+      const status=await api.list();
+      if(status?.ok!==true||!Array.isArray(status.plugins))throw Error("Catálogo não confirmado pela conta");
+      const detail=status.plugins.map(p=>String(p.name||p.id).slice(0,50)+
+        ": "+(p.installed?"INSTALADO":"não instalado")).join("; ");
+      const message="PLUGINS DA CONTA // "+(detail||"nenhum plugin disponível")+
+        ". Esta lista é do servidor autenticado, não de uma pesquisa pública.";
+      log(message);
+      state.lastRoute="account-plugin-list";
+      return {ok:true,status:"completed",results:[{route:"account-plugin-list",ok:true,result:{text:message}}]};
+    }catch(error) {
+      const message="Não foi possível consultar os plugins reais: "+String(error?.message||error).slice(0,160)+
+        ". Confira o login Cloudflare Access; nenhuma lista foi presumida.";
+      log(message,true);
+      return {ok:false,status:"failed",results:[{route:"account-plugin-list",ok:false,result:{text:message}}]};
+    }
+  }
   if(accountIntent?.kind==="execute") {
     const api=window.JARVIS_ACCOUNT_PLUGINS;
     try {
@@ -708,8 +729,8 @@ window.addEventListener("ultron:emergency-stop",event=>{
 function enqueue(message, source = "terminal", approvedMission = false) {
   // Device diagnostics must never be intercepted by general knowledge or visual routers.
   const pluginIntent=parseAccountPluginCommand(message);
-  if(pluginIntent?.kind==="execute"&&pluginIntent.actionId==="storage.diagnostics"){
-    log("DEVICE // Diagnóstico solicitado ao Bridge Android; resposta da IA genérica desativada para este comando.");
+  if(pluginIntent?.kind==="list" || (pluginIntent?.kind==="execute"&&pluginIntent.actionId==="storage.diagnostics")){
+    log(pluginIntent.kind==="list" ? "PLUGINS // Catálogo autenticado; pesquisa genérica desativada." : "DEVICE // Diagnóstico solicitado ao Bridge Android; resposta da IA genérica desativada para este comando.");
     const generation=queueGeneration;
     queue=queue.catch(()=>null).then(()=>generation!==queueGeneration
       ? {ok:false,status:"cancelled",route:"p0-stop"}
@@ -984,10 +1005,10 @@ function captureAndroidDiagnostic(event){
   else if(event.key!=="Enter"||event.shiftKey||!input?.contains(event.target))return;
   const command=String(input?.value||"").trim();
   const intent=parseAccountPluginCommand(command);
-  if(intent?.kind!=="execute"||intent.actionId!=="storage.diagnostics")return;
+  if(!(intent?.kind==="list" || (intent?.kind==="execute"&&intent.actionId==="storage.diagnostics")))return;
   event.preventDefault();event.stopImmediatePropagation();event.stopPropagation();
   if(input)input.value="";
-  log("DEVICE // Comando de diagnóstico capturado antes do roteador de IA.");
+  log(intent.kind==="list" ? "PLUGINS // Lista capturada antes do roteador de IA." : "DEVICE // Diagnóstico capturado antes do roteador de IA.");
   void enqueue(command,"terminal");
 }
 document.addEventListener("click",captureAndroidDiagnostic,true);
