@@ -1074,6 +1074,21 @@ try {
     });
     assert.deepEqual(globalSingleton,{same:true,count:1,visible:true,previousVisible:true},
       'Alternate import URLs cannot replace an active global intelligence controller');
+    const mapSingleton=await page.evaluate(async()=>{
+      const visual=window.ULTRON_GEO_VISUAL;
+      const scene=visual.state;
+      await import(new URL('modules/jarvis-geospatial-visual.js?v=duplicate-regression',
+        document.baseURI).href);
+      return {same:window.ULTRON_GEO_VISUAL===visual,
+        count:document.querySelectorAll('#jarvis-geo-visual').length,
+        current:window.ULTRON_GEO_VISUAL.state.scenario,
+        prior:scene.scenario};
+    });
+    assert.equal(mapSingleton.same,true,
+      'Loading another geospatial URL must preserve the current map controller');
+    assert.equal(mapSingleton.count,1,'The Neural Ring must have only one geospatial panel');
+    assert.equal(mapSingleton.current,mapSingleton.prior,
+      'Reimport must not discard the geographic scenario already displayed');
     assert.equal(global2d.route,"local-global-intelligence");
     assert.equal(global2d.panelInside,true);
     assert.equal(global2d.visible,true);
