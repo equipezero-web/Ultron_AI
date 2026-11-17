@@ -24,7 +24,7 @@ export function parseAccountPluginCommand(input){
  if(yt)return {kind:"execute",pluginId:"youtube",actionId:"youtube.open",preferredType:/celular|android/.test(yt[1])?"mobile":"desktop"};
  const cal=value.match(/^(?:abra|abrir|abre|mostre|mostrar)\s+(?:a\s+)?(?:agenda|calendario)\s+(?:no|do|pelo)\s+(?:meu\s+)?(celular|android|computador|notebook|pc)[.!?]?$/);
  if(cal)return {kind:"execute",pluginId:"agenda",actionId:"calendar.open",preferredType:/celular|android/.test(cal[1])?"mobile":"desktop"};
- if(/^(?:faca|fazer|mostre|mostrar|exiba|exibir|verifique|verificar|execute|executar)\\s+(?:um\\s+|o\\s+)?diagnostico\\s+(?:completo\\s+)?(?:do\\s+)?(?:meu\\s+)?(?:celular|android)(?:\\s+(?:no|pelo)\\s+(?:painel\\s+)?neural(?:\\s+ring)?)?[.!?]?$/.test(value))
+ if(/^(?:faca|fazer|mostre|mostrar|exiba|exibir|verifique|verificar|execute|executar)\s+(?:um\s+|o\s+)?diagnostico\s+(?:completo\s+)?(?:do\s+)?(?:meu\s+)?(?:celular|android)(?:\s+(?:no|pelo)\s+(?:painel\s+)?neural(?:\s+ring)?)?[.!?]?$/.test(value))
    return {kind:"execute",pluginId:"armazenamento",actionId:"storage.diagnostics"};
  if(/^(?:faca|fazer|mostre|mostrar|verifique|verificar|execute|executar)\s+(?:um\s+|o\s+)?(?:diagnostico|diagnosticar|estado)\s+(?:do\s+)?armazenamento\s+(?:no|do|pelo)\s+(?:meu\s+)?(?:celular|android)[.!?]?$/.test(value))
    return {kind:"execute",pluginId:"armazenamento",actionId:"storage.diagnostics"};
