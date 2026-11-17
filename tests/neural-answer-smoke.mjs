@@ -977,6 +977,22 @@ try {
     assert.equal(radar.state.radarFrames,6);
     assert.match(radar.source,/rainviewer.com/);
     assert.match(radar.message,/Radar|RADAR/);
+    // Regression: a stale/differently cached module URL must NOT replace the
+    // installed native radar controller, duplicate the panel, or wipe its tiles.
+    const meteorologySingleton=await page.evaluate(async()=>{
+      const original=window.ULTRON_METEO_CENTER;
+      const before=original.state;
+      await import(new URL('modules/jarvis-meteorological-center.js?v=duplicate-regression',
+        document.baseURI).href);
+      return {same:original===window.ULTRON_METEO_CENTER,
+        count:document.querySelectorAll('.jarvis-meteo-center').length,
+        native:window.ULTRON_METEO_CENTER.__nativeRing===true,
+        tab:window.ULTRON_METEO_CENTER.state.tab,
+        frames:window.ULTRON_METEO_CENTER.state.radarFrames,
+        before:before.radarFrames};
+    });
+    assert.deepEqual(meteorologySingleton,{same:true,count:1,native:true,tab:'radar',frames:6,before:6},
+      'Duplicate module imports cannot replace the native meteorology controller');
     const apac=await page.evaluate(async()=>{
       const result=await window.ULTRON_ORCHESTRATOR.execute(
         "Jarvis, mostre as chuvas registradas em Pernambuco","meteo-apac-test");
@@ -1046,6 +1062,18 @@ try {
         room:root.getBoundingClientRect().right<=window.innerWidth+1};
     });
     assert.equal(global2d.result.ok,true,JSON.stringify(global2d));
+    const globalSingleton=await page.evaluate(async()=>{
+      const controller=window.ULTRON_GLOBAL_INTELLIGENCE;
+      const prior=controller.state;
+      await import(new URL('modules/jarvis-global-intelligence-ring.js?v=duplicate-regression',
+        document.baseURI).href);
+      return {same:window.ULTRON_GLOBAL_INTELLIGENCE===controller,
+        count:document.querySelectorAll('.jarvis-global-intel-panel').length,
+        visible:window.ULTRON_GLOBAL_INTELLIGENCE.state.visible,
+        previousVisible:prior.visible};
+    });
+    assert.deepEqual(globalSingleton,{same:true,count:1,visible:true,previousVisible:true},
+      'Alternate import URLs cannot replace an active global intelligence controller');
     assert.equal(global2d.route,"local-global-intelligence");
     assert.equal(global2d.panelInside,true);
     assert.equal(global2d.visible,true);
