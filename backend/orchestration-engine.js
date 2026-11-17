@@ -117,28 +117,33 @@ export async function recordOrchestrationStep(env, {
   const allowed = new Set(["queued", "running", "completed", "failed", "skipped", "waiting-confirmation", "submitted", "cancelled"]);
   const cleanStatus = allowed.has(String(status)) ? String(status) : "running";
   const id = crypto.randomUUID();
-  await env.ULTRON_DB.batch([
+  const writes = await env.ULTRON_DB.batch([
     env.ULTRON_DB.prepare(
       `INSERT INTO orchestration_steps
         (id, run_id, operator_id, step_key, module, status, detail_json, created_at, completed_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP,
-         CASE WHEN ? IN ('completed','failed','skipped','waiting-confirmation','submitted','cancelled') THEN CURRENT_TIMESTAMP ELSE NULL END)`
+       SELECT ?, r.id, r.operator_id, ?, ?, ?, ?, CURRENT_TIMESTAMP,
+         CASE WHEN ? IN ('completed','failed','skipped','waiting-confirmation','submitted','cancelled') THEN CURRENT_TIMESTAMP ELSE NULL END
+       FROM orchestration_runs AS r
+       WHERE r.id = ? AND r.operator_id = ? AND r.status = 'running'`
     ).bind(
       id,
-      runId,
-      operatorId,
       String(stepKey || "step").slice(0, 80),
       String(module || "core").slice(0, 80),
       cleanStatus,
       safeJson(detail),
-      cleanStatus
+      cleanStatus,
+      runId,
+      operatorId
     ),
     env.ULTRON_DB.prepare(
       `UPDATE orchestration_runs
           SET route = COALESCE(route, ?), updated_at = CURRENT_TIMESTAMP
-        WHERE id = ? AND operator_id = ?`
+        WHERE id = ? AND operator_id = ? AND status = 'running'`
     ).bind(String(module || "core").slice(0, 80), runId, operatorId)
   ]);
+  if (!Number(writes?.[0]?.meta?.changes)) {
+    return {ok:false,error:"Execução inexistente, encerrada ou não pertencente ao operador."};
+  }
   return { ok: true, stepId: id, status: cleanStatus };
 }
 
