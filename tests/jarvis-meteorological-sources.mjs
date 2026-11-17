@@ -41,4 +41,5 @@ assert.match(checkedUrl,/horas_24/);
 const offline=await loadApacObservations({fetchImpl:async()=>{throw Error("CORS blocked");}});
 assert.equal(offline.ok,false);assert.match(offline.error,/APAC/);
 assert.deepEqual(parseMeteoIntent("abrir informações meteorológicas"),{tab:"radar",view:"2d"});
+assert.equal(parseMeteoIntent("Jarvis, abra a previsão do tempo")?.tab,"forecast");
 console.log("METEO SOURCES PASS: official origins, exact intents, APAC station validation, no fake radar, safe failure");
