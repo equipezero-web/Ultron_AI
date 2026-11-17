@@ -412,6 +412,35 @@ async function routeSingle(command, run, index = 0, {signal,awaitCompletion=fals
 async function executeMessage(message, source = "terminal", approvedMission = false) {
   const clean = String(message || "").trim();
   if (!clean) return null;
+  // Account pairing and legacy memory-key pairing are separate identities.
+  // Use the authenticated account's live device registry for read-only Android
+  // status instead of assuming a matching device in the memory-key registry.
+  const requestedDevice=window.ULTRON_DEVICES?.parseDeviceIntent?.(clean);
+  if(requestedDevice?.deviceType==="mobile"&&requestedDevice.command==="device.status"){
+    try{
+      const api=window.JARVIS_ACCOUNT_PLUGINS;
+      if(typeof api?.list!=="function")throw Error("Catálogo autenticado de dispositivos indisponível");
+      const status=await api.list();
+      if(status?.ok!==true||!Array.isArray(status.devices))throw Error("Consulta da conta não confirmada");
+      const mobiles=status.devices.filter(d=>d.type==="mobile"&&d.status==="active");
+      const message=mobiles.length
+        ? "BRIDGE ANDROID // "+mobiles.map(d=>
+            String(d.name||"Celular").slice(0,70)+" // "+(d.online?"ONLINE":"OFFLINE")+
+            " // recursos anunciados: "+(Array.isArray(d.capabilities)?d.capabilities.join(", "):"nenhum")).join("; ")+
+          ". ONLINE significa comunicação recente do serviço; não comprova execução de um comando."
+        : "BRIDGE ANDROID // Nenhum celular pareado nesta conta autenticada. Verifique se o pareamento foi feito na mesma conta.";
+      log(message,!mobiles.length);
+      state.lastRoute="account-device-status";
+      return {ok:mobiles.length>0,status:mobiles.length?"completed":"failed",results:[
+        {route:"account-device-status",ok:mobiles.length>0,result:{text:message,online:mobiles.some(d=>d.online)}}]};
+    }catch(error){
+      const message="BRIDGE ANDROID // Falha na consulta autenticada: "+
+        String(error?.message||error).slice(0,150)+
+        ". Confira o login da conta; não foi realizada pesquisa na web.";
+      log(message,true);
+      return {ok:false,status:"failed",results:[{route:"account-device-status",ok:false,result:{text:message}}]};
+    }
+  }
   // Explicit account-plugin actions take precedence over EARTH place detection and TV routing.
   // Report device execution only after an authenticated receipt confirms completion.
   const accountIntent=parseAccountPluginCommand(clean);
@@ -729,6 +758,15 @@ window.addEventListener("ultron:emergency-stop",event=>{
 function enqueue(message, source = "terminal", approvedMission = false) {
   // Device diagnostics must never be intercepted by general knowledge or visual routers.
   const pluginIntent=parseAccountPluginCommand(message);
+  const statusIntent=window.ULTRON_DEVICES?.parseDeviceIntent?.(message);
+  if(statusIntent?.deviceType==="mobile"&&statusIntent.command==="device.status"){
+    const generation=queueGeneration;
+    queue=queue.catch(()=>null).then(()=>generation!==queueGeneration
+      ? {ok:false,status:"cancelled",route:"p0-stop"}
+      :executeMessage(message,source,approvedMission));
+    return queue;
+  }
+
   if(pluginIntent?.kind==="list" || (pluginIntent?.kind==="execute"&&pluginIntent.actionId==="storage.diagnostics")){
     log(pluginIntent.kind==="list" ? "PLUGINS // Catálogo autenticado; pesquisa genérica desativada." : "DEVICE // Diagnóstico solicitado ao Bridge Android; resposta da IA genérica desativada para este comando.");
     const generation=queueGeneration;
