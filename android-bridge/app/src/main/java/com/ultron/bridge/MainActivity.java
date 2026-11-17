@@ -265,7 +265,7 @@ public class MainActivity extends Activity {
         root.addView(diagCard, JarvisUi.width(this, 14));
 
         root.addView(JarvisUi.caption(this,
-            "J.A.R.V.I.S. BRIDGE v0.9.0  •  Android  •  Controle local e autorizado"),
+            "J.A.R.V.I.S. BRIDGE v0.9.1  •  Android  •  Controle local e autorizado"),
             JarvisUi.width(this, 0));
         ScrollView scroll = new ScrollView(this);
         scroll.setFillViewport(true);
