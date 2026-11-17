@@ -8,7 +8,7 @@ import {createRecoveryEngine} from "./jarvis-recovery-engine.js";
 import {probeRecoveryHealth} from "./jarvis-recovery-probes.js";
 import {parseAccountPluginCommand} from "../backend/jarvis-account-plugin-intents.js";
 import API_CONFIG from "../config.js";
-import {showStorageDiagnostic} from "./jarvis-storage-neural.js?v=1.0.0";
+import {showStorageDiagnostic} from "./jarvis-storage-neural.js?v=1.0.1";
 
 const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
 const output = document.getElementById("output-box");
