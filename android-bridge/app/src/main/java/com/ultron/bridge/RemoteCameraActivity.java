@@ -51,7 +51,7 @@ public class RemoteCameraActivity extends Activity {
 
         TextView explanation = new TextView(this);
         explanation.setText(
-                "Autorize a câmera uma única vez neste celular. Depois disso, o Ultron Bridge guarda a autorização localmente e pode disponibilizar a câmera ao Neural Command sem pedir novamente, enquanto a permissão não for revogada nas configurações do Android.\n\n" +
+                "A câmera só aceita uma sessão remota depois de você iniciá-la nesta tela. O Android mostrará uma notificação enquanto ela estiver disponível. Pare a sessão quando terminar.\n\n" +
                 "O vídeo é transmitido por WebRTC diretamente para a sessão do Ultron. O navegador do computador não precisa de permissão para a webcam local quando este modo estiver ativo."
         );
         explanation.setTextSize(16);
@@ -59,7 +59,7 @@ public class RemoteCameraActivity extends Activity {
         root.addView(explanation, fullWidth());
 
         Button authorize = new Button(this);
-        authorize.setText("AUTORIZAR CÂMERA UMA ÚNICA VEZ");
+        authorize.setText("INICIAR SESSÃO DA CÂMERA");
         authorize.setOnClickListener(v -> beginAuthorization());
         root.addView(authorize, fullWidth());
 
