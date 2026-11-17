@@ -416,7 +416,7 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
   // Use the authenticated account's live device registry for read-only Android
   // status instead of assuming a matching device in the memory-key registry.
   const requestedDevice=window.ULTRON_DEVICES?.parseDeviceIntent?.(clean);
-  if(requestedDevice?.deviceType==="mobile"&&requestedDevice.command==="device.status"){
+  if(requestedDevice?.deviceType==="mobile"&&["device.status","app.list"].includes(requestedDevice.command)){
     try{
       const api=window.JARVIS_ACCOUNT_PLUGINS;
       if(typeof api?.list!=="function")throw Error("Catálogo autenticado de dispositivos indisponível");
@@ -436,7 +436,7 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
       if(typeof api.status!=="function"||typeof api.receipt!=="function")
         throw Error("Módulo de status autenticado não carregado");
       const device=online[0];
-      const queued=await api.status(device.id);
+      const queued=await api.status(device.id,requestedDevice.command);
       if(!queued?.ok||!queued.commandId)throw Error("Servidor recusou consulta do Android");
       let receipt=null;
       for(let attempt=0;attempt<8;attempt++){
@@ -446,9 +446,15 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
       }
       const resultStatus=receipt?.command?.status||"pending";
       const actual=receipt?.command?.result||{};
-      const verified=resultStatus==="completed"&&actual.bridge==="online" &&
-        typeof actual.model==="string"&&actual.model.length>0;
-      const message=verified
+      const listing=requestedDevice.command==="app.list";
+      const verified=resultStatus==="completed"&&(listing
+        ? actual.ok===true&&Array.isArray(actual.apps)&&actual.scope==="approved-launcher-apps-only"
+        : actual.bridge==="online"&&typeof actual.model==="string"&&actual.model.length>0);
+      const message=verified&&listing
+        ? "APLICATIVOS AUTORIZADOS NO ANDROID // "+
+          (actual.apps.length?actual.apps.slice(0,30).map(app=>String(app.label||"Aplicativo").slice(0,60)).join("; "):"nenhum. Autorize aplicativos na lista do Bridge.")+
+          ". Esta é a lista aprovada no aparelho, não uma lista inventada."
+        :verified
         ? "BRIDGE ANDROID CONFIRMADO // "+String(actual.manufacturer||"Android").slice(0,40)+
           " "+String(actual.model).slice(0,65)+
           " // Android "+String(actual.androidRelease||"não informado").slice(0,24)+
@@ -790,7 +796,7 @@ function enqueue(message, source = "terminal", approvedMission = false) {
   // Device diagnostics must never be intercepted by general knowledge or visual routers.
   const pluginIntent=parseAccountPluginCommand(message);
   const statusIntent=window.ULTRON_DEVICES?.parseDeviceIntent?.(message);
-  if(statusIntent?.deviceType==="mobile"&&statusIntent.command==="device.status"){
+  if(statusIntent?.deviceType==="mobile"&&["device.status","app.list"].includes(statusIntent.command)){
     const generation=queueGeneration;
     queue=queue.catch(()=>null).then(()=>generation!==queueGeneration
       ? {ok:false,status:"cancelled",route:"p0-stop"}
