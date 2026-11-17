@@ -30,7 +30,7 @@ export function parseAccountPluginCommand(input){
    return {kind:"execute",pluginId:"armazenamento",actionId:"storage.diagnostics"};
  // Read-only local Android storage information. This is NOT RAM,
  // a remote file read or authorization to access private documents.
- if(/^(?:(?:qual|quanto) (?:e |eh |tenho )?(?:o |de )?(?:meu |de )?(?:armazenamento|espaco (?:livre|disponivel)|memoria)(?: (?:interna|do meu celular|do celular|no meu celular|no celular|do android|no android))?|(?:consulte|consultar|verifique|verificar|veja|ver|mostre|mostrar) (?:o |a )?(?:meu |minha )?(?:armazenamento|memoria|espaco livre)(?: (?:interno|interna|do meu celular|do celular|no meu celular|no celular|do android|no android))?)[.!?]?$/.test(value))
+ if(/^(?:(?:qual|quanto) (?:e |eh |tenho )?(?:o |de )?(?:meu |de )?(?:armazenamento|espaco (?:livre|disponivel)|memoria)(?: (?:interna|do meu celular|do celular|no meu celular|no celular|do android|no android))?|(?:consulte|consultar|verifique|verificar|veja|ver|mostre|mostrar) (?:o |a )?(?:meu |minha )?(?:armazenamento|memoria|espaco livre)(?: (?:interno|interna|do meu celular|do celular|no meu celular|no celular|do android|no android))?(?: (?:motorola|moto) [a-z0-9 ]{2,30})?)[.!?]?$/.test(value))
    return {kind:"execute",pluginId:"armazenamento",actionId:"storage.diagnostics"};
  // Event creation is a high-impact write: require title, offset-aware times,
  // and an explicit "confirmo". The Android calendar still requires Save.
