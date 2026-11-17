@@ -47,5 +47,10 @@ for (const route of ["/api/hubs/plan","/api/hubs/skills","/api/hubs/trajectories
   assert.match(scope,/if \(!operatorId\) return missingOperator\(\)/);
 }
 assert.doesNotMatch(worker,/\/api\/hubs\/activate|\/api\/hubs\/execute/);
+const orchestration=readFileSync(new URL("../backend/orchestration-engine.js",import.meta.url),"utf8");
+assert.match(orchestration,/INSERT INTO orchestration_steps[\\s\\S]*?FROM orchestration_runs AS r/);
+assert.match(orchestration,/r\\.id = \\? AND r\\.operator_id = \\? AND r\\.status = 'running'/);
+assert.match(orchestration,/if \\(!Number\\(writes\\?\\.\\[0\\]\\?\\.meta\\?\\.changes\\)\\)/);
+
 
 console.log("JARVIS HUBS PASS: declarative skills, allowlisted agents, cancellation, minimal trajectory");
