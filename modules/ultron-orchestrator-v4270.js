@@ -411,6 +411,59 @@ async function routeSingle(command, run, index = 0, {signal,awaitCompletion=fals
 async function executeMessage(message, source = "terminal", approvedMission = false) {
   const clean = String(message || "").trim();
   if (!clean) return null;
+  // Explicit account-plugin actions take precedence over EARTH place detection and TV routing.
+  // Report device execution only after an authenticated receipt confirms completion.
+  const accountIntent=parseAccountPluginCommand(clean);
+  if(accountIntent?.kind==="execute") {
+    const api=window.JARVIS_ACCOUNT_PLUGINS;
+    try {
+      if(typeof api?.list!=="function"||typeof api?.execute!=="function")
+        throw Error("Módulo de plugins da conta indisponível");
+      const status=await api.list();
+      const plugin=status?.plugins?.find(p=>p.id===accountIntent.pluginId);
+      if(!plugin?.installed)throw Error("Plugin "+accountIntent.pluginId+" não instalado");
+      const candidates=(status.devices||[]).filter(d=>
+        d.online && d.type===(accountIntent.preferredType||"mobile") &&
+        (accountIntent.actionId==="youtube.open"
+          ? d.capabilities?.includes(d.type==="desktop"?"desktop.open.url":"app.open")
+          : d.capabilities?.includes(accountIntent.actionId)));
+      if(candidates.length!==1)
+        throw Error(candidates.length?"Mais de um dispositivo compatível; selecione um dispositivo":"Nenhum dispositivo compatível online");
+      const target=candidates[0];
+      const queued=await api.execute({pluginId:accountIntent.pluginId,
+        actionId:accountIntent.actionId,deviceId:target.id,
+        payload:accountIntent.payload||{}});
+      if(!queued?.ok||!queued?.commandId)throw Error("Comando não aceito pela conta");
+      let receipt=null;
+      if(typeof api.receipt==="function"){
+        for(let attempt=0;attempt<5;attempt++){
+          await new Promise(resolve=>setTimeout(resolve,1000));
+          receipt=await api.receipt(queued.commandId);
+          if(["completed","failed","cancelled","expired"].includes(receipt?.command?.status))break;
+        }
+      }
+      const resultStatus=receipt?.command?.status||"pending";
+      const success=resultStatus==="completed";
+      const message=success
+        ?"Plugin "+accountIntent.actionId+" confirmado pelo celular "+target.name+"."
+        :resultStatus==="pending"||resultStatus==="claimed"
+          ?"Comando "+accountIntent.actionId+" enviado ao celular "+target.name+
+            "; aguardando confirmação do Android. Confira a notificação no aparelho."
+          :"Falha ao executar "+accountIntent.actionId+" no celular "+target.name+
+            ": "+String(receipt?.command?.result?.error||resultStatus);
+      log(message,!success&&resultStatus!=="pending"&&resultStatus!=="claimed");
+      state.lastRoute="account-plugin-execute";
+      return {ok:success,status:success?"completed":
+        resultStatus==="pending"||resultStatus==="claimed"?"submitted":"failed",
+        results:[{route:"account-plugin-execute",ok:success,result:{text:message,
+          commandId:queued.commandId,commandStatus:resultStatus}}]};
+    }catch(error){
+      const message="Comando do plugin não executado: "+String(error?.message||error);
+      log(message,true);
+      return {ok:false,status:"failed",results:[{route:"account-plugin-execute",
+        ok:false,result:{text:message}}]};
+    }
+  }
   // Account-scoped Android pairing must not fall through to the LG webOS device router.
   // The authenticated account API generates the code; this is not a TV pairing code.
   if (parseAccountPluginCommand(clean)?.kind === "pair") {
