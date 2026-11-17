@@ -576,7 +576,7 @@ async function executeAiCore(env, body) {
   if (message.length > 8000) return { status: 413, data: { error: "Mensagem muito longa." } };
 
   const [memoryState, newsState] = await Promise.all([
-    loadMemoryContext(env, { operatorId, conversationId, recentLimit: 16 }),
+    loadMemoryContext(env, { operatorId, conversationId, query: message, recentLimit: 16 }),
     skipLegacyResearch ? Promise.resolve(emptyNewsState()) : loadLiveNewsContext(message, { limit: 6 })
   ]);
 
