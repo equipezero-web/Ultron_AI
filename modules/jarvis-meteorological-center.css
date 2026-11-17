@@ -79,3 +79,11 @@ body.jarvis-command-center .jarvis-meteo-apac-map svg{max-height:360px}
  body.jarvis-command-center .jarvis-cc-center>.jarvis-meteo-center{max-height:82%}
  body.jarvis-command-center .jarvis-meteo-rain-band{font-size:9px;padding:3px}
 }
+
+/* Live forecast: compact scrollable 7-day cards inside the existing Neural Ring. */
+.jarvis-meteo-forecast-results{max-height:min(45vh,380px);overflow:auto;overscroll-behavior:contain}
+.jarvis-meteo-forecast-days{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:9px}
+.jarvis-meteo-forecast-day{padding:10px;border:1px solid rgba(187,211,230,.24);border-radius:9px;background:rgba(9,27,43,.58)}
+.jarvis-meteo-forecast-day strong{display:block;font-size:.88rem;margin-bottom:5px}
+.jarvis-meteo-forecast-day p{font-size:.8rem;line-height:1.55;margin:0}
+.jarvis-meteo-native-tools select{min-height:42px;max-width:100%;background:#0c2435;color:#f6f7f8;border:1px solid #5a7585;border-radius:7px}
