@@ -426,7 +426,7 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
       const candidates=(status.devices||[]).filter(d=>
         d.online && d.type===(accountIntent.preferredType||"mobile") &&
         (accountIntent.actionId==="youtube.open"
-          ? d.capabilities?.includes(d.type==="desktop"?"desktop.open.url":"app.open")
+          ? (d.capabilities?.includes("youtube.open")||d.capabilities?.includes("app.open"))
           : d.capabilities?.includes(accountIntent.actionId)));
       if(candidates.length!==1)
         throw Error(candidates.length?"Mais de um dispositivo compatível; selecione um dispositivo":"Nenhum dispositivo compatível online");
