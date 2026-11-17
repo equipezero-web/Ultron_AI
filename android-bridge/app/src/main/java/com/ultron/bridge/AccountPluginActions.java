@@ -63,6 +63,13 @@ public final class AccountPluginActions {
         } else {
             return reply.put("ok",false).put("error","Plugin não reconhecido.");
         }
+        // Built-in open commands must respect the same local approval as app.open.
+        if ("youtube.open".equals(command) &&
+            !ApprovedApps.allowed(context, "com.google.android.youtube"))
+            return reply.put("ok",false).put("error","Autorize YouTube em Gerenciar aplicativos autorizados.");
+        if ("calendar.open".equals(command) || "calendar.create".equals(command))
+            return reply.put("ok",false).put("error",
+                "Por segurança, use app.open com o aplicativo de agenda autorizado. A criação de eventos requer integração específica.");
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         final boolean creating="calendar.create".equals(command);
         if (isForeground(context)) {
