@@ -118,6 +118,24 @@ export async function executeAccountPlugin(env,accountId,input={}){
      "O Android exigirá confirmar e salvar o evento na agenda.":
      "O Android pode exigir toque na notificação para abrir o aplicativo."};
 }
+// Read-only status of an Android that belongs to the signed account.
+ // Does not install any plugin or grant new Android permission.
+export async function accountAndroidStatus(env,accountId,{deviceId}={}) {
+ if(!accountId||!String(deviceId||"").match(/^[0-9a-f-]{36}$/i))return error("account-device-required",400);
+ if(!(await ensure(env)))return error("plugin-database-unavailable",503);
+ const devices=await listDevices(env,accountId);
+ const target=devices.find(d=>d.id===deviceId && d.deviceType==="mobile" &&
+   d.status==="active" && d.online===true);
+ if(!target)return error("account-android-not-paired-or-offline",404);
+ if(!target.capabilities?.includes("device.status"))
+   return error("android-device-status-not-advertised",409);
+ const queued=await enqueueControlCommand(env,{
+   operatorId:accountId,deviceId,deviceType:"mobile",command:"device.status",payload:{}
+ });
+ if(!queued?.ok)return error("android-status-queue-rejected",409);
+ return {ok:true,commandId:queued.commandId,deviceId,status:"queued"};
+}
+
 export async function accountPluginReceipt(env,accountId,commandId){
  if(!/^[0-9a-f-]{36}$/i.test(String(commandId||"")))return error("command-id-required");
  return getCommandStatus(env,accountId,commandId);
