@@ -41,7 +41,7 @@ try{
   assert.equal(pending.ok,true);
   assert.equal(pending.handled,true);
   assert.equal(pending.route,"remote-phone-files");
-  assert.match(pending.text,/digite o PIN temporário ou a chave permanente/i);
+  assert.match(pending.text,/digite o PIN de 8 números/i);
   assert.match(pending.text,/pressione Enter/i);
   assert.doesNotMatch(pending.text,/toque em ABRIR MEMÓRIA/i);
   assert.doesNotMatch(pending.text,/pasta download do celular aberta/i);
