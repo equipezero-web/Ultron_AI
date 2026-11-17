@@ -60,7 +60,9 @@ assert.match(orchestration,/function isRingHomeCommand\(message\)/);
 assert.match(orchestration,/isRingHomeCommand\(clean\)/);
 assert.match(orchestration,/isRingHomeCommand\(message\)/);
 assert.match(orchestration,/state\.lastRoute="local-neural-ring"/);
-assert.match(orchestration,/\["clear-interface","capabilities"\]\.includes\(parseLocalCommand\(message\)\?\.type\)/);
+assert.match(orchestration,/\["clear-interface","capabilities","meteorological-close"\]\.includes\(parseLocalCommand\(message\)\?\.type\)/);
+assert.match(orchestration,/state\.lastRoute="local-meteorological-close"/);
+assert.match(orchestration,/ULTRON_WORLD_CAMERAS\.hide/);
 assert.match(orchestration,/executeMessage\(message,source,approvedMission\)/);
 
 for(const cmd of ["Jarvis, mostre suas funcionalidades.","mostre suas funcionalidades"]){
