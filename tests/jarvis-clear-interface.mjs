@@ -60,10 +60,30 @@ assert.match(orchestration,/function isRingHomeCommand\(message\)/);
 assert.match(orchestration,/isRingHomeCommand\(clean\)/);
 assert.match(orchestration,/isRingHomeCommand\(message\)/);
 assert.match(orchestration,/state\.lastRoute="local-neural-ring"/);
-assert.match(orchestration,/\["clear-interface","capabilities"\]\.includes\(parseLocalCommand\(message\)\?\.type\)/);
+assert.match(orchestration,/\["clear-interface","capabilities","meteorological-close"\]\.includes\(parseLocalCommand\(message\)\?\.type\)/);
+assert.match(orchestration,/state\.lastRoute="local-meteorological-close"/);
+assert.match(orchestration,/ULTRON_WORLD_CAMERAS\.hide/);
 assert.match(orchestration,/executeMessage\(message,source,approvedMission\)/);
 
 for(const cmd of ["Jarvis, mostre suas funcionalidades.","mostre suas funcionalidades"]){
  assert.equal(parseLocalCommand(cmd)?.type,"capabilities",cmd);
 }
+const weather={state:{visible:true,tab:"forecast"},close(){
+ this.state.visible=false;calls.push("meteo-close");return {ok:true};}};
+window.ULTRON_METEO_CENTER=weather;
+const closeWeather=await runLocalCommand("Jarvis, feche previsão do tempo");
+assert.equal(closeWeather.ok,true);
+assert.equal(closeWeather.route,"local-meteorological-close");
+assert.equal(weather.state.visible,false);
+assert.ok(calls.includes("meteo-close"));
+const closedTwice=await runLocalCommand("fechar previsão");
+assert.equal(closedTwice.ok,false,"Second close must not fabricate an action");
+weather.state={visible:true,tab:"radar"};
+const mismatched=await runLocalCommand("fechar previsão");
+assert.equal(mismatched.ok,false);
+assert.equal(weather.state.visible,true,"Closing forecast must not close active radar");
+const proper=await runLocalCommand("fechar radar");
+assert.equal(proper.ok,true);
+assert.equal(weather.state.visible,false);
+
 console.log("VISIBLE CLEAR PASS: exact local voice intent, visual reset, idempotency, no external research and no stored data deletion");

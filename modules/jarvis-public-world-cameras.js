@@ -4,7 +4,7 @@ import {PUBLIC_WORLD_CAMERAS, CAMERA_CATEGORY_NAMES, CAMERA_PROVIDER_NAMES,
  getWorldCameraAlternative, getWesternWallPlayableAlternative,
  WESTERN_WALL_EARTHCAM_ID,WESTERN_WALL_OFFICIAL_CAMERAS_URL,
  findPublicCameras, parseWorldCameraCommand,
- publicCameraEmbed, cameraDirectorySummary} from "./jarvis-public-world-cameras-model.js?v=5.38.1";
+ publicCameraEmbed, cameraDirectorySummary} from "./jarvis-public-world-cameras-model.js?v=5.38.2";
 
 // Public third-party webcams only. Nothing here activates user/device cameras.
 // Playing a listed stream is NOT proof that its owner is currently broadcasting.

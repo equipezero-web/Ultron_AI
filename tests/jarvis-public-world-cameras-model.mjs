@@ -132,4 +132,12 @@ for(const cmd of ["sair das cameras","remover cameras","Jarvis, feche as câmera
  assert.deepEqual(parseWorldCameraCommand(cmd),{type:"close"},cmd);
 }
 assert.equal(parseWorldCameraCommand("Não remova câmeras"),null);
+for(const phrase of ["fechar câmeras","sair das câmeras mundiais","encerrar webcams mundiais",
+ "desativar câmeras públicas","feche o painel de câmeras"]){
+ assert.deepEqual(parseWorldCameraCommand(phrase),{type:"close"},phrase);
+}
+for(const phrase of ["como fechar câmeras?","não fechar câmeras","fechar câmera do celular",
+ "fechar câmera do computador","desativar webcam local"]){
+ assert.equal(parseWorldCameraCommand(phrase),null,phrase);
+}
 console.log("JARVIS PUBLIC WORLD CAMERAS MODEL PASS: curated real links, strict whitelist, source guard, no fake live status.");

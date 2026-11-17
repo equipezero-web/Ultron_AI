@@ -16,6 +16,29 @@ export const METEO_VIEWERS=Object.freeze({
 export const APAC_HOURS=Object.freeze({1:0,3:1,6:2,12:3,24:4,48:5,72:6});
 const valueField=Object.freeze({1:"hora_1",3:"horas_3",6:"horas_6",12:"horas_12",24:"horas_24",48:"horas_48",72:"horas_72"});
 const clean=(v,n=90)=>String(v??"").replace(/[<>\r\n]/g," ").trim().slice(0,n);
+// Imperative, source-specific close commands. A close never loads data or leaves
+// the Neural Ring; interrogatives and negations are intentionally not commands.
+export function parseMeteoCloseIntent(command){
+ const q=String(command||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase()
+  .replace(/^(?:jarvis|ultron)[, :!?]+/,"").replace(/[.!?]+$/,"").trim();
+ if(/^(?:nao|nunca|como|se|e se|por que|porque|o que|qual|quais)\b/.test(q))return null;
+ const action="(?:fechar|feche|encerre|encerrar|ocultar|oculte|sair de|sair do|sair da|sair das|sair dos|voltar da|voltar do|desativar|desative)";
+ const match=q.match(new RegExp("^"+action+"\\s+(?:(?:a|o|as|os|da|do)\\s+)?(.+)$"));
+ if(!match)return null;
+ const target=match[1].trim().replace(/\s+(?:no|do) neural(?: ring)?$/,"");
+ const all=/^(?:meteorologia|centro meteorologico|central meteorologica|painel meteorologico|informacoes meteorologicas|informacao meteorologica|painel do tempo)$/;
+ const tabs=[
+  ["forecast",/^(?:previsao(?: do tempo| meteorologica)?|previsao de (?:chuva|7 dias)|previsao semanal)$/],
+  ["radar",/^(?:radar(?: meteorologico| de chuva| do tempo)?|mapa de radar)$/],
+  ["satellite",/^(?:satelite(?: meteorologico)?|goes(?:-?19)?|imagens de satelite)$/],
+  ["inmet",/^(?:inmet|estacoes do inmet|mapa do inmet)$/],
+  ["apac",/^(?:apac|estacoes da apac|pluviometros da apac)$/]
+ ];
+ if(all.test(target))return {type:"close",tab:null};
+ const found=tabs.find(([,pattern])=>pattern.test(target));
+ return found?{type:"close",tab:found[0]}:null;
+}
+
 export function parseMeteoIntent(command){
   const q=String(command||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase()
     .replace(/^(?:jarvis|ultron)[, :!?]+/,"").replace(/[.!?]+$/,"").trim();

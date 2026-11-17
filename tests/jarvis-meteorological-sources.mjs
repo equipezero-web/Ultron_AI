@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import {parseMeteoIntent,normalizeApacResponse,loadApacObservations,METEO_VIEWERS} from "../modules/jarvis-meteorological-sources.js";
+import {parseMeteoIntent,parseMeteoCloseIntent,normalizeApacResponse,loadApacObservations,METEO_VIEWERS} from "../modules/jarvis-meteorological-sources.js";
 for(const [q,tab] of [
  ["Jarvis, mostre as chuvas em tempo real no Brasil","radar"],
  ["Jarvis, ative o satélite e acompanhe as nuvens","satellite"],
@@ -42,4 +42,25 @@ const offline=await loadApacObservations({fetchImpl:async()=>{throw Error("CORS 
 assert.equal(offline.ok,false);assert.match(offline.error,/APAC/);
 assert.deepEqual(parseMeteoIntent("abrir informações meteorológicas"),{tab:"radar",view:"2d"});
 assert.equal(parseMeteoIntent("Jarvis, abra a previsão do tempo")?.tab,"forecast");
+for(const [command,tab] of [
+ ["Jarvis, feche a previsão do tempo","forecast"],
+ ["fechar previsão","forecast"],
+ ["sair da previsão meteorológica","forecast"],
+ ["fechar radar","radar"],
+ ["desativar radar meteorológico","radar"],
+ ["feche o satélite","satellite"],
+ ["sair do GOES-19","satellite"],
+ ["fechar INMET","inmet"],
+ ["feche as estações da APAC","apac"],
+ ["fechar meteorologia",null],
+ ["sair da central meteorológica",null],
+ ["fechar informações meteorológicas",null]
+]){
+ assert.deepEqual(parseMeteoCloseIntent(command),{type:"close",tab},command);
+}
+for(const command of [
+ "Não feche a previsão","como fechar o radar?","fechar câmera do celular",
+ "fechar meus arquivos","fechar TV","se fechar meteorologia?"
+])assert.equal(parseMeteoCloseIntent(command),null,command);
+assert.equal(parseMeteoIntent("Jarvis, feche previsão do tempo"),null);
 console.log("METEO SOURCES PASS: official origins, exact intents, APAC station validation, no fake radar, safe failure");
