@@ -246,9 +246,15 @@ export async function claimPairing(
     return { ok: false, error: "Código expirado, já utilizado ou inexistente." };
   }
 
+  // The operator chooses the device class when issuing the pairing code.
+  // A claimant must never upgrade its type simply by supplying a different value.
+  const reservedType = normalizeDeviceType(pairing.device_type);
+  if (deviceType && normalizeDeviceType(deviceType) !== reservedType) {
+    return {ok:false,error:"Tipo de dispositivo diferente do pareamento autorizado."};
+  }
   const deviceId = crypto.randomUUID();
   const authHash = await sha256Hex(secret);
-  const finalType = normalizeDeviceType(deviceType || pairing.device_type);
+  const finalType = reservedType;
   const finalName = safeName(deviceName || pairing.device_name);
 
   try {
