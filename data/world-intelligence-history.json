@@ -4,10 +4,154 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-17T11:13:33.267Z",
-  "oldestEventAt": "2026-11-16T12:28:00.000Z",
-  "windowStartAt": "2026-11-16T11:13:33.267Z",
+  "updatedAt": "2026-11-17T19:52:03.891Z",
+  "oldestEventAt": "2026-11-16T19:59:14.000Z",
+  "windowStartAt": "2026-11-16T19:52:03.891Z",
   "events": [
+    {
+      "id": "event-717fe7e1",
+      "category": "brasil",
+      "title": "Durigan prevê impacto inicial da reforma tributária sobre inflação",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/durigan-preve-impacto-inicial-da-reforma-tributaria-sobre-inflacao",
+      "description": "O ministro da Fazenda, Dario Durigan, afirmou, nesta terça-feira (17), que a implementação da reforma tributária pode gerar pequeno impacto inicial sobre a inflação. A observação foi em resposta à preocupação manifestada por senadores com uma eventual alta do índice. Segundo o ministro, esse efeito tende a diminuir gradualmente à medida que as empresas se adaptem às novas regras tributárias e ajustem a formação de preços. Notícias relacionadas: Durigan defende alíquota da reforma e estima média efetiva de 8,5%. Reforma tributária: Receita descarta punição a erros de boa-fé. Mais de 276 mil trabalhadores ainda não sacaram o abono salarial 2026. “Pode haver algum pequeno impacto inflacionário, mas estamos passando por um processo em que os empresários vão aprender a precificar seus bens e serviços de acordo com a nova legislação tributária, considerando os créditos a que têm direito e os débitos pelos quais são responsáveis”, disse Durigan durante audiência na Comissão de Assuntos Econômicos (CAE) do Senado. Na avaliação do ministro, “à medida que essa precificação for sendo compreendi",
+      "imageUrl": "https://imagens.ebc.com.br/_ekxbEBuPEJWngnKc5aLepEFQUk=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/17/sessao_do_congresso_12-11-26-16.jpg?itok=HgBUQ-i_",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-17T18:56:00.000Z",
+      "firstSeenAt": "2026-11-17T19:52:03.891Z",
+      "lastSeenAt": "2026-11-17T19:52:03.891Z"
+    },
+    {
+      "id": "event-d01fb4eb",
+      "category": "brasil",
+      "title": "Bukele, de El Salvador, projeta poder no Caribe com operação no Haiti",
+      "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/bukele-de-el-salvador-projeta-poder-no-caribe-com-operacao-no-haiti",
+      "description": "Sob a justificativa de resgatar quatro soldados de El Salvador que teriam sido capturados por gangues do Haiti, o presidente Nayib Bukele tem projetado poder no Caribe com uma operação militar na ilha Hispaniola, que dura três semanas e conta com mais de dois mil militares salvadorenhos. Os jornais haitianos registram crescente apoio popular às ações militares conduzidas por El Salvador. O colunista do Le Nouvelliste, Frantz Duval, afirma que Bukele está “no centro das atenções” do país. Notícias relacionadas: Haiti marca para dezembro primeira eleição em uma década. El Salvador retira limite de mandato presidencial, favorecendo Bukele. “Nas ruas de Porto Príncipe e em cidades do interior, as pessoas cantam seu nome. Multidões dançam, evocando suas ações. Isso é bastante incomum para um fenômeno que começou há apenas algumas semanas”, escreveu o analista haitiano . Nas redes sociais, Bukele tem se vangloriado das supostas ações contra os grupos criminosos que, na capital Porto Príncipe, controlam cerca de 80% do território e têm aterrorizado a população local. Uma das “conquistas” ce",
+      "imageUrl": "https://imagens.ebc.com.br/gQbyBg58pz-jw9f6zDiw6fJY-8I=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/17/2026-11-13t202614z_1741446206_rc2qmoatlx6l_rtrmadp_3_haiti-violence-el-salvador.jpg?itok=jPYPyH-z",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-17T18:49:00.000Z",
+      "firstSeenAt": "2026-11-17T19:52:03.891Z",
+      "lastSeenAt": "2026-11-17T19:52:03.891Z"
+    },
+    {
+      "id": "event-90230750",
+      "category": "mundo",
+      "title": "Principais notícias do mundo na tarde de hoje (17)",
+      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxORXdydEZRdkFfZW5IMjA4SnF1RWlyLUJad2l4UzU4SmZNZG5wTzktUlN2NDBGWlItMEpzMGFrS0RUZ0wtU0RtOHVaZjdaSlRka3NQR1otejJwd3Nid1dNb09kS0gwaG1sR3VOczhUNHg5b1dONmplNy1CUXZPc2wxcDEzWmFlcVlQamEwejh0S3VlTzd0Z2NPNEw3LXp2UHNfQzNvYW1HWkxGbGRB",
+      "description": "Principais notícias do mundo na tarde de hoje (17) &nbsp;&nbsp; Tribuna do Sertão",
+      "imageUrl": null,
+      "source": "Tribuna do Sertão",
+      "publishedAt": "2026-11-17T18:32:01.000Z",
+      "firstSeenAt": "2026-11-17T19:52:03.891Z",
+      "lastSeenAt": "2026-11-17T19:52:03.891Z"
+    },
+    {
+      "id": "event-7e0f9840",
+      "category": "brasil",
+      "title": "Dino decide que escala 5x2 será julgada de forma definitiva pelo STF",
+      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/dino-decide-que-escala-5x2-sera-julgada-de-forma-definitiva-pelo-stf",
+      "description": "O ministro Flávio Dino, do Supremo Tribunal Federal (STF), decidiu nesta terça-feira (17) que as ações que tratam das regras de transição para o início da escala de trabalho 5x2 serão julgadas de forma definitiva, ou seja, diretamente no mérito. Na semana passada, o plenário virtual da Corte iniciou o julgamento para referendar a liminar do ministro, que é relator do caso, sobre a questão, mas o julgamento foi suspenso por um pedido de destaque feito por Luiz Fux. O placar parcial do julgamento está 4 votos a 0 para manter a decisão do relator. Notícias relacionadas: Oxê de Xangô, símbolo da justiça, será inaugurado no STF. STF tem 4 votos para manter início da escala 5x2 em dezembro. Gilmar diz que Moro agiu para impedir candidatura de Lula em 2018. Na decisão de hoje, Dino reforçou que sua liminar que manteve a implantação da nova escala para 16 de dezembro deste ano continua em vigor. O ministro também ressaltou que as negociações coletivas para implantação da nova jornada não estão proibidas. “Friso que as negociações coletivas, protegidas pela Constituição Federal e mencionadas",
+      "imageUrl": "https://imagens.ebc.com.br/VOSEhSLfC-GWm2_wtALi_V4WDuA=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/11042023-pzzb9267.jpg?itok=1O4II4bb",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-17T18:10:00.000Z",
+      "firstSeenAt": "2026-11-17T19:52:03.891Z",
+      "lastSeenAt": "2026-11-17T19:52:03.891Z"
+    },
+    {
+      "id": "event-d4c16d94",
+      "category": "brasil",
+      "title": "Capobianco reforça responsabilidades de países na COP31 na Turquia",
+      "url": "https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-11/capobianco-reforca-responsabilidades-de-paises-na-cop31-na-turquia",
+      "description": "A menos de uma semana do fim da 31ª Conferência das Nações Unidas sobre Mudança do Clima (COP31), em Antalya, na Turquia o ministro do Meio Ambiente e Mudança do Clima, João Paulo Capobianco, destacou a responsabilidade dos países no processo de negociação de definição das ações climáticas. Capobianco discursou nesta terça-feira (17), na Sessão Ministerial de Alto Nível sobre Ação Climática, quando reforçou o papel de delegados e representantes dos países que participam da Convenção do Clima de ajudar o mundo a recuperar a confiança no sistema multilateral e lembrar que a mudança do clima afeta pessoas. Notícias relacionadas: Brasil assina na COP31 pacto global por IA sustentável e empregos. COP31: ministro defende esforço compartilhado na proteção da Amazônia. COP31: negociações avançam, mas financiamento é desafio para 2ª semana. “Pessoas que perdem a vida, famílias que perdem suas casas, trabalhadores que perdem seu sustento”, destacou. O discurso ocorreu um dia após a divulgação de um primeiro rascunho do documento final da conferência ser divulgado com muitos destaques me vermel",
+      "imageUrl": "https://imagens.ebc.com.br/MxU0sZPl8NLwURHvXugaXw90xEY=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/17/55645079274_e4892f5d0d_o.jpg?itok=lDSlxu5H",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-17T18:03:00.000Z",
+      "firstSeenAt": "2026-11-17T19:52:03.891Z",
+      "lastSeenAt": "2026-11-17T19:52:03.891Z"
+    },
+    {
+      "id": "event-ace40bd4",
+      "category": "mundo",
+      "title": "Fim do mundo: relembre 6 previsões que nunca se concretizaram",
+      "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxQdkpZUm1HaVdCbTBNWm9YNWdOeF8wdGZUQXZzMlkzWDFoR0luekpkcmxTSjdkOXhEYVMxUjR6R0ZsaUFmMWluMWhKcWdLcWk3clE0MEh5WjZheUg0V01JZ0FVZU1TLS1FTVpLbk9ET0t1emRrX043MDVoLU1JSEcyb3Y3NWZTQ3BVaDJBcFZOWUo",
+      "description": "Fim do mundo: relembre 6 previsões que nunca se concretizaram &nbsp;&nbsp; Exame",
+      "imageUrl": null,
+      "source": "Exame",
+      "publishedAt": "2026-11-17T17:36:47.000Z",
+      "firstSeenAt": "2026-11-17T19:52:03.891Z",
+      "lastSeenAt": "2026-11-17T19:52:03.891Z"
+    },
+    {
+      "id": "event-7ab1701b",
+      "category": "clima",
+      "title": "O El Niño atinge a força máxima entre novembro e janeiro e só deve perder força no outono de 2027, segundo o Inmet, com impacto no verão",
+      "url": "https://news.google.com/rss/articles/CBMilgJBVV95cUxOb2phZ3VFV2cxR3g4MXpiUDFhbzQ0bnYxdzlGdW40UHUxMUxDczIweVRCQ3JFNW9xbHRBT3NILVlfQ0JIMXVfVHZTT0hESXdLQWZSSExOY2xTVWt3QnBQajI4N2dsS3BuUkFsNUN0UFRPVGZxcnFNVUo0UzNOLUpjU3lwdmdCWWRPRGVnUHdHTVJPMGNhNjBIRm9pQ0RjWjRhenRNMEdsVEtYZHMtamF4SGxYNVdWcWhNZGFJOU5xUG9NdkZBSjJCQmJScU80MFVrbERrNk9IYjV1dUNrSzg0VDdWNF83a3RmM24xQ2VhYTlSV2tpTU5ua2ZxTHNWWmNSY0hyWmNFMkd4eG5RcmRaWGQxUUN4dw",
+      "description": "O El Niño atinge a força máxima entre novembro e janeiro e só deve perder força no outono de 2027, segundo o Inmet, com impacto no verão &nbsp;&nbsp; Olhar Digital",
+      "imageUrl": null,
+      "source": "Olhar Digital",
+      "publishedAt": "2026-11-17T17:07:00.000Z",
+      "firstSeenAt": "2026-11-17T19:52:03.891Z",
+      "lastSeenAt": "2026-11-17T19:52:03.891Z"
+    },
+    {
+      "id": "event-11acfa0",
+      "category": "santa-catarina",
+      "title": "Temporais voltam a SC e risco aumenta até quinta, com calor acima de 30 °C",
+      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxNOUlUaEVCVmJ1UzBuUURZeXIzNXFWMm9BeTFXY1NLeV9PUnpBXzlBV2FTWEVXNVY5S2xJYS1admZZSnJSODk1M2NPcWc0NkdXdks4M1JFbEs0Mkl2MENRdXdfNm5zTTVFWE9vdUZkY0w3UUQ5Q3kxcFFYQ3lWWktvNHRqYUNyQUMwaDFVODdLM2FqM2pka1V5ejhfMld2cnViQ1FvSzBRVUY0TVRtNVE",
+      "description": "Temporais voltam a SC e risco aumenta até quinta, com calor acima de 30 °C &nbsp;&nbsp; TopElegance",
+      "imageUrl": null,
+      "source": "TopElegance",
+      "publishedAt": "2026-11-17T16:02:50.000Z",
+      "firstSeenAt": "2026-11-17T19:52:03.891Z",
+      "lastSeenAt": "2026-11-17T19:52:03.891Z"
+    },
+    {
+      "id": "event-9a347345",
+      "category": "clima",
+      "title": "Depois do El Niño vem a La Niña? O que o Inmet prevê para 2027 e o que muda em SC",
+      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPa1RqWmNXa3R0V2lVVExDVTdBd2pfV0dwaVJVYXoxTXFTb1NFajVOUkxSOVFsakxNNkFNNmpZelh5NUdadklpb19sdldmelYxU1dqUTlxdTJlMVZsam05TzhTdFhaSG1XcVZDRmhfNHE5UENkU1V1LTQtdkFFWDFkMlJkcUdzOEV5aW5KVC1IRjNxV051LWk4Y29ESGZFT0RERmRVSXdOS3l6MzdVMVE",
+      "description": "Depois do El Niño vem a La Niña? O que o Inmet prevê para 2027 e o que muda em SC &nbsp;&nbsp; ND Mais",
+      "imageUrl": null,
+      "source": "ND Mais",
+      "publishedAt": "2026-11-17T15:13:49.000Z",
+      "firstSeenAt": "2026-11-17T19:52:03.891Z",
+      "lastSeenAt": "2026-11-17T19:52:03.891Z"
+    },
+    {
+      "id": "event-1c0ba9ba",
+      "category": "america-latina",
+      "title": "Quem se beneficia da mineração não convive com seus impactos - UFJF - Universidade Federal de Juiz de Fora",
+      "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxObEdvWXk4cG95TWh5elk3cjRDYWR6R00zT3p2X0szTHhvbGQ3M1ZWVGJEbTV2QTV6MTJjYTdrS3dqY3hNY3FIa3o0MklHMElvVlhHQ0VSM2xjSndqbFdMZVBkQnlWMk1QbWgtRTQ4RHdTWUJMdHhmTnFaRUYwVFp3YnRWOVhzc0ZYWlppWjhlblpWTnlSSGROMVlub3ozQlE2dE8xLQ",
+      "description": "Quem se beneficia da mineração não convive com seus impactos &nbsp;&nbsp; UFJF - Universidade Federal de Juiz de Fora",
+      "imageUrl": null,
+      "source": "UFJF - Universidade Federal de Juiz de Fora",
+      "publishedAt": "2026-11-17T14:20:29.000Z",
+      "firstSeenAt": "2026-11-17T19:52:03.891Z",
+      "lastSeenAt": "2026-11-17T19:52:03.891Z"
+    },
+    {
+      "id": "event-8152ec3d",
+      "category": "clima",
+      "title": "El Niño: quando deve atingir pico e quando acaba? Veja previsões",
+      "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxNZWxOYzBfVFNCVzVQVDgweUpjcnVJaUY0MDlMVWJQSjBZZ1F2MHJNOVk3OWJCcDVnbHduUmZkcDl0MWlIMExzR045c05lc2IyLURpTzlJLXJ0RUVmZ1F3WldsbGFDS1FvNzl3Tk1GZGxFWE8tQ0RVR1FRQ3BTcXpVNi1KRmk",
+      "description": "El Niño: quando deve atingir pico e quando acaba? Veja previsões &nbsp;&nbsp; Revista Fórum",
+      "imageUrl": null,
+      "source": "Revista Fórum",
+      "publishedAt": "2026-11-17T14:07:57.000Z",
+      "firstSeenAt": "2026-11-17T19:52:03.891Z",
+      "lastSeenAt": "2026-11-17T19:52:03.891Z"
+    },
+    {
+      "id": "event-9ecf9060",
+      "category": "santa-catarina",
+      "title": "Ciclone extratropical pode provocar chuva intensa em Santa Catarina no fim da semana",
+      "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxOWnRwMXZoUElYWWNjcTlpQzAwd0RBbEd1ZWVyUnNDa1V5aWhrSGlQa3pqUDdSVmlDWmpWMWpRa0tEZU1aaS1uUHZBYVNsc1pLS09VUmhYTEs1Z0pRa0JrcGtteUJzUTlqRlhoR3lNbkhFbEtFRFRzUkhPRU5JRk5Wa1BfR3pRb2tIcTlhWEd2RG1NMG1wa21idF9YWnZZelhJd0Z3czN3dHpXc00weXBYQ2VR",
+      "description": "Ciclone extratropical pode provocar chuva intensa em Santa Catarina no fim da semana &nbsp;&nbsp; UNITV",
+      "imageUrl": null,
+      "source": "UNITV",
+      "publishedAt": "2026-11-17T12:18:48.000Z",
+      "firstSeenAt": "2026-11-17T19:52:03.891Z",
+      "lastSeenAt": "2026-11-17T19:52:03.891Z"
+    },
     {
       "id": "event-d597f160",
       "category": "mundo",
@@ -31,6 +175,18 @@
       "publishedAt": "2026-11-17T10:51:00.000Z",
       "firstSeenAt": "2026-11-17T11:13:33.267Z",
       "lastSeenAt": "2026-11-17T11:13:33.267Z"
+    },
+    {
+      "id": "event-7499bb93",
+      "category": "santa-catarina",
+      "title": "Temporais e chuva intensa podem atingir o Oeste no início da semana",
+      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxQODUxZldwZkJuM3pTZXVReWFkZWNKMGZaODR6OEZqbDZ6WGdwSElsc29xMjhFTWxNcE5iMUNvYVpXZ1kydjV3RGdTS3JESFZfdDJiTEhneUZScFpDeDF1UWpaZy1DcHJ4a3BoWlNhMURCVG1zZGpXZXVGeTRCNTNScmplMElyZk4tOVNzdnNjYl9KdnNRR0tUSmpUM0ZoSXJiLU9mdi1BaFdVajhPNTJJQw",
+      "description": "Temporais e chuva intensa podem atingir o Oeste no início da semana &nbsp;&nbsp; Portal Tri Notícias",
+      "imageUrl": null,
+      "source": "Portal Tri Notícias",
+      "publishedAt": "2026-11-17T10:50:56.000Z",
+      "firstSeenAt": "2026-11-17T19:52:03.891Z",
+      "lastSeenAt": "2026-11-17T19:52:03.891Z"
     },
     {
       "id": "event-c9007501",
@@ -235,205 +391,9 @@
       "publishedAt": "2026-11-16T19:59:14.000Z",
       "firstSeenAt": "2026-11-17T11:13:33.267Z",
       "lastSeenAt": "2026-11-17T11:13:33.267Z"
-    },
-    {
-      "id": "event-92bff8aa",
-      "category": "mundo",
-      "title": "Maior artilheiro da Bélgica, Lukaku anuncia aposentadoria",
-      "url": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxQWDBQM2JuWWpkVUU4dGt6UUNDd1F3WUd6NVpHT3haUXVVRW5Va1RZY25mS3lEMG5jMGd1N2h1THZYZzVINVhFcE9RZ1U3VU5QZVU3bFBVMjU1LUdkS0oyNWgzVnExZGhVZ0RMR0N1Q0dWak1VS3NZdUpxQTloTjJoUFk0THNKcEZ6ZFBXUjdEWG9RSzlGRFVYTERpZ3RzalJpWTg4ZjVqeTJEaWozLW1BTkxBbmlzek11YjN3TW02TWY0eGdjUWl6ZjVFWm84cWwxVXRuLXBYTQ",
-      "description": "Maior artilheiro da Bélgica, Lukaku anuncia aposentadoria &nbsp;&nbsp; LANCE!",
-      "imageUrl": null,
-      "source": "LANCE!",
-      "publishedAt": "2026-11-16T19:08:58.000Z",
-      "firstSeenAt": "2026-11-16T19:51:49.587Z",
-      "lastSeenAt": "2026-11-16T19:51:49.587Z"
-    },
-    {
-      "id": "event-693ff9f1",
-      "category": "brasil",
-      "title": "Anvisa proíbe dois tira-manchas à base de percarbonato de sódio",
-      "url": "https://agenciabrasil.ebc.com.br/saude/noticia/2026-11/anvisa-proibe-dois-tira-manchas-base-de-percarbonato-de-sodio",
-      "description": "A Agência Nacional de Vigilância Sanitária (Anvisa) determinou, nesta segunda-feira (16), a apreensão de todos os lotes de dois alvejantes tira-manchas à base de percarbonato de sódio, Brankissimo Alvejante e Alveclean Tira Manchas em Pó. A decisão foi publicada no Diário Oficial da União . Os produtos são popularizados nas redes sociais e também vendidos pela internet. A comercialização, distribuição, fabricação, propaganda e o uso foram proibidos. Notícias relacionadas: Anvisa manda recolher anestésico por amostra com \"partícula estranha\". Anvisa manda recolher lotes de insumos para canetas emagrecedoras . Anvisa determina apreensão de suplementos alimentares. Ambos os alvejantes, segundo a Anvisa, não têm regularização sanitária e são feitos por empresas sem autorização de funcionamento para a fabricação. Cosmético A resolução da agência também prevê a apreensão de todos os lotes do produto Lace Glue, usado para fixar próteses capilares. Da mesma forma, o cosmético não tem registro e é produzido por empresa sem autorização de funcionamento. >> Siga o canal da Agência Brasil no Wha",
-      "imageUrl": "https://imagens.ebc.com.br/1jAMR8_Xc9yy0LM3LNk4Wtm06s8=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/16/brakissimo.jpg?itok=PpOTGWmW",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-16T19:02:00.000Z",
-      "firstSeenAt": "2026-11-16T19:51:49.587Z",
-      "lastSeenAt": "2026-11-16T19:51:49.587Z"
-    },
-    {
-      "id": "event-fc27fca9",
-      "category": "santa-catarina",
-      "title": "Semana de calor termina com chuva forte em Santa Catarina",
-      "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxOV2RrNWEya3VocDFMNUd2Wm1JRjJ1MmFVS0ZwQkQ5dTNWa0Q3cHhfaUdtVm9aNTh3eThLUnhVZjRZRV9uVWtHVUxaamphN2ZYeWVhOFVnOTlIdkVSUEdJWXlzTXZvSkZpa3BxbmlRMWw5aTdxMTdXRC1FZHhpVmQxVXdCTjVpUVUwVm1hMQ",
-      "description": "Semana de calor termina com chuva forte em Santa Catarina &nbsp;&nbsp; OCP News",
-      "imageUrl": null,
-      "source": "OCP News",
-      "publishedAt": "2026-11-16T19:00:56.000Z",
-      "firstSeenAt": "2026-11-16T19:51:49.587Z",
-      "lastSeenAt": "2026-11-16T19:51:49.587Z"
-    },
-    {
-      "id": "event-cd881e91",
-      "category": "santa-catarina",
-      "title": "Ciclone pode trazer chuva forte em SC entre sexta e sábado",
-      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOZXhUM2FDWE1OcDMtNFpQWFdSUTI4UXhWc1FGd0Y2TURiSDlGdVhwS1NobWNDbDMzNE01NmY2eUxZdDNBQXFsS09XbGtncTVIbzJzNnV5Y1RSc2JsVlRISFo3a1BPRmwtcTlvLVZUZC1MVDNZV3FMLThjc0o5NXpRS0pwV3lvVExpVGVZR0ZNWTczcHl1elpmUWJuRlIydU85LWVSaVBJZC1rZ0k",
-      "description": "Ciclone pode trazer chuva forte em SC entre sexta e sábado &nbsp;&nbsp; Deolhonailha",
-      "imageUrl": null,
-      "source": "Deolhonailha",
-      "publishedAt": "2026-11-16T18:34:15.000Z",
-      "firstSeenAt": "2026-11-16T19:51:49.587Z",
-      "lastSeenAt": "2026-11-17T11:13:33.267Z"
-    },
-    {
-      "id": "event-16a7c951",
-      "category": "santa-catarina",
-      "title": "Próximos três meses terão chuvas frequentes e temperaturas mais altas em Santa Catarina",
-      "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTE9tR2hRdVBtUkRFdnlnODY2OFlDOTRGUFItOVBfZ2c3S2pYOXVDQzlFd2JmMk1vM1lCWUM0blFMc3ZWMkFUVHZDcFpfSjV3ekw2cUUtZ0ZsLU9sZHMyQlNYbm5yLTU1YkJkTjlrWFpR",
-      "description": "Próximos três meses terão chuvas frequentes e temperaturas mais altas em Santa Catarina &nbsp;&nbsp; Jornal O Celeiro",
-      "imageUrl": null,
-      "source": "Jornal O Celeiro",
-      "publishedAt": "2026-11-16T18:29:08.000Z",
-      "firstSeenAt": "2026-11-16T19:51:49.587Z",
-      "lastSeenAt": "2026-11-16T19:51:49.587Z"
-    },
-    {
-      "id": "event-2b354852",
-      "category": "brasil",
-      "title": "Economia circular movimenta até R$ 90,7 bilhões no Brasil, aponta CNI",
-      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/economia-circular-movimenta-ate-r-907-bilhoes-no-brasil-aponta-cni",
-      "description": "A economia circular movimenta entre R$ 31 bilhões e R$ 90,7 bilhões no Brasil, segundo levantamento inédito da Confederação Nacional da Indústria (CNI). Apresentado na 31ª Conferência das Nações Unidas sobre Mudança do Clima (COP31), em Antália, na Turquia, o estudo Financiamento para a Economia Circular na Indústria Brasileira, mostra que o país tem um mercado de finanças sustentáveis estimado em R$ 884 bilhões. Segundo a CNI, os recursos destinados diretamente à circularidade representam entre 3,5% e 10,3% desse total. O percentual é superior à média mundial, de aproximadamente 2%. Notícias relacionadas: Quatro em cada 10 brasileiros nunca ouviram falar em economia circular. Comitê vai traçar estratégia financeira para economia circular. Novos títulos verdes financiarão economia circular e saneamento. Apesar do volume de investimentos, a pesquisa identifica um desequilíbrio na distribuição dos recursos. A maior parte do dinheiro está concentrada em iniciativas de reciclagem, gestão de resíduos e recuperação de materiais, enquanto projetos voltados à prevenção do desperdício, ao des",
-      "imageUrl": "https://imagens.ebc.com.br/Xkjujh1dmFAArCZz05s8rL7t5P0=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/_materiais_reciclaveis2807200517.jpg?itok=fRUycUHs",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-16T18:25:00.000Z",
-      "firstSeenAt": "2026-11-16T19:51:49.587Z",
-      "lastSeenAt": "2026-11-16T19:51:49.587Z"
-    },
-    {
-      "id": "event-a7c97223",
-      "category": "clima",
-      "title": "El Niño deve perder força em 2027 e terminar no outono",
-      "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxOQkJnM0g2TVNXNHBsNUFQMUJ2Szg0b3hLdnZ5dVRoSmFjcnd3alVCdEJoVWdFLVhSdnF5dmJJMEpEU3VySDFvc0k1ejdZeF83THhUSWpZdHVaVFRsZjJvVVFSTEN0X0pnQWwyS2VDU05GWkdkZHJJYzZDY3FtVXI1d2hoeGlGbmlrU3RyNll3LW83MGpaOU9aelF3",
-      "description": "El Niño deve perder força em 2027 e terminar no outono &nbsp;&nbsp; Revista Cultivar",
-      "imageUrl": null,
-      "source": "Revista Cultivar",
-      "publishedAt": "2026-11-16T18:16:23.000Z",
-      "firstSeenAt": "2026-11-16T19:51:49.587Z",
-      "lastSeenAt": "2026-11-17T11:13:33.267Z"
-    },
-    {
-      "id": "event-6f258e5f",
-      "category": "brasil",
-      "title": "Fies 2026: chamada para vagas remanescentes sai nesta segunda-feira",
-      "url": "https://agenciabrasil.ebc.com.br/educacao/noticia/2026-11/fies-2026-chamada-para-vagas-remanescentes-sai-nesta-segunda-feira",
-      "description": "O resultado da chamada única para as vagas remanescentes do Fundo de Financiamento Estudantil (Fies) do segundo semestre será divulgado nesta segunda-feira (16) pelo Ministério da Educação (MEC). Os interessados podem consultar a lista dos convocados no Portal Único de Acesso ao Ensino Superior, na parte do Fies . O acesso é com o login da conta Gov.br. Notícias relacionadas: Enem 2026: começa prazo para pedir reaplicação de provas em dezembro. Gabarito do Enem sai na quarta-feira, e resultado em 18 de janeiro. Enem 2026: um a cada cinco participantes faz prova como treineiro. Quem não for pré-selecionado na chamada única será incluído automaticamente na lista de espera, e convocação ocorrerá no período de 25 a 30 de novembro. As vagas remanescentes destinam-se exclusivamente à contratação do financiamento no segundo semestre letivo deste ano, sem possibilidade de extensão do prazo. Os candidatos pré-selecionados devem ter condições de acompanhar as atividades acadêmicas com aproveitamento suficiente para concluir o semestre. >> Siga o canal da Agência Brasil no WhatsApp Classificaçã",
-      "imageUrl": "https://imagens.ebc.com.br/Z2mNsQ5lWQL4xHhftpdFlqEw8ws=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/15/pzzb0527.jpg?itok=LIjqokwH",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-16T18:11:00.000Z",
-      "firstSeenAt": "2026-11-16T19:51:49.587Z",
-      "lastSeenAt": "2026-11-16T19:51:49.587Z"
-    },
-    {
-      "id": "event-cd21a75e",
-      "category": "santa-catarina",
-      "title": "Defesa Civil prevê temporais e chuva intensa no Extremo-Oeste entre terça e quarta",
-      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxQODZ6a19Td04tUnBWUEVrWWwzd1dRUXdfaWxpbXY5U3p3bnBkcUJEaWFvVGNJOVdvZW8zYzdFcXZZbUNlMkprNDBqcFUwZjJONmFaSDZLOE9TVHdCdVpySUdTQnYycnFZeFpOTHIyOGJVQmFHc1oxX204b0FOdEhvX0d2ZTJJZDR2WS1OUS1ZUUotZjRDSUlKV0hhS290TmlscUVySFRWSGY5VkgxamU2di0tVS1tOWJXM3RZSGFn",
-      "description": "Defesa Civil prevê temporais e chuva intensa no Extremo-Oeste entre terça e quarta &nbsp;&nbsp; Rede Peperi",
-      "imageUrl": null,
-      "source": "Rede Peperi",
-      "publishedAt": "2026-11-16T18:09:42.000Z",
-      "firstSeenAt": "2026-11-17T02:44:10.581Z",
-      "lastSeenAt": "2026-11-17T02:44:10.581Z"
-    },
-    {
-      "id": "event-e8392bef",
-      "category": "brasil",
-      "title": "Lula e Sánchez defendem união contra o avanço da extrema-direita",
-      "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2026-11/lula-e-sanchez-defendem-uniao-contra-avanco-da-extrema-direita",
-      "description": "O presidente Luiz Inácio Lula da Silva se encontrou, na manhã desta segunda-feira (16), com o presidente do governo da Espanha, Pedro Sánchez, em Madri. Lula parou no país ibérico durante a viagem de volta das Filipinas. Segundo o Palácio do Planalto, Lula e Sánchez trataram de temas como o combate ao discurso de ódio e desinformação da extrema-direita, além da promoção de uma agenda de inclusão social para o fortalecimento da democracia no mundo. Notícias relacionadas: Lula quer ampliar relações comerciais com países da Asean. Brasil e Espanha firmam acordo para estimular taxação de super-ricos. Sánchez foi um dos presidentes que mais celebrou a vitória de Lula nas eleições de outubro. Pelas redes sociais, ele chamou a reeleição do presidente brasileiro de “grande vitória” e afirmou que a Espanha seguiria a mesma tendência nas eleições de seu país. “O que aconteceu no Brasil acontecerá na Espanha. A virada do progressismo global acaba de começar”, disse, na ocasião. O povo espanhol irá às urnas em 29 de novembro para renovar as 350 cadeiras do Congresso. E será o Congresso que decid",
-      "imageUrl": "https://imagens.ebc.com.br/uEtKd4UXQonDNxLIGDrp5QpDumc=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/16/55654857102_fbe1ed24c9_o.jpg?itok=KTRWZTk2",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-16T18:09:00.000Z",
-      "firstSeenAt": "2026-11-16T19:51:49.587Z",
-      "lastSeenAt": "2026-11-16T19:51:49.587Z"
-    },
-    {
-      "id": "event-e8e8d762",
-      "category": "mundo",
-      "title": "Mercado de Transferências",
-      "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBIOU85bnFIVFphUlQxWWc0X0JxOHRabE9iOVpNNzgtX1JKeFFXMU5UeW9FMC1rVEVmMUYwWVRWT1NvYWl5allOUXhFZUxObUQzZFluOXZubzdPLUFJWjJyazVlTmtwQkZjeUI5RW51Yw",
-      "description": "Mercado de Transferências &nbsp;&nbsp; Maisfutebol",
-      "imageUrl": null,
-      "source": "Maisfutebol",
-      "publishedAt": "2026-11-16T17:12:38.000Z",
-      "firstSeenAt": "2026-11-16T19:51:49.587Z",
-      "lastSeenAt": "2026-11-16T19:51:49.587Z"
-    },
-    {
-      "id": "event-54be1c8",
-      "category": "mundo",
-      "title": "Governos na Europa incentivam armazenamento de 'kit de sobrevivência' caseiro em antecipação a crises",
-      "url": "https://news.google.com/rss/articles/CBMinAJBVV95cUxQNV9ES3pnU2NncWRDdDJ6THVPNDBxM0sxb2JmRmhleGZDbVoweXNLNURNU0xuZVZWR2tLcXpoU1hfZWozS3QxUHgxTHFBOE9HN0xrNW9Valc4R25WTVp0ZkkyekpuNDhwa2haaDYzOVh1dHhzRGdyNVp1ZkVkMGZpcFFqMFhMSklFZ3JqUmgxeHZMclNRU0pGYzVTa2xhdlMzbFZ5cktCSFYxNjhYNk9Kc054X2Q4UkNUYk9PbDdsOWJBdV9zQWh5ZVpmNEJxY2V6Mm9XWmlZVzZ1XzFRZnBIMWQ1VktaaklTdnN0dGlqTzg1NG9TZzJQc1l3TUwtMGFFYkxzNTNRcDRVNndnTS1ZMHdKTWU3Mmhfdm0zeA",
-      "description": "Governos na Europa incentivam armazenamento de 'kit de sobrevivência' caseiro em antecipação a crises &nbsp;&nbsp; Terra",
-      "imageUrl": null,
-      "source": "Terra",
-      "publishedAt": "2026-11-16T16:43:00.000Z",
-      "firstSeenAt": "2026-11-16T19:51:49.587Z",
-      "lastSeenAt": "2026-11-16T19:51:49.587Z"
-    },
-    {
-      "id": "event-662f7bed",
-      "category": "clima",
-      "title": "El Niño se aproxima de intensidade máxima e deve perder força no início de 2027, aponta Inmet",
-      "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxQS1Z2c2lEWEdZSG9mS0JINkJTTnl1MFE4ZzVUcGRKaHkwNjZQcF9JVnN1ZFVNUjBDd1JTcjd2M2QtaE1fYW1keHY1aE1uVEw3V2F6OVNieUNlRHNtRmF6aEg0N1BHTmxHUGxfVUlLMEZiU0cteXVjQmpvazFqS0VuajU2TU8wMHlVRlBVZmhYRUU2T0F2dllSdTdCWDZlXzNXVHVCb0JXOWxieVNIV2NhNFFjQ1A3bHItd210RTU2NjY4X1NqTjZkS3Bhbw",
-      "description": "El Niño se aproxima de intensidade máxima e deve perder força no início de 2027, aponta Inmet &nbsp;&nbsp; Saiba Já News",
-      "imageUrl": null,
-      "source": "Saiba Já News",
-      "publishedAt": "2026-11-16T15:28:53.000Z",
-      "firstSeenAt": "2026-11-16T19:51:49.587Z",
-      "lastSeenAt": "2026-11-17T02:44:10.581Z"
-    },
-    {
-      "id": "event-c4d72d16",
-      "category": "asia",
-      "title": "Trump diz que pode se reunir com Kim Jong-un durante viagem à Ásia - Estadão",
-      "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPUjFhT2hSbVV5TG5ISW1HUE5PSjhfVlBZamppbDc2aUY3SkVwTm1xRnFRREc0Y01nNHNaMlBGUDg0bk5DbnNiZC0zOC1wbDg3Y2p0VGhBTHlTdnRvbGdtZlZpNUYxdHZwUy1BTG94TXREeWVmc1BmTERuWUxpSGlMZTJaVG1MVlp1Zk55M3hvZXB0MTdpUXRmS2tWbi1jV2FSTUpIQlZkOEpuZm1IeEJWYmhR0gG3AUFVX3lxTE1XY1hkbzV0LXZZMEhKZTFwWlhzaEJGVlI1aDFsTjE0VzU1NDB3SXlndzdoUlR6V1k0S01TRkhPY3JTTkRzMWZqa240TVB4S3oyeFhIamJuNGtLdm4wWFFaRlJnYkJhZDc4UlRGSXQxMS1iV3VMcGNVeGtoQUh3S09SN2dXeDJXWWVCWTBvVFBMOTBET1h1Q1JsblE0TXpzczl0cjNNMGd1QjNLc3VydFgyVi0yZ1Jjaw",
-      "description": "Trump diz que pode se reunir com Kim Jong-un durante viagem à Ásia &nbsp;&nbsp; Estadão",
-      "imageUrl": null,
-      "source": "Estadão",
-      "publishedAt": "2026-11-16T15:17:56.000Z",
-      "firstSeenAt": "2026-11-16T19:51:49.587Z",
-      "lastSeenAt": "2026-11-17T11:13:33.267Z"
-    },
-    {
-      "id": "event-2161e714",
-      "category": "clima",
-      "title": "Inmet aponta El Niño muito forte no pico de 2026/27",
-      "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTFBwQjdSbkRqU3d6X3hrR1cwdkcwTndocW4tVi1tTUJXcUduOWJrMXBGYThSU2FRQWtwRE1hTjhHQUxwbmZ6Q2FxUklUbGFiSmFzTndXeEJTaV94bHJyeHVxX3V0X2NpX1VfY3pPWmdJTXBJYzZv",
-      "description": "Inmet aponta El Niño muito forte no pico de 2026/27 &nbsp;&nbsp; SpaceMoney",
-      "imageUrl": null,
-      "source": "SpaceMoney",
-      "publishedAt": "2026-11-16T12:28:00.000Z",
-      "firstSeenAt": "2026-11-16T19:51:49.587Z",
-      "lastSeenAt": "2026-11-16T19:51:49.587Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-16T19:51:49.587Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 15,
-      "newArticles": 15,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "asia"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-17T02:44:10.581Z",
       "ok": true,
@@ -467,14 +427,32 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-17T19:52:03.891Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 14,
+      "newArticles": 13,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "america-latina",
+        "europa",
+        "asia"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 3,
-  "lastSuccessfulAt": "2026-11-17T11:13:33.267Z",
+  "lastSuccessfulAt": "2026-11-17T19:52:03.891Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-17T11:13:33.267Z",
+      "checkedAt": "2026-11-17T19:52:03.891Z",
       "warnings": [
         {
           "id": "56432",
@@ -488,11 +466,12 @@
           "url": "https://avisos.inmet.gov.br/"
         },
         {
-          "id": "56433",
+          "id": "56442",
           "title": "Tempestade",
           "severity": "Perigo",
           "phase": "previsto",
           "regions": [
+            "DO",
             "DO"
           ],
           "startsAt": "2026-11-18T00:00:00.000Z",
@@ -501,7 +480,7 @@
           "url": "https://avisos.inmet.gov.br/"
         },
         {
-          "id": "56431",
+          "id": "56438",
           "title": "Tempestade",
           "severity": "Perigo Potencial",
           "phase": "previsto",
@@ -514,12 +493,27 @@
           "endsAt": "2026-11-18T00:00:00.000Z",
           "source": "INMET",
           "url": "https://avisos.inmet.gov.br/"
+        },
+        {
+          "id": "56440",
+          "title": "Tempestade",
+          "severity": "Perigo Potencial",
+          "phase": "previsto",
+          "regions": [
+            "DO",
+            "DO",
+            "DE"
+          ],
+          "startsAt": "2026-11-19T00:00:00.000Z",
+          "endsAt": "2026-11-19T00:00:00.000Z",
+          "source": "INMET",
+          "url": "https://avisos.inmet.gov.br/"
         }
       ]
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-17T11:13:33.267Z",
+      "checkedAt": "2026-11-17T19:52:03.891Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
