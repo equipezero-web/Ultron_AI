@@ -1,6 +1,6 @@
 import { JARVIS_CAPABILITIES } from "../backend/jarvis-capabilities.js?v=4.67.0";
 import {clearVisibleInterface} from "./jarvis-clear-interface.js?v=4.98.0";
-import {parseMeteoIntent} from "./jarvis-meteorological-sources.js?v=4.99.1";
+import {parseMeteoIntent,parseMeteoCloseIntent} from "./jarvis-meteorological-sources.js?v=4.99.2";
 import {parseGlobalIntelligenceIntent} from "./jarvis-global-intelligence-intent.js?v=5.10.0";
 import {parseTrendIntent} from "./jarvis-trend-intent.js?v=1.0.0";
 
@@ -58,6 +58,8 @@ export function parseLocalCommand(value){
   if(trendIntent)return trendIntent;
   const globalIntent=parseGlobalIntelligenceIntent(plain);
   if(globalIntent)return globalIntent;
+  const meteoClose=parseMeteoCloseIntent(plain);
+  if(meteoClose)return {type:"meteorological-close",tab:meteoClose.tab};
   const meteo=parseMeteoIntent(plain);
   if(meteo)return {type:"meteorological-center",...meteo};
   const match=plain.match(/^(?:por favor )?(?:pode |consegue |quero )?(desative|desativar|desativa|oculte|ocultar|esconda|esconder|remova|remover|retire|retirar|tire|tirar|ative|ativar|ativa|habilite|habilitar|ligue|ligar|mostre|mostrar|exiba|exibir|restaure|restaurar|volte a mostrar|pare de mostrar)\s+(?:o |os |a |as )?(?:textos?|respostas? em texto|legendas?)(?:\s+(?:(?:do|no|da|na)\s+(?:painel\s+)?(?:neural ring|neural|anel neural|painel de respostas|jarvis)|(?:agora|por favor)))*$/);
@@ -193,6 +195,22 @@ export async function runLocalCommand(command){
       " locais representados no mapa. Fontes e horários indicados.":
       "Não foi possível confirmar o monitoramento mundial no Neural Jarvis: "+
       String(result?.error||"sem coleta válida").slice(0,150)};
+  }
+  if(intent.type==="meteorological-close"){
+    const module=window.ULTRON_METEO_CENTER;
+    const state=module?.state;
+    if(!module?.close||!state?.visible)
+      return {handled:true,ok:false,route:"local-meteorological-close",provider:"jarvis-local",
+        text:"Nenhum painel meteorológico está aberto. Nenhuma outra visualização foi alterada."};
+    if(intent.tab&&state.tab!==intent.tab)
+      return {handled:true,ok:false,route:"local-meteorological-close",provider:"jarvis-local",
+        text:"A aba solicitada não está aberta. A visualização atual foi preservada."};
+    const closed=module.close();
+    const ok=closed?.ok===true&&module.state?.visible===false;
+    return {handled:true,ok,route:"local-meteorological-close",provider:"jarvis-local",
+      text:ok?"METEOROLOGIA // "+(intent.tab||state.tab).toUpperCase()+
+        " fechada no Neural Ring. Consultas e animações interrompidas.":
+        "Falha ao fechar meteorologia. Verifique o botão X do painel."};
   }
   if(intent.type==="meteorological-center"){
     if(!window.ULTRON_METEO_CENTER?.open)await import("./jarvis-meteorological-center.js?v=4.99.1");
