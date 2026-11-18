@@ -163,9 +163,13 @@ try {
   assert.ok(wakeInfo.wake && wakeInfo.wake===wakeInfo.stored);
   assert.equal(wakeInfo.voice,false,"Spoken narration must remain off by default");
   const controlLabels=await page.evaluate(()=>[...document.querySelectorAll(".jarvis-intel-controls button")].map(x=>x.textContent.trim()));
-  assert.equal(controlLabels.length,2,"Refresh and opt-in notification controls only; voice remains off");
+  assert.equal(controlLabels.length,4,
+   "Atualizar, Ouvir, automatic narration toggle and notification controls must be visible");
   assert.equal(controlLabels[0],"Atualizar");
-  assert.match(controlLabels[1],/NOTIFICAÇÕES|PUSH OFICIAL/,"Notifications show an explicit browser support state");
+  assert.equal(controlLabels[1],"Ouvir");
+  assert.match(controlLabels[2],/Voz automática: desligada/);
+  assert.match(controlLabels[3],/NOTIFICAÇÕES|PUSH OFICIAL/,
+   "Notifications show an explicit browser support state");
   // Real transcript regression: terminal and voice use the same local routing.
   // The region-specific request must render sourced news, never geocode a title.
   const routedNews=await page.evaluate(async()=>{
@@ -275,7 +279,7 @@ try {
         panelWidth:panel?.getBoundingClientRect().width||0};
     },device.tv);
     assert.equal(result.panels,1,device.name+": duplicate intelligence panels");
-    assert.equal(result.controls,2,device.name+": communication controls lost");
+    assert.equal(result.controls,4,device.name+": voice and notification controls must remain available");
     assert.equal(result.state,true,device.name+": notifications controller missing");
     assert.equal(result.focusable,true,device.name+": TV keyboard/touch controls inaccessible");
     assert.ok(result.panelWidth<=result.viewport+2,device.name+": panel overflow");

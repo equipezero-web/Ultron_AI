@@ -31,11 +31,10 @@
 <link rel="stylesheet" href="modules/jarvis-mobile-native-scroll.css?v=5.35.0">
 <link rel="stylesheet" href="modules/jarvis-mobile-pairing.css?v=5.40.0">
 <link rel="stylesheet" href="modules/jarvis-phone-files.css?v=5.50.0">
-<link rel="stylesheet" href="modules/jarvis-voice-text-only.css?v=1.0.0">
 <link rel="stylesheet" href="modules/jarvis-account-plugin-panel.css?v=1.0.0">
 <link rel="stylesheet" href="modules/jarvis-trend-intelligence.css?v=1.0.0">
 </head>
-<body class="jarvis-command-center jarvis-voice-text-only jarvis-voice-output-disabled">
+<body class="jarvis-command-center">
 <div class="hud-bg" aria-hidden="true">
   <div class="hud-grid-lines"></div>
   <div class="hud-glow glow-a"></div>
@@ -96,7 +95,9 @@
           <button id="btn-mobile-mic" class="hud-button primary">MIC DO CELULAR</button>
           <button id="btn-test-mic" class="hud-button">TESTAR MICROFONE</button>
           <button id="btn-voice" data-command="voice" class="hud-button">TESTAR VOZ</button>
+          <button id="btn-toggle-speech" class="hud-button" type="button" aria-pressed="true">SILENCIAR VOZ</button>
         </div>
+        <p id="voice-output-status" role="status" aria-live="polite" class="spatial-help">SAÍDA DE VOZ HABILITADA · CLIQUE EM ATIVAR ESCUTA PARA AUTORIZAR O MICROFONE</p>
         <div class="voice-match-strip">
           <div class="voice-match-copy"><span>VOICE MATCH // LOCAL PROFILE</span><strong id="voice-match-state">NÃO CADASTRADO</strong></div>
           <div class="voice-match-actions">
@@ -212,7 +213,7 @@
   </div>
 </div>
 
-<audio id="voice-audio" preload="none" muted></audio>
+<audio id="voice-audio" preload="none"></audio>
 <script type="module" src="modules/jarvis-brand-v4310.js?v=4.31.0"></script>
 <script type="module" src="modules/jarvis-backend-guard-v4310.js?v=4.31.0"></script>
 <script type="module" src="modules/jarvis-account-diagnostics.js?v=1.0.0"></script>
@@ -239,7 +240,7 @@
 <script type="module" src="modules/neural-command-v4280.js?v=4.31.0"></script>
 <script type="module" src="modules/neural-filespace-click-bridge-v4280.js?v=4.31.0"></script>
 <script type="module" src="modules/jarvis-command-center-v4330.js?v=5.58.0"></script>
-<script type="module" src="modules/jarvis-neural-jarvis-hud.js?v=5.31.1"></script>
+<script type="module" src="modules/jarvis-neural-jarvis-hud.js?v=5.64.0"></script>
 <script type="module" src="modules/jarvis-earth.js?v=4.94.0"></script>
 <script type="module" src="modules/jarvis-geospatial-visual.js?v=4.96.1"></script>
 <script type="module" src="modules/jarvis-meteorological-center.js?v=4.99.3"></script>
@@ -255,18 +256,18 @@
 <script type="module" src="modules/neural-framing-v4300.js?v=4.30.0"></script>
 <script type="module" src="modules/neural-haptics-v4300.js?v=4.30.0"></script>
 <script type="module" src="modules/telemetry-client-v4270.js?v=4.27.0"></script>
-<script type="module" src="script.js?v=5.14.1"></script>
+<script type="module" src="script.js?v=5.64.0"></script>
 <script type="module" src="modules/vision-command-router.js?v=4.17.0"></script>
-<script type="module" src="modules/voice-listener-v4290.js?v=5.53.0"></script>
+<script type="module" src="modules/voice-listener-v4290.js?v=5.64.0"></script>
+<script type="module" src="modules/jarvis-voice-controls.js?v=1.0.0"></script>
 <script type="module" src="modules/voice-orchestration-bridge-v4290.js?v=4.31.0"></script>
 <script type="module" src="modules/orchestrator-ui-bridge-v4270.js?v=4.27.0"></script>
-<script type="module" src="modules/ultron-intelligence-briefing.js?v=5.53.0"></script>
+<script type="module" src="modules/ultron-intelligence-briefing.js?v=5.64.0"></script>
 <script type="module" src="modules/jarvis-communication-notifications.js?v=5.53.0"></script>
 <script type="module" src="modules/neural-intelligence-visual.js?v=1.0.1"></script>
 <script type="module" src="modules/ultron-tv-display.js?v=4.54.0"></script>
 <script type="module" src="modules/ultron-neural-answer.js?v=5.53.0"></script>
 <script type="module" src="modules/jarvis-universal-adaptive.js?v=5.34.0"></script>
 <script type="module" src="modules/jarvis-phone-files.js?v=5.51.0"></script>
-<script type="module" src="modules/jarvis-voice-text-only.js?v=1.0.0"></script>
 </body>
 </html>

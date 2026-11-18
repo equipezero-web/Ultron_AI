@@ -78,7 +78,16 @@ function setMicState(state, detail = '') {
   const [moduleText, buttonText] = states[state] || states.off;
   micModule.textContent = detail || moduleText;
   micModule.className = ['passive', 'active', 'hearing', 'speaking', 'ready', 'suspended', 'recovering'].includes(state) ? 'green' : '';
-  if (button) button.textContent = buttonText;
+  if (button) {
+    button.textContent = buttonText;
+    button.setAttribute('aria-pressed', String(listeningEnabled &&
+      !['blocked','off','unsupported','error'].includes(state)));
+    button.setAttribute('aria-label', listeningEnabled ?
+      'Desativar detecção de voz' : 'Ativar detecção de voz e permitir microfone');
+  }
+  window.dispatchEvent(new CustomEvent('ultron:voice-listening-state',{
+    detail:{state,enabled:listeningEnabled,recognitionSupported:Boolean(SpeechRecognition)}
+  }));
 }
 
 function setWakeUi(awake, detail = '') {
@@ -503,6 +512,12 @@ async function enableListening({ userInitiated = false, persist = true } = {}) {
     }
     window.dispatchEvent(new CustomEvent('ultron:voice-listening-enabled'));
     startRecognition();
+    // If the operator activates the microphone immediately after a spoken
+    // response, the anti-echo guard intentionally prevents startRecognition.
+    // Schedule it once the guard expires; otherwise the UI would show
+    // "escuta ativa" without the speech engine actually listening.
+    if (!recognitionRunning && !recognitionStarting && !ultronSpeaking)
+      scheduleRecognitionRestart(Math.max(0,echoGuardUntil-Date.now()));
     return true;
   } catch (error) {
     listeningEnabled = false;

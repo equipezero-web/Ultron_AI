@@ -153,21 +153,21 @@ function toggleOverdrive(){
  return {ok:true,active:overdrive};
 }
 function speak(){
- if(document.body.classList.contains("jarvis-voice-output-disabled"))return {ok:false,reason:"VOICE_OUTPUT_DISABLED"};
  if(!engine()?.active)return {ok:false,reason:"ENGINE_INACTIVE"};
- if(!("speechSynthesis"in window)){
-  report("Síntese de voz indisponível neste navegador.");
+ if(document.body.classList.contains("jarvis-voice-paused"))
+  return {ok:false,reason:"VOICE_PAUSED"};
+ // Reuse the shared speech pipeline, which emits speech-start/speech-end:
+ // recognition pauses while the Jarvis speaks and avoids its own echo.
+ const speech=window.ULTRON_VOICE_OUTPUT;
+ if(!speech?.available){
+  report("A voz não está disponível neste navegador. Verifique as permissões e o áudio.");
   return {ok:false,reason:"SPEECH_UNAVAILABLE"};
  }
- const msg="Neural Jarvis pronto. Matriz holográfica disponível para visualização.";
- const utterance=new SpeechSynthesisUtterance(msg);
- utterance.lang="pt-BR";utterance.rate=1.02;utterance.pitch=.94;
- window.speechSynthesis.cancel();
- speaking=true;
- utterance.onend=()=>{speaking=false;};
- utterance.onerror=()=>{speaking=false;};
- try{window.speechSynthesis.speak(utterance);return {ok:true,requested:true};}
- catch{speaking=false;report("Falha ao iniciar síntese de voz neste navegador.");return {ok:false,reason:"SPEECH_FAILED"};}
+ const ok=speech.speak("Neural Jarvis pronto. Comandos por voz disponíveis.",{
+  reason:"user-requested",announce:false
+ });
+ if(!ok)report("O navegador não conseguiu iniciar a reprodução de voz.");
+ return {ok:Boolean(ok),requested:Boolean(ok)};
 }
 function stop(){
  closeArchive();
@@ -251,12 +251,8 @@ function init(){
  panel.append(header,archiveList,detail);
  center.append(panel);
  makeButton("FALAR","speak",speak);
- if(document.body.classList.contains("jarvis-voice-output-disabled")){
-  buttons.speak.dataset.requiresEngine="false";
-  buttons.speak.disabled=true;
-  buttons.speak.title="Voz desativada pelo operador";
-  buttons.speak.setAttribute("aria-disabled","true");
- }
+ buttons.speak.title="Fazer o J.A.R.V.I.S. falar usando a voz do navegador";
+ buttons.speak.setAttribute("aria-label","Testar resposta falada do Neural Jarvis");
  makeButton("ÁUDIO VISUAL","microphone",toggleAudio);
  makeButton("SOBRECARGA TÁTICA","overdrive",toggleOverdrive);
  const expand=makeButton("REDOMA & ARQUIVOS","expand",toggleArchive);

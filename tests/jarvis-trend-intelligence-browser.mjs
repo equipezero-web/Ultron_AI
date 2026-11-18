@@ -11,7 +11,7 @@ try{
   const page=await browser.newPage();
   try{
    await page.setViewport({width,height,deviceScaleFactor:1});
-   await page.goto("http://127.0.0.1:8772/index.html?jarvisVoiceOnly=1",
+   await page.goto("http://127.0.0.1:8772/index.html",
     {waitUntil:"domcontentloaded",timeout:40000});
    await page.waitForFunction(()=>Boolean(window.JARVIS_TREND_INTELLIGENCE?.open),
     {timeout:30000});
@@ -39,11 +39,13 @@ try{
      const visible=panel&&!panel.hidden&&getComputedStyle(panel).display!=="none";
      const inNeural=Boolean(panel?.closest(".jarvis-cc-center"));
      const links=[...panel.querySelectorAll("a")].map(el=>el.href);
-     const allHidden=[...document.querySelectorAll("button")].every(el=>
-       getComputedStyle(el).display==="none");
+     const controlsVisible=["btn-listen-voice","btn-toggle-speech"].every(id=>{
+       const el=document.getElementById(id);
+       return !!el&&getComputedStyle(el).display!=="none"&&el.getBoundingClientRect().width>0;
+      });
      const text=panel.textContent;
      const closed=window.JARVIS_TREND_INTELLIGENCE.close();
-     return {called,visible,inNeural,links,allHidden,text,
+     return {called,visible,inNeural,links,controlsVisible,text,
        closed:closed.ok===true&&panel.hidden,
        overflow:document.documentElement.scrollWidth-innerWidth};
     }finally{window.fetch=prior;}
@@ -52,7 +54,7 @@ try{
    assert.equal(out.visible,true,name+": in-Neural panel visible");
    assert.equal(out.inNeural,true,name+": trend cards in existing stage");
    assert.equal(out.links.length,2,name+": both grounded source links");
-   assert.equal(out.allHidden,true,name+": no new buttons");
+   assert.equal(out.controlsVisible,true,name+": speech controls stay available during news view");
    assert.match(out.text,/COBERTURA PARCIAL/);
    assert.match(out.text,/PRESENTE EM 2 COLETAS/);
    assert.match(out.text,/não comprovam a veracidade/);

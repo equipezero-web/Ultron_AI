@@ -18,7 +18,8 @@ let history=null,historyPending=null,historyLoadedAt=0,wakeBusy=false;
 let wakeSummary=null,lastWakeAt=null;
 try{lastWakeAt=localStorage.getItem(LAST_WAKE_KEY)||null;}catch{}
 let lastWakeReadAt=0;
-let autoVoice=false; // Speech output is disabled; briefing remains in text.
+let autoVoice=false; // Auto narration is optional; user enables it in the briefing.
+try{autoVoice=localStorage.getItem(VOICE_PREF)==="on";}catch{}
 const fmtTime=new Intl.DateTimeFormat("pt-BR",{
   dateStyle:"short",timeStyle:"short",timeZone:"America/Recife"
 });
@@ -162,7 +163,7 @@ const voiceButton=elem("button","","Ouvir");
 voiceButton.type="button";voiceButton.title="Ouvir o resumo das fontes verificadas";
 const autoButton=elem("button","",autoVoice?"Voz automática: ativada":"Voz automática: desligada");
 autoButton.type="button";autoButton.setAttribute("aria-pressed",String(autoVoice));
-controls.append(updateButton); // Narration controls disabled in text-only mode.
+controls.append(updateButton,voiceButton,autoButton); // Browser narration, explicit auto-wake opt-in.
 const state=elem("div","jarvis-intel-message","Consultando Brasil, Santa Catarina, clima e mundo...");
 const historyArea=elem("section","jarvis-intel-history");
 historyArea.setAttribute("aria-label","Monitoramento contínuo das últimas 24 horas");

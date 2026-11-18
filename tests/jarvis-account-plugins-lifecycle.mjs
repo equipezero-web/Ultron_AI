@@ -80,5 +80,6 @@ assert.match(panel,/document\.createElement/);
 assert.doesNotMatch(panel,/\.innerHTML\s*=/);
 assert.match(shell,/Plugins permanentes/);
 assert.match(html,/jarvis-account-plugin-panel\.js/);
-assert.match(html,/jarvis-voice-output-disabled/);
+assert.doesNotMatch(html,/<body[^>]*jarvis-voice-output-disabled/);
+assert.match(html,/id="btn-toggle-speech"/);
 console.log("JARVIS ACCOUNT PLUGIN LIFECYCLE PASS: owner-only revoke, pending scrub, no cross-account action, UI confirmation, text-only mode");
