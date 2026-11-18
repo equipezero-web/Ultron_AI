@@ -44,7 +44,7 @@ async function enable({userGesture=false}={}){
  const worker=await serviceWorker();
  const remote=await activateRemotePush(worker,{userGesture});
  render();
- return {ok:true,enabled:true,foregroundOnly:true,backgroundPush:remote.backgroundPush===true,
+ return {ok:true,enabled:true,sessionNotifications:true,backgroundPush:remote.backgroundPush===true,
   remoteReason:remote.ok?null:remote.reason};
 }
 async function disable(){
@@ -52,7 +52,7 @@ async function disable(){
  const remote=await deactivateRemotePush(registration);
  render();return {ok:true,enabled:false,backgroundPush:false,...remote};
 }
-function status(){return {ok:true,enabled:enabled(),permission:permission(),foregroundOnly:true,
+function status(){return {ok:true,enabled:enabled(),permission:permission(),sessionNotifications:true,
  backgroundPush:enabled()&&remotePushState().registered,
  reason:lastError||remotePushState().lastError||"Push remoto depende de conta autenticada e VAPID configurado."};}
 const safeUrl=value=>{
