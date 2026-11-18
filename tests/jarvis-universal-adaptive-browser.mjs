@@ -69,16 +69,21 @@ try{
   if(m.docWidth>m.w+5)errors.push("horizontal overflow "+(m.docWidth-m.w));
   if(!m.center||m.center.width>m.w+6)errors.push("center too wide");
   if(!m.visual||m.visual.width>m.w+8)errors.push("hologram too wide");
-  if(!m.buttons.length||m.buttons.some(b=>b.hidden||b.w<40||b.h<43))
-   errors.push("tool buttons missing/too small");
+  const phoneVoiceText=width<=699||(mobile&&height<=490&&width<=930);
+  if(phoneVoiceText){
+   if(!m.buttons.length||m.buttons.some(b=>b.w>0||b.h>0))
+    errors.push("phone dashboard shortcuts must be hidden");
+  }else if(!m.buttons.length||m.buttons.some(b=>b.hidden||b.w<40||b.h<43)){
+   errors.push("tablet, notebook and TV buttons missing/too small");
+  }
   if(m.gpu.qualityTier!==m.profile.tier)errors.push("renderer not linked to profile");
   if(m.gpu.canvasPixels>m.profile.maxCanvasPixels*1.01)
    errors.push("GPU buffer exceeds pixel cap");
   if(m.gpu.fpsCap!==m.profile.fps)errors.push("GPU fpsCap not applied");
-  if(width<=699&&m.screenInputFont<16)errors.push("mobile input auto zoom");
-  if(width>=320&&width<700&&m.dockColumns.split(" ").length!==2)
+  if(phoneVoiceText&&m.screenInputFont<16)errors.push("mobile input auto zoom");
+  if(width>=360&&width<700&&m.dockColumns.split(" ").length!==2)
    errors.push("2x2 system grid lost");
-  if(width<300&&m.dockColumns.split(" ").length!==1)
+  if(width<360&&m.dockColumns.split(" ").length!==1)
    errors.push("tiny-phone fallback should stack system cards");
   assert.deepEqual(errors,[],name+" "+JSON.stringify(m));
   console.log("UNIVERSAL PHONE/DISPLAY PASS",name,width+"x"+height,
