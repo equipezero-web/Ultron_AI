@@ -391,7 +391,21 @@ jobs:
             }
             throw error;
           };
-          const backend=await fetch(base+'/api/geo/locations?q=Tokyo',{signal:AbortSignal.timeout(12000)});
+          const routeProbe=async()=>{
+            let lastError;
+            for(let attempt=0;attempt<3;attempt++){
+              try{return await fetch(base+'/api/geo/locations?q=Tokyo',{
+                signal:AbortSignal.timeout(15000),cache:'no-store'
+              });}
+              catch(error){
+                lastError=error;
+                console.log('::warning::World route attempt '+(attempt+1)+' failed: '+String(error));
+                if(attempt<2)await new Promise(resolve=>setTimeout(resolve,1500));
+              }
+            }
+            throw lastError; // Persistent production failure is never marked green.
+          };
+          const backend=await routeProbe();
           console.log('Cloudflare World route:',backend.status,'(200=deployed, 404=fallback required)');
           assert.ok([200,404].includes(backend.status),'Unexpected Worker status');
           let workerForecastVerified=false;
