@@ -176,10 +176,13 @@ try {
     try{
       const result=await window.ULTRON_ORCHESTRATOR.execute(
         "Jarvis, mostre as notícias do Brasil e imagens no Neural Ring.","terminal-test");
+      const b=window.ULTRON_INTELLIGENCE?.visualData?.briefing;
       return {result,geocoded,mode:window.ULTRON_NEURAL_ANSWER?.state?.mode,
-        text:document.querySelector(".ultron-neural-answer")?.textContent||""};
+        text:document.querySelector(".ultron-neural-answer")?.textContent||"",
+        briefing:{ok:b?.ok,fetchedAt:b?.fetchedAt,topics:b?.topics?.map(t=>({id:t.id,count:t.articles?.length}))}};
     }finally{if(earth)earth.locate=original;}
   });
+  if(!routedNews.result?.ok)console.error("REGIONAL NEWS ROUTE DIAGNOSTIC",routedNews);
   assert.equal(routedNews.result?.route,"communication-regional-news");
   assert.equal(routedNews.result?.ok,true);
   assert.equal(routedNews.geocoded,false,"News requests must never trigger Earth geocoding");
