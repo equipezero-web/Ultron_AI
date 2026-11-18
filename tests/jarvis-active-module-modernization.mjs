@@ -36,6 +36,11 @@ assert.doesNotMatch(devices,/mobilePairButton\?\.addEventListener|lastDirectMobi
 assert.ok(!existsSync(resolve(root,"modules/device-client.js")),
  "Orphan historical device-client.js must not be reintroduced");
 assert.ok(!index.includes("device-client.js"));
+assert.ok(!existsSync(resolve(root,"modules/telemetry-client.js")),
+ "Outdated duplicate telemetry client must remain removed");
+const telemetry=read("modules/telemetry-client-v4270.js");
+assert.doesNotMatch(telemetry,/import\s*["']\.\/stark-bootstrap\.js/,
+ "Telemetry must never load a second historical Stark Bootstrap version");
 const bootstrap=read("modules/stark-bootstrap.js");
 for(const match of bootstrap.matchAll(/await import\(['"]\.\/([^'"]+)['"]\)/g)){
  const file=local(match[1]);assert.ok(existsSync(resolve(root,"modules",file)),"Missing bootstrap dependency: "+file);
