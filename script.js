@@ -92,6 +92,8 @@ function playVoice(base64, mime = "audio/mpeg") {
     if (audio.dataset.audioUrl) URL.revokeObjectURL(audio.dataset.audioUrl);
     audio.dataset.audioUrl = url;
     audio.src = url;
+    audio.muted = document.body.classList.contains("jarvis-voice-output-disabled");
+    audio.volume = 1;
     audio.load();
     audio.play().catch(() => {
       addLog(output, "Áudio gerado, mas o navegador bloqueou a reprodução automática.", "alert");
@@ -359,26 +361,30 @@ async function askUltron(command) {
 }
 
 async function testVoice() {
-  if (document.body.classList.contains("jarvis-voice-output-disabled") || document.body.classList.contains("jarvis-voice-paused")) return;
+  if (document.body.classList.contains("jarvis-voice-paused") ||
+      document.body.classList.contains("jarvis-voice-output-disabled")) {
+    addLog(output, "VOZ: saída de áudio silenciada. Ative a voz no painel para testar.", "alert");
+    return;
+  }
   if (voiceBusy) return;
   voiceBusy = true;
-  addLog(output, "Solicitando teste de voz...");
-
   try {
-    if (!API_BASE) throw new Error("Backend não configurado.");
-    const response = await fetch(apiUrl("/api/voice"), {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text: "Teste de voz do J.A.R.V.I.S. O áudio foi gerado pelo provedor." })
-    });
-    const data = await readApiResponse(response);
-    if (!response.ok) throw new Error(getErrorMessage(data, response.status));
-    if (!data?.audioBase64) throw new Error("O provedor não retornou áudio.");
-    window.ULTRON_VISUAL_PANEL?.setCaption?.("Teste de voz do J.A.R.V.I.S.; áudio obtido do provedor.");
-    playVoice(data.audioBase64, data.audioMimeType || "audio/mpeg");
-    addLog(output, "Voz recebida e enviada para reprodução.");
-  } catch (error) {
-    addLog(output, `VOICE ERROR: ${error.message}`, "alert");
+    // Use the browser's pt-BR synthesis first: this does not consume paid
+    // voice-provider credits or request microphone/camera access.
+    const tts = window.ULTRON_VOICE_OUTPUT;
+    if (!tts?.available) {
+      addLog(output,
+        "VOZ: síntese indisponível neste navegador. Tente Chrome/Edge atualizado e libere áudio.", "alert");
+      return;
+    }
+    const text = "Teste de voz do J.A.R.V.I.S. Áudio ativado. Estou pronto para conversar.";
+    const requested = tts.speak(text, {reason:"user-test", announce:false});
+    if (requested) {
+      window.ULTRON_VISUAL_PANEL?.setCaption?.(text);
+      addLog(output, "VOZ: reprodução solicitada ao sintetizador do navegador (português).");
+    } else {
+      addLog(output, "VOZ: o navegador não iniciou a fala; verifique a saída de som.", "alert");
+    }
   } finally {
     voiceBusy = false;
   }
