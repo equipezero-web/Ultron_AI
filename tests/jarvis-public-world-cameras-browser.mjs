@@ -23,6 +23,37 @@ try{
  assert.ok(panel,"Worldcam panel must open inside existing Neural Ring");
  assert.equal(await page.$(".jarvis-worldcam-view iframe[src]"),null,
   "No hidden or automatic camera feed should load on activation");
+ // A user must see which cameras exist before seeing an empty video player.
+ const cameraChoices=await page.evaluate(()=>{
+  const panel=document.querySelector(".jarvis-worldcam-panel");
+  const picker=document.querySelector("#jarvis-worldcam-camera-select");
+  const first=document.querySelector(".jarvis-worldcam-item");
+  const pr=picker.getBoundingClientRect(),fr=first.getBoundingClientRect();
+  const panelRect=panel.getBoundingClientRect();
+  return {
+   choices:picker.options.length,firstOption:picker.options[1]?.textContent,
+   firstCard:first.textContent,
+   top:pr.top,bottom:pr.bottom,cardTop:fr.top,panelBottom:panelRect.bottom,
+   visible:getComputedStyle(picker).display!=="none"&&pr.width>100&&pr.height>=40,
+   scroll:getComputedStyle(panel).overflowY,
+   gallery:panel.querySelectorAll(".jarvis-worldcam-item").length,
+   advancedClosed:!panel.querySelector(".jarvis-worldcam-advanced").open
+  };
+ });
+ assert.ok(cameraChoices.choices>=11,JSON.stringify(cameraChoices));
+ assert.match(cameraChoices.firstOption,/VÍDEO NO RING/);
+ assert.ok(cameraChoices.visible, "Camera selector must be visible above preview: "+JSON.stringify(cameraChoices));
+ assert.ok(cameraChoices.gallery>=10);
+ assert.ok(cameraChoices.cardTop<cameraChoices.panelBottom,
+  "Camera options must appear without scrolling below a blank video: "+JSON.stringify(cameraChoices));
+ assert.equal(cameraChoices.advancedClosed,true,"Advanced filters must not hide the default options");
+ assert.equal(cameraChoices.scroll,"auto","Camera panel must scroll instead of clipping the catalogue");
+ await page.select("#jarvis-worldcam-camera-select","copacabana");
+ const picked=await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.state);
+ assert.equal(picked.selected,"copacabana");
+ assert.equal(picked.playerRequested,true,"Native picker should start authorized player in Ring");
+ assert.match(await page.$eval(".jarvis-worldcam-view iframe",i=>i.getAttribute("src")),'/embed/');
+ assert.match(await page.$eval(".jarvis-worldcam-view iframe",i=>i.getAttribute("src")),'mute=1');
  const searched=await run("Jarvis, mostre a câmera de Recife");
  assert.equal(searched.ok,true,JSON.stringify(searched));
  assert.equal(searched.selected,"recife-airport");
@@ -129,10 +160,16 @@ try{
   "Switching to source-only camera must clear previous video");
  assert.equal(await page.$(".jarvis-worldcam-play"),null,
   "Source-only camera must not invent a playable stream");
+ await page.click(".jarvis-worldcam-advanced>summary");
  const input=await page.$(".jarvis-worldcam-filters input");
  await input.click({clickCount:3});await input.type("não existe");
  const empty=await page.$eval(".jarvis-worldcam-empty",node=>node.textContent);
  assert.match(empty,/Nenhuma câmera/);
+ // Reopening without a search must clear the old query so the user sees choices.
+ const reopened=await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.open());
+ assert.ok(reopened.count>=10,"Reopening world cams must recover public camera options");
+ assert.ok((await page.$("#jarvis-worldcam-camera-select option")).length>=11);
+ assert.equal(await page.$eval(".jarvis-worldcam-advanced",el=>el.open),false);
  await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.open({cameraId:"tokyo-rainbow"}));
  const closedByVoice=await run("Jarvis, sair das câmeras mundiais");
  assert.equal(closedByVoice.ok,true);
@@ -158,5 +195,18 @@ try{
  assert.ok(width<=4,"No mobile horizontal overflow: "+width);
  const privateIntent=await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.parse("abrir câmera do celular"));
  assert.equal(privateIntent,null,"Worldcam module cannot intercept local optical sensor");
- console.log("WORLD WEBCAM BROWSER PASS: mobile, source-only, opt-in iframe, accurate live status and P0.");
+ // The chooser must also be reachable on a notebook, not phone-only.
+ await page.setViewport({width:1366,height:768,isMobile:false,hasTouch:false,deviceScaleFactor:1});
+ await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.open());
+ const notebook=await page.evaluate(()=>{
+  const picker=document.querySelector("#jarvis-worldcam-camera-select");
+  const panel=document.querySelector(".jarvis-worldcam-panel");
+  const card=document.querySelector(".jarvis-worldcam-item");
+  const r=picker.getBoundingClientRect();
+  return {pickerVisible:r.height>=40&&r.top>=0&&r.bottom<=innerHeight,
+   itemCount:panel.querySelectorAll(".jarvis-worldcam-item").length,
+   cardVisible:card.getBoundingClientRect().top<panel.getBoundingClientRect().bottom};
+ });
+ assert.ok(notebook.pickerVisible&&notebook.cardVisible&&notebook.itemCount>=10,JSON.stringify(notebook));
+ console.log("WORLD WEBCAM BROWSER PASS: chooser + gallery visible, mobile/notebook, source-only, muted opt-in iframe and P0.");
 }finally{await browser.close();}
