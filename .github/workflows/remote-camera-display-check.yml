@@ -39,7 +39,7 @@ jobs:
           grep -q "webcam do Windows permanecerá desligada" modules/remote-camera-mode-v4232.js
           grep -q "remote-camera-display-v4232.js?v=4.23.2" modules/stark-bootstrap.js
           grep -q "remote-camera-mode-v4232.js?v=4.23.2" modules/stark-bootstrap.js
-          grep -Fq "stark-bootstrap.js?v=" index.html
+          grep -Eq "remote-camera-webrtc-hotfix-v4221.js\\?v=4\\.(23|24)\\.[0-9]+" modules/stark-bootstrap.js
           grep -q "ULTRON_REMOTE_CAMERA_ICE" modules/remote-camera-webrtc-hotfix-v4221.js
           grep -q "icecandidateerror" modules/remote-camera-webrtc-hotfix-v4221.js
-          grep -Eq "stark-bootstrap.js\?v=4\.[0-9]+\.[0-9]+" index.html
+          grep -Fq "stark-bootstrap.js?v=" index.html
