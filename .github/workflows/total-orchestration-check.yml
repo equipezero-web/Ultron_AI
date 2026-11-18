@@ -410,10 +410,10 @@ jobs:
               workerForecastVerified=true;
               console.log('WORKER GLOBAL 16-DAY FORECAST VERIFIED');
             }else{
-              assert.equal(verified.status,502,'Unexpected Worker weather failure');
+              assert.ok([502,503].includes(verified.status),'Unexpected Worker weather failure');
               const error=JSON.parse(body);
               assert.equal(error.ok,false);
-              console.log('::warning::Worldwide forecast returned a validated 502; provider/model data may be temporarily unavailable. No forecast was invented.');
+              console.log('::warning::Worldwide forecast returned a validated 502/503; provider/model data may be temporarily unavailable. No forecast was invented.');
               try{
                 const direct=new URL('https://api.open-meteo.com/v1/forecast');
                 for(const [key,value] of Object.entries({
