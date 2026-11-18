@@ -85,9 +85,8 @@ try{
  }));
  assert.equal(w24selected.ok,true);
  assert.equal(w24selected.selected,"webcamera24-patong-nanai");
- assert.equal(await page.$(".jarvis-worldcam-view iframe[src]"),null);
- assert.equal(await page.$(".jarvis-worldcam-audio:not([hidden])"),null);
- await page.click(".jarvis-worldcam-play");
+ assert.equal((await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.state)).playerRequested,true);
+ assert.equal(await page.$eval(".jarvis-worldcam-audio",el=>el.hidden),false);
  const w24stream=await page.$eval(".jarvis-worldcam-view iframe",el=>el.getAttribute("src"));
  assert.match(w24stream,/youtube-nocookie\.com\/embed\/uEkJjuAjWa0/);
  assert.match(w24stream,/mute=1/);
@@ -112,9 +111,8 @@ try{
  assert.equal(switched.selected,"webcamera24-osaka-ikuno");
  const afterSwitch=await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.state);
  assert.equal(afterSwitch.audioRequested,false,"No audio permission may carry between cams");
- assert.equal(afterSwitch.playerRequested,false);
- assert.equal(await page.$eval(".jarvis-worldcam-audio",el=>el.hidden),true);
- await page.click(".jarvis-worldcam-play");
+ assert.equal(afterSwitch.playerRequested,true);
+ assert.equal(await page.$eval(".jarvis-worldcam-audio",el=>el.hidden),false);
  assert.equal((await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.state)).audioRequested,false);
  assert.match(await page.$eval(".jarvis-worldcam-view iframe",el=>el.getAttribute("src")),
   /mute=1/);
