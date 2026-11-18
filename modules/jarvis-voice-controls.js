@@ -43,6 +43,7 @@ setEnabled(savedPreference(),{persist:false});
 toggle?.addEventListener("click",()=>setEnabled(!enabled()));
 document.getElementById("btn-listen-voice")?.addEventListener("click",()=>queueMicrotask(update));
 window.addEventListener("ultron:voice-listening-enabled",update);
+window.addEventListener("ultron:voice-listening-state",update);
 window.addEventListener("ultron:wake-state",update);
 window.JARVIS_VOICE_CONTROLS={
  setEnabled,
