@@ -189,6 +189,14 @@ try {
   assert.equal(routedNews.mode,"news");
   assert.ok(routedNews.text.includes("Notícia de teste Brasil & economia"),
     "Brazil news should appear in the Neural Ring with a source");
+  const allNews=await page.evaluate(async()=>{
+    const result=await window.ULTRON_ORCHESTRATOR.execute(
+      "Jarvis, mostre as notícias e imagens no Neural Ring","terminal-test");
+    return {result,mode:window.ULTRON_NEURAL_ANSWER?.state?.mode};
+  });
+  assert.equal(allNews.result?.route,"communication-regional-news");
+  assert.equal(allNews.result?.ok,true);
+  assert.equal(allNews.mode,"news");
   const routedPrevious=await page.evaluate(async()=>{
     const visual=window.ULTRON_VISUAL_ORCHESTRATOR;
     const original=visual.previous;
