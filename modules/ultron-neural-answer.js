@@ -39,7 +39,7 @@ if(center){
   let activeWakeStories=[];
   let textEnabled=true;
   try{textEnabled=localStorage.getItem('ultron-neural-text-enabled')!=='false';}catch{}
-  let hasContent=false;
+  let hasContent=false,currentMode=null;
   function syncVisibility(){
     box.classList.toggle('ultron-text-disabled',!textEnabled);
     text.hidden=!textEnabled;
@@ -52,8 +52,16 @@ if(center){
   const clear=()=>{
     dismissed=true;pendingAnswer=false;
     hasContent=false;box.hidden=true;text.textContent='';
-    media.replaceChildren();sources.replaceChildren();
+    media.replaceChildren();sources.replaceChildren();currentMode=null;
+    return {ok:true,closed:true};
   };
+  function clearMedia(kind){
+    const selector=kind==="videos"?".ultron-media-videos":kind==="images"?".ultron-media-images":null;
+    const section=selector?media.querySelector(selector):null;
+    if(!section)return {ok:false,reason:"media-not-visible"};
+    section.remove();syncVisibility();
+    return {ok:true,closed:true,kind};
+  }
   close.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();clear();});
   // Prevent stage gestures from consuming clicks and touch interactions.
   for(const type of ['pointerdown','pointerup','touchstart','touchend','click']){
@@ -71,6 +79,7 @@ if(center){
   const present=(value,{pending=false,visual=null,webResearch=null}={})=>{
     if(dismissed)return;
     syncLayout();
+    currentMode=visual?.mode||null;
     hasContent=true;box.hidden=false;
     status.textContent=pending?'ULTRON // CONSULTANDO FONTES':'ULTRON // RESPOSTA';
     text.textContent=String(value||'').slice(0,6500);
@@ -253,5 +262,5 @@ if(center){
       present('',{visual:{mode:'news',cards:stories,introduction:wakeIntro(event.detail.summary)}});
     }
   });
-  window.ULTRON_NEURAL_ANSWER={show:(value,options)=>{dismissed=false;present(value,options);},clear,setTextEnabled,get textEnabled(){return textEnabled;},get visible(){return !box.hidden;}};
+  window.ULTRON_NEURAL_ANSWER={show:(value,options)=>{dismissed=false;present(value,options);},clear,clearMedia,setTextEnabled,get textEnabled(){return textEnabled;},get visible(){return !box.hidden;},get state(){return {visible:!box.hidden,mode:currentMode,hasVideos:Boolean(media.querySelector(".ultron-media-videos")),hasImages:Boolean(media.querySelector(".ultron-media-images"))};}};
 }
