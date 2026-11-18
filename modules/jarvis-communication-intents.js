@@ -66,3 +66,9 @@ export function parseNewsVisualCloseIntent(value){
   return {type:"images"};
  return null;
 }
+
+// Explicit operator request to start the existing consent-based Android pairing UI.
+export function parseMobilePairingIntent(value){
+ const q=safe(value);if(!q)return null;
+ return /^(?:(?:conecte|conectar|pareie|parear|vincule|vincular) (?:o |meu |o meu )?(?:celular|android)(?: (?:pelo|via|ao|com) (?:o )?(?:mobile link|jarvis|j a r v i s|bridge))?|(?:abra|abrir|inicie|iniciar) (?:o )?pareamento (?:do |de )?(?:meu )?(?:celular|android))$/.test(q)?{type:"open"}:null;
+}
