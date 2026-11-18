@@ -3,7 +3,7 @@ import {planAgents} from "../backend/intelligent-task-hub.js";
 import {classifyOperatorTurn,splitOperatorSteps} from "./jarvis-intent-engine.js?v=4.69.0";
 import {directPlan,resolveActionPlan,runActionPlan} from "./jarvis-action-engine.js?v=4.101.2";
 import {parseLocalCommand,runLocalCommand} from "./jarvis-local-commands.js?v=5.53.0";
-import {parseDirectorIntent,parseRegionalNewsVisualIntent,parseBriefingIntent,parsePublicCameraAudioIntent,parseCommunicationNotificationIntent,parseNewsVisualCloseIntent} from "./jarvis-communication-intents.js?v=5.54.0";
+import {parseDirectorIntent,parseRegionalNewsVisualIntent,parseBriefingIntent,parsePublicCameraAudioIntent,parseCommunicationNotificationIntent,parseNewsVisualCloseIntent,parseMobilePairingIntent} from "./jarvis-communication-intents.js?v=5.55.0";
 import {buildRegionalNewsVisual} from "./jarvis-regional-news-visual.js?v=5.54.0";
 import {parseMissionControl,assessCompoundMission,createMissionGate} from "./jarvis-mission-safety.js";
 import {inspectMissionDependencies,missionStepOutcome,createMissionJournal} from "./jarvis-mission-diagnostics.js";
@@ -857,6 +857,20 @@ function enqueue(message, source = "terminal", approvedMission = false) {
       ? {ok:false,status:"cancelled",route:"p0-stop"}:
       executeMessage(message,source,approvedMission));
     return queue;
+  }
+  // Pairing is a local, operator-initiated UI action, not a web search or AI reply.
+  const mobilePairingIntent=parseMobilePairingIntent(message);
+  if(mobilePairingIntent){
+    const button=document.getElementById("btn-jarvis-pair-mobile");
+    const panel=document.getElementById("jarvis-mobile-pair-card");
+    if(!button||!panel){
+      log("MOBILE LINK // painel de pareamento indisponível.",true);
+      return Promise.resolve({ok:false,route:"communication-mobile-pairing",reason:"pairing-ui-unavailable"});
+    }
+    panel.scrollIntoView?.({behavior:"smooth",block:"center"});
+    button.click();
+    log("MOBILE LINK // solicitação de pareamento iniciada no painel; conexão ainda não confirmada.");
+    return Promise.resolve({ok:true,route:"communication-mobile-pairing",status:"pairing-requested",paired:false});
   }
   // Communication controls are local UI operations, never AI or TV commands.
   const mediaClose=parseNewsVisualCloseIntent(message);

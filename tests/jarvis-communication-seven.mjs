@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import {readFileSync} from "node:fs";
 import {parseDirectorIntent,parseRegionalNewsVisualIntent,parseBriefingIntent,parsePublicCameraAudioIntent,
- parseCommunicationNotificationIntent,parseNewsVisualCloseIntent} from "../modules/jarvis-communication-intents.js";
+ parseCommunicationNotificationIntent,parseNewsVisualCloseIntent,parseMobilePairingIntent} from "../modules/jarvis-communication-intents.js";
 import {buildRegionalNewsVisual} from "../modules/jarvis-regional-news-visual.js";
 import {isExplicitSleepCommand} from "../modules/voice-runtime-policy.js";
 import {parseWorldCameraCommand} from "../modules/jarvis-public-world-cameras-model.js";
@@ -40,7 +40,14 @@ for(const phrase of ["Jarvis, durma","dormir","Ultron, pare de responder"])
 for(const phrase of ["Não pare de responder","Como encerrar conversa?","se eu disser dormir",
  "ainda não quero dormir","eu não quero que você pare de responder"])
  assert.equal(isExplicitSleepCommand(phrase),false,phrase);
+for(const phrase of ["Jarvis, conecte meu celular pelo Mobile Link", "parear celular", "Jarvis, vincule meu Android ao Bridge"])
+ assert.deepEqual(parseMobilePairingIntent(phrase),{type:"open"},phrase);
+for(const phrase of ["Não conecte meu celular", "Como conectar meu celular?", "Se eu parear celular"])
+ assert.equal(parseMobilePairingIntent(phrase),null,phrase);
 const orchestrator=file("modules/ultron-orchestrator-v4270.js");
+assert.ok(orchestrator.includes("parseMobilePairingIntent(message)"));
+assert.ok(orchestrator.includes('status:"pairing-requested",paired:false'));
+
 for(const fn of ["parseDirectorIntent","parseBriefingIntent","parsePublicCameraAudioIntent",
  "parseCommunicationNotificationIntent","parseNewsVisualCloseIntent"])
  assert.ok(orchestrator.includes(fn+"(message)"),fn+" must route before generic AI");
@@ -149,6 +156,6 @@ assert.ok(orchestratorNew.indexOf("const regionalNewsIntent=parseRegionalNewsVis
  "Regional news must route before generic director/Earth/AI");
 assert.match(orchestratorNew,/if\(\/\\b\(\?:noticias\?\|manchetes\?/,
  "Earth place parser must reject media/news commands");
-assert.match(file("index.html"),/ultron-orchestrator-v4270\.js\?v=5\.54\.0/);
+assert.match(file("index.html"),/ultron-orchestrator-v4270\.js\?v=5\.55\.0/);
 
 console.log("JARVIS COMMUNICATION 7 PASS: command safety, voice, visual, news, camera audio and consented notifications");
