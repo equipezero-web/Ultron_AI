@@ -629,6 +629,10 @@ try {
             w:el.getBoundingClientRect().width,h:el.getBoundingClientRect().height}
         })),
         hitButtonMode:target?.closest?.('button')?.dataset?.mode||null,
+        hitButtonText:target?.closest?.('button')?.textContent||null,
+        hitGroupSame:target?.closest?.('.jarvis-geo-modes')===button.closest('.jarvis-geo-modes'),
+        hitPanelSame:target?.closest?.('.jarvis-geo-visual')===panel,
+        panelCount:document.querySelectorAll('#jarvis-geo-visual').length,
         buttonZ:getComputedStyle(button).zIndex,panelZ:getComputedStyle(panel).zIndex};
     });
     assert.ok(accessibleMode.insideViewport&&accessibleMode.hit,
