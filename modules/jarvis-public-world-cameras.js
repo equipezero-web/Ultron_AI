@@ -48,15 +48,17 @@ function syncAudio(){
   "Ativação solicitada ao YouTube; o som não pôde ser confirmado automaticamente.":
   "Áudio desativado por padrão. Seu clique é necessário para ativar.";
 }
-function toggleAudio(){
+function setAudio(enabled){
+ const requested=Boolean(enabled);
  if(!playing||cameraProvider(nowPlaying)!=="webcamera24")
   return {ok:false,reason:"NO_MANAGED_PLAYER",audioRequested:false};
- const next=!audioRequested;
- if(!sendYouTubeSound(next?"unMute":"mute"))
-  return {ok:false,reason:"PLAYER_UNAVAILABLE",audioRequested:false};
- audioRequested=next;syncAudio();
- return {ok:true,audioRequested:next,audioVerified:false};
+ if(audioRequested===requested)return {ok:true,audioRequested:requested,audioVerified:false,unchanged:true};
+ if(!sendYouTubeSound(requested?"unMute":"mute"))
+  return {ok:false,reason:"PLAYER_UNAVAILABLE",audioRequested};
+ audioRequested=requested;syncAudio();
+ return {ok:true,audioRequested:requested,audioVerified:false};
 }
+function toggleAudio(){return setAudio(!audioRequested);}
 function endPlayback(){
  if(playing)sendYouTubeSound("mute");
  playing=false;nowPlaying=null;audioRequested=false;
@@ -323,7 +325,7 @@ function stop(){
  hide();say("STOP: reprodução de câmeras externas encerrada no Neural Ring.");
  return {ok:true,stopped:true};
 }
-window.ULTRON_WORLD_CAMERAS={parse,execute,open,search,hide,status,stop,toggleAudio,
+window.ULTRON_WORLD_CAMERAS={parse,execute,open,search,hide,status,stop,toggleAudio,setAudio,
  get state(){return {open:requested,selected:selection?.id||null,
   playerRequested:playing,liveVerified:false,playing:nowPlaying?.id||null,
   audioRequested:audioRequested,audioVerified:false,
