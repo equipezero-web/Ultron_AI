@@ -403,20 +403,23 @@ body.jarvis-command-center .jarvis-worldcam-sidebar .jarvis-worldcam-filters inp
  body.jarvis-command-center .jarvis-worldcam-media{
   display:contents;
  }
- body.jarvis-command-center .jarvis-worldcam-picker{order:1;position:relative}
+ body.jarvis-command-center .jarvis-worldcam-picker{order:1}
+ body.jarvis-command-center .jarvis-worldcam-sidebar>.jarvis-worldcam-picker{
+  position:relative;top:auto;
+ }
  body.jarvis-command-center .jarvis-worldcam-results{order:2}
  body.jarvis-command-center .jarvis-worldcam-view{order:3}
  body.jarvis-command-center .jarvis-worldcam-audio{order:4}
  body.jarvis-command-center .jarvis-worldcam-info{order:5}
  body.jarvis-command-center .jarvis-worldcam-advanced{order:6}
  body.jarvis-command-center .jarvis-worldcam-catalogs{order:7}
- body.jarvis-command-center .jarvis-worldcam-results{
+ body.jarvis-command-center .jarvis-worldcam-sidebar .jarvis-worldcam-results{
   display:grid!important;grid-template-columns:minmax(0,1fr)!important;
   max-height:155px!important;min-height:86px!important;
   flex:0 0 auto!important;
  }
  body.jarvis-command-center .jarvis-worldcam-item{min-height:75px!important}
- body.jarvis-command-center .jarvis-worldcam-view{
+ body.jarvis-command-center .jarvis-worldcam-media>.jarvis-worldcam-view{
   flex:0 0 auto!important;height:clamp(280px,43svh,470px)!important;
   min-height:clamp(280px,43svh,470px)!important;width:100%;
  }
