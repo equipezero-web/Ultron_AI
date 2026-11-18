@@ -17,13 +17,13 @@ function publicHttps(value){
  }catch{return null;}
 }
 export function buildRegionalNewsVisual(visualData,{region="brasil",now=Date.now()}={}){
- if(!["brasil","mundo"].includes(region))return {ok:false,reason:"invalid-region"};
+ if(!["brasil","mundo","all"].includes(region))return {ok:false,reason:"invalid-region"};
  const briefing=visualData?.briefing;
  if(briefing?.ok!==true||!verifiedTime(briefing.fetchedAt,now,TWO_HOURS))
   return {ok:false,reason:"briefing-unavailable-or-stale"};
- const groups=(briefing.topics||[]).filter(group=>region==="brasil"
-  ?["brasil","santa-catarina"].includes(group?.id)
-  :!["brasil","santa-catarina"].includes(group?.id));
+ const groups=(briefing.topics||[]).filter(group=>region==="all"||
+  (region==="brasil"?["brasil","santa-catarina"].includes(group?.id):
+   !["brasil","santa-catarina"].includes(group?.id)));
  const cards=[],seen=new Set();
  for(const group of groups){
   for(const article of (Array.isArray(group.articles)?group.articles:[])){
@@ -47,7 +47,7 @@ export function buildRegionalNewsVisual(visualData,{region="brasil",now=Date.now
  }
  if(!cards.length)return {ok:false,reason:"no-current-verified-regional-news"};
  const imageCount=cards.filter(card=>Boolean(card.imageUrl)).length;
- const area=region==="brasil"?"Brasil":"mundo";
+ const area=region==="brasil"?"Brasil":region==="mundo"?"mundo":"Brasil e do mundo";
  const introduction="Notícias recentes do "+area+" com fontes e datas verificáveis. "+
   (imageCount?"Imagens exibidas somente quando fornecidas pelas notícias. ":
    "As fontes desta seleção não forneceram imagens verificáveis. ")+
