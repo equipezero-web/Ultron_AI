@@ -3,7 +3,7 @@ import {planAgents} from "../backend/intelligent-task-hub.js";
 import {classifyOperatorTurn,splitOperatorSteps} from "./jarvis-intent-engine.js?v=4.69.0";
 import {directPlan,resolveActionPlan,runActionPlan} from "./jarvis-action-engine.js?v=4.101.2";
 import {parseLocalCommand,runLocalCommand} from "./jarvis-local-commands.js?v=5.53.0";
-import {parseDirectorIntent,parseBriefingIntent,parsePublicCameraAudioIntent,parseCommunicationNotificationIntent} from "./jarvis-communication-intents.js?v=5.53.0";
+import {parseDirectorIntent,parseBriefingIntent,parsePublicCameraAudioIntent,parseCommunicationNotificationIntent,parseNewsVisualCloseIntent} from "./jarvis-communication-intents.js?v=5.53.0";
 import {parseMissionControl,assessCompoundMission,createMissionGate} from "./jarvis-mission-safety.js";
 import {inspectMissionDependencies,missionStepOutcome,createMissionJournal} from "./jarvis-mission-diagnostics.js";
 import {createRecoveryEngine} from "./jarvis-recovery-engine.js";
@@ -855,6 +855,17 @@ function enqueue(message, source = "terminal", approvedMission = false) {
     return queue;
   }
   // Communication controls are local UI operations, never AI or TV commands.
+  const mediaClose=parseNewsVisualCloseIntent(message);
+  if(mediaClose){
+    const answer=window.ULTRON_NEURAL_ANSWER,news=window.ULTRON_NEURAL_NEWS;
+    let result={ok:false,reason:"requested-media-not-visible"};
+    if(mediaClose.type==="news"){
+      if(answer?.state?.visible&&answer.state.mode==="news")result=answer.clear?.()||result;
+      if(news?.state?.requested){news.hide?.();result={ok:true,closed:true};}
+    }else if(answer?.state?.visible)result=answer.clearMedia?.(mediaClose.type)||result;
+    log("MÍDIA // "+mediaClose.type+" // "+(result?.ok?"FECHADA":"NÃO ESTAVA ABERTA"),!result?.ok);
+    return Promise.resolve({route:"communication-media-close",...result});
+  }
   const directorIntent=parseDirectorIntent(message);
   if(directorIntent){
     const module=window.ULTRON_VISUAL_ORCHESTRATOR;
