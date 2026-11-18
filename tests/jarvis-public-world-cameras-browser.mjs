@@ -48,6 +48,34 @@ try{
   "Camera options must appear without scrolling below a blank video: "+JSON.stringify(cameraChoices));
  assert.equal(cameraChoices.advancedClosed,true,"Advanced filters must not hide the default options");
  assert.equal(cameraChoices.scroll,"auto","Camera panel must scroll instead of clipping the catalogue");
+ // Regression: generic or unmatched search terms must never leave the picker
+ // showing 0 cameras while the curated source index contains real entries.
+ const broad=await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.open({
+  search:"câmeras do mundo"
+ }));
+ assert.ok(broad.count>=10,JSON.stringify(broad));
+ assert.ok((await page.$("#jarvis-worldcam-camera-select option")).length>=11);
+ assert.equal(await page.$(".jarvis-worldcam-empty"),null);
+ const unknown=await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.open({
+  search:"local inexistente em lugar algum"
+ }));
+ assert.ok(unknown.count>=10,JSON.stringify(unknown));
+ assert.equal(await page.$eval(".jarvis-worldcam-filters input",el=>el.value),"");
+ assert.match(await page.$eval(".jarvis-worldcam-picker-notice",el=>el.textContent),/Exibindo todas as opções/);
+ assert.ok((await page.$("#jarvis-worldcam-camera-select option")).length>=11);
+ assert.equal(await page.$(".jarvis-worldcam-empty"),null);
+ // Explicit advanced searches may yield zero, but must show a working reset.
+ await page.click(".jarvis-worldcam-advanced>summary");
+ await page.$eval(".jarvis-worldcam-filters input",el=>{
+  el.value="local inexistente";
+  el.dispatchEvent(new Event("input",{bubbles:true}));
+ });
+ assert.ok(await page.$(".jarvis-worldcam-empty"));
+ await page.click(".jarvis-worldcam-show-all");
+ assert.equal(await page.$(".jarvis-worldcam-empty"),null);
+ assert.ok((await page.$("#jarvis-worldcam-camera-select option")).length>=11);
+ assert.equal(await page.$eval(".jarvis-worldcam-filters input",el=>el.value),"");
+
  await page.select("#jarvis-worldcam-camera-select","copacabana");
  const picked=await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.state);
  assert.equal(picked.selected,"copacabana");
