@@ -142,6 +142,13 @@ geoWeather.state={visible:true,scenario:"tsunami-japan"};
 const notWeather=await runLocalCommand("fechar previsão do tempo");
 assert.equal(notWeather.ok,false);
 assert.equal(geoWeather.state.visible,true,"Unrelated geospatial scenes must remain open");
+geoWeather.state={visible:true,scenario:"weather-global-123"};
+const centerRadar={state:{visible:true,tab:"radar"},close(){throw Error("Radar must stay open");}};
+window.ULTRON_METEO_CENTER=centerRadar;
+const onlyForecast=await runLocalCommand("Jarvis, feche a previsão do tempo");
+assert.equal(onlyForecast.ok,true);
+assert.equal(geoWeather.state.visible,false);
+assert.equal(centerRadar.state.visible,true,"Closing geographic forecast must preserve radar");
 const answerSource=readFileSync(new URL("../modules/ultron-neural-answer.js",import.meta.url),"utf8");
 assert.match(answerSource,/autoplay=1&mute=1/,"News videos should not autoplay unmuted");
 
