@@ -107,7 +107,7 @@ async function deriveHKDF(ikm,salt,info,bits){
  return new Uint8Array(await crypto.subtle.deriveBits({
   name:"HKDF",hash:"SHA-256",salt,info},key,bits));
 }
-async function encryptPayload(payload,sub){
+export async function encryptPushPayload(payload,sub){
  const receiver=b64bytes(sub.p256dh),auth=b64bytes(sub.auth_secret);
  const receiverKey=await crypto.subtle.importKey("raw",receiver,{name:"ECDH",namedCurve:"P-256"},false,[]);
  const ephemeral=await crypto.subtle.generateKey({name:"ECDH",namedCurve:"P-256"},true,["deriveBits"]);
@@ -123,7 +123,7 @@ async function encryptPayload(payload,sub){
  const encrypted=new Uint8Array(await crypto.subtle.encrypt({name:"AES-GCM",iv:nonce},key,plaintext));
  return concat(salt,new Uint8Array([0,0,16,0,65]),sender,encrypted);
 }
-async function vapidToken(env,endpoint,now){
+export async function vapidToken(env,endpoint,now){
  const conf=pushConfiguration(env);if(!conf.enabled)throw Error("vapid-not-configured");
  const jwk=JSON.parse(env.JARVIS_PUSH_VAPID_PRIVATE_JWK);
  const key=await crypto.subtle.importKey("jwk",{...jwk,ext:true,key_ops:["sign"]},
@@ -139,7 +139,7 @@ async function sendPush(env,sub,payload,{fetchImpl=fetch,now=Date.now()}={}){
  if(!validatePushSubscription({endpoint:sub.endpoint,keys:{p256dh:sub.p256dh,auth:sub.auth_secret}}))
   return {ok:false,status:400};
  const token=await vapidToken(env,sub.endpoint,now);
- const body=await encryptPayload(payload,sub);
+ const body=await encryptPushPayload(payload,sub);
  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),6500);
  try{
   const res=await fetchImpl(sub.endpoint,{method:"POST",redirect:"error",signal:controller.signal,
