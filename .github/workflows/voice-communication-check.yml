@@ -97,6 +97,7 @@ jobs:
       - name: Verify all seven communication capabilities
         run: |
           node --check modules/jarvis-communication-intents.js
+          node --check modules/jarvis-regional-news-visual.js
           node --check modules/jarvis-communication-notifications.js
           node --check jarvis-notification-sw.js
           node --check modules/ultron-orchestrator-v4270.js

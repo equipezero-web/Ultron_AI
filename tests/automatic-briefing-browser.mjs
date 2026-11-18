@@ -166,6 +166,51 @@ try {
   assert.equal(controlLabels.length,2,"Refresh and opt-in notification controls only; voice remains off");
   assert.equal(controlLabels[0],"Atualizar");
   assert.match(controlLabels[1],/NOTIFICAÇÕES|PUSH OFICIAL/,"Notifications show an explicit browser support state");
+  // Real transcript regression: terminal and voice use the same local routing.
+  // The region-specific request must render sourced news, never geocode a title.
+  const routedNews=await page.evaluate(async()=>{
+    const earth=window.ULTRON_EARTH;
+    const original=earth?.locate;
+    let geocoded=false;
+    if(earth)earth.locate=async()=>{geocoded=true;return {ok:false};};
+    try{
+      const result=await window.ULTRON_ORCHESTRATOR.execute(
+        "Jarvis, mostre as notícias do Brasil e imagens no Neural Ring.","terminal-test");
+      const b=window.ULTRON_INTELLIGENCE?.visualData?.briefing;
+      return {result,geocoded,mode:window.ULTRON_NEURAL_ANSWER?.state?.mode,
+        text:document.querySelector(".ultron-neural-answer")?.textContent||"",
+        briefing:{ok:b?.ok,fetchedAt:b?.fetchedAt,topics:b?.topics?.map(t=>({id:t.id,count:t.articles?.length}))}};
+    }finally{if(earth)earth.locate=original;}
+  });
+  if(!routedNews.result?.ok)console.error("REGIONAL NEWS ROUTE DIAGNOSTIC",routedNews);
+  assert.equal(routedNews.result?.route,"communication-regional-news");
+  assert.equal(routedNews.result?.ok,true);
+  assert.equal(routedNews.geocoded,false,"News requests must never trigger Earth geocoding");
+  assert.equal(routedNews.mode,"news");
+  assert.ok(routedNews.text.includes("Notícia de teste Brasil & economia"),
+    "Brazil news should appear in the Neural Ring with a source");
+  const allNews=await page.evaluate(async()=>{
+    const result=await window.ULTRON_ORCHESTRATOR.execute(
+      "Jarvis, mostre as notícias e imagens no Neural Ring","terminal-test");
+    return {result,mode:window.ULTRON_NEURAL_ANSWER?.state?.mode};
+  });
+  assert.equal(allNews.result?.route,"communication-regional-news");
+  assert.equal(allNews.result?.ok,true);
+  assert.equal(allNews.mode,"news");
+  const routedPrevious=await page.evaluate(async()=>{
+    const visual=window.ULTRON_VISUAL_ORCHESTRATOR;
+    const original=visual.previous;
+    let called=0;
+    visual.previous=()=>{called++;return {ok:true,scene:"map"};};
+    try{
+      const a=await window.ULTRON_ORCHESTRATOR.execute("volte a cena anterior","terminal-test");
+      const b=await window.ULTRON_ORCHESTRATOR.execute("Volte para a cena anterio","voice-test");
+      return {a,b,called};
+    }finally{visual.previous=original;}
+  });
+  assert.equal(routedPrevious.called,2,"Both natural variants must call director.previous");
+  assert.equal(routedPrevious.a?.route,"communication-director");
+  assert.equal(routedPrevious.b?.route,"communication-director");
   const initialCalls=calls;
   await page.click(".jarvis-intel-controls button:first-child");
   await page.waitForFunction(()=>window.ULTRON_INTELLIGENCE?.state?.loading===false,{timeout:6000});

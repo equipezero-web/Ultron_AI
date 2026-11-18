@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
 import {readFileSync} from "node:fs";
-import {parseDirectorIntent,parseBriefingIntent,parsePublicCameraAudioIntent,
+import {parseDirectorIntent,parseRegionalNewsVisualIntent,parseBriefingIntent,parsePublicCameraAudioIntent,
  parseCommunicationNotificationIntent,parseNewsVisualCloseIntent} from "../modules/jarvis-communication-intents.js";
+import {buildRegionalNewsVisual} from "../modules/jarvis-regional-news-visual.js";
 import {isExplicitSleepCommand} from "../modules/voice-runtime-policy.js";
 import {parseWorldCameraCommand} from "../modules/jarvis-public-world-cameras-model.js";
 import {parseLocalCommand} from "../modules/jarvis-local-commands.js";
@@ -81,5 +82,71 @@ assert.match(worker,/checkPushSubscription\(env,auth.accountId,body.endpoint\)/)
 assert.match(worker,/pollOfficialPush\(env\)/);
 const pushClient=file("modules/jarvis-communication-push-client.js");
 assert.match(pushClient,/action:"status",endpoint:subscription.endpoint/);
+
+// Real operator log regression: visual news must not be geocoded, and
+// "volte a cena anterior" / voice-truncated "anterio" must not reach AI.
+for(const phrase of [
+ "volte a cena anterior","Volte para a cena anterio",
+ "Jarvis, volte para a cena anterior","retorne a cena anterior"
+])assert.deepEqual(parseDirectorIntent(phrase),{type:"previous"},phrase);
+for(const phrase of [
+ "Jarvis, mostre as notícias do brasil e imagens no Neural Ring.",
+ "mostre notícias do Brasil com imagens no Neural Ring",
+ "mostre as notícias brasileiras no neural ring"
+])assert.deepEqual(parseRegionalNewsVisualIntent(phrase),{type:"show",region:"brasil"},phrase);
+assert.deepEqual(parseRegionalNewsVisualIntent("mostre as notícias do mundo e imagens no Neural Ring"),
+ {type:"show",region:"mundo"});
+assert.deepEqual(parseRegionalNewsVisualIntent("Jarvis, mostre as notícias e imagens no Neural Ring"),
+ {type:"show",region:"all"});
+for(const phrase of ["Não mostre notícias do Brasil","Como mostrar notícias do Brasil?",
+ "Se eu mostrar notícias do Brasil","mostre a China no globo",
+ "não volte a cena anterior"]){
+ assert.equal(parseRegionalNewsVisualIntent(phrase),null,phrase);
+}
+assert.equal(parseDirectorIntent("não volte a cena anterior"),null);
+const now=Date.UTC(2026,10,18,14,0,0);
+const at=offset=>new Date(now-offset).toISOString();
+const data={briefing:{ok:true,fetchedAt:at(20*60000),topics:[
+ {id:"brasil",label:"Brasil",articles:[
+  {title:"Manchete brasileira",url:"https://agenciabrasil.ebc.com.br/noticias/teste",
+   imageUrl:"https://agenciabrasil.ebc.com.br/imagens/teste.jpg",
+   source:"Agência Brasil",publishedAt:at(40*60000)},
+  {title:"Duplicada",url:"https://agenciabrasil.ebc.com.br/noticias/teste?utm=1",
+   publishedAt:at(20*60000)},
+  {title:"Muito antiga",url:"https://example.org/old",publishedAt:at(25*60*60000)},
+  {title:"Sem fonte segura",url:"http://example.org/insecure",publishedAt:at(20*60000)}
+ ]},
+ {id:"santa-catarina",label:"Santa Catarina",articles:[
+  {title:"Defesa Civil de SC",url:"https://www.defesacivil.sc.gov.br/aviso",
+   imageUrl:"http://example.org/insecure-image.jpg",
+   publishedAt:at(30*60000)}
+ ]},
+ {id:"mundo",label:"Mundo",articles:[
+  {title:"Notícia internacional",url:"https://www.bbc.com/news/example",
+   publishedAt:at(30*60000)}
+ ]}
+]}};
+const brazil=buildRegionalNewsVisual(data,{region:"brasil",now});
+assert.equal(brazil.ok,true);
+assert.equal(brazil.count,2,"Only two distinct, fresh Brazil/SC source articles");
+assert.equal(brazil.imageCount,1,"Never invent images missing from verified sources");
+assert.equal(brazil.visual.mode,"news");
+assert.equal(brazil.visual.cards[0].title,"Manchete brasileira");
+assert.equal(brazil.visual.cards[0].imageUrl,"https://agenciabrasil.ebc.com.br/imagens/teste.jpg");
+assert.equal(brazil.visual.cards[1].imageUrl,undefined);
+const combined=buildRegionalNewsVisual(data,{region:"all",now});
+assert.equal(combined.count,3,"General news must include Brazil and world, without invented media");
+const world=buildRegionalNewsVisual(data,{region:"mundo",now});
+assert.equal(world.count,1);
+assert.equal(world.visual.cards[0].title,"Notícia internacional");
+assert.equal(buildRegionalNewsVisual(data,{region:"brasil",now:now+3*60*60000}).ok,false,
+ "Stale briefing cannot be shown as current");
+const orchestratorNew=file("modules/ultron-orchestrator-v4270.js");
+assert.ok(orchestratorNew.indexOf("const regionalNewsIntent=parseRegionalNewsVisualIntent(message)")<
+ orchestratorNew.indexOf("const directorIntent=parseDirectorIntent(message)"),
+ "Regional news must route before generic director/Earth/AI");
+assert.match(orchestratorNew,/if\(\/\\b\(\?:noticias\?\|manchetes\?/,
+ "Earth place parser must reject media/news commands");
+assert.match(file("index.html"),/ultron-orchestrator-v4270\.js\?v=5\.54\.0/);
 
 console.log("JARVIS COMMUNICATION 7 PASS: command safety, voice, visual, news, camera audio and consented notifications");

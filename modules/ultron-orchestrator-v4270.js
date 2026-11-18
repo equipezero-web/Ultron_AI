@@ -3,7 +3,8 @@ import {planAgents} from "../backend/intelligent-task-hub.js";
 import {classifyOperatorTurn,splitOperatorSteps} from "./jarvis-intent-engine.js?v=4.69.0";
 import {directPlan,resolveActionPlan,runActionPlan} from "./jarvis-action-engine.js?v=4.101.2";
 import {parseLocalCommand,runLocalCommand} from "./jarvis-local-commands.js?v=5.53.0";
-import {parseDirectorIntent,parseBriefingIntent,parsePublicCameraAudioIntent,parseCommunicationNotificationIntent,parseNewsVisualCloseIntent} from "./jarvis-communication-intents.js?v=5.53.0";
+import {parseDirectorIntent,parseRegionalNewsVisualIntent,parseBriefingIntent,parsePublicCameraAudioIntent,parseCommunicationNotificationIntent,parseNewsVisualCloseIntent} from "./jarvis-communication-intents.js?v=5.54.0";
+import {buildRegionalNewsVisual} from "./jarvis-regional-news-visual.js?v=5.54.0";
 import {parseMissionControl,assessCompoundMission,createMissionGate} from "./jarvis-mission-safety.js";
 import {inspectMissionDependencies,missionStepOutcome,createMissionJournal} from "./jarvis-mission-diagnostics.js";
 import {createRecoveryEngine} from "./jarvis-recovery-engine.js";
@@ -103,7 +104,7 @@ async function beginRun(message) {
     }
     return result;
   } catch (error) {
-    log(`D1 indisponível para histórico; execução continuará localmente (${error.message}).`, true);
+    log(`HISTÓRICO REMOTO // API de execução não acessível (${String(error?.message||"erro de conexão").slice(0,130)}); execução continuará localmente. Isso não confirma falha do D1.`, true);
     return { ok: true, runId: localRunId(), localOnly: true, plan: null };
   }
 }
@@ -248,6 +249,9 @@ async function showMissionReport() {
 const geoAliases = /^(?:globo|gllobo|globo terrestre|planeta|planeta terra|terra|mundo|mapa|google earth)$/;
 function parseEarthIntent(command) {
   const normalized = normalize(command).replace(/^(?:jarvis|ultron)[, ]+/, '').replace(/^(mostre|mostra|mostrar)-me\s+/, 'me $1 ');
+  // A request to show news, pictures or scenes is not a geographic place.
+  // Keep media controls out of Earth even when they mention "Neural Ring".
+  if(/\b(?:noticias?|manchetes?|imagens?|videos?|cenas?|boletim)\b|diretor visual/.test(normalized))return null;
   if (/^(?:volte?|retorne?|retornar|sair|feche|fechar)\s+(?:ao?|para o)\s+(?:anel|neural ring|ring)(?: neural)?[.!?]*$/.test(normalized))
     return { action: 'ring', place: '' };
   // Natural voice/text orders target the existing Neural Ring instead of opening a second view.
@@ -865,6 +869,32 @@ function enqueue(message, source = "terminal", approvedMission = false) {
     }else if(answer?.state?.visible)result=answer.clearMedia?.(mediaClose.type)||result;
     log("MÍDIA // "+mediaClose.type+" // "+(result?.ok?"FECHADA":"NÃO ESTAVA ABERTA"),!result?.ok);
     return Promise.resolve({route:"communication-media-close",...result});
+  }
+  // Explicit regional news stays in the Neural Ring; never geocode article text.
+  const regionalNewsIntent=parseRegionalNewsVisualIntent(message);
+  if(regionalNewsIntent){
+    const intelligence=window.ULTRON_INTELLIGENCE;
+    const answer=window.ULTRON_NEURAL_ANSWER;
+    if(!intelligence||typeof answer?.show!=="function"){
+      log("NOTÍCIAS VISUAIS // módulo de boletim ou painel neural indisponível.",true);
+      return Promise.resolve({ok:false,route:"communication-regional-news",reason:"module-unavailable"});
+    }
+    return (async()=>{
+      let news=buildRegionalNewsVisual(intelligence.visualData,{region:regionalNewsIntent.region});
+      if(!news.ok&&typeof intelligence.refresh==="function"){
+        try{await intelligence.refresh({reason:"manual"});}catch{}
+        news=buildRegionalNewsVisual(intelligence.visualData,{region:regionalNewsIntent.region});
+      }
+      if(!news.ok){
+        log("NOTÍCIAS VISUAIS // nenhuma notícia regional recente com fonte confirmada; globo não alterado.",true);
+        return {ok:false,route:"communication-regional-news",reason:news.reason};
+      }
+      answer.show("",{visual:news.visual});
+      log("NOTÍCIAS VISUAIS // "+regionalNewsIntent.region.toUpperCase()+" // "+news.count+
+        " notícia(s) verificadas // "+news.imageCount+" imagem(ns) de fontes.");
+      return {ok:true,route:"communication-regional-news",region:news.region,
+        count:news.count,imageCount:news.imageCount};
+    })();
   }
   const directorIntent=parseDirectorIntent(message);
   if(directorIntent){
