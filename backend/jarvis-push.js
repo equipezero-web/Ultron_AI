@@ -91,6 +91,18 @@ export async function registerPush(env,accountId,raw){
   return {ok:true,registered:true,backgroundPush:true};
  }catch{return fail(503,"push-storage-unavailable");}
 }
+export async function checkPushSubscription(env,accountId,endpoint){
+ if(!validAccount(accountId))return fail(401,"account-invalid");
+ if(typeof endpoint!=="string"||endpoint.length>1700)return fail(400,"invalid-endpoint");
+ try{
+  const url=new URL(endpoint);
+  if(url.protocol!=="https:"||!allowedHost(url.hostname)||url.username||url.password)return fail(400,"invalid-endpoint");
+  const db=await setup(env);
+  const row=await db.prepare("SELECT endpoint_hash FROM "+TABLE+" WHERE account_id=? AND endpoint_hash=?")
+   .bind(accountId,await hash(endpoint)).first();
+  return {ok:true,registered:Boolean(row),backgroundPush:Boolean(row)};
+ }catch{return fail(503,"push-storage-unavailable");}
+}
 export async function removePush(env,accountId,endpoint){
  if(!validAccount(accountId))return fail(401,"account-invalid");
  if(typeof endpoint!=="string"||endpoint.length>1700)return fail(400,"invalid-endpoint");
