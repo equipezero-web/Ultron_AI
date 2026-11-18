@@ -16,6 +16,12 @@ export function parseLocalCommand(value){
     return {type:"voice-listening",enabled:true};
   if(/^(?:desative|desativar|desligue|desligar|pare|parar)\s+(?:a\s+)?(?:escuta|microfone|comandos? de voz)(?:\s+(?:do|no)\s+jarvis)?$/.test(plain))
     return {type:"voice-listening",enabled:false};
+  if(/^(?:ative|ativar|ligue|ligar|habilite|habilitar)\s+(?:(?:o|a)\s+)?(?:audio|som|voz|fala|respostas faladas)(?:\s+(?:do|no)\s+jarvis)?$/.test(plain))
+    return {type:"voice-output",enabled:true};
+  if(/^(?:silencie|silenciar|desative|desativar|desligue|desligar|mute|mutar)\s+(?:(?:o|a)\s+)?(?:audio|som|voz|fala|respostas faladas)(?:\s+(?:do|no)\s+jarvis)?$/.test(plain))
+    return {type:"voice-output",enabled:false};
+  if(/^(?:teste|testar|reproduza|reproduzir|ouvir)\s+(?:a\s+)?(?:sua\s+)?voz(?:\s+(?:do|no)\s+jarvis)?$/.test(plain))
+    return {type:"voice-test"};
   if(/^(?:cadastre|cadastrar|registre|registrar)\s+(?:a\s+)?(?:minha\s+)?voz(?:\s+(?:no|para)\s+jarvis)?$/.test(plain))
     return {type:"voice-enroll"};
   if(/^(?:parear|pareie|vincular|vincule|conectar|conecte)\s+(?:(?:o|meu)\s+)?(?:celular|telefone|android)(?:\s+(?:ao|com)\s+jarvis)?$/.test(plain))
@@ -74,6 +80,23 @@ export function parseLocalCommand(value){
 export async function runLocalCommand(command){
   const intent=parseLocalCommand(command);
   if(!intent)return null;
+  if(intent.type==="voice-output"){
+    const output=window.JARVIS_VOICE_CONTROLS;
+    if(!output?.setEnabled)return {handled:true,ok:false,route:"voice-output",
+      provider:"jarvis-local",text:"Controle de áudio ainda não carregado."};
+    const state=output.setEnabled(intent.enabled);
+    return {handled:true,ok:state.enabled===intent.enabled,route:"voice-output",
+      provider:"jarvis-local",text:intent.enabled?
+      "Voz e áudio do Jarvis ativados no navegador.":"Voz do Jarvis silenciada."};
+  }
+  if(intent.type==="voice-test"){
+    const speech=window.ULTRON_VOICE_OUTPUT;
+    const ok=Boolean(speech?.speak?.(
+      "J.A.R.V.I.S. online. Áudio habilitado. Estou pronto para conversar.",
+      {reason:"mobile-voice-test",announce:false}));
+    return {handled:true,ok,route:"voice-test",provider:"jarvis-local",
+      text:ok?"Teste de voz solicitado ao navegador.":"Não consegui iniciar a voz. Confira som e permissão do navegador."};
+  }
   if(intent.type==="voice-listening") {
     const voice=window.ULTRON_VOICE_INPUT;
     if(!voice?.enable || !voice?.disable)return {handled:true,ok:false,route:"voice-control",
