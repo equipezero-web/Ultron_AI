@@ -61,7 +61,7 @@ const orchestratorCode=readFileSync(new URL("../modules/ultron-orchestrator-v427
 assert.match(orchestratorCode,/accountIntent\?\.kind==="list"/);
 assert.match(orchestratorCode,/Catálogo não confirmado pela conta/);
 assert.match(orchestratorCode,/intent\?\.kind==="list"/);
-assert.match(orchestratorCode,/requestedDevice\.command==="device\.status"/);
+assert.match(orchestratorCode,/\["device\.status","app\.list"\]\.includes\(requestedDevice\.command\)/);
 assert.match(orchestratorCode,/account-device-status/);
 assert.equal(parseAccountPluginCommand("Não abra YouTube no celular"),null);
 assert.equal(parseAccountPluginCommand("Como abrir YouTube no celular?"),null);
@@ -121,7 +121,7 @@ assert.equal((await accountAndroidStatus(appEnv,one.accountId,{deviceId:androidI
 const workerText=readFileSync(new URL("../backend/worker.js",import.meta.url),"utf8");
 assert.match(workerText,/path==="\/api\/account\/devices\/status"/);
 assert.match(workerText,/accountAndroidStatus\(env,auth.accountId,body\)/);
-assert.match(orchestratorCode,/api\.status\(device.id\)/);
+assert.match(orchestratorCode,/api\.status\(device.id,requestedDevice\.command\)/);
 assert.match(orchestratorCode,/actual.bridge==="online"/);
 assert.match(orchestratorCode,/approved-launcher-apps-only/);
 let sent=await executeAccountPlugin(appEnv,one.accountId,{pluginId:"youtube",actionId:"youtube.open",deviceId:androidId});
