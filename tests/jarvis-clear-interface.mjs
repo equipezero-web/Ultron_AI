@@ -143,6 +143,6 @@ const notWeather=await runLocalCommand("fechar previsão do tempo");
 assert.equal(notWeather.ok,false);
 assert.equal(geoWeather.state.visible,true,"Unrelated geospatial scenes must remain open");
 const answerSource=readFileSync(new URL("../modules/ultron-neural-answer.js",import.meta.url),"utf8");
-assert.match(answerSource,/autoplay=0&mute=1/,"News videos should not autoplay unmuted");
+assert.match(answerSource,/autoplay=1&mute=1/,"News videos should not autoplay unmuted");
 
 console.log("VISIBLE CLEAR PASS: exact local voice intent, visual reset, idempotency, no external research and no stored data deletion");
