@@ -192,6 +192,19 @@ try {
   assert.ok((await page.$eval(".jarvis-intel-message",el=>el.textContent)).includes("Última consulta preservada"),
     "The previous verified bulletin must remain visible after all sources fail");
   assert.equal(await page.evaluate(()=>window.ULTRON_INTELLIGENCE.state.totalStories),1,"Past verified content remains after all sources fail");
+  // Closing the briefing must remove the actual surface, not just set a hidden
+  // attribute that author CSS accidentally overrides.
+  const visibility=await page.evaluate(()=>{
+    const panel=document.querySelector(".jarvis-intel-panel");
+    const closed=window.ULTRON_INTELLIGENCE.close();
+    const hidden=panel.hidden&&getComputedStyle(panel).display==="none";
+    const opened=window.ULTRON_INTELLIGENCE.open();
+    return {closed,hidden,opened,visible:!panel.hidden&&getComputedStyle(panel).display!=="none"};
+  });
+  assert.equal(visibility.closed?.ok,true);
+  assert.equal(visibility.hidden,true,"Closing the bulletin must hide the actual panel");
+  assert.equal(visibility.opened?.ok,true);
+  assert.equal(visibility.visible,true,"Reopening the bulletin must restore the panel");
   // One shared communication UI must remain usable on phones, PCs and TV displays.
   for(const device of [
     {name:"compact-phone",width:320,height:640,mobile:true},
