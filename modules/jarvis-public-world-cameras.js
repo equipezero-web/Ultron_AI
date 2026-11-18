@@ -299,7 +299,7 @@ function open({search="",cameraId=null}={}){
  let selected=cameraId?PUBLIC_WORLD_CAMERAS.find(x=>x.id===cameraId):null;
  if(!selected&&search){
   const matches=findPublicCameras({search});
-  if(matches.length===1)selected=matches[0];
+  if(matches.length)selected=matches.find(camera=>Boolean(camera.embedId))||matches[0];
  }
  choose(selected,{autoPlay:Boolean(selected)});render();
  const count=findPublicCameras({search:queryField.value}).length;
