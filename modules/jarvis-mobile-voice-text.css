@@ -194,6 +194,16 @@
  }
 }
 @media(max-width:359px){
+ html body.jarvis-command-center #jarvis-cc-input-slot .command-input-wrap > span{
+  display:none!important;
+ }
+ html body.jarvis-command-center #jarvis-cc-input-slot .command-input-wrap{
+  display:flex!important;grid-template-columns:minmax(0,1fr)!important;
+ }
+ html body.jarvis-command-center #command-input{
+  width:100%!important;min-width:0!important;
+ }
+
  html body.jarvis-command-center .jarvis-cc-dock-grid{
   grid-template-columns:minmax(0,1fr)!important;
  }
