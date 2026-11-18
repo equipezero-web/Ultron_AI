@@ -549,4 +549,5 @@ if (stage) {
   window.addEventListener('ultron:speech-end',()=>{state.textContent='STANDBY';});
   window.JARVIS_COMMAND_CENTER = {version:'4.60.0',setVisualMode,open:(name)=>actions[name]?.(),get active(){return true;}};
   installStarkCommandCenter(ui,window.JARVIS_COMMAND_CENTER);
+  window.dispatchEvent?.(new CustomEvent('jarvis:command-center-ready'));
 }
