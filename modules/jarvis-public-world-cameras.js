@@ -278,7 +278,8 @@ function build(){
   .sort((a,b)=>a.localeCompare(b,"pt-BR")).map(x=>[x,x])]);
  optionList(regionField,[["","Todas as regiões"],...[...new Set(PUBLIC_WORLD_CAMERAS.map(x=>x.region))].map(x=>[x,x])]);
  optionList(categoryField,[["","Todos os tipos"],...Object.entries(CAMERA_CATEGORY_NAMES)]);
- optionList(providerField,[["","Todos os provedores"],...Object.entries(CAMERA_PROVIDER_NAMES).filter(([k])=>k!=="all")]);
+ optionList(providerField,[["","Todos os provedores"],...Object.entries(CAMERA_PROVIDER_NAMES)
+  .filter(([k])=>k!=="all"&&PUBLIC_WORLD_CAMERAS.some(c=>cameraProvider(c)===k))]);
  for(const el of [queryField,regionField,countryField,categoryField,providerField]){
   el.addEventListener("input",()=>{
    if(el===queryField&&String(queryField.value).includes("@")){
