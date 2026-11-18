@@ -27,7 +27,7 @@ export function parseRegionalNewsVisualIntent(value){
  const q=safe(value);if(!q)return null;
  if(/^(?:mostre|mostrar|exiba|exibir|abra|abrir) (?:as )?(?:noticias e imagens|noticias visuais)(?: no neural ring)?$/.test(q))
   return {type:"show",region:"all"};
- const match=q.match(/^(?:mostre|mostrar|exiba|exibir|abra|abrir) (?:as )?(?:noticias|manchetes) (?:do brasil|brasileiras|do mundo|mundiais)(?: (?:e|com) imagens)?(?: no neural ring)?$/);
+ const match=q.match(/^(?:mostre|mostrar|exiba|exibir|abra|abrir) (?:as |os )?(?:(?:mais recentes|principais|ultimas) )?(?:noticias|manchetes) (?:mais recentes |principais |ultimas )?(?:do brasil|brasileiras|do mundo|mundiais)(?: (?:e|com) imagens)?(?: no neural ring)?$/);
  if(!match)return null;
  return {type:"show",region:/\b(?:brasil|brasileiras)\b/.test(q)?"brasil":"mundo"};
 }

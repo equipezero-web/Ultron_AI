@@ -91,6 +91,8 @@ for(const phrase of [
 ])assert.deepEqual(parseDirectorIntent(phrase),{type:"previous"},phrase);
 for(const phrase of [
  "Jarvis, mostre as notícias do brasil e imagens no Neural Ring.",
+ "Jarvis, mostre as notícias mais recentes do Brasil com imagens no Neural Ring.",
+ "Jarvis, mostre as principais notícias do Brasil com imagens no Neural Ring.",
  "mostre notícias do Brasil com imagens no Neural Ring",
  "mostre as notícias brasileiras no neural ring"
 ])assert.deepEqual(parseRegionalNewsVisualIntent(phrase),{type:"show",region:"brasil"},phrase);
