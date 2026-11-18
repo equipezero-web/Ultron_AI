@@ -54,7 +54,7 @@ try{
    assert.equal(out.visible,true,name+": in-Neural panel visible");
    assert.equal(out.inNeural,true,name+": trend cards in existing stage");
    assert.equal(out.links.length,2,name+": both grounded source links");
-   assert.equal(out.controlsVisible,true,name+": speech controls stay available during news view");
+   assert.equal(out.controlsVisible,name==="desktop",name+": hidden mobile dashboard voice buttons, visible desktop controls");
    assert.match(out.text,/COBERTURA PARCIAL/);
    assert.match(out.text,/PRESENTE EM 2 COLETAS/);
    assert.match(out.text,/não comprovam a veracidade/);

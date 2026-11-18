@@ -72,9 +72,17 @@ try{
   if(!result.visual||result.visual.width>result.center.width+6)bad.push("visual exceeds center");
   if(!result.engine||!result.ringVisible)bad.push("3D engine unavailable");
   if(result.canvasBuffer.width===0||result.canvasBuffer.height===0)bad.push("WebGL canvas not resized");
-  if(!result.controlsVisible||result.neuralCount!==4||result.collapsed)
-   bad.push("neural buttons missing/hidden");
-  if(result.minHeight<43||result.minWidth<43)bad.push("touch target too small");
+  const phoneMode=config.width<=699||
+   (config.mobile&&config.height<=490&&config.width<=930);
+  if(phoneMode){
+   if(result.controlsVisible||result.minHeight!==0||result.minWidth!==0)
+    bad.push("mobile dashboard/neural buttons must be removed");
+   if(result.neuralCount!==4)bad.push("hidden listeners must remain mounted");
+  }else{
+   if(!result.controlsVisible||result.neuralCount!==4||result.collapsed)
+    bad.push("notebook/tablet/TV neural buttons missing/hidden");
+   if(result.minHeight<43||result.minWidth<43)bad.push("touch target too small");
+  }
   if(result.actions.width>result.viewport.width+5)bad.push("action toolbar too wide");
   if(!/rgb\(249, 217, 142\)/.test(result.titleColor||""))
    bad.push("Stark gold title missing "+result.titleColor);

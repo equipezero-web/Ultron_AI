@@ -62,7 +62,14 @@ try{
   assert.ok(display.bodyWidth<=display.screen+5, name+": no horizontal overflow "+JSON.stringify(display));
   assert.ok(display.stageWidth>=display.screen*.92,name+": stage must occupy viewport");
   assert.equal(display.buttons.length,7,name+": all command-center buttons mounted");
-  assert.ok(display.buttons.every(b=>b.visible),name+": command buttons tappable");
+  if(name==="phone"){
+   assert.ok(display.buttons.every(b=>!b.visible),
+    name+": all dashboard command buttons must be hidden on phones");
+   assert.equal(await page.evaluate(()=>window.JARVIS_MOBILE_VOICE_TEXT?.active),true);
+   assert.ok(await page.$eval("#command-input",el=>el.getBoundingClientRect().width>180));
+  }else{
+   assert.ok(display.buttons.every(b=>b.visible),name+": notebook/TV buttons must stay tappable");
+  }
   assert.ok(display.buttons.every(b=>/gradient/.test(b.background)),
    name+": metallic controls "+JSON.stringify(display.buttons));
   assert.match(display.topBackground,/gradient/);
@@ -81,7 +88,8 @@ try{
    panels:display.cameraPanel,gold:display.title
   }));
  }
- await page.setViewport({width:390,height:844,isMobile:true,hasTouch:true,deviceScaleFactor:1});
+ // Interactive dashboard button checks now run on notebook; phones are voice/text only.
+ await page.setViewport({width:1366,height:768,isMobile:false,hasTouch:false,deviceScaleFactor:1});
  await page.waitForFunction(()=>Boolean(
   window.JARVIS_COMMAND_CENTER?.active&&window.ULTRON_NEURAL_JARVIS?.active&&
   window.ULTRON_WORLD_CAMERAS&&window.ULTRON_NEURAL_JARVIS_UI?.state?.mounted

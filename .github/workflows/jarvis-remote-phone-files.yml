@@ -15,6 +15,9 @@ on:
       - "modules/jarvis-voice-controls.js"
       - "modules/jarvis-neural-jarvis-hud.js"
       - "tests/jarvis-voice-enabled-browser.mjs"
+      - "tests/jarvis-mobile-voice-text-browser.mjs"
+      - "modules/jarvis-mobile-voice-text.js"
+      - "modules/jarvis-mobile-voice-text.css"
       - "modules/jarvis-local-commands.js"
       - ".github/workflows/jarvis-remote-phone-files.yml"
   pull_request:
@@ -68,3 +71,4 @@ jobs:
           python3 -m http.server 8772 --bind 127.0.0.1 >/tmp/jarvis-voice-enabled.log 2>&1 &
           sleep 2
           node tests/jarvis-voice-enabled-browser.mjs
+          node tests/jarvis-mobile-voice-text-browser.mjs

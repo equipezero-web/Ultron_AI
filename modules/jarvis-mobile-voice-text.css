@@ -1,0 +1,228 @@
+/* J.A.R.V.I.S. // Mobile Voice + Text
+ * Mobile dashboard only. The original DOM/actions remain for desktop, TV,
+ * desktop pointer users and voice/text command routing.
+ * Contextual playback, permission, confirmation and modal close controls
+ * intentionally remain available in their own opened panels.
+ */
+@media (max-width:699px), (max-height:490px) and (orientation:landscape) and (pointer:coarse){
+ html:has(body.jarvis-command-center){
+  max-width:100%;overflow-x:clip!important;-webkit-text-size-adjust:100%;
+ }
+ html body.jarvis-command-center{
+  width:100%;max-width:100vw!important;overflow-x:clip!important;
+  touch-action:pan-y!important;-webkit-text-size-adjust:100%;
+ }
+ html body.jarvis-command-center .app-shell,
+ html body.jarvis-command-center .orb-stage,
+ html body.jarvis-command-center .jarvis-command-center-ui,
+ html body.jarvis-command-center .jarvis-cc-bottom,
+ html body.jarvis-command-center .jarvis-cc-console-layout,
+ html body.jarvis-command-center .jarvis-cc-console-terminal{
+  min-width:0!important;max-width:100%!important;
+  box-sizing:border-box!important;
+ }
+ html body.jarvis-command-center .jarvis-command-center-ui{
+  display:grid!important;grid-template-columns:minmax(0,1fr)!important;
+  grid-template-rows:auto auto auto!important;
+  overflow:visible!important;row-gap:4px!important;
+ }
+ html body.jarvis-command-center .jarvis-cc-top{
+  grid-column:1!important;grid-row:1!important;min-height:36px!important;
+  width:100%!important;position:relative!important;
+  padding-inline:max(8px,env(safe-area-inset-left,0px))!important;
+  gap:6px!important;
+ }
+ html body.jarvis-command-center .jarvis-cc-center{
+  grid-column:1!important;grid-row:2!important;
+  order:1!important;width:100%!important;min-width:0!important;
+  height:auto!important;min-height:0!important;
+  padding:42px 4px 8px!important;gap:6px!important;
+  overflow:visible!important;
+ }
+ html body.jarvis-command-center .jarvis-cc-visual[data-mode="ring"]{
+  width:min(calc(100vw - 22px),470px)!important;
+  height:auto!important;aspect-ratio:1/1!important;
+  min-height:0!important;max-height:none!important;
+  overflow:hidden!important;
+ }
+ html body.jarvis-command-center .jarvis-cc-visual[data-mode="globe"]{
+  width:min(calc(100vw - 16px),480px)!important;
+  max-width:100%!important;
+ }
+ html body.jarvis-command-center .jarvis-cc-bottom{
+  grid-column:1!important;grid-row:3!important;order:2!important;
+  position:relative!important;
+  width:100%!important;min-height:0!important;
+  padding:8px max(7px,env(safe-area-inset-right,0px))
+    max(12px,env(safe-area-inset-bottom,0px))
+    max(7px,env(safe-area-inset-left,0px))!important;
+  margin:0!important;gap:8px!important;
+ }
+ html body.jarvis-command-center .jarvis-cc-console-layout{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr)!important;
+  gap:8px!important;width:100%!important;
+ }
+ html body.jarvis-command-center #jarvis-cc-input-slot{
+  display:flex!important;order:0!important;
+  width:100%!important;max-width:100%!important;
+  padding:0!important;margin:0!important;gap:4px!important;
+ }
+ html body.jarvis-command-center #jarvis-cc-input-slot .command-row{
+  display:flex!important;flex-direction:column!important;
+  width:100%!important;min-height:0!important;
+  gap:4px!important;margin:0!important;
+ }
+ html body.jarvis-command-center #jarvis-cc-input-slot .command-input-wrap{
+  display:flex!important;flex:0 0 auto!important;
+  width:100%!important;min-width:0!important;
+  height:auto!important;min-height:60px!important;
+  max-width:100%!important;
+  padding:7px 9px!important;align-items:center!important;
+  border-radius:9px!important;
+ }
+ html body.jarvis-command-center #command-input{
+  display:block!important;visibility:visible!important;
+  opacity:1!important;pointer-events:auto!important;
+  flex:1 1 auto!important;width:100%!important;
+  height:auto!important;min-height:46px!important;
+  max-height:min(30dvh,180px)!important;
+  font-size:16px!important;line-height:1.45!important;
+  padding:8px 4px!important;resize:vertical!important;
+  touch-action:manipulation!important;
+ }
+ html body.jarvis-command-center #jarvis-cc-link-slot #btn-pair-mobile,
+ html body.jarvis-command-center .jarvis-cc-dock-grid #btn-jarvis-pair-mobile{
+  display:none!important;visibility:hidden!important;
+  width:0!important;height:0!important;min-width:0!important;min-height:0!important;
+  padding:0!important;margin:0!important;
+ }
+ html body.jarvis-command-center #jarvis-cc-input-slot :is(
+   .jarvis-cc-tool-actions,.quick-actions,[data-cc],[data-command]
+ ){
+  display:none!important;visibility:hidden!important;
+  width:0!important;height:0!important;min-width:0!important;min-height:0!important;
+  padding:0!important;margin:0!important;
+ }
+ /* Dashboard actions removed on phones, without destroying their
+    real underlying listeners or breaking module/consent controls. */
+ html body.jarvis-command-center :is(
+   .jarvis-cc-orb-controls,.jarvis-cc-actions,
+   .jarvis-cc-tool-actions,.quick-actions,
+   .mic-actions,.voice-match-actions,
+   .jarvis-cc-camera-slot .controls,
+   .neural-jarvis-control
+ ){
+  display:none!important;visibility:hidden!important;
+  min-height:0!important;height:0!important;
+  padding:0!important;margin:0!important;
+ }
+ html body.jarvis-command-center :is(
+   #btn-send,#btn-pair-mobile,#btn-pair-tv,
+   #btn-orchestrator-recovery,#btn-mobile-mic,
+   #btn-test-mic,#btn-listen-voice,#btn-voice,
+   #btn-toggle-speech,#btn-enroll-voice-match,
+   #btn-disable-voice-match
+ ){
+  display:none!important;visibility:hidden!important;
+  width:0!important;min-width:0!important;
+  height:0!important;min-height:0!important;
+  padding:0!important;margin:0!important;
+ }
+ html body.jarvis-command-center .jarvis-cc-console-terminal{
+  min-height:0!important;gap:7px!important;
+  padding:9px 7px!important;
+ }
+ html body.jarvis-command-center .jarvis-cc-responses{
+  order:2!important;min-height:0!important;
+  width:100%!important;max-width:100%!important;
+  padding:5px!important;margin:0!important;
+  max-height:none!important;
+ }
+ html body.jarvis-command-center #output-box{
+  display:block!important;min-height:125px!important;
+  height:clamp(130px,27dvh,240px)!important;
+  max-height:45dvh!important;overflow-y:auto!important;
+  overflow-x:hidden!important;
+  font-size:clamp(11px,2.9vw,13px)!important;
+  line-height:1.5!important;
+  overscroll-behavior:contain!important;
+  -webkit-overflow-scrolling:touch!important;
+ }
+ html body.jarvis-command-center #jarvis-cc-voice-slot{
+  order:3!important;width:100%!important;
+  min-width:0!important;max-width:100%!important;
+ }
+ html body.jarvis-command-center .jarvis-cc-console-events{
+  display:none!important;
+ }
+ html body.jarvis-command-center .jarvis-cc-system-dock{
+  min-width:0!important;width:100%!important;
+  max-width:100%!important;gap:6px!important;
+  padding:7px!important;
+ }
+ html body.jarvis-command-center .jarvis-cc-dock-grid{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:6px!important;min-width:0!important;
+ }
+ html body.jarvis-command-center .jarvis-cc-dock-module,
+ html body.jarvis-command-center .hud-panel{
+  min-width:0!important;max-width:100%!important;
+  overflow-wrap:anywhere!important;
+ }
+ html body.jarvis-command-center .jarvis-cc-dock-module button{
+  display:none!important;
+ }
+ html body.jarvis-command-center #voice-output-status{
+  min-width:0;line-height:1.5!important;
+  font-size:clamp(10px,2.7vw,12px)!important;
+  margin:4px 0!important;
+ }
+ html body.jarvis-command-center #jarvis-mobile-command-hint{
+  display:block!important;order:1!important;
+  width:100%!important;max-width:100%!important;
+  box-sizing:border-box!important;
+  color:#e4c98c;font:500 clamp(10px,2.7vw,12px)/1.55
+   ui-monospace,monospace;letter-spacing:.02em;
+  padding:5px 4px 7px;margin:0!important;
+  overflow-wrap:anywhere;text-align:center;
+ }
+ html body.jarvis-command-center .jarvis-worldcam-panel,
+ html body.jarvis-command-center .jarvis-global-intel-panel{
+  max-width:100%!important;min-width:0!important;
+ }
+ html body.jarvis-command-center .jarvis-worldcam-workspace{
+  grid-template-columns:minmax(0,1fr)!important;
+ }
+ html body.jarvis-command-center .jarvis-worldcam-view{
+  width:100%!important;min-width:0!important;
+ }
+}
+@media(max-width:359px){
+ html body.jarvis-command-center #jarvis-cc-input-slot .command-input-wrap > span{
+  display:none!important;
+ }
+ html body.jarvis-command-center #jarvis-cc-input-slot .command-input-wrap{
+  display:flex!important;grid-template-columns:minmax(0,1fr)!important;
+ }
+ html body.jarvis-command-center #command-input{
+  width:100%!important;min-width:0!important;
+ }
+
+ html body.jarvis-command-center .jarvis-cc-dock-grid{
+  grid-template-columns:minmax(0,1fr)!important;
+ }
+ html body.jarvis-command-center .jarvis-cc-center{
+  padding-top:36px!important;
+ }
+}
+@media(max-width:930px) and (max-height:490px) and (orientation:landscape) and (pointer:coarse){
+ html body.jarvis-command-center .jarvis-cc-center{
+  min-height:340px!important;height:auto!important;
+  padding-top:38px!important;
+ }
+ html body.jarvis-command-center .jarvis-cc-visual[data-mode="ring"]{
+  width:min(calc(100vw - 28px),85svh,440px)!important;
+ }
+}

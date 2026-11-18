@@ -72,13 +72,27 @@ try {
    assert.equal(initial.micEnabled,false,name+": mic requires permission");
    assert.equal(initial.micRequests,0,name+": never request mic on page load");
    assert.equal(initial.voiceEnabled,true);
-   assert.ok(initial.controls.every(c=>c.visible),name+": voice controls hidden "+JSON.stringify(initial));
+   if(name==="phone"){
+    assert.ok(initial.controls.every(c=>!c.visible),
+     name+": dashboard buttons must disappear, retaining original event listeners "+JSON.stringify(initial));
+    assert.equal(await page.evaluate(()=>window.JARVIS_MOBILE_VOICE_TEXT?.active),true);
+    assert.ok(await page.$eval("#jarvis-mobile-command-hint",e=>e.getBoundingClientRect().height>0));
+   }else{
+    assert.ok(initial.controls.every(c=>c.visible),name+": desktop/TV controls must remain visible");
+   }
    assert.ok(initial.overflow<=8,name+": horizontal overflow "+JSON.stringify(initial));
-
-   await page.click("#btn-voice");
+   const submit=async text=>{
+    await page.focus("#command-input");
+    await page.$eval("#command-input",(el,value)=>{el.value=value;},text);
+    await page.keyboard.press("Enter");
+    await page.waitForFunction(()=>document.getElementById("command-input")?.value==="",{timeout:6000});
+   };
+   if(name==="phone")await submit("Jarvis teste sua voz");
+   else await page.click("#btn-voice");
    await page.waitForFunction(()=>window.__voiceTest.speaks>=1,{timeout:6000});
    // Mute does not start microphone and prevents subsequent synthesis.
-   await page.click("#btn-toggle-speech");
+   if(name==="phone")await submit("Jarvis silenciar voz");
+   else await page.click("#btn-toggle-speech");
    const muted=await page.evaluate(()=>({
     muted:document.body.classList.contains("jarvis-voice-output-disabled"),
     voice:window.ULTRON_VOICE_OUTPUT.speak("I should not be audible"),
@@ -87,10 +101,12 @@ try {
    assert.equal(muted.muted,true);
    assert.equal(muted.voice,false);
    assert.equal(muted.micRequests,0);
-   await page.click("#btn-toggle-speech");
+   if(name==="phone")await submit("Jarvis ativar voz");
+   else await page.click("#btn-toggle-speech");
    assert.equal(await page.evaluate(()=>window.JARVIS_VOICE_CONTROLS.state.outputEnabled),true);
 
-   await page.click("#btn-listen-voice");
+   if(name==="phone")await submit("Jarvis ativar escuta");
+   else await page.click("#btn-listen-voice");
    await page.waitForFunction(()=>window.ULTRON_VOICE_INPUT.state.enabled&&
     window.ULTRON_VOICE_INPUT.state.recognitionRunning,{timeout:6500});
    const active=await page.evaluate(()=>({
@@ -105,7 +121,8 @@ try {
    assert.match(active.micBtn,/ESCUTA|CONVERSA|VOICE/i);
    await page.evaluate(()=>window.__voiceTest.recognition.onspeechstart?.());
    assert.match(await page.$eval("#mic-module",el=>el.textContent),/VOZ DETECTADA/);
-   await page.click("#btn-listen-voice");
+   if(name==="phone")await submit("Jarvis desativar escuta");
+   else await page.click("#btn-listen-voice");
    await page.waitForFunction(()=>!window.ULTRON_VOICE_INPUT.state.enabled,{timeout:6500});
    assert.equal(await page.evaluate(()=>window.__voiceTest.cameraRequests),0);
 
