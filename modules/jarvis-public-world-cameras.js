@@ -120,7 +120,13 @@ function choose(camera,{autoPlay=false}={}){
   link.classList.add("jarvis-worldcam-fallback");
   notice.append(hint,link);
  }
- if(autoPlay&&camera.embedId)startPlayback(camera);
+ if(autoPlay){
+  if(camera.embedId)startPlayback(camera);
+  else if(camera.id===WORLD_CAMERAS_ALTERNATIVE_ID){
+   const samePlace=getWesternWallPlayableAlternative(camera);
+   if(samePlace){choose(samePlace,{autoPlay:true});render();}
+  }
+ }
 }
 function startPlayback(camera){
  if(!requested||!selection||camera.id!==selection.id)return {ok:false,reason:"NO_SELECTION"};
@@ -225,7 +231,7 @@ function build(){
  results.setAttribute("aria-label","Seleção local de câmeras públicas catalogadas");
  const videoArea=make("div","jarvis-worldcam-view");
  screen=make("div","jarvis-worldcam-placeholder",
-  "Selecione um local. A câmera será reproduzida somente após o seu clique.");
+  "Selecione uma câmera pública para assistir aqui no Neural Ring.");
  player=make("iframe");player.hidden=true;
  player.setAttribute("allow","autoplay; encrypted-media; picture-in-picture");
  player.setAttribute("allowfullscreen","");
@@ -277,7 +283,7 @@ function render(){
    make("small","",c.city+" · "+c.country+" · "+CAMERA_CATEGORY_NAMES[c.category]),
    make("small","",CAMERA_PROVIDER_NAMES[cameraProvider(c)]+" · "+
     (c.embedId?"Player divulgado (mudo ao iniciar)":"Vídeo na página do provedor")));
-  button.addEventListener("click",()=>{choose(c);render();});
+  button.addEventListener("click",()=>{choose(c,{autoPlay:true});render();});
   results.append(button);
  }
  if(!matches.length)
@@ -295,12 +301,12 @@ function open({search="",cameraId=null}={}){
   const matches=findPublicCameras({search});
   if(matches.length===1)selected=matches[0];
  }
- choose(selected);render();
+ choose(selected,{autoPlay:Boolean(selected)});render();
  const count=findPublicCameras({search:queryField.value}).length;
  say("Central exibida dentro do Neural Ring: "+count+
   " câmeras selecionadas indexadas e "+WORLD_CAMERAS_CATALOGS.length+
   " catálogos oficiais navegáveis. Áudio Webcamera24 mudo por padrão.");
- return {handled:true,ok:true,count,selected:selected?.id||null,videoStarted:false};
+ return {handled:true,ok:true,count,selected:selected?.id||null,videoStarted:playing};
 }
 function search(term){
  return open({search:term});
