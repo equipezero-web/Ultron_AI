@@ -4,15 +4,16 @@ import {PUBLIC_WORLD_CAMERAS,validatePublicCamera,publicCameraEmbed,
  WORLD_CAMERAS_SKYLINE_URL,WORLD_CAMERAS_ALTERNATIVE_ID,getWorldCameraAlternative,
  getWesternWallPlayableAlternative,WESTERN_WALL_EARTHCAM_ID,WESTERN_WALL_EARTHCAM_YOUTUBE_URL,
  WESTERN_WALL_OFFICIAL_CAMERAS_URL,
- WORLD_CAMERAS_CATALOGS,CAMERA_PROVIDER_NAMES,cameraProvider}
+ WORLD_CAMERAS_CATALOGS,CAMERA_PROVIDER_NAMES,cameraProvider,
+ cameraProviderCoverage,WORLD_CAMERA_PUBLISHED_BASELINES}
  from "../modules/jarvis-public-world-cameras-model.js";
 assert.ok(PUBLIC_WORLD_CAMERAS.length>=10);
 assert.equal(PUBLIC_WORLD_CAMERAS.every(validatePublicCamera),true);
 assert.equal(new Set(PUBLIC_WORLD_CAMERAS.map(c=>c.id)).size,PUBLIC_WORLD_CAMERAS.length);
 const summary=cameraDirectorySummary();
 assert.equal(summary.indexed,PUBLIC_WORLD_CAMERAS.length);
-assert.equal(WORLD_CAMERAS_CATALOGS.length,4,"Both worldwide directories are available");
-assert.equal(summary.providerCatalogs,4);
+assert.equal(WORLD_CAMERAS_CATALOGS.length,6,"Six provider directories should be included");
+assert.equal(summary.providerCatalogs,6);
 assert.ok(WORLD_CAMERAS_CATALOGS.some(p=>p.id==="skyline"&&
  p.all==="https://www.skylinewebcams.com/en/webcam.html"));
 assert.ok(WORLD_CAMERAS_CATALOGS.some(p=>p.id==="webcamera24"&&
@@ -24,6 +25,41 @@ assert.equal(WORLD_CAMERAS_CATALOGS.find(p=>p.id==="camerasdomundo")?.all,
  "https://camerasdomundo.com/live-cams/");
 assert.equal(WORLD_CAMERAS_CATALOGS.find(p=>p.id==="africam")?.all,
  "https://africam.com/our-locations/");
+assert.ok(WORLD_CAMERAS_CATALOGS.some(p=>p.id==="janelastv"&&
+ p.all==="https://www.janelas.tv.br/camera-ao-vivo/"));
+assert.ok(WORLD_CAMERAS_CATALOGS.some(p=>p.id==="tabicam"&&
+ p.all==="https://tabi.cam/pt/explore/"));
+const coverage=cameraProviderCoverage();
+const cdm=coverage.find(c=>c.provider==="camerasdomundo");
+const janelas=coverage.find(c=>c.provider==="janelastv");
+const tabi=coverage.find(c=>c.provider==="tabicam");
+assert.equal(PUBLIC_WORLD_CAMERAS.length,48,"25 original + 16 Câmeras do Mundo + 7 Janelas TV");
+assert.equal(summary.embedded,29,"15 original players + 14 verified YouTube IDs");
+assert.equal(cdm.indexed,29,"13 old Câmeras do Mundo + 16 verified new camera pages");
+assert.equal(cdm.embeddable,23,"9 old + 14 new publicly published YouTube embeds");
+assert.equal(cdm.knownUnindexedMin,572,
+ "Published more than 600 minus 29 indexed must remain explicitly unindexed");
+assert.equal(janelas.indexed,7,"All 7 cameras on the Janelas TV public main listing");
+assert.equal(janelas.embeddable,0,"H.265 custom streams may not be rehosted without permission");
+assert.equal(janelas.sourceOnly,7);
+assert.equal(tabi.indexed,0,"No crawling of Tabi.cam contrary to its Terms");
+assert.equal(tabi.embeddable,0);
+assert.equal(tabi.knownUnindexedMin,null,"Unknown advertised total must not be guessed");
+assert.equal(WORLD_CAMERA_PUBLISHED_BASELINES.tabicam.countries,61);
+assert.equal(new Set(PUBLIC_WORLD_CAMERAS.map(c=>c.sourceUrl)).size,
+ PUBLIC_WORLD_CAMERAS.length,"Every source URL is unique");
+for(const c of PUBLIC_WORLD_CAMERAS.filter(c=>cameraProvider(c)==="janelastv")){
+ assert.equal(validatePublicCamera(c),true);
+ assert.equal(publicCameraEmbed(c),null);
+ assert.equal(c.embedId,null);
+ assert.equal(validatePublicCamera({...c,embedId:"abcdefghijk"}),false,
+  "Cannot hijack proprietary Janelas H.265/VR feeds via arbitrary YouTube IDs");
+ assert.equal(validatePublicCamera({...c,sourceUrl:
+  "https://www.janelas.tv.br/camera-ao-vivo/sp/santos/not-approved"}),false);
+}
+assert.ok(findPublicCameras({search:"Congonhas",provider:"camerasdomundo"}).length>=1);
+assert.ok(findPublicCameras({search:"Santos",provider:"janelastv"}).length>=3);
+assert.equal(findPublicCameras({provider:"tabicam"}).length,0);
 assert.ok(findPublicCameras({provider:"camerasdomundo"}).length>4);
 assert.ok(findPublicCameras({provider:"africam"}).length>=1);
 
