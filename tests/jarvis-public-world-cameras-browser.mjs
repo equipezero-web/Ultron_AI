@@ -62,7 +62,7 @@ try{
  assert.equal(selectedJerusalem.playerRequested,true);
  assert.equal(selectedJerusalem.liveVerified,false);
  const embeddedJerusalem=await page.$eval(".jarvis-worldcam-view iframe",el=>el.getAttribute("src"));
- assert.match(embeddedJerusalem,/youtube-nocookie\\.com\\/embed\\/77akujLn4k8/);
+ assert.ok(embeddedJerusalem.includes("youtube-nocookie.com/embed/77akujLn4k8"),"Expected EarthCam embedded player");
  assert.match(embeddedJerusalem,/mute=1/);
  const directories=await page.$$eval(".jarvis-worldcam-catalogs .jarvis-worldcam-catalog-card",cards=>
   cards.map(card=>({title:card.querySelector("strong").textContent,
