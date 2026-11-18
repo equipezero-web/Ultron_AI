@@ -16,6 +16,7 @@ const make=(tag,cls,txt)=>{
 let panel=null,queryField=null,countryField=null,categoryField=null,regionField=null,providerField=null;
 let results=null,player=null,screen=null,nowPlaying=null,notice=null,summary=null;
 let picker=null,pickerSelect=null,pickerCount=null,filterDetails=null;
+let pickerNotice=null,showAllButton=null;
 let audioBar=null,audioButton=null,audioLabel=null;
 let requested=false,selection=null,playing=false,userReportedFailure=null;
 let audioRequested=false;
@@ -176,6 +177,13 @@ function optionList(select,entries){
   const o=document.createElement("option");o.value=v;o.textContent=label;select.append(o);
  }
 }
+function resetCameraFilters(){
+ if(queryField)queryField.value="";
+ for(const field of [regionField,countryField,categoryField,providerField]){
+  if(field)field.value="";
+ }
+ if(filterDetails)filterDetails.open=false;
+}
 function build(){
  if(panel?.isConnected)return true;
  // The command center is dynamically mounted after this module loads.
@@ -208,7 +216,17 @@ function build(){
  pickerTitle.htmlFor=pickerSelect.id;
  pickerSelect.setAttribute("aria-label","Escolher câmera pública para assistir no Neural Ring");
  pickerCount=make("small","jarvis-worldcam-picker-count");
- pickerBar.append(pickerTitle,pickerSelect,pickerCount);
+ showAllButton=make("button","jarvis-worldcam-show-all","MOSTRAR TODAS AS CÂMERAS");
+ showAllButton.type="button";
+ showAllButton.addEventListener("click",()=>{
+  resetCameraFilters();
+  if(pickerNotice)pickerNotice.textContent="";
+  choose(null);render();
+ });
+ pickerNotice=make("p","jarvis-worldcam-picker-notice");
+ pickerNotice.setAttribute("role","status");
+ pickerNotice.setAttribute("aria-live","polite");
+ pickerBar.append(pickerTitle,pickerSelect,pickerCount,showAllButton,pickerNotice);
  pickerSelect.addEventListener("change",()=>{
   const selected=PUBLIC_WORLD_CAMERAS.find(c=>c.id===pickerSelect.value);
   if(!selected)return;
@@ -232,7 +250,10 @@ function build(){
  optionList(categoryField,[["","Todos os tipos"],...Object.entries(CAMERA_CATEGORY_NAMES)]);
  optionList(providerField,[["","Todos os provedores"],...Object.entries(CAMERA_PROVIDER_NAMES).filter(([k])=>k!=="all")]);
  for(const el of [queryField,regionField,countryField,categoryField,providerField]){
-  el.addEventListener("input",render);
+  el.addEventListener("input",()=>{
+   if(pickerNotice)pickerNotice.textContent="";
+   render();
+  });
   toolbar.append(el);
  }
  filterDetails=make("details","jarvis-worldcam-advanced");
@@ -304,11 +325,10 @@ function render(){
  pickerCount.textContent=matches.length+" opções disponíveis no catálogo selecionado · "+
   matches.filter(c=>c.embedId).length+" com player no Neural Ring";
  const info=cameraDirectorySummary();
- summary.textContent=info.indexed+" câmeras selecionadas ("+
-  info.countries.length+" países) · "+info.embedded+
-  " com player divulgado · "+info.providerCatalogs+
-  " catálogos completos via links oficiais · "+
-  "0 sinais confirmados automaticamente";
+ summary.textContent=info.indexed+" câmeras cadastradas ("+
+  info.countries.length+" países), "+matches.length+" visíveis na seleção · "+
+  info.embedded+" com player divulgado no catálogo · "+info.providerCatalogs+
+  " catálogos oficiais · 0 sinais ao vivo confirmados";
  results.replaceChildren();
  for(const c of matches){
   const button=make("button","jarvis-worldcam-item");
@@ -321,25 +341,34 @@ function render(){
   button.addEventListener("click",()=>{choose(c,{autoPlay:true});render();});
   results.append(button);
  }
- if(!matches.length)
+ if(!matches.length){
   results.append(make("p","jarvis-worldcam-empty",
-   "Nenhuma câmera deste local consta na seleção inicial. "+
-   "Consulte o catálogo de origem; não vamos inventar um feed."));
+   "Nenhuma câmera corresponde aos filtros atuais. Use MOSTRAR TODAS AS CÂMERAS "+
+   "para recuperar o catálogo sem sair do Neural Ring."));
+  showAllButton.hidden=false;
+ }else showAllButton.hidden=false;
 }
 function open({search="",cameraId=null}={}){
  if(!build())return {handled:true,ok:false,reason:"RING_UNAVAILABLE"};
  requested=true;panel.hidden=false;
- // Every new open starts from the real camera catalogue; stale filters
- // must not leave the viewer saying "select" with zero visible options.
- queryField.value=search||"";
- countryField.value="";regionField.value="";categoryField.value="";
- providerField.value="";
- if(filterDetails)filterDetails.open=false;
+ // Generic voice requests are for browsing, not literal city searches.
+ // Never allow an unmatched spoken phrase or an old filter to hide every
+ // camera and leave the Neural Ring with only a blank player.
+ resetCameraFilters();
+ const searchText=String(search??"").trim();
+ const plainSearch=searchText.normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+  .toLowerCase().replace(/\s+/g," ");
+ const browseAll=/^(?:cameras?|webcams?|mundo|todas|todos|lista de cameras|opcoes de cameras|(?:cameras?|webcams?) (?:do mundo|mundiais|publicas?|ao vivo)|todas (?:as )?(?:cameras|webcams))$/.test(plainSearch);
+ const found=searchText&&!browseAll?findPublicCameras({search:searchText}):[];
+ const noExactMatch=Boolean(searchText&&!browseAll&&!found.length);
+ queryField.value=found.length?searchText:"";
+ if(pickerNotice)pickerNotice.textContent=noExactMatch?
+  "Não encontramos uma câmera correspondente a \""+searchText.slice(0,70)+
+  "\". Exibindo todas as opções cadastradas para você escolher.":"";
  panel.scrollTop=0;if(results)results.scrollTop=0;
  let selected=cameraId?PUBLIC_WORLD_CAMERAS.find(x=>x.id===cameraId):null;
- if(!selected&&search){
-  const matches=findPublicCameras({search});
-  if(matches.length)selected=matches.find(camera=>Boolean(camera.embedId))||matches[0];
+ if(!selected&&found.length){
+  selected=found.find(camera=>Boolean(camera.embedId))||found[0];
  }
  choose(selected,{autoPlay:Boolean(selected)});render();
  const count=findPublicCameras({search:queryField.value}).length;
