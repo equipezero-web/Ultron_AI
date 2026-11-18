@@ -4,7 +4,7 @@
  * Contextual playback, permission, confirmation and modal close controls
  * intentionally remain available in their own opened panels.
  */
-@media (max-width:699px){
+@media (max-width:699px), (max-height:490px) and (orientation:landscape) and (pointer:coarse){
  html:has(body.jarvis-command-center){
   max-width:100%;overflow-x:clip!important;-webkit-text-size-adjust:100%;
  }
@@ -97,7 +97,6 @@
    .jarvis-cc-orb-controls,.jarvis-cc-actions,
    .jarvis-cc-tool-actions,.quick-actions,
    .mic-actions,.voice-match-actions,
-   .jarvis-cc-intel-controls,.jarvis-intel-controls,
    .jarvis-cc-camera-slot .controls,
    .neural-jarvis-control
  ){
