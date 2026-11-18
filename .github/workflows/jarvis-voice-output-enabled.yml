@@ -1,0 +1,54 @@
+name: JARVIS Audible Voice and Consent Contract
+on:
+  pull_request:
+    paths:
+      - "index.html"
+      - "script.js"
+      - "backend/worker.js"
+      - "backend/server.js"
+      - "modules/voice-fallback.js"
+      - "modules/jarvis-voice-controls.js"
+      - "modules/voice-listener-v4290.js"
+      - "modules/ultron-intelligence-briefing.js"
+      - "modules/ultron-core-bridge-v4270.js"
+      - "modules/jarvis-neural-jarvis-hud.js"
+      - "tests/jarvis-voice-output-enabled.mjs"
+      - ".github/workflows/jarvis-voice-output-enabled.yml"
+  push:
+    branches: [main]
+    paths:
+      - "index.html"
+      - "script.js"
+      - "backend/worker.js"
+      - "backend/server.js"
+      - "modules/voice-fallback.js"
+      - "modules/ultron-intelligence-briefing.js"
+      - "modules/ultron-core-bridge-v4270.js"
+      - "modules/jarvis-neural-jarvis-hud.js"
+      - "tests/jarvis-voice-output-enabled.mjs"
+      - ".github/workflows/jarvis-voice-output-enabled.yml"
+permissions:
+  contents: read
+jobs:
+  browser-voice-safety:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate syntax
+        run: |
+          node --check backend/worker.js
+          node --check backend/server.js
+          node --check modules/voice-fallback.js
+          node --check modules/jarvis-voice-controls.js
+          node --check modules/voice-listener-v4290.js
+          node --check modules/ultron-intelligence-briefing.js
+          node --check modules/ultron-core-bridge-v4270.js
+          node --check modules/jarvis-neural-jarvis-hud.js
+          node --check script.js
+          node --check tests/jarvis-voice-output-enabled.mjs
+      - name: Assert browser speech works with explicit mic consent and no paid cloud synthesis
+        run: node tests/jarvis-voice-output-enabled.mjs
