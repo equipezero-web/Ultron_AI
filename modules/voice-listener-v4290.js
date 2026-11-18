@@ -9,7 +9,7 @@ import {
   isLikelySpeechEcho,
   isDuplicateVoiceText,
   isExplicitSleepCommand
-} from './voice-runtime-policy.js';
+} from './voice-runtime-policy.js?v=5.53.0';
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const WAKE_ALIASES = ['jarvis', 'javis', 'jarves', 'ultron', 'outron', 'utron', 'ultra on', 'ultraon'];
