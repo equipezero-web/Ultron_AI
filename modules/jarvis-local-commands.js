@@ -206,33 +206,32 @@ export async function runLocalCommand(command){
       String(result?.error||"sem coleta válida").slice(0,150)};
   }
   if(intent.type==="meteorological-close"){
-    const module=window.ULTRON_METEO_CENTER;
-    const state=module?.state;
-    if(!module?.close||!state?.visible){
-      // Weather forecasts also live in the geographic visualizer. Do not close
-      // an unrelated map (news, earthquakes, El Niño or manually selected place).
-      const geo=window.ULTRON_GEO_VISUAL;
-      const gs=geo?.state;
-      const isForecast=typeof gs?.scenario==="string"&&
-        /^weather-(?:global-\d+|[a-z0-9-]+)$/.test(gs.scenario);
-      if((intent.tab===null||intent.tab==="forecast")&&gs?.visible&&isForecast&&typeof geo.close==="function"){
-        const result=geo.close();
-        const ok=result?.ok===true&&geo.state?.visible===false;
-        return {handled:true,ok,route:"local-meteorological-close",provider:"jarvis-local",
-          text:ok?"PREVISÃO // mapa meteorológico fechado; Neural Ring preservado.":
-            "Falha ao fechar a previsão no mapa geográfico."};
-      }
+    const module=window.ULTRON_METEO_CENTER,state=module?.state;
+    const geo=window.ULTRON_GEO_VISUAL,gs=geo?.state;
+    const geoForecast=Boolean(gs?.visible&&typeof gs?.scenario==="string"&&
+      /^weather-(?:global-\d+|[a-z0-9-]+)$/.test(gs.scenario)&&typeof geo.close==="function");
+    const closeGeo=()=>{
+      if(!geoForecast)return false;
+      const result=geo.close();
+      return result?.ok===true&&geo.state?.visible===false;
+    };
+    const centerOpen=Boolean(module?.close&&state?.visible);
+    if(!centerOpen&&!geoForecast)
       return {handled:true,ok:false,route:"local-meteorological-close",provider:"jarvis-local",
         text:"Nenhum painel meteorológico ou mapa de previsão está aberto. Nenhuma outra visualização foi alterada."};
-    }
-    if(intent.tab&&state.tab!==intent.tab)
+    if(intent.tab&&(!centerOpen||state.tab!==intent.tab)){
+      if(intent.tab==="forecast"&&closeGeo())
+        return {handled:true,ok:true,route:"local-meteorological-close",provider:"jarvis-local",
+          text:"PREVISÃO // mapa meteorológico fechado; outras visualizações preservadas."};
       return {handled:true,ok:false,route:"local-meteorological-close",provider:"jarvis-local",
         text:"A aba solicitada não está aberta. A visualização atual foi preservada."};
-    const closed=module.close();
-    const ok=closed?.ok===true&&module.state?.visible===false;
+    }
+    const centerClosed=centerOpen?module.close()?.ok===true&&module.state?.visible===false:false;
+    const geoClosed=(!intent.tab||intent.tab==="forecast")?closeGeo():false;
+    const ok=centerClosed||geoClosed;
     return {handled:true,ok,route:"local-meteorological-close",provider:"jarvis-local",
-      text:ok?"METEOROLOGIA // "+(intent.tab||state.tab).toUpperCase()+
-        " fechada no Neural Ring. Consultas e animações interrompidas.":
+      text:ok?"METEOROLOGIA // visualização solicitada fechada no Neural Ring. "+
+        "Consultas e animações do painel fechado interrompidas.":
         "Falha ao fechar meteorologia. Verifique o botão X do painel."};
   }
   if(intent.type==="meteorological-center"){
