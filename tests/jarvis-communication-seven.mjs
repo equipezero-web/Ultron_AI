@@ -1,13 +1,16 @@
 import assert from "node:assert/strict";
 import {readFileSync} from "node:fs";
 import {parseDirectorIntent,parseBriefingIntent,parsePublicCameraAudioIntent,
- parseCommunicationNotificationIntent} from "../modules/jarvis-communication-intents.js";
+ parseCommunicationNotificationIntent,parseNewsVisualCloseIntent} from "../modules/jarvis-communication-intents.js";
 import {isExplicitSleepCommand} from "../modules/voice-runtime-policy.js";
 import {parseWorldCameraCommand} from "../modules/jarvis-public-world-cameras-model.js";
 import {parseLocalCommand} from "../modules/jarvis-local-commands.js";
 const file=path=>readFileSync(new URL("../"+path,import.meta.url),"utf8");
 const cases=[
  [parseDirectorIntent,"Jarvis, feche o diretor visual",{type:"close"}],
+ [parseNewsVisualCloseIntent,"Jarvis, feche as notícias e imagens",{type:"news"}],
+ [parseNewsVisualCloseIntent,"feche os vídeos",{type:"videos"}],
+ [parseNewsVisualCloseIntent,"oculte as imagens",{type:"images"}],
  [parseDirectorIntent,"Jarvis, próxima cena",{type:"next"}],
  [parseDirectorIntent,"Volte para a cena anterior",{type:"previous"}],
  [parseDirectorIntent,"Jarvis, mostre as notícias e imagens no Neural Ring",{type:"scene",scene:"news"}],
@@ -23,9 +26,9 @@ for(const [parser,input,expected]of cases)assert.deepEqual(parser(input),expecte
 for(const phrase of [
  "Não feche o diretor visual","Como fechar o diretor visual?",
  "Não ative o áudio das câmeras mundiais","Se eu desativar as notificações do Jarvis",
- "Não feche o boletim de notícias"
+ "Não feche o boletim de notícias","Não feche as notícias e imagens"
 ])for(const parse of [parseDirectorIntent,parseBriefingIntent,
- parsePublicCameraAudioIntent,parseCommunicationNotificationIntent])
+ parsePublicCameraAudioIntent,parseCommunicationNotificationIntent,parseNewsVisualCloseIntent])
  assert.equal(parse(phrase),null,phrase);
 assert.deepEqual(parseWorldCameraCommand("Jarvis, as câmeras mundiais estão abertas, feche as câmeras mundiais"),{type:"close"});
 assert.equal(parseWorldCameraCommand("não feche as câmeras mundiais"),null);
@@ -38,7 +41,7 @@ for(const phrase of ["Não pare de responder","Como encerrar conversa?","se eu d
  assert.equal(isExplicitSleepCommand(phrase),false,phrase);
 const orchestrator=file("modules/ultron-orchestrator-v4270.js");
 for(const fn of ["parseDirectorIntent","parseBriefingIntent","parsePublicCameraAudioIntent",
- "parseCommunicationNotificationIntent"])
+ "parseCommunicationNotificationIntent","parseNewsVisualCloseIntent"])
  assert.ok(orchestrator.includes(fn+"(message)"),fn+" must route before generic AI");
 const index=file("index.html");
 assert.match(index,/jarvis-communication-notifications\.js\?v=5\.53\.0/);
@@ -52,6 +55,8 @@ assert.match(cameras,/audioVerified:false/);
 const news=file("modules/ultron-neural-answer.js");
 assert.match(news,/autoplay=1&mute=1/);
 assert.match(news,/Abrir notícia na fonte/);
+assert.match(news,/clearMedia/);
+assert.match(news,/currentMode/);
 const notification=file("modules/jarvis-communication-notifications.js");
 assert.match(notification,/requestPermission\(\)/);
 assert.match(notification,/if\(!userGesture\)/);
