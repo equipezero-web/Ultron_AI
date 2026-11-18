@@ -223,17 +223,17 @@ try {
       statusOverflow:document.querySelector('.jarvis-cc-top').scrollWidth-document.querySelector('.jarvis-cc-top').clientWidth
     }));
     assert.ok(layout.overflow<=3,'Mobile '+width+': prevent horizontal overflow');
-    assert.ok(layout.input<=50 && layout.font>=16,'Mobile '+width+': compact, readable command editor');
-    assert.ok(layout.send<=55 && layout.sendWidth<=95,'Mobile '+width+': compact send action');
-    assert.equal(layout.dockColumns,2,'Mobile '+width+': four system cards form two columns');
+    assert.ok(layout.input>=44 && layout.input<=180 && layout.font>=16,'Mobile '+width+': wide, readable command editor');
+    assert.equal(layout.send,0,'Mobile '+width+': send button must be hidden; Enter submits commands');
+    assert.equal(layout.dockColumns,width<360?1:2,'Mobile '+width+': adaptive system card layout');
     assert.equal(layout.cards.length,4);
     assert.ok(layout.cards.every(w=>w>=120),'Mobile '+width+': system card text space');
-    assert.ok(layout.responses<=120,'Mobile '+width+': output log scrolls internally');
-    assert.ok(layout.globe>=380,'Mobile '+width+': keep the original 3D stage large');
-    assert.equal(layout.quickRail,'visible','Mobile '+width+': shortcuts must not be clipped by scroll rail');
-    assert.equal(layout.quickLayout,'grid','Mobile '+width+': independent grid buttons prevent click swallowing');
-    assert.equal(layout.quickColumns,2,'Mobile '+width+': shortcuts must occupy two readable columns');
-    assert.ok(layout.quickHeight>=40,'Mobile '+width+': shortcut touch targets remain usable');
+    assert.ok(layout.responses>=125 && layout.responses<=250,'Mobile '+width+': readable scrolling response log');
+    assert.ok(layout.globe>=width-30,'Mobile '+width+': keep 3D stage usable at narrow widths');
+    assert.equal(layout.quickLayout,'none','Mobile '+width+': shortcuts must be hidden');
+    assert.equal(layout.quickLayout,'none','Mobile '+width+': shortcuts are replaced by voice/text');
+    assert.equal(layout.quickHeight,0,'Mobile '+width+': no shortcut buttons shown');
+    assert.equal(layout.sendWidth,0,'Mobile '+width+': no visible submit button');
     assert.equal(layout.inputHint,'send','Mobile '+width+': keyboard should show the Send action');
     assert.ok(layout.statusOverflow<=3,'Mobile '+width+': status bar text must not clip');
   }
