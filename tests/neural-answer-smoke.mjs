@@ -1280,7 +1280,10 @@ try {
     assert.equal(clearResult.outputCount,0,"No terminal logs should reappear after clear");
     assert.equal(clearResult.input,"");
 
-    // COMMAND CENTER BUTTON AUDIT — use actual pointer/click events.
+    const phoneTextMode=viewport.width<=699;
+    const dashboardAction=selector=>phoneTextMode?
+      page.$eval(selector,button=>button.click()):page.click(selector);
+    // COMMAND CENTER BUTTON AUDIT — desktop/TV use pointer, mobile keeps hidden listeners.
     // A previous layout hid 5/6 controls and the globe-mode button
     // changed only its label instead of opening ULTRON_EARTH.
     const ccButtons=await page.evaluate(()=>[...document.querySelectorAll(
@@ -1291,7 +1294,8 @@ try {
     assert.deepEqual(ccButtons.map(x=>x.action).sort(),
       ['agenda','camera','devices','earth','files','ring','status'].sort(),
       'All seven command-center controls, including return to Ring, must be reachable');
-    assert.ok(ccButtons.every(x=>x.visible&&x.width>12),JSON.stringify(ccButtons));
+    assert.ok(ccButtons.every(x=>phoneTextMode?x.width===0:x.visible&&x.width>12),
+      JSON.stringify(ccButtons));
     for(const action of ['status','agenda','devices','files','camera','ring']){
       const selector='[data-cc="'+action+'"]';
       await page.$eval(selector,button=>button.scrollIntoView({
@@ -1304,7 +1308,10 @@ try {
           blocker:center?.tagName||null,blockerText:center?.textContent?.slice(0,32),
           width:r.width,height:r.height};
       });
-      assert.equal(target.ok,true,action+' must accept an actual click: '+JSON.stringify(target));
+      if(phoneTextMode)assert.equal(target.width,0,
+        action+' must be hidden in phone text/voice mode');
+      else assert.equal(target.ok,true,
+        action+' must accept an actual click on desktop: '+JSON.stringify(target));
     }
     // Assert real module bootstrap BEFORE injecting any test substitutes:
     // previously a syntax error left ULTRON_DEVICES undefined in production.
@@ -1330,7 +1337,7 @@ try {
         b.addEventListener(type,e=>window.__ccStatusEvents.push(type+':'+e.target.tagName));
       }
     });
-    await page.click('[data-cc="status"]');
+    await dashboardAction('[data-cc="status"]');
     const ccStatusDebug=await page.evaluate(()=>({
       events:window.__ccStatusEvents,
       center:window.JARVIS_COMMAND_CENTER?.version,
@@ -1348,9 +1355,9 @@ try {
     await page.click('.jarvis-cc-inline-result:last-child button');
     await page.waitForFunction(()=>[...document.querySelectorAll('.jarvis-cc-inline-result')]
       .filter(el=>el.textContent.includes('STATUS DO SISTEMA')).length>=2);
-    await page.click('[data-cc="agenda"]');
+    await dashboardAction('[data-cc="agenda"]');
     assert.match(await page.$eval('.jarvis-cc-inline-result:last-child',el=>el.textContent),/AGENDA \/ VISÃO LOCAL/);
-    await page.click('[data-cc="devices"]');
+    await dashboardAction('[data-cc="devices"]');
     await page.waitForFunction(()=>[...document.querySelectorAll('.jarvis-cc-inline-result button')]
       .some(el=>el.textContent.includes('Configurar TV')));
     await page.$eval('.jarvis-cc-inline-result:last-child',el=>{
@@ -1359,7 +1366,7 @@ try {
     });
     await page.click('[data-test-tv="true"]');
     await page.waitForFunction(()=>window.__ccAuditTv===1);
-    await page.click('[data-cc="files"]');
+    await dashboardAction('[data-cc="files"]');
     await page.waitForFunction(()=>[...document.querySelectorAll('.jarvis-cc-inline-result')]
       .some(el=>el.textContent.includes('ARQUIVOS LOCAIS (1)')));
     assert.ok(await page.$eval('.jarvis-cc-inline-result:last-child',
@@ -1367,17 +1374,17 @@ try {
     await page.click('.jarvis-cc-inline-result:last-child button');
     await page.waitForFunction(()=>[...document.querySelectorAll('.jarvis-cc-inline-result')]
       .filter(el=>el.textContent.includes('ARQUIVOS LOCAIS (1)')).length>=2);
-    await page.click('[data-cc="camera"]');
+    await dashboardAction('[data-cc="camera"]');
     await page.waitForFunction(()=>window.__ccAuditCamera===1);
     await page.$eval('[data-visual="globe"]',button=>
       button.scrollIntoView({block:'center',behavior:'instant'}));
-    await page.click('[data-visual="globe"]');
+    await dashboardAction('[data-visual="globe"]');
     await page.waitForFunction(()=>window.__phase3MockState.visible===true);
     // The stable return-to-Ring tool must work even when a moving 3D
     // visual prevents a click on the tiny sphere-mode toggle.
     await page.$eval('[data-cc="ring"]',button=>
       button.scrollIntoView({behavior:'instant',block:'center'}));
-    await page.click('[data-cc="ring"]');
+    await dashboardAction('[data-cc="ring"]');
     await page.waitForFunction(()=>window.__phase3MockState.visible===false&&
       document.querySelector('.jarvis-cc-visual')?.dataset.mode==='ring',{timeout:9000});
     assert.equal(await page.$eval('[data-visual="ring"]',button=>button.getAttribute('aria-pressed')),'true');
@@ -1418,13 +1425,13 @@ try {
           width:rect.width,height:rect.height,top:rect.top,
           chain:button.id==='btn-pair-mobile'?chain:undefined};
       });
-      assert.ok(hit.hit&&hit.width>60&&hit.height>=40,
-        'Quick control should be tappable: '+selector+' '+JSON.stringify(hit));
+      assert.ok(phoneTextMode?(hit.width===0):(hit.hit&&hit.width>60&&hit.height>=40),
+        'Phone shortcuts hidden, desktop shortcuts tappable: '+selector+' '+JSON.stringify(hit));
     }
-    await page.click('[data-command="status"]');
+    await dashboardAction('[data-command="status"]');
     await page.waitForFunction(()=>document.getElementById('output-box')
       .textContent.includes('INTERFACE JARVIS ATIVA'),{timeout:5000});
-    await page.click('[data-command="center"]');
+    await dashboardAction('[data-command="center"]');
     assert.match(await page.$eval('#output-box',el=>el.textContent),
       /Neural Jarvis centralizado/);
     await page.evaluate(()=>{
@@ -1433,7 +1440,7 @@ try {
       marker.textContent='CLEAR_TERMINAL_SENTINEL_2026';
       document.getElementById('output-box').append(marker);
     });
-    await page.click('[data-command="clear"]');
+    await dashboardAction('[data-command="clear"]');
     assert.equal(await page.$('#output-box [data-test-clear-sentinel]'),null,
       'LIMPAR TERMINAL should remove pre-existing entries without suppressing legitimate later async logs');
     // Phone pairing must work without starting remote camera or asking for
@@ -1456,14 +1463,15 @@ try {
         smartConnect:()=>{window.__cameraShortcutCalls++;return Promise.resolve(false);}
       };
     });
-    await page.waitForSelector('#btn-jarvis-pair-mobile',{visible:true,timeout:6000});
-    await page.click('#btn-jarvis-pair-mobile');
+    await page.waitForSelector('#btn-jarvis-pair-mobile',phoneTextMode?
+      {timeout:6000}:{visible:true,timeout:6000});
+    await dashboardAction('#btn-jarvis-pair-mobile');
     await page.waitForFunction(()=>document.getElementById('bridge-session-state')
       ?.textContent==='CODE 654321',{timeout:6000});
     assert.equal(await page.evaluate(()=>window.__mobilePairShortcutCalls),1);
     assert.equal(await page.evaluate(()=>window.__cameraShortcutCalls),0,
       'Connect phone must not activate remote camera');
-    await page.click('#btn-jarvis-pair-mobile');
+    await dashboardAction('#btn-jarvis-pair-mobile');
     assert.equal(await page.evaluate(()=>window.__mobilePairShortcutCalls),1,
       'Do not generate a second code while previous code is valid');
     await page.evaluate(()=>{
@@ -1498,7 +1506,7 @@ try {
         files:async()=>{throw Error('Unexpected local access');}
       };
     });
-    await page.click('[data-cc="files"]');
+    await dashboardAction('[data-cc="files"]');
     await page.waitForFunction(()=>document.getElementById('output-box')
       .textContent.includes('LOCAL CORE OFFLINE'),{timeout:5000});
     await page.waitForFunction(()=>[...document.querySelectorAll('.jarvis-cc-inline-result button')]
@@ -1516,7 +1524,7 @@ try {
     await page.evaluate(()=>{window.ULTRON_LOCAL_FILES=window.__savedFilesUi;});
 
     // Agenda is a working, explicitly LOCAL scheduler (no invented Google sync).
-    await page.click('[data-cc="agenda"]');
+    await dashboardAction('[data-cc="agenda"]');
     await page.waitForFunction(()=>[...document.querySelectorAll('.jarvis-cc-inline-result button')]
       .some(b=>b.textContent.includes('Adicionar compromisso')),{timeout:7000});
     await page.evaluate(()=>{
