@@ -67,7 +67,9 @@ let copied = "";
 let adoptedCode = null;
 let clock = 1000000;
 class FakeDate extends Date { static now() { return clock; } }
+const readinessEvents = {};
 const window = {
+  addEventListener(name, listener) { readinessEvents[name] = listener; },
   ULTRON_MOBILE_LINK: { adoptPairingCode(code, ttl) { adoptedCode = {code, ttl}; } },
   ULTRON_DEVICES: { startPairing: async (type, name) => {
     calls++;
@@ -79,6 +81,8 @@ const window = {
 const navigator = { clipboard: { writeText: async value => { copied = value; } } };
 vm.runInNewContext(source, { document, window, navigator, Date: FakeDate });
 
+assert.equal(typeof readinessEvents["jarvis:command-center-ready"], "function");
+readinessEvents["jarvis:command-center-ready"]();
 const card = document.getElementById("jarvis-mobile-pair-card");
 const primary = document.getElementById("btn-jarvis-pair-mobile");
 const top = document.getElementById("btn-jarvis-mobile-pair-top");

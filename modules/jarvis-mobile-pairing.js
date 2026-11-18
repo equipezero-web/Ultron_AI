@@ -158,6 +158,9 @@ function installVisibleMobilePairing() {
   }
 }
 
+// Command-center mount is asynchronous relative to entrypoint evaluation.
+// Retry once the current panel finishes mounting, without duplicating UI or codes.
+window.addEventListener?.("jarvis:command-center-ready", installVisibleMobilePairing);
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", installVisibleMobilePairing, { once: true });
 } else {

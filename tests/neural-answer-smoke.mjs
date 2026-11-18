@@ -562,6 +562,7 @@ try {
       const snapshot={result,geo:window.ULTRON_GEO_VISUAL?.state,theme:{...state}};
       window.__phase3EarthRestore=()=>{window.ULTRON_EARTH=earth;};
       window.__phase3MockState=state;
+      window.__phase3EarthMock=window.ULTRON_EARTH;
       return snapshot;
     });
     assert.equal(geography.result.ok,true,JSON.stringify(geography));
@@ -602,8 +603,74 @@ try {
     assert.ok(regionDetail.link?.includes('gov.br/cemaden'),JSON.stringify(regionDetail));
     await page.select('.jarvis-geo-filter','wet');
     assert.ok((await page.$eval('.jarvis-geo-visual',el=>el.querySelectorAll('.jarvis-geo-marker').length))>=1);
+    // This test uses a bounded Earth mock. The real 3D Earth module can finish
+    // asynchronous initialization while the page is under test; keep the mock
+    // under test from being replaced by that unrelated late initialization.
+    const accessibleMode=await page.evaluate(()=>{
+      window.ULTRON_EARTH=window.__phase3EarthMock;
+      const panel=document.querySelector('.jarvis-geo-visual');
+      const button=panel.querySelector('.jarvis-geo-modes [data-mode="3d"]');
+      panel.scrollTop=0;
+      panel.scrollIntoView({behavior:'instant',block:'center',inline:'nearest'});
+      button.scrollIntoView({behavior:'instant',block:'nearest',inline:'nearest'});
+      const r=button.getBoundingClientRect();
+      const px=r.left+r.width/2,py=r.top+r.height/2;
+      const target=document.elementFromPoint(px,py);
+      const ancestorPath=[];
+      for(let el=target,n=0;el&&n<9;el=el.parentElement,n++){
+        ancestorPath.push({tag:el.tagName,id:el.id,cls:typeof el.className==='string'?el.className:'',
+          label:el.getAttribute?.('aria-label')||null,txt:el.textContent?.trim()?.slice(0,60)||'',
+          dataset:{...el.dataset},z:getComputedStyle(el).zIndex});
+      }
+      const blockers=document.elementsFromPoint(px,py).slice(0,8).map(el=>({
+        tag:el.tagName, id:el.id,cls:typeof el.className==='string'?el.className:'',
+        z:getComputedStyle(el).zIndex, pointer:getComputedStyle(el).pointerEvents
+      }));
+      return {insideViewport:r.top>=0&&r.bottom<=innerHeight,
+        hit:button===target||button.contains(target),top:r.top,scrollY:scrollY,
+        panelTop:panel.getBoundingClientRect().top,blockers,ancestorPath,
+        modes:[...panel.querySelectorAll('.jarvis-geo-modes button')].map(el=>({
+          mode:el.dataset.mode,text:el.textContent,
+          rect:{x:el.getBoundingClientRect().x,y:el.getBoundingClientRect().y,
+            w:el.getBoundingClientRect().width,h:el.getBoundingClientRect().height}
+        })),
+        hitButtonMode:target?.closest?.('button')?.dataset?.mode||null,
+        hitButtonText:target?.closest?.('button')?.textContent||null,
+        hitGroupSame:target?.closest?.('.jarvis-geo-modes')===button.closest('.jarvis-geo-modes'),
+        hitPanelSame:target?.closest?.('.jarvis-geo-visual')===panel,
+        panelCount:document.querySelectorAll('#jarvis-geo-visual').length,
+        buttonZ:getComputedStyle(button).zIndex,panelZ:getComputedStyle(panel).zIndex};
+    });
+    assert.ok(accessibleMode.insideViewport&&accessibleMode.hit,
+      'Map mode switch must be clickable inside Neural Ring: '+JSON.stringify(accessibleMode));
+    await page.evaluate(()=>{
+      window.__geoModeClickAudit=[];
+      const button=document.querySelector('.jarvis-geo-modes [data-mode="3d"]');
+      const record=where=>event=>window.__geoModeClickAudit.push({
+        where,type:event.type,target:event.target?.tagName,
+        mode:window.ULTRON_GEO_VISUAL?.state?.mode,
+        defaultPrevented:event.defaultPrevented
+      });
+      for(const type of ['pointerdown','pointerup','click']){
+        button.addEventListener(type,record('target-capture'),true);
+        button.addEventListener(type,record('target-bubble'));
+        document.addEventListener(type,record('document-capture'),true);
+      }
+    });
     await page.click('.jarvis-geo-modes [data-mode="3d"]');
-    await page.waitForFunction(()=>window.ULTRON_GEO_VISUAL?.state?.mode==='3d',{timeout:7000});
+    try{
+      await page.waitForFunction(()=>window.ULTRON_GEO_VISUAL?.state?.mode==='3d',{timeout:7000});
+    }catch(error){
+      console.error('GEO 3D MODE DIAGNOSTICS',JSON.stringify(await page.evaluate(()=>({
+        mode:window.ULTRON_GEO_VISUAL?.state?.mode,
+        globeVisible:window.ULTRON_EARTH?.state?.visible,
+        usingTestGlobe:window.ULTRON_EARTH===window.__phase3EarthMock,
+        panelVisible:window.ULTRON_GEO_VISUAL?.state?.visible,
+        selectorPressed:document.querySelector('.jarvis-geo-modes [data-mode="3d"]')?.getAttribute('aria-pressed'),
+        events:window.__geoModeClickAudit||[]
+      }))));
+      throw error;
+    }
     assert.ok(await page.evaluate(()=>window.__phase3MockState.layerCount)>=1,'Globe must receive filtered thematic markers');
     await page.click('.jarvis-geo-timeline button');
     assert.equal(await page.evaluate(()=>window.ULTRON_GEO_VISUAL.state.playing),true);
@@ -1379,13 +1446,14 @@ try {
         smartConnect:()=>{window.__cameraShortcutCalls++;return Promise.resolve(false);}
       };
     });
-    await page.click('#btn-pair-mobile');
+    await page.waitForSelector('#btn-jarvis-pair-mobile',{visible:true,timeout:6000});
+    await page.click('#btn-jarvis-pair-mobile');
     await page.waitForFunction(()=>document.getElementById('bridge-session-state')
       ?.textContent==='CODE 654321',{timeout:6000});
     assert.equal(await page.evaluate(()=>window.__mobilePairShortcutCalls),1);
     assert.equal(await page.evaluate(()=>window.__cameraShortcutCalls),0,
       'Connect phone must not activate remote camera');
-    await page.click('#btn-pair-mobile');
+    await page.click('#btn-jarvis-pair-mobile');
     assert.equal(await page.evaluate(()=>window.__mobilePairShortcutCalls),1,
       'Do not generate a second code while previous code is valid');
     await page.evaluate(()=>{

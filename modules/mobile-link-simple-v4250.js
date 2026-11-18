@@ -1,5 +1,4 @@
 import { mobileBridgeSummary } from './bridge-status.js?v=5.15.0';
-const button = document.getElementById('btn-pair-mobile');
 const output = document.getElementById('output-box');
 
 function setText(id, value) {
@@ -151,18 +150,8 @@ function adoptPairingCode(code, expiresInSeconds=600) {
   return true;
 }
 
-let lastMobilePointerAt=0;
-button?.addEventListener('pointerdown',event=>{
-  if(event.button!==0)return;
-  lastMobilePointerAt=Date.now();
-  void connect();
-},true);
-button?.addEventListener('click',event=>{
-  event.preventDefault();
-  event.stopImmediatePropagation();
-  if(Date.now()-lastMobilePointerAt<850)return;
-  void connect();
-},true);
+// Pairing buttons are owned by the visible J.A.R.V.I.S. pairing panel.
+// This module only maintains its connection/status API for existing integrations.
 
 window.addEventListener('ultron:mobile-camera-source', (event) => {
   if (!event?.detail?.active) return;

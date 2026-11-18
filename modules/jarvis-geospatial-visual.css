@@ -566,3 +566,18 @@ body.jarvis-command-center .jarvis-tsunami-wave-front{
 @media(prefers-reduced-motion:reduce){
  body.jarvis-command-center .jarvis-tsunami-wave-front{animation:none}
 }
+
+/* The 2D/3D mode switch remains reachable while the map panel scrolls.
+   Keep the controls in the existing Neural Ring, never a separate modal. */
+body.jarvis-command-center .jarvis-cc-center>.jarvis-geo-visual>.jarvis-geo-controls{
+  position:sticky;top:0;z-index:8;
+  padding:4px 2px;border-radius:7px;background:rgba(8,25,39,.97);
+}
+
+
+/* When a geographic workspace is open, the actual Neural map controls must
+   receive input above the persistent topbar (z-index:42). Keep the topbar
+   untouched the rest of the time. This fixes TV and notebook hit-testing. */
+body.jarvis-command-center .jarvis-command-center-ui:has(> .jarvis-cc-center > .jarvis-geo-visual:not([hidden])) > .jarvis-cc-center{
+ position:relative!important;z-index:50!important;
+}

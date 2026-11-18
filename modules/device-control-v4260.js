@@ -573,17 +573,8 @@ async function pairMobileDirect(){
     outputLine("Abra o Ultron Bridge no celular, digite o código e toque em INICIAR BRIDGE.");
   }catch(error){outputLine("Falha ao gerar código do celular: "+String(error?.message||error),true);}
 }
-const mobilePairButton=document.getElementById("btn-pair-mobile");
-let lastDirectMobilePointerAt=0;
-mobilePairButton?.addEventListener("pointerdown",event=>{
-  if(event.button!==0||window.ULTRON_MOBILE_LINK?.connect)return;
-  lastDirectMobilePointerAt=Date.now();
-  void pairMobileDirect();
-});
-mobilePairButton?.addEventListener("click",()=>{
-  if(Date.now()-lastDirectMobilePointerAt<850)return;
-  if(!window.ULTRON_MOBILE_LINK?.connect)void pairMobileDirect();
-});
+// The current visible pairing panel owns the mobile button exclusively.
+// pairMobileDirect is retained solely for TV recovery when no phone is paired.
 async function setupTv(){
   outputLine("LG WEBOS: verificando o pareamento do celular. A TV não aceita o código de seis dígitos do J.A.R.V.I.S.");
   try{
