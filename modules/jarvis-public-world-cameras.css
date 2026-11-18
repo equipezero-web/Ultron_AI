@@ -430,3 +430,21 @@ body.jarvis-command-center .jarvis-worldcam-sidebar .jarvis-worldcam-filters inp
   grid-column:1/-1!important;
  }
 }
+
+/* Provider-by-provider audit remains inside the Neural Ring side catalogue. */
+body.jarvis-command-center .jarvis-worldcam-coverage{
+ flex:0 0 auto;max-width:100%;min-width:0;
+ border:1px solid rgba(244,196,112,.52);
+ border-radius:8px;background:rgba(14,25,33,.92);color:#f4e0b6;
+}
+body.jarvis-command-center .jarvis-worldcam-coverage>summary{
+ box-sizing:border-box;padding:11px 8px;cursor:pointer;
+ min-height:44px;font-weight:750;font-size:11px;line-height:1.4;
+}
+body.jarvis-command-center .jarvis-worldcam-coverage-list{
+ display:grid;gap:7px;padding:7px 9px 10px;
+}
+body.jarvis-command-center .jarvis-worldcam-coverage-list p{
+ margin:0;line-height:1.5;font-size:11px;color:#d7dde3;
+ overflow-wrap:anywhere;
+}
