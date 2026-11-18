@@ -168,7 +168,7 @@ if(center){
           event.preventDefault();event.stopPropagation();
           if(block.querySelector('iframe'))return;
           const frame=document.createElement('iframe');
-          frame.src='https://www.youtube-nocookie.com/embed/'+item.id+'?playsinline=1&rel=0&autoplay=1';
+          frame.src='https://www.youtube-nocookie.com/embed/'+item.id+'?playsinline=1&rel=0&autoplay=0&mute=1';
           frame.title=item.title;frame.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';
           frame.allowFullscreen=true;frame.loading='eager';frame.referrerPolicy='strict-origin-when-cross-origin';
           const player=document.createElement('div');player.className='ultron-video-player';player.append(frame);
