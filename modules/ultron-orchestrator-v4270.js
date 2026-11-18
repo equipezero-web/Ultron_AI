@@ -3,6 +3,7 @@ import {planAgents} from "../backend/intelligent-task-hub.js";
 import {classifyOperatorTurn,splitOperatorSteps} from "./jarvis-intent-engine.js?v=4.69.0";
 import {directPlan,resolveActionPlan,runActionPlan} from "./jarvis-action-engine.js?v=4.101.2";
 import {parseLocalCommand,runLocalCommand} from "./jarvis-local-commands.js?v=5.12.4";
+import {parseDirectorIntent,parseBriefingIntent,parsePublicCameraAudioIntent,parseCommunicationNotificationIntent} from "./jarvis-communication-intents.js?v=5.53.0";
 import {parseMissionControl,assessCompoundMission,createMissionGate} from "./jarvis-mission-safety.js";
 import {inspectMissionDependencies,missionStepOutcome,createMissionJournal} from "./jarvis-mission-diagnostics.js";
 import {createRecoveryEngine} from "./jarvis-recovery-engine.js";
@@ -885,38 +886,59 @@ function enqueue(message, source = "terminal", approvedMission = false) {
   // notícia", "este evento") against the currently verified visual scene.
   const contextualIntent=window.ULTRON_MULTIMODAL?.parse?.(message);
   if(contextualIntent)return window.ULTRON_MULTIMODAL.execute(message,{source});
-  const directorCommand=normalize(message).replace(/^(?:jarvis|ultron)[, :]+/,"").replace(/[.!?]+$/,"").trim();
-  if(/^(?:(?:abrir|abra|iniciar|inicie|mostrar|mostre|ative|ativar) (?:a |o )?)?(?:diretor visual|orquestracao visual|apresentacao visual|roteiro visual)$/.test(directorCommand)){
-    return window.ULTRON_VISUAL_ORCHESTRATOR?.start?.()||
-      Promise.resolve({ok:false,error:"Diretor visual indisponível."});
-  }
-  if(/^(?:proxima cena|avancar cena|cena seguinte)$/.test(directorCommand)){
-    return window.ULTRON_VISUAL_ORCHESTRATOR?.next?.()||
-      Promise.resolve({ok:false,error:"Apresentação visual não iniciada."});
-  }
-  if(/^(?:cena anterior|voltar cena)$/.test(directorCommand)){
-    return window.ULTRON_VISUAL_ORCHESTRATOR?.previous?.()||
-      Promise.resolve({ok:false,error:"Apresentação visual não iniciada."});
-  }
-  if(/^(?:mostre|mostrar|abrir|abra|exibir|exiba) (?:as |os |o )?(?:noticias e imagens|noticias visuais|fontes verificadas|prioridades visuais|mapa contextual 2d|globo contextual 3d)(?: no neural ring)?$/.test(directorCommand)){
-    const scene=/noticias/.test(directorCommand)?"news":
-      /fontes|prioridades/.test(directorCommand)?"priorities":
-      /mapa/.test(directorCommand)?"map":"tour";
-    return window.ULTRON_VISUAL_ORCHESTRATOR?.show?.(scene)||
-      Promise.resolve({ok:false,error:"Cena visual indisponível."});
-  }
-  if(/^(?:status|estado|diagnostico) (?:do |da )?(?:diretor visual|orquestracao visual|apresentacao visual)$/.test(directorCommand)){
+  // Communication controls are local UI operations, never AI or TV commands.
+  const directorIntent=parseDirectorIntent(message);
+  if(directorIntent){
     const module=window.ULTRON_VISUAL_ORCHESTRATOR;
-    const state=module?.state||null;
-    const plan=module?.plan?.();
-    log("VISUAL // "+(state?.active?"ATIVO":"INATIVO")+
-      " // "+(state?.scene||"SEM CENA")+" // "+
-      (plan?.available?.join(", ")||"SEM FONTES CONFIRMADAS"));
-    return Promise.resolve({ok:Boolean(module),state,available:plan?.available||[]});
+    if(!module)return Promise.resolve({ok:false,route:"communication-director",error:"Diretor visual indisponível"});
+    if(directorIntent.type==="status"){
+      const state=module.state,plan=module.plan?.();
+      log("VISUAL // "+(state?.active?"ATIVO":"INATIVO")+" // "+(state?.scene||"SEM CENA"));
+      return Promise.resolve({ok:true,route:"communication-director",state,available:plan?.available||[]});
+    }
+    const action=directorIntent.type==="open"?module.start?.():
+      directorIntent.type==="close"?module.stop?.():
+      directorIntent.type==="next"?module.next?.():
+      directorIntent.type==="previous"?module.previous?.():
+      module.show?.(directorIntent.scene);
+    return Promise.resolve(action||{ok:false,error:"Ação visual indisponível"}).then(result=>{
+      log("DIRETOR VISUAL // "+directorIntent.type+" // "+(result?.ok?"CONFIRMADO":result?.error||"NÃO CONFIRMADO"),!result?.ok);
+      return {route:"communication-director",...result};
+    });
   }
-  if(/^(?:fechar|encerrar|parar|cancelar) (?:a |o )?(?:diretor visual|orquestracao visual|apresentacao visual)$/.test(directorCommand)){
-    return Promise.resolve(window.ULTRON_VISUAL_ORCHESTRATOR?.stop?.()||
-      {ok:false,error:"Diretor visual indisponível."});
+  const briefingIntent=parseBriefingIntent(message);
+  if(briefingIntent){
+    const module=window.ULTRON_INTELLIGENCE;
+    if(!module)return Promise.resolve({ok:false,route:"communication-briefing",error:"Boletim indisponível"});
+    const action=briefingIntent.type==="open"?module.open?.():
+      briefingIntent.type==="close"?module.close?.():
+      briefingIntent.type==="refresh"?module.refresh?.({reason:"manual"}):
+      {ok:true,state:module.state};
+    return Promise.resolve(action).then(result=>{
+      const ok=briefingIntent.type==="refresh"?Boolean(result?.ok):result?.ok===true;
+      log("BOLETIM // "+briefingIntent.type+" // "+(ok?"CONFIRMADO":"NÃO CONFIRMADO"),!ok);
+      return {route:"communication-briefing",ok,...(result||{})};
+    });
+  }
+  const audioIntent=parsePublicCameraAudioIntent(message);
+  if(audioIntent){
+    const result=window.ULTRON_WORLD_CAMERAS?.setAudio?.(audioIntent.enabled)||
+      {ok:false,error:"Player público com áudio controlável não disponível"};
+    log("CÂMERAS PÚBLICAS // "+(audioIntent.enabled?"ATIVAR":"DESATIVAR")+
+      " ÁUDIO // "+(result?.ok?"SOLICITADO":"NÃO CONFIRMADO"),!result?.ok);
+    return Promise.resolve({route:"communication-worldcam-audio",...result});
+  }
+  const notificationIntent=parseCommunicationNotificationIntent(message);
+  if(notificationIntent){
+    const module=window.JARVIS_COMM_NOTIFICATIONS;
+    if(!module)return Promise.resolve({ok:false,route:"communication-notifications",error:"Notificações indisponíveis"});
+    const action=notificationIntent.type==="enable"?module.enable?.({userGesture:false}):
+      notificationIntent.type==="disable"?module.disable?.():
+      module.status?.();
+    return Promise.resolve(action).then(result=>{
+      log("NOTIFICAÇÕES // "+notificationIntent.type+" // "+(result?.ok?"CONFIRMADO":result?.reason||"NÃO CONFIRMADO"),!result?.ok);
+      return {route:"communication-notifications",...result};
+    });
   }
   const immerseCommand=normalize(message).replace(/^(?:jarvis|ultron)[, :]+/,"").replace(/[.!?]+$/,"").trim();
   if(/^(?:(?:iniciar|inicie|abrir|abra|mostrar|mostre|explorar) (?:a |o )?)?(?:exploracao visual|experiencia imersiva|tour visual|tour contextual|explorar eventos)$/.test(immerseCommand)){
