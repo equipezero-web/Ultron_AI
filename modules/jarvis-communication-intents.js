@@ -44,3 +44,14 @@ export function parseCommunicationNotificationIntent(value){
  if(new RegExp("^(?:status|estado) (?:das |dos )?"+target+"$").test(q))return {type:"status"};
  return null;
 }
+
+export function parseNewsVisualCloseIntent(value){
+ const q=safe(value);if(!q)return null;
+ if(/^(?:fechar|feche|ocultar|oculte|encerrar|encerre) (?:as |os |a |o )?(?:noticias e imagens|noticias visuais|painel de noticias visuais|resposta de noticias)$/.test(q))
+  return {type:"news"};
+ if(/^(?:fechar|feche|ocultar|oculte|parar|pare) (?:os |o )?(?:videos|video|reprodutor de video|player de video)(?: do neural ring)?$/.test(q))
+  return {type:"videos"};
+ if(/^(?:fechar|feche|ocultar|oculte) (?:as |a )?(?:imagens|galeria de imagens)(?: do neural ring)?$/.test(q))
+  return {type:"images"};
+ return null;
+}
