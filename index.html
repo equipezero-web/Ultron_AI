@@ -95,7 +95,9 @@
           <button id="btn-mobile-mic" class="hud-button primary">MIC DO CELULAR</button>
           <button id="btn-test-mic" class="hud-button">TESTAR MICROFONE</button>
           <button id="btn-voice" data-command="voice" class="hud-button">TESTAR VOZ</button>
+          <button id="btn-toggle-speech" class="hud-button" type="button" aria-pressed="true">SILENCIAR VOZ</button>
         </div>
+        <p id="voice-output-status" role="status" aria-live="polite" class="spatial-help">SAÍDA DE VOZ HABILITADA · CLIQUE EM ATIVAR ESCUTA PARA AUTORIZAR O MICROFONE</p>
         <div class="voice-match-strip">
           <div class="voice-match-copy"><span>VOICE MATCH // LOCAL PROFILE</span><strong id="voice-match-state">NÃO CADASTRADO</strong></div>
           <div class="voice-match-actions">
@@ -257,6 +259,7 @@
 <script type="module" src="script.js?v=5.64.0"></script>
 <script type="module" src="modules/vision-command-router.js?v=4.17.0"></script>
 <script type="module" src="modules/voice-listener-v4290.js?v=5.64.0"></script>
+<script type="module" src="modules/jarvis-voice-controls.js?v=1.0.0"></script>
 <script type="module" src="modules/voice-orchestration-bridge-v4290.js?v=4.31.0"></script>
 <script type="module" src="modules/orchestrator-ui-bridge-v4270.js?v=4.27.0"></script>
 <script type="module" src="modules/ultron-intelligence-briefing.js?v=5.64.0"></script>
