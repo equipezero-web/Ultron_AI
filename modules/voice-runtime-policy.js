@@ -88,3 +88,10 @@ export function isDuplicateVoiceText(text, lastText, elapsedMs, limitMs) {
   const previous = normalizeVoiceText(lastText);
   return Boolean(current && previous && current === previous && elapsedMs >= 0 && elapsedMs < limitMs);
 }
+
+/** Exact sleep commands only. Negated, hypothetical and quoted phrases are NOT actions. */
+export function isExplicitSleepCommand(value){
+ const q=normalizeVoiceText(value).replace(/^(?:ultron)\s+/,"").trim();
+ return new Set(["dormir","durma","modo passivo","pare de responder",
+  "encerrar conversa","finalizar conversa","voltar ao modo passivo"]).has(q);
+}
