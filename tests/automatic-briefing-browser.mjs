@@ -162,8 +162,10 @@ try {
   assert.ok(wakeInfo.stories.some(x=>x.includes("Tempestade monitorada em SC")));
   assert.ok(wakeInfo.wake && wakeInfo.wake===wakeInfo.stored);
   assert.equal(wakeInfo.voice,false,"Spoken narration must remain off by default");
-  assert.deepEqual(await page.evaluate(()=>[...document.querySelectorAll(".jarvis-intel-controls button")].map(x=>x.textContent.trim())),
-    ["Atualizar","ATIVAR NOTIFICAÇÕES"],"Refresh and consent controls are present; voice remains off");
+  const controlLabels=await page.evaluate(()=>[...document.querySelectorAll(".jarvis-intel-controls button")].map(x=>x.textContent.trim()));
+  assert.equal(controlLabels.length,2,"Refresh and opt-in notification controls only; voice remains off");
+  assert.equal(controlLabels[0],"Atualizar");
+  assert.match(controlLabels[1],/NOTIFICAÇÕES|PUSH OFICIAL/,"Notifications show an explicit browser support state");
   const initialCalls=calls;
   await page.click(".jarvis-intel-controls button:first-child");
   await page.waitForFunction(()=>window.ULTRON_INTELLIGENCE?.state?.loading===false,{timeout:6000});
@@ -190,6 +192,41 @@ try {
   assert.ok((await page.$eval(".jarvis-intel-message",el=>el.textContent)).includes("Última consulta preservada"),
     "The previous verified bulletin must remain visible after all sources fail");
   assert.equal(await page.evaluate(()=>window.ULTRON_INTELLIGENCE.state.totalStories),1,"Past verified content remains after all sources fail");
+  // One shared communication UI must remain usable on phones, PCs and TV displays.
+  for(const device of [
+    {name:"compact-phone",width:320,height:640,mobile:true},
+    {name:"phone",width:390,height:844,mobile:true},
+    {name:"tablet",width:768,height:1024,mobile:true},
+    {name:"desktop",width:1366,height:768,mobile:false},
+    {name:"tv",width:1920,height:1080,mobile:false,tv:true},
+    {name:"4k-tv",width:3840,height:2160,mobile:false,tv:true}
+  ]){
+    await page.setViewport({width:device.width,height:device.height,
+      isMobile:device.mobile,hasTouch:device.mobile,deviceScaleFactor:1});
+    const result=await page.evaluate(tv=>{
+      document.body.classList.toggle("ultron-tv-display",Boolean(tv));
+      const panel=document.querySelector(".jarvis-intel-panel");
+      const controls=[...document.querySelectorAll(".jarvis-intel-controls button")];
+      const boxes=controls.map(el=>el.getBoundingClientRect());
+      return {panels:document.querySelectorAll(".jarvis-intel-panel").length,
+        controls:controls.length,
+        buttons:boxes.map(b=>({width:b.width,height:b.height,left:b.left,right:b.right})),
+        focusable:controls.every(el=>el.tabIndex>=0&&!el.hidden),
+        state:typeof window.JARVIS_COMM_NOTIFICATIONS?.status==="function",
+        viewport:window.innerWidth,
+        panelWidth:panel?.getBoundingClientRect().width||0};
+    },device.tv);
+    assert.equal(result.panels,1,device.name+": duplicate intelligence panels");
+    assert.equal(result.controls,2,device.name+": communication controls lost");
+    assert.equal(result.state,true,device.name+": notifications controller missing");
+    assert.equal(result.focusable,true,device.name+": TV keyboard/touch controls inaccessible");
+    assert.ok(result.panelWidth<=result.viewport+2,device.name+": panel overflow");
+    for(const button of result.buttons){
+      assert.ok(button.height>=(device.tv?48:40),device.name+": touch/TV target too small");
+      assert.ok(button.width>0,device.name+": hidden control");
+    }
+  }
+  await page.evaluate(()=>document.body.classList.remove("ultron-tv-display"));
   console.log("AUTO BRIEFING BROWSER PASS: startup, Brazil/SC/world, 24h archive/wake delta, voice toggle, fallback and network resilience");
 } catch(error){
   console.error("AUTO BRIEFING BROWSER FAILED:",error);
