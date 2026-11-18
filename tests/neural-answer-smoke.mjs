@@ -1202,16 +1202,26 @@ try {
     // The GLOBAL INTEL button must still open the SAME Ring with verified
     // direct GeoJSON (explicitly marked as NOT persisted/24-hour monitoring).
     globalBackendOffline=true;
-    await page.$eval('#btn-global-intelligence',button=>
-      button.scrollIntoView({block:'center',inline:'nearest',behavior:'instant'}));
-    const quickHit=await page.$eval('#btn-global-intelligence',button=>{
-      const box=button.getBoundingClientRect();
-      const at=document.elementFromPoint(box.x+box.width/2,box.y+box.height/2);
-      return {hit:at===button||button.contains(at),element:at?.tagName,
-        text:at?.textContent?.slice(0,50),display:getComputedStyle(button).display};
-    });
-    assert.equal(quickHit.hit,true,'GLOBAL INTEL quick button must be reachable by pointer: '+JSON.stringify(quickHit));
-    await page.click('#btn-global-intelligence');
+    if(viewport.width<=699){
+      const hidden=await page.$eval('#btn-global-intelligence',button=>
+        button.getBoundingClientRect().width===0);
+      assert.equal(hidden,true,"Phone uses text/voice, not a GLOBAL INTEL quick button");
+      const opened=await page.evaluate(()=>window.ULTRON_ORCHESTRATOR.execute(
+        "Jarvis, mostre a inteligência global no globo 3D","mobile-text"));
+      assert.equal(opened.ok,true,"Mobile global intelligence must open from command text");
+    }else{
+      await page.$eval('#btn-global-intelligence',button=>
+        button.scrollIntoView({block:'center',inline:'nearest',behavior:'instant'}));
+      const quickHit=await page.$eval('#btn-global-intelligence',button=>{
+        const box=button.getBoundingClientRect();
+        const at=document.elementFromPoint(box.x+box.width/2,box.y+box.height/2);
+        return {hit:at===button||button.contains(at),element:at?.tagName,
+          text:at?.textContent?.slice(0,50),display:getComputedStyle(button).display};
+      });
+      assert.equal(quickHit.hit,true,
+        'Desktop/TV GLOBAL INTEL quick button pointer: '+JSON.stringify(quickHit));
+      await page.click('#btn-global-intelligence');
+    }
     await page.waitForFunction(()=>window.ULTRON_GLOBAL_INTELLIGENCE.state.visible===true,{timeout:10000});
     await page.waitForFunction(()=>document.querySelector(
       '.jarvis-global-intel-panel')?.getAttribute('aria-busy')==="false",{timeout:15000});
