@@ -1382,13 +1382,14 @@ try {
         smartConnect:()=>{window.__cameraShortcutCalls++;return Promise.resolve(false);}
       };
     });
-    await page.click('#btn-pair-mobile');
+    await page.waitForSelector('#btn-jarvis-pair-mobile',{visible:true,timeout:6000});
+    await page.click('#btn-jarvis-pair-mobile');
     await page.waitForFunction(()=>document.getElementById('bridge-session-state')
       ?.textContent==='CODE 654321',{timeout:6000});
     assert.equal(await page.evaluate(()=>window.__mobilePairShortcutCalls),1);
     assert.equal(await page.evaluate(()=>window.__cameraShortcutCalls),0,
       'Connect phone must not activate remote camera');
-    await page.click('#btn-pair-mobile');
+    await page.click('#btn-jarvis-pair-mobile');
     assert.equal(await page.evaluate(()=>window.__mobilePairShortcutCalls),1,
       'Do not generate a second code while previous code is valid');
     await page.evaluate(()=>{
