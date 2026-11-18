@@ -190,7 +190,7 @@ export function parseWorldCameraCommand(message){
   return {type:"close"};
  if(/^(?:status|estado) (?:das cameras mundiais|do monitoramento visual mundial)$/.test(s))
   return {type:"status"};
- const match=s.match(/^(?:mostrar|mostre|abrir|abra|buscar|busque|ver) (?:as |uma |a )?(?:cameras?|webcams?) (?:de|do|da|em|no|na) ([a-z0-9\s-]{2,64})$/);
+ const match=s.match(/^(?:mostrar|mostre|abrir|abra|buscar|busque|ver) (?:as |uma |a )?(?:cameras?|webcams?) (?:publicas? |ao vivo )?(?:de|do|da|em|no|na) ([a-z0-9\s-]{2,64})$/);
  if(match){
   const term=match[1].trim();
   // Keep private, attached, household and local optical-camera requests

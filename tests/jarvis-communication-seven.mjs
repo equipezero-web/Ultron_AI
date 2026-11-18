@@ -7,6 +7,14 @@ import {isExplicitSleepCommand} from "../modules/voice-runtime-policy.js";
 import {parseWorldCameraCommand} from "../modules/jarvis-public-world-cameras-model.js";
 import {parseLocalCommand} from "../modules/jarvis-local-commands.js";
 const file=path=>readFileSync(new URL("../"+path,import.meta.url),"utf8");
+// Public streams must never activate the user's local optical sensor.
+for(const phrase of ["Jarvis, mostre uma câmera pública de Jerusalém", "mostre câmera pública de Jerusalém", "abra uma webcam pública de Recife", "mostre uma câmera ao vivo de Jerusalém"]){
+ const intent=parseWorldCameraCommand(phrase);
+ assert.deepEqual(intent,{type:"search",term:phrase.includes("Recife")?"recife":"jerusalem"},phrase);
+}
+for(const phrase of ["Jarvis, abra minha câmera do notebook","mostre uma câmera pública do meu celular","como mostrar uma câmera pública de Jerusalém"])
+ assert.equal(parseWorldCameraCommand(phrase),null,phrase);
+
 const cases=[
  [parseDirectorIntent,"Jarvis, feche o diretor visual",{type:"close"}],
  [parseNewsVisualCloseIntent,"Jarvis, feche as notícias e imagens",{type:"news"}],
