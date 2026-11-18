@@ -341,7 +341,17 @@ function build(){
   "Não afirmamos sinal ao vivo sem confirmação."),
   safeLink(WORLD_CAMERAS_HOME,"Catálogo Brasil"),
   safeLink(WORLD_CAMERAS_INTERNATIONAL,"Catálogo internacional"));
- panel.append(head,summary,pickerBar,filterDetails,results,videoArea,audioBar,notice,catalogs,footer);
+ // A dedicated side catalogue and a large, separate video stage share
+ // the same Neural Ring. Camera switching does not resize the live player.
+ const workspace=make("div","jarvis-worldcam-workspace");
+ const sidebar=make("aside","jarvis-worldcam-sidebar");
+ sidebar.setAttribute("aria-label","Filtros e câmeras públicas");
+ sidebar.append(pickerBar,filterDetails,results,catalogs);
+ const media=make("section","jarvis-worldcam-media");
+ media.setAttribute("aria-label","Reprodução ampliada da câmera pública");
+ media.append(videoArea,audioBar,notice);
+ workspace.append(sidebar,media);
+ panel.append(head,summary,workspace,footer);
  stage.append(panel);
  return true;
 }
