@@ -623,6 +623,12 @@ try {
       return {insideViewport:r.top>=0&&r.bottom<=innerHeight,
         hit:button===target||button.contains(target),top:r.top,scrollY:scrollY,
         panelTop:panel.getBoundingClientRect().top,blockers,
+        modes:[...panel.querySelectorAll('.jarvis-geo-modes button')].map(el=>({
+          mode:el.dataset.mode,text:el.textContent,
+          rect:{x:el.getBoundingClientRect().x,y:el.getBoundingClientRect().y,
+            w:el.getBoundingClientRect().width,h:el.getBoundingClientRect().height}
+        })),
+        hitButtonMode:target?.closest?.('button')?.dataset?.mode||null,
         buttonZ:getComputedStyle(button).zIndex,panelZ:getComputedStyle(panel).zIndex};
     });
     assert.ok(accessibleMode.insideViewport&&accessibleMode.hit,
