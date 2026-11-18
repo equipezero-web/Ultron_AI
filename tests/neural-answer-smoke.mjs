@@ -562,6 +562,7 @@ try {
       const snapshot={result,geo:window.ULTRON_GEO_VISUAL?.state,theme:{...state}};
       window.__phase3EarthRestore=()=>{window.ULTRON_EARTH=earth;};
       window.__phase3MockState=state;
+      window.__phase3EarthMock=window.ULTRON_EARTH;
       return snapshot;
     });
     assert.equal(geography.result.ok,true,JSON.stringify(geography));
@@ -602,11 +603,27 @@ try {
     assert.ok(regionDetail.link?.includes('gov.br/cemaden'),JSON.stringify(regionDetail));
     await page.select('.jarvis-geo-filter','wet');
     assert.ok((await page.$eval('.jarvis-geo-visual',el=>el.querySelectorAll('.jarvis-geo-marker').length))>=1);
-    const geoHit=await page.evaluate(()=>{const b=document.querySelector('.jarvis-geo-modes [data-mode="3d"]');const r=b.getBoundingClientRect();const at=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2);return {target:at?.tagName,cls:String(at?.className||""),inside:b===at||b.contains(at),x:r.left+r.width/2,y:r.top+r.height/2};});
-    console.log('GEO 3D MODE TARGET',JSON.stringify(geoHit));
+    // This test uses a bounded Earth mock. The real 3D Earth module can finish
+    // asynchronous initialization while the page is under test; keep the mock
+    // under test from being replaced by that unrelated late initialization.
+    await page.evaluate(()=>{
+      window.ULTRON_EARTH=window.__phase3EarthMock;
+      document.querySelector('.jarvis-geo-modes [data-mode="3d"]')
+        ?.scrollIntoView({block:'center',inline:'nearest'});
+    });
     await page.click('.jarvis-geo-modes [data-mode="3d"]');
-    console.log('GEO 3D MODE RESULT',await page.evaluate(()=>({mode:window.ULTRON_GEO_VISUAL?.state?.mode,globeVisible:window.ULTRON_EARTH?.state?.visible})));
-    await page.waitForFunction(()=>window.ULTRON_GEO_VISUAL?.state?.mode==='3d',{timeout:7000});
+    try{
+      await page.waitForFunction(()=>window.ULTRON_GEO_VISUAL?.state?.mode==='3d',{timeout:7000});
+    }catch(error){
+      console.error('GEO 3D MODE DIAGNOSTICS',JSON.stringify(await page.evaluate(()=>({
+        mode:window.ULTRON_GEO_VISUAL?.state?.mode,
+        globeVisible:window.ULTRON_EARTH?.state?.visible,
+        usingTestGlobe:window.ULTRON_EARTH===window.__phase3EarthMock,
+        panelVisible:window.ULTRON_GEO_VISUAL?.state?.visible,
+        selectorPressed:document.querySelector('.jarvis-geo-modes [data-mode="3d"]')?.getAttribute('aria-pressed')
+      }))));
+      throw error;
+    }
     assert.ok(await page.evaluate(()=>window.__phase3MockState.layerCount)>=1,'Globe must receive filtered thematic markers');
     await page.click('.jarvis-geo-timeline button');
     assert.equal(await page.evaluate(()=>window.ULTRON_GEO_VISUAL.state.playing),true);
