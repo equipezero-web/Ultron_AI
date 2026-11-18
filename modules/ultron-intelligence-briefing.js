@@ -151,7 +151,10 @@ panel.setAttribute("aria-label","Boletim de inteligência automática Brasil e M
 const heading=elem("div","jarvis-intel-heading");
 const title=elem("strong","","◈ J.A.R.V.I.S // INTELIGÊNCIA EM TEMPO REAL");
 const status=elem("span","jarvis-intel-status","AGUARDANDO FONTES");
-heading.append(title,status);
+const closeButton=elem("button","","×");
+closeButton.type="button";closeButton.title="Fechar boletim (sem interromper a coleta)";
+closeButton.setAttribute("aria-label","Fechar boletim de inteligência");
+heading.append(title,status,closeButton);
 const controls=elem("div","jarvis-intel-controls");
 const updateButton=elem("button","","Atualizar");
 updateButton.type="button";updateButton.title="Consultar notícias novamente";
@@ -178,6 +181,15 @@ const officialArea=elem("div","jarvis-intel-official");
 const footer=elem("div","jarvis-intel-footer");
 panel.append(heading,controls,state,historyArea,weatherArea,storyArea,officialArea,footer);
 if(root)root.append(panel);
+function hideBriefing(){
+ if(panel.hidden)return {ok:false,reason:"already-closed"};
+ panel.hidden=true;return {ok:true,closed:true};
+}
+function openBriefing(){
+ if(!root)return {ok:false,reason:"not-mounted"};
+ panel.hidden=false;return {ok:true,visible:true};
+}
+closeButton.addEventListener("click",hideBriefing);
 function render(data,{announce=false}={}){
   if(!root)return;
   storyArea.replaceChildren();officialArea.replaceChildren();footer.replaceChildren();
@@ -191,7 +203,7 @@ function render(data,{announce=false}={}){
   status.textContent=(isOld?"DADOS ANTIGOS":data.delivery==="github-scheduled-snapshot"?"COLETA VERIFICADA":"CONSULTA CONCLUÍDA")+" · "+formatDate(data.fetchedAt);
   const count=(data.topics||[]).reduce((sum,t)=>sum+(t.articles?.length||0),0);
   state.textContent=count
-    ? count+" notícias recentes com links e datas; fontes oficiais de clima abaixo."
+    ? count+(isOld?" notícias em boletim desatualizado; confirme datas e fontes.":" notícias catalogadas com links e datas; confira a publicação de cada uma.")
     : "Nenhuma manchete recente confirmada nesta consulta.";
   for(const group of data.topics||[]){
     const section=elem("section","jarvis-intel-topic");
@@ -474,12 +486,26 @@ async function refresh({reason="manual",narrate=false}={}){
       current=result;
       render(result,{announce:reason!=="periodic"});
       void loadMeteorologyMonitor();
-      const before=new Set((old?.topics||[]).flatMap(t=>t.articles||[]).map(a=>a.url));
-      const newly=(result.topics||[]).flatMap(t=>t.articles||[]).filter(a=>!before.has(a.url));
+      const normalizeUrl=value=>{
+        try{const u=new URL(value);if(u.protocol!=="https:"&&u.protocol!=="http:")return null;
+          u.hash="";for(const k of [...u.searchParams.keys()])if(/^utm_|^(?:fbclid|gclid)$/i.test(k))u.searchParams.delete(k);
+          return u.href;}catch{return null;}
+      };
+      const before=new Set((old?.topics||[]).flatMap(t=>t.articles||[]).map(a=>normalizeUrl(a.url)).filter(Boolean));
+      const freshCutoff=Date.now()-24*60*60*1000;
+      const seen=new Set();
+      const newly=(result.topics||[]).flatMap(t=>t.articles||[]).filter(a=>{
+        const url=normalizeUrl(a.url),published=Date.parse(a.publishedAt);
+        if(!url||seen.has(url)||before.has(url)||!Number.isFinite(published)||
+           published<freshCutoff||published>Date.now()+30*60*1000)return false;
+        seen.add(url);return true;
+      });
       lastRendered=result.fetchedAt;
       window.dispatchEvent(new CustomEvent("ultron:intelligence-update",{detail:{
         fetchedAt:result.fetchedAt,newStories:old?newly.length:0,
-        urgentAlerts:result.alerts?.warnings?.length||0,partial:Boolean(result.partial)
+        urgentAlerts:result.alerts?.checked===true ? (result.alerts?.warnings||[]).filter(a=>a?.url&&a?.title).length:0,
+        verifiedNewStories:newly.slice(0,10).map(a=>({title:short(a.title),url:a.url,publishedAt:a.publishedAt})),
+        partial:Boolean(result.partial)
       }}));
       if(reason==="periodic"&&old&&newly.length)log(newly.length+" nova(s) manchete(s) desde o último boletim.");
       if(narrate)speak(bulletinText(result),{automatic:true});
@@ -538,7 +564,7 @@ window.setInterval(()=>{
   void loadHistory();
 },REFRESH_MS);
 window.ULTRON_INTELLIGENCE={
-  refresh,
+  refresh,open:openBriefing,close:hideBriefing,
   loadHistory,
   deliverWakeReport,
   get visualData(){return {
@@ -546,7 +572,7 @@ window.ULTRON_INTELLIGENCE={
     archiveValid:history ? (Date.now()-Date.parse(history.updatedAt)<HISTORY_STALE_MS) : false
   };},
   get state(){return {
-    active:true,loading:Boolean(pending),updatedAt:current?.fetchedAt||null,
+    active:true,visible:!panel.hidden,loading:Boolean(pending),updatedAt:current?.fetchedAt||null,
     totalStories:(current?.topics||[]).reduce((n,t)=>n+(t.articles?.length||0),0),
     autoVoice,lastRendered,
     monitor24h:{available:Boolean(history),lastCheckAt:history?.updatedAt||null,
