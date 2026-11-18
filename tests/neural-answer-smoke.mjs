@@ -637,6 +637,20 @@ try {
     });
     assert.ok(accessibleMode.insideViewport&&accessibleMode.hit,
       'Map mode switch must be clickable inside Neural Ring: '+JSON.stringify(accessibleMode));
+    await page.evaluate(()=>{
+      window.__geoModeClickAudit=[];
+      const button=document.querySelector('.jarvis-geo-modes [data-mode="3d"]');
+      const record=where=>event=>window.__geoModeClickAudit.push({
+        where,type:event.type,target:event.target?.tagName,
+        mode:window.ULTRON_GEO_VISUAL?.state?.mode,
+        defaultPrevented:event.defaultPrevented
+      });
+      for(const type of ['pointerdown','pointerup','click']){
+        button.addEventListener(type,record('target-capture'),true);
+        button.addEventListener(type,record('target-bubble'));
+        document.addEventListener(type,record('document-capture'),true);
+      }
+    });
     await page.click('.jarvis-geo-modes [data-mode="3d"]');
     try{
       await page.waitForFunction(()=>window.ULTRON_GEO_VISUAL?.state?.mode==='3d',{timeout:7000});
@@ -646,7 +660,8 @@ try {
         globeVisible:window.ULTRON_EARTH?.state?.visible,
         usingTestGlobe:window.ULTRON_EARTH===window.__phase3EarthMock,
         panelVisible:window.ULTRON_GEO_VISUAL?.state?.visible,
-        selectorPressed:document.querySelector('.jarvis-geo-modes [data-mode="3d"]')?.getAttribute('aria-pressed')
+        selectorPressed:document.querySelector('.jarvis-geo-modes [data-mode="3d"]')?.getAttribute('aria-pressed'),
+        events:window.__geoModeClickAudit||[]
       }))));
       throw error;
     }
