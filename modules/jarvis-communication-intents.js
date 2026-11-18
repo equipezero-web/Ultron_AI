@@ -16,11 +16,20 @@ export function parseDirectorIntent(value){
  if(new RegExp("^(?:fechar|feche|encerrar|encerre|parar|pare|cancelar|cancele|ocultar|oculte) (?:a |o )?"+target+"$").test(q))return {type:"close"};
  if(new RegExp("^(?:status|estado|diagnostico) (?:do |da )?"+target+"$").test(q))return {type:"status"};
  if(/^(?:proxima cena|avancar cena|cena seguinte|avance para a proxima cena|mostre a proxima cena)$/.test(q))return {type:"next"};
- if(/^(?:cena anterior|voltar cena|volte para a cena anterior|mostre a cena anterior)$/.test(q))return {type:"previous"};
+ if(/^(?:cena anterior|voltar cena|(?:volte|volta|voltar|retorne|retornar) (?:para )?(?:a )?cena anterio(?:r)?|mostre a cena anterior)$/.test(q))return {type:"previous"};
  const scene=q.match(/^(?:mostre|mostrar|abrir|abra|exibir|exiba) (?:as |os |o )?(noticias e imagens|noticias visuais|fontes verificadas|prioridades visuais|mapa contextual 2d|globo contextual 3d)(?: no neural ring)?$/);
  if(scene)return {type:"scene",scene:/noticias/.test(scene[1])?"news":/fontes|prioridades/.test(scene[1])?"priorities":/mapa/.test(scene[1])?"map":"tour"};
  return null;
 }
+// Regional news requests are visual commands, not geographic place searches.
+// Only explicit display verbs are accepted; negations and questions are inert.
+export function parseRegionalNewsVisualIntent(value){
+ const q=safe(value);if(!q)return null;
+ const match=q.match(/^(?:mostre|mostrar|exiba|exibir|abra|abrir) (?:as )?(?:noticias|manchetes) (?:do brasil|brasileiras|do mundo|mundiais)(?: (?:e|com) imagens)?(?: no neural ring)?$/);
+ if(!match)return null;
+ return {type:"show",region:/\\b(?:brasil|brasileiras)\\b/.test(q)?"brasil":"mundo"};
+}
+
 export function parseBriefingIntent(value){
  const q=safe(value);if(!q)return null;
  const target="(?:boletim(?: de inteligencia| de noticias| mundial| do mundo)?|painel de noticias|resumo de inteligencia)";
