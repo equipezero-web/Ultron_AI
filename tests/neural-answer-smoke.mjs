@@ -614,10 +614,16 @@ try {
       panel.scrollIntoView({behavior:'instant',block:'center',inline:'nearest'});
       button.scrollIntoView({behavior:'instant',block:'nearest',inline:'nearest'});
       const r=button.getBoundingClientRect();
-      const target=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2);
+      const px=r.left+r.width/2,py=r.top+r.height/2;
+      const target=document.elementFromPoint(px,py);
+      const blockers=document.elementsFromPoint(px,py).slice(0,8).map(el=>({
+        tag:el.tagName, id:el.id,cls:typeof el.className==='string'?el.className:'',
+        z:getComputedStyle(el).zIndex, pointer:getComputedStyle(el).pointerEvents
+      }));
       return {insideViewport:r.top>=0&&r.bottom<=innerHeight,
         hit:button===target||button.contains(target),top:r.top,scrollY:scrollY,
-        panelTop:panel.getBoundingClientRect().top};
+        panelTop:panel.getBoundingClientRect().top,blockers,
+        buttonZ:getComputedStyle(button).zIndex,panelZ:getComputedStyle(panel).zIndex};
     });
     assert.ok(accessibleMode.insideViewport&&accessibleMode.hit,
       'Map mode switch must be clickable inside Neural Ring: '+JSON.stringify(accessibleMode));
