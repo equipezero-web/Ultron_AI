@@ -104,3 +104,7 @@ jobs:
           node --check modules/jarvis-public-world-cameras.js
           node --check modules/ultron-neural-answer.js
           node tests/jarvis-communication-seven.mjs
+          node --check modules/jarvis-communication-push-client.js
+          node --check backend/jarvis-push.js
+          node --check backend/worker.js
+          node tests/jarvis-push-crypto.mjs
