@@ -67,7 +67,7 @@ import { analyzeVisualFrame } from "./vision-analysis.js";
 import { getWebRtcIceServers, webRtcIceHealth } from "./webrtc-ice.js";
 import { loadLiveNewsContext, isGeneralNewsIntent, isLiveNewsIntent } from "./news-context.js";
 import { createWorldBriefing } from "./world-briefing.js";
-import {pushConfiguration,pushAccountStatus,registerPush,removePush,pollOfficialPush} from "./jarvis-push.js";
+import {pushConfiguration,pushAccountStatus,checkPushSubscription,registerPush,removePush,pollOfficialPush} from "./jarvis-push.js";
 import {
   answerLooksUncertain,
   researchVisualContext,
@@ -1009,7 +1009,8 @@ async function handleAccountPush(request,env){
   const raw=await request.text();if(raw.length>4000)throw Error("request-too-large");
   body=JSON.parse(raw);if(!body||typeof body!=="object"||Array.isArray(body))throw Error("invalid-body");
  }catch{return accountPluginsJson(request,env,{ok:false,error:"invalid-body"},400);}
- const result=body.action==="subscribe"?await registerPush(env,auth.accountId,body.subscription):
+ const result=body.action==="status"?await checkPushSubscription(env,auth.accountId,body.endpoint):
+  body.action==="subscribe"?await registerPush(env,auth.accountId,body.subscription):
   body.action==="unsubscribe"?await removePush(env,auth.accountId,body.endpoint):
   {ok:false,status:400,error:"unknown-push-action"};
  return accountPluginsJson(request,env,result,result.ok?200:result.status||400);
