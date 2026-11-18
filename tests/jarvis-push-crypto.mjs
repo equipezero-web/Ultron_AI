@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import {webcrypto} from "node:crypto";
-globalThis.crypto=webcrypto;
+if(!globalThis.crypto?.subtle)Object.defineProperty(globalThis,"crypto",{value:webcrypto,configurable:true});
 import {validatePushSubscription,pushConfiguration,encryptPushPayload,vapidToken,removePush}
  from "../backend/jarvis-push.js";
 const e=new TextEncoder(),d=new TextDecoder();
