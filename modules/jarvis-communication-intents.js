@@ -27,7 +27,7 @@ export function parseRegionalNewsVisualIntent(value){
  const q=safe(value);if(!q)return null;
  const match=q.match(/^(?:mostre|mostrar|exiba|exibir|abra|abrir) (?:as )?(?:noticias|manchetes) (?:do brasil|brasileiras|do mundo|mundiais)(?: (?:e|com) imagens)?(?: no neural ring)?$/);
  if(!match)return null;
- return {type:"show",region:/\\b(?:brasil|brasileiras)\\b/.test(q)?"brasil":"mundo"};
+ return {type:"show",region:/\b(?:brasil|brasileiras)\b/.test(q)?"brasil":"mundo"};
 }
 
 export function parseBriefingIntent(value){
