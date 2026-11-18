@@ -48,6 +48,49 @@ try{
   "Camera options must appear without scrolling below a blank video: "+JSON.stringify(cameraChoices));
  assert.equal(cameraChoices.advancedClosed,true,"Advanced filters must not hide the default options");
  assert.equal(cameraChoices.scroll,"auto","Camera panel must scroll instead of clipping the catalogue");
+ // Regression reproduced from a real screenshot: a browser/password manager
+ // inserts an account e-mail into the camera place-search and causes 0 options.
+ // Do not log or echo it; restore public camera choices automatically.
+ const autoFillBefore=await page.evaluate(()=>{
+  const input=document.querySelector('.jarvis-worldcam-filters input');
+  return {locked:input.readOnly,autocomplete:input.autocomplete};
+ });
+ assert.equal(autoFillBefore.locked,true,"Camera search should resist initial autofill");
+ assert.equal(autoFillBefore.autocomplete,"off");
+ await page.$eval('.jarvis-worldcam-filters input',input=>{
+  input.value="autofill@example.invalid";
+  input.dispatchEvent(new Event("input",{bubbles:true}));
+ });
+ const autofillRecovered=await page.evaluate(()=>({
+  search:document.querySelector('.jarvis-worldcam-filters input').value,
+  options:document.querySelector('#jarvis-worldcam-camera-select').options.length,
+  cards:document.querySelectorAll('.jarvis-worldcam-item').length,
+  reset:document.querySelector('.jarvis-worldcam-show-all')?.getBoundingClientRect()?.height||0,
+  visible:getComputedStyle(document.querySelector('.jarvis-worldcam-show-all')).visibility
+ }));
+ assert.equal(autofillRecovered.search,"","Account data must never stay in camera-search field");
+ assert.ok(autofillRecovered.options>=11&&autofillRecovered.cards>=10,
+  "Account autofill must never cause zero visible cameras: "+JSON.stringify(autofillRecovered));
+ assert.ok(autofillRecovered.reset>=40&&autofillRecovered.visible==="visible",
+  "Show all cameras reset should be genuinely visible");
+ // A delayed autofill with no input event must also be cleared on the next
+ // catalogue render, e.g. when the user touches a different filter.
+ await page.$eval('.jarvis-worldcam-filters input',el=>{el.value="late@example.invalid";});
+ await page.$eval('.jarvis-worldcam-filters select[aria-label="Filtrar continente"]',
+  el=>el.dispatchEvent(new Event("input",{bubbles:true})));
+ assert.equal(await page.$eval('.jarvis-worldcam-filters input',el=>el.value),"");
+ assert.ok((await page.$('#jarvis-worldcam-camera-select option')).length>=11);
+ // Real manual location searching must remain functional after unlocking.
+ await page.$eval('.jarvis-worldcam-filters input',el=>el.focus());
+ assert.equal(await page.$eval('.jarvis-worldcam-filters input',el=>el.readOnly),false);
+ await page.$eval('.jarvis-worldcam-filters input',el=>{
+  el.value="Recife";
+  el.dispatchEvent(new Event("input",{bubbles:true}));
+ });
+ assert.equal((await page.$('#jarvis-worldcam-camera-select option')).length,2);
+ await page.click('.jarvis-worldcam-show-all');
+ assert.ok((await page.$('#jarvis-worldcam-camera-select option')).length>=11);
+
  // Regression: generic or unmatched search terms must never leave the picker
  // showing 0 cameras while the curated source index contains real entries.
  const broad=await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.open({
