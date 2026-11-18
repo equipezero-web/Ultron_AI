@@ -1,3 +1,4 @@
+import {activateRemotePush,deactivateRemotePush,checkRemotePush,remotePushState} from "./jarvis-communication-push-client.js?v=5.53.0";
 // Operator-consented notifications for fresh verified briefings while the page is running.
 // Background Web Push requires a separate authenticated subscription/sender; never claim it is enabled.
 const KEY="jarvis_communication_notifications_opt_in_v1";
@@ -13,7 +14,8 @@ const available=()=>typeof window.Notification!=="undefined"&&window.isSecureCon
 const permission=()=>available()?window.Notification.permission:"unsupported";
 const enabled=()=>opted&&permission()==="granted";
 function render(){
- button.textContent=!available()?"NOTIFICAÇÕES INDISPONÍVEIS":enabled()?"NOTIFICAÇÕES: ATIVADAS":"ATIVAR NOTIFICAÇÕES";
+ button.textContent=!available()?"NOTIFICAÇÕES INDISPONÍVEIS":permission()==="denied"?"NOTIFICAÇÕES BLOQUEADAS":
+  enabled()?(remotePushState().registered?"PUSH OFICIAL: ATIVO":"NOTIFICAÇÕES: SESSÃO"):"ATIVAR NOTIFICAÇÕES";
  button.setAttribute("aria-pressed",String(enabled()));
  button.disabled=!available();
 }
@@ -38,12 +40,21 @@ async function enable({userGesture=false}={}){
   try{p=await window.Notification.requestPermission();}catch{return {ok:false,reason:"permission-request-failed"};}
  }
  if(p!=="granted")return {ok:false,reason:"permission-not-granted"};
- opted=true;store();await serviceWorker();
- return {ok:true,enabled:true,foregroundOnly:true,backgroundPush:false};
+ opted=true;store();
+ const worker=await serviceWorker();
+ const remote=await activateRemotePush(worker,{userGesture});
+ render();
+ return {ok:true,enabled:true,foregroundOnly:true,backgroundPush:remote.backgroundPush===true,
+  remoteReason:remote.ok?null:remote.reason};
 }
-function disable(){opted=false;store();return {ok:true,enabled:false,backgroundPush:false};}
+async function disable(){
+ opted=false;store();
+ const remote=await deactivateRemotePush(registration);
+ render();return {ok:true,enabled:false,backgroundPush:false,...remote};
+}
 function status(){return {ok:true,enabled:enabled(),permission:permission(),foregroundOnly:true,
- backgroundPush:false,reason:lastError||"Push remoto não configurado; apenas notificações de sessão."};}
+ backgroundPush:enabled()&&remotePushState().registered,
+ reason:lastError||remotePushState().lastError||"Push remoto depende de conta autenticada e VAPID configurado."};}
 const safeUrl=value=>{
  try{const u=new URL(value);return u.protocol==="https:"&&!u.username&&!u.password&&
   !/^(?:localhost|127\.0\.0\.1|0\.0\.0\.0)$/.test(u.hostname)?u.href:null;}catch{return null;}
@@ -73,7 +84,7 @@ async function onIntelligenceUpdate(event){
  if(!enabled()||!document.hidden||d.partial===true||!Number.isFinite(stamp)||
   Date.now()-stamp>15*60*1000||stamp>Date.now()+5*60*1000)return;
  const bulletin=window.ULTRON_INTELLIGENCE?.visualData?.briefing;
- if(bulletin?.alerts?.checked===true){
+ if(!remotePushState().registered&&bulletin?.alerts?.checked===true){
   for(const warning of (bulletin.alerts.warnings||[]).slice(0,2)){
    const href=safeUrl(warning.url),id=href&&"inmet:"+href+":"+String(warning.title||"");
    if(id&&warning.title)await notify({id,title:"INMET · aviso publicado",
@@ -86,9 +97,10 @@ async function onIntelligenceUpdate(event){
    body:first.title,url:first.url});
  }
 }
-button.addEventListener("click",()=>{if(enabled())disable();else void enable({userGesture:true}).then(render);});
+button.addEventListener("click",()=>{if(enabled())void disable();else void enable({userGesture:true}).then(render);});
 if(controls)controls.append(button);
 window.addEventListener("ultron:intelligence-update",event=>{void onIntelligenceUpdate(event);});
 window.addEventListener("focus",render);
+if(enabled())void serviceWorker().then(worker=>checkRemotePush(worker)).then(render);
 window.JARVIS_COMM_NOTIFICATIONS={enable,disable,status,get state(){return status();}};
 render();
