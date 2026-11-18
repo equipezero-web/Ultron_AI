@@ -1,0 +1,27 @@
+name: JARVIS Active Module Modernization
+on:
+  push:
+    paths:
+      - 'modules/**'
+      - 'index.html'
+      - 'tests/jarvis-active-module-modernization.mjs'
+      - '.github/workflows/jarvis-active-module-modernization.yml'
+  pull_request:
+    paths:
+      - 'modules/**'
+      - 'index.html'
+      - 'tests/jarvis-active-module-modernization.mjs'
+      - '.github/workflows/jarvis-active-module-modernization.yml'
+jobs:
+  module-integrity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify current entrypoints and remove obsolete pair handlers
+        run: |
+          node tests/jarvis-active-module-modernization.mjs
+          node tests/jarvis-mobile-pairing.mjs
+          node tests/mobile-link-stale-pairing.mjs
