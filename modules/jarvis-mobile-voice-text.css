@@ -213,7 +213,8 @@
 }
 @media(max-width:930px) and (max-height:490px) and (orientation:landscape) and (pointer:coarse){
  html body.jarvis-command-center .jarvis-cc-center{
-  min-height:0!important;padding-top:38px!important;
+  min-height:340px!important;height:auto!important;
+  padding-top:38px!important;
  }
  html body.jarvis-command-center .jarvis-cc-visual[data-mode="ring"]{
   width:min(calc(100vw - 28px),85svh,440px)!important;
