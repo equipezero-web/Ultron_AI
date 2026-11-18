@@ -48,6 +48,19 @@ try{
   "Camera options must appear without scrolling below a blank video: "+JSON.stringify(cameraChoices));
  assert.equal(cameraChoices.advancedClosed,true,"Advanced filters must not hide the default options");
  assert.equal(cameraChoices.scroll,"auto","Camera panel must scroll instead of clipping the catalogue");
+ const mobileLayout=await page.evaluate(()=>{
+  const view=document.querySelector(".jarvis-worldcam-view").getBoundingClientRect();
+  const picker=document.querySelector(".jarvis-worldcam-picker").getBoundingClientRect();
+  return {width:view.width,height:view.height,pickerWidth:picker.width,
+   horizontalOverflow:document.documentElement.scrollWidth-innerWidth};
+ });
+ assert.ok(mobileLayout.height>=275,
+  "Mobile camera viewer must be large: "+JSON.stringify(mobileLayout));
+ assert.ok(mobileLayout.width>=mobileLayout.pickerWidth-20,
+  "Mobile camera viewer must use nearly the whole Ring width: "+JSON.stringify(mobileLayout));
+ assert.ok(mobileLayout.horizontalOverflow<=4,
+  "Wider camera viewer must not cause horizontal overflow: "+JSON.stringify(mobileLayout));
+
  // Regression reproduced from a real screenshot: a browser/password manager
  // inserts an account e-mail into the camera place-search and causes 0 options.
  // Do not log or echo it; restore public camera choices automatically.
@@ -79,7 +92,7 @@ try{
  await page.$eval('.jarvis-worldcam-filters select[aria-label="Filtrar continente"]',
   el=>el.dispatchEvent(new Event("input",{bubbles:true})));
  assert.equal(await page.$eval('.jarvis-worldcam-filters input',el=>el.value),"");
- assert.ok((await page.$('#jarvis-worldcam-camera-select option')).length>=11);
+ assert.ok((await page.$$('#jarvis-worldcam-camera-select option')).length>=11);
  // Real manual location searching must remain functional after unlocking.
  await page.$eval('.jarvis-worldcam-filters input',el=>el.focus());
  assert.equal(await page.$eval('.jarvis-worldcam-filters input',el=>el.readOnly),false);
@@ -87,9 +100,9 @@ try{
   el.value="Recife";
   el.dispatchEvent(new Event("input",{bubbles:true}));
  });
- assert.equal((await page.$('#jarvis-worldcam-camera-select option')).length,2);
+ assert.equal((await page.$$('#jarvis-worldcam-camera-select option')).length,2);
  await page.click('.jarvis-worldcam-show-all');
- assert.ok((await page.$('#jarvis-worldcam-camera-select option')).length>=11);
+ assert.ok((await page.$$('#jarvis-worldcam-camera-select option')).length>=11);
 
  // Regression: generic or unmatched search terms must never leave the picker
  // showing 0 cameras while the curated source index contains real entries.
@@ -279,5 +292,31 @@ try{
    cardVisible:card.getBoundingClientRect().top<panel.getBoundingClientRect().bottom};
  });
  assert.ok(notebook.pickerVisible&&notebook.cardVisible&&notebook.itemCount>=10,JSON.stringify(notebook));
+ const wideLayout=await page.evaluate(()=>{
+  const rect=sel=>document.querySelector(sel).getBoundingClientRect();
+  const sidebar=rect(".jarvis-worldcam-sidebar"),viewer=rect(".jarvis-worldcam-view");
+  const media=rect(".jarvis-worldcam-media");
+  const panel=rect(".jarvis-worldcam-panel");
+  return {sidebarX:sidebar.x,sidebarRight:sidebar.right,sidebarWidth:sidebar.width,
+   viewerX:viewer.x,viewerWidth:viewer.width,viewerHeight:viewer.height,
+   mediaX:media.x,panelWidth:panel.width,
+   horizontalOverflow:document.documentElement.scrollWidth-innerWidth};
+ });
+ assert.ok(wideLayout.viewerX>=wideLayout.sidebarRight,
+  "On notebook filters must appear left of video: "+JSON.stringify(wideLayout));
+ assert.ok(wideLayout.viewerHeight>=390,
+  "Notebook camera should be substantially enlarged: "+JSON.stringify(wideLayout));
+ assert.ok(wideLayout.viewerWidth>wideLayout.sidebarWidth*1.35,
+  "Live video should dominate wide Ring: "+JSON.stringify(wideLayout));
+ assert.ok(wideLayout.horizontalOverflow<=4);
+ await page.setViewport({width:1920,height:1080,isMobile:false,hasTouch:false,deviceScaleFactor:1});
+ const tvLayout=await page.evaluate(()=>{
+  const player=document.querySelector(".jarvis-worldcam-view").getBoundingClientRect();
+  const sidebar=document.querySelector(".jarvis-worldcam-sidebar").getBoundingClientRect();
+  return {width:player.width,height:player.height,toRight:player.x>=sidebar.right};
+ });
+ assert.ok(tvLayout.width>=700&&tvLayout.height>=540&&tvLayout.toRight,
+  "TV camera should be prominent beside filters: "+JSON.stringify(tvLayout));
+
  console.log("WORLD WEBCAM BROWSER PASS: chooser + gallery visible, mobile/notebook, source-only, muted opt-in iframe and P0.");
 }finally{await browser.close();}
