@@ -512,6 +512,12 @@ async function enableListening({ userInitiated = false, persist = true } = {}) {
     }
     window.dispatchEvent(new CustomEvent('ultron:voice-listening-enabled'));
     startRecognition();
+    // If the operator activates the microphone immediately after a spoken
+    // response, the anti-echo guard intentionally prevents startRecognition.
+    // Schedule it once the guard expires; otherwise the UI would show
+    // "escuta ativa" without the speech engine actually listening.
+    if (!recognitionRunning && !recognitionStarting && !ultronSpeaking)
+      scheduleRecognitionRestart(Math.max(0,echoGuardUntil-Date.now()));
     return true;
   } catch (error) {
     listeningEnabled = false;
