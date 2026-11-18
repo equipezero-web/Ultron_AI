@@ -199,7 +199,7 @@ function render(data,{announce=false}={}){
     return;
   }
   const stamp=Date.parse(data.fetchedAt);
-  const isOld=!Number.isFinite(stamp)||Date.now()-stamp>40*60*1000;
+  const isOld=!Number.isFinite(stamp)||stamp>Date.now()+5*60*1000||Date.now()-stamp>40*60*1000;
   status.textContent=(isOld?"DADOS ANTIGOS":data.delivery==="github-scheduled-snapshot"?"COLETA VERIFICADA":"CONSULTA CONCLUÍDA")+" · "+formatDate(data.fetchedAt);
   const count=(data.topics||[]).reduce((sum,t)=>sum+(t.articles?.length||0),0);
   state.textContent=count
@@ -222,7 +222,7 @@ function render(data,{announce=false}={}){
   }
   const officialTitle=elem("h4","","METEOROLOGIA E ALERTAS OFICIAIS");
   officialArea.append(officialTitle);
-  if(data.alerts?.checked){
+  if(data.alerts?.checked&&!isOld){
     if(data.alerts.warnings?.length){
       for(const alert of data.alerts.warnings.slice(0,4)){
         const line=elem("p");
@@ -236,7 +236,7 @@ function render(data,{announce=false}={}){
       officialArea.append(elem("p","jarvis-intel-empty","INMET consultado; nenhum aviso exibido nesta resposta. Confira sempre o portal oficial."));
     }
   }else{
-    officialArea.append(elem("p","jarvis-intel-empty","Não foi possível consultar os avisos do INMET nesta tentativa."));
+    officialArea.append(elem("p","jarvis-intel-empty","Avisos atuais do INMET não confirmados nesta consulta ou boletim desatualizado."));
   }
   if(data.enso?.bulletin){
     const ens=data.enso.bulletin;
