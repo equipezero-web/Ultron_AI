@@ -69,4 +69,17 @@ assert.doesNotMatch(sw,/addEventListener\("fetch"/,"Do not hijack other app requ
 const voice=file("modules/voice-listener-v4290.js");
 assert.match(voice,/isExplicitSleepCommand\(text\)/);
 assert.match(voice,/recognitionSupported:Boolean\(SpeechRecognition\)/);
+const css=file("modules/jarvis-command-center-v4330.css");
+assert.match(css,/ultron-tv-display \.jarvis-intel-controls button/);
+assert.match(css,/min-height:56px/);
+assert.match(css,/@media\(max-width:420px\)/);
+const answerCss=file("modules/ultron-neural-answer.css");
+assert.match(answerCss,/\.jarvis-intel-panel\[hidden\]\{display:none!important\}/);
+assert.match(answerCss,/\.jarvis-intel-heading button/);
+const worker=file("backend/worker.js");
+assert.match(worker,/checkPushSubscription\(env,auth.accountId,body.endpoint\)/);
+assert.match(worker,/pollOfficialPush\(env\)/);
+const pushClient=file("modules/jarvis-communication-push-client.js");
+assert.match(pushClient,/action:"status",endpoint:subscription.endpoint/);
+
 console.log("JARVIS COMMUNICATION 7 PASS: command safety, voice, visual, news, camera audio and consented notifications");
