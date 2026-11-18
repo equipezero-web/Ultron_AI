@@ -96,9 +96,13 @@ export async function removePush(env,accountId,endpoint){
  if(typeof endpoint!=="string"||endpoint.length>1700)return fail(400,"invalid-endpoint");
  try{const db=await setup(env);
   const endpointHash=await hash(endpoint);
-  await db.prepare("DELETE FROM "+TABLE+" WHERE account_id=? AND endpoint_hash=?")
-   .bind(accountId,endpointHash).run();
-  await db.prepare("DELETE FROM jarvis_push_deliveries WHERE endpoint_hash=?").bind(endpointHash).run();
+  const existing=await db.prepare("SELECT account_id FROM "+TABLE+" WHERE endpoint_hash=?")
+   .bind(endpointHash).first();
+  if(existing?.account_id===accountId){
+   await db.prepare("DELETE FROM "+TABLE+" WHERE account_id=? AND endpoint_hash=?")
+    .bind(accountId,endpointHash).run();
+   await db.prepare("DELETE FROM jarvis_push_deliveries WHERE endpoint_hash=?").bind(endpointHash).run();
+  }
   return {ok:true,registered:false};
  }catch{return fail(503,"push-storage-unavailable");}
 }
