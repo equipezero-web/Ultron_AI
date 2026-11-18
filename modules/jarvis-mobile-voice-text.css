@@ -91,6 +91,13 @@
   padding:8px 4px!important;resize:vertical!important;
   touch-action:manipulation!important;
  }
+ html body.jarvis-command-center #jarvis-cc-input-slot :is(
+   .jarvis-cc-tool-actions,.quick-actions,[data-cc],[data-command]
+ ){
+  display:none!important;visibility:hidden!important;
+  width:0!important;height:0!important;min-width:0!important;min-height:0!important;
+  padding:0!important;margin:0!important;
+ }
  /* Dashboard actions removed on phones, without destroying their
     real underlying listeners or breaking module/consent controls. */
  html body.jarvis-command-center :is(
