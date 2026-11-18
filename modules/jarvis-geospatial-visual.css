@@ -573,3 +573,15 @@ body.jarvis-command-center .jarvis-cc-center>.jarvis-geo-visual>.jarvis-geo-cont
   position:sticky;top:0;z-index:8;
   padding:4px 2px;border-radius:7px;background:rgba(8,25,39,.97);
 }
+
+/* Prevent the 2D sibling control from overlapping the 3D target when
+   desktop/TV typography or global button rules alter intrinsic sizing. */
+body.jarvis-command-center .jarvis-cc-center>.jarvis-geo-visual .jarvis-geo-modes{
+  display:grid!important;grid-template-columns:max-content max-content!important;
+  align-items:stretch;justify-content:start;column-gap:6px;isolation:isolate;
+}
+body.jarvis-command-center .jarvis-cc-center>.jarvis-geo-visual .jarvis-geo-modes>button{
+  position:relative!important;min-width:90px;max-width:none;
+  width:auto!important;flex:0 0 auto!important;
+  transform:none!important;white-space:nowrap;box-sizing:border-box;
+}
