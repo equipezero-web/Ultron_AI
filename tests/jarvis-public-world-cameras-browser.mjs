@@ -54,7 +54,7 @@ try{
   search:"câmeras do mundo"
  }));
  assert.ok(broad.count>=10,JSON.stringify(broad));
- assert.ok((await page.$("#jarvis-worldcam-camera-select option")).length>=11);
+ assert.ok((await page.$$("#jarvis-worldcam-camera-select option")).length>=11);
  assert.equal(await page.$(".jarvis-worldcam-empty"),null);
  const unknown=await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.open({
   search:"local inexistente em lugar algum"
@@ -62,7 +62,7 @@ try{
  assert.ok(unknown.count>=10,JSON.stringify(unknown));
  assert.equal(await page.$eval(".jarvis-worldcam-filters input",el=>el.value),"");
  assert.match(await page.$eval(".jarvis-worldcam-picker-notice",el=>el.textContent),/Exibindo todas as opções/);
- assert.ok((await page.$("#jarvis-worldcam-camera-select option")).length>=11);
+ assert.ok((await page.$$("#jarvis-worldcam-camera-select option")).length>=11);
  assert.equal(await page.$(".jarvis-worldcam-empty"),null);
  // Explicit advanced searches may yield zero, but must show a working reset.
  await page.click(".jarvis-worldcam-advanced>summary");
@@ -73,7 +73,7 @@ try{
  assert.ok(await page.$(".jarvis-worldcam-empty"));
  await page.click(".jarvis-worldcam-show-all");
  assert.equal(await page.$(".jarvis-worldcam-empty"),null);
- assert.ok((await page.$("#jarvis-worldcam-camera-select option")).length>=11);
+ assert.ok((await page.$$("#jarvis-worldcam-camera-select option")).length>=11);
  assert.equal(await page.$eval(".jarvis-worldcam-filters input",el=>el.value),"");
 
  await page.select("#jarvis-worldcam-camera-select","copacabana");
