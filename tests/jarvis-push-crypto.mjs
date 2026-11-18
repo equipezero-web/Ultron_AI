@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import {webcrypto} from "node:crypto";
 globalThis.crypto=webcrypto;
-import {validatePushSubscription,pushConfiguration,encryptPushPayload,vapidToken}
+import {validatePushSubscription,pushConfiguration,encryptPushPayload,vapidToken,removePush}
  from "../backend/jarvis-push.js";
 const e=new TextEncoder(),d=new TextDecoder();
 const b64=x=>Buffer.from(x).toString("base64url");
@@ -57,4 +57,17 @@ const valid=await crypto.subtle.verify({name:"ECDSA",hash:"SHA-256"},vapid.publi
  bytes(parts[2]),e.encode(parts[0]+"."+parts[1]));
 assert.equal(valid,true,"VAPID JWT signature must verify");
 assert.equal(pushConfiguration({...env,JARVIS_PUSH_VAPID_PUBLIC_KEY:b64(publicReceiver)}).enabled,false);
+// A different authenticated account must not delete another user's subscription history.
+const owner="a".repeat(64),other="b".repeat(64),writes=[];
+const db={prepare(sql){return {
+ run:async()=>({}),
+ bind(...args){return {
+  first:async()=>sql.startsWith("SELECT account_id")?{account_id:owner}:null,
+  run:async()=>{writes.push({sql,args});return {};}
+ };}};}};
+assert.equal((await removePush({ULTRON_DB:db},other,endpoint)).ok,true);
+assert.equal(writes.filter(x=>x.sql.startsWith("DELETE")).length,0);
+assert.equal((await removePush({ULTRON_DB:db},owner,endpoint)).ok,true);
+assert.equal(writes.filter(x=>x.sql.startsWith("DELETE")).length,2);
+
 console.log("WEB PUSH CRYPTO PASS: RFC 8291 payload roundtrip, VAPID JWT signature, endpoint allowlist and configuration");
