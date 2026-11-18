@@ -329,3 +329,12 @@ body.jarvis-command-center .jarvis-worldcam-picker-notice:empty{display:none}
 body.jarvis-command-center .jarvis-worldcam-show-all:focus-visible{
  outline:2px solid #ffe8af;outline-offset:2px;
 }
+
+/* v5.61: keep the catalogue reset reachable even if browser autofill or
+   a global theme hides generic buttons; do not cover camera previews. */
+body.jarvis-command-center .jarvis-worldcam-picker>.jarvis-worldcam-show-all{
+ display:inline-flex!important;visibility:visible!important;opacity:1!important;
+ position:relative!important;align-self:flex-start;align-items:center;
+ min-height:44px!important;width:auto;max-width:100%;flex:0 0 auto;
+ z-index:11;
+}
