@@ -4,7 +4,7 @@ import {PUBLIC_WORLD_CAMERAS, CAMERA_CATEGORY_NAMES, CAMERA_PROVIDER_NAMES,
  getWorldCameraAlternative, getWesternWallPlayableAlternative,
  WESTERN_WALL_EARTHCAM_ID,WESTERN_WALL_OFFICIAL_CAMERAS_URL,
  findPublicCameras, parseWorldCameraCommand,
- publicCameraEmbed, cameraDirectorySummary} from "./jarvis-public-world-cameras-model.js?v=5.56.0";
+ publicCameraEmbed, cameraDirectorySummary, cameraProviderCoverage} from "./jarvis-public-world-cameras-model.js?v=5.63.0";
 
 // Public third-party webcams only. Nothing here activates user/device cameras.
 // Playing a listed stream is NOT proof that its owner is currently broadcasting.
@@ -293,11 +293,17 @@ function build(){
  filterDetails=make("details","jarvis-worldcam-advanced");
  filterDetails.append(make("summary","","BUSCAR E FILTRAR CÂMERAS · PAÍS / REGIÃO / TIPO / PROVEDOR"),toolbar);
  const catalogs=make("details","jarvis-worldcam-catalogs");
- catalogs.append(make("summary","","EXPLORAR TODOS OS PROVEDORES · 4 CATÁLOGOS MUNDIAIS"));
+ catalogs.append(make("summary","",
+  "EXPLORAR TODOS OS PROVEDORES · "+WORLD_CAMERAS_CATALOGS.length+" CATÁLOGOS OFICIAIS"));
  const directory=make("div","jarvis-worldcam-catalog-grid");
  for(const provider of WORLD_CAMERAS_CATALOGS){
   const card=make("section","jarvis-worldcam-catalog-card");
-  card.append(make("strong","",provider.label),make("small","",provider.note));
+  const indexed=PUBLIC_WORLD_CAMERAS.filter(c=>cameraProvider(c)===provider.id);
+  const inline=indexed.filter(c=>Boolean(c.embedId)).length;
+  card.append(make("strong","",provider.label),
+   make("small","",indexed.length+" câmeras cadastradas no J.A.R.V.I.S. · "+
+    inline+" com player divulgado no Neural Ring"),
+   make("small","",provider.note));
   const links=make("div","jarvis-worldcam-catalog-links");
   for(const [name,url] of [["TODAS AS CÂMERAS",provider.all],
    ["PAÍSES",provider.countries],["CATEGORIAS",provider.categories]]){
@@ -343,10 +349,32 @@ function build(){
   safeLink(WORLD_CAMERAS_INTERNATIONAL,"Catálogo internacional"));
  // A dedicated side catalogue and a large, separate video stage share
  // the same Neural Ring. Camera switching does not resize the live player.
+ const audit=make("details","jarvis-worldcam-coverage");
+ audit.append(make("summary","","COBERTURA E PENDÊNCIAS · FONTES X PLAYER INTEGRADO"));
+ const coverageItems=make("div","jarvis-worldcam-coverage-list");
+ for(const count of cameraProviderCoverage()){
+  const item=make("p","");
+  const label=CAMERA_PROVIDER_NAMES[count.provider];
+  const published=count.exactPublished!==null?String(count.exactPublished):
+   count.publishedMin!==null?"pelo menos "+count.publishedMin:"total não informado";
+  const notIndexed=count.knownUnindexedMin===null?"não calculável":
+   "pelo menos "+count.knownUnindexedMin;
+  item.textContent=label+": anunciadas "+published+" · catalogadas "+count.indexed+
+   " · player no Ring "+count.embeddable+" · ainda não catalogadas "+
+   notIndexed+".";
+  coverageItems.append(item);
+ }
+ coverageItems.append(make("p","",
+  "Tabi.cam: 61 países; não foi importado por proibição de coleta automatizada e "+
+  "redistribuição sem autorização. Janelas TV: player H.265/VR próprio; vídeo "+
+  "externo não autorizado/verificado. Câmeras do Mundo: somente páginas e "+
+  "players públicos conferidos individualmente foram cadastrados. "+
+  "Vídeo no catálogo não comprova transmissão ativa."));
+ audit.append(coverageItems);
  const workspace=make("div","jarvis-worldcam-workspace");
  const sidebar=make("aside","jarvis-worldcam-sidebar");
  sidebar.setAttribute("aria-label","Filtros e câmeras públicas");
- sidebar.append(pickerBar,filterDetails,results,catalogs);
+ sidebar.append(pickerBar,filterDetails,results,audit,catalogs);
  const media=make("section","jarvis-worldcam-media");
  media.setAttribute("aria-label","Reprodução ampliada da câmera pública");
  media.append(videoArea,audioBar,notice);
