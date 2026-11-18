@@ -216,6 +216,6 @@
   min-height:0!important;padding-top:38px!important;
  }
  html body.jarvis-command-center .jarvis-cc-visual[data-mode="ring"]{
-  width:min(calc(100vw - 28px),75svh,420px)!important;
+  width:min(calc(100vw - 28px),85svh,440px)!important;
  }
 }
