@@ -62,8 +62,8 @@ export async function checkRemotePush(registration){
  try{
   const subscription=await registration?.pushManager?.getSubscription?.();
   if(!subscription){registered=false;return {ok:true,backgroundPush:false};}
-  const result=await api();
-  registered=result.configured===true&&result.subscriptions>0;
+  const result=await api({action:"status",endpoint:subscription.endpoint});
+  registered=result.registered===true;
   return {ok:true,backgroundPush:registered};
  }catch(error){registered=false;lastError=String(error?.message||error).slice(0,100);
   return {ok:false,backgroundPush:false,reason:lastError};}
