@@ -96,6 +96,8 @@ for(const phrase of [
 ])assert.deepEqual(parseRegionalNewsVisualIntent(phrase),{type:"show",region:"brasil"},phrase);
 assert.deepEqual(parseRegionalNewsVisualIntent("mostre as notícias do mundo e imagens no Neural Ring"),
  {type:"show",region:"mundo"});
+assert.deepEqual(parseRegionalNewsVisualIntent("Jarvis, mostre as notícias e imagens no Neural Ring"),
+ {type:"show",region:"all"});
 for(const phrase of ["Não mostre notícias do Brasil","Como mostrar notícias do Brasil?",
  "Se eu mostrar notícias do Brasil","mostre a China no globo",
  "não volte a cena anterior"]){
@@ -132,6 +134,8 @@ assert.equal(brazil.visual.mode,"news");
 assert.equal(brazil.visual.cards[0].title,"Manchete brasileira");
 assert.equal(brazil.visual.cards[0].imageUrl,"https://agenciabrasil.ebc.com.br/imagens/teste.jpg");
 assert.equal(brazil.visual.cards[1].imageUrl,undefined);
+const combined=buildRegionalNewsVisual(data,{region:"all",now});
+assert.equal(combined.count,3,"General news must include Brazil and world, without invented media");
 const world=buildRegionalNewsVisual(data,{region:"mundo",now});
 assert.equal(world.count,1);
 assert.equal(world.visual.cards[0].title,"Notícia internacional");
