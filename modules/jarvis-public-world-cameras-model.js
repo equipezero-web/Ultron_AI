@@ -57,7 +57,32 @@ export const PUBLIC_WORLD_CAMERAS=Object.freeze([
   ,entry("skyline-shanghai","Skyline de Xangai","Xangai","China","Ásia","cidades",
   "https://www.skylinewebcams.com/en/webcam/china/shanghai/shanghai/skyline-of-shanghai.html","SkylineWebcams")
   ,entry("skyline-times-square","Times Square — SkylineWebcams","Nova York","Estados Unidos","América do Norte","cidades",
-  "https://www.skylinewebcams.com/en/webcam/united-states/new-york/new-york/times-square.html","SkylineWebcams")
+  "https://www.skylinewebcams.com/en/webcam/united-states/new-york/new-york/times-square.html","SkylineWebcams"),
+ // Additional manually verified published pages (18 Nov 2026).
+ // An embed ID means the publisher listed a YouTube player; never assume the signal is live or externally embeddable at every moment.
+ entry("cdm-afonso-pena","Aeroporto Afonso Pena — Curitiba","São José dos Pinhais","Brasil","América do Sul","aeroportos","https://camerasdomundo.com/aeroporto-internacional-afonso-pena/","Plane Spotter","PtaHi82kFEc"),
+ entry("cdm-congonhas","Aeroporto de Congonhas — Cam 1","São Paulo","Brasil","América do Sul","aeroportos","https://camerasdomundo.com/aeroporto-congonhas-ao-vivo/","Golf Oscar Romeo","MfnqZBrjFNI"),
+ entry("cdm-guarulhos","Aeroporto de Guarulhos — Cam 10L","Guarulhos","Brasil","América do Sul","aeroportos","https://camerasdomundo.com/aeroporto-de-guarulhos-ao-vivo/","Golf Oscar Romeo","3rYEB7ukoWE"),
+ entry("cdm-viracopos","Aeroporto de Viracopos","Campinas","Brasil","América do Sul","aeroportos","https://camerasdomundo.com/aeroporto-de-viracopos-ao-vivo/","Canal YouTube indicado na fonte","iVvJf8YlC6Y"),
+ entry("cdm-goioere","Centro de Goioerê","Goioerê","Brasil","América do Sul","cidades","https://camerasdomundo.com/centro-goioere/","Transmissão ao Vivo Cidade","X8LarnTkEac"),
+ entry("cdm-cristo-redentor","Cristo Redentor — Corcovado","Rio de Janeiro","Brasil","América do Sul","cidades","https://camerasdomundo.com/cristo-redentor-corcovado-ao-vivo/","Canal YouTube indicado na fonte","O08y0UiwNEc"),
+ entry("cdm-praia-milionarios","Praia dos Milionários","São Vicente","Brasil","América do Sul","praias","https://camerasdomundo.com/praia-dos-milionarios/","Canal YouTube indicado na fonte","dwhDd7j73ic"),
+ entry("cdm-sao-conrado","Praia de São Conrado","Rio de Janeiro","Brasil","América do Sul","praias","https://camerasdomundo.com/praia-sao-conrado/","Nextcon","J5uNN0_CO1M"),
+ entry("cdm-meia-praia","Meia Praia — Itapema","Itapema","Brasil","América do Sul","praias","https://camerasdomundo.com/meia-praia-itapema-sc/","ConexãoDCTV","Zas6UA88x8Y"),
+ entry("cdm-retiro-padres","Praia Retiro dos Padres","Bombinhas","Brasil","América do Sul","praias","https://camerasdomundo.com/praia-retiro-dos-padres/","ConexãoDCTV","UT7AgfRD4Lc"),
+ entry("cdm-barra-salvador","Praia da Barra — Salvador","Salvador","Brasil","América do Sul","praias","https://camerasdomundo.com/barra-salvador-bahia/","Clima ao Vivo",null),
+ entry("cdm-proveta","Praia de Provetá — Ilha Grande","Angra dos Reis","Brasil","América do Sul","praias","https://camerasdomundo.com/proveta-ilha-grande/","Recanto do Machado","zJl5_2l0vfE"),
+ entry("cdm-morro-pedras","Praia Morro das Pedras","Florianópolis","Brasil","América do Sul","praias","https://camerasdomundo.com/morro-das-pedras-florianopolis/","Maax Cam","fb6Re2yDFio"),
+ entry("cdm-itacoatiara","Praia de Itacoatiara","Niterói","Brasil","América do Sul","praias","https://camerasdomundo.com/praia-itacoatiara/","LCJ Itacoatiara",null),
+ entry("cdm-sao-jose-campos","São José dos Campos — panorâmica","São José dos Campos","Brasil","América do Sul","cidades","https://camerasdomundo.com/sao-jose-dos-campos-ao-vivo/","Placa de Chumbo","JpF_xTgo6KU"),
+ entry("cdm-galeao","Aeroporto do Galeão","Rio de Janeiro","Brasil","América do Sul","aeroportos","https://camerasdomundo.com/aeroporto-internacional-do-galeao-ao-vivo/","Aviation TV","wmAArqW6GnY"),
+ entry("janelas-canto-forte","Canto do Forte — Praia Grande","Praia Grande","Brasil","América do Sul","praias","https://www.janelas.tv.br/camera-ao-vivo/sp/praia-grande/canto-do-forte","Janelas TV",null),
+ entry("janelas-ponta-praia","Ponta da Praia — Porto de Santos","Santos","Brasil","América do Sul","portos","https://www.janelas.tv.br/camera-ao-vivo/sp/santos/ponta-da-praia","Janelas TV",null),
+ entry("janelas-quebra-mar","Quebra-Mar — Santos","Santos","Brasil","América do Sul","praias","https://www.janelas.tv.br/camera-ao-vivo/sp/santos/quebra-mar","Janelas TV",null),
+ entry("janelas-canal-3","Canal 3 — Santos","Santos","Brasil","América do Sul","praias","https://www.janelas.tv.br/camera-ao-vivo/sp/santos/canal-3","Janelas TV",null),
+ entry("janelas-monte-serrat","Monte Serrat — Santos","Santos","Brasil","América do Sul","cidades","https://www.janelas.tv.br/camera-ao-vivo/sp/santos/monte-serrat","Janelas TV",null),
+ entry("janelas-pitangueiras","Praia das Pitangueiras — Guarujá","Guarujá","Brasil","América do Sul","praias","https://www.janelas.tv.br/camera-ao-vivo/sp/guaruja/praia-das-pitangueiras","Janelas TV",null),
+ entry("janelas-ilha-porchat","Ilha Porchat — São Vicente","São Vicente","Brasil","América do Sul","cidades","https://www.janelas.tv.br/camera-ao-vivo/sp/sao-vicente/ilha-porchat","Janelas TV",null)
 
 ]);
 export const CAMERA_CATEGORY_NAMES=Object.freeze({
@@ -104,11 +129,22 @@ export const WORLD_CAMERAS_CATALOGS=Object.freeze([
   all:"https://webcamera24.com/pt/all-webcams/",
   countries:"https://webcamera24.com/pt/countries/",
   categories:"https://webcamera24.com/pt/categories/",
-  note:"Diretório mundial; players YouTube selecionados iniciam sem áudio no J.A.R.V.I.S."})
+  note:"Diretório mundial; players YouTube selecionados iniciam sem áudio no J.A.R.V.I.S."}),
+ Object.freeze({id:"janelastv",label:"Janelas TV",home:"https://www.janelas.tv.br/",
+  all:"https://www.janelas.tv.br/camera-ao-vivo/",
+  countries:"https://www.janelas.tv.br/camera-ao-vivo/",
+  categories:"https://www.janelas.tv.br/camera-ao-vivo/",
+  note:"7 câmeras listadas no catálogo principal. Player proprietário H.265/VR; incorporação externa não autorizada/verificada."}),
+ Object.freeze({id:"tabicam",label:"Tabi.cam",home:"https://tabi.cam/pt/",
+  all:"https://tabi.cam/pt/explore/",
+  countries:"https://tabi.cam/pt/explore/",
+  categories:"https://tabi.cam/pt/explore/",
+  note:"61 países no diretório. Sem importação automática: termos proíbem crawlers/scrapers e redistribuição não autorizada."})
 ]);
 export const CAMERA_PROVIDER_NAMES=Object.freeze({
  all:"Todos os provedores",skyline:"SkylineWebcams",webcamera24:"Webcamera24",
- camerasdomundo:"Câmeras do Mundo",africam:"Africam"
+ camerasdomundo:"Câmeras do Mundo",africam:"Africam",
+ janelastv:"Janelas TV",tabicam:"Tabi.cam"
 });
 export function cameraProvider(camera){
  const source=String(camera?.sourceUrl||"");
@@ -116,12 +152,22 @@ export function cameraProvider(camera){
  if(source.startsWith("https://webcamera24.com/"))return "webcamera24";
  if(source.startsWith("https://camerasdomundo.com/"))return "camerasdomundo";
  if(source.startsWith("https://africam.com/"))return "africam";
+ if(source.startsWith("https://www.janelas.tv.br/"))return "janelastv";
  return "independent";
 }
 const SKYLINE_APPROVED=new Map([
  [WORLD_CAMERAS_SKYLINE_URL,WORLD_CAMERAS_ALTERNATIVE_ID],
  ["https://www.skylinewebcams.com/en/webcam/china/shanghai/shanghai/skyline-of-shanghai.html","skyline-shanghai"],
  ["https://www.skylinewebcams.com/en/webcam/united-states/new-york/new-york/times-square.html","skyline-times-square"]
+]);
+const JANELAS_APPROVED=new Map([
+ ["https://www.janelas.tv.br/camera-ao-vivo/sp/praia-grande/canto-do-forte","janelas-canto-forte"],
+ ["https://www.janelas.tv.br/camera-ao-vivo/sp/santos/ponta-da-praia","janelas-ponta-praia"],
+ ["https://www.janelas.tv.br/camera-ao-vivo/sp/santos/quebra-mar","janelas-quebra-mar"],
+ ["https://www.janelas.tv.br/camera-ao-vivo/sp/santos/canal-3","janelas-canal-3"],
+ ["https://www.janelas.tv.br/camera-ao-vivo/sp/santos/monte-serrat","janelas-monte-serrat"],
+ ["https://www.janelas.tv.br/camera-ao-vivo/sp/guaruja/praia-das-pitangueiras","janelas-pitangueiras"],
+ ["https://www.janelas.tv.br/camera-ao-vivo/sp/sao-vicente/ilha-porchat","janelas-ilha-porchat"]
 ]);
 const WEB_CAMERA24_APPROVED=new Set([
  "https://webcamera24.com/pt/camera/usa/elboroom-bar-band-cam/",
@@ -151,12 +197,15 @@ export function validatePublicCamera(camera){
    camera.embedId===null&&camera.publisher==="SkylineWebcams";
   const webcamera24=WEB_CAMERA24_APPROVED.has(url.href)&&
    camera.publisher==="Webcamera24";
+  // Publisher-controlled H.265/VR video is NOT rehosted or framed.
+  const janelas=JANELAS_APPROVED.get(url.href)===camera.id&&
+   camera.embedId===null&&camera.publisher==="Janelas TV";
   // First-party EarthCam video published on its official YouTube channel.
   // Exact source+ID pair is required; do not permit arbitrary YouTube videos.
   const earthcam=url.href===WESTERN_WALL_EARTHCAM_YOUTUBE_URL&&
    camera.id===WESTERN_WALL_EARTHCAM_ID&&camera.publisher==="EarthCam"&&
    camera.embedId==="77akujLn4k8";
-  if(url.protocol!=="https:"||(!recognized&&!skyline&&!webcamera24&&!earthcam)||
+  if(url.protocol!=="https:"||(!recognized&&!skyline&&!webcamera24&&!janelas&&!earthcam)||
    url.username||url.password||url.port)return false;
  }catch{return false;}
  return camera.embedId===null||/^[a-zA-Z0-9_-]{11}$/.test(camera.embedId);
@@ -201,10 +250,32 @@ export function parseWorldCameraCommand(message){
  }
  return null;
 }
+// Published provider counts are not additive: directories may repeat feeds.
+export const WORLD_CAMERA_PUBLISHED_BASELINES=Object.freeze({
+ camerasdomundo:Object.freeze({min:601,exact:null,source:"Mais de 600, declaração do próprio site"}),
+ janelastv:Object.freeze({min:7,exact:null,source:"7 páginas na listagem pública principal"}),
+ tabicam:Object.freeze({min:null,exact:null,countries:61,
+  source:"61 países listados; sem total de câmeras e sem autorização de scraping"})
+});
+export function cameraProviderCoverage(){
+ return ["camerasdomundo","janelastv","tabicam"].map(provider=>{
+  const indexed=PUBLIC_WORLD_CAMERAS.filter(c=>cameraProvider(c)===provider);
+  const baseline=WORLD_CAMERA_PUBLISHED_BASELINES[provider];
+  return Object.freeze({
+   provider,indexed:indexed.length,embeddable:indexed.filter(c=>Boolean(c.embedId)).length,
+   sourceOnly:indexed.filter(c=>!c.embedId).length,
+   publishedMin:baseline.min,exactPublished:baseline.exact,
+   knownUnindexedMin:baseline.min===null?null:Math.max(0,baseline.min-indexed.length),
+   countriesAdvertised:baseline.countries||null,
+   countSource:baseline.source
+  });
+ });
+}
 export function cameraDirectorySummary(){
  const countries=[...new Set(PUBLIC_WORLD_CAMERAS.map(c=>c.country))].sort();
  const regions=[...new Set(PUBLIC_WORLD_CAMERAS.map(c=>c.region))];
  return {indexed:PUBLIC_WORLD_CAMERAS.length,countries,regions,embedded:PUBLIC_WORLD_CAMERAS.filter(c=>c.embedId).length,
   liveVerified:0,providerCatalogs:WORLD_CAMERAS_CATALOGS.length,
-  source:"Câmeras do Mundo / Africam / SkylineWebcams / Webcamera24 — fontes públicas externas"};
+  coverage:cameraProviderCoverage(),
+  source:"Câmeras do Mundo / Africam / SkylineWebcams / Webcamera24 / Janelas TV / Tabi.cam — fontes públicas externas"};
 }

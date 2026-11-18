@@ -184,7 +184,7 @@ try{
  const directories=await page.$$eval(".jarvis-worldcam-catalogs .jarvis-worldcam-catalog-card",cards=>
   cards.map(card=>({title:card.querySelector("strong").textContent,
    urls:[...card.querySelectorAll("a")].map(a=>a.href)})));
- assert.equal(directories.length,4);
+ assert.equal(directories.length,6);
  assert.ok(directories.some(x=>x.title==="SkylineWebcams"&&
    x.urls.includes("https://www.skylinewebcams.com/en/webcam.html")));
  assert.ok(directories.some(x=>x.title==="Câmeras do Mundo"&&
@@ -193,6 +193,31 @@ try{
    x.urls.includes("https://africam.com/our-locations/")));
  assert.ok(directories.some(x=>x.title==="Webcamera24"&&
    x.urls.includes("https://webcamera24.com/pt/all-webcams/")));
+ assert.ok(directories.some(x=>x.title==="Janelas TV"&&
+   x.urls.includes("https://www.janelas.tv.br/camera-ao-vivo/")));
+ assert.ok(directories.some(x=>x.title==="Tabi.cam"&&
+   x.urls.includes("https://tabi.cam/pt/explore/")));
+ const coverage=await page.$$eval(".jarvis-worldcam-coverage-list p",
+  items=>items.map(x=>x.textContent));
+ assert.ok(coverage.some(x=>x.includes("Câmeras do Mundo")&&x.includes("catalogadas 29")));
+ assert.ok(coverage.some(x=>x.includes("Janelas TV")&&x.includes("catalogadas 7")));
+ assert.ok(coverage.some(x=>x.includes("Tabi.cam")&&x.includes("catalogadas 0")));
+ const janelasSelected=await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.open({
+  cameraId:"janelas-ponta-praia"
+ }));
+ assert.equal(janelasSelected.selected,"janelas-ponta-praia");
+ assert.equal(await page.$(".jarvis-worldcam-view iframe[src]"),null,
+  "No unauthorized Janelas TV proprietary video may be embedded");
+ const cdms=await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.open({
+  cameraId:"cdm-afonso-pena"
+ }));
+ assert.equal(cdms.selected,"cdm-afonso-pena");
+ assert.equal((await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.state)).playerRequested,true);
+ assert.match(await page.$eval(".jarvis-worldcam-view iframe",i=>i.getAttribute("src")),
+  /PtaHi82kFEc/);
+ assert.match(await page.$eval(".jarvis-worldcam-view iframe",i=>i.getAttribute("src")),
+  /mute=1/);
+
  const providerOptions=await page.$$eval(".jarvis-worldcam-filters select[aria-label='Filtrar provedor de câmeras'] option",
   opts=>opts.map(o=>o.textContent));
  assert.ok(providerOptions.includes("Webcamera24"));
