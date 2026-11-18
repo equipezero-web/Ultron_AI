@@ -240,6 +240,40 @@ try {
     }
   }
   await page.evaluate(()=>document.body.classList.remove("ultron-tv-display"));
+  // Real transcript regression: terminal and voice use the same local routing.
+  // The region-specific request must render sourced news, never geocode a title.
+  const routedNews=await page.evaluate(async()=>{
+    const earth=window.ULTRON_EARTH;
+    const original=earth?.locate;
+    let geocoded=false;
+    if(earth)earth.locate=async()=>{geocoded=true;return {ok:false};};
+    try{
+      const result=await window.ULTRON_ORCHESTRATOR.execute(
+        "Jarvis, mostre as notícias do Brasil e imagens no Neural Ring.","terminal-test");
+      return {result,geocoded,mode:window.ULTRON_NEURAL_ANSWER?.state?.mode,
+        text:document.querySelector(".ultron-neural-answer")?.textContent||""};
+    }finally{if(earth)earth.locate=original;}
+  });
+  assert.equal(routedNews.result?.route,"communication-regional-news");
+  assert.equal(routedNews.result?.ok,true);
+  assert.equal(routedNews.geocoded,false,"News requests must never trigger Earth geocoding");
+  assert.equal(routedNews.mode,"news");
+  assert.ok(routedNews.text.includes("Boletim confirmado do espelho"),
+    "Brazil news should appear in the Neural Ring with a source");
+  const routedPrevious=await page.evaluate(async()=>{
+    const visual=window.ULTRON_VISUAL_ORCHESTRATOR;
+    const original=visual.previous;
+    let called=0;
+    visual.previous=()=>{called++;return {ok:true,scene:"map"};};
+    try{
+      const a=await window.ULTRON_ORCHESTRATOR.execute("volte a cena anterior","terminal-test");
+      const b=await window.ULTRON_ORCHESTRATOR.execute("Volte para a cena anterio","voice-test");
+      return {a,b,called};
+    }finally{visual.previous=original;}
+  });
+  assert.equal(routedPrevious.called,2,"Both natural variants must call director.previous");
+  assert.equal(routedPrevious.a?.route,"communication-director");
+  assert.equal(routedPrevious.b?.route,"communication-director");
   console.log("AUTO BRIEFING BROWSER PASS: startup, Brazil/SC/world, 24h archive/wake delta, voice toggle, fallback and network resilience");
 } catch(error){
   console.error("AUTO BRIEFING BROWSER FAILED:",error);
