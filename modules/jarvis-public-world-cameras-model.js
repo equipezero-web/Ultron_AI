@@ -176,7 +176,11 @@ export function findPublicCameras({search="",country="",category="",region="",pr
   (!region||c.region===region)&&(!provider||cameraProvider(c)===provider));
 }
 export function parseWorldCameraCommand(message){
- const s=normalizeCameraText(message).replace(/^(?:jarvis|ultron)[ ,:.-]+/,"").replace(/[.!?]+$/,"").trim();
+ let s=normalizeCameraText(message).replace(/^(?:jarvis|ultron)[ ,:.-]+/,"").replace(/[.!?]+$/,"").trim();
+ if(/^(?:nao|nunca|como|por que|porque|se |e se )\b/.test(s))return null;
+ // Spoken status followed by a real imperative, not a question or a device command.
+ const compound=s.match(/^(?:as )?(?:cameras|webcams)(?: mundiais| do mundo| publicas)? (?:estao|tao) (?:abertas|visiveis)[,;:] (.+)$/);
+ if(compound)s=compound[1];
  // Bare "abrir câmeras" opens only the public catalog, never a local camera.
  if(/^(?:abrir|abra|mostre|mostrar|exibir|exiba) (?:as |os )?(?:cameras|webcams)$/.test(s))
   return {type:"open"};

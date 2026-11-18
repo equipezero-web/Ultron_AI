@@ -280,13 +280,13 @@ jobs:
           grep -Eq '(TOTAL ORCHESTRATION|P0→P5|NEURAL INTERACTION|J\.A\.R\.V\.I\.S NEURAL COMMAND)' index.html
           grep -Fq 'J.A.R.V.I.S INTERACTIVE COMMAND CENTER // v4.35.0' index.html
           grep -Eq 'ultron-core-bridge-v4270[.]js[?]v=4[.][0-9]+[.][0-9]+' index.html
-          grep -Eq 'ultron-orchestrator-v4270[.]js[?]v=4[.][0-9]+[.][0-9]+' index.html
+          grep -Eq 'ultron-orchestrator-v4270[.]js[?]v=(4|5)[.][0-9]+[.][0-9]+' index.html
           grep -q 'neural-priority-core-v4300.js?v=4.30.0' index.html
           grep -Eq 'device-control-v4260[.]js[?]v=4[.][0-9]+[.][0-9]+' index.html
           grep -q 'orchestrator-device-verify-v4270.js?v=4.27.0' index.html
           grep -q 'telemetry-client-v4270.js?v=4.27.0' index.html
           grep -Eq 'voice-match-v4290\.js\?v=4\.(29|31|32)\.0' index.html
-          grep -Eq 'voice-listener-v4290\.js\?v=4\.(29|31|32)\.0' index.html
+          grep -Eq 'voice-listener-v4290\.js\?v=(4\.(29|31|32)\.0|5\.53\.0)' index.html
           grep -Eq 'voice-orchestration-bridge-v4290\.js\?v=4\.(29|31|32)\.0' index.html
           grep -q 'orchestrator-ui-bridge-v4270.js?v=4.27.0' index.html
           node --input-type=module <<'NODE'
@@ -394,6 +394,7 @@ jobs:
           const backend=await fetch(base+'/api/geo/locations?q=Tokyo',{signal:AbortSignal.timeout(12000)});
           console.log('Cloudflare World route:',backend.status,'(200=deployed, 404=fallback required)');
           assert.ok([200,404].includes(backend.status),'Unexpected Worker status');
+          let workerForecastVerified=false;
           if(backend.status===200){
             const verified=await fetch(base+'/api/geo/global?city=Tokyo&days=16',{signal:AbortSignal.timeout(20000)});
             const body=await verified.text();
@@ -406,6 +407,7 @@ jobs:
               assert.equal(decoded.requestedDays,16);
               assert.equal(decoded.partialForecast,decoded.days.length<16);
               assert.ok(decoded.source.url.includes('open-meteo.com'));
+              workerForecastVerified=true;
               console.log('WORKER GLOBAL 16-DAY FORECAST VERIFIED');
             }else{
               assert.equal(verified.status,502,'Unexpected Worker weather failure');
@@ -445,12 +447,22 @@ jobs:
           assert.match(world,/globalWeatherScenario/);
           const recovery=await check('direct-fallback-module',site+'backend/weather-global.js?v=4.74.0');
           assert.match(recovery,/loadGlobalWeather/);
-          const locations=JSON.parse(await check('open-meteo-geocoding',
-            'https://geocoding-api.open-meteo.com/v1/search?name=Tokyo&count=1&language=pt'));
-          assert.ok(locations.results.some(c=>c.country_code==='JP'));
-          const data=JSON.parse(await check('open-meteo-16days',
-            'https://api.open-meteo.com/v1/forecast?latitude=35.6895&longitude=139.6917&timezone=auto&forecast_days=16&current=temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max'));
-          assert.equal(data.daily.time.length,16);
+          // Direct provider checks are secondary when the live Worker already returned
+          // a validated 16-day forecast. Do not misclassify an upstream network timeout
+          // as a J.A.R.V.I.S. regression, but do not swallow bad provider payloads.
+          const checkExternal=async(name,url,validate)=>{
+            try{validate(JSON.parse(await check(name,url)));}
+            catch(error){
+              if(!workerForecastVerified||!(/fetch failed|timeout|aborted|ECONNRESET|ETIMEDOUT/i.test(String(error?.message||error))))throw error;
+              console.log('::warning::'+name+' unreachable directly from GitHub runner; verified 16-day Cloudflare Worker forecast is operational.');
+            }
+          };
+          await checkExternal('open-meteo-geocoding',
+            'https://geocoding-api.open-meteo.com/v1/search?name=Tokyo&count=1&language=pt',
+            locations=>assert.ok(locations.results?.some(c=>c.country_code==='JP')));
+          await checkExternal('open-meteo-16days',
+            'https://api.open-meteo.com/v1/forecast?latitude=35.6895&longitude=139.6917&timezone=auto&forecast_days=16&current=temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max',
+            data=>assert.equal(data.daily.time.length,16));
           console.log('WORLD WEATHER AVAILABLE IN PRODUCTION: fallback modules and Open-Meteo source; Worker HTTP '+backend.status);
           NODE
 

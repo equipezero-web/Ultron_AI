@@ -7,8 +7,9 @@ import {
   restartDelayFor,
   nextFailureState,
   isLikelySpeechEcho,
-  isDuplicateVoiceText
-} from './voice-runtime-policy.js';
+  isDuplicateVoiceText,
+  isExplicitSleepCommand
+} from './voice-runtime-policy.js?v=5.53.0';
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const WAKE_ALIASES = ['jarvis', 'javis', 'jarves', 'ultron', 'outron', 'utron', 'ultra on', 'ultraon'];
@@ -170,11 +171,7 @@ function activateConversation({ announceWake = false, resetTimer = true, method 
   if (announceWake) addLog(output, `ULTRON: acordado (${method}). Pode falar normalmente.`);
 }
 
-function isSleepCommand(text) {
-  const normalized = normalizeVoiceText(text);
-  return ['dormir', 'durma', 'modo passivo', 'pare de responder', 'encerrar conversa', 'finalizar conversa']
-    .some((command) => normalized === command || normalized.endsWith(` ${command}`));
-}
+function isSleepCommand(text){return isExplicitSleepCommand(text);}
 
 async function routeVoiceCommand(cleanCommand, source = 'local') {
   const orchestrator = window.ULTRON_ORCHESTRATOR;
@@ -647,6 +644,8 @@ function exposeVoiceInputApi() {
     get state() {
       return {
         enabled: listeningEnabled,
+        recognitionSupported:Boolean(SpeechRecognition),
+        engine:SpeechRecognition?"web-speech-api":"unavailable",
         suspended: localSuspended,
         suspensionReason: suspensionReason || null,
         recognitionRunning,
@@ -672,6 +671,7 @@ function initializeVoiceListener() {
   exposeVoiceInputApi();
   bindSpeechPauseResume();
   refreshGatewayHealth();
+  testMicButton?.addEventListener('click', testPhysicalMicrophone);
   if (!SpeechRecognition) {
     setMicState('unsupported');
     return;
@@ -682,7 +682,6 @@ function initializeVoiceListener() {
     if (listeningEnabled) disableListening();
     else await enableListening({ userInitiated: true, persist: true });
   });
-  testMicButton?.addEventListener('click', testPhysicalMicrophone);
   const prefs = loadPreferences();
   if (prefs.microphoneAccepted && prefs.voiceWakeEnabled !== false) enableListening({ userInitiated: false, persist: false });
   else setMicState('ready');

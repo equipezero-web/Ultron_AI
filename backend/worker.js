@@ -67,6 +67,7 @@ import { analyzeVisualFrame } from "./vision-analysis.js";
 import { getWebRtcIceServers, webRtcIceHealth } from "./webrtc-ice.js";
 import { loadLiveNewsContext, isGeneralNewsIntent, isLiveNewsIntent } from "./news-context.js";
 import { createWorldBriefing } from "./world-briefing.js";
+import {pushConfiguration,pushAccountStatus,checkPushSubscription,registerPush,removePush,pollOfficialPush} from "./jarvis-push.js";
 import {
   answerLooksUncertain,
   researchVisualContext,
@@ -994,6 +995,26 @@ function accountPluginsJson(request,env,data,status=200){
   return new Response(JSON.stringify(data),{status,
     headers:accountAccessHeaders(request,env)});
 }
+async function handleAccountPush(request,env){
+ const auth=await authorizeJarvisAccount(request,env);
+ if(!auth.ok)return accountPluginsJson(request,env,{ok:false,error:auth.code},auth.status);
+ if(request.method==="GET"){
+  const result=await pushAccountStatus(env,auth.accountId);
+  return accountPluginsJson(request,env,result,result.ok?200:result.status||503);
+ }
+ if(request.method!=="POST")return accountPluginsJson(request,env,{ok:false,error:"method-not-allowed"},405);
+ let body;
+ try{
+  if(Number(request.headers.get("content-length")||0)>4000)throw Error("request-too-large");
+  const raw=await request.text();if(raw.length>4000)throw Error("request-too-large");
+  body=JSON.parse(raw);if(!body||typeof body!=="object"||Array.isArray(body))throw Error("invalid-body");
+ }catch{return accountPluginsJson(request,env,{ok:false,error:"invalid-body"},400);}
+ const result=body.action==="status"?await checkPushSubscription(env,auth.accountId,body.endpoint):
+  body.action==="subscribe"?await registerPush(env,auth.accountId,body.subscription):
+  body.action==="unsubscribe"?await removePush(env,auth.accountId,body.endpoint):
+  {ok:false,status:400,error:"unknown-push-action"};
+ return accountPluginsJson(request,env,result,result.ok?200:result.status||400);
+}
 async function handleAccountPlugins(request,env,path){
   const auth=await authorizeJarvisAccount(request,env);
   if(!auth.ok)return accountPluginsJson(request,env,{ok:false,error:auth.code},auth.status);
@@ -1078,6 +1099,7 @@ async function health(env) {
     },
     privateGitHub: {enabled:privateGitHubConfig(env).enabled,access:"access-jwt+repo-allowlist",mode:"read-only"},
     accountPlugins: {configured:accountAccessConfig(env).enabled,scope:"per-account",authenticated:true,arbitraryCode:false},
+    communicationPush: {configured:pushConfiguration(env).enabled,consentRequired:true,source:"INMET",authenticated:true},
     webResearch: {
       enabled: true,
       googleSearch: Boolean(env.SERPER_API_KEY),
@@ -1117,6 +1139,7 @@ export default {
         const headers=accountAccessHeaders(request,env);
         return new Response(null,{status:headers["Access-Control-Allow-Origin"]?204:403,headers});
       }
+      if(path==="/api/account/push")return handleAccountPush(request,env);
       if([
         "/api/account/plugins",
         "/api/account/plugins/execute",
@@ -1707,5 +1730,6 @@ export default {
     ctx.waitUntil(pollTrendIntelligence(env).catch(error=>
       console.warn("JARVIS public trend monitoring unavailable",String(error?.message||error))));
     ctx.waitUntil(pollPersonalWeatherWatches(env).catch(error=>console.warn("JARVIS personal weather watch failed",String(error?.message||error))));
+    ctx.waitUntil(pollOfficialPush(env).catch(()=>console.warn("JARVIS official push collection unavailable")));
   }
 };

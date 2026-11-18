@@ -48,9 +48,22 @@ body.jarvis-command-center .ultron-neural-answer:focus-within{outline:1px solid 
    but remove duplicate news stories from the command strip below the ring. */
 body.jarvis-command-center .jarvis-intel-panel :is(
  .jarvis-intel-topics,.jarvis-intel-official,.jarvis-intel-history,
- .jarvis-intel-footer,.jarvis-intel-message
+ .jarvis-intel-footer,.jarvis-intel-message,.jarvis-intel-weather-sampler
 ){display:none!important}
-body.jarvis-command-center .jarvis-intel-panel{max-height:86px!important;overflow:hidden!important}
+body.jarvis-command-center .jarvis-intel-panel{
+  max-height:none!important;overflow:visible!important;
+}
+body.jarvis-command-center .jarvis-intel-panel[hidden]{display:none!important}
+body.jarvis-command-center .jarvis-intel-heading button{
+  min-width:44px;min-height:44px;border:1px solid #365169;
+  background:#0d1e31;color:#c8f2ff;border-radius:7px;cursor:pointer;
+}
+body.jarvis-command-center .jarvis-intel-heading button:focus-visible{
+  outline:3px solid #9be7ff;outline-offset:3px;
+}
+body.jarvis-command-center.ultron-tv-display .jarvis-intel-heading button{
+  min-width:56px;min-height:56px;font-size:20px;
+}
 
 /* Prevent browser scroll anchoring from nudging the document as WebGL zoom repaints. */
 html:has(body.jarvis-command-center){overflow-anchor:none}
