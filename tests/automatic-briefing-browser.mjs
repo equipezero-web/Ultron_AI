@@ -162,8 +162,8 @@ try {
   assert.ok(wakeInfo.stories.some(x=>x.includes("Tempestade monitorada em SC")));
   assert.ok(wakeInfo.wake && wakeInfo.wake===wakeInfo.stored);
   assert.equal(wakeInfo.voice,false,"Spoken narration must remain off by default");
-  assert.equal(await page.evaluate(()=>document.querySelectorAll(".jarvis-intel-controls button").length),1,
-    "Only text refresh is available; voice buttons are hidden");
+  assert.deepEqual(await page.evaluate(()=>[...document.querySelectorAll(".jarvis-intel-controls button")].map(x=>x.textContent.trim())),
+    ["Atualizar","ATIVAR NOTIFICAÇÕES"],"Refresh and consent controls are present; voice remains off");
   const initialCalls=calls;
   await page.click(".jarvis-intel-controls button:first-child");
   await page.waitForFunction(()=>window.ULTRON_INTELLIGENCE?.state?.loading===false,{timeout:6000});
