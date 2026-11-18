@@ -184,6 +184,24 @@ function resetCameraFilters(){
  }
  if(filterDetails)filterDetails.open=false;
 }
+// Chrome and password managers may fill the camera search with credentials
+// after our normal reset. An account identifier is never a camera location.
+function sanitizedCameraSearch(){
+ if(!queryField)return "";
+ const value=String(queryField.value||"");
+ if(value.includes("@")){
+  queryField.value="";
+  if(pickerNotice)pickerNotice.textContent=
+   "Busca de câmeras restaurada: dados de conta não são usados como localização.";
+  return "";
+ }
+ return value;
+}
+function recoverLateAutofill(){
+ if(!requested||!panel?.isConnected||!queryField?.value?.includes("@"))return;
+ sanitizedCameraSearch();
+ render();
+}
 function build(){
  if(panel?.isConnected)return true;
  // The command center is dynamically mounted after this module loads.
@@ -239,7 +257,19 @@ function build(){
  const toolbar=make("div","jarvis-worldcam-filters");
  queryField=make("input");queryField.type="search";queryField.placeholder="Buscar cidade, país ou câmera";
  queryField.setAttribute("aria-label","Buscar câmera pública por cidade, país ou tema");
+ queryField.name="jarvis-worldcam-public-place-query";
  queryField.autocomplete="off";
+ queryField.setAttribute("autocapitalize","off");
+ queryField.setAttribute("autocorrect","off");
+ queryField.setAttribute("spellcheck","false");
+ queryField.setAttribute("data-lpignore","true");
+ queryField.setAttribute("data-1p-ignore","true");
+ queryField.setAttribute("data-form-type","other");
+ // Do not expose a writable credential-looking field during initial autofill.
+ // An actual keyboard/touch focus unlocks normal city/country searching.
+ queryField.readOnly=true;
+ queryField.addEventListener("focus",()=>{queryField.readOnly=false;});
+ queryField.addEventListener("change",recoverLateAutofill);
  countryField=make("select");countryField.setAttribute("aria-label","Filtrar país");
  regionField=make("select");regionField.setAttribute("aria-label","Filtrar continente");
  categoryField=make("select");categoryField.setAttribute("aria-label","Filtrar tipo de câmera");
@@ -251,6 +281,10 @@ function build(){
  optionList(providerField,[["","Todos os provedores"],...Object.entries(CAMERA_PROVIDER_NAMES).filter(([k])=>k!=="all")]);
  for(const el of [queryField,regionField,countryField,categoryField,providerField]){
   el.addEventListener("input",()=>{
+   if(el===queryField&&String(queryField.value).includes("@")){
+    recoverLateAutofill();
+    return;
+   }
    if(pickerNotice)pickerNotice.textContent="";
    render();
   });
@@ -307,14 +341,25 @@ function build(){
   "Não afirmamos sinal ao vivo sem confirmação."),
   safeLink(WORLD_CAMERAS_HOME,"Catálogo Brasil"),
   safeLink(WORLD_CAMERAS_INTERNATIONAL,"Catálogo internacional"));
- panel.append(head,summary,pickerBar,filterDetails,results,videoArea,audioBar,notice,catalogs,footer);
+ // A dedicated side catalogue and a large, separate video stage share
+ // the same Neural Ring. Camera switching does not resize the live player.
+ const workspace=make("div","jarvis-worldcam-workspace");
+ const sidebar=make("aside","jarvis-worldcam-sidebar");
+ sidebar.setAttribute("aria-label","Filtros e câmeras públicas");
+ sidebar.append(pickerBar,filterDetails,results,catalogs);
+ const media=make("section","jarvis-worldcam-media");
+ media.setAttribute("aria-label","Reprodução ampliada da câmera pública");
+ media.append(videoArea,audioBar,notice);
+ workspace.append(sidebar,media);
+ panel.append(head,summary,workspace,footer);
  stage.append(panel);
  return true;
 }
 function render(){
  if(!panel)return;
+ const safeTerm=sanitizedCameraSearch();
  const matches=findPublicCameras({
-  search:queryField.value,country:countryField.value,
+  search:safeTerm,country:countryField.value,
   category:categoryField.value,region:regionField.value,provider:providerField.value
  }).sort((a,b)=>Number(Boolean(b.embedId))-Number(Boolean(a.embedId)));
  pickerSelect.replaceChildren();
@@ -371,7 +416,12 @@ function open({search="",cameraId=null}={}){
   selected=found.find(camera=>Boolean(camera.embedId))||found[0];
  }
  choose(selected,{autoPlay:Boolean(selected)});render();
- const count=findPublicCameras({search:queryField.value}).length;
+ // Password-manager autofill may occur AFTER DOM mount or after this open.
+ // Bounded checks protect the catalogue without polling or touching real input.
+ for(const delay of [0,250,1200]){
+  setTimeout(recoverLateAutofill,delay);
+ }
+ const count=findPublicCameras({search:sanitizedCameraSearch()}).length;
  say("Central exibida dentro do Neural Ring: "+count+
   " câmeras selecionadas indexadas e "+WORLD_CAMERAS_CATALOGS.length+
   " catálogos oficiais navegáveis. Áudio Webcamera24 mudo por padrão.");
