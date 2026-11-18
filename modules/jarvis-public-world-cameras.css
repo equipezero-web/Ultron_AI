@@ -242,3 +242,73 @@ body.jarvis-command-center .jarvis-worldcam-info .jarvis-worldcam-same-place:foc
   width:100%;min-height:48px;font-size:11px;
  }
 }
+
+
+/* v5.59: The selection UI must be visible BEFORE the video placeholder on
+   phone, notebook and TV. One scrollable panel rather than clipped children. */
+body.jarvis-command-center .jarvis-cc-center>.jarvis-worldcam-panel:not([hidden]){
+ overflow-x:hidden!important;overflow-y:auto!important;
+ overscroll-behavior-y:contain;scrollbar-width:thin;
+ -webkit-overflow-scrolling:touch;
+ align-content:start;
+}
+body.jarvis-command-center .jarvis-worldcam-picker{
+ display:flex;flex-direction:column;gap:6px;position:sticky;top:0;z-index:10;
+ flex:0 0 auto;min-height:0;padding:8px;border-radius:9px;
+ background:linear-gradient(140deg,rgba(33,38,28,.99),rgba(8,27,39,.99));
+ border:1px solid rgba(229,191,112,.65);
+}
+body.jarvis-command-center .jarvis-worldcam-picker-label{
+ color:#ffe4ae;font:800 11px/1.4 system-ui,sans-serif;
+ letter-spacing:.045em;
+}
+body.jarvis-command-center .jarvis-worldcam-picker-select{
+ display:block!important;width:100%;max-width:100%;min-height:46px;
+ border:1px solid #d4af66;border-radius:8px;
+ padding:9px;color:#f9f0d9;background:#162c35;
+ font:600 14px/1.45 system-ui,sans-serif;
+ touch-action:manipulation;cursor:pointer;
+}
+body.jarvis-command-center .jarvis-worldcam-picker-count{
+ display:block;color:#bed8df;font-size:10px;line-height:1.35;
+}
+body.jarvis-command-center .jarvis-worldcam-results{
+ flex:0 0 auto!important;min-height:110px!important;
+ max-height:clamp(120px,21vh,205px)!important;
+ overflow-y:auto!important;overscroll-behavior-y:contain!important;
+}
+body.jarvis-command-center .jarvis-worldcam-item{min-height:74px}
+body.jarvis-command-center .jarvis-worldcam-view{
+ flex:0 0 auto!important;min-height:155px;
+ height:clamp(155px,30vh,355px);
+}
+body.jarvis-command-center .jarvis-worldcam-advanced{
+ flex:0 0 auto;max-width:100%;min-width:0;
+ border:1px solid rgba(137,182,196,.40);border-radius:7px;
+ background:#0d202b;color:#cde4ea;
+}
+body.jarvis-command-center .jarvis-worldcam-advanced>summary{
+ min-height:44px;box-sizing:border-box;padding:12px 9px;cursor:pointer;
+ font-size:11px;font-weight:700;line-height:1.4;touch-action:manipulation;
+}
+body.jarvis-command-center .jarvis-worldcam-advanced .jarvis-worldcam-filters{
+ padding:7px;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));
+}
+body.jarvis-command-center .jarvis-worldcam-panel :is(
+ .jarvis-worldcam-picker-select,.jarvis-worldcam-item,
+ .jarvis-worldcam-advanced>summary):focus-visible{
+ outline:2px solid #f0c77c;outline-offset:1px;
+}
+@media(max-width:650px){
+ body.jarvis-command-center .jarvis-worldcam-picker{padding:7px;gap:4px}
+ body.jarvis-command-center .jarvis-worldcam-picker-select{
+  font-size:16px;min-height:48px;
+ }
+ body.jarvis-command-center .jarvis-worldcam-results{
+  min-height:112px!important;max-height:155px!important;
+ }
+ body.jarvis-command-center .jarvis-worldcam-item{min-height:68px}
+ body.jarvis-command-center .jarvis-worldcam-view{
+  min-height:150px;height:210px;
+ }
+}
