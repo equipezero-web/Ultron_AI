@@ -7,7 +7,9 @@ const TABLE="jarvis_push_subscriptions";
 const SCHEMA=[
  "CREATE TABLE IF NOT EXISTS "+TABLE+" (endpoint_hash TEXT PRIMARY KEY,account_id TEXT NOT NULL,endpoint TEXT NOT NULL,p256dh TEXT NOT NULL,auth_secret TEXT NOT NULL,last_notice_id TEXT,created_at TEXT NOT NULL,last_sent_at TEXT)",
  "CREATE INDEX IF NOT EXISTS idx_jarvis_push_account ON "+TABLE+"(account_id)",
- "CREATE INDEX IF NOT EXISTS idx_jarvis_push_delivery ON "+TABLE+"(last_sent_at)"
+ "CREATE INDEX IF NOT EXISTS idx_jarvis_push_delivery ON "+TABLE+"(last_sent_at)",
+ "CREATE TABLE IF NOT EXISTS jarvis_push_deliveries (endpoint_hash TEXT NOT NULL,notice_id TEXT NOT NULL,sent_at TEXT NOT NULL,PRIMARY KEY(endpoint_hash,notice_id))",
+ "CREATE INDEX IF NOT EXISTS idx_jarvis_push_deliveries_time ON jarvis_push_deliveries(sent_at)"
 ];
 let prepared=false;
 const fail=(status,reason)=>({ok:false,status,error:reason});
@@ -93,8 +95,10 @@ export async function removePush(env,accountId,endpoint){
  if(!validAccount(accountId))return fail(401,"account-invalid");
  if(typeof endpoint!=="string"||endpoint.length>1700)return fail(400,"invalid-endpoint");
  try{const db=await setup(env);
+  const endpointHash=await hash(endpoint);
   await db.prepare("DELETE FROM "+TABLE+" WHERE account_id=? AND endpoint_hash=?")
-   .bind(accountId,await hash(endpoint)).run();
+   .bind(accountId,endpointHash).run();
+  await db.prepare("DELETE FROM jarvis_push_deliveries WHERE endpoint_hash=?").bind(endpointHash).run();
   return {ok:true,registered:false};
  }catch{return fail(503,"push-storage-unavailable");}
 }
@@ -168,7 +172,9 @@ export async function pollOfficialPush(env,{now=()=>new Date(),fetchImpl=fetch}=
   if(!warnings.length)return {ok:true,sent:0,reason:"no-verified-danger-warnings"};
   let sent=0,expired=0,failed=0;
   for(const row of rows){
-   const alert=warnings.find(w=>row.last_notice_id!==w.id);
+   const delivered=await db.prepare("SELECT notice_id FROM jarvis_push_deliveries WHERE endpoint_hash=?").bind(row.endpoint_hash).all();
+   const known=new Set((delivered.results||[]).map(x=>x.notice_id));
+   const alert=warnings.find(w=>!known.has(w.id));
    if(!alert)continue;
    const region=alert.regions?.length?" UFs: "+alert.regions.join(", ")+".":" Confira a região afetada.";
    const payload={kind:"official-alert",id:String(alert.id).slice(0,90),
@@ -181,11 +187,16 @@ export async function pollOfficialPush(env,{now=()=>new Date(),fetchImpl=fetch}=
      sent++;
      await db.prepare("UPDATE "+TABLE+" SET last_notice_id=?,last_sent_at=? WHERE endpoint_hash=?")
       .bind(alert.id,date.toISOString(),row.endpoint_hash).run();
+     await db.prepare("INSERT OR IGNORE INTO jarvis_push_deliveries (endpoint_hash,notice_id,sent_at) VALUES (?,?,?)")
+      .bind(row.endpoint_hash,alert.id,date.toISOString()).run();
     }else if([404,410].includes(delivery.status)){
      expired++;await db.prepare("DELETE FROM "+TABLE+" WHERE endpoint_hash=?").bind(row.endpoint_hash).run();
+     await db.prepare("DELETE FROM jarvis_push_deliveries WHERE endpoint_hash=?").bind(row.endpoint_hash).run();
     }else failed++;
    }catch{failed++;}
   }
+  await db.prepare("DELETE FROM jarvis_push_deliveries WHERE sent_at < ?")
+   .bind(new Date(date.getTime()-30*86400000).toISOString()).run();
   return {ok:true,sent,expired,failed,checkedAt:date.toISOString(),source:"INMET",notifications:true};
  }catch{return fail(503,"official-push-collection-unavailable");}
 }
