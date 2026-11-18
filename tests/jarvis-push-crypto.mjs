@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import {webcrypto} from "node:crypto";
 if(!globalThis.crypto?.subtle)Object.defineProperty(globalThis,"crypto",{value:webcrypto,configurable:true});
-import {validatePushSubscription,pushConfiguration,encryptPushPayload,vapidToken,removePush}
+import {validatePushSubscription,pushConfiguration,encryptPushPayload,vapidToken,removePush,checkPushSubscription}
  from "../backend/jarvis-push.js";
 const e=new TextEncoder(),d=new TextDecoder();
 const b64=x=>Buffer.from(x).toString("base64url");
@@ -69,5 +69,15 @@ assert.equal((await removePush({ULTRON_DB:db},other,endpoint)).ok,true);
 assert.equal(writes.filter(x=>x.sql.startsWith("DELETE")).length,0);
 assert.equal((await removePush({ULTRON_DB:db},owner,endpoint)).ok,true);
 assert.equal(writes.filter(x=>x.sql.startsWith("DELETE")).length,2);
+
+const scopedDb={prepare(sql){return {
+ run:async()=>({}),
+ bind(accountId){return {
+  first:async()=>sql.startsWith("SELECT endpoint_hash")&&accountId===owner?{endpoint_hash:"verified"}:null
+ };}};}};
+assert.deepEqual(await checkPushSubscription({ULTRON_DB:scopedDb},owner,endpoint),
+ {ok:true,registered:true,backgroundPush:true});
+assert.deepEqual(await checkPushSubscription({ULTRON_DB:scopedDb},other,endpoint),
+ {ok:true,registered:false,backgroundPush:false});
 
 console.log("WEB PUSH CRYPTO PASS: RFC 8291 payload roundtrip, VAPID JWT signature, endpoint allowlist and configuration");
