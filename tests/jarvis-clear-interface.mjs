@@ -119,4 +119,30 @@ assert.ok(globalModule.includes('jarvis-geospatial-visual.js?v=4.96.1'),
  "Global map must use the same geospatial module URL as the host page");
 assert.match(meteoBridge,/ultron:meteo-center-ready/);
 
+// Communication routing: spoken compound commands must not fall through to AI.
+for(const phrase of [
+ "Jarvis, a previsão do tempo está aberto, feche a previsão do tempo.",
+ "Jarvis, a previsão do tempo está aberta, feche a previsão do tempo.",
+ "a meteorologia está aberta, fechar meteorologia",
+ "o radar está visível, feche o radar"
+])assert.equal(parseLocalCommand(phrase)?.type,"meteorological-close",phrase);
+for(const phrase of ["como fechar a previsão?","não feche a previsão",
+ "a previsão está aberta, não feche a previsão",
+ "a previsão está aberta, feche a câmera do celular"])
+ assert.notEqual(parseLocalCommand(phrase)?.type,"meteorological-close",phrase);
+const geoWeather={state:{visible:true,scenario:"weather-global-123"},close(){
+ this.state.visible=false;return {ok:true};}};
+window.ULTRON_GEO_VISUAL=geoWeather;
+window.ULTRON_METEO_CENTER={state:{visible:false},close(){throw Error("should not close");}};
+const compoundClose=await runLocalCommand(
+ "Jarvis, a previsão do tempo está aberto, feche a previsão do tempo.");
+assert.equal(compoundClose.ok,true);
+assert.equal(geoWeather.state.visible,false);
+geoWeather.state={visible:true,scenario:"tsunami-japan"};
+const notWeather=await runLocalCommand("fechar previsão do tempo");
+assert.equal(notWeather.ok,false);
+assert.equal(geoWeather.state.visible,true,"Unrelated geospatial scenes must remain open");
+const answerSource=readFileSync(new URL("../modules/ultron-neural-answer.js",import.meta.url),"utf8");
+assert.match(answerSource,/autoplay=0&mute=1/,"News videos should not autoplay unmuted");
+
 console.log("VISIBLE CLEAR PASS: exact local voice intent, visual reset, idempotency, no external research and no stored data deletion");
