@@ -52,8 +52,8 @@ try{
  const picked=await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.state);
  assert.equal(picked.selected,"copacabana");
  assert.equal(picked.playerRequested,true,"Native picker should start authorized player in Ring");
- assert.match(await page.$eval(".jarvis-worldcam-view iframe",i=>i.getAttribute("src")),'/embed/');
- assert.match(await page.$eval(".jarvis-worldcam-view iframe",i=>i.getAttribute("src")),'mute=1');
+ assert.match(await page.$eval(".jarvis-worldcam-view iframe",i=>i.getAttribute("src")),/\/embed\//);
+ assert.match(await page.$eval(".jarvis-worldcam-view iframe",i=>i.getAttribute("src")),/mute=1/);
  const searched=await run("Jarvis, mostre a câmera de Recife");
  assert.equal(searched.ok,true,JSON.stringify(searched));
  assert.equal(searched.selected,"recife-airport");
