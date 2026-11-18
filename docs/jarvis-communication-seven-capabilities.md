@@ -52,3 +52,19 @@ Provisionar **somente nos secrets/vars do Cloudflare Worker** (nunca em GitHub, 
 Após configurar, publicar o Worker, validar `GET /api/account/push` com sessão autenticada e clicar **ATIVAR NOTIFICAÇÕES** no navegador. O usuário pode revogar em qualquer momento. O service worker não intercepta fetch, não cacheia dados e não acessa dispositivos.
 
 **Limitações obrigatórias:** chaves ainda não provisionadas pelo operador; entrega remota e compatibilidade Android/Windows não verificadas em aparelho real; Web Speech API e webcams dependem de permissões, navegador e provedor. A ausência de um aviso no INMET não prova ausência de riscos.
+
+## Compatibilidade transversal (PC, celular, tablet e TV)
+
+A implementação usa **o mesmo orquestrador e as mesmas intenções** no terminal, comandos rápidos e voz; não existem lógicas de negócio separadas para cada tamanho de tela. O painel de notícias, o diretor visual e os controles de câmera continuam na página atual, sem pop-up obrigatório. A apresentação usa media queries e a classe de TV `ultron-tv-display`, com alvos de toque de no mínimo 44 px e botões de TV de no mínimo 56 px.
+
+| Superfície | Comandos / notícias / visual | Notificações | Voz e dispositivos |
+|---|---|---|---|
+| PC (mouse/teclado) | Mesmos módulos; comandos digitados e mídia | Notificações de sessão; push remoto quando permitido/configurado | Web Speech API depende do navegador e permissão do microfone |
+| Android / iOS (toque) | Mesmo roteamento; layout 320–430 px e tablet | Depende de navegador, PWA instalada quando exigido pelo sistema, permissões e backend | Microfone local ou Bridge pareado; acesso a apps/arquivos depende de permissões explícitas |
+| Tablet | Mesmo roteamento, layout adaptativo | Suporte conforme navegador | Microfone e dispositivos conforme permissões |
+| TV (controle remoto/teclado) | Mesmo roteamento, foco visível e controles maiores; sem exigir hover | Se Notification/Push API não existir, exibe indisponível sem simular envio | Controle por teclado/pareamento externo; microfone depende do equipamento |
+| TV 4K | Layout amplo com controles dimensionados | Mesmo contrato de capacidades | Mesmo motor; sem prometer APIs ausentes |
+
+Testes automatizados incluem 320×640, 390×844, 768×1024, 1366×768, 1920×1080 e 3840×2160. Esses testes verificam integridade da UI e não substituem homologação em aparelhos físicos.
+
+O teste de meteorologia externo só considera timeout direto tolerável quando o Worker já forneceu previsão válida de 16 dias; respostas inválidas continuam falhando. Nenhuma credencial de serviço, permissão de câmera, áudio ou acesso a arquivos é criada automaticamente.
