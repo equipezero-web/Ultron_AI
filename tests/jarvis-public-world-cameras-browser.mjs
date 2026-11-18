@@ -197,7 +197,7 @@ try{
    x.urls.includes("https://www.janelas.tv.br/camera-ao-vivo/")));
  assert.ok(directories.some(x=>x.title==="Tabi.cam"&&
    x.urls.includes("https://tabi.cam/pt/explore/")));
- const coverage=await page.$eval(".jarvis-worldcam-coverage-list p",
+ const coverage=await page.$$eval(".jarvis-worldcam-coverage-list p",
   items=>items.map(x=>x.textContent));
  assert.ok(coverage.some(x=>x.includes("Câmeras do Mundo")&&x.includes("catalogadas 29")));
  assert.ok(coverage.some(x=>x.includes("Janelas TV")&&x.includes("catalogadas 7")));
