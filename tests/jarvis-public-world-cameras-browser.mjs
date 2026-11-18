@@ -168,7 +168,7 @@ try{
  // Reopening without a search must clear the old query so the user sees choices.
  const reopened=await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.open());
  assert.ok(reopened.count>=10,"Reopening world cams must recover public camera options");
- assert.ok((await page.$("#jarvis-worldcam-camera-select option")).length>=11);
+ assert.ok((await page.$$("#jarvis-worldcam-camera-select option")).length>=11);
  assert.equal(await page.$eval(".jarvis-worldcam-advanced",el=>el.open),false);
  await page.evaluate(()=>window.ULTRON_WORLD_CAMERAS.open({cameraId:"tokyo-rainbow"}));
  const closedByVoice=await run("Jarvis, sair das câmeras mundiais");
