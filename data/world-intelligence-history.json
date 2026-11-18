@@ -4,10 +4,70 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-18T01:59:44.467Z",
-  "oldestEventAt": "2026-11-17T02:55:37.000Z",
-  "windowStartAt": "2026-11-17T01:59:44.467Z",
+  "updatedAt": "2026-11-18T09:58:46.014Z",
+  "oldestEventAt": "2026-11-17T10:02:00.000Z",
+  "windowStartAt": "2026-11-17T09:58:46.014Z",
   "events": [
+    {
+      "id": "event-72e8061a",
+      "category": "santa-catarina",
+      "title": "Temporais voltam a Santa Catarina nesta quarta-feira; sexta terá risco alto de ocorrências",
+      "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxQUEVsWmhMdVpPZG5CM053TU1WS1FuTEJmYTJVNVZHLVNWczFnbE91QXJFalpHdVQzaWVReDFnTjM1N29JOWFkS0dPUGd5emE0cmhiMnU1cXo2Qk9yQTdNcF9WZFhiSXhmM1FILWQwbUlLUEk0YmVxT0JoQkgwMkc1ZF9hdlV5aUZOcnJudlhsWHhzRzRCV1ZBRlNHNUs0T1U2VUUxV3lRM0UzNk9sVWtpSk9KZkRHTXlFWkUya1dhNEpSZjY3",
+      "description": "Temporais voltam a Santa Catarina nesta quarta-feira; sexta terá risco alto de ocorrências &nbsp;&nbsp; No Ponto SC",
+      "imageUrl": null,
+      "source": "No Ponto SC",
+      "publishedAt": "2026-11-18T09:24:22.000Z",
+      "firstSeenAt": "2026-11-18T09:58:46.014Z",
+      "lastSeenAt": "2026-11-18T09:58:46.014Z"
+    },
+    {
+      "id": "event-ccee1efe",
+      "category": "santa-catarina",
+      "title": "Temporais retornam com força a SC nesta quarta-feira (18)",
+      "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxQS2h0eU90UnpqNEQyc2RfQnNvRmZzTnlINHYtT1RIbW5RSUhuN2R6bS1MblJCVTVoRHRTZFRwSHYxdVROcmNqMHQwUHVSckEtb3VOWlNjYU4tZl9DRGZnRThiTmhNelNzem02NFBfVE9DY3pFQXFRNUhvdFBjZ00yZHFfSVhDZjQ",
+      "description": "Temporais retornam com força a SC nesta quarta-feira (18) &nbsp;&nbsp; TVBV ONLINE",
+      "imageUrl": null,
+      "source": "TVBV ONLINE",
+      "publishedAt": "2026-11-18T09:02:02.000Z",
+      "firstSeenAt": "2026-11-18T09:58:46.014Z",
+      "lastSeenAt": "2026-11-18T09:58:46.014Z"
+    },
+    {
+      "id": "event-e43c2f5a",
+      "category": "mundo",
+      "title": "Jogos de hoje: quem joga no futebol e onde assistir ao vivo – quarta-feira (18/11/2026)",
+      "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxNQ3p0Mk4xcjFBYzFJYy02c3FhUWJLLXhfalJZMGw2S1hVX0hpUTlmcWVXTE5yMi1MZ1dOZVpYWVNBQ0d5djZOM3FQdG9mYUQyOVpXcFgyekQ5RXVuVC1qRF9zbF9tUEhrb3VfUEEtaFkwMTk3cDFlR2h2R1pRa1VkTVVPZHdsWi1zQTEwdDljVHQzM1J2UWRKNU42dklWd0kxcXQ0T1dNdWFkdmpsMVI0Tl9BR05VYkc5VzdYUEVZblBUYkJz",
+      "description": "Jogos de hoje: quem joga no futebol e onde assistir ao vivo – quarta-feira (18/11/2026) &nbsp;&nbsp; LANCE!",
+      "imageUrl": null,
+      "source": "LANCE!",
+      "publishedAt": "2026-11-18T08:00:00.000Z",
+      "firstSeenAt": "2026-11-18T09:58:46.014Z",
+      "lastSeenAt": "2026-11-18T09:58:46.014Z"
+    },
+    {
+      "id": "event-d7fa25b",
+      "category": "mundo",
+      "title": "Apagão mundial em 17 de novembro: de onde vem o boato?",
+      "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNZnR4d1VySzFsOVdDSUd1d2ZXREt2UnN1LS1ULVpSYnpGS2U3TFN5NmRIMGV1ajQ4M0ZvdG5yQ2lhLUp4d3RjckhUaDkxbGtJUVg2a2tmZVNsQlBMUFg1V1ZVOFpPQWNOMml3R2RKYVJCdjBpcF9VeHpxSkcxWVRFZWVWYldaMHJVVVZMNlYtSGpYTUdMSFlTeE1n",
+      "description": "Apagão mundial em 17 de novembro: de onde vem o boato? &nbsp;&nbsp; SBT News",
+      "imageUrl": null,
+      "source": "SBT News",
+      "publishedAt": "2026-11-18T05:32:20.000Z",
+      "firstSeenAt": "2026-11-18T09:58:46.014Z",
+      "lastSeenAt": "2026-11-18T09:58:46.014Z"
+    },
+    {
+      "id": "event-34bef5b1",
+      "category": "mundo",
+      "title": "Rádio Mundo Pop faz cobertura especial do Festival Clássicos do Brasil 2026 em Recife",
+      "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxOaDZQRkV3dW43UXVOVW10S0swaFlDTnV0UE9Fem5zaEdleTFfcVB3V3dXT1NfWlJIODZNM0t6ejFfWTBWV3ZlMGIzQkZKYThvWjdkdVVpV1Z4MDV3YkVSOEdQQndkMnRuN3B5dFNLLXdOQ2VWeDNTdl8ydktGXzlTRVYyYUZLUzlLb3huZEZDWFF3eUE5dWFCc2wtTHJNX3FNS2RQVDdza2EyTEIzUVE1OE1NbGtaM2ZPY3RXOGVua29lZmVtSGxnRQ",
+      "description": "Rádio Mundo Pop faz cobertura especial do Festival Clássicos do Brasil 2026 em Recife &nbsp;&nbsp; Ultima Hora Online",
+      "imageUrl": null,
+      "source": "Ultima Hora Online",
+      "publishedAt": "2026-11-18T02:20:09.000Z",
+      "firstSeenAt": "2026-11-18T09:58:46.014Z",
+      "lastSeenAt": "2026-11-18T09:58:46.014Z"
+    },
     {
       "id": "event-e372eb6b",
       "category": "santa-catarina",
@@ -18,7 +78,7 @@
       "source": "TopElegance",
       "publishedAt": "2026-11-18T00:58:52.000Z",
       "firstSeenAt": "2026-11-18T01:59:44.467Z",
-      "lastSeenAt": "2026-11-18T01:59:44.467Z"
+      "lastSeenAt": "2026-11-18T09:58:46.014Z"
     },
     {
       "id": "event-4165a38f",
@@ -54,7 +114,7 @@
       "source": "Agência Brasil",
       "publishedAt": "2026-11-17T23:57:00.000Z",
       "firstSeenAt": "2026-11-18T01:59:44.467Z",
-      "lastSeenAt": "2026-11-18T01:59:44.467Z"
+      "lastSeenAt": "2026-11-18T09:58:46.014Z"
     },
     {
       "id": "event-4efb341b",
@@ -66,7 +126,7 @@
       "source": "Agência Brasil",
       "publishedAt": "2026-11-17T23:41:00.000Z",
       "firstSeenAt": "2026-11-18T01:59:44.467Z",
-      "lastSeenAt": "2026-11-18T01:59:44.467Z"
+      "lastSeenAt": "2026-11-18T09:58:46.014Z"
     },
     {
       "id": "event-e75d83f6",
@@ -78,7 +138,19 @@
       "source": "Agência Brasil",
       "publishedAt": "2026-11-17T23:35:00.000Z",
       "firstSeenAt": "2026-11-18T01:59:44.467Z",
-      "lastSeenAt": "2026-11-18T01:59:44.467Z"
+      "lastSeenAt": "2026-11-18T09:58:46.014Z"
+    },
+    {
+      "id": "event-8364289f",
+      "category": "brasil",
+      "title": "Fachin sinaliza que STF pode julgar Lei da Dosimetria neste ano",
+      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/fachin-sinaliza-que-stf-pode-julgar-lei-da-dosimetria-neste-ano",
+      "description": "O presidente do Supremo Tribunal Federal (STF), ministro Edson Fachin, disse nesta terça-feira (17) que a Corte pode julgar, ainda neste ano, a validade da lei que diminui as penas de condenados pelos atos golpistas de 8 de janeiro de 2023 (Lei da Dosimetria) e que também pode beneficiar o ex-presidente Jair Bolsonaro. Segundo Fachin, a data do julgamento será definida somente se o ministro Alexandre de Moraes, relator do caso, liberar o processo para julgamento. Notícias relacionadas: PGR se manifesta contra suspensão da Lei da Dosimetria . AGU diz ao STF que Lei da Dosimetria é inconstitucional. Câmara e Senado defendem no STF validade da Lei da Dosimetria . Durante um evento no Supremo, o presidente foi perguntado pela imprensa se tem a intenção de julgar o caso neste ano e respondeu “sim”. Mais cedo, os presidentes da Câmara dos Deputados, Hugo Motta (Republicanos-PB), e do Senado, Davi Alcolumbre (União-AP), se reuniram com Moraes e defenderam que o ministro libere o processo para inclusão na pauta do plenário do Supremo. Em maio deste ano, Moraes suspendeu a aplicação da Lei da",
+      "imageUrl": "https://imagens.ebc.com.br/XfuQnwfXqYlkKvgtzxAK7UY-alI=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/10/21/55603645624_ea872fc2f4_o.jpg?itok=AXSGO_dE",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-17T23:01:00.000Z",
+      "firstSeenAt": "2026-11-18T09:58:46.014Z",
+      "lastSeenAt": "2026-11-18T09:58:46.014Z"
     },
     {
       "id": "event-db695d9d",
@@ -210,7 +282,7 @@
       "source": "Olhar Digital",
       "publishedAt": "2026-11-17T17:07:00.000Z",
       "firstSeenAt": "2026-11-17T19:52:03.891Z",
-      "lastSeenAt": "2026-11-18T01:59:44.467Z"
+      "lastSeenAt": "2026-11-18T09:58:46.014Z"
     },
     {
       "id": "event-11acfa0",
@@ -234,7 +306,7 @@
       "source": "ND Mais",
       "publishedAt": "2026-11-17T15:13:49.000Z",
       "firstSeenAt": "2026-11-17T19:52:03.891Z",
-      "lastSeenAt": "2026-11-18T01:59:44.467Z"
+      "lastSeenAt": "2026-11-18T09:58:46.014Z"
     },
     {
       "id": "event-b80d22d2",
@@ -246,7 +318,7 @@
       "source": "Diário do Litoral",
       "publishedAt": "2026-11-17T14:30:00.000Z",
       "firstSeenAt": "2026-11-18T01:59:44.467Z",
-      "lastSeenAt": "2026-11-18T01:59:44.467Z"
+      "lastSeenAt": "2026-11-18T09:58:46.014Z"
     },
     {
       "id": "event-1c0ba9ba",
@@ -258,7 +330,7 @@
       "source": "UFJF - Universidade Federal de Juiz de Fora",
       "publishedAt": "2026-11-17T14:20:29.000Z",
       "firstSeenAt": "2026-11-17T19:52:03.891Z",
-      "lastSeenAt": "2026-11-18T01:59:44.467Z"
+      "lastSeenAt": "2026-11-18T09:58:46.014Z"
     },
     {
       "id": "event-8152ec3d",
@@ -379,62 +451,9 @@
       "publishedAt": "2026-11-17T10:02:00.000Z",
       "firstSeenAt": "2026-11-17T11:13:33.267Z",
       "lastSeenAt": "2026-11-17T11:13:33.267Z"
-    },
-    {
-      "id": "event-41d56d90",
-      "category": "santa-catarina",
-      "title": "Temporais retornam a Santa Catarina nesta terça-feira com risco de alagamentos e ventos fortes",
-      "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxQa2xCbGVBWDN3MlJzdjNqbzlhQUJOWVVRRF9fUGlWUUwxX2VEeElCYkJSQW1JS0pJTkhobVM3X2NuVVNPSXJyaHZvaVJJYkhOYXo4Um1aM1MycVZ4cVJTOGNhczRsZ2RFYzZVY2lmenFsRkpTSDk0cUFMUFlyczV0ejJCbFE1eW9jUXo5QkpPWDY1SXFFVF9VVU5sSnVpcUY4NV9vel9peFg5RjBFcUVDTE5qTlctSVVSd1BsbnREcXdzVnB0VzZLRURBNA",
-      "description": "Temporais retornam a Santa Catarina nesta terça-feira com risco de alagamentos e ventos fortes &nbsp;&nbsp; No Ponto SC",
-      "imageUrl": null,
-      "source": "No Ponto SC",
-      "publishedAt": "2026-11-17T09:26:34.000Z",
-      "firstSeenAt": "2026-11-17T11:13:33.267Z",
-      "lastSeenAt": "2026-11-17T11:13:33.267Z"
-    },
-    {
-      "id": "event-556d1f09",
-      "category": "europa",
-      "title": "Série de falhas alimenta teoria de 'apagão mundial' no dia 17: saiba por que é improvável que aconteça - G1",
-      "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNYjZMRUUxdTd2dWplV09OZ3pnYWM1Y1pkUlFkYVE4UHh0bWl3QVExNXRPVXFBcUhHUjFmRVd3OHlacU14dXFudHZrUWsyckhvM3g0eUlGNnNRdTZRQ20yeUZpQkNUc3pZY3NBREJqU1JvUFlOWkgwTllpM3BheTRsQmhIcktiTXZ5ODNOTk9jUFJMUWREZTdz0gGmAUFVX3lxTE41Ty0wRXV6VTk0VUxDaFRVdHl1V2x5SWNXczF3NUVDOHJSQUdIc3ZhWTJUVG84UEc1VTRSRkwwOGV2LS0xVWZrbE0zOGlPWWFjRGlvS2thZVZUSmwyVGsxaFBRdTVuemQxcGRVRkNkQlFROHZieVJQVEI2bUxoTDdrRHVuMm9KRk9HUlVFNHNiOXBGd0tLQ1hlLTB1X1VnelRvWHpMVUE",
-      "description": "Série de falhas alimenta teoria de 'apagão mundial' no dia 17: saiba por que é improvável que aconteça &nbsp;&nbsp; G1",
-      "imageUrl": null,
-      "source": "G1",
-      "publishedAt": "2026-11-17T03:00:00.000Z",
-      "firstSeenAt": "2026-11-18T01:59:44.467Z",
-      "lastSeenAt": "2026-11-18T01:59:44.467Z"
-    },
-    {
-      "id": "event-a688e049",
-      "category": "brasil",
-      "title": "17 de novembro terá apagão mundial?",
-      "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE5jbnNuSkRFenVWS19IQnhNRktNOGNua3pFUU85a1JRdjNfdW1EOWFlQjNybk1KMU5OUnZNT3hkYldlZzVxbFZKODBZelFnVEVWYkhzS0pGM0RXYk9wSDFj",
-      "description": "17 de novembro terá apagão mundial? &nbsp;&nbsp; BBC",
-      "imageUrl": null,
-      "source": "BBC",
-      "publishedAt": "2026-11-17T02:55:37.000Z",
-      "firstSeenAt": "2026-11-17T11:13:33.267Z",
-      "lastSeenAt": "2026-11-17T11:13:33.267Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-17T02:44:10.581Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 16,
-      "newArticles": 11,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "europa",
-        "asia"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-17T11:13:33.267Z",
       "ok": true,
@@ -487,14 +506,32 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-18T09:58:46.014Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 14,
+      "newArticles": 6,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "america-latina",
+        "europa",
+        "asia"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 4,
-  "lastSuccessfulAt": "2026-11-18T01:59:44.467Z",
+  "lastSuccessfulAt": "2026-11-18T09:58:46.014Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-18T01:59:44.467Z",
+      "checkedAt": "2026-11-18T09:58:46.014Z",
       "warnings": [
         {
           "id": "56440",
@@ -515,7 +552,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-18T01:59:44.467Z",
+      "checkedAt": "2026-11-18T09:58:46.014Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
