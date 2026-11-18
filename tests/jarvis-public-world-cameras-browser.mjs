@@ -94,6 +94,8 @@ try{
  assert.equal(await page.$eval('.jarvis-worldcam-filters input',el=>el.value),"");
  assert.ok((await page.$$('#jarvis-worldcam-camera-select option')).length>=11);
  // Real manual location searching must remain functional after unlocking.
+ // The advanced filter is intentionally collapsed; reveal it before focusing.
+ await page.click(".jarvis-worldcam-advanced>summary");
  await page.$eval('.jarvis-worldcam-filters input',el=>el.focus());
  assert.equal(await page.$eval('.jarvis-worldcam-filters input',el=>el.readOnly),false);
  await page.$eval('.jarvis-worldcam-filters input',el=>{
