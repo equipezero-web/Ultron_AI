@@ -602,7 +602,10 @@ try {
     assert.ok(regionDetail.link?.includes('gov.br/cemaden'),JSON.stringify(regionDetail));
     await page.select('.jarvis-geo-filter','wet');
     assert.ok((await page.$eval('.jarvis-geo-visual',el=>el.querySelectorAll('.jarvis-geo-marker').length))>=1);
+    const geoHit=await page.evaluate(()=>{const b=document.querySelector('.jarvis-geo-modes [data-mode="3d"]');const r=b.getBoundingClientRect();const at=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2);return {target:at?.tagName,cls:String(at?.className||""),inside:b===at||b.contains(at),x:r.left+r.width/2,y:r.top+r.height/2};});
+    console.log('GEO 3D MODE TARGET',JSON.stringify(geoHit));
     await page.click('.jarvis-geo-modes [data-mode="3d"]');
+    console.log('GEO 3D MODE RESULT',await page.evaluate(()=>({mode:window.ULTRON_GEO_VISUAL?.state?.mode,globeVisible:window.ULTRON_EARTH?.state?.visible})));
     await page.waitForFunction(()=>window.ULTRON_GEO_VISUAL?.state?.mode==='3d',{timeout:7000});
     assert.ok(await page.evaluate(()=>window.__phase3MockState.layerCount)>=1,'Globe must receive filtered thematic markers');
     await page.click('.jarvis-geo-timeline button');
