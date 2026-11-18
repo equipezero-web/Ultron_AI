@@ -279,7 +279,7 @@ try {
         panelWidth:panel?.getBoundingClientRect().width||0};
     },device.tv);
     assert.equal(result.panels,1,device.name+": duplicate intelligence panels");
-    assert.equal(result.controls,2,device.name+": communication controls lost");
+    assert.equal(result.controls,4,device.name+": voice and notification controls must remain available");
     assert.equal(result.state,true,device.name+": notifications controller missing");
     assert.equal(result.focusable,true,device.name+": TV keyboard/touch controls inaccessible");
     assert.ok(result.panelWidth<=result.viewport+2,device.name+": panel overflow");
