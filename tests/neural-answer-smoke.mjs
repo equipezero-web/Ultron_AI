@@ -606,11 +606,21 @@ try {
     // This test uses a bounded Earth mock. The real 3D Earth module can finish
     // asynchronous initialization while the page is under test; keep the mock
     // under test from being replaced by that unrelated late initialization.
-    await page.evaluate(()=>{
+    const accessibleMode=await page.evaluate(()=>{
       window.ULTRON_EARTH=window.__phase3EarthMock;
-      document.querySelector('.jarvis-geo-modes [data-mode="3d"]')
-        ?.scrollIntoView({block:'center',inline:'nearest'});
+      const panel=document.querySelector('.jarvis-geo-visual');
+      const button=panel.querySelector('.jarvis-geo-modes [data-mode="3d"]');
+      panel.scrollTop=0;
+      panel.scrollIntoView({behavior:'instant',block:'center',inline:'nearest'});
+      button.scrollIntoView({behavior:'instant',block:'nearest',inline:'nearest'});
+      const r=button.getBoundingClientRect();
+      const target=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2);
+      return {insideViewport:r.top>=0&&r.bottom<=innerHeight,
+        hit:button===target||button.contains(target),top:r.top,scrollY:scrollY,
+        panelTop:panel.getBoundingClientRect().top};
     });
+    assert.ok(accessibleMode.insideViewport&&accessibleMode.hit,
+      'Map mode switch must be clickable inside Neural Ring: '+JSON.stringify(accessibleMode));
     await page.click('.jarvis-geo-modes [data-mode="3d"]');
     try{
       await page.waitForFunction(()=>window.ULTRON_GEO_VISUAL?.state?.mode==='3d',{timeout:7000});
