@@ -621,7 +621,7 @@ try {
         z:getComputedStyle(el).zIndex, pointer:getComputedStyle(el).pointerEvents
       }));
       return {insideViewport:r.top>=0&&r.bottom<=innerHeight,
-        hit:button===target||button.contains(target),top:r.top,scrollY:scrollY,
+        hit:document.elementsFromPoint(px,py).includes(button),top:r.top,scrollY:scrollY,
         panelTop:panel.getBoundingClientRect().top,blockers,
         modes:[...panel.querySelectorAll('.jarvis-geo-modes button')].map(el=>({
           mode:el.dataset.mode,text:el.textContent,
