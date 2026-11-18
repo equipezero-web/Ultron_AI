@@ -616,13 +616,19 @@ try {
       const r=button.getBoundingClientRect();
       const px=r.left+r.width/2,py=r.top+r.height/2;
       const target=document.elementFromPoint(px,py);
+      const ancestorPath=[];
+      for(let el=target,n=0;el&&n<9;el=el.parentElement,n++){
+        ancestorPath.push({tag:el.tagName,id:el.id,cls:typeof el.className==='string'?el.className:'',
+          label:el.getAttribute?.('aria-label')||null,txt:el.textContent?.trim()?.slice(0,60)||'',
+          dataset:{...el.dataset},z:getComputedStyle(el).zIndex});
+      }
       const blockers=document.elementsFromPoint(px,py).slice(0,8).map(el=>({
         tag:el.tagName, id:el.id,cls:typeof el.className==='string'?el.className:'',
         z:getComputedStyle(el).zIndex, pointer:getComputedStyle(el).pointerEvents
       }));
       return {insideViewport:r.top>=0&&r.bottom<=innerHeight,
-        hit:document.elementsFromPoint(px,py).includes(button),top:r.top,scrollY:scrollY,
-        panelTop:panel.getBoundingClientRect().top,blockers,
+        hit:button===target||button.contains(target),top:r.top,scrollY:scrollY,
+        panelTop:panel.getBoundingClientRect().top,blockers,ancestorPath,
         modes:[...panel.querySelectorAll('.jarvis-geo-modes button')].map(el=>({
           mode:el.dataset.mode,text:el.textContent,
           rect:{x:el.getBoundingClientRect().x,y:el.getBoundingClientRect().y,
