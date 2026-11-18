@@ -854,38 +854,6 @@ function enqueue(message, source = "terminal", approvedMission = false) {
       executeMessage(message,source,approvedMission));
     return queue;
   }
-  // Device diagnostics must never be intercepted by general knowledge or visual routers.
-  const pluginIntent=parseAccountPluginCommand(message);
-  const statusIntent=window.ULTRON_DEVICES?.parseDeviceIntent?.(message);
-  if(statusIntent?.deviceType==="mobile"&&["device.status","app.list"].includes(statusIntent.command)){
-    const generation=queueGeneration;
-    queue=queue.catch(()=>null).then(()=>generation!==queueGeneration
-      ? {ok:false,status:"cancelled",route:"p0-stop"}
-      :executeMessage(message,source,approvedMission));
-    return queue;
-  }
-
-  if(pluginIntent?.kind==="list" || (pluginIntent?.kind==="execute"&&pluginIntent.actionId==="storage.diagnostics")){
-    log(pluginIntent.kind==="list" ? "PLUGINS // Catálogo autenticado; pesquisa genérica desativada." : "DEVICE // Diagnóstico solicitado ao Bridge Android; resposta da IA genérica desativada para este comando.");
-    const generation=queueGeneration;
-    queue=queue.catch(()=>null).then(()=>generation!==queueGeneration
-      ? {ok:false,status:"cancelled",route:"p0-stop"}
-      : executeMessage(message,source,approvedMission));
-    return queue;
-  }
-  // Public world webcams: whitelisted text/voice commands, never private device video.
-  const worldCameraIntent=window.ULTRON_WORLD_CAMERAS?.parse?.(message);
-  if(worldCameraIntent)return window.ULTRON_WORLD_CAMERAS.execute(message,{source});
-  // Phases XV–XIX: strict read-only commands are routed ahead of generic missions.
-  const integratedIntent=window.ULTRON_INTEGRATED_INTELLIGENCE?.parse?.(message);
-  if(integratedIntent)return window.ULTRON_INTEGRATED_INTELLIGENCE.execute(message,{source});
-  // Phase XIV: consented bounded sequences must be checked before generic missions.
-  const supervisedIntent=window.ULTRON_SUPERVISED_AUTONOMY?.parse?.(message);
-  if(supervisedIntent)return window.ULTRON_SUPERVISED_AUTONOMY.execute(message,{source});
-  // Phase XIII: resolve only exact whitelisted references ("isto", "essa
-  // notícia", "este evento") against the currently verified visual scene.
-  const contextualIntent=window.ULTRON_MULTIMODAL?.parse?.(message);
-  if(contextualIntent)return window.ULTRON_MULTIMODAL.execute(message,{source});
   // Communication controls are local UI operations, never AI or TV commands.
   const directorIntent=parseDirectorIntent(message);
   if(directorIntent){
@@ -940,6 +908,38 @@ function enqueue(message, source = "terminal", approvedMission = false) {
       return {route:"communication-notifications",...result};
     });
   }
+  // Device diagnostics must never be intercepted by general knowledge or visual routers.
+  const pluginIntent=parseAccountPluginCommand(message);
+  const statusIntent=window.ULTRON_DEVICES?.parseDeviceIntent?.(message);
+  if(statusIntent?.deviceType==="mobile"&&["device.status","app.list"].includes(statusIntent.command)){
+    const generation=queueGeneration;
+    queue=queue.catch(()=>null).then(()=>generation!==queueGeneration
+      ? {ok:false,status:"cancelled",route:"p0-stop"}
+      :executeMessage(message,source,approvedMission));
+    return queue;
+  }
+
+  if(pluginIntent?.kind==="list" || (pluginIntent?.kind==="execute"&&pluginIntent.actionId==="storage.diagnostics")){
+    log(pluginIntent.kind==="list" ? "PLUGINS // Catálogo autenticado; pesquisa genérica desativada." : "DEVICE // Diagnóstico solicitado ao Bridge Android; resposta da IA genérica desativada para este comando.");
+    const generation=queueGeneration;
+    queue=queue.catch(()=>null).then(()=>generation!==queueGeneration
+      ? {ok:false,status:"cancelled",route:"p0-stop"}
+      : executeMessage(message,source,approvedMission));
+    return queue;
+  }
+  // Public world webcams: whitelisted text/voice commands, never private device video.
+  const worldCameraIntent=window.ULTRON_WORLD_CAMERAS?.parse?.(message);
+  if(worldCameraIntent)return window.ULTRON_WORLD_CAMERAS.execute(message,{source});
+  // Phases XV–XIX: strict read-only commands are routed ahead of generic missions.
+  const integratedIntent=window.ULTRON_INTEGRATED_INTELLIGENCE?.parse?.(message);
+  if(integratedIntent)return window.ULTRON_INTEGRATED_INTELLIGENCE.execute(message,{source});
+  // Phase XIV: consented bounded sequences must be checked before generic missions.
+  const supervisedIntent=window.ULTRON_SUPERVISED_AUTONOMY?.parse?.(message);
+  if(supervisedIntent)return window.ULTRON_SUPERVISED_AUTONOMY.execute(message,{source});
+  // Phase XIII: resolve only exact whitelisted references ("isto", "essa
+  // notícia", "este evento") against the currently verified visual scene.
+  const contextualIntent=window.ULTRON_MULTIMODAL?.parse?.(message);
+  if(contextualIntent)return window.ULTRON_MULTIMODAL.execute(message,{source});
   const immerseCommand=normalize(message).replace(/^(?:jarvis|ultron)[, :]+/,"").replace(/[.!?]+$/,"").trim();
   if(/^(?:(?:iniciar|inicie|abrir|abra|mostrar|mostre|explorar) (?:a |o )?)?(?:exploracao visual|experiencia imersiva|tour visual|tour contextual|explorar eventos)$/.test(immerseCommand)){
     return window.ULTRON_IMMERSIVE?.start?.({view:"2d"}) ||
