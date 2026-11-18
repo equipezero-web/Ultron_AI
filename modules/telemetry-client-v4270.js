@@ -1,5 +1,6 @@
 import API_CONFIG from "../config.js";
-import "./stark-bootstrap.js?v=4.25.0";
+// Stark Bootstrap is mounted once by index.html; telemetry must not re-import
+// a historical cache-key variant and race with the current command center.
 import "./la-team-bootstrap.js?v=4.15.0";
 
 const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
