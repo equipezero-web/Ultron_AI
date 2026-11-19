@@ -58,7 +58,7 @@ assert.equal(noData.ok,false);
 assert.match(noData.text,/inventário verificável indisponível/);
 const cancelled=await showJarvisEvolutionProgress({
  fetchImpl:async()=>({ok:true,json:async()=>manifest}),
- isCancelled:()=>true,showAnswer:()=>{throw Error("stale update")};});
+ isCancelled:()=>true,showAnswer:()=>{throw Error("stale update");}});
 assert.equal(cancelled.status,"cancelled");
 const orchestrator=readFileSync(new URL("../modules/ultron-orchestrator-v4270.js",import.meta.url),"utf8");
 assert.match(orchestrator,/parseJarvisEvolutionCommand\(message\)/);
