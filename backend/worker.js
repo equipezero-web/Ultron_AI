@@ -1133,7 +1133,11 @@ async function health(env) {
       webResearchBypassWhenGrounded: true
     },
     privateGitHub: {enabled:privateGitHubConfig(env).enabled,access:"access-jwt+repo-allowlist",mode:"read-only"},
-    accountPlugins: {configured:accountAccessConfig(env).enabled,scope:"per-account",authenticated:true,arbitraryCode:false},
+    // Public configuration signal; no tokens, emails or policy values are disclosed.
+    // This does not prove that the hostname is actually protected by Access.
+    accountPlugins: {configured:accountAccessConfig(env).enabled,
+      uiOriginAllowed:accountAccessConfig(env).origins.includes("https://equipezero-web.github.io"),
+      scope:"per-account",authenticated:true,arbitraryCode:false},
     communicationPush: {configured:pushConfiguration(env).enabled,consentRequired:true,source:"INMET",authenticated:true},
     webResearch: {
       enabled: true,
