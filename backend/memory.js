@@ -1,7 +1,8 @@
 import { rankMemories } from "./memory-relevance.js";
-const MAX_CONTEXT_CHARS = 14000;
+import { composeMemoryContext } from "./memory-context.js";
 const DEFAULT_RECENT_MESSAGES = 24;
 const DEFAULT_MEMORIES = 10;
+const MAX_MEMORY_CANDIDATES = 160; // bounded, operator-scoped D1 retrieval pool
 
 let schemaReady = false;
 let schemaError = null;
@@ -77,11 +78,6 @@ const SCHEMA_STATEMENTS = [
   `CREATE INDEX IF NOT EXISTS idx_monitors_operator_enabled
     ON monitors(operator_id, enabled, updated_at DESC)`
 ];
-
-function clip(value, max = 2200) {
-  const text = String(value || "").trim();
-  return text.length > max ? `${text.slice(0, max)}…` : text;
-}
 
 function compactError(error) {
   return String(error?.message || error || "erro desconhecido")
@@ -253,7 +249,7 @@ export async function loadMemoryContext(
            ORDER BY importance DESC, updated_at DESC
            LIMIT ?`
         )
-        .bind(operatorId, 40)
+        .bind(operatorId, MAX_MEMORY_CANDIDATES)
         .all()
     ]);
 
@@ -263,40 +259,12 @@ export async function loadMemoryContext(
     const recentUserMessage = [...messages].reverse().find((item) => item.role === "user")?.content || "";
     const memories = rankMemories(memoryResult?.results, query || recentUserMessage, { limit: DEFAULT_MEMORIES });
 
-    const sections = [];
-
-    if (memories.length) {
-      sections.push(
-        "MEMÓRIAS PERSISTENTES RELEVANTES:",
-        ...memories.map(
-          (item) => `- [${item.retrieval.tier} / ${item.category || "memória"}] ${clip(item.content, 1200)}`
-        )
-      );
-    }
-
-    if (messages.length) {
-      sections.push(
-        "",
-        "HISTÓRICO RECENTE DESTA CONVERSA:",
-        ...messages.map((item) => {
-          const speaker = item.role === "assistant" ? "ULTRON" : "OPERADOR";
-          return `${speaker}: ${clip(item.content)}`;
-        })
-      );
-    }
-
-    let context = sections.join("\n").trim();
-    if (context.length > MAX_CONTEXT_CHARS) {
-      context = context.slice(context.length - MAX_CONTEXT_CHARS);
-    }
-
+    const rendered = composeMemoryContext(memories, messages);
     return {
       active: true,
-      context,
-      recalledMessages: messages.length,
-      recalledMemories: memories.length,
-      lastAssistantMessage: [...messages].reverse().find((item) => item.role === 'assistant')?.content || null,
-      lastUserMessage: [...messages].reverse().find((item) => item.role === 'user')?.content || null
+      ...rendered,
+      lastAssistantMessage: [...messages].reverse().find(item => item.role === "assistant")?.content || null,
+      lastUserMessage: [...messages].reverse().find(item => item.role === "user")?.content || null
     };
   } catch (error) {
     console.error("[ULTRON MEMORY] Falha ao recuperar contexto:", error);
