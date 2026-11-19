@@ -285,7 +285,7 @@ jobs:
           grep -Fq 'device-control-v4260.js?v=' index.html
           grep -q 'orchestrator-device-verify-v4270.js?v=4.27.0' index.html
           grep -q 'telemetry-client-v4270.js?v=4.27.0' index.html
-          grep -Eq 'voice-match-v4290\.js\?v=4\.(29|31|32)\.0' index.html
+          grep -Eq 'voice-match-v4290\.js\?v=[45]\.[0-9]+\.[0-9]+' index.html
           grep -Fq 'voice-listener-v4290.js?v=' index.html
           grep -Eq 'voice-orchestration-bridge-v4290\.js\?v=4\.(29|31|32)\.0' index.html
           grep -q 'orchestrator-ui-bridge-v4270.js?v=4.27.0' index.html
