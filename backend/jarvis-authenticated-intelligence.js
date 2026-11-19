@@ -38,7 +38,9 @@ export async function runVerifiedReadOnlyIntelligence(input={},{
       // Reuse the same scientific 2D/3D dataset that the existing weather
       // command uses. The browser must independently validate and actually
       // render it before any completion claim.
-      const scenario=globalWeatherScenario(report);
+      const canLocate=report.location?.key?.startsWith("global-") &&
+        Number.isFinite(report.location?.lat)&&Number.isFinite(report.location?.lng);
+      const scenario=canLocate?globalWeatherScenario(report):null;
       const geoScenario=scenario?validateGeoScenario(scenario):null;
       return {ok:true,result:{
         type:"forecast-model",location:cap(report.location.label,130),
