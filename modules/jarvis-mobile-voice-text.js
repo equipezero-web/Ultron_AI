@@ -14,6 +14,11 @@ hint.hidden=true;
 commandRow?.after(hint);
 const update=()=>{
  const mobile=media.matches;
+ if(window.JARVIS_AUDIO_POLICY?.enabled===false){
+  hint.hidden=!mobile;
+  if(mobile)hint.textContent="MODO TEXTO · ENTER ENVIA · Escuta e voz desativadas para manutenção.";
+  return;
+ }
  const voice=window.ULTRON_VOICE_INPUT?.state;
  const speech=window.JARVIS_VOICE_CONTROLS?.state;
  hint.hidden=!mobile;
