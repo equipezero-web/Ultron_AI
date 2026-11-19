@@ -43,3 +43,13 @@ Resultados possíveis:
 O teste pontual de Access só será **CONFIRMADO** quando `GET /api/account/session/verify` retornar 200, com `authenticated:true` e `verifiedBy:"cloudflare-access-jwt"`, após o Worker validar a assinatura e os atributos do JWT. Essa prova ainda não homologa as 60 capacidades, nem a execução do agente autenticado, D1 ou dispositivos físicos.
 
 Voz, Voice Match, microfone e escuta permanecem **desativados**.
+
+## Incremento de experiência — login manual a partir do terminal
+
+Quando `Jarvis, testar globo e acesso` retorna `login-required`, `access-or-cookie-blocked` ou `access-configuration-unverified`, o Command Center apresenta **um botão no próprio terminal**: `Entrar no Cloudflare Access`.
+
+O botão utiliza somente a URL fixa `https://ultron-backend.lucaalves17-20.workers.dev/api/account/session/verify` e abre a página em outra aba **apenas por clique, toque ou Enter do operador**. Não há abertura automática, coleta de credenciais, armazenamento de JWT ou token na URL. A tela de login é do Cloudflare e deve ser autenticada ali, quando aparecer.
+
+Após o login, retornar ao J.A.R.V.I.S. e executar novamente o comando de teste. Se o destino abrir uma resposta JSON 401 em vez de uma tela de login, ou se a nova tentativa falhar novamente, conferir a proteção do domínio no painel Cloudflare. Políticas de cookies de terceiros e CORS ainda podem impedir o uso do Access entre `github.io` e `workers.dev`.
+
+Este botão é um facilitador de login, **não corrige automaticamente a política Cloudflare Access** e não representa homologação das 60 capacidades.
