@@ -19,7 +19,7 @@ let wakeSummary=null,lastWakeAt=null;
 try{lastWakeAt=localStorage.getItem(LAST_WAKE_KEY)||null;}catch{}
 let lastWakeReadAt=0;
 let autoVoice=false; // Auto narration is optional; user enables it in the briefing.
-try{autoVoice=localStorage.getItem(VOICE_PREF)==="on";}catch{}
+try{autoVoice=window.JARVIS_AUDIO_POLICY?.enabled!==false&&localStorage.getItem(VOICE_PREF)==="on";}catch{}
 const fmtTime=new Intl.DateTimeFormat("pt-BR",{
   dateStyle:"short",timeStyle:"short",timeZone:"America/Recife"
 });
@@ -109,6 +109,7 @@ function bulletinText(data){
   return lines.join(" ").slice(0,1150);
 }
 function speak(text,{automatic=false}={}){
+  if (window.JARVIS_AUDIO_POLICY?.enabled===false) return false;
   if(document.body.classList.contains("jarvis-voice-output-disabled"))return false;
   if(!text||!window.speechSynthesis||typeof window.SpeechSynthesisUtterance!=="function"){
     state.textContent="Narração indisponível neste navegador.";
@@ -164,6 +165,10 @@ voiceButton.type="button";voiceButton.title="Ouvir o resumo das fontes verificad
 const autoButton=elem("button","",autoVoice?"Voz automática: ativada":"Voz automática: desligada");
 autoButton.type="button";autoButton.setAttribute("aria-pressed",String(autoVoice));
 controls.append(updateButton,voiceButton,autoButton); // Browser narration, explicit auto-wake opt-in.
+if (window.JARVIS_AUDIO_POLICY?.enabled===false) {
+ autoVoice=false;voiceButton.hidden=true;autoButton.hidden=true;
+ voiceButton.disabled=true;autoButton.disabled=true;
+}
 const state=elem("div","jarvis-intel-message","Consultando Brasil, Santa Catarina, clima e mundo...");
 const historyArea=elem("section","jarvis-intel-history");
 historyArea.setAttribute("aria-label","Monitoramento contínuo das últimas 24 horas");
@@ -536,6 +541,7 @@ voiceButton.addEventListener("click",()=>{
   speak(bulletinText(current));
 });
 autoButton.addEventListener("click",()=>{
+  if (window.JARVIS_AUDIO_POLICY?.enabled===false) return;
   autoVoice=!autoVoice;
   try {localStorage.setItem(VOICE_PREF,autoVoice?"on":"off");}catch{}
   autoButton.textContent=autoVoice?"Voz automática: ativada":"Voz automática: desligada";
