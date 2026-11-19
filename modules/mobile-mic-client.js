@@ -167,7 +167,7 @@ function resumeNotebookMicrophone() {
 }
 
 function executeRemoteTranscript(text) {
-  if (window.JARVIS_AUDIO_POLICY?.enabled===false) return;
+  if ((window.JARVIS_AUDIO_POLICY?.enabled===false || document.body.classList.contains("jarvis-voice-paused"))) return;
   const clean = String(text || "").trim();
   if (!clean) return;
 
@@ -284,14 +284,14 @@ async function pollEventsOnce() {
 }
 
 function startPolling() {
-  if (window.JARVIS_AUDIO_POLICY?.enabled===false) return;
+  if ((window.JARVIS_AUDIO_POLICY?.enabled===false || document.body.classList.contains("jarvis-voice-paused"))) return;
   if (polling) return;
   polling = true;
   pollEventsOnce();
 }
 
 async function requestMobileMicrophone() {
-  if (window.JARVIS_AUDIO_POLICY?.enabled===false) { log("Escuta remota desativada. Use comandos por texto."); return false; }
+  if ((window.JARVIS_AUDIO_POLICY?.enabled===false || document.body.classList.contains("jarvis-voice-paused"))) { log("Escuta remota desativada. Use comandos por texto."); return false; }
   try {
     if (requestButton) requestButton.textContent = "VERIFICANDO CELULAR...";
 
