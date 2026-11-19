@@ -6,7 +6,8 @@
 import {planAgents,executeAgents} from "./intelligent-task-hub.js";
 import {loadGlobalWeather} from "./weather-global.js";
 import {loadLiveNewsContext} from "./news-context.js";
-import {safeLocationQuery} from "../modules/jarvis-global-weather.js";
+import {safeLocationQuery,globalWeatherScenario} from "../modules/jarvis-global-weather.js";
+import {validateGeoScenario} from "../modules/jarvis-geospatial-model.js";
 
 const cap=(v,n=170)=>String(v??"").replace(/[\r\n<>]/g," ").trim().slice(0,n);
 const isHttps=v=>{try{const u=new URL(v);return u.protocol==="https:"&&!u.username&&!u.password;}catch{return false;}};
@@ -34,11 +35,17 @@ export async function runVerifiedReadOnlyIntelligence(input={},{
       if(report?.ok!==true||report.kind!=="global-short-term-forecast"||
          !report.location?.label||!report.source?.url||!isHttps(report.source.url)||
          !Array.isArray(report.days)||!report.days.length||!report.fetchedAt)return {ok:false};
+      // Reuse the same scientific 2D/3D dataset that the existing weather
+      // command uses. The browser must independently validate and actually
+      // render it before any completion claim.
+      const scenario=globalWeatherScenario(report);
+      const geoScenario=scenario?validateGeoScenario(scenario):null;
       return {ok:true,result:{
         type:"forecast-model",location:cap(report.location.label,130),
         fetchedAt:report.fetchedAt,source:{name:cap(report.source.name,110),url:report.source.url},
         current:report.current,days:report.days.slice(0,days),
-        disclaimer:cap(report.source.disclaimer,350),isOfficialAlert:false
+        disclaimer:cap(report.source.disclaimer,350),isOfficialAlert:false,
+        ...(geoScenario?{geoScenario}:{})
       }};
     },
     news:async()=>{
