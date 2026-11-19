@@ -4,10 +4,70 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-19T00:45:04.587Z",
-  "oldestEventAt": "2026-11-18T00:58:52.000Z",
-  "windowStartAt": "2026-11-18T00:45:04.587Z",
+  "updatedAt": "2026-11-19T07:58:48.047Z",
+  "oldestEventAt": "2026-11-18T08:00:00.000Z",
+  "windowStartAt": "2026-11-18T07:58:48.047Z",
   "events": [
+    {
+      "id": "event-3ae8ec6a",
+      "category": "brasil",
+      "title": "GTA 6 chega no Brasil hoje (19); conheça história e por que é tão popular",
+      "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxOa1A5M0FpTXUzY0t1OFNsVS1rajg5UTdPZjJncHllalFVcUllMUY1Q2JYZ3prUzRpdHdNaVlHNDZYX0NqRHQzVjhvMkdYVkIxbG1nM2Z2ZHp3THZsOHhLR1ZWVW1HTVMxelpxaV9ZUk1PNnJud25ISGFLMzA1UEloNTU0ZF9hWHpScC0tRlp6bzdwN3NsLXhib0R1eXoyc0U3SjNGR3pMVU5iZGdFWkpPRlVMeHRKR2F1QXZfODBpSlJFbGlObWh6R9IB1wFBVV95cUxQX050QURfaHQwSVBUWUxUMV9fMHBaVlN1a3AwamtMLU1ELVZmMkM2VjVQdkV3LWRJWGl5ZHpXNGgzWGpnSllHRXRuQTBXWFBoZHhGWG15R0tEeEsxNlhkZ2tsdG1kZV80Rm9RQklaeEViOXR5MU9Uc1lZWFczZV9ONXFlUW9FYnVjbDhNRmtuNUV1eWwybm5SWm9FS0Y1dWhUNDlEX2tVaVc1MDg5MVFiVmlDRklWbFFZdXhDWFJLc044aEtKcVdyN2FIc0doeDcyaVRmVkYyRQ",
+      "description": "GTA 6 chega no Brasil hoje (19); conheça história e por que é tão popular &nbsp;&nbsp; TechTudo",
+      "imageUrl": null,
+      "source": "TechTudo",
+      "publishedAt": "2026-11-19T03:00:00.000Z",
+      "firstSeenAt": "2026-11-19T07:58:48.047Z",
+      "lastSeenAt": "2026-11-19T07:58:48.047Z"
+    },
+    {
+      "id": "event-bef8a2a1",
+      "category": "mundo",
+      "title": "De ruptura com a OpenAI a gigante da bolsa: veja 5 fatos importantes sobre a Anthropic",
+      "url": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxObk1LQXZ0amRfUkFJNDd5YzFVVWdRV1pkaHdCdkdmLWhyMnF2X09hN1l3T1d6ZGE2WFRfZTlXbkctMDVuTFgzYVYtMGMzVmJ3bXpINWxmRVVtUXM4czd3ZXhBanVoUzJxQ3labmk0bzlDTDNCZ3d4NWlBLXVUVVk0dWtnQ3ZRanVDWFIyeGs3YkM5UTRmbncyekR3cHUxTHZjc09QaUZGaVdaZy0yb3pHLU9pZlhoUEtEYzhfaEZMRGxJYXIyTjBXbkZNeUwyeFFUY284RDJVdW1UUdIB6AFBVV95cUxNT1F6TFpDY1d4LUpXWVV1akdjTjd1QXRPb2k0U2xjQ3pWYWZUNXloQXVHZDhVWlVYcnhvRHktVmk3QUQ2T0NFMTdTQ0xXQ2hwcjQ1c0NvNmxzeFNFMGpUUHRYYWdtTkFva2s2Z3ZYRzU5ZWJlVjFOVmY2Z0RHLUtsaUF2ZFNxZVhjTUdmT1BOUDNjOXhmM1RTQU9CVTdvWHV6NWhVV2I3NFdVNFdkcnRaUU9NNnk4WmphMnY2VGE3Y21pdXhKeG5oZ1UzSHI1bTdIUGE2WklKX09PZHBLR1hoUnd6QWNPMEdD",
+      "description": "De ruptura com a OpenAI a gigante da bolsa: veja 5 fatos importantes sobre a Anthropic &nbsp;&nbsp; G1",
+      "imageUrl": null,
+      "source": "G1",
+      "publishedAt": "2026-11-19T03:00:00.000Z",
+      "firstSeenAt": "2026-11-19T07:58:48.047Z",
+      "lastSeenAt": "2026-11-19T07:58:48.047Z"
+    },
+    {
+      "id": "event-49befa83",
+      "category": "mundo",
+      "title": "América do Sul tem 14 vinícolas entre as 50 melhores do mundo",
+      "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxPeVlVVk1fZ3YweGZYbDRPTi1hdTFFeDNEVDBfU01IQkhLWVA3TVNUT29iLS1pQ0x1dUE5ZHRibU1SX1dPcmh0ZVVNeW5aaXFYeThRMGdiRTU2X1pZQUN1MmEyNDRqc19ScHpvc1dNRGplSVE3Mnl3MEdsM0F1LXZuRkd5dDU1QllPMkNQSjQ5eFQ1d1hzaUdtRl94cWx3ZVl1eUtWSXZEYV9hU2FMc0F4TExGbUZ0Vzhy",
+      "description": "América do Sul tem 14 vinícolas entre as 50 melhores do mundo &nbsp;&nbsp; CNN Brasil",
+      "imageUrl": null,
+      "source": "CNN Brasil",
+      "publishedAt": "2026-11-19T02:01:10.000Z",
+      "firstSeenAt": "2026-11-19T07:58:48.047Z",
+      "lastSeenAt": "2026-11-19T07:58:48.047Z"
+    },
+    {
+      "id": "event-42755723",
+      "category": "mundo",
+      "title": "Trump: Falei com Xi sobre IA e citei 'brevemente' caso do ex-CEO da Nvidia",
+      "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxNSDZPVkNlNlJyWUc5Zkh2a0JtS1pmSFRwdU1qcWUtaTNHRWw5X0gwWW9weU9ubzcwcnhsUVBXcDZKX1NwNDNLMGMxSDE1WmVOU1ZtaHRTYVN0WHRBb3JieEE1V2UtV0VTYktNcURiUVNzZHRJUFRVVWZlTEtDOWlneHBBSTlHS2dPTC1vRG1RR0d1clBJTFctVllKYzNyUQ",
+      "description": "Trump: Falei com Xi sobre IA e citei 'brevemente' caso do ex-CEO da Nvidia &nbsp;&nbsp; UOL Notícias",
+      "imageUrl": null,
+      "source": "UOL Notícias",
+      "publishedAt": "2026-11-19T01:16:02.000Z",
+      "firstSeenAt": "2026-11-19T07:58:48.047Z",
+      "lastSeenAt": "2026-11-19T07:58:48.047Z"
+    },
+    {
+      "id": "event-d71f2dd3",
+      "category": "brasil",
+      "title": "Andrei entrega a Fachin relatórios sobre ministros no caso Master",
+      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/andrei-entrega-fachin-relatorios-sobre-ministros-no-caso-master",
+      "description": "O diretor-geral da Polícia Federal (PF), Andrei Rodrigues, se encontrou na noite desta quarta-feira (18) com o presidente do Supremo Tribunal Federal (STF), Edson Fachin, para entregar os relatórios que tratam de menções a ministros da Corte encontradas nas investigações relativas ao Banco Master. Agora, Fachin remeterá os relatórios à Procuradoria-Geral da República (PGR), para análise e parecer sobre providências que o procurador-geral da República, Paulo Gonet, entender necessárias. Notícias relacionadas: Caso Master: PF entregará ao STF relatórios sobre citações a ministros. Fachin homologa delação de investigado no caso Master. Fachin devolve relatoria do caso do INSS a Mendonça e mantém Master. “As informações de polícia judiciária recebidas mantêm, por ora, caráter sigiloso e serão tratadas com a devida reserva, em observância às normas legais aplicáveis, à preservação das investigações em curso, ao devido processo legal e às competências institucionais dos órgãos envolvidos, até ulterior deliberação”, afirmou o STF, em nota. Também participaram da reunião desta noite o direto",
+      "imageUrl": "https://imagens.ebc.com.br/neTGwyVxjUHRnqeBrNh02myHtZ8=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/16/dia-do-policial-federal-mc_abr_16112026-4.jpg?itok=85-TYmLy",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-19T01:01:00.000Z",
+      "firstSeenAt": "2026-11-19T07:58:48.047Z",
+      "lastSeenAt": "2026-11-19T07:58:48.047Z"
+    },
     {
       "id": "event-94774ac2",
       "category": "brasil",
@@ -18,7 +78,7 @@
       "source": "Vero Notícias",
       "publishedAt": "2026-11-19T00:02:48.000Z",
       "firstSeenAt": "2026-11-19T00:45:04.587Z",
-      "lastSeenAt": "2026-11-19T00:45:04.587Z"
+      "lastSeenAt": "2026-11-19T07:58:48.047Z"
     },
     {
       "id": "event-314b2ed9",
@@ -30,7 +90,7 @@
       "source": "Estadão",
       "publishedAt": "2026-11-18T23:22:33.000Z",
       "firstSeenAt": "2026-11-19T00:45:04.587Z",
-      "lastSeenAt": "2026-11-19T00:45:04.587Z"
+      "lastSeenAt": "2026-11-19T07:58:48.047Z"
     },
     {
       "id": "event-98793226",
@@ -57,6 +117,18 @@
       "lastSeenAt": "2026-11-19T00:45:04.587Z"
     },
     {
+      "id": "event-72579b6c",
+      "category": "santa-catarina",
+      "title": "Formação de ciclone e temporais marcam o fim de semana em SC",
+      "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxPanh5b0xzV1hUWXBVOFlYUHhUUkhlbVZCOEI0Zl80WnM4MlpYTHdjWkFROE9DYTdqTEtrRXloYzlnekkxQS1jM2M3R1UxaGNmd3BpRTJpUERxS2hsTTdnWEo3SXlocE91QkZoTVFOcnRlWHpDTHFjRzN6eGlqYl96bUlUZUQ5ZTdyZUlzT2doSGNRTm53cmdyWUxUYUNYNGNsREJaMHE5aUh4NGs0SzREdkVZbDdvQQ",
+      "description": "Formação de ciclone e temporais marcam o fim de semana em SC &nbsp;&nbsp; Diário do Iguaçu",
+      "imageUrl": null,
+      "source": "Diário do Iguaçu",
+      "publishedAt": "2026-11-18T22:48:00.000Z",
+      "firstSeenAt": "2026-11-19T07:58:48.047Z",
+      "lastSeenAt": "2026-11-19T07:58:48.047Z"
+    },
+    {
       "id": "event-363cebf5",
       "category": "brasil",
       "title": "Senado rejeita mudanças no texto e aprova ajuste fiscal do governo",
@@ -78,7 +150,7 @@
       "source": "Instagram",
       "publishedAt": "2026-11-18T22:29:04.000Z",
       "firstSeenAt": "2026-11-19T00:45:04.587Z",
-      "lastSeenAt": "2026-11-19T00:45:04.587Z"
+      "lastSeenAt": "2026-11-19T07:58:48.047Z"
     },
     {
       "id": "event-871e56d7",
@@ -114,7 +186,7 @@
       "source": "Folha Vitória",
       "publishedAt": "2026-11-18T20:10:22.000Z",
       "firstSeenAt": "2026-11-19T00:45:04.587Z",
-      "lastSeenAt": "2026-11-19T00:45:04.587Z"
+      "lastSeenAt": "2026-11-19T07:58:48.047Z"
     },
     {
       "id": "event-bc435f9d",
@@ -138,7 +210,7 @@
       "source": "Jornal de Pomerode",
       "publishedAt": "2026-11-18T19:43:08.000Z",
       "firstSeenAt": "2026-11-19T00:45:04.587Z",
-      "lastSeenAt": "2026-11-19T00:45:04.587Z"
+      "lastSeenAt": "2026-11-19T07:58:48.047Z"
     },
     {
       "id": "event-2103e80e",
@@ -150,7 +222,7 @@
       "source": "Gazeta de Patrocínio",
       "publishedAt": "2026-11-18T19:40:00.000Z",
       "firstSeenAt": "2026-11-19T00:45:04.587Z",
-      "lastSeenAt": "2026-11-19T00:45:04.587Z"
+      "lastSeenAt": "2026-11-19T07:58:48.047Z"
     },
     {
       "id": "event-62432fdb",
@@ -210,7 +282,7 @@
       "source": "Portal Engeplus",
       "publishedAt": "2026-11-18T17:00:00.000Z",
       "firstSeenAt": "2026-11-18T18:44:51.160Z",
-      "lastSeenAt": "2026-11-19T00:45:04.587Z"
+      "lastSeenAt": "2026-11-19T07:58:48.047Z"
     },
     {
       "id": "event-5d0cce01",
@@ -343,63 +415,9 @@
       "publishedAt": "2026-11-18T08:00:00.000Z",
       "firstSeenAt": "2026-11-18T09:58:46.014Z",
       "lastSeenAt": "2026-11-18T09:58:46.014Z"
-    },
-    {
-      "id": "event-d7fa25b",
-      "category": "mundo",
-      "title": "Apagão mundial em 17 de novembro: de onde vem o boato?",
-      "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNZnR4d1VySzFsOVdDSUd1d2ZXREt2UnN1LS1ULVpSYnpGS2U3TFN5NmRIMGV1ajQ4M0ZvdG5yQ2lhLUp4d3RjckhUaDkxbGtJUVg2a2tmZVNsQlBMUFg1V1ZVOFpPQWNOMml3R2RKYVJCdjBpcF9VeHpxSkcxWVRFZWVWYldaMHJVVVZMNlYtSGpYTUdMSFlTeE1n",
-      "description": "Apagão mundial em 17 de novembro: de onde vem o boato? &nbsp;&nbsp; SBT News",
-      "imageUrl": null,
-      "source": "SBT News",
-      "publishedAt": "2026-11-18T05:32:20.000Z",
-      "firstSeenAt": "2026-11-18T09:58:46.014Z",
-      "lastSeenAt": "2026-11-18T09:58:46.014Z"
-    },
-    {
-      "id": "event-34bef5b1",
-      "category": "mundo",
-      "title": "Rádio Mundo Pop faz cobertura especial do Festival Clássicos do Brasil 2026 em Recife",
-      "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxOaDZQRkV3dW43UXVOVW10S0swaFlDTnV0UE9Fem5zaEdleTFfcVB3V3dXT1NfWlJIODZNM0t6ejFfWTBWV3ZlMGIzQkZKYThvWjdkdVVpV1Z4MDV3YkVSOEdQQndkMnRuN3B5dFNLLXdOQ2VWeDNTdl8ydktGXzlTRVYyYUZLUzlLb3huZEZDWFF3eUE5dWFCc2wtTHJNX3FNS2RQVDdza2EyTEIzUVE1OE1NbGtaM2ZPY3RXOGVua29lZmVtSGxnRQ",
-      "description": "Rádio Mundo Pop faz cobertura especial do Festival Clássicos do Brasil 2026 em Recife &nbsp;&nbsp; Ultima Hora Online",
-      "imageUrl": null,
-      "source": "Ultima Hora Online",
-      "publishedAt": "2026-11-18T02:20:09.000Z",
-      "firstSeenAt": "2026-11-18T09:58:46.014Z",
-      "lastSeenAt": "2026-11-18T09:58:46.014Z"
-    },
-    {
-      "id": "event-e372eb6b",
-      "category": "santa-catarina",
-      "title": "Sexta-feira deve ter temporais com granizo e chuva volumosa em boa parte de SC",
-      "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQZjBSYUNVcnBBaXFlemJfMHdULTlFRG9EWWE5bTJLRVBBamw5TkE2UGpyN0JJajYxOWNSVEg1enFaVmxTTE55Y0JYeG5zYldCbE9seHBDX1Z4N00zeHJxS2U4MjRub2Jja3IyNlBidDY2TWdSYU5fc0JoclNlWkpDTXAyR1FWaTNmRlY0YWNKbmQ0Q3Q4VHVLdkZtTXZlWDhGeHY2MmpnVWh5VGlVU005TEk0TGpCQQ",
-      "description": "Sexta-feira deve ter temporais com granizo e chuva volumosa em boa parte de SC &nbsp;&nbsp; TopElegance",
-      "imageUrl": null,
-      "source": "TopElegance",
-      "publishedAt": "2026-11-18T00:58:52.000Z",
-      "firstSeenAt": "2026-11-18T01:59:44.467Z",
-      "lastSeenAt": "2026-11-18T09:58:46.014Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-18T01:59:44.467Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 15,
-      "newArticles": 12,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "america-latina",
-        "europa",
-        "asia"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-18T09:58:46.014Z",
       "ok": true,
@@ -453,14 +471,32 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-19T07:58:48.047Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 13,
+      "newArticles": 6,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "america-latina",
+        "europa",
+        "asia"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 4,
-  "lastSuccessfulAt": "2026-11-19T00:45:04.587Z",
+  "lastSuccessfulAt": "2026-11-19T07:58:48.047Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-19T00:45:04.587Z",
+      "checkedAt": "2026-11-19T07:58:48.047Z",
       "warnings": [
         {
           "id": "56447",
@@ -481,7 +517,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-19T00:45:04.587Z",
+      "checkedAt": "2026-11-19T07:58:48.047Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
