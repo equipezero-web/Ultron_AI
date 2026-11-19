@@ -42,6 +42,72 @@ const aborted=new AbortController();aborted.abort();
 assert.equal((await executeAgents(plan,{signal:aborted.signal})).cancelled,true);
 assert.ok(AGENTS.research.tools.includes("research.search"));
 
+// An explanatory plan with a visual step MUST finish its verified data read
+// before invoking the render agent, even if concurrency is enabled.
+const order=[];
+let finishWeather;
+const delayed=executeAgents(plan,{agents:{
+  meteorology:async()=>{order.push("weather:start");return new Promise(resolve=>{finishWeather=resolve;});},
+  visual:async()=>{order.push("visual:start");return {ok:true,result:{view:"globe"}};}
+},concurrency:3});
+assert.deepEqual(order,["weather:start"],"render must not race the source query");
+finishWeather({ok:true,result:{verified:true}});
+const ordered=await delayed;
+assert.deepEqual(order,["weather:start","visual:start"]);
+assert.equal(ordered.ok,true);
+
+let renderAttempted=false;
+const sourceFailed=await executeAgents(plan,{agents:{
+  meteorology:async()=>({ok:false}),
+  visual:async()=>{renderAttempted=true;return {ok:true};}
+}});
+assert.equal(sourceFailed.ok,false);
+assert.equal(sourceFailed.steps[1].status,"blocked","failed source must not produce a visual");
+assert.equal(sourceFailed.steps[1].reason,"PREREQUISITE_NOT_COMPLETED");
+assert.equal(renderAttempted,false);
+
+let unregisteredRender=false;
+const sourceMissing=await executeAgents(plan,{agents:{
+  visual:async()=>{unregisteredRender=true;return {ok:true};}
+}});
+assert.equal(sourceMissing.steps[0].status,"unavailable");
+assert.equal(sourceMissing.steps[1].status,"blocked");
+assert.equal(unregisteredRender,false);
+
+const badOrder=await executeAgents({...plan,steps:[plan.steps[1],plan.steps[0]]},{
+  agents:{meteorology:async()=>({ok:true}),visual:async()=>({ok:true})}
+});
+assert.equal(badOrder.error,"PLAN_INVALID_ORDER");
+
+const concurrent=planAgents("Analise a previsão do tempo e as notícias recentes");
+let started=0;
+let releaseReads;
+const readGate=new Promise(resolve=>{releaseReads=resolve;});
+const readExecution=executeAgents(concurrent,{concurrency:3,agents:{
+  meteorology:async()=>{started++;await readGate;return {ok:true};},
+  news:async()=>{started++;await readGate;return {ok:true};}
+}});
+assert.equal(started,2,"independent read-only agents can run concurrently");
+releaseReads();
+assert.equal((await readExecution).ok,true);
+
+const cancelledBeforeRender=new AbortController();
+let releaseCancelled;
+const blocker=new Promise(resolve=>{releaseCancelled=resolve;});
+let renderAfterCancel=false;
+const interrupted=executeAgents(plan,{signal:cancelledBeforeRender.signal,agents:{
+  meteorology:async()=>{await blocker;return {ok:true};},
+  visual:async()=>{renderAfterCancel=true;return {ok:true};}
+}});
+cancelledBeforeRender.abort();
+releaseCancelled();
+const abortedResult=await interrupted;
+assert.equal(abortedResult.cancelled,true);
+assert.equal(abortedResult.ok,false);
+assert.equal(abortedResult.steps[1].status,"cancelled");
+assert.equal(renderAfterCancel,false);
+
+
 assert.equal(sanitizeTrajectory({status:"invalid"}),null);
 const audit=sanitizeTrajectory({runId:"a",stepId:"b",agent:"research",status:"completed",
  durationMs:20,secret:"SHOULD_NOT_LEAK",prompt:"PRIVATE"});

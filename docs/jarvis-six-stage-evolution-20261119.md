@@ -26,3 +26,14 @@ A ordem é definida pelo operador e deve ser respeitada. As porcentagens são re
 3. Nenhuma porcentagem estimada sobe apenas por adicionar código.
 4. Falhas de fontes, câmeras, push e dispositivos são mostradas sem simular sucesso.
 5. Manter o modo texto do PR #204: voz, Voice Match, escuta local/remota e narração não serão religadas sem solicitação explícita do operador.
+
+## Etapa 1: incremento 2 — barreiras entre consulta e visualização
+
+- Consultas somente leitura podem executar em paralelo até o limite já existente de três agentes.
+- Visualizações só são iniciadas após a conclusão das consultas anteriores no plano; uma consulta falhada ou indisponível bloqueia a renderização, sem simular resultados.
+- Cancelamento P0/AbortSignal interrompe o agendamento das próximas etapas e proíbe iniciar a visualização depois de abortar.
+- Plano manual com visualização posicionada antes de consulta é recusado (PLAN_INVALID_ORDER).
+- A saída do agente segue condicionada a um adaptador explicitamente registrado; esta alteração não conecta APIs externas nem executa ações administrativas.
+- Cobertura de regressão adicional em tests/jarvis-intelligent-hubs.mjs.
+
+**Escopo de aceite:** verificar CI, merge e depois homologar o fluxo completo no navegador com fontes externas reais. Nenhuma porcentagem é elevada sem evidência operacional.

@@ -55,29 +55,53 @@ export async function executeAgents(plan,{agents={},signal,onStep=()=>{},approve
   if(!Array.isArray(tasks)||!tasks.length||tasks.length>6)return {ok:false,error:"PLAN_INVALID"};
   if(tasks.some(s=>!AGENTS[s.agent]?.tools.includes(s.tool)||s.level!==AGENTS[s.agent].level))
     return {ok:false,error:"PLAN_NOT_ALLOWED"};
+  // Pure read agents may run together; visual rendering must be a barrier
+  // after the data they refer to, never before or in parallel with them.
+  if(tasks.some((step,index)=>step.level===1&&tasks.slice(0,index).some(prev=>prev.level===2)))
+    return {ok:false,error:"PLAN_INVALID_ORDER"};
   if(tasks.some(s=>s.level>2)&&!approved)return {ok:false,error:"APPROVAL_REQUIRED"};
   const limit=Math.max(1,Math.min(3,Number(concurrency)||2)),results=new Array(tasks.length);
-  let next=0;
-  async function worker() {
-    while(next<tasks.length) {
-      if(signal?.aborted)return;
-      const index=next++,step=tasks[index];
-      if(typeof agents[step.agent]!=="function") {
-        results[index]={id:step.id,status:"unavailable",agent:step.agent};onStep(results[index]);continue;
-      }
-      try {
-        // Never pass arbitrary instructions to privileged agents. Tools are fixed by plan.
-        const response=await agents[step.agent]({tool:step.tool,signal});
-        const ok=response?.ok===true;
-        results[index]={id:step.id,status:ok?"completed":"failed",agent:step.agent,
-          result:ok?response?.result??null:null};onStep(results[index]);
-      } catch(error) {
-        results[index]={id:step.id,status:signal?.aborted?"cancelled":"failed",agent:step.agent,
-          error:String(error?.message||error).slice(0,160)};onStep(results[index]);
-      }
+  const notify=step=>{try{onStep(step);}catch{/* Observability cannot change execution outcome. */}};
+  async function runStep(index) {
+    const step=tasks[index];
+    if(signal?.aborted){
+      results[index]={id:step.id,status:"cancelled",agent:step.agent};notify(results[index]);return;
     }
+    if(typeof agents[step.agent]!=="function"){
+      results[index]={id:step.id,status:"unavailable",agent:step.agent};notify(results[index]);return;
+    }
+    try {
+      // Only allowlisted tool and cancellation token reach the registered agent.
+      const response=await agents[step.agent]({tool:step.tool,signal});
+      const ok=response?.ok===true&&!signal?.aborted;
+      results[index]={id:step.id,status:signal?.aborted?"cancelled":ok?"completed":"failed",
+        agent:step.agent,result:ok?response?.result??null:null};
+    } catch(error) {
+      results[index]={id:step.id,status:signal?.aborted?"cancelled":"failed",agent:step.agent,
+        error:String(error?.message||error).slice(0,160)};
+    }
+    notify(results[index]);
   }
-  await Promise.all(Array.from({length:Math.min(limit,tasks.length)},()=>worker()));
+  let cursor=0;
+  while(cursor<tasks.length&&!signal?.aborted){
+    if(tasks[cursor].level===2){
+      // Never display a supposedly sourced visual when any preceding read failed.
+      const index=cursor++;
+      if(results.slice(0,index).some(x=>x?.status!=="completed")){
+        const step=tasks[index];
+        results[index]={id:step.id,status:"blocked",agent:step.agent,reason:"PREREQUISITE_NOT_COMPLETED"};
+        notify(results[index]);
+      }else await runStep(index);
+      continue;
+    }
+    const batch=[];
+    while(cursor<tasks.length&&tasks[cursor].level===1)batch.push(cursor++);
+    let next=0;
+    async function worker(){
+      while(next<batch.length&&!signal?.aborted)await runStep(batch[next++]);
+    }
+    await Promise.all(Array.from({length:Math.min(limit,batch.length)},()=>worker()));
+  }
   return {ok:!signal?.aborted&&results.every(x=>x?.status==="completed"),cancelled:Boolean(signal?.aborted),
-    steps:results.map((r,i)=>r||{id:tasks[i].id,status:"cancelled",agent:tasks[i].agent})};
+    steps:tasks.map((step,index)=>results[index]||{id:step.id,status:"cancelled",agent:step.agent})};
 }
