@@ -2,7 +2,7 @@ import {TASK_CONTEXT} from "./jarvis-task-context.js?v=4.69.0";
 import {planAgents} from "../backend/intelligent-task-hub.js";
 import {classifyOperatorTurn,splitOperatorSteps} from "./jarvis-intent-engine.js?v=4.69.0";
 import {directPlan,resolveActionPlan,runActionPlan} from "./jarvis-action-engine.js?v=4.101.2";
-import {parseLocalCommand,runLocalCommand} from "./jarvis-local-commands.js?v=5.65.0";
+import {parseLocalCommand,runLocalCommand} from "./jarvis-local-commands.js?v=5.66.0";
 import {parseDirectorIntent,parseRegionalNewsVisualIntent,parseBriefingIntent,parsePublicCameraAudioIntent,parseCommunicationNotificationIntent,parseNewsVisualCloseIntent,parseMobilePairingIntent} from "./jarvis-communication-intents.js?v=5.55.0";
 import {buildRegionalNewsVisual} from "./jarvis-regional-news-visual.js?v=5.54.0";
 import {parseMissionControl,assessCompoundMission,createMissionGate} from "./jarvis-mission-safety.js";
@@ -1240,6 +1240,9 @@ window.addEventListener("online",()=>{
   void refreshUnifiedState();
 });
 window.addEventListener("ultron:voice-command", (event) => {
+  // No external voice event may bypass text-only maintenance, including
+  // previously paired Android/gesture producers.
+  if(window.JARVIS_AUDIO_POLICY?.enabled===false)return;
   const command = String(event?.detail?.command || event?.detail?.text || "").trim();
   if (command) enqueue(command, "voice-event");
 });

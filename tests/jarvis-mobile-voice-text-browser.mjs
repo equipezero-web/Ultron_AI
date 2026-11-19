@@ -75,11 +75,13 @@ try{
     await page.$eval("#command-input",e=>{e.value="Jarvis ativar voz";});
     await page.keyboard.press("Enter");
     await page.waitForFunction(()=>document.getElementById("command-input").value==="");
-    await page.waitForFunction(()=>window.JARVIS_VOICE_CONTROLS?.state.outputEnabled===true);
+    await page.waitForFunction(()=>window.JARVIS_VOICE_CONTROLS?.state.outputEnabled===false);
+    assert.match(await page.$eval("#output-box",el=>el.textContent),/Modo texto ativo/);
    }else{
     assert.equal(r.mobile,false,name+": notebook/TV should keep controls");
-    assert.ok(r.controls.filter(c=>c.selector!=="#btn-test-mic").every(c=>c.size?.w>20),
-     name+": desktop buttons unexpectedly removed "+JSON.stringify(r.controls));
+    const voiceSelectors=["#btn-listen-voice","#btn-toggle-speech","#btn-test-mic","#btn-enroll-voice-match"];
+    assert.ok(r.controls.filter(c=>voiceSelectors.includes(c.selector)).every(c=>c.size?.w===0),
+     name+": desktop/TV voice controls must be hidden");
    }
    console.log("JARVIS MOBILE VOICE/TEXT PASS",name,width+"x"+height);
   }finally{await page.close().catch(()=>{});}

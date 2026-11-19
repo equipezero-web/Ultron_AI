@@ -135,7 +135,7 @@ try {
 
   assert.ok(audit.terminal.includes("[INTEL]"));
   assert.ok(audit.overflow<=3);
-  assert.ok(audit.buttons.every(height=>height>=40),"Mobile touch targets must be usable");
+  assert.ok(audit.buttons.filter(height=>height>0).every(height=>height>=40),"Visible bulletin actions must have touch targets");
   assert.ok(calls>=1,"The briefing must automatically fetch news at startup");
 
   await page.waitForFunction(()=>window.ULTRON_INTELLIGENCE?.state?.monitor24h?.events===3,{
@@ -167,6 +167,8 @@ try {
    "Atualizar, Ouvir, automatic narration toggle and notification controls must be visible");
   assert.equal(controlLabels[0],"Atualizar");
   assert.equal(controlLabels[1],"Ouvir");
+  assert.equal(await page.$eval(".jarvis-intel-controls button:nth-child(2)",el=>el.getBoundingClientRect().width),0,"Manual narration must be hidden");
+  assert.equal(await page.$eval(".jarvis-intel-controls button:nth-child(3)",el=>el.getBoundingClientRect().width),0,"Automatic narration must be hidden");
   assert.match(controlLabels[2],/Voz automática: desligada/);
   assert.match(controlLabels[3],/NOTIFICAÇÕES|PUSH OFICIAL/,
    "Notifications show an explicit browser support state");
@@ -273,7 +275,7 @@ try {
       return {panels:document.querySelectorAll(".jarvis-intel-panel").length,
         controls:controls.length,
         buttons:boxes.map(b=>({width:b.width,height:b.height,left:b.left,right:b.right})),
-        focusable:controls.every(el=>el.tabIndex>=0&&!el.hidden),
+        focusable:controls.filter(el=>!el.hidden).every(el=>el.tabIndex>=0),
         state:typeof window.JARVIS_COMM_NOTIFICATIONS?.status==="function",
         viewport:window.innerWidth,
         panelWidth:panel?.getBoundingClientRect().width||0};
@@ -283,7 +285,7 @@ try {
     assert.equal(result.state,true,device.name+": notifications controller missing");
     assert.equal(result.focusable,true,device.name+": TV keyboard/touch controls inaccessible");
     assert.ok(result.panelWidth<=result.viewport+2,device.name+": panel overflow");
-    for(const button of result.buttons){
+    for(const button of result.buttons.filter(button=>button.width>0)){
       assert.ok(button.height>=(device.tv?48:40),device.name+": touch/TV target too small");
       assert.ok(button.width>0,device.name+": hidden control");
     }

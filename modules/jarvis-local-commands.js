@@ -80,6 +80,9 @@ export function parseLocalCommand(value){
 export async function runLocalCommand(command){
   const intent=parseLocalCommand(command);
   if(!intent)return null;
+  if (window.JARVIS_AUDIO_POLICY?.enabled===false && ["voice-output","voice-test","voice-listening","voice-enroll"].includes(intent.type))
+    return {handled:true,ok:false,route:"voice-disabled",provider:"jarvis-local",
+      text:"Modo texto ativo. Escuta, Voice Match e respostas faladas estão desativados para manutenção."};
   if(intent.type==="voice-output"){
     const output=window.JARVIS_VOICE_CONTROLS;
     if(!output?.setEnabled)return {handled:true,ok:false,route:"voice-output",

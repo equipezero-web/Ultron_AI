@@ -58,9 +58,10 @@ try{
     controlsVisible:style(".jarvis-cc-actions")?.display!=="none",
     actionsCount:actionButtons.length,
     neuralCount:neuralButtons.length,
-    minHeight:Math.min(...neuralButtons.map(b=>b.getBoundingClientRect().height)),
-    minWidth:Math.min(...neuralButtons.map(b=>b.getBoundingClientRect().width)),
-    collapsed:neuralButtons.some(b=>getComputedStyle(b).display==="none"),
+    voiceHidden:neuralButtons.filter(b=>b.dataset.jarvisVoiceAction).every(b=>b.getBoundingClientRect().width===0),
+    minHeight:Math.min(...neuralButtons.filter(b=>!b.dataset.jarvisVoiceAction).map(b=>b.getBoundingClientRect().height)),
+    minWidth:Math.min(...neuralButtons.filter(b=>!b.dataset.jarvisVoiceAction).map(b=>b.getBoundingClientRect().width)),
+    collapsed:neuralButtons.filter(b=>!b.dataset.jarvisVoiceAction).some(b=>getComputedStyle(b).display==="none"),
     gridColumns:style(".jarvis-cc-actions")?.gridTemplateColumns,
     stageWidth:rect(".jarvis-command-center-ui")?.width
    };
@@ -78,10 +79,12 @@ try{
    if(result.controlsVisible||result.minHeight!==0||result.minWidth!==0)
     bad.push("mobile dashboard/neural buttons must be removed");
    if(result.neuralCount!==4)bad.push("hidden listeners must remain mounted");
+   if(!result.voiceHidden)bad.push("Voice/microphone controls must be hidden");
   }else{
    if(!result.controlsVisible||result.neuralCount!==4||result.collapsed)
     bad.push("notebook/tablet/TV neural buttons missing/hidden");
    if(result.minHeight<43||result.minWidth<43)bad.push("touch target too small");
+   if(!result.voiceHidden)bad.push("Audio controls should be off in maintenance mode");
   }
   if(result.actions.width>result.viewport.width+5)bad.push("action toolbar too wide");
   if(!/rgb\(249, 217, 142\)/.test(result.titleColor||""))

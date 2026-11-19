@@ -1,6 +1,6 @@
 import { bridgeAgeMs, bridgeIsOnline, sortMobileBridges, BRIDGE_ONLINE_MAX_AGE_MS } from './bridge-status.js?v=5.15.0';
 import "./neural-live.js";
-import "./voice-fallback.js";
+import "./voice-fallback.js?v=5.66.0";
 import API_CONFIG from "../config.js";
 
 const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
@@ -167,6 +167,7 @@ function resumeNotebookMicrophone() {
 }
 
 function executeRemoteTranscript(text) {
+  if ((window.JARVIS_AUDIO_POLICY?.enabled===false || document.body.classList.contains("jarvis-voice-paused"))) return;
   const clean = String(text || "").trim();
   if (!clean) return;
 
@@ -283,12 +284,14 @@ async function pollEventsOnce() {
 }
 
 function startPolling() {
+  if ((window.JARVIS_AUDIO_POLICY?.enabled===false || document.body.classList.contains("jarvis-voice-paused"))) return;
   if (polling) return;
   polling = true;
   pollEventsOnce();
 }
 
 async function requestMobileMicrophone() {
+  if ((window.JARVIS_AUDIO_POLICY?.enabled===false || document.body.classList.contains("jarvis-voice-paused"))) { log("Escuta remota desativada. Use comandos por texto."); return false; }
   try {
     if (requestButton) requestButton.textContent = "VERIFICANDO CELULAR...";
 

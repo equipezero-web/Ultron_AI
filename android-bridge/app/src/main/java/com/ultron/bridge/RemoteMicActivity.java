@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class RemoteMicActivity extends Activity {
+    private static final boolean REMOTE_MIC_ENABLED = false;
     private static final int REQUEST_RECORD_AUDIO = 2001;
 
     private TextView statusView;
@@ -78,6 +79,8 @@ public class RemoteMicActivity extends Activity {
 
         Button start = new Button(this);
         start.setText("INICIAR SESSÃO DO MICROFONE");
+        start.setEnabled(false);
+        start.setText("ESCUTA DESATIVADA PARA MANUTENÇÃO");
         start.setOnClickListener(v -> beginAuthorization());
         root.addView(start, fullWidth());
 
@@ -118,6 +121,11 @@ public class RemoteMicActivity extends Activity {
     }
 
     private void beginAuthorization() {
+        if (!REMOTE_MIC_ENABLED) {
+            stopPersistentRemoteMic();
+            statusView.setText("MODO TEXTO // MICROFONE REMOTO DESATIVADO");
+            return;
+        }
         if (!hasMicrophonePermission()) {
             statusView.setText("O Android vai solicitar acesso ao microfone uma única vez.");
             requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, REQUEST_RECORD_AUDIO);

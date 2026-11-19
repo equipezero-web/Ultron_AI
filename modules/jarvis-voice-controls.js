@@ -7,7 +7,8 @@ const preferenceKey="jarvis_speech_output_enabled_v1";
 function savedPreference(){
  try{return localStorage.getItem(preferenceKey)!=="off";}catch{return true;}
 }
-function enabled(){return !document.body.classList.contains("jarvis-voice-output-disabled");}
+function enabled(){return window.JARVIS_AUDIO_POLICY?.enabled!==false &&
+ !document.body.classList.contains("jarvis-voice-output-disabled");}
 function update(){
  if(toggle){
   toggle.textContent=enabled()?"SILENCIAR VOZ":"ATIVAR VOZ";
@@ -16,12 +17,12 @@ function update(){
  }
  if(label){
   const recognition=window.ULTRON_VOICE_INPUT?.state;
-  label.textContent=(enabled()?"SAÍDA DE VOZ HABILITADA":"SAÍDA DE VOZ SILENCIADA")+
+  label.textContent=(window.JARVIS_AUDIO_POLICY?.enabled===false?"VOZ E ESCUTA DESATIVADAS":enabled()?"SAÍDA DE VOZ HABILITADA":"SAÍDA DE VOZ SILENCIADA")+
    (recognition?.enabled?" · ESCUTA ATIVA":" · ESCUTA AGUARDANDO PERMISSÃO");
  }
 }
 function setEnabled(value,{persist=true}={}){
- const active=Boolean(value);
+ const active=Boolean(value)&&window.JARVIS_AUDIO_POLICY?.enabled!==false;
  document.body.classList.toggle("jarvis-voice-output-disabled",!active);
  if(audio){
   audio.muted=!active;
@@ -39,7 +40,7 @@ function setEnabled(value,{persist=true}={}){
 }
 // A previous version had forced the page silent. This new mode defaults to
 // browser TTS enabled, but honors a subsequent deliberate local mute.
-setEnabled(savedPreference(),{persist:false});
+setEnabled(savedPreference()&&window.JARVIS_AUDIO_POLICY?.enabled!==false,{persist:true});
 toggle?.addEventListener("click",()=>setEnabled(!enabled()));
 document.getElementById("btn-listen-voice")?.addEventListener("click",()=>queueMicrotask(update));
 window.addEventListener("ultron:voice-listening-enabled",update);

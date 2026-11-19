@@ -76,8 +76,7 @@ public final class BridgeApi {
         capabilities.put("calendar.open");
         capabilities.put("calendar.create");
         capabilities.put("storage.diagnostics");
-        capabilities.put("microphone.remote");
-        capabilities.put("speech.transcript");
+        // Voice capabilities withheld in text-only maintenance mode.
         capabilities.put("camera.remote");
         capabilities.put("camera.webrtc");
         capabilities.put("files.list");
