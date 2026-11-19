@@ -27,7 +27,13 @@ export function rankMemories(memories, query="", {limit=10,now=Date.now()}={}) {
     seen.add(normalized);
     output.push({...row,retrieval:scoreMemory(row,query,now)});
   }
-  return output.sort((a,b)=>b.retrieval.score-a.retrieval.score ||
+  // When the operator asked about a topic, matching memories must outrank
+  // unrelated high-importance memories. Keep prior importance/recency ranking
+  // when no stored memory matches, so long-term preferences remain available.
+  const anyMatch=output.some(item=>item.retrieval.overlap>0);
+  return output.sort((a,b)=>
+    (anyMatch?Number(b.retrieval.overlap>0)-Number(a.retrieval.overlap>0):0) ||
+    b.retrieval.score-a.retrieval.score ||
     String(b.updated_at||"").localeCompare(String(a.updated_at||"")))
     .slice(0,Math.max(0,Math.min(40,Number(limit)||10)));
 }
