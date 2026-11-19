@@ -15,8 +15,8 @@ const activity=file("android-bridge/app/src/main/java/com/ultron/bridge/RemoteMi
 const bridge=file("android-bridge/app/src/main/java/com/ultron/bridge/BridgeService.java");
 const capabilities=file("android-bridge/app/src/main/java/com/ultron/bridge/BridgeApi.java");
 const boot=file("modules/jarvis-audio-maintenance.js");
-assert.match(html,/jarvis-audio-maintenance\\.js\\?v=/);
-assert.match(boot,/Object\\.freeze\\(\\{enabled:false/);
+assert.ok(html.includes("jarvis-audio-maintenance.js?v="));
+assert.ok(boot.includes("Object.freeze({enabled:false"));
 assert.ok(html.indexOf("jarvis-audio-maintenance.js")<html.indexOf("voice-match-v4290.js?v="));
 assert.match(html,/jarvis-voice-paused jarvis-voice-output-disabled/);
 assert.match(boot,/ultron_ai_preferences_v3/);
