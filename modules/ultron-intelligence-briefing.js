@@ -109,7 +109,8 @@ function bulletinText(data){
   return lines.join(" ").slice(0,1150);
 }
 function speak(text,{automatic=false}={}){
-  if (window.JARVIS_AUDIO_POLICY?.enabled===false) return false;
+  if (window.JARVIS_AUDIO_POLICY?.enabled===false ||
+     document.body.classList.contains("jarvis-voice-paused")) return false;
   if(document.body.classList.contains("jarvis-voice-output-disabled"))return false;
   if(!text||!window.speechSynthesis||typeof window.SpeechSynthesisUtterance!=="function"){
     state.textContent="Narração indisponível neste navegador.";
