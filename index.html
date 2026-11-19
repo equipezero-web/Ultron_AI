@@ -4,19 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#03050b">
-<!-- Operator-requested maintenance mode: text commands only. This policy
-     is established synchronously before any module can restore saved audio. -->
-<script>
-window.JARVIS_AUDIO_POLICY=Object.freeze({enabled:false,mode:"text-only",reason:"operator-maintenance"});
-document.documentElement.classList.add("jarvis-voice-off");
-try{
- localStorage.setItem("jarvis_speech_output_enabled_v1","off");
- localStorage.setItem("ultron_world_briefing_auto_voice_v1","off");
- const p=JSON.parse(localStorage.getItem("ultron_ai_preferences_v3")||"null");
- if(p&&typeof p==="object"){p.voiceWakeEnabled=false;localStorage.setItem("ultron_ai_preferences_v3",JSON.stringify(p));}
-}catch{}
-try{window.speechSynthesis?.cancel?.();}catch{}
-</script>
+<script src="modules/jarvis-audio-maintenance.js?v=5.66.1"></script>
 <meta name="application-name" content="J.A.R.V.I.S">
 <meta name="description" content="J.A.R.V.I.S // Holographic Neural Command Core">
 <title>J.A.R.V.I.S // Command Center</title>
