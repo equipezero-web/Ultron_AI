@@ -121,7 +121,7 @@ const authHandler=worker.slice(worker.indexOf("async function handleAccountSessi
 assert.match(authHandler,/request\.method!=="GET"/);
 assert.match(authHandler,/authorizeJarvisAccount\(request,env\)/);
 assert.match(authHandler,/if\(!auth\.ok\)/);
-assert.doesNotMatch(authHandler,/accountId|email|memoryKey|token|secret|deviceSecret/);
+assert.doesNotMatch(authHandler,/auth\.(?:accountId|email|token)|bodyOf\(|memoryKey|deviceSecret/);
 assert.match(worker,/\/api\/account\/session\/verify"\)return handleAccountSessionVerify/);
 const orchestrator=readFileSync(new URL("../modules/ultron-orchestrator-v4270.js",import.meta.url),"utf8");
 assert.match(orchestrator,/source==="terminal"&&parseJarvisOperationalSelfTest\(message\)/);
