@@ -1,0 +1,27 @@
+/* Operator maintenance: J.A.R.V.I.S. keyboard/text-only.
+ * Keep camera picture, news cards, closed-caption content and device controls.
+ * Never hide consent dialogs or functional close buttons. */
+html.jarvis-voice-off body.jarvis-command-center :is(
+ .microphone-panel,
+ #jarvis-cc-voice-slot,
+ .mic-actions,
+ .voice-match-actions,
+ .mic-visual,
+ .voice-wave,
+ .voice-match-strip,
+ #btn-mobile-mic,
+ #btn-listen-voice,
+ #btn-test-mic,
+ #btn-voice,
+ #btn-toggle-speech,
+ #btn-enroll-voice-match,
+ #btn-disable-voice-match,
+ .neural-jarvis-control[data-jarvis-voice-action],
+ .jarvis-intel-controls button[hidden]
+){display:none!important;visibility:hidden!important;pointer-events:none!important}
+html.jarvis-voice-off body.jarvis-command-center #system-mode,
+html.jarvis-voice-off body.jarvis-command-center #voice-module,
+html.jarvis-voice-off body.jarvis-command-center #mic-module{color:#f3cd83!important}
+html.jarvis-voice-off body.jarvis-command-center .jarvis-cc-console-terminal{
+ min-width:0!important
+}
