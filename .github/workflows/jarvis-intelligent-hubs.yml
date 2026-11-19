@@ -4,6 +4,8 @@ on:
     paths:
       - 'backend/skill-hub.js'
       - 'backend/intelligent-task-hub.js'
+      - 'backend/memory-relevance.js'
+      - 'tests/jarvis-memory-relevance.mjs'
       - 'backend/trajectory-hub.js'
       - 'modules/ultron-orchestrator-v4270.js'
       - 'tests/jarvis-intelligent-hubs.mjs'
@@ -19,3 +21,4 @@ jobs:
         with:
           node-version: '22'
       - run: node tests/jarvis-intelligent-hubs.mjs
+      - run: node tests/jarvis-memory-relevance.mjs
