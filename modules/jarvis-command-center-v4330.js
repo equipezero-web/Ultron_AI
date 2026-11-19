@@ -1,6 +1,7 @@
 import { installStarkCommandCenter } from './stark-command-center-adapter.js?v=4.60.0';
 // JARVIS Command Center v4.33.0 — lightweight, functional dashboard.
 const stage = document.querySelector('.orb-stage');
+const audioInMaintenance = window.JARVIS_AUDIO_POLICY?.enabled === false;
 if (stage) {
   document.body.classList.add('jarvis-command-center');
   const ui = document.createElement('section');
@@ -9,9 +10,9 @@ if (stage) {
   ui.innerHTML = `
     <div class="jarvis-cc-top"><span>J.A.R.V.I.S <em> / OPERATIONS</em></span><span class="jarvis-cc-live"><i class="jarvis-cc-dot"></i><span id="jarvis-cc-state">STANDBY</span></span><span class="jarvis-cc-clock" id="jarvis-cc-clock">--:--:--</span></div>
     <aside class="jarvis-cc-sidebar" aria-label="Telemetria JARVIS"><div id="jarvis-cc-gateway-slot"></div>
-      <section class="jarvis-cc-widget"><header>EVENT LOG <span>LIVE</span></header><div class="jarvis-cc-log" id="jarvis-cc-log"><p>› CORE // INITIALIZED</p><p>› NETWORK // READY</p><p>› VOICE // STANDBY</p></div></section>
+      <section class="jarvis-cc-widget"><header>EVENT LOG <span>LIVE</span></header><div class="jarvis-cc-log" id="jarvis-cc-log"><p>› CORE // INITIALIZED</p><p>› NETWORK // READY</p><p>› VOICE // ${audioInMaintenance ? 'DESATIVADA / MANUTENÇÃO' : 'STANDBY'}</p></div></section>
       <section class="jarvis-cc-widget"><header>TELEMETRY <span>LIVE</span></header><div class="jarvis-cc-wave" aria-hidden="true"></div><div class="jarvis-cc-metric">CORE STATUS <b id="jarvis-cc-metric">READY</b></div><div class="jarvis-cc-metric">BRIDGE <b>REMOTE</b></div></section>
-      <section class="jarvis-cc-widget"><header>SUBSYSTEMS <span>LINK</span></header><div class="jarvis-cc-metric">VOICE <b>ENABLED</b></div><div class="jarvis-cc-metric">CAMERA <b>ON DEMAND</b></div><div class="jarvis-cc-metric">DEVICES <b>GATEWAY</b></div></section>
+      <section class="jarvis-cc-widget"><header>SUBSYSTEMS <span>LINK</span></header><div class="jarvis-cc-metric">VOICE <b>${audioInMaintenance ? 'DESATIVADA' : 'ENABLED'}</b></div><div class="jarvis-cc-metric">CAMERA <b>ON DEMAND</b></div><div class="jarvis-cc-metric">DEVICES <b>GATEWAY</b></div></section>
     <div id="jarvis-cc-link-slot"></div></aside>
     <div class="jarvis-cc-center"><div class="jarvis-cc-heading">NEURAL JARVIS <span>// MATRIZ HOLOGRÁFICA</span></div><div class="jarvis-cc-visual"><canvas id="jarvis-cc-canvas" aria-label="Visualização 3D do Neural Jarvis" role="img"></canvas><div class="jarvis-cc-orb-label" id="jarvis-cc-visual-label">NEURAL JARVIS</div></div><div class="jarvis-cc-camera-slot" id="jarvis-cc-camera-slot"></div><div class="jarvis-cc-orb-controls"><button type="button" data-visual="ring" aria-pressed="true" title="Exibir a matriz holográfica Neural Jarvis">◎</button><button type="button" data-visual="globe" aria-pressed="false" title="Mostrar globo terrestre">◉</button></div></div>
     <aside class="jarvis-cc-right"><div id="jarvis-cc-voice-slot"></div><div id="jarvis-cc-infra-slot"></div></aside><div class="jarvis-cc-bottom"><div class="jarvis-cc-responses"><div class="jarvis-cc-responses-title">J.A.R.V.I.S // RESPOSTAS E EVENTOS</div><div id="jarvis-cc-response-slot"></div></div><div id="jarvis-cc-input-slot"></div><div class="jarvis-cc-actions">
@@ -545,7 +546,7 @@ if (stage) {
   });
   window.addEventListener('ultron:processing-start',()=>{state.textContent='PROCESSANDO';logEvent('CORE // PROCESSING');});
   window.addEventListener('ultron:processing-end',()=>{state.textContent='STANDBY';});
-  window.addEventListener('ultron:speech-start',()=>{state.textContent='FALANDO';logEvent('VOICE // OUTPUT');});
+  window.addEventListener('ultron:speech-start',()=>{if(audioInMaintenance)return;state.textContent='FALANDO';logEvent('VOICE // OUTPUT');});
   window.addEventListener('ultron:speech-end',()=>{state.textContent='STANDBY';});
   window.JARVIS_COMMAND_CENTER = {version:'4.60.0',setVisualMode,open:(name)=>actions[name]?.(),get active(){return true;}};
   installStarkCommandCenter(ui,window.JARVIS_COMMAND_CENTER);
