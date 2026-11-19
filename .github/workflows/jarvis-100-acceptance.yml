@@ -23,6 +23,8 @@ jobs:
         run: node tests/jarvis-dynamic-acceptance.mjs
       - name: Verify deployment observation parser with mocked services
         run: node tests/jarvis-production-proof-unit.mjs
+      - name: Verify explicit globe and Cloudflare Access self-test
+        run: node tests/jarvis-operational-selftest.mjs
       - name: Verify authenticated public-intelligence execution
         run: node tests/jarvis-authenticated-intelligence.mjs
       - name: Confirm JavaScript syntax

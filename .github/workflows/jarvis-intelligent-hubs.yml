@@ -19,6 +19,8 @@ on:
       - 'tests/jarvis-verified-intelligence-client.mjs'
       - 'tests/jarvis-verified-weather-scene.mjs'
       - 'modules/jarvis-evidence-progress.js'
+      - 'modules/jarvis-operational-selftest.js'
+      - 'tests/jarvis-operational-selftest.mjs'
       - 'modules/jarvis-live-runtime-observation.js'
       - 'tests/jarvis-live-runtime-observation.mjs'
       - 'tests/jarvis-evidence-progress.mjs'

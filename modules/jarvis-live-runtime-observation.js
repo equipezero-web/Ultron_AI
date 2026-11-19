@@ -35,10 +35,13 @@ export async function observeJarvisRuntime({
         "API de respostas disponível nesta sessão; exibição real não testada":
         "API de respostas ainda não identificada nesta sessão"),
     status("Globo 3D",browser?.ULTRON_EARTH?.state?.ready===true?
-      "observed":"not-confirmed",
+      "observed":browser?.ULTRON_EARTH?.state?.available===true?
+      "awaiting-activation":"not-confirmed",
       browser?.ULTRON_EARTH?.state?.ready===true?
         "Motor inicializado; interação e renderização física não homologadas":
-        "Motor do globo não confirmado nesta sessão"),
+        browser?.ULTRON_EARTH?.state?.available===true?
+          "Motor registrado, mas o globo é iniciado sob demanda; use 'Jarvis, testar globo e acesso'":
+          "Motor do globo não confirmado nesta sessão"),
     status("Voz e escuta",browser?.JARVIS_AUDIO_POLICY?.enabled===false&&
       browser?.JARVIS_AUDIO_POLICY?.mode==="text-only"?"observed":"not-confirmed",
       browser?.JARVIS_AUDIO_POLICY?.enabled===false&&
@@ -93,9 +96,11 @@ export async function observeJarvisRuntime({
   const lines=[
     "DIAGNÓSTICO OPERACIONAL DESTA SESSÃO // NÃO É HOMOLOGAÇÃO",
     ...checks.map(c=>(c.state==="observed"?"CONFIRMADO":
-      c.state==="configured-unverified"?"CONFIGURADO, NÃO TESTADO":"NÃO CONFIRMADO")+
+      c.state==="configured-unverified"?"CONFIGURADO, NÃO TESTADO":
+      c.state==="awaiting-activation"?"EM ESPERA":"NÃO CONFIRMADO")+
       " · "+c.label+": "+c.description),
     "Comprovados nesta sessão: "+observed+"/"+checks.length+" sinais básicos, NÃO capacidades homologadas.",
+    "Use o comando de texto 'Jarvis, testar globo e acesso' para abrir o globo e conferir o JWT sem divulgar tokens.",
     "Não testados: autenticação real, comandos privados, mapa renderizado, D1, Android, PC e TV físicos.",
     "A classificação de 60 capacidades só muda após evidências auditadas no inventário."
   ];
