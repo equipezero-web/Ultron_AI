@@ -166,7 +166,7 @@ function aggregateFrames(frames) {
 }
 
 async function createMonitor() {
-  if (window.JARVIS_AUDIO_POLICY?.enabled===false) throw Error("Voice Match desativado durante manutenção.");
+  if ((window.JARVIS_AUDIO_POLICY?.enabled===false || document.body.classList.contains("jarvis-voice-paused"))) throw Error("Voice Match desativado durante manutenção.");
   if (monitor) return monitor;
   if (!navigator.mediaDevices?.getUserMedia) throw new Error('Microfone indisponível neste navegador.');
 
@@ -252,7 +252,7 @@ async function captureSample(ms = CAPTURE_MS) {
 }
 
 async function enroll() {
-  if (window.JARVIS_AUDIO_POLICY?.enabled===false) return false;
+  if ((window.JARVIS_AUDIO_POLICY?.enabled===false || document.body.classList.contains("jarvis-voice-paused"))) return false;
   if (enrolling) return false;
   enrolling = true;
   setStatus('enrolling');
@@ -329,7 +329,7 @@ async function verifyLocalWake() {
 }
 
 async function authorizeWake({ source = 'local', trustedDevice = false, voiceMatch = false } = {}) {
-  if (window.JARVIS_AUDIO_POLICY?.enabled===false) return {matched:false,method:"disabled",reason:"text-only"};
+  if ((window.JARVIS_AUDIO_POLICY?.enabled===false || document.body.classList.contains("jarvis-voice-paused"))) return {matched:false,method:"disabled",reason:"text-only"};
   const cfg = settings();
   const profile = currentProfile();
   if (!profile?.vector?.length || cfg.required === false) {
@@ -348,7 +348,7 @@ async function authorizeWake({ source = 'local', trustedDevice = false, voiceMat
 }
 
 async function enableRequired() {
-  if (window.JARVIS_AUDIO_POLICY?.enabled===false) return false;
+  if ((window.JARVIS_AUDIO_POLICY?.enabled===false || document.body.classList.contains("jarvis-voice-paused"))) return false;
   if (!isEnrolled()) {
     log('Cadastre sua voz antes de exigir Voice Match.', true);
     return false;
@@ -367,7 +367,7 @@ function disableRequired() {
 }
 
 async function initialize() {
-  if (window.JARVIS_AUDIO_POLICY?.enabled===false) { await closeMonitor(); setStatus("disabled","VOICE MATCH DESATIVADO"); return; }
+  if ((window.JARVIS_AUDIO_POLICY?.enabled===false || document.body.classList.contains("jarvis-voice-paused"))) { await closeMonitor(); setStatus("disabled","VOICE MATCH DESATIVADO"); return; }
   const profile = currentProfile();
   const cfg = settings();
   if (!profile?.vector?.length) {
@@ -395,7 +395,7 @@ window.addEventListener('ultron:speech-start', () => { ttsSpeaking = true; recen
 window.addEventListener('ultron:speech-end', () => { ttsSpeaking = false; recentFrames = []; });
 
 window.addEventListener('ultron:voice-listening-enabled', () => {
-  if (window.JARVIS_AUDIO_POLICY?.enabled===false) return;
+  if ((window.JARVIS_AUDIO_POLICY?.enabled===false || document.body.classList.contains("jarvis-voice-paused"))) return;
   if (isEnrolled() && settings().required !== false) openMonitor().catch(() => {});
 });
 window.addEventListener('beforeunload', () => closeMonitor());
