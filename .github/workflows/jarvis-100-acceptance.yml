@@ -15,6 +15,8 @@ jobs:
           node-version: '22'
       - name: Verify 60 capabilities and six stages
         run: node tests/jarvis-100-acceptance.mjs
+      - name: Verify live browser and backend indicators without overclaiming acceptance
+        run: node tests/jarvis-live-runtime-observation.mjs
       - name: Verify visible progress uses evidence rather than historical percentages
         run: node tests/jarvis-evidence-progress.mjs
       - name: Prove acceptance can progress from 0 to 60 with proper evidence
