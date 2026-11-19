@@ -2,7 +2,8 @@ import API_CONFIG from "../config.js";
 
 const output = document.getElementById("output-box");
 const synth = window.speechSynthesis || null;
-const muted = () => document.body?.classList.contains("jarvis-voice-output-disabled") === true;
+const muted = () => window.JARVIS_AUDIO_POLICY?.enabled === false ||
+ document.body?.classList.contains("jarvis-voice-output-disabled") === true;
 const nativeFetch = window.fetch.bind(window);
 const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
 
