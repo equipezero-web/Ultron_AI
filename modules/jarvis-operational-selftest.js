@@ -109,7 +109,7 @@ export async function runJarvisOperationalSelfTest({
   const text="J.A.R.V.I.S. // TESTE OPERACIONAL SOLICITADO\n"+
     (globe.ok?"CONFIRMADO":"NÃO CONFIRMADO")+" · Globo: "+globe.detail+"\n"+
     (access.ok?"CONFIRMADO":"NÃO CONFIRMADO")+" · Cloudflare Access: "+access.detail+"\n"+
-    "Resultado: "+Number(globe.ok)+Number(access.ok)+"/2 testes pontuais confirmados.\n"+
+    "Resultado: "+(Number(globe.ok)+Number(access.ok))+"/2 testes pontuais confirmados.\n"+
     "Isto NÃO concede homologação das 60 capacidades. "+
     "Globo com interação real, D1, telefone/TV e execução do agente autenticado ainda exigem testes próprios.\n"+
     "Voz, escuta e Voice Match permanecem desligados.";
