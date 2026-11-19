@@ -1,0 +1,40 @@
+name: JARVIS production observation
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'backend/**'
+      - 'modules/**'
+      - 'data/jarvis-100-acceptance-manifest.json'
+      - 'index.html'
+      - 'scripts/jarvis-production-proof*.mjs'
+      - '.github/workflows/jarvis-production-observation.yml'
+  schedule:
+    - cron: '23 */6 * * *'
+permissions:
+  contents: read
+concurrency:
+  group: jarvis-public-production-observation
+  cancel-in-progress: true
+jobs:
+  observe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+      - name: Confirm production checker is correctly implemented
+        run: node tests/jarvis-production-proof-unit.mjs
+      - name: Read-only public production probe
+        run: node scripts/jarvis-production-proof-runner.mjs
+      - name: Save public deployment proof for audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jarvis-public-production-observation
+          path: artifacts/jarvis-production-proof.json
+          if-no-files-found: warn
+          retention-days: 30
