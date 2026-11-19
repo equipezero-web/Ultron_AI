@@ -1016,6 +1016,20 @@ async function handleAccountPush(request,env){
   {ok:false,status:400,error:"unknown-push-action"};
  return accountPluginsJson(request,env,result,result.ok?200:result.status||400);
 }
+async function handleAccountSessionVerify(request,env){
+  // Read-only proof that the edge validated a Cloudflare Access JWT.
+  // No operator metadata, account ID, token or D1 information is returned.
+  if(request.method!=="GET")
+    return accountPluginsJson(request,env,{ok:false,error:"method-not-allowed"},405);
+  const auth=await authorizeJarvisAccount(request,env);
+  if(!auth.ok)
+    return accountPluginsJson(request,env,{ok:false,error:auth.code},auth.status);
+  return accountPluginsJson(request,env,{
+    ok:true,authenticated:true,verifiedBy:"cloudflare-access-jwt",
+    sessionScope:"read-only",voiceEnabled:false
+  },200);
+}
+
 async function handleAccountIntelligence(request,env){
   // Authentication is verified against Cloudflare Access JWT, not memoryKey.
   const auth=await authorizeJarvisAccount(request,env);
@@ -1161,6 +1175,7 @@ export default {
         return new Response(null,{status:headers["Access-Control-Allow-Origin"]?204:403,headers});
       }
       if(path==="/api/account/push")return handleAccountPush(request,env);
+      if(path==="/api/account/session/verify")return handleAccountSessionVerify(request,env);
       if(path==="/api/account/intelligence/execute")return handleAccountIntelligence(request,env);
       if([
         "/api/account/plugins",
