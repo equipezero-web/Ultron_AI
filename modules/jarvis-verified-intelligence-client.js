@@ -21,7 +21,7 @@ export function parseVerifiedIntelligenceCommand(value){
   let city=null;
   if(weather){
     const withoutDays=topic.replace(/\s+(?:por|durante)\s+(?:3|7|16)\s+dias\b/i,"").trim();
-    const cityMatch=/\b(?:em|para)\s+([\p{L}\p{M}\p{N} ,.'’()-]{2,96})(?:\s+(?:no|na)\s+(?:globo|mapa))?$/iu.exec(withoutDays);
+    const cityMatch=/\b(?:em|para)\s+([\p{L}\p{M}\p{N} ,.'’()-]{2,96}?)(?:\s+(?:no|na)\s+(?:globo|mapa))?$/iu.exec(withoutDays);
     city=cityMatch?.[1]?.trim()||null;
   }
   return {message:topic,city,days};
