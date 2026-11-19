@@ -1,5 +1,6 @@
 import {TASK_CONTEXT} from "./jarvis-task-context.js?v=4.69.0";
 import {planAgents} from "../backend/intelligent-task-hub.js";
+import {parseVerifiedIntelligenceCommand,runVerifiedIntelligenceCommand} from "./jarvis-verified-intelligence-client.js";
 import {classifyOperatorTurn,splitOperatorSteps} from "./jarvis-intent-engine.js?v=4.69.0";
 import {directPlan,resolveActionPlan,runActionPlan} from "./jarvis-action-engine.js?v=4.101.2";
 import {parseLocalCommand,runLocalCommand} from "./jarvis-local-commands.js?v=5.66.0";
@@ -856,6 +857,22 @@ function enqueue(message, source = "terminal", approvedMission = false) {
     queue=queue.catch(()=>null).then(()=>generation!==queueGeneration
       ? {ok:false,status:"cancelled",route:"p0-stop"}:
       executeMessage(message,source,approvedMission));
+    return queue;
+  }
+  // Explicit, signed-account intelligence runs inside the same Neural Ring.
+  // Do not hijack ordinary news/weather intents or handle commands via voice.
+  const verifiedIntent=parseVerifiedIntelligenceCommand(message);
+  if(verifiedIntent){
+    const generation=queueGeneration;
+    queue=queue.catch(()=>null).then(async()=>{
+      if(generation!==queueGeneration)return {ok:false,status:"cancelled",route:"verified-intelligence"};
+      const result=await runVerifiedIntelligenceCommand(verifiedIntent,{
+        isCancelled:()=>generation!==queueGeneration
+      });
+      if(result?.status!=="cancelled")log(result.text,!result.ok);
+      state.lastRoute="verified-intelligence";
+      return result;
+    });
     return queue;
   }
   // Pairing is a local, operator-initiated UI action, not a web search or AI reply.
