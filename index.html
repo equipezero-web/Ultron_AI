@@ -4,6 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#03050b">
+<!-- Operator-requested maintenance mode: text commands only. This policy
+     is established synchronously before any module can restore saved audio. -->
+<script>
+window.JARVIS_AUDIO_POLICY=Object.freeze({enabled:false,mode:"text-only",reason:"operator-maintenance"});
+document.documentElement.classList.add("jarvis-voice-off");
+try{
+ localStorage.setItem("jarvis_speech_output_enabled_v1","off");
+ localStorage.setItem("ultron_world_briefing_auto_voice_v1","off");
+ const p=JSON.parse(localStorage.getItem("ultron_preferences")||"null");
+ if(p&&typeof p==="object"){p.voiceWakeEnabled=false;localStorage.setItem("ultron_preferences",JSON.stringify(p));}
+}catch{}
+try{window.speechSynthesis?.cancel?.();}catch{}
+</script>
 <meta name="application-name" content="J.A.R.V.I.S">
 <meta name="description" content="J.A.R.V.I.S // Holographic Neural Command Core">
 <title>J.A.R.V.I.S // Command Center</title>
@@ -34,8 +47,9 @@
 <link rel="stylesheet" href="modules/jarvis-account-plugin-panel.css?v=1.0.0">
 <link rel="stylesheet" href="modules/jarvis-trend-intelligence.css?v=1.0.0">
 <link rel="stylesheet" href="modules/jarvis-mobile-voice-text.css?v=5.65.0">
+<link rel="stylesheet" href="modules/jarvis-voice-maintenance.css?v=5.66.0">
 </head>
-<body class="jarvis-command-center">
+<body class="jarvis-command-center jarvis-voice-paused jarvis-voice-output-disabled">
 <div class="hud-bg" aria-hidden="true">
   <div class="hud-grid-lines"></div>
   <div class="hud-glow glow-a"></div>
@@ -60,7 +74,7 @@
 
     <div class="top-status">
       <div class="status-chip"><span>UPTIME</span><strong id="uptime">00:00:00</strong></div>
-      <div class="status-chip"><span>MODE</span><strong id="system-mode">VOICE STANDBY</strong></div>
+      <div class="status-chip"><span>MODE</span><strong id="system-mode">MODO TEXTO</strong></div>
       <div class="status-chip online"><i></i><div><span>CORE</span><strong id="status-text">SYSTEM ONLINE</strong></div></div>
       <div class="clock-chip"><span>LOCAL TIME</span><strong id="clock">--:--:--</strong></div>
     </div>
@@ -81,12 +95,12 @@
         <div class="module-list compact">
           <div class="module"><span class="module-dot"></span><div><strong>OPTICAL VISION</strong><small>Frames / mãos / profundidade</small></div><em id="optical-ai-state">READY</em></div>
           <div class="module"><span class="module-dot"></span><div><strong>DEVICE BRIDGE</strong><small>Celular / TV / desktop / automações</small></div><em id="bridge-module">API WAIT</em></div>
-          <div class="module"><span class="module-dot"></span><div><strong>VOICE ROUTER</strong><small>Wake JARVIS + Voice Match + speech</small></div><em id="voice-module">CHECKING</em></div>
+          <div class="module"><span class="module-dot"></span><div><strong>VOICE ROUTER</strong><small>Wake JARVIS + Voice Match + speech</small></div><em id="voice-module">DESATIVADO</em></div>
         </div>
       </section>
 
       <section class="hud-panel microphone-panel">
-        <div class="panel-heading"><div><span class="panel-index">02</span><h2>JARVIS VOICE CONTROL</h2></div><b id="mic-module">CHECKING</b></div>
+        <div class="panel-heading"><div><span class="panel-index">02</span><h2>JARVIS VOICE CONTROL</h2></div><b id="mic-module">DESATIVADO</b></div>
         <div class="mic-visual">
           <div class="mic-orbit" aria-hidden="true"><span>◉</span></div>
           <div class="voice-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
@@ -230,18 +244,18 @@
 <script type="module" src="modules/jarvis-public-world-cameras.js?v=5.63.0"></script>
 <script type="module" src="modules/jarvis-parallel-readonly-center.js?v=5.39.0"></script>
 <script type="module" src="modules/jarvis-scoped-files.js?v=5.39.0"></script>
-<script type="module" src="modules/ultron-orchestrator-v4270.js?v=5.65.0"></script>
+<script type="module" src="modules/ultron-orchestrator-v4270.js?v=5.66.0"></script>
 <script type="module" src="modules/neural-priority-core-v4300.js?v=4.30.0"></script>
 <script type="module" src="modules/device-control-v4260.js?v=5.58.0"></script>
 <script type="module" src="modules/jarvis-mobile-pairing.js?v=5.58.0"></script>
 <script type="module" src="modules/orchestrator-device-verify-v4270.js?v=4.27.0"></script>
-<script type="module" src="modules/voice-match-v4290.js?v=4.31.0"></script>
-<script type="module" src="modules/mobile-mic-client.js?v=4.21.1"></script>
+<script type="module" src="modules/voice-match-v4290.js?v=5.66.0"></script>
+<script type="module" src="modules/mobile-mic-client.js?v=5.66.0"></script>
 <script type="module" src="modules/stark-bootstrap.js?v=5.58.0"></script>
 <script type="module" src="modules/neural-command-v4280.js?v=4.31.0"></script>
 <script type="module" src="modules/neural-filespace-click-bridge-v4280.js?v=4.31.0"></script>
 <script type="module" src="modules/jarvis-command-center-v4330.js?v=5.58.0"></script>
-<script type="module" src="modules/jarvis-neural-jarvis-hud.js?v=5.64.0"></script>
+<script type="module" src="modules/jarvis-neural-jarvis-hud.js?v=5.66.0"></script>
 <script type="module" src="modules/jarvis-earth.js?v=4.94.0"></script>
 <script type="module" src="modules/jarvis-geospatial-visual.js?v=4.96.1"></script>
 <script type="module" src="modules/jarvis-meteorological-center.js?v=4.99.3"></script>
@@ -259,17 +273,17 @@
 <script type="module" src="modules/telemetry-client-v4270.js?v=4.27.0"></script>
 <script type="module" src="script.js?v=5.64.0"></script>
 <script type="module" src="modules/vision-command-router.js?v=4.17.0"></script>
-<script type="module" src="modules/voice-listener-v4290.js?v=5.64.0"></script>
-<script type="module" src="modules/jarvis-voice-controls.js?v=1.0.0"></script>
+<script type="module" src="modules/voice-listener-v4290.js?v=5.66.0"></script>
+<script type="module" src="modules/jarvis-voice-controls.js?v=5.66.0"></script>
 <script type="module" src="modules/voice-orchestration-bridge-v4290.js?v=4.31.0"></script>
 <script type="module" src="modules/orchestrator-ui-bridge-v4270.js?v=4.27.0"></script>
-<script type="module" src="modules/ultron-intelligence-briefing.js?v=5.64.0"></script>
+<script type="module" src="modules/ultron-intelligence-briefing.js?v=5.66.0"></script>
 <script type="module" src="modules/jarvis-communication-notifications.js?v=5.53.0"></script>
 <script type="module" src="modules/neural-intelligence-visual.js?v=1.0.1"></script>
 <script type="module" src="modules/ultron-tv-display.js?v=4.54.0"></script>
 <script type="module" src="modules/ultron-neural-answer.js?v=5.53.0"></script>
 <script type="module" src="modules/jarvis-universal-adaptive.js?v=5.34.0"></script>
 <script type="module" src="modules/jarvis-phone-files.js?v=5.51.0"></script>
-<script type="module" src="modules/jarvis-mobile-voice-text.js?v=5.65.0"></script>
+<script type="module" src="modules/jarvis-mobile-voice-text.js?v=5.66.0"></script>
 </body>
 </html>
