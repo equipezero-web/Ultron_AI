@@ -1,0 +1,1200 @@
+{
+  "schemaVersion": 1,
+  "goal": "100% comprovado (código + CI + produção + dispositivos reais pertinentes)",
+  "auditDate": "2026-11-19",
+  "source": "Evolution Control 5 Áreas 2026-11-18",
+  "notes": [
+    "Percentual anterior é referência histórica, não evidência nem valor atual automaticamente atualizado.",
+    "100% exige teste de uso real, comprovante verificável e dependências externas autorizadas.",
+    "Nenhum check de CI sozinho comprova produção, transmissões externas ou funcionamento de hardware."
+  ],
+  "phases": [
+    {
+      "stage": 1,
+      "area": "Inteligência"
+    },
+    {
+      "stage": 2,
+      "area": "Funcionalidades"
+    },
+    {
+      "stage": 3,
+      "area": "Comunicação"
+    },
+    {
+      "stage": 4,
+      "area": "Integridade"
+    },
+    {
+      "stage": 5,
+      "area": "Dispositivos"
+    },
+    {
+      "stage": 6,
+      "area": "Inteligência",
+      "purpose": "consolidação"
+    }
+  ],
+  "capabilities": [
+    {
+      "id": "CORE-01",
+      "area": "Integridade",
+      "name": "Backend Cloudflare Worker + D1",
+      "stages": [
+        4
+      ],
+      "baselinePercent": 75,
+      "existingBaseline": "Entrypoint worker.js, APIs de saúde, memória, orquestração e telemetria.",
+      "codeReference": "README.md",
+      "acceptanceRequirement": "Homologação contínua da produção, falhas externas e identidade de conta.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "CORE-02",
+      "area": "Inteligência",
+      "name": "Gateway multi-IA e fallback",
+      "stages": [
+        1,
+        6
+      ],
+      "baselinePercent": 65,
+      "existingBaseline": "Integração com múltiplos provedores e failover no backend; o log confirma Cloudflare AI.",
+      "codeReference": "backend/providers.js",
+      "acceptanceRequirement": "Garantir que uma ação de interface nunca vire resposta genérica da IA.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "CORE-03",
+      "area": "Inteligência",
+      "name": "Pesquisa web e fontes",
+      "stages": [
+        1,
+        6
+      ],
+      "baselinePercent": 65,
+      "existingBaseline": "Pesquisa Serper, ranking e cache com fontes; integração com respostas no Neural.",
+      "codeReference": "backend/web-research.js",
+      "acceptanceRequirement": "Eliminar pesquisas irrelevantes para ações locais; checar pertinência e atualidade.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "CORE-04",
+      "area": "Comunicação",
+      "name": "Roteador de linguagem natural",
+      "stages": [
+        3
+      ],
+      "baselinePercent": 40,
+      "existingBaseline": "Intenções locais, ações tipadas, consulta a plugins, comando composto e rotas especializadas.",
+      "codeReference": "modules/ultron-orchestrator-v4270.js",
+      "acceptanceRequirement": "Compreender comandos flexíveis e compostos; no log, “...feche a previsão” caiu na IA.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "CORE-05",
+      "area": "Integridade",
+      "name": "Prioridades P0–P5 e STOP",
+      "stages": [
+        4
+      ],
+      "baselinePercent": 75,
+      "existingBaseline": "Fila, interrupção, aprovação de missões e barreiras contra ações sensíveis.",
+      "codeReference": "modules/neural-priority-core-v4300.js",
+      "acceptanceRequirement": "Testar cancelamento real em Android, TV e operações simultâneas.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "CORE-06",
+      "area": "Integridade",
+      "name": "Telemetria, diagnósticos e recuperação",
+      "stages": [
+        4
+      ],
+      "baselinePercent": 65,
+      "existingBaseline": "Logs de saúde, gateway, recuperação segura de leitura e detecção de falhas.",
+      "codeReference": "modules/ultron-orchestrator-v4270.js",
+      "acceptanceRequirement": "Medir resultados efetivos, não apenas o estado “módulo READY”.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "CORE-07",
+      "area": "Integridade",
+      "name": "Autenticação e isolamento por conta",
+      "stages": [
+        4
+      ],
+      "baselinePercent": 50,
+      "existingBaseline": "Fluxos de Cloudflare Access e registros de dispositivos/plugins por conta implementados.",
+      "codeReference": "docs/jarvis-account-plugins.md",
+      "acceptanceRequirement": "Provar configuração, sessões isoladas e revogações no ambiente real.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "VIS-01",
+      "area": "Funcionalidades",
+      "name": "Neural Jarvis holográfico 3D",
+      "stages": [
+        2
+      ],
+      "baselinePercent": 73,
+      "existingBaseline": "Núcleo WebGL, geometria, giroscópios, HUD e modo Ring.",
+      "codeReference": "docs/neural-jarvis-holographic-structure.md",
+      "acceptanceRequirement": "Confirmar renderização estável com GPU fraca, tela pequena e longas sessões.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "VIS-02",
+      "area": "Funcionalidades",
+      "name": "Globo terrestre 3D / Mapbox",
+      "stages": [
+        2
+      ],
+      "baselinePercent": 65,
+      "existingBaseline": "Globo WebGL com controles de rotação, zoom e camadas; Mapbox opcional.",
+      "codeReference": "README.md",
+      "acceptanceRequirement": "Checar token, tiles em alta resolução, gestos e centralização em aparelhos reais.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "VIS-03",
+      "area": "Funcionalidades",
+      "name": "Mapas 2D/3D e camadas reais",
+      "stages": [
+        2
+      ],
+      "baselinePercent": 70,
+      "existingBaseline": "Mapas globais, contornos, pontos georreferenciados, quadro temporal e dados numéricos.",
+      "codeReference": "modules/jarvis-geospatial-visual.js",
+      "acceptanceRequirement": "Verificar sobreposição, troca de cena e cobertura por fonte; sem simulações físicas falsas.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "VIS-04",
+      "area": "Comunicação",
+      "name": "Notícias com imagens e vídeos",
+      "stages": [
+        3
+      ],
+      "baselinePercent": 60,
+      "existingBaseline": "Painel de respostas, imagens vinculadas às fontes e lane de vídeos clicáveis.",
+      "codeReference": "modules/ultron-neural-answer.js",
+      "acceptanceRequirement": "Garantir que a mídia corresponda à notícia e não oculte a área central.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "VIS-05",
+      "area": "Comunicação",
+      "name": "Diretor visual e referências contextuais",
+      "stages": [
+        3
+      ],
+      "baselinePercent": 60,
+      "existingBaseline": "Fases XII/XIII: cenas, próxima/anterior, seleção de evento e “mostre isto no mapa”.",
+      "codeReference": "docs/jarvis-phase12-visual-orchestration.md",
+      "acceptanceRequirement": "Reduzir colisões entre cenas e verificar todos os comandos por voz e texto.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "VIS-06",
+      "area": "Funcionalidades",
+      "name": "Mobile, notebook e TV responsivos",
+      "stages": [
+        2
+      ],
+      "baselinePercent": 70,
+      "existingBaseline": "Breakpoints, modo de economia WebGL, teclado e layouts para diferentes telas.",
+      "codeReference": "docs/jarvis-universal-mobile-and-networks.md",
+      "acceptanceRequirement": "Homologação em Android real, Smart TV e notebooks com performance medida.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "VIS-07",
+      "area": "Funcionalidades",
+      "name": "Gestos, zoom, rolagem e foco",
+      "stages": [
+        2
+      ],
+      "baselinePercent": 60,
+      "existingBaseline": "Arrastar, pinça, roda e navegação manual em módulos visuais.",
+      "codeReference": "docs/neural-jarvis-holographic-structure.md",
+      "acceptanceRequirement": "Testar scroll-lock, zoom e toques sobrepostos em múltiplos dispositivos.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "VIS-08",
+      "area": "Funcionalidades",
+      "name": "Abrir/fechar painéis por linguagem natural",
+      "stages": [
+        2
+      ],
+      "baselinePercent": 35,
+      "existingBaseline": "Comandos dedicados e correções de controladores duplicados na main.",
+      "codeReference": "modules/jarvis-local-commands.js",
+      "acceptanceRequirement": "Unificar dois centros de previsão; reconhecer frases compostas e confirmar o fechamento da vista certa.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "WORLD-01",
+      "area": "Comunicação",
+      "name": "Boletins, notícias e despertar",
+      "stages": [
+        3
+      ],
+      "baselinePercent": 65,
+      "existingBaseline": "Histórico de 24h, manchetes e preferência por notícias do Brasil.",
+      "codeReference": "modules/ultron-intelligence-briefing.js",
+      "acceptanceRequirement": "Validação editorial das prioridades e comportamento quando a fonte está antiga.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "WORLD-02",
+      "area": "Inteligência",
+      "name": "Eventos USGS, NASA e GDACS",
+      "stages": [
+        1,
+        6
+      ],
+      "baselinePercent": 68,
+      "existingBaseline": "Eventos georreferenciados, fontes e horários no Neural Ring; 110 registros relatados no log.",
+      "codeReference": "modules/jarvis-global-intelligence-ring.js",
+      "acceptanceRequirement": "Não tratar ponto catalogado como área de impacto ou gravidade calculada.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "WORLD-03",
+      "area": "Inteligência",
+      "name": "Prioridades e contexto regional",
+      "stages": [
+        1,
+        6
+      ],
+      "baselinePercent": 60,
+      "existingBaseline": "Recortes por Brasil e eventos próximos com timestamps e verificação parcial.",
+      "codeReference": "docs/jarvis-phase8-continuity.md",
+      "acceptanceRequirement": "Corrigir estados de prioridades antigas e diferenciar fonte atual de cache.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "WORLD-04",
+      "area": "Inteligência",
+      "name": "Tendências por setores",
+      "stages": [
+        1,
+        6
+      ],
+      "baselinePercent": 50,
+      "existingBaseline": "Motor de tendências em setores, resumos e integração com interface.",
+      "codeReference": "backend/trend-intelligence.js",
+      "acceptanceRequirement": "Cobertura heterogênea, base de dados e validação de relevância de cada setor.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "WORLD-05",
+      "area": "Inteligência",
+      "name": "Coleta cronológica fora do navegador",
+      "stages": [
+        1,
+        6
+      ],
+      "baselinePercent": 65,
+      "existingBaseline": "Snapshots D1, cron de eventos globais e meteorologia em janelas de 1h/3h.",
+      "codeReference": "docs/jarvis-phase8-continuity.md",
+      "acceptanceRequirement": "Não equivale a observar tudo segundo a segundo nem emitir push para o celular.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "WORLD-06",
+      "area": "Inteligência",
+      "name": "Indicadores mundiais",
+      "stages": [
+        1,
+        6
+      ],
+      "baselinePercent": 60,
+      "existingBaseline": "Visualizador de dados geográficos e indicadores oficiais, como Banco Mundial.",
+      "codeReference": "docs/jarvis-worldwide-geo-intelligence.md",
+      "acceptanceRequirement": "Cobertura temática, limites de atualização e origem para cada indicador.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "MET-01",
+      "area": "Funcionalidades",
+      "name": "Previsões mundiais 3/7/16 dias",
+      "stages": [
+        2
+      ],
+      "baselinePercent": 70,
+      "existingBaseline": "Geocodificação, modelo Open-Meteo, gráficos numéricos e horizonte configurável.",
+      "codeReference": "docs/jarvis-global-weather.md",
+      "acceptanceRequirement": "Melhorar intenção de fechar a previsão exibida no mapa geográfico.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "MET-02",
+      "area": "Funcionalidades",
+      "name": "Previsão 7 dias na central do Ring",
+      "stages": [
+        2
+      ],
+      "baselinePercent": 65,
+      "existingBaseline": "Nova aba com cidades, mínima/máxima, vento e precipitação.",
+      "codeReference": "modules/jarvis-meteorological-center.js",
+      "acceptanceRequirement": "Eliminar ambiguidade com o painel geográfico de previsão e testar troca rápida.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "MET-03",
+      "area": "Funcionalidades",
+      "name": "Radar de chuva RainViewer",
+      "stages": [
+        2
+      ],
+      "baselinePercent": 58,
+      "existingBaseline": "Mosaicos de ecos observados e visualização no Ring/Mapa.",
+      "codeReference": "modules/jarvis-meteo-ring-bridge.js",
+      "acceptanceRequirement": "Checar sinal, última imagem e falhas do provedor; não é radar oficial do INPE.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "MET-04",
+      "area": "Funcionalidades",
+      "name": "Satélite GOES-19",
+      "stages": [
+        2
+      ],
+      "baselinePercent": 60,
+      "existingBaseline": "Imagens NOAA/CIRA carregáveis no Ring com controle de atualização.",
+      "codeReference": "modules/jarvis-meteo-ring-bridge.js",
+      "acceptanceRequirement": "Confirmar horário da captura, disponibilidade e compatibilidade do player de imagem.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "MET-05",
+      "area": "Funcionalidades",
+      "name": "APAC e estações INMET",
+      "stages": [
+        2
+      ],
+      "baselinePercent": 62,
+      "existingBaseline": "Pluviômetros em Pernambuco e posições de estações com fonte; valores separados de previsão.",
+      "codeReference": "modules/jarvis-meteorological-sources.js",
+      "acceptanceRequirement": "Ampliar observações verificadas e evidenciar estações sem atualização.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "MET-06",
+      "area": "Inteligência",
+      "name": "Histórico, ar, mar, rios e ensemble",
+      "stages": [
+        1,
+        6
+      ],
+      "baselinePercent": 55,
+      "existingBaseline": "Integrações ERA5, CAMS, oceanos, GloFAS e membros de modelo numérico.",
+      "codeReference": "docs/jarvis-world-weather-intelligence-v2.md",
+      "acceptanceRequirement": "Testes completos de localidade, indisponibilidades, precisão e interpretação.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "MET-07",
+      "area": "Inteligência",
+      "name": "Alertas oficiais multinacionais",
+      "stages": [
+        1,
+        6
+      ],
+      "baselinePercent": 35,
+      "existingBaseline": "Conectores limitados para INMET (Brasil) e NWS (EUA).",
+      "codeReference": "docs/jarvis-personal-weather-intelligence.md",
+      "acceptanceRequirement": "Fontes oficiais em outros países, área afetada, validade e notificações.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "MET-08",
+      "area": "Inteligência",
+      "name": "El Niño e mapas de impacto",
+      "stages": [
+        1,
+        6
+      ],
+      "baselinePercent": 42,
+      "existingBaseline": "Camadas e explicações geográficas ilustrativas/científicas delimitadas.",
+      "codeReference": "docs/jarvis-phase4-audit.md",
+      "acceptanceRequirement": "Mapas de risco quantitativo exigem modelo e dados apropriados; evitar inferências.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "MET-09",
+      "area": "Funcionalidades",
+      "name": "Simulação atmosférica física 2D/3D",
+      "stages": [
+        2
+      ],
+      "baselinePercent": 10,
+      "existingBaseline": "Visualizadores e linhas do tempo de dados, sem dinâmica física contínua.",
+      "codeReference": "docs/jarvis-phases15-19-integrated.md",
+      "acceptanceRequirement": "Motor físico, grade temporal, propagação, incerteza e validação científica.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "MET-10",
+      "area": "Inteligência",
+      "name": "Cobertura planetária contínua",
+      "stages": [
+        1,
+        6
+      ],
+      "baselinePercent": 15,
+      "existingBaseline": "Consultas por cidade e amostragem de poucas localidades em cron.",
+      "codeReference": "docs/jarvis-world-weather-intelligence-v2.md",
+      "acceptanceRequirement": "Não há radar ao vivo de todo o planeta, nem sensores em todos os países.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "CAM-01",
+      "area": "Funcionalidades",
+      "name": "Câmeras públicas mundiais indexadas",
+      "stages": [
+        2
+      ],
+      "baselinePercent": 45,
+      "existingBaseline": "25 entradas em 16 países, segundo o terminal; filtros e páginas de origem.",
+      "codeReference": "modules/jarvis-public-world-cameras-model.js",
+      "acceptanceRequirement": "Validar cada sinal e ampliar o índice autorizado; zero sinais confirmados ao vivo.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "CAM-02",
+      "area": "Funcionalidades",
+      "name": "Catálogos oficiais de quatro provedores",
+      "stages": [
+        2
+      ],
+      "baselinePercent": 70,
+      "existingBaseline": "Links de SkylineWebcams, Webcamera24, Africam e Câmeras do Mundo.",
+      "codeReference": "docs/jarvis-global-worldcam-catalogs-and-audio.md",
+      "acceptanceRequirement": "Os links não importam nem verificam automaticamente todas as câmeras.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "CAM-03",
+      "area": "Comunicação",
+      "name": "Player incorporado e áudio opcional",
+      "stages": [
+        3
+      ],
+      "baselinePercent": 48,
+      "existingBaseline": "Player consentido, iframe removido no fechamento, mute inicial.",
+      "codeReference": "docs/jarvis-public-world-webcams.md",
+      "acceptanceRequirement": "Alguns embeds são proibidos ou falham; reprodução real não foi confirmada para todos.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "CAM-04",
+      "area": "Integridade",
+      "name": "Todas as webcams verificadas 24h",
+      "stages": [
+        4
+      ],
+      "baselinePercent": 5,
+      "existingBaseline": "Nenhum monitor de sinal validado automaticamente no log apresentado.",
+      "codeReference": "docs/jarvis-public-world-webcams.md",
+      "acceptanceRequirement": "Licença/API do provedor, telemetria autorizada e teste de disponibilidade por câmera.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "CAM-05",
+      "area": "Dispositivos",
+      "name": "Sensor óptico Windows / visão local",
+      "stages": [
+        5
+      ],
+      "baselinePercent": 20,
+      "existingBaseline": "Detecção do hardware e fallback de driver implementados.",
+      "codeReference": "modules/vision-command-router.js",
+      "acceptanceRequirement": "O seu log relata zero frames e tentativa de inicializar câmera apesar da preferência desligada.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "DEV-01",
+      "area": "Dispositivos",
+      "name": "Bridge Android e pareamento",
+      "stages": [
+        5
+      ],
+      "baselinePercent": 50,
+      "existingBaseline": "APK compilado, conexão por código, polling e API de status.",
+      "codeReference": "docs/android-bridge-v0.9.1-security.md",
+      "acceptanceRequirement": "Provar fluxo ponta a ponta no aparelho, reconexão, permissões e revogação.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "DEV-02",
+      "area": "Dispositivos",
+      "name": "Plugins de YouTube, agenda e armazenamento",
+      "stages": [
+        5
+      ],
+      "baselinePercent": 45,
+      "existingBaseline": "Catálogo por conta e comandos permitidos para ações Android/desktop.",
+      "codeReference": "docs/jarvis-account-plugins.md",
+      "acceptanceRequirement": "Confirmar ACK real do app, whitelists, rascunhos e diagnóstico de armazenamento.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "DEV-03",
+      "area": "Dispositivos",
+      "name": "Arquivos Android selecionados e PIN temporário",
+      "stages": [
+        5
+      ],
+      "baselinePercent": 38,
+      "existingBaseline": "Seleção de pasta com SAF, escopo e PIN temporário no Bridge.",
+      "codeReference": "docs/android-bridge-v0.9.1-security.md",
+      "acceptanceRequirement": "Testar leitura real, expiração, revogação, rejeição de pastas não autorizadas.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "DEV-04",
+      "area": "Dispositivos",
+      "name": "Câmera e microfone do Android sob consentimento",
+      "stages": [
+        5
+      ],
+      "baselinePercent": 30,
+      "existingBaseline": "Modelo de autorização local e sessão iniciada no aparelho, sem ativação silenciosa.",
+      "codeReference": "docs/android-bridge-v0.9.1-security.md",
+      "acceptanceRequirement": "Testar vídeo/voz bidirecional e pausa/encerramento sem privilégios excessivos.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "DEV-05",
+      "area": "Dispositivos",
+      "name": "Bridge para Windows / desktop",
+      "stages": [
+        5
+      ],
+      "baselinePercent": 30,
+      "existingBaseline": "Estrutura de gateway e comandos para desktop suportada no projeto.",
+      "codeReference": "README.md",
+      "acceptanceRequirement": "Instalação no PC, controle real de apps/arquivos e respostas autenticadas.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "DEV-06",
+      "area": "Dispositivos",
+      "name": "TV LG webOS e comandos",
+      "stages": [
+        5
+      ],
+      "baselinePercent": 30,
+      "existingBaseline": "Adaptadores de pareamento, entradas, mídia e comando tipado no código.",
+      "codeReference": "modules/device-control-v4260.js",
+      "acceptanceRequirement": "Homologação na TV, LAN, CORS/transporte e confirmação de execução.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "DEV-07",
+      "area": "Funcionalidades",
+      "name": "Multitarefas e consultas concorrentes",
+      "stages": [
+        2
+      ],
+      "baselinePercent": 45,
+      "existingBaseline": "Até três leituras independentes e histórico, com cancelamento.",
+      "codeReference": "docs/jarvis-worldcams-concurrent-mobile-files.md",
+      "acceptanceRequirement": "Expandir execução real e orquestração confiável entre dispositivos.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "DEV-08",
+      "area": "Dispositivos",
+      "name": "Controle integral de apps autorizados",
+      "stages": [
+        5
+      ],
+      "baselinePercent": 20,
+      "existingBaseline": "Abertura limitada de apps com aprovação no Android.",
+      "codeReference": "docs/jarvis-account-plugins.md",
+      "acceptanceRequirement": "Controle granular dos demais apps exigiria APIs e autorizações específicas; não acesso irrestrito.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "AGENT-01",
+      "area": "Inteligência",
+      "name": "Memória persistente D1",
+      "stages": [
+        1,
+        6
+      ],
+      "baselinePercent": 65,
+      "existingBaseline": "Contexto recente e registros por operador; log mostra 16 mensagens / 6 memórias.",
+      "codeReference": "docs/jarvis-memory-hub-increment.md",
+      "acceptanceRequirement": "Validar recuperação, exclusão e isolamento no ambiente real.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "AGENT-02",
+      "area": "Inteligência",
+      "name": "Relevância HOT / WARM / COLD",
+      "stages": [
+        1,
+        6
+      ],
+      "baselinePercent": 62,
+      "existingBaseline": "Ranking lexical por importância, idade e similaridade de palavras.",
+      "codeReference": "backend/memory-relevance.js",
+      "acceptanceRequirement": "Embeddings semânticos, deduplicação robusta e testes com casos difíceis.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "AGENT-03",
+      "area": "Inteligência",
+      "name": "Busca semântica vetorial avançada",
+      "stages": [
+        1,
+        6
+      ],
+      "baselinePercent": 10,
+      "existingBaseline": "Planejada; o ranking atual é lexical, não embeddings.",
+      "codeReference": "docs/jarvis-memory-hub-increment.md",
+      "acceptanceRequirement": "Indexação vetorial privada, consentimento, orçamento e apagamento.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "AGENT-04",
+      "area": "Inteligência",
+      "name": "Skill Hub versionado",
+      "stages": [
+        1,
+        6
+      ],
+      "baselinePercent": 30,
+      "existingBaseline": "Registro de skills declarativas e allowlists somente de leitura.",
+      "codeReference": "docs/jarvis-intelligent-hubs-foundation.md",
+      "acceptanceRequirement": "Ativar, revisar, revogar e executar skills em servidor autenticado.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "AGENT-05",
+      "area": "Inteligência",
+      "name": "Perfis de agentes especialistas",
+      "stages": [
+        1,
+        6
+      ],
+      "baselinePercent": 30,
+      "existingBaseline": "Planejador consultivo com sete perfis e concorrência delimitada.",
+      "codeReference": "docs/jarvis-intelligent-hubs-foundation.md",
+      "acceptanceRequirement": "Agentes executores reais conectados a ferramentas; hoje é seleção/advisory.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "AGENT-06",
+      "area": "Inteligência",
+      "name": "Execução autônoma multiagente de ponta a ponta",
+      "stages": [
+        1,
+        6
+      ],
+      "baselinePercent": 10,
+      "existingBaseline": "Arquitetura e perfis preparados; não há despacho real generalizado.",
+      "codeReference": "docs/jarvis-intelligent-hubs-foundation.md",
+      "acceptanceRequirement": "Agentes com ferramentas, recibos, supervisão, avaliação e rollback.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "AGENT-07",
+      "area": "Integridade",
+      "name": "Trajectory Hub e rastreio de missões",
+      "stages": [
+        4
+      ],
+      "baselinePercent": 42,
+      "existingBaseline": "Histórico de etapas e metadados auditáveis por operador.",
+      "codeReference": "backend/trajectory-hub.js",
+      "acceptanceRequirement": "Reconciliar recibos reais de execução, métricas e falhas com o servidor.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "AGENT-08",
+      "area": "Inteligência",
+      "name": "Planejamento supervisionado de ações",
+      "stages": [
+        1,
+        6
+      ],
+      "baselinePercent": 48,
+      "existingBaseline": "Missões limitadas, aprovação explícita, P0 e histórico.",
+      "codeReference": "docs/jarvis-phase14-supervised-autonomy.md",
+      "acceptanceRequirement": "Planejar solicitações abertas sem perder contexto nem sair executando ações não autorizadas.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "AGENT-09",
+      "area": "Inteligência",
+      "name": "Aprendizado com feedback e preferências",
+      "stages": [
+        1,
+        6
+      ],
+      "baselinePercent": 30,
+      "existingBaseline": "Preferências visuais de duração limitada e marcações gostei/não gostei.",
+      "codeReference": "docs/jarvis-phases15-19-integrated.md",
+      "acceptanceRequirement": "Aprendizado validado por resultados, não só preferência de exibição.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "AGENT-10",
+      "area": "Inteligência",
+      "name": "Autoaperfeiçoamento supervisionado",
+      "stages": [
+        1,
+        6
+      ],
+      "baselinePercent": 10,
+      "existingBaseline": "Diretrizes planejadas para revisão, testes e aprovação de mudanças.",
+      "codeReference": "docs/jarvis-intelligent-hubs-foundation.md",
+      "acceptanceRequirement": "Ciclo controlado sugerir → testar → revisar → reverter, sem autoimplantação irrestrita.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "FUT-01",
+      "area": "Comunicação",
+      "name": "Alertas push / notificações oficiais fora do navegador",
+      "stages": [
+        3
+      ],
+      "baselinePercent": 5,
+      "existingBaseline": "Boletins e status existem, mas não push autônomo geral.",
+      "codeReference": "docs/jarvis-personal-weather-intelligence.md",
+      "acceptanceRequirement": "Consentimento, canais de envio, provedores oficiais e deduplicação de risco.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "FUT-02",
+      "area": "Funcionalidades",
+      "name": "PWA plenamente offline",
+      "stages": [
+        2
+      ],
+      "baselinePercent": 10,
+      "existingBaseline": "Layout adaptativo e recursos locais já disponíveis na página carregada.",
+      "codeReference": "docs/jarvis-universal-mobile-and-networks.md",
+      "acceptanceRequirement": "Service Worker, armazenamento offline, atualização segura e testes sem internet.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "FUT-03",
+      "area": "Funcionalidades",
+      "name": "Simulações físicas cinematográficas / vídeo sintético",
+      "stages": [
+        2
+      ],
+      "baselinePercent": 5,
+      "existingBaseline": "Globo, animações de interface e cenas geográficas ilustrativas.",
+      "codeReference": "docs/jarvis-phases15-19-integrated.md",
+      "acceptanceRequirement": "Renderização física, geração temporal coerente e validação de simulações.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "FUT-04",
+      "area": "Comunicação",
+      "name": "Voz conversacional contínua integrada",
+      "stages": [
+        3
+      ],
+      "baselinePercent": 40,
+      "existingBaseline": "Wake, transcrição, síntese e integração com comandos no navegador.",
+      "codeReference": "README.md",
+      "acceptanceRequirement": "Testes reais com latência, interrupção, áudio opcional e ruído no celular.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "FUT-05",
+      "area": "Integridade",
+      "name": "Homologação 100% em Android, PC, TV e serviços",
+      "stages": [
+        4
+      ],
+      "baselinePercent": 20,
+      "existingBaseline": "GitHub Actions e testes de navegador estão integrados; PR #189 teve 43/43.",
+      "codeReference": "docs/jarvis-intelligent-hubs-foundation.md",
+      "acceptanceRequirement": "Teste físico de ponta a ponta, publicação comprovada e zero regressões críticas.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    },
+    {
+      "id": "FUT-06",
+      "area": "Integridade",
+      "name": "Sistema universal de plugins auditados",
+      "stages": [
+        4
+      ],
+      "baselinePercent": 20,
+      "existingBaseline": "Catálogo inicial com três plugins e regras de acesso.",
+      "codeReference": "docs/jarvis-account-plugins.md",
+      "acceptanceRequirement": "SDK de plugins, revisão de permissões, reversão e teste de ações reais.",
+      "checks": {
+        "code": "not-certified",
+        "ci": "not-certified",
+        "production": "not-certified",
+        "physical": "not-certified"
+      },
+      "acceptance": "pending"
+    }
+  ]
+}
