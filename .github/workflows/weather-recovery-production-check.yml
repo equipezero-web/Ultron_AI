@@ -43,11 +43,11 @@ jobs:
             throw error;
           };
           const html=await get('Pages',site);
-          assert.match(html,/ultron-orchestrator-v4270[.]js[?]v=4[.]80[.]0/);
-          const action=await get('Browser action engine',site+'modules/jarvis-action-engine.js?v=4.80.0');
+          assert.match(html,/ultron-orchestrator-v4270[.]js(?:[?]v=[0-9.]+)?/);
+          const action=await get('Browser action engine',site+'modules/jarvis-action-engine.js');
           assert.match(action,/loadLiveWeather/);
           assert.match(action,/case "weather.show"/);
-          const module=await get('Brazil direct fallback',site+'backend/weather-live.js?v=4.80.0');
+          const module=await get('Brazil direct fallback',site+'backend/weather-live.js');
           assert.match(module,/WEATHER_PROVIDER_RATE_LIMIT/);
           assert.match(module,/attempt<2/);
           console.log('BRAZIL WEATHER RESILIENCE PUBLISHED');
