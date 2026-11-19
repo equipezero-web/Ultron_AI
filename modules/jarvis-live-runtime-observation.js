@@ -77,11 +77,16 @@ export async function observeJarvisRuntime({
       worker=status("Backend Cloudflare",healthy?"observed":"not-confirmed",
         healthy?"Saúde e modo sem voz confirmados por resposta pública do Worker":
           "Resposta recebida, mas contrato do backend ou manutenção divergente");
-      access=status("Cloudflare Access",data.accountPlugins?.configured===true?
-        "configured-unverified":"not-confirmed",
-        data.accountPlugins?.configured===true?
-          "Configuração anunciada pelo Worker; login e comando autenticado não testados":
-          "Configuração não anunciada ou indisponível; login não testado");
+      const configured=data.accountPlugins?.configured===true;
+      const uiOriginAllowed=data.accountPlugins?.uiOriginAllowed;
+      access=status("Cloudflare Access",
+        configured&&uiOriginAllowed!==false?"configured-unverified":"not-confirmed",
+        !configured?"Configuração não anunciada ou indisponível; login não testado":
+          uiOriginAllowed===false?
+          "Origem do GitHub Pages não autorizada no Worker: corrigir JARVIS_ACCOUNT_UI_ORIGIN":
+          uiOriginAllowed===true?
+          "Origem oficial autorizada pelo Worker; sessão JWT e política de Access não testadas":
+          "Configuração anunciada, mas a versão publicada ainda não informa a origem autorizada");
     } finally { clearTimeout(timeout); }
   } catch(error) {
     const name=error?.name==="AbortError"?"tempo excedido":"rede, CORS ou serviço indisponível";

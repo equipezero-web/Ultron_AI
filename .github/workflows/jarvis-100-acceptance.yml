@@ -25,6 +25,8 @@ jobs:
         run: node tests/jarvis-production-proof-unit.mjs
       - name: Verify explicit globe and Cloudflare Access self-test
         run: node tests/jarvis-operational-selftest.mjs
+      - name: Verify strict Cloudflare Access origin allowlist and CORS
+        run: node tests/jarvis-access-origin-cors.mjs
       - name: Verify authenticated public-intelligence execution
         run: node tests/jarvis-authenticated-intelligence.mjs
       - name: Confirm JavaScript syntax

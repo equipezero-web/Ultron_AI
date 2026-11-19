@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import {readFileSync} from "node:fs";
 import {
   parseJarvisOperationalSelfTest,testJarvisGlobe,testJarvisAccess,
-  runJarvisOperationalSelfTest
+  diagnoseJarvisAccessTransport,runJarvisOperationalSelfTest
 } from "../modules/jarvis-operational-selftest.js";
 
 assert.deepEqual(parseJarvisOperationalSelfTest("Jarvis, testar globo e acesso"),
@@ -80,6 +80,58 @@ const fake200=await testJarvisAccess({
   fetchImpl:async()=>({status:200,text:async()=>JSON.stringify({ok:true})})
 });
 assert.equal(fake200.ok,false);
+// The reported live failure is a browser-level CORS/redirect error, not HTTP 401.
+const backendHealth=(originAllowed=true,configured=true)=>({
+  status:"online",workerEntrypoint:"worker.js",
+  accountPlugins:{configured,uiOriginAllowed:originAllowed}
+});
+async function blockedAccessWithPublicHealth(health){
+  const observed=[];
+  const result=await testJarvisAccess({fetchImpl:async(url,init)=>{
+    observed.push({url,init});
+    if(url.endsWith("/api/account/session/verify"))throw new TypeError("Failed to fetch");
+    if(url.endsWith("/api/health"))return {status:200,text:async()=>JSON.stringify(health)};
+    throw Error("unexpected host");
+  }});
+  assert.equal(observed.length,2);
+  assert.equal(observed[0].init.credentials,"include");
+  assert.equal(observed[1].init.credentials,"omit");
+  assert.equal(observed[1].init.method,"GET");
+  assert.deepEqual(Object.keys(observed[1].init.headers),["Accept"]);
+  assert.equal(observed[1].url,backend+"/api/health");
+  return result;
+}
+const corsAllowed=await blockedAccessWithPublicHealth(backendHealth(true));
+assert.equal(corsAllowed.ok,false);
+assert.equal(corsAllowed.status,"access-or-cookie-blocked");
+assert.match(corsAllowed.detail,/Worker responde e origem está autorizada/);
+assert.match(corsAllowed.detail,/cookies entre github.io e workers.dev/);
+const corsDenied=await blockedAccessWithPublicHealth(backendHealth(false));
+assert.equal(corsDenied.status,"origin-not-allowed");
+assert.match(corsDenied.detail,/JARVIS_ACCOUNT_UI_ORIGIN/);
+const accessMissing=await blockedAccessWithPublicHealth(backendHealth(false,false));
+assert.equal(accessMissing.status,"access-not-configured");
+const staleDeploy=await blockedAccessWithPublicHealth({
+  status:"online",workerEntrypoint:"worker.js",accountPlugins:{configured:true}
+});
+assert.equal(staleDeploy.status,"access-configuration-unverified");
+const diagnostic=await diagnoseJarvisAccessTransport({
+  fetchImpl:async()=>({status:200,text:async()=>JSON.stringify(backendHealth(true))})
+});
+assert.equal(diagnostic.status,"access-or-cookie-blocked");
+const probeDenied=await diagnoseJarvisAccessTransport({
+  fetchImpl:async()=>({status:403,text:async()=>""})
+});
+assert.equal(probeDenied.status,"not-confirmed");
+const offline=await diagnoseJarvisAccessTransport({
+  fetchImpl:async()=>{throw Error("offline");}
+});
+assert.equal(offline.status,"not-confirmed");
+const noRequests=await diagnoseJarvisAccessTransport({
+  isCancelled:()=>true,fetchImpl:async()=>{throw Error("must not send request");}
+});
+assert.equal(noRequests.status,"cancelled");
+
 const unsafe=await testJarvisAccess({
   backendUrl:"https://attacker.invalid",
   fetchImpl:async()=>{throw Error("untrusted network request");}

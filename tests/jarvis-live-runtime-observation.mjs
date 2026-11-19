@@ -51,6 +51,20 @@ const loginDisabled=await observeJarvisRuntime({browser,fetchImpl:async()=>({
  status:200,text:async()=>JSON.stringify({...healthy,accountPlugins:{configured:false}})
 })});
 assert.equal(loginDisabled.checks[5].state,"not-confirmed");
+const wrongUiOrigin=await observeJarvisRuntime({browser,fetchImpl:async()=>({
+ status:200,text:async()=>JSON.stringify({
+  ...healthy,accountPlugins:{configured:true,uiOriginAllowed:false}
+ })
+})});
+assert.equal(wrongUiOrigin.checks[5].state,"not-confirmed");
+assert.match(wrongUiOrigin.checks[5].description,/JARVIS_ACCOUNT_UI_ORIGIN/);
+const allowedUiOrigin=await observeJarvisRuntime({browser,fetchImpl:async()=>({
+ status:200,text:async()=>JSON.stringify({
+  ...healthy,accountPlugins:{configured:true,uiOriginAllowed:true}
+ })
+})});
+assert.equal(allowedUiOrigin.checks[5].state,"configured-unverified");
+assert.match(allowedUiOrigin.checks[5].description,/sessão JWT e política de Access não testadas/);
 const corsBlocked=await observeJarvisRuntime({browser,fetchImpl:async()=>{throw Error("CORS blocked");}});
 assert.equal(corsBlocked.checks[4].state,"not-confirmed");
 assert.equal(corsBlocked.checks[5].state,"not-tested");

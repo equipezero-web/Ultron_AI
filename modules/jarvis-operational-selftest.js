@@ -48,6 +48,55 @@ export async function testJarvisGlobe({browser=globalThis.window,isCancelled=()=
   return {ok:true,status:"observed",mode:state.mode,
     detail:"Globo aberto; câmera e canvas visível confirmados nesta sessão. Pixels e interação por toque ainda não homologados"};
 }
+/**
+ * After a failed credentialed request, verify only the public health endpoint.
+ * This diagnoses policy deployment without reading cookies, JWTs or identity.
+ * It cannot observe the actual edge login response hidden by browser CORS.
+ */
+export async function diagnoseJarvisAccessTransport({
+  fetchImpl=globalThis.fetch,backendUrl=BACKEND,isCancelled=()=>false
+}={}){
+  if(isCancelled())return {status:"cancelled",detail:"Teste interrompido"};
+  let health;
+  try{
+    const url=new URL(backendUrl+"/api/health");
+    if(url.protocol!=="https:"||url.hostname!=="ultron-backend.lucaalves17-20.workers.dev")
+      return {status:"not-confirmed",detail:"Origem do backend não autorizada"};
+    const controller=new AbortController();
+    const timer=setTimeout(()=>controller.abort(),4500);
+    try{
+      const response=await fetchImpl(url.href,{
+        method:"GET",credentials:"omit",mode:"cors",redirect:"error",cache:"no-store",
+        headers:{"Accept":"application/json"},signal:controller.signal
+      });
+      if(isCancelled())return {status:"cancelled",detail:"Teste interrompido"};
+      if(response.status!==200)
+        return {status:"not-confirmed",
+          detail:"A rota pública do Worker não respondeu normalmente nesta sessão"};
+      const raw=await response.text();
+      if(raw.length>65536)return {status:"not-confirmed",
+        detail:"Resposta pública do Worker fora do limite"};
+      health=JSON.parse(raw);
+    }finally{clearTimeout(timer);}
+  }catch{
+    return {status:"not-confirmed",
+      detail:"Também não foi possível consultar a saúde pública do Worker; rede ou CORS não confirmados"};
+  }
+  if(health?.status!=="online"||health?.workerEntrypoint!=="worker.js")
+    return {status:"not-confirmed",detail:"Contrato de saúde do Worker não confirmado"};
+  if(health?.accountPlugins?.configured!==true)
+    return {status:"access-not-configured",
+      detail:"Worker público está ativo, mas a configuração de Cloudflare Access está incompleta"};
+  if(health.accountPlugins.uiOriginAllowed===false)
+    return {status:"origin-not-allowed",
+      detail:"Worker está ativo, mas JARVIS_ACCOUNT_UI_ORIGIN não autoriza https://equipezero-web.github.io"};
+  if(health.accountPlugins.uiOriginAllowed===true)
+    return {status:"access-or-cookie-blocked",
+      detail:"Worker responde e origem está autorizada no backend; verificar login no domínio protegido, configuração CORS do Access e cookies entre github.io e workers.dev"};
+  return {status:"access-configuration-unverified",
+    detail:"Worker está ativo, mas a versão publicada não informa se a origem do GitHub Pages está autorizada"};
+}
+
 export async function testJarvisAccess({
   fetchImpl=globalThis.fetch,backendUrl=BACKEND,isCancelled=()=>false
 }={}){
@@ -89,10 +138,13 @@ export async function testJarvisAccess({
       detail:"JWT Cloudflare Access validado pelo Worker, sem divulgar credenciais ou dados da conta"}:
       {ok:false,status:"not-confirmed",detail:"Contrato da sessão não validado"};
   }catch(error){
-    return {ok:false,status:"not-confirmed",
-      detail:error?.name==="AbortError"?
-        "Verificação excedeu o tempo limite":
-        "Conexão, CORS ou proteção do Cloudflare Access impediu a verificação"};
+    if(isCancelled())return {ok:false,status:"cancelled",detail:"Teste interrompido"};
+    const transport=await diagnoseJarvisAccessTransport({fetchImpl,backendUrl,isCancelled});
+    if(transport.status==="cancelled")
+      return {ok:false,status:"cancelled",detail:"Teste interrompido"};
+    return {ok:false,status:transport.status,
+      detail:(error?.name==="AbortError"?"A rota privada excedeu o tempo limite. ":"")+
+        transport.detail};
   }finally{clearTimeout(timer);}
 }
 export async function runJarvisOperationalSelfTest({
