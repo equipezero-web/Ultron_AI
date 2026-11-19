@@ -21,6 +21,7 @@ on:
       - 'modules/jarvis-evidence-progress.js'
       - 'modules/jarvis-operational-selftest.js'
       - 'tests/jarvis-operational-selftest.mjs'
+      - 'tests/jarvis-access-origin-cors.mjs'
       - 'modules/jarvis-live-runtime-observation.js'
       - 'tests/jarvis-live-runtime-observation.mjs'
       - 'tests/jarvis-evidence-progress.mjs'
