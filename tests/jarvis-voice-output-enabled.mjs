@@ -14,10 +14,12 @@ const service=file("android-bridge/app/src/main/java/com/ultron/bridge/RemoteMic
 const activity=file("android-bridge/app/src/main/java/com/ultron/bridge/RemoteMicActivity.java");
 const bridge=file("android-bridge/app/src/main/java/com/ultron/bridge/BridgeService.java");
 const capabilities=file("android-bridge/app/src/main/java/com/ultron/bridge/BridgeApi.java");
-assert.match(html,/JARVIS_AUDIO_POLICY=Object\.freeze\(\{enabled:false/);
-assert.ok(html.indexOf("JARVIS_AUDIO_POLICY")<html.indexOf("voice-match-v4290.js?v="));
+const boot=file("modules/jarvis-audio-maintenance.js");
+assert.match(html,/jarvis-audio-maintenance\\.js\\?v=/);
+assert.match(boot,/Object\\.freeze\\(\\{enabled:false/);
+assert.ok(html.indexOf("jarvis-audio-maintenance.js")<html.indexOf("voice-match-v4290.js?v="));
 assert.match(html,/jarvis-voice-paused jarvis-voice-output-disabled/);
-assert.match(html,/ultron_ai_preferences_v3/);
+assert.match(boot,/ultron_ai_preferences_v3/);
 for(const [name,text] of Object.entries({listener,match,output,fallback,remote,mobile,briefing,hud,local}))
  assert.match(text,/JARVIS_AUDIO_POLICY\?\.enabled===false|JARVIS_AUDIO_POLICY\?\.enabled !==false|JARVIS_AUDIO_POLICY\?\.enabled!==false|JARVIS_AUDIO_POLICY\?\.enabled === false/,
   name+" must respect operator policy");
