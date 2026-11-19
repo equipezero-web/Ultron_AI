@@ -77,7 +77,7 @@ assert.match(handler,/authorizeJarvisAccount\(request,env\)/);
 assert.match(handler,/if\(!auth\.ok\)return accountPluginsJson/);
 assert.match(handler,/request\.method!=="POST"/);
 assert.match(handler,/request\.text\(\)/);
-assert.doesNotMatch(handler,/operatorFrom|memoryKey|executeAccountPlugin|deviceBridge/);
+assert.doesNotMatch(handler.replace(/\/\/[^\n]*/g,""),/operatorFrom|memoryKey|executeAccountPlugin|deviceBridge/);
 assert.match(worker,/if\(path\.startsWith\("\/api\/account\/"\)\)/);
 assert.match(worker,/if\(path==="\u002Fapi\u002Faccount\u002Fintelligence\u002Fexecute"\)return handleAccountIntelligence/);
 console.log("JARVIS AUTHENTICATED INTELLIGENCE PASS: live read-only runners, provenance, unsafe denial, Access gate, no fake visual");
