@@ -80,6 +80,7 @@ assert.match(panel,/document\.createElement/);
 assert.doesNotMatch(panel,/\.innerHTML\s*=/);
 assert.match(shell,/Plugins permanentes/);
 assert.match(html,/jarvis-account-plugin-panel\.js/);
-assert.doesNotMatch(html,/<body[^>]*jarvis-voice-output-disabled/);
+assert.match(html,/modules\/jarvis-audio-maintenance\.js\?v=/);
+assert.match(read("modules/jarvis-audio-maintenance.js"),/enabled:false,mode:"text-only"/);
 assert.match(html,/id="btn-toggle-speech"/);
 console.log("JARVIS ACCOUNT PLUGIN LIFECYCLE PASS: owner-only revoke, pending scrub, no cross-account action, UI confirmation, text-only mode");
