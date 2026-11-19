@@ -253,9 +253,11 @@ function init(){
  panel.append(header,archiveList,detail);
  center.append(panel);
  makeButton("FALAR","speak",speak);
+ buttons.speak.dataset.jarvisVoiceAction="speech";
  buttons.speak.title="Fazer o J.A.R.V.I.S. falar usando a voz do navegador";
  buttons.speak.setAttribute("aria-label","Testar resposta falada do Neural Jarvis");
  makeButton("ÁUDIO VISUAL","microphone",toggleAudio);
+ buttons.microphone.dataset.jarvisVoiceAction="microphone";
  makeButton("SOBRECARGA TÁTICA","overdrive",toggleOverdrive);
  const expand=makeButton("REDOMA & ARQUIVOS","expand",toggleArchive);
  expand.setAttribute("aria-expanded","false");
