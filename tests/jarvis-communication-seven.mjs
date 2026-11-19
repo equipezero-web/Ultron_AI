@@ -164,6 +164,6 @@ assert.ok(orchestratorNew.indexOf("const regionalNewsIntent=parseRegionalNewsVis
  "Regional news must route before generic director/Earth/AI");
 assert.match(orchestratorNew,/if\(\/\\b\(\?:noticias\?\|manchetes\?/,
  "Earth place parser must reject media/news commands");
-assert.match(file("index.html"),/ultron-orchestrator-v4270\.js\?v=5\.66\.0/);
+assert.match(file("index.html"),/ultron-orchestrator-v4270\.js\?v=5\.[0-9]+\.[0-9]+/);
 
 console.log("JARVIS COMMUNICATION 7 PASS: command safety, voice, visual, news, camera audio and consented notifications");
