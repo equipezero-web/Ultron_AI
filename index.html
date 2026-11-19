@@ -12,8 +12,8 @@ document.documentElement.classList.add("jarvis-voice-off");
 try{
  localStorage.setItem("jarvis_speech_output_enabled_v1","off");
  localStorage.setItem("ultron_world_briefing_auto_voice_v1","off");
- const p=JSON.parse(localStorage.getItem("ultron_preferences")||"null");
- if(p&&typeof p==="object"){p.voiceWakeEnabled=false;localStorage.setItem("ultron_preferences",JSON.stringify(p));}
+ const p=JSON.parse(localStorage.getItem("ultron_ai_preferences_v3")||"null");
+ if(p&&typeof p==="object"){p.voiceWakeEnabled=false;localStorage.setItem("ultron_ai_preferences_v3",JSON.stringify(p));}
 }catch{}
 try{window.speechSynthesis?.cancel?.();}catch{}
 </script>
