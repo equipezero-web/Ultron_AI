@@ -126,6 +126,10 @@ try {
     await client.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:points(gap)});
   }
   await client.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+  // Globe.gl updates its camera between animation frames. Verify the actual
+  // final altitude with a bounded wait; do not accept a mere touch event.
+  await page.waitForFunction(start=>window.ULTRON_EARTH.state.view.altitude < start-.08,
+    {timeout:3500,polling:75},original);
   const pinched=await page.evaluate(()=>window.ULTRON_EARTH.state.view.altitude);
   assert.ok(pinched < original-.08,'Two-finger outward pinch must zoom Globe.gl on the phone');
 
