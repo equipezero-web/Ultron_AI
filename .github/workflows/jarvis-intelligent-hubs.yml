@@ -17,6 +17,9 @@ on:
       - 'modules/ultron-orchestrator-v4270.js'
       - 'modules/jarvis-verified-intelligence-client.js'
       - 'tests/jarvis-verified-intelligence-client.mjs'
+      - 'tests/jarvis-verified-weather-scene.mjs'
+      - 'modules/jarvis-global-weather.js'
+      - 'modules/jarvis-geospatial-model.js'
       - 'tests/jarvis-intelligent-hubs.mjs'
       - '.github/workflows/jarvis-intelligent-hubs.yml'
   push:
@@ -32,5 +35,6 @@ jobs:
       - run: node tests/jarvis-intelligent-hubs.mjs
       - run: node tests/jarvis-authenticated-intelligence.mjs
       - run: node tests/jarvis-verified-intelligence-client.mjs
+      - run: node tests/jarvis-verified-weather-scene.mjs
       - run: node tests/jarvis-memory-relevance.mjs
       - run: node tests/jarvis-memory-context.mjs
