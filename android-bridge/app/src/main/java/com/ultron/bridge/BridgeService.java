@@ -119,6 +119,16 @@ public class BridgeService extends Service {
                         break;
                     }
 
+                    if ("microphone.request".equals(action) ||
+                        "microphone.pause".equals(action) ||
+                        "microphone.resume".equals(action)) {
+                        SecureStore.setRemoteMicTrusted(this, false);
+                        success = false;
+                        result.put("delivered", false);
+                        result.put("reason", "VOICE_DISABLED_MAINTENANCE");
+                        result.put("action", action);
+                        break;
+                    }
                     if ("microphone.request".equals(action)) {
                         boolean trusted = SecureStore.isRemoteMicTrusted(this);
                         boolean permissionGranted = hasRecordAudioPermission();
