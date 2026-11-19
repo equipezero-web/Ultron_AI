@@ -40,6 +40,7 @@ public class RemoteMicService extends Service {
     private final Handler handler = new Handler(Looper.getMainLooper());
     private SpeechRecognizer recognizer;
     private Intent recognizerIntent;
+    private static final boolean REMOTE_MIC_ENABLED = false;
     private boolean listeningEnabled = true;
     private boolean systemPaused = false;
     private boolean restarting = false;
@@ -70,6 +71,11 @@ public class RemoteMicService extends Service {
 
         if (ACTION_STOP.equals(action)) {
             stopRemoteMicrophone(true);
+            return START_NOT_STICKY;
+        }
+        // Temporary operator maintenance: no remote audio/speech on Android.
+        if (!REMOTE_MIC_ENABLED) {
+            stopRemoteMicrophone(false);
             return START_NOT_STICKY;
         }
         if (ACTION_START.equals(action) &&
