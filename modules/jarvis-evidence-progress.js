@@ -13,8 +13,8 @@ export function parseJarvisEvolutionCommand(value){
   return /^(?:(?:mostre|mostrar|consulte|consultar|verifique|verificar)\s+)?(?:(?:o|meu)\s+)?(?:progresso\s+(?:das\s+60\s+capacidades|do\s+jarvis|do\s+sistema)|relatorio\s+de\s+evolucao(?:\s+100%)?|evolucao\s+das\s+60\s+capacidades)$/.test(n)?
     {kind:"verified-acceptance-progress"}:null;
 }
-export function summarizeJarvisEvidence(manifest){
-  const evaluation=validateJarvisAcceptanceManifest(manifest);
+export function summarizeJarvisEvidence(manifest,{now=Date.now}={}){
+  const evaluation=validateJarvisAcceptanceManifest(manifest,{now});
   if(!evaluation.ok)return null;
   const items=manifest.capabilities;
   const complete=items.filter(x=>x.acceptance==="accepted");
