@@ -1,6 +1,6 @@
 import { bridgeAgeMs, bridgeIsOnline, sortMobileBridges, BRIDGE_ONLINE_MAX_AGE_MS } from './bridge-status.js?v=5.15.0';
 import "./neural-live.js";
-import "./voice-fallback.js";
+import "./voice-fallback.js?v=5.66.0";
 import API_CONFIG from "../config.js";
 
 const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
