@@ -8,7 +8,7 @@ assert.equal(parseVerifiedIntelligenceCommand("Não execute inteligência verifi
 assert.equal(parseVerifiedIntelligenceCommand("Jarvis, inteligência verificada: notícias").city,null);
 assert.deepEqual(parseVerifiedIntelligenceCommand(
   "Jarvis, inteligência verificada: previsão do tempo em Recife"),{
-  message:"previsão do tempo em Recife",city:"Recife",days:7
+  message:"previsão do tempo em Recife",city:"Recife",days:7,view:null
 });
 assert.equal(parseVerifiedIntelligenceCommand(
   "Jarvis, inteligência verificada: previsão do tempo em Tóquio no globo por 16 dias").city,"Tóquio");
