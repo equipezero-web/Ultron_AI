@@ -63,13 +63,13 @@ export async function runVerifiedIntelligenceCommand(intent,{fetchImpl,showAnswe
     return {ok:false,route:"verified-intelligence",text:"INTELIGÊNCIA VERIFICADA // rede ou login Cloudflare Access indisponível. Não foi possível confirmar a consulta."};
   }
   if(cancelled())return {ok:false,status:"cancelled",route:"verified-intelligence",text:"Consulta interrompida.",displayed:false};
+  if(!response.ok&&data?.ok!==true&&data?.partial!==true){
+    return {ok:false,route:"verified-intelligence",text:"INTELIGÊNCIA VERIFICADA // "+
+      clean(data?.error||"consulta não autorizada ou indisponível",170)+
+      ". O sistema não presumiu nenhuma execução."};
+  }
   if(!data||!Array.isArray(data.steps)){
     return {ok:false,route:"verified-intelligence",text:"INTELIGÊNCIA VERIFICADA // resposta inválida do backend, sem dados confirmados."};
-  }
-  if(!response.ok&&data.ok!==true&&data.partial!==true){
-    return {ok:false,route:"verified-intelligence",text:"INTELIGÊNCIA VERIFICADA // "+
-      clean(data.error||"consulta não autorizada ou indisponível",170)+
-      ". O sistema não presumiu nenhuma execução."};
   }
   const steps=data.steps.filter(s=>["meteorology","news","visual"].includes(s?.agent));
   const text="INTELIGÊNCIA VERIFICADA // "+steps.map(summarizeStep).join("\n")+
