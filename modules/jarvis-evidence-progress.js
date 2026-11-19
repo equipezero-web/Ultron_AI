@@ -1,3 +1,4 @@
+import {validateJarvisAcceptanceManifest} from "./jarvis-acceptance-validation.js";
 /**
  * Evidence-based evolution status, without another page or a synthetic score.
  * The public manifest contains capability requirements, not credentials.
@@ -12,27 +13,14 @@ export function parseJarvisEvolutionCommand(value){
   return /^(?:(?:mostre|mostrar|consulte|consultar|verifique|verificar)\s+)?(?:(?:o|meu)\s+)?(?:progresso\s+(?:das\s+60\s+capacidades|do\s+jarvis|do\s+sistema)|relatorio\s+de\s+evolucao(?:\s+100%)?|evolucao\s+das\s+60\s+capacidades)$/.test(n)?
     {kind:"verified-acceptance-progress"}:null;
 }
-export function summarizeJarvisEvidence(manifest){
-  const items=manifest?.capabilities;
-  if(!Array.isArray(items)||items.length!==60)return null;
-  const ids=new Set(items.map(x=>x?.id));
-  if(ids.size!==60)return null;
-  for(const [area,count] of areas)
-    if(items.filter(x=>x.area===area).length!==count)return null;
+export function summarizeJarvisEvidence(manifest,{now=Date.now}={}){
+  const evaluation=validateJarvisAcceptanceManifest(manifest,{now});
+  if(!evaluation.ok)return null;
+  const items=manifest.capabilities;
   const complete=items.filter(x=>x.acceptance==="accepted");
-  const partial=items.filter(x=>
-    x.acceptance==="pending" &&
-    x.checks?.code?.state==="partial-scope-verified" &&
+  const partial=items.filter(x=>x.acceptance==="pending"&&
+    x.checks?.code?.state==="partial-scope-verified"&&
     x.checks?.ci?.state==="partial-scope-verified");
-  // An accepted capability MUST have the required source proofs for all
-  // dimensions. Reject a malformed or forged 100% claim, never infer it.
-  for(const item of complete)
-    for(const dimension of ["code","ci","production","physical"]){
-      const proof=item.checks?.[dimension];
-      if(!proof||typeof proof!=="object"||
-         !/^https:\/\//.test(proof.url||"")||
-         !Number.isFinite(Date.parse(proof.verifiedAt)))return null;
-    }
   const rows=areas.map(([name,total])=>({
     name,total,accepted:items.filter(x=>x.area===name&&x.acceptance==="accepted").length,
     partial:partial.filter(x=>x.area===name).length
@@ -42,6 +30,7 @@ export function summarizeJarvisEvidence(manifest){
     pending:items.length-complete.length,areas:rows,
     text:"EVOLUÇÃO J.A.R.V.I.S. // HOMOLOGAÇÃO REAL\n"+
       complete.length+"/"+items.length+" capacidades aceitas integralmente.\n"+
+      "Isso não significa que as demais capacidades estejam ausentes ou sem funcionamento; significa que ainda faltam comprovantes completos.\n"+
       partial.length+" capacidades têm evidência parcial de código e CI, mas não de produção/dispositivos.\n"+
       rows.map(x=>x.name+": "+x.accepted+"/"+x.total+" aceitas; "+
         x.partial+" com progresso técnico parcialmente comprovado.").join("\n")+

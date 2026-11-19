@@ -17,6 +17,10 @@ jobs:
         run: node tests/jarvis-100-acceptance.mjs
       - name: Verify visible progress uses evidence rather than historical percentages
         run: node tests/jarvis-evidence-progress.mjs
+      - name: Prove acceptance can progress from 0 to 60 with proper evidence
+        run: node tests/jarvis-dynamic-acceptance.mjs
+      - name: Verify deployment observation parser with mocked services
+        run: node tests/jarvis-production-proof-unit.mjs
       - name: Verify authenticated public-intelligence execution
         run: node tests/jarvis-authenticated-intelligence.mjs
       - name: Confirm JavaScript syntax
