@@ -102,6 +102,7 @@ function audioLoop(){
  audioFrame=requestAnimationFrame(audioLoop);
 }
 async function toggleAudio(){
+  if (window.JARVIS_AUDIO_POLICY?.enabled===false) { await stopAudio(); return {ok:false,reason:"VOICE_DISABLED"}; }
  if(visualAudio)return stopAudio();
  if(!engine()?.active){
   report("Áudio visual indisponível: núcleo holográfico inativo.");
@@ -153,6 +154,7 @@ function toggleOverdrive(){
  return {ok:true,active:overdrive};
 }
 function speak(){
+  if (window.JARVIS_AUDIO_POLICY?.enabled===false) return {ok:false,reason:"VOICE_DISABLED"};
  if(!engine()?.active)return {ok:false,reason:"ENGINE_INACTIVE"};
  if(document.body.classList.contains("jarvis-voice-paused"))
   return {ok:false,reason:"VOICE_PAUSED"};
