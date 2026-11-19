@@ -79,4 +79,8 @@ assert.match(orchestrator.slice(hook,pairing),/generation!==queueGeneration/);
 assert.match(orchestrator,/import \{parseVerifiedIntelligenceCommand,runVerifiedIntelligenceCommand\}/);
 const audio=readFileSync(new URL("../modules/jarvis-audio-maintenance.js",import.meta.url),"utf8");
 assert.match(audio,/enabled:false,mode:"text-only"/);
+const commandCenter=readFileSync(new URL("../modules/jarvis-command-center-v4330.js",import.meta.url),"utf8");
+assert.match(commandCenter,/audioInMaintenance = window\.JARVIS_AUDIO_POLICY\?\.enabled === false/);
+assert.match(commandCenter,/audioInMaintenance \? 'DESATIVADA' : 'ENABLED'/);
+assert.match(commandCenter,/if\(audioInMaintenance\)return;state\.textContent='FALANDO'/);
 console.log("VERIFIED INTELLIGENCE CLIENT PASS: explicit terminal route, signed requests, sourced Neural news, no false globe claim, P0 and voice OFF");
