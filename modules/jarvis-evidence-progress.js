@@ -30,6 +30,7 @@ export function summarizeJarvisEvidence(manifest,{now=Date.now}={}){
     pending:items.length-complete.length,areas:rows,
     text:"EVOLUÇÃO J.A.R.V.I.S. // HOMOLOGAÇÃO REAL\n"+
       complete.length+"/"+items.length+" capacidades aceitas integralmente.\n"+
+      "Isso não significa que as demais capacidades estejam ausentes ou sem funcionamento; significa que ainda faltam comprovantes completos.\n"+
       partial.length+" capacidades têm evidência parcial de código e CI, mas não de produção/dispositivos.\n"+
       rows.map(x=>x.name+": "+x.accepted+"/"+x.total+" aceitas; "+
         x.partial+" com progresso técnico parcialmente comprovado.").join("\n")+
