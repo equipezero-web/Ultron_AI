@@ -19,6 +19,8 @@ on:
       - 'tests/jarvis-verified-intelligence-client.mjs'
       - 'tests/jarvis-verified-weather-scene.mjs'
       - 'modules/jarvis-evidence-progress.js'
+      - 'modules/jarvis-live-runtime-observation.js'
+      - 'tests/jarvis-live-runtime-observation.mjs'
       - 'tests/jarvis-evidence-progress.mjs'
       - 'data/jarvis-100-acceptance-manifest.json'
       - 'modules/jarvis-global-weather.js'
@@ -39,5 +41,6 @@ jobs:
       - run: node tests/jarvis-authenticated-intelligence.mjs
       - run: node tests/jarvis-verified-intelligence-client.mjs
       - run: node tests/jarvis-verified-weather-scene.mjs
+      - run: node tests/jarvis-live-runtime-observation.mjs
       - run: node tests/jarvis-memory-relevance.mjs
       - run: node tests/jarvis-memory-context.mjs

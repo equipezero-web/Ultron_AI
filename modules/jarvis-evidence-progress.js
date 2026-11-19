@@ -1,4 +1,5 @@
 import {validateJarvisAcceptanceManifest} from "./jarvis-acceptance-validation.js";
+import {observeJarvisRuntime} from "./jarvis-live-runtime-observation.js";
 /**
  * Evidence-based evolution status, without another page or a synthetic score.
  * The public manifest contains capability requirements, not credentials.
@@ -39,7 +40,7 @@ export function summarizeJarvisEvidence(manifest,{now=Date.now}={}){
       "Voz, escuta e Voice Match permanecem desligados durante a manutenção."
   };
 }
-export async function showJarvisEvolutionProgress({fetchImpl,showAnswer,isCancelled}={}){
+export async function showJarvisEvolutionProgress({fetchImpl,showAnswer,isCancelled,runtimeObserver}={}){
   const url=new URL("../data/jarvis-100-acceptance-manifest.json",import.meta.url);
   const fetcher=fetchImpl||globalThis.fetch;
   let report;
@@ -53,11 +54,25 @@ export async function showJarvisEvolutionProgress({fetchImpl,showAnswer,isCancel
     return {ok:false,route:"acceptance-progress",text:"EVOLUÇÃO J.A.R.V.I.S. // inventário verificável indisponível. Nenhuma nota foi presumida."};
   }
   if(typeof isCancelled==="function"&&isCancelled())return {ok:false,status:"cancelled",route:"acceptance-progress",text:"Consulta interrompida."};
+  let live=null;
+  const observer=runtimeObserver||(typeof globalThis.window!=="undefined"?observeJarvisRuntime:null);
+  if(typeof observer==="function"){
+    try{
+      live=await observer({fetchImpl:fetcher,browser:globalThis.window});
+    }catch{
+      // The manifest remains meaningful even when live checks cannot run.
+      live={text:"DIAGNÓSTICO OPERACIONAL // rede e módulo de verificação não confirmados.",
+        observed:0,total:0,certificationCountIncrement:0};
+    }
+  }
+  if(typeof isCancelled==="function"&&isCancelled())return {ok:false,status:"cancelled",route:"acceptance-progress",text:"Consulta interrompida."};
+  const message=report.text+(live?.text?"\n\n"+live.text:"");
   let displayed=false;
   try{
     const fn=showAnswer||globalThis.window?.ULTRON_NEURAL_ANSWER?.show;
-    if(typeof fn==="function"){fn(report.text);displayed=true;}
+    if(typeof fn==="function"){fn(message);displayed=true;}
   }catch{}
-  return {ok:true,route:"acceptance-progress",text:report.text,
-    accepted:report.accepted,partial:report.partial,displayed,voiceEnabled:false};
+  return {ok:true,route:"acceptance-progress",text:message,
+    accepted:report.accepted,partial:report.partial,liveObserved:live?.observed??null,
+    liveTotal:live?.total??null,displayed,voiceEnabled:false};
 }
