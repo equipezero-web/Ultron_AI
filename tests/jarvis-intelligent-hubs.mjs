@@ -18,6 +18,19 @@ assert.ok(plan.steps.some(s=>s.agent==="meteorology"));
 assert.ok(plan.steps.some(s=>s.agent==="visual"));
 assert.ok(plan.steps.length<=6);
 assert.equal(planAgents("qual o resultado?").steps[0].agent,"research");
+
+const mixed=planAgents("Jarvis, não mostre notícias; mostre a previsão meteorológica no mapa");
+assert.ok(mixed.steps.some(s=>s.agent==="meteorology"));
+assert.ok(mixed.steps.some(s=>s.agent==="visual"));
+assert.ok(!mixed.steps.some(s=>s.agent==="news"),"negative news request must not become an agent step");
+const contrary=planAgents("Quero notícias, mas não quero o mapa");
+assert.deepEqual(contrary.steps.map(s=>s.agent),["news"],"negative map clause must not render");
+const fullyNegative=planAgents("Não mostre notícias e nem o mapa");
+assert.equal(fullyNegative.steps.length,0,"fully negative request must not trigger web-search fallback");
+assert.equal(fullyNegative.reason,"NO_AFFIRMATIVE_ACTION");
+assert.ok(planAgents("Mostre meteorologia e visualize no mapa").steps.some(s=>s.agent==="meteorology"));
+assert.ok(planAgents("Mostre meteorologia e visualize no mapa").steps.some(s=>s.agent==="visual"));
+
 const execution=await executeAgents(plan,{agents:{
   meteorology:async({tool})=>({ok:tool==="weather.read",result:{verified:true}}),
   visual:async({tool})=>({ok:tool==="visual.render",result:{view:"globe"}})
