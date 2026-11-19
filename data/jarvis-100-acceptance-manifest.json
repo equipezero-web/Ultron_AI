@@ -6,7 +6,8 @@
   "notes": [
     "Percentual anterior é referência histórica, não evidência nem valor atual automaticamente atualizado.",
     "100% exige teste de uso real, comprovante verificável e dependências externas autorizadas.",
-    "Nenhum check de CI sozinho comprova produção, transmissões externas ou funcionamento de hardware."
+    "Nenhum check de CI sozinho comprova produção, transmissões externas ou funcionamento de hardware.",
+    "Seis capacidades possuem provas parciais de código/CI com escopo delimitado; nenhuma foi aceita em produção/dispositivo real, portanto não aumentar automaticamente o percentual final."
   ],
   "phases": [
     {
@@ -221,8 +222,18 @@
       "codeReference": "modules/jarvis-geospatial-visual.js",
       "acceptanceRequirement": "Verificar sobreposição, troca de cena e cobertura por fonte; sem simulações físicas falsas.",
       "checks": {
-        "code": "not-certified",
-        "ci": "not-certified",
+        "code": {
+          "state": "partial-scope-verified",
+          "url": "https://github.com/equipezero-web/Ultron_AI/pull/210",
+          "verifiedAt": "2026-11-19",
+          "scope": "Cenário meteorológico localizado em 2D/3D, com fonte e estado real confirmados; camadas contínuas e aparelhos reais pendentes."
+        },
+        "ci": {
+          "state": "partial-scope-verified",
+          "url": "https://github.com/equipezero-web/Ultron_AI/actions/runs/44534446695",
+          "verifiedAt": "2026-11-19",
+          "scope": "CI de integridade e execução autenticada; não equivale a prova de produção."
+        },
         "production": "not-certified",
         "physical": "not-certified"
       },
@@ -240,8 +251,18 @@
       "codeReference": "modules/ultron-neural-answer.js",
       "acceptanceRequirement": "Garantir que a mídia corresponda à notícia e não oculte a área central.",
       "checks": {
-        "code": "not-certified",
-        "ci": "not-certified",
+        "code": {
+          "state": "partial-scope-verified",
+          "url": "https://github.com/equipezero-web/Ultron_AI/pull/209",
+          "verifiedAt": "2026-11-19",
+          "scope": "Cartões de notícias recentes com links HTTPS; correspondência e disponibilidade de todas as imagens e vídeos não certificadas."
+        },
+        "ci": {
+          "state": "partial-scope-verified",
+          "url": "https://github.com/equipezero-web/Ultron_AI/actions/runs/44534446695",
+          "verifiedAt": "2026-11-19",
+          "scope": "CI de integridade e execução autenticada; não equivale a prova de produção."
+        },
         "production": "not-certified",
         "physical": "not-certified"
       },
@@ -335,8 +356,18 @@
       "codeReference": "modules/ultron-intelligence-briefing.js",
       "acceptanceRequirement": "Validação editorial das prioridades e comportamento quando a fonte está antiga.",
       "checks": {
-        "code": "not-certified",
-        "ci": "not-certified",
+        "code": {
+          "state": "partial-scope-verified",
+          "url": "https://github.com/equipezero-web/Ultron_AI/pull/209",
+          "verifiedAt": "2026-11-19",
+          "scope": "Notícias brasileiras recentes no Neural Ring com data e origem; despertar e curadoria editorial ainda não homologados."
+        },
+        "ci": {
+          "state": "partial-scope-verified",
+          "url": "https://github.com/equipezero-web/Ultron_AI/actions/runs/44534446695",
+          "verifiedAt": "2026-11-19",
+          "scope": "CI de integridade e execução autenticada; não equivale a prova de produção."
+        },
         "production": "not-certified",
         "physical": "not-certified"
       },
@@ -454,8 +485,18 @@
       "codeReference": "docs/jarvis-global-weather.md",
       "acceptanceRequirement": "Melhorar intenção de fechar a previsão exibida no mapa geográfico.",
       "checks": {
-        "code": "not-certified",
-        "ci": "not-certified",
+        "code": {
+          "state": "partial-scope-verified",
+          "url": "https://github.com/equipezero-web/Ultron_AI/pull/210",
+          "verifiedAt": "2026-11-19",
+          "scope": "Consulta pública com previsão numérica de 3, 7 e 16 dias e cenário verificável para cidade escolhida."
+        },
+        "ci": {
+          "state": "partial-scope-verified",
+          "url": "https://github.com/equipezero-web/Ultron_AI/actions/runs/44534446695",
+          "verifiedAt": "2026-11-19",
+          "scope": "CI de integridade e execução autenticada; não equivale a prova de produção."
+        },
         "production": "not-certified",
         "physical": "not-certified"
       },
@@ -857,8 +898,18 @@
       "codeReference": "docs/jarvis-worldcams-concurrent-mobile-files.md",
       "acceptanceRequirement": "Expandir execução real e orquestração confiável entre dispositivos.",
       "checks": {
-        "code": "not-certified",
-        "ci": "not-certified",
+        "code": {
+          "state": "partial-scope-verified",
+          "url": "https://github.com/equipezero-web/Ultron_AI/pull/208",
+          "verifiedAt": "2026-11-19",
+          "scope": "Execução concorrente somente leitura de notícias e meteorologia; multitarefas por dispositivos não certificadas."
+        },
+        "ci": {
+          "state": "partial-scope-verified",
+          "url": "https://github.com/equipezero-web/Ultron_AI/actions/runs/44534446695",
+          "verifiedAt": "2026-11-19",
+          "scope": "CI de integridade e execução autenticada; não equivale a prova de produção."
+        },
         "production": "not-certified",
         "physical": "not-certified"
       },
@@ -976,8 +1027,18 @@
       "codeReference": "docs/jarvis-intelligent-hubs-foundation.md",
       "acceptanceRequirement": "Agentes executores reais conectados a ferramentas; hoje é seleção/advisory.",
       "checks": {
-        "code": "not-certified",
-        "ci": "not-certified",
+        "code": {
+          "state": "partial-scope-verified",
+          "url": "https://github.com/equipezero-web/Ultron_AI/pull/208",
+          "verifiedAt": "2026-11-19",
+          "scope": "Dois especialistas de leitura autenticada (meteorologia e notícias); demais perfis não executam ferramentas completas."
+        },
+        "ci": {
+          "state": "partial-scope-verified",
+          "url": "https://github.com/equipezero-web/Ultron_AI/actions/runs/44534446695",
+          "verifiedAt": "2026-11-19",
+          "scope": "CI de integridade e execução autenticada; não equivale a prova de produção."
+        },
         "production": "not-certified",
         "physical": "not-certified"
       },
