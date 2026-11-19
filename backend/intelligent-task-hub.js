@@ -9,24 +9,46 @@ export const AGENTS=Object.freeze({
   programming:{tools:["code.inspect","tests.read"],level:1}
 });
 const ACTIONS=[
-  {agent:"meteorology",pattern:/\b(clima|tempo|chuva|meteorolog|el nino|previsao)\b/,tool:"weather.read"},
-  {agent:"news",pattern:/\b(noticias|noticias|acontecimentos|manchetes)\b/,tool:"news.read"},
+  {agent:"meteorology",pattern:/\b(clima|tempo|chuva|meteorolog\w*|el nino|previs\w*)\b/,tool:"weather.read"},
+  {agent:"news",pattern:/\b(notici\w*|acontecimentos|manchetes)\b/,tool:"news.read"},
   {agent:"devices",pattern:/\b(dispositivos|celular|android|tv|computador)\b/,tool:"devices.status"},
-  {agent:"programming",pattern:/\b(codigo|repositorio|erro|programa|bug|teste)\b/,tool:"code.inspect"},
+  {agent:"programming",pattern:/\b(codigo|repositorio|erro|programa\w*|bug|teste\w*)\b/,tool:"code.inspect"},
   {agent:"memory",pattern:/\b(memoria|lembre|anteriores|historico)\b/,tool:"memory.recall"},
   {agent:"research",pattern:/\b(pesquise|pesquisar|investigue|busque|procure)\b/,tool:"research.search"},
-  {agent:"visual",pattern:/\b(globo|mapa|visualiz|neural ring)\b/,tool:"visual.render"}
+  {agent:"visual",pattern:/\b(globo|mapa|visualiz\w*|neural ring)\b/,tool:"visual.render"}
 ];
+const NEGATORS=/\b(?:nao|nunca|jamais|sem|evite|dispense)\b/g;
+const CLAUSE_BOUNDARY=/[,;.!?]+|\b(?:mas|porem|contudo|e sim|em vez disso)\b/;
+// A negative instruction is not authorization to plan its opposite. Each
+// capability is matched within an affirmative clause, never just by keywords.
+function affirmativeMatch(clause,pattern) {
+  const matcher=new RegExp(pattern.source,"g");
+  let hit;
+  while((hit=matcher.exec(clause))) {
+    const prefix=clause.slice(Math.max(0,hit.index-100),hit.index);
+    const negations=[...prefix.matchAll(NEGATORS)];
+    const last=negations[negations.length-1];
+    if(last){
+      const between=prefix.slice(last.index+last[0].length);
+      if(between.trim().split(/\s+/).filter(Boolean).length<=7)continue;
+    }
+    return true;
+  }
+  return false;
+}
 export function planAgents(input,{maxSteps=6}={}) {
   const message=String(input||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().slice(0,2000);
-  const recognized=ACTIONS.filter(a=>a.pattern.test(message));
-  const selected=recognized.length?recognized:[{agent:"research",tool:"research.search"}];
-  const steps=selected.slice(0,Math.max(1,Math.min(6,maxSteps))).map((a,i)=>({
+  const clauses=message.split(CLAUSE_BOUNDARY).map(x=>x.trim()).filter(Boolean);
+  const recognized=ACTIONS.filter(a=>clauses.some(c=>affirmativeMatch(c,a.pattern)));
+  // A fully negated request must not silently become an unrelated web search.
+  const onlyNegation=recognized.length===0&&clauses.some(c=>/\b(?:nao|nunca|jamais|sem|evite|dispense)\b/.test(c));
+  const selected=recognized.length?recognized:onlyNegation?[]:[{agent:"research",tool:"research.search"}];
+  const steps=selected.slice(0,Math.max(1,Math.min(6,Number(maxSteps)||6))).map((a,i)=>({
     id:"step-"+(i+1),agent:a.agent,tool:a.tool,level:AGENTS[a.agent].level,
     requiresApproval:AGENTS[a.agent].level>2
   }));
   return {steps,parallelizable:steps.every(x=>x.level===1),requiresApproval:steps.some(x=>x.requiresApproval),
-    advisory:true};
+    advisory:true,...(onlyNegation?{reason:"NO_AFFIRMATIVE_ACTION"}:{})};
 }
 export async function executeAgents(plan,{agents={},signal,onStep=()=>{},approved=false,concurrency=2}={}) {
   const tasks=plan?.steps;
