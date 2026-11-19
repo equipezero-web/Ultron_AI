@@ -1,6 +1,7 @@
 import {TASK_CONTEXT} from "./jarvis-task-context.js?v=4.69.0";
 import {planAgents} from "../backend/intelligent-task-hub.js";
 import {parseVerifiedIntelligenceCommand,runVerifiedIntelligenceCommand} from "./jarvis-verified-intelligence-client.js";
+import {parseJarvisEvolutionCommand,showJarvisEvolutionProgress} from "./jarvis-evidence-progress.js";
 import {classifyOperatorTurn,splitOperatorSteps} from "./jarvis-intent-engine.js?v=4.69.0";
 import {directPlan,resolveActionPlan,runActionPlan} from "./jarvis-action-engine.js?v=4.101.2";
 import {parseLocalCommand,runLocalCommand} from "./jarvis-local-commands.js?v=5.66.0";
@@ -871,6 +872,21 @@ function enqueue(message, source = "terminal", approvedMission = false) {
       });
       if(result?.status!=="cancelled")log(result.text,!result.ok);
       state.lastRoute="verified-intelligence";
+      return result;
+    });
+    return queue;
+  }
+  // Evidence-based state is read from the 60-capability manifest; no fake
+  // 100% or historical average masquerading as current production readiness.
+  if(parseJarvisEvolutionCommand(message)){
+    const generation=queueGeneration;
+    queue=queue.catch(()=>null).then(async()=>{
+      if(generation!==queueGeneration)return {ok:false,status:"cancelled",route:"acceptance-progress"};
+      const result=await showJarvisEvolutionProgress({
+        isCancelled:()=>generation!==queueGeneration
+      });
+      if(result?.status!=="cancelled")log(result.text,!result.ok);
+      state.lastRoute="acceptance-progress";
       return result;
     });
     return queue;
