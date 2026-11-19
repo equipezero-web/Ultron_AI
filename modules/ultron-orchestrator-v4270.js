@@ -2,7 +2,7 @@ import {TASK_CONTEXT} from "./jarvis-task-context.js?v=4.69.0";
 import {planAgents} from "../backend/intelligent-task-hub.js";
 import {parseVerifiedIntelligenceCommand,runVerifiedIntelligenceCommand} from "./jarvis-verified-intelligence-client.js";
 import {parseJarvisEvolutionCommand,showJarvisEvolutionProgress} from "./jarvis-evidence-progress.js?v=5.72.0";
-import {parseJarvisOperationalSelfTest,runJarvisOperationalSelfTest} from "./jarvis-operational-selftest.js?v=1.0.1";
+import {parseJarvisOperationalSelfTest,runJarvisOperationalSelfTest} from "./jarvis-operational-selftest.js?v=1.0.2";
 import {classifyOperatorTurn,splitOperatorSteps} from "./jarvis-intent-engine.js?v=4.69.0";
 import {directPlan,resolveActionPlan,runActionPlan} from "./jarvis-action-engine.js?v=4.101.2";
 import {parseLocalCommand,runLocalCommand} from "./jarvis-local-commands.js?v=5.66.0";
