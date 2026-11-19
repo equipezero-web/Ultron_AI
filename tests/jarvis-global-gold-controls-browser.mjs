@@ -161,9 +161,11 @@ try{
  const neuralButtons=await page.evaluate(()=>[...document.querySelectorAll(".neural-jarvis-control")]
   .map(b=>({text:b.textContent,disabled:b.disabled,width:b.getBoundingClientRect().width})));
  assert.equal(neuralButtons.length,4);
- assert.ok(neuralButtons.every(b=>b.width>40),JSON.stringify(neuralButtons));
- assert.equal(neuralButtons.find(b=>b.text==="FALAR")?.disabled,false,"Speech control should be available again");
- assert.ok(neuralButtons.filter(b=>b.text!=="FALAR").every(b=>!b.disabled),"Other controls remain enabled");
+ assert.ok(neuralButtons.filter(b=>/SOBRECARGA|REDOMA/.test(b.text)).every(b=>b.width>40),JSON.stringify(neuralButtons));
+ assert.equal(neuralButtons.find(b=>b.text==="FALAR")?.width,0,"Speech button hidden during maintenance");
+ assert.equal(neuralButtons.find(b=>b.text==="ÁUDIO VISUAL")?.width,0,"Microphone visualizer hidden during maintenance");
+ assert.ok(neuralButtons.filter(b=>/SOBRECARGA|REDOMA/.test(b.text)).every(b=>!b.disabled),
+  "Non-voice Ring controls remain enabled");
  await page.click('.neural-jarvis-control[aria-controls="neural-jarvis-archive"]');
  assert.equal(await page.$eval(".neural-jarvis-archive",e=>e.hidden),false);
  await page.click(".neural-jarvis-archive-head button");
