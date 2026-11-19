@@ -53,7 +53,7 @@ assert.equal(readCount,1);
 assert.equal(rendered.length,1);
 const noData=await showJarvisEvolutionProgress({
  fetchImpl:async()=>({ok:false,status:503}),
- showAnswer:()=>{throw Error("must not render")};});
+ showAnswer:()=>{throw Error("must not render");}});
 assert.equal(noData.ok,false);
 assert.match(noData.text,/inventário verificável indisponível/);
 const cancelled=await showJarvisEvolutionProgress({
