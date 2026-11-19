@@ -67,7 +67,7 @@ jobs:
           assert.equal(worldForecast.json?.partialForecast,worldForecast.json?.days.length<16);
           const pageHtml=page.text;
           // Validate the deployed asset reference, not a stale hard-coded cache version.
-          const briefing=pageHtml.match(/modules\/(ultron-intelligence-briefing[.]js[?]v=4[.]76[.][0-9]+)/);
+          const briefing=pageHtml.match(/modules\/(ultron-intelligence-briefing[.]js(?:[?]v=[0-9]+(?:[.][0-9]+){1,3})?)/);
           assert.ok(briefing,'Published J.A.R.V.I.S. weather briefing script missing');
           const deployedBriefing=await get('deployed-briefing',site+'modules/'+briefing[1]);
           assert.equal(deployedBriefing.status,200,'Referenced briefing asset is not accessible on GitHub Pages');

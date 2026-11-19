@@ -56,6 +56,7 @@ import {
 } from "./smart-router.js";
 import { buildOperationalPlan } from "./planner.js";
 import { planAgents } from "./intelligent-task-hub.js";
+import {runVerifiedReadOnlyIntelligence} from "./jarvis-authenticated-intelligence.js";
 import { listSkills } from "./skill-hub.js";
 import { listTrajectories } from "./trajectory-hub.js";
 import {classifyConsultativeTurn,consultativeGuidance} from "./consultative-dialogue.js";
@@ -1015,6 +1016,24 @@ async function handleAccountPush(request,env){
   {ok:false,status:400,error:"unknown-push-action"};
  return accountPluginsJson(request,env,result,result.ok?200:result.status||400);
 }
+async function handleAccountIntelligence(request,env){
+  // Authentication is verified against Cloudflare Access JWT, not memoryKey.
+  const auth=await authorizeJarvisAccount(request,env);
+  if(!auth.ok)return accountPluginsJson(request,env,{ok:false,error:auth.code},auth.status);
+  if(request.method!=="POST")return accountPluginsJson(request,env,{ok:false,error:"method-not-allowed"},405);
+  let body;
+  try{
+    if(Number(request.headers.get("content-length")||0)>1200)
+      return accountPluginsJson(request,env,{ok:false,error:"request-too-large"},413);
+    const raw=await request.text();
+    if(raw.length>1200)return accountPluginsJson(request,env,{ok:false,error:"request-too-large"},413);
+    body=JSON.parse(raw);
+    if(!body||typeof body!=="object"||Array.isArray(body))throw Error("body-invalid");
+  }catch{return accountPluginsJson(request,env,{ok:false,error:"invalid-json"},400);}
+  const result=await runVerifiedReadOnlyIntelligence(body);
+  return accountPluginsJson(request,env,result,result.status||503);
+}
+
 async function handleAccountPlugins(request,env,path){
   const auth=await authorizeJarvisAccount(request,env);
   if(!auth.ok)return accountPluginsJson(request,env,{ok:false,error:auth.code},auth.status);
@@ -1081,8 +1100,10 @@ async function health(env) {
     permissionPolicy: "auto/confirm/blocked",
     visualAnalysis: Boolean(env.GEMINI_API_KEY),
     webRtcIce: webRtcIceHealth(env),
-    voiceRouter: getVoiceRouterStatus(env),
-    voiceOrder: ["ElevenLabs", "Google Neural2", "Google WaveNet", "Browser TTS", "XTTS v2"],
+    voiceRouter: {enabled:false,status:"operator-maintenance",activeProvider:null},
+    voiceOrder: [],
+    voiceMaintenance: {mode:"text-only",inputEnabled:false,outputEnabled:false,
+      remoteMicEnabled:false,reason:"operator-maintenance"},
     liveNews: true,
     automaticWorldBriefing: true,
     briefingPath: "/api/briefing",
@@ -1140,6 +1161,7 @@ export default {
         return new Response(null,{status:headers["Access-Control-Allow-Origin"]?204:403,headers});
       }
       if(path==="/api/account/push")return handleAccountPush(request,env);
+      if(path==="/api/account/intelligence/execute")return handleAccountIntelligence(request,env);
       if([
         "/api/account/plugins",
         "/api/account/plugins/execute",

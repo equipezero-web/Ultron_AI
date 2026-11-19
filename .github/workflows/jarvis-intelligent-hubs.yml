@@ -4,6 +4,10 @@ on:
     paths:
       - 'backend/skill-hub.js'
       - 'backend/intelligent-task-hub.js'
+      - 'backend/jarvis-authenticated-intelligence.js'
+      - 'tests/jarvis-authenticated-intelligence.mjs'
+      - 'backend/jarvis-account-access.js'
+      - 'backend/worker.js'
       - 'backend/memory-relevance.js'
       - 'backend/memory-context.js'
       - 'backend/memory.js'
@@ -24,5 +28,6 @@ jobs:
         with:
           node-version: '22'
       - run: node tests/jarvis-intelligent-hubs.mjs
+      - run: node tests/jarvis-authenticated-intelligence.mjs
       - run: node tests/jarvis-memory-relevance.mjs
       - run: node tests/jarvis-memory-context.mjs

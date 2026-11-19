@@ -1,0 +1,23 @@
+name: JARVIS 60-capability acceptance
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  acceptance:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+      - name: Verify 60 capabilities and six stages
+        run: node tests/jarvis-100-acceptance.mjs
+      - name: Verify authenticated public-intelligence execution
+        run: node tests/jarvis-authenticated-intelligence.mjs
+      - name: Confirm JavaScript syntax
+        run: |
+          node --check backend/jarvis-authenticated-intelligence.js
+          node --check backend/worker.js
