@@ -37,3 +37,13 @@ A ordem é definida pelo operador e deve ser respeitada. As porcentagens são re
 - Cobertura de regressão adicional em tests/jarvis-intelligent-hubs.mjs.
 
 **Escopo de aceite:** verificar CI, merge e depois homologar o fluxo completo no navegador com fontes externas reais. Nenhuma porcentagem é elevada sem evidência operacional.
+
+## Etapa 1: incremento 3 — continuidade de contexto em conversas longas
+
+- A montagem anterior cortava os primeiros caracteres do contexto inteiro quando a conversa ultrapassava 14.000 caracteres. Isso eliminava silenciosamente memórias ranqueadas e podia começar no meio de uma mensagem.
+- O novo montador reserva até 43% do limite para memórias ranqueadas e preserva mensagens do final da conversa, incluindo seus rótulos de interlocutor e a ordem cronológica. O contexto continua limitado a 14.000 caracteres.
+- A busca inicial de registros D1 passa de 40 para 160 candidatos, ordenados por importância, ainda sob filtro de operador, com classificação contextual nos até 10 selecionados. É uma ampliação limitada, não uma busca semântica sobre toda a base.
+- Campos auxiliares de status contam agora apenas as memórias e mensagens efetivamente presentes no contexto gerado. Os metadados de último usuário/assistente continuam refletindo o histórico real recuperado.
+- Testes incluem histórico extenso, limite de caracteres, retenção de memória relevante, separação por operador e indisponibilidade de memórias prioritárias entre os 40 primeiros.
+
+**Limitações**: Nenhum vetor semântico, nova coleta de dados, autenticação, permissão de dispositivos ou alteração na política de áudio. Verificação em D1 de produção ainda necessária.
