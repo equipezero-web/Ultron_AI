@@ -4,10 +4,142 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-19T17:12:15.865Z",
-  "oldestEventAt": "2026-11-18T17:39:00.000Z",
-  "windowStartAt": "2026-11-18T17:12:15.865Z",
+  "updatedAt": "2026-11-19T23:35:39.481Z",
+  "oldestEventAt": "2026-11-19T00:02:48.000Z",
+  "windowStartAt": "2026-11-18T23:35:39.481Z",
   "events": [
+    {
+      "id": "event-db80a0d2",
+      "category": "brasil",
+      "title": "Dólar supera R$ 5,93 e fecha no maior valor desde abril de 2025",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/dolar-supera-r-593-e-fecha-no-maior-valor-desde-abril-de-2025",
+      "description": "Em mais um dia de turbulência no mercado financeiro, o dólar avançou pela sexta sessão consecutiva e superou R$ 5,93 nesta quinta-feira (19). A alta ocorreu mesmo após o Banco Central vender US$ 1 bilhão para tentar conter a alta. A moeda fechou no maior patamar desde abril de 2025, em meio à pressão do mercado financeiro por cortes no orçamento e indicações da equipe ecônomica. Na Bolsa, o Ibovespa recuou 0,69%, influenciado em parte pelas bolsas de Nova York, que também fecharam em queda. Notícias relacionadas: Lula promete manter direitos e diz que controle fiscal é prioridade. Dólar sobe para R$ 5,87 com expectativa sobre votação de ajuste fiscal. Senado rejeita mudanças no texto e aprova ajuste fiscal do governo. Ao assinar o decreto que regulamenta a jornada de trabalho 5x2, o presidente Luiz Inácio Lula da Silva afirmou que parte das críticas contra o governo federal são fruto de um movimento especulativo , encabeçado por agentes econômicos que faturam com a instabilidade. “Tem gente que quer ganhar dinheiro com a especulação, com a boataria”, disse Lula. “Os caras vão inventa",
+      "imageUrl": "https://imagens.ebc.com.br/qgr1uCa7n_TP2WKn5oQPmLd6V2M=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/07/23/2026-07-23t123806z_1_lynxmpem6m19r_rtroptp_4_usa-trump-tariffs-indonesia.jpg?itok=6u1xpzSK",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-19T22:47:00.000Z",
+      "firstSeenAt": "2026-11-19T23:35:39.481Z",
+      "lastSeenAt": "2026-11-19T23:35:39.481Z"
+    },
+    {
+      "id": "event-e24f22f6",
+      "category": "mundo",
+      "title": "Belo Horizonte participa de encontro nacional de preparação para a Copa do Mundo Feminina de 2027",
+      "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxNc3hoNUVpSmMzMmozc1hud0FJNTByb25oYUlTTGhZM3dLVk5neWtOUWVRLXZuR045ZHFiQ2hNYnlCWHdac1E1X2JKT2E3ZEVFY2gzTGRZSDJOcHFiaUQxZzNRb2tMNzdGOTBpWVBJUVFyQUk0Wi1BSmNGQldwNXc5cDVWODNVcTc2dlJmYnBlMk5UVWxzeDhvQ2xUNEwxcFZuWEpoZ2VZRnlrc0V3dEZsWEo0aFZiRUEyZk1oandxaDBSUnY2elpUNQ",
+      "description": "Belo Horizonte participa de encontro nacional de preparação para a Copa do Mundo Feminina de 2027 &nbsp;&nbsp; Prefeitura de Belo Horizonte",
+      "imageUrl": null,
+      "source": "Prefeitura de Belo Horizonte",
+      "publishedAt": "2026-11-19T22:22:29.000Z",
+      "firstSeenAt": "2026-11-19T23:35:39.481Z",
+      "lastSeenAt": "2026-11-19T23:35:39.481Z"
+    },
+    {
+      "id": "event-bccc351d",
+      "category": "clima",
+      "title": "Furacões quase somem do Atlântico, algo que não acontecia há 101 anos, e a NOAA aponta o El Niño",
+      "url": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxQZ2xudnJIRUNCRXB6N1l6SE5tY19UZzBSZkRDbWxuNWFyME9BS3NHT3V2WlV5TlpUak5TMmxydGpLRmFxSm1VdUNRc1BEREdiTHlNZ3pSRVh0NDlvUmo5VEJOM1JHUkpkWG5ZNU5nR1VuamF0R3lOczNBZk5BVml6RGlQN243YVhOTlVIRkJvNENJZFVkOEU0bUNlajBNSkdIS3NTaUQzcS1MSVFZTEk1eGc5MmNrZkxiakYtdTFZZWpTTFVfNVEzdEFUdnh4WlZvUFVzR1lVUVA0bXBKTzBZQVdnaWZadw",
+      "description": "Furacões quase somem do Atlântico, algo que não acontecia há 101 anos, e a NOAA aponta o El Niño &nbsp;&nbsp; O Tempo",
+      "imageUrl": null,
+      "source": "O Tempo",
+      "publishedAt": "2026-11-19T22:19:13.000Z",
+      "firstSeenAt": "2026-11-19T23:35:39.481Z",
+      "lastSeenAt": "2026-11-19T23:35:39.481Z"
+    },
+    {
+      "id": "event-11f7a0a0",
+      "category": "santa-catarina",
+      "title": "Mudanças nas condições do tempo devem ocorrer em Santa Catarina",
+      "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxPNWk4R0RUUDNhWVRROHVucjM1UE90UUNGTF84YUpYTWYxSVJSTnBmakxocWt3X2hEZlBqR0xwbU0zbVhOLUM5cTViYV82OEhpdXFhLWc1eXFEbThhX205c0p0SmstaUxfQTQtSHRyVldnOHZmWXI2dVk1RnJhY0xBbHQ5NnpzakRNVkhsazN0WHlINmtKNGpTZEtzXzRrQ0xvM1BV",
+      "description": "Mudanças nas condições do tempo devem ocorrer em Santa Catarina &nbsp;&nbsp; Hora Hiper",
+      "imageUrl": null,
+      "source": "Hora Hiper",
+      "publishedAt": "2026-11-19T22:10:00.000Z",
+      "firstSeenAt": "2026-11-19T23:35:39.481Z",
+      "lastSeenAt": "2026-11-19T23:35:39.481Z"
+    },
+    {
+      "id": "event-d62092ac",
+      "category": "brasil",
+      "title": "Moraes pauta julgamento da Lei da Dosimetria para o dia 4 de dezembro",
+      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/moraes-pauta-julgamento-da-lei-da-dosimetria-para-o-dia-4-de-dezembro",
+      "description": "O ministro Alexandre de Moraes, do Supremo Tribunal Federal (STF), marcou para o dia 4 de dezembro o julgamento virtual sobe a validade da lei que altera o cálculo das penas (dosimetria) de condenados pelos atos golpistas de 8 de janeiro de 2023 e que também pode beneficiar o ex-presidente Jair Bolsonaro. O processo sobre a questão foi liberado para julgamento após os presidentes da Câmara dos Deputados, Hugo Motta (Republicanos-PB), e do Senado, Davi Alcolumbre (União-AP), se reunirem com Moraes e defenderem que o ministro libere o processo para inclusão na pauta do Supremo. Notícias relacionadas: Fachin sinaliza que STF pode julgar Lei da Dosimetria neste ano. O caso será julgado pelo plenário virtual da Corte. Serão apreciadas quatro ações que contestam a Lei 15.402 de 2026, conhecida como Lei da Dosimetria. A lei foi promulgada no dia 8 de maio após o Congresso derrubar o veto do presidente Luiz Inácio Lula da Silva à anistia das penas. Em seguida, Moraes suspendeu a aplicação da norma após analisar o caso de Nara Faustino de Menezes , condenada por participação nos atos de 8 de",
+      "imageUrl": "https://imagens.ebc.com.br/JqHvFoqAEwNMxBM4sThGT3BKprI=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/manifestacao1_mcamgo_abr_080120231818-8.jpg?itok=6xDwX7zO",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-19T21:34:00.000Z",
+      "firstSeenAt": "2026-11-19T23:35:39.481Z",
+      "lastSeenAt": "2026-11-19T23:35:39.481Z"
+    },
+    {
+      "id": "event-72a0c52d",
+      "category": "santa-catarina",
+      "title": "Defesa Civil alerta para temporais com risco alto de granizo, ventos fortes e enxurradas em Santa Catarina nesta sexta-feira",
+      "url": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxObEVJanRMeThsaXUwa3g5NTVHVXhJbUp4LTJhVWdhOG9qbTZ2aTJUTUgyaUNueWlYcnh2Yi1naE1aSWNCbHF5cDl0UlJtZXhDekpLWjBIYlhqUFJFVjF4WVhSQVpiQlQ5YkhxaFRYZGtXVkZzdlVqMzlWNlNxeDJsaWdTN0dDaERvSmdNa3YxTWQ4cF95aVVvZ09mTHNnWWRReEJVWFU2WGVXbU1LNDFRUTRZZDlTS2J1MnZLRFh4aVRlOXd6MmJsWHZKU1Y0YnA3QnVYdFpPWU02aDlyNzFSVWdFMS1jZw",
+      "description": "Defesa Civil alerta para temporais com risco alto de granizo, ventos fortes e enxurradas em Santa Catarina nesta sexta-feira &nbsp;&nbsp; Notiserra SC",
+      "imageUrl": null,
+      "source": "Notiserra SC",
+      "publishedAt": "2026-11-19T21:33:07.000Z",
+      "firstSeenAt": "2026-11-19T23:35:39.481Z",
+      "lastSeenAt": "2026-11-19T23:35:39.481Z"
+    },
+    {
+      "id": "event-5aa38469",
+      "category": "brasil",
+      "title": "Xi, Trump e Putin sinalizam disposição para diálogo entre potências",
+      "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/xi-trump-e-putin-sinalizam-disposicao-para-dialogo-entre-potencias",
+      "description": "O encontro presencial entre os presidentes da China, Xi Jinping, dos Estados Unidos (EUA), Donald Trump, e da Rússia, Vladimir Putin, indica que há espaço para diálogo mais direto entre as três potências em meio a cenário geopolítico turbulento. Realizada em Shenzhen, no sul da China, o encontro chamou atenção da mídia internacional pelo caráter sem precedentes da reunião que discutiu guerra na Ucrânia, controle de armas nucleares, mudança na ordem internacional, entre outros assuntos. Notícias relacionadas: Estados Unidos entram em alerta após sucessivas panes tecnológicas. Irã e Houthis pressionam EUA e aliados no Golfo em duas frentes. O anfitrião Xi Jinping informou que os três concordaram em quatro pontos sobre como os países devem se relacionar entre si: \"defender o respeito mútuo, a coexistência pacífica, a cooperação vantajosa para ambos os lados e o diálogo e a consulta”, afirmou a agência estatal chinesa Xinhua. Entre os acordos pactuados, estariam a não interferência nos assuntos internos um dos outros e, em questões sensíveis, os países devem se comunicar com antecedência",
+      "imageUrl": "https://imagens.ebc.com.br/Wx7vYlarrchrKeRXRWfLSHatEOI=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/19/2026-11-19t105625z_765833748_rc2xqoatuo07_rtrmadp_3_apec-summit.jpg?itok=8vmgrMcj",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-19T20:33:00.000Z",
+      "firstSeenAt": "2026-11-19T23:35:39.481Z",
+      "lastSeenAt": "2026-11-19T23:35:39.481Z"
+    },
+    {
+      "id": "event-a88a54dc",
+      "category": "brasil",
+      "title": "Festival Nicho apresenta cinema negro com exibições gratuitas em SP",
+      "url": "https://agenciabrasil.ebc.com.br/cultura/noticia/2026-11/festival-nicho-apresenta-cinema-negro-com-exibicoes-gratuitas-em-sp",
+      "description": "Celebrar o cinema de autoria negra. Este é o objetivo do Festival Nicho, realizado a partir desta sexta-feira (20) em quatro espaços culturais da capital paulista. Exibições gratuitas até 28 de novembro estarão no Centro Cultural São Paulo (CCSP), no Museu das Favelas, na Cinemateca Brasileira e no Vão Livre do Museu de Arte de São Paulo (MASP). A oitava edição festeja neste ano o centenário do geógrafo Milton Santos , que redefiniu a forma de compreender o espaço geográfico, articulando economia, política e sociedade. Também será homenageada a atriz portuguesa Isabél Zuaa, que participou de filmes como O Agente Secreto e As Boas Maneiras e de diversas séries na TV, como Carcereiros . Notícias relacionadas: Festival Animage reúne mais de 280 filmes de animação no Recife. Intelectual baiano Edison Carneiro será próximo homenageado da Flipelô. Festival de música e dança no Rio de Janeiro valoriza cultura negra. Entre os filmes selecionados pela curadoria estão o longa-metragem Crocodilo , que conta a história dos irmãos Godwin e Raymond, que transformam um quintal em cinema, e o curta",
+      "imageUrl": "https://imagens.ebc.com.br/7FBZcw4m2AWTS9-XPeTQKBuKk_s=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/05/01/milton_santos_100_anos_geografo_negro_teorizou_sobre_desigualdades03.jpg?itok=9PwIG_bC",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-19T20:32:00.000Z",
+      "firstSeenAt": "2026-11-19T23:35:39.481Z",
+      "lastSeenAt": "2026-11-19T23:35:39.481Z"
+    },
+    {
+      "id": "event-bd521b3f",
+      "category": "mundo",
+      "title": "Charleaux: Criminoso de guerra e donos de ogivas querem comandar mundo sós",
+      "url": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxPMk9GMlcycjFfVjFlWk5DUUtPRi1MX3lSQmlhaG9jekt3b2hEZERNQnM2TDBFWTZtNzl3aGJVMEpwU0ViYk00TXJWa0VzNTc3a3lWeU95NmZnTDNfVkNzMjZJbVRiZmsyQjZadEtXNmNGWWd4c1RwZmVEMVFVX1JHX2ZSYVRHcFBCUU9YbFFCeHhYQlJ3NlBVR3J0NXlhYUI5elplMTJjcTJnZVVUYVpFZTB4VkpWVGowTTV6S2ZSZldjODJmM0c1SzFmZ1NMNjQ0NmljNFliNS03VExiNkNVRE9n",
+      "description": "Charleaux: Criminoso de guerra e donos de ogivas querem comandar mundo sós &nbsp;&nbsp; UOL Notícias",
+      "imageUrl": null,
+      "source": "UOL Notícias",
+      "publishedAt": "2026-11-19T20:28:42.000Z",
+      "firstSeenAt": "2026-11-19T23:35:39.481Z",
+      "lastSeenAt": "2026-11-19T23:35:39.481Z"
+    },
+    {
+      "id": "event-2bef419f",
+      "category": "clima",
+      "title": "Antes do pico do El Niño, Nordeste fica com metade da chuva e 36 cidades têm setembro mais chuvoso em 10 anos",
+      "url": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxQWmZlb3V3MWR4R016WFpZdEpDaVlMYkVsdzRUdUtrbjlKTkduSS1VZTZYaU1rcGFwaWxSR3d4dGpHbWVlX2ZFVzdhT3IyRm5zaTlYSnZfVnBfUlhPZFRxeVlhVFNLc04wUlluUXcxLVhOQWU3V1FwMFVqT2xiZWhOYjA0Ym5wT1hYdzZ3OEFKTndGRlpzclBRTWRCMTJ6TnlCbWdXOWVPYlFNN211bWlPZ0x3aUxhYkRxZU1SZkxYVkxLcGhwNmRNUlppRkEwdXhMaENjSUtrSWxDTDBoMzFoWUVJaXZoZw",
+      "description": "Antes do pico do El Niño, Nordeste fica com metade da chuva e 36 cidades têm setembro mais chuvoso em 10 anos &nbsp;&nbsp; O Tempo",
+      "imageUrl": null,
+      "source": "O Tempo",
+      "publishedAt": "2026-11-19T20:23:23.000Z",
+      "firstSeenAt": "2026-11-19T23:35:39.481Z",
+      "lastSeenAt": "2026-11-19T23:35:39.481Z"
+    },
+    {
+      "id": "event-ea677d51",
+      "category": "santa-catarina",
+      "title": "Onda de temporais e até 250 mm de chuva: o que dizem as previsões para SC",
+      "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxOSVRaN3loZU9mLVBoeFQ1VGdkOVpIRDh3OEo5eXk0d0laM2NUazdrc0t3TnBBMnYzdDVPaGVVMzNGSThhLUNNVDI4ZTc1aERvRjRUOHdnQUdLcEF0dUtXRTE2UFpyZTNmNy02WlZhYjhxWVA0NDBMZEtRdzhZelNoQlhLQzhZRnJqM0ptY2lhTm1OTFQyV2p0T0JDT2M2Zw",
+      "description": "Onda de temporais e até 250 mm de chuva: o que dizem as previsões para SC &nbsp;&nbsp; TVBV ONLINE",
+      "imageUrl": null,
+      "source": "TVBV ONLINE",
+      "publishedAt": "2026-11-19T19:56:17.000Z",
+      "firstSeenAt": "2026-11-19T23:35:39.481Z",
+      "lastSeenAt": "2026-11-19T23:35:39.481Z"
+    },
     {
       "id": "event-f5d2739c",
       "category": "mundo",
@@ -189,6 +321,18 @@
       "lastSeenAt": "2026-11-19T07:58:48.047Z"
     },
     {
+      "id": "event-7ba2c273",
+      "category": "clima",
+      "title": "Inmet alerta para ventos de até 60 km/h e possibilidade de granizo em SC",
+      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQM3dkYXI0ODhTMl9QeFlfMFZyOUZVOVFPdHJWUHFLczg2aEVEVmVoQVZydnI2eGFfVnRselh3bGtCWlRPdzFEYzAteDlTV085clVtNkVuZmVRQTlFVTJhOWN1NGU1YzI5WjdtRy1fTEtlMi1KWHlIQzh4d2tSTTRXc2k4Z2ZIaWl6bHVZVGFYV1RfTFFoTEpEaThXaldOcFlhaTNKQTJ5cw",
+      "description": "Inmet alerta para ventos de até 60 km/h e possibilidade de granizo em SC &nbsp;&nbsp; SCC10",
+      "imageUrl": null,
+      "source": "SCC10",
+      "publishedAt": "2026-11-19T00:46:08.000Z",
+      "firstSeenAt": "2026-11-19T23:35:39.481Z",
+      "lastSeenAt": "2026-11-19T23:35:39.481Z"
+    },
+    {
       "id": "event-94774ac2",
       "category": "brasil",
       "title": "Alexandre Barreto é cotado para presidir Banco do Brasil",
@@ -199,195 +343,9 @@
       "publishedAt": "2026-11-19T00:02:48.000Z",
       "firstSeenAt": "2026-11-19T00:45:04.587Z",
       "lastSeenAt": "2026-11-19T07:58:48.047Z"
-    },
-    {
-      "id": "event-314b2ed9",
-      "category": "brasil",
-      "title": "Claude Monet em 4 fatos e curiosidades - e onde ver suas pinturas no Brasil",
-      "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxQQl9VcnB4MDRpOGtMcW5aVF84VHVaNVpaOUJLdlZDRXBWcW96R2R6VTAwOWxuSmlIYlh6MlhqN2dmOWNmbnp2Skw1cHdyZHlNSVZJV2xHdGNUeGg5eHJpWi1QNFFaSDBMbzFrZmRBaDhrcXZvb005X2NsWTlIaHNPZ2R3MDZoVzVzVmxWZGd6ZDF6ZWY2S0FobjhOVzZPb0Rtbi1MLTdmX0NVNHozSzZ1STdpRlFGODFKS0RLUkNpYWFDZW9EcktwcQ",
-      "description": "Claude Monet em 4 fatos e curiosidades - e onde ver suas pinturas no Brasil &nbsp;&nbsp; Estadão",
-      "imageUrl": null,
-      "source": "Estadão",
-      "publishedAt": "2026-11-18T23:22:33.000Z",
-      "firstSeenAt": "2026-11-19T00:45:04.587Z",
-      "lastSeenAt": "2026-11-19T07:58:48.047Z"
-    },
-    {
-      "id": "event-98793226",
-      "category": "mundo",
-      "title": "Principais notícias do mundo na noite de hoje (18)",
-      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPMDcxR3ROdW5DbnNmSzlPTWI5aHVYd3pxMDVaOGRTZXVnQTdLcDlCb3ZvaVJ2blkzZ25nNjNHTHRRYm5MaXBCYTd6WGU3WUktYVctMWlMbkJjb1hrZmxjZEFhR2VCWmtjUURlZGhHa2Zvei1obEZocnRraGpHTUpUbFFQRVlNUDIzbG5raE5uX2VYc1ppclhlZjVtSEVvOUNObVBoUDYtbUhjQzg1",
-      "description": "Principais notícias do mundo na noite de hoje (18) &nbsp;&nbsp; Tribuna do Sertão",
-      "imageUrl": null,
-      "source": "Tribuna do Sertão",
-      "publishedAt": "2026-11-18T23:06:01.000Z",
-      "firstSeenAt": "2026-11-19T00:45:04.587Z",
-      "lastSeenAt": "2026-11-19T00:45:04.587Z"
-    },
-    {
-      "id": "event-6d61cb50",
-      "category": "santa-catarina",
-      "title": "Formação de ciclone e temporais marcam o fim de semana em SC",
-      "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxQZncwd2I3YkdnbzV1WXVRZWlEajdpamhDd2RweFo0aHlRRnBtWmNUa1lsNHNQWVg1b3BOdkRTT3o0MlllNV80Vklyei1ydnc2c1RhdzdWNVFOeDB3VTJPZER4bzBneDlLRjRHQ0laVkJKd2JNOVIzOXMwWDR4bEpwbFFjei1hYnVJdU9sSGlGb0VtYkJTd1pEalRXQmNrNy1DZkYwQXpmeElfNkRhWnh1dW9OYXZpNDl0SFRLQ2QtZXlmRmc",
-      "description": "Formação de ciclone e temporais marcam o fim de semana em SC &nbsp;&nbsp; Diário do Iguaçu",
-      "imageUrl": null,
-      "source": "Diário do Iguaçu",
-      "publishedAt": "2026-11-18T22:48:00.000Z",
-      "firstSeenAt": "2026-11-19T00:45:04.587Z",
-      "lastSeenAt": "2026-11-19T00:45:04.587Z"
-    },
-    {
-      "id": "event-72579b6c",
-      "category": "santa-catarina",
-      "title": "Formação de ciclone e temporais marcam o fim de semana em SC",
-      "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxPanh5b0xzV1hUWXBVOFlYUHhUUkhlbVZCOEI0Zl80WnM4MlpYTHdjWkFROE9DYTdqTEtrRXloYzlnekkxQS1jM2M3R1UxaGNmd3BpRTJpUERxS2hsTTdnWEo3SXlocE91QkZoTVFOcnRlWHpDTHFjRzN6eGlqYl96bUlUZUQ5ZTdyZUlzT2doSGNRTm53cmdyWUxUYUNYNGNsREJaMHE5aUh4NGs0SzREdkVZbDdvQQ",
-      "description": "Formação de ciclone e temporais marcam o fim de semana em SC &nbsp;&nbsp; Diário do Iguaçu",
-      "imageUrl": null,
-      "source": "Diário do Iguaçu",
-      "publishedAt": "2026-11-18T22:48:00.000Z",
-      "firstSeenAt": "2026-11-19T07:58:48.047Z",
-      "lastSeenAt": "2026-11-19T07:58:48.047Z"
-    },
-    {
-      "id": "event-363cebf5",
-      "category": "brasil",
-      "title": "Senado rejeita mudanças no texto e aprova ajuste fiscal do governo",
-      "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2026-11/senado-rejeita-mudancas-no-texto-e-aprova-ajuste-fiscal-do-governo",
-      "description": "O Senado Federal aprovou no fim da tarde desta quarta-feira (18) o projeto de ajuste fiscal do governo , sem as alterações no texto tentadas pela oposição. Ao todo, três destaques ao projeto, que modificavam substancialmente o seu conteúdo, foram rejeitados, um a um, pela votação em plenário. A análise precisou ser adiada por 24 horas por falta de consenso e risco de derrota para o governo. O Projeto de Lei Complementar (PLP 299/2026) prevê medidas para reduzir despesas e ampliar a arrecadação, com economia estimada entre R$ 45,1 bilhões e R$ 56,1 bilhões em 2027. A projeção considera tanto o aumento da arrecadação quanto o controle das despesas e se refere ao chamado resultado primário, a diferença entre o que o governo arrecada e o que gasta antes do pagamento dos juros da dívida. Notícias relacionadas: Senado adia votação de destaques do projeto de ajuste fiscal. Senado aprova texto-base de pacote que prevê economia de até R$ 60 bi. Entre os itens do texto, está uma mudança no arcabouço fiscal para permitir ao governo fazer bloqueios adicionais de despesas para alcançar a meta fis",
-      "imageUrl": "https://imagens.ebc.com.br/FLDGjt82Rr2ESob_e7iJL6mYCdc=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/18/maioridade_12-11-26-3_0.jpg?itok=wpPlcKHc",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-18T22:39:00.000Z",
-      "firstSeenAt": "2026-11-19T00:45:04.587Z",
-      "lastSeenAt": "2026-11-19T00:45:04.587Z"
-    },
-    {
-      "id": "event-d524895f",
-      "category": "clima",
-      "title": "O El Niño de 2026-2027 pode já ter alcançado seu pico de intensidade, embora ainda não esteja descartada a possibilidade de novos aumentos na temperatura do Pacífico Equatorial. A",
-      "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE9CR0J3UXZTalkteWpxbEF2bjhDdWVZVXJNbWk3M2JZNXVUa3pnVUk2S3VxbEJZWTg0WWFFTmZCXzRGeUNmOUVvSTlaZTRhNi1adGc",
-      "description": "O El Niño de 2026-2027 pode já ter alcançado seu pico de intensidade, embora ainda não esteja descartada a possibilidade de novos aumentos na temperatura do Pacífico Equatorial. A discussão ganhou força entre meteorologistas após os dados mais rec &nbsp;&nbsp; Instagram",
-      "imageUrl": null,
-      "source": "Instagram",
-      "publishedAt": "2026-11-18T22:29:04.000Z",
-      "firstSeenAt": "2026-11-19T00:45:04.587Z",
-      "lastSeenAt": "2026-11-19T17:12:15.865Z"
-    },
-    {
-      "id": "event-871e56d7",
-      "category": "brasil",
-      "title": "Dólar sobe para R$ 5,87 com expectativa sobre votação de ajuste fiscal",
-      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/dolar-sobe-para-r-587-com-expectativa-sobre-votacao-de-ajuste-fiscal",
-      "description": "O mercado financeiro brasileiro teve mais um dia de perdas nesta quarta-feira (18). O dólar subiu pela quinta sessão consecutiva e atingiu a maior cotação em 19 meses, fechando próximo de R$ 5,87. Na bolsa, o Ibovespa recuou 1,34% , pressionado por ações de bancos e pela cautela dos investidores diante da votação do pacote de ajuste fiscal no Senado. No exterior, o petróleo também caiu, com a perspectiva de recuperação da oferta global. Notícias relacionadas: Governo anuncia medidas de ajuste para economia de até R$ 60 bilhões . Senado adia votação de destaques do projeto de ajuste fiscal. Principais números do dia: Dólar comercial: R$ 5,868 (+1,48%); Alta do dólar em 2026: 6.9%; Ibovespa: 167.537,95 pontos (-1,34%); Petróleo tipo Brent: US$ 91,95 (-1,27%); Petróleo tipo WTI: US$ 82,31 (-2,76%); Dólar em alta O dólar comercial fechou esta quarta em alta de 1,48%, a R$ 5,868, maior valor desde 15 de abril de 2025, quando chegou a R$ 5,891. Poucos minutos antes do encerramento do pregão, a moeda atingiu R$ 5,8708, avanço de 1,54%. Com a quinta alta consecutiva, a divisa acumula alta de",
-      "imageUrl": "https://imagens.ebc.com.br/ABCzDV1BNGLK1WelR64FGvUJtDs=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/dolar_moeda_0803221211.jpg?itok=9aRcSX3F",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-18T22:26:00.000Z",
-      "firstSeenAt": "2026-11-19T00:45:04.587Z",
-      "lastSeenAt": "2026-11-19T00:45:04.587Z"
-    },
-    {
-      "id": "event-816be425",
-      "category": "mundo",
-      "title": "Embratur 60 anos: seis décadas de história e uma parceria que atravessa gerações",
-      "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxObVNtc25Dc1FCQ0phVkkyMjl6QlBMNXJkUDNIQWVua1d5bms4OHpIUnp1MVdUVFlqbWYzOXcxSTlUenJpWDVnT0NxVmtDZnpIZHh2SUJ2UVA1ckxBRHplZEltYlZDdU5mN3FNQ0daNXFfYkFmX3NOV1lqajJkY2lRY1pKUm85ZXkyV2ZiTWJ6T19aellzd3AxT1BTSnhVVUVVUUxpOXlrWVdnWC00Zl95SldaVW1XemlBaEdybVZjQllSUjVmQm5qbHdidGY4Zw",
-      "description": "Embratur 60 anos: seis décadas de história e uma parceria que atravessa gerações &nbsp;&nbsp; Mercado e Eventos",
-      "imageUrl": null,
-      "source": "Mercado e Eventos",
-      "publishedAt": "2026-11-18T20:26:00.000Z",
-      "firstSeenAt": "2026-11-19T00:45:04.587Z",
-      "lastSeenAt": "2026-11-19T00:45:04.587Z"
-    },
-    {
-      "id": "event-8bb8b842",
-      "category": "clima",
-      "title": "El Niño deve atingir o auge no verão de 2027; saiba quando começa a perder força",
-      "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxQU0dPOFJYZm5SWE5va2E3X2dydXBJVVhIWC11cE00WjdZa0RodERYTHI2M3lpclZISzl3Z2ozeTYzWkE1S3J0SHByeGhkMGFMbXV4SGw4SzBleXdyb1o5b0h0WVRvSlJodW5HUXRwLUx3QlNzVGtJMFp4ZVIyRDhEOUNJWmRvWUQxZFFQV3RFakF0ZE51cGZibWxaMGFmbHNyVmp3OWExZkl2MHlWNUQ0WjNSV3NTbWkxR1E",
-      "description": "El Niño deve atingir o auge no verão de 2027; saiba quando começa a perder força &nbsp;&nbsp; Folha Vitória",
-      "imageUrl": null,
-      "source": "Folha Vitória",
-      "publishedAt": "2026-11-18T20:10:22.000Z",
-      "firstSeenAt": "2026-11-19T00:45:04.587Z",
-      "lastSeenAt": "2026-11-19T17:12:15.865Z"
-    },
-    {
-      "id": "event-bc435f9d",
-      "category": "mundo",
-      "title": "“O Bahia é o Mundo”: Tricolor lança documentário sobre era City",
-      "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxOMEZsVnRfR1R2aGk2V2RDVWlVdWRzV0lmam56QVJDcnFONS1fb3RZZjhHNkdyZkNLTDd2X3hhMTh3TFpuOWZTd3J4amFJLTRmNVE3N0FoNEJabnp1Q21GTEluV3lUc1ZjcGJhVDJWcHhua3ZMWmdjWXB0TjJCOHkwOGdOUVIzbFF5Q01MdFNZa280U1M1RG50bUszZlN6UGNtMDJTQkZoMGx5Zw",
-      "description": "“O Bahia é o Mundo”: Tricolor lança documentário sobre era City &nbsp;&nbsp; Portal Salvador FM",
-      "imageUrl": null,
-      "source": "Portal Salvador FM",
-      "publishedAt": "2026-11-18T20:01:10.000Z",
-      "firstSeenAt": "2026-11-19T00:45:04.587Z",
-      "lastSeenAt": "2026-11-19T00:45:04.587Z"
-    },
-    {
-      "id": "event-439573bc",
-      "category": "santa-catarina",
-      "title": "Chuva intensa, granizo e vendavais: veja a previsão para Santa Catarina nos próximos dias",
-      "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxQVXpVbU1lOGM5c05CU2VxTzctMUItdkJmNDVWU1Bnbmp6OUh6Y3lqVVFxZ1BzR1BZLXhrU1REREgwV3NBNjIxcEZqcGtjRE5qclR6QW56YjBqaWJjNkdJOXBaRzVIZkRxOEdXVTJ2dmlUQ0lKd095U1R1dEh5ZzNnUG1HaFZobW9aeGRVNWJ2SlhlTnNnaTZJRTJyaDZ1UUwtZ0NtbmtXN3JTelUzRkYzVkVIei1IYWdCRUJRd1Vaekhtdw",
-      "description": "Chuva intensa, granizo e vendavais: veja a previsão para Santa Catarina nos próximos dias &nbsp;&nbsp; Jornal de Pomerode",
-      "imageUrl": null,
-      "source": "Jornal de Pomerode",
-      "publishedAt": "2026-11-18T19:43:08.000Z",
-      "firstSeenAt": "2026-11-19T00:45:04.587Z",
-      "lastSeenAt": "2026-11-19T07:58:48.047Z"
-    },
-    {
-      "id": "event-2103e80e",
-      "category": "clima",
-      "title": "Chuvas já provocam estragos em Minas Gerais antes do auge do período chuvoso, sob influência do El Niño",
-      "url": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxPUHVJeHpYVk9sdUhxeVN3QzBkWEM0cTlmYzVPaUV3WUk1ZzQ2c1J3Y1BjTU8xZDE2cDJiWG9JSzd2YjlKOFNCNHdFa3MtTUM0NVVUTlRBUWd4cVo5eVZJUE4wNGZFeVJlR0wxMjFBc3BtbThnZGtwNjhZd3p2MUtSREFMeGRDYU9NOUo4UHBVMHVVWDBxVzlmaUpvNC1FN3haNHFmd05CRkNhNkRaT0FqQ1NMeVRtbFRsQldsSndsaUVqZkJPdDBScWVOdktwZWlUUVJRbkZJWTc",
-      "description": "Chuvas já provocam estragos em Minas Gerais antes do auge do período chuvoso, sob influência do El Niño &nbsp;&nbsp; Gazeta de Patrocínio",
-      "imageUrl": null,
-      "source": "Gazeta de Patrocínio",
-      "publishedAt": "2026-11-18T19:40:00.000Z",
-      "firstSeenAt": "2026-11-19T00:45:04.587Z",
-      "lastSeenAt": "2026-11-19T17:12:15.865Z"
-    },
-    {
-      "id": "event-62432fdb",
-      "category": "clima",
-      "title": "El Niño se aproxima do pico máximo, mas já tem data para acabar",
-      "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxPeGwwQWtKQjhWTmRad1dhdHA1LVpsS045d0ZNbVNnc1hrVWNibnRxeDA5cnBMY0FWTHpsbmgyQndTSE0ybnBHQ1QycTQ4V21VS3RvVFMtdVRCWjY5alZyR1ZtclFXd3c2ckJUZGZnVHVlRXJ1QWJWYnk5UkhwZFBXUm5kaTJSenR3bTNiUVdDZHBwdE96ZHpkMG9QelZDX0hGQmx4LXNn0gGrAUFVX3lxTFB2am1DOVVRVE9ha2pHdkdHZ2daenNYeWVXRlExNTFLZlFBRlZVMlRaY1pLX0FWRVRrMWE3bUFGVjVGVnI1M0U2VS15SEJTS1NreHl1T1k5YWpPWW1TZi1nVVFJUXV1YV9xcnhiaVQzNV9FV1o4V0FvaFUwSkpFTVp3bGFtQXFYNUc3X0ZzQXdRRnlTN2twTkdpbVFSNDBieG1RR1I5VWtjTmxtcw",
-      "description": "El Niño se aproxima do pico máximo, mas já tem data para acabar &nbsp;&nbsp; GMC Online",
-      "imageUrl": null,
-      "source": "GMC Online",
-      "publishedAt": "2026-11-18T17:43:00.000Z",
-      "firstSeenAt": "2026-11-18T18:44:51.160Z",
-      "lastSeenAt": "2026-11-18T18:44:51.160Z"
-    },
-    {
-      "id": "event-95d1f5a5",
-      "category": "brasil",
-      "title": "MEC amplia até dia 23 prazo para adesão ao Selo de Alfabetização",
-      "url": "https://agenciabrasil.ebc.com.br/educacao/noticia/2026-11/mec-amplia-ate-dia-23-prazo-para-adesao-ao-selo-de-alfabetizacao",
-      "description": "O Ministério da Educação (MEC) prorrogou até a próxima segunda-feira (23) o prazo de inscrição de Secretarias de Educação na terceira edição do Selo Nacional Compromisso com a Alfabetização. Estão aptas a participar as secretarias de educação dos estados, municípios e do Distrito Federal que aderiram ao Compromisso Nacional Criança Alfabetizada (CNCA). Notícias relacionadas: Analfabetismo entre jovens e adultos com deficiência é 12 vezes maior. O processo de inscrição deverá ser realizado pelos articuladores estaduais e municipais da Rede Nacional de Articulação de Gestão, Formação e Mobilização (Renalfa), junto aos respectivos secretários de educação. O acesso deve ser realizado exclusivamente pelo Sistema Integrado de Monitoramento, Execução e Controle (Simec) com login na plataforma Gov.br. Para participar, as secretarias de educação deverão, ainda: entrar no módulo da terceira edição do Selo Nacional Compromisso com a Alfabetização, preencher as informações solicitadas e anexar os documentos comprobatórios exigidos no edital de 2026 . Selo O Selo de Alfabetização é uma iniciativa",
-      "imageUrl": "https://imagens.ebc.com.br/a3yJOipwwu5JmGk-TV99s4di76A=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2025/06/05/toms0722.jpg?itok=ouxRcI6w",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-18T17:39:00.000Z",
-      "firstSeenAt": "2026-11-18T18:44:51.160Z",
-      "lastSeenAt": "2026-11-18T18:44:51.160Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-18T18:44:51.160Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 13,
-      "newArticles": 13,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "america-latina",
-        "europa",
-        "asia"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-19T00:45:04.587Z",
       "ok": true,
@@ -441,14 +399,32 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-19T23:35:39.481Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 13,
+      "newArticles": 12,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "america-latina",
+        "europa",
+        "asia"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 4,
-  "lastSuccessfulAt": "2026-11-19T17:12:15.865Z",
+  "lastSuccessfulAt": "2026-11-19T23:35:39.481Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-19T17:12:15.865Z",
+      "checkedAt": "2026-11-19T23:35:39.481Z",
       "warnings": [
         {
           "id": "56456",
@@ -473,6 +449,17 @@
             "DO"
           ],
           "startsAt": "2026-11-20T00:00:00.000Z",
+          "endsAt": "2026-11-20T00:00:00.000Z",
+          "source": "INMET",
+          "url": "https://avisos.inmet.gov.br/"
+        },
+        {
+          "id": "56460",
+          "title": "Tempestade",
+          "severity": "Perigo Potencial",
+          "phase": "vigente",
+          "regions": [],
+          "startsAt": "2026-11-19T00:00:00.000Z",
           "endsAt": "2026-11-20T00:00:00.000Z",
           "source": "INMET",
           "url": "https://avisos.inmet.gov.br/"
@@ -526,7 +513,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-19T17:12:15.865Z",
+      "checkedAt": "2026-11-19T23:35:39.481Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
