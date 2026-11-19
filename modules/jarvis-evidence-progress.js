@@ -50,7 +50,7 @@ export function summarizeJarvisEvidence(manifest){
       "Voz, escuta e Voice Match permanecem desligados durante a manutenção."
   };
 }
-export async function showJarvisEvolutionProgress({fetchImpl,showAnswer}={}){
+export async function showJarvisEvolutionProgress({fetchImpl,showAnswer,isCancelled}={}){
   const url=new URL("../data/jarvis-100-acceptance-manifest.json",import.meta.url);
   const fetcher=fetchImpl||globalThis.fetch;
   let report;
@@ -63,6 +63,7 @@ export async function showJarvisEvolutionProgress({fetchImpl,showAnswer}={}){
   }catch{
     return {ok:false,route:"acceptance-progress",text:"EVOLUÇÃO J.A.R.V.I.S. // inventário verificável indisponível. Nenhuma nota foi presumida."};
   }
+  if(typeof isCancelled==="function"&&isCancelled())return {ok:false,status:"cancelled",route:"acceptance-progress",text:"Consulta interrompida."};
   let displayed=false;
   try{
     const fn=showAnswer||globalThis.window?.ULTRON_NEURAL_ANSWER?.show;
