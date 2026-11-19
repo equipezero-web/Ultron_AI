@@ -55,6 +55,13 @@ const corsBlocked=await observeJarvisRuntime({browser,fetchImpl:async()=>{throw 
 assert.equal(corsBlocked.checks[4].state,"not-confirmed");
 assert.equal(corsBlocked.checks[5].state,"not-tested");
 assert.match(corsBlocked.checks[4].description,/CORS/);
+const lazyGlobe=await observeJarvisRuntime({browser:{
+ ...browser,ULTRON_EARTH:{state:{available:true,ready:false,mode:"not-opened"}}
+},fetchImpl:fetchHealth});
+assert.equal(lazyGlobe.checks[2].state,"awaiting-activation");
+assert.match(lazyGlobe.checks[2].description,/iniciado sob demanda/);
+assert.equal(lazyGlobe.observed,4,"lazy globe must not count as confirmed");
+assert.match(lazyGlobe.text,/EM ESPERA · Globo 3D/);
 const noBrowser=await observeJarvisRuntime({
  browser:{location:{origin:"http://localhost:3000",pathname:"/"}},
  fetchImpl:fetchHealth
