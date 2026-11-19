@@ -1240,6 +1240,9 @@ window.addEventListener("online",()=>{
   void refreshUnifiedState();
 });
 window.addEventListener("ultron:voice-command", (event) => {
+  // No external voice event may bypass text-only maintenance, including
+  // previously paired Android/gesture producers.
+  if(window.JARVIS_AUDIO_POLICY?.enabled===false)return;
   const command = String(event?.detail?.command || event?.detail?.text || "").trim();
   if (command) enqueue(command, "voice-event");
 });
