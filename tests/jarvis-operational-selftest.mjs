@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import {readFileSync} from "node:fs";
 import {
   parseJarvisOperationalSelfTest,testJarvisGlobe,testJarvisAccess,
-  diagnoseJarvisAccessTransport,runJarvisOperationalSelfTest
+  diagnoseJarvisAccessTransport,runJarvisOperationalSelfTest,jarvisAccessLoginUrl
 } from "../modules/jarvis-operational-selftest.js";
 
 assert.deepEqual(parseJarvisOperationalSelfTest("Jarvis, testar globo e acesso"),
@@ -180,4 +180,48 @@ assert.match(orchestrator,/source==="terminal"&&parseJarvisOperationalSelfTest\(
 assert.match(orchestrator,/isCancelled:\(\)=>generation!==queueGeneration/);
 const audio=readFileSync(new URL("../modules/jarvis-audio-maintenance.js",import.meta.url),"utf8");
 assert.match(audio,/enabled:false,mode:"text-only"/);
+// Explicit navigation must never be triggered in the background by a failed
+// diagnostic. The browser opens the protected domain only after a real click.
+assert.equal(jarvisAccessLoginUrl(),
+  "https://ultron-backend.lucaalves17-20.workers.dev/api/account/session/verify");
+assert.equal(jarvisAccessLoginUrl("https://attacker.invalid"),null);
+assert.equal(jarvisAccessLoginUrl(
+  "https://user:pass@ultron-backend.lucaalves17-20.workers.dev"),null);
+assert.equal(jarvisAccessLoginUrl(
+  "https://ultron-backend.lucaalves17-20.workers.dev/other"),null);
+assert.equal(jarvisAccessLoginUrl(
+  "https://ultron-backend.lucaalves17-20.workers.dev?jwt=secret"),null);
+const EventBackup=globalThis.CustomEvent;
+class TestCustomEvent{
+  constructor(type,{detail}={}){this.type=type;this.detail=detail;}
+}
+globalThis.CustomEvent=TestCustomEvent;
+const emitted=[];
+const loginBrowser={...browser,dispatchEvent:event=>{emitted.push(event);return true;}};
+const loginSuggested=await runJarvisOperationalSelfTest({
+  browser:loginBrowser,
+  fetchImpl:async()=>({status:401,text:async()=>JSON.stringify({error:"account-login-required"})})
+});
+assert.equal(loginSuggested.access.status,"login-required");
+assert.equal(emitted.length,1);
+assert.equal(emitted[0].type,"jarvis:access-signin-required");
+assert.deepEqual(emitted[0].detail,{status:"login-required"});
+assert.equal(loginSuggested.certifiedCapabilitiesIncrement,0);
+emitted.length=0;
+await runJarvisOperationalSelfTest({
+  browser:loginBrowser,
+  fetchImpl:async()=>({status:403,text:async()=>JSON.stringify({error:"account-not-allowed"})})
+});
+assert.equal(emitted.length,0,"forbidden origin must not suggest a login bypass");
+emitted.length=0;
+await runJarvisOperationalSelfTest({browser:loginBrowser,fetchImpl:fetchOk});
+assert.equal(emitted.length,0,"authenticated sessions must not trigger login UI");
+globalThis.CustomEvent=EventBackup;
+const commandCenter=readFileSync(new URL("../modules/jarvis-command-center-v4330.js",import.meta.url),"utf8");
+assert.match(commandCenter,/window\.addEventListener\('jarvis:access-signin-required'/);
+assert.match(commandCenter,/jarvisAccessLoginUrl\(\)/);
+assert.match(commandCenter,/label:'Entrar no Cloudflare Access'/);
+assert.match(commandCenter,/run:\(\)=>\{\s*\/\/ Runs synchronously/);
+assert.match(commandCenter,/window\.open\(loginUrl,'_blank','noopener,noreferrer'\)/);
+assert.equal((commandCenter.match(/window\.open\(loginUrl/g)||[]).length,1);
 console.log("JARVIS OPERATIONAL SELFTEST PASS: lazy globe, visible canvas, signed JWT gate, P0, no identity leak, voice OFF");

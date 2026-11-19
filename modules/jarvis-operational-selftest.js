@@ -5,6 +5,21 @@ const ENDPOINT="/api/account/session/verify";
 const safeError=(v,max=100)=>String(v??"")
   .replace(/[^a-zA-Z0-9_.:-]/g," ").trim().slice(0,max);
 
+/**
+ * HTTPS top-level navigation endpoint for a user-initiated Access sign-in.
+ * No session data or JWT is ever read, stored or added to query parameters.
+ */
+export function jarvisAccessLoginUrl(backendUrl=BACKEND){
+  try{
+    const base=new URL(backendUrl);
+    if(base.protocol!=="https:"||
+       base.hostname!=="ultron-backend.lucaalves17-20.workers.dev"||
+       base.username||base.password||base.search||base.hash||
+       base.pathname!=="/"||base.port)return null;
+    return new URL(ENDPOINT,base.origin).href;
+  }catch{return null;}
+}
+
 export function parseJarvisOperationalSelfTest(message){
   if(typeof message!=="string"||message.length>170)return null;
   const normalized=message.normalize("NFD").replace(/[\u0300-\u036f]/g,"")
@@ -165,6 +180,19 @@ export async function runJarvisOperationalSelfTest({
     "Isto NÃO concede homologação das 60 capacidades. "+
     "Globo com interação real, D1, telefone/TV e execução do agente autenticado ainda exigem testes próprios.\n"+
     "Voz, escuta e Voice Match permanecem desligados.";
+  // A CORS/Access failure requires a login *navigation*, not an automated
+  // credential bypass. Only emit a UI action; never open another tab here.
+  const signinSuggested=!access.ok&&
+    ["login-required","access-or-cookie-blocked",
+      "access-configuration-unverified"].includes(access.status);
+  if(signinSuggested&&!isCancelled()&&jarvisAccessLoginUrl(backendUrl)&&
+     typeof globalThis.CustomEvent==="function"){
+    try{
+      browser?.dispatchEvent?.(new CustomEvent("jarvis:access-signin-required",{
+        detail:{status:access.status}
+      }));
+    }catch{/* An unavailable UI must not change the result of the test. */}
+  }
   let displayed=false;
   // Avoid closing/replacing the globe merely to show a text message.
   if(!globe.ok){

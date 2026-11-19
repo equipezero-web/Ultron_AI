@@ -1,4 +1,5 @@
 import { installStarkCommandCenter } from './stark-command-center-adapter.js?v=4.60.0';
+import {jarvisAccessLoginUrl} from './jarvis-operational-selftest.js?v=1.0.2';
 // JARVIS Command Center v4.33.0 — lightweight, functional dashboard.
 const stage = document.querySelector('.orb-stage');
 const audioInMaintenance = window.JARVIS_AUDIO_POLICY?.enabled === false;
@@ -305,6 +306,27 @@ if (stage) {
     output.scrollTop=output.scrollHeight;
     logEvent(title+' // ATUALIZADO');
   }
+  // Access sign-in requires explicit user navigation to the protected site.
+  // The login button is displayed in the SAME terminal and never runs
+  // automatically as part of a model answer, event or startup script.
+  window.addEventListener('jarvis:access-signin-required',event=>{
+    const status=event?.detail?.status;
+    if(!['login-required','access-or-cookie-blocked',
+          'access-configuration-unverified'].includes(status))return;
+    const loginUrl=jarvisAccessLoginUrl();
+    if(!loginUrl)return;
+    show('CLOUDFLARE ACCESS',
+      'A sessão da API ainda não foi confirmada. Abra o domínio protegido, '+
+      'conclua o login somente se a página oficial do Cloudflare Access aparecer, '+
+      'volte ao J.A.R.V.I.S. e repita "Jarvis, testar globo e acesso". '+
+      'Se a página mostrar apenas um erro 401 em JSON, o administrador '+
+      'deve conferir a aplicação Access que protege a rota.',
+      [{label:'Entrar no Cloudflare Access',run:()=>{
+        // Runs synchronously from a real button press (also supports keyboard).
+        // No cookies, tokens, account IDs or query parameters are copied.
+        window.open(loginUrl,'_blank','noopener,noreferrer');
+      }}]);
+  });
   // Device-local browsing never scans the filesystem or uploads files
   // silently: the operator must explicitly select each batch in the browser.
   let selectedLocalFiles=[];
