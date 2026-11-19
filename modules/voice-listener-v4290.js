@@ -258,6 +258,7 @@ async function authorizeWake(source, meta = {}) {
 }
 
 async function processTranscript(transcript, { source = 'local', meta = {}, localGuards = true } = {}) {
+  if (window.JARVIS_AUDIO_POLICY?.enabled===false) return {handled:false,disabled:true};
   const cleanTranscript = String(transcript || '').trim();
   if (!cleanTranscript || ultronSpeaking || !listeningEnabled) return { handled: false };
   if (localGuards && localSuspended) return { handled: false };
@@ -441,6 +442,7 @@ async function ensureMicrophonePermission() {
   savePreferences(prefs);
 }
 async function testPhysicalMicrophone() {
+  if (window.JARVIS_AUDIO_POLICY?.enabled===false) return false;
   if (!navigator.mediaDevices?.getUserMedia) return;
   let stream;
   let context;
@@ -476,6 +478,7 @@ async function testPhysicalMicrophone() {
 }
 
 async function enableListening({ userInitiated = false, persist = true } = {}) {
+  if (window.JARVIS_AUDIO_POLICY?.enabled===false) { disableListening({persist:true,announce:false}); return false; }
   if (document.body.classList.contains("jarvis-voice-paused")) return false;
   if (!SpeechRecognition) {
     setMicState('unsupported');
@@ -645,6 +648,7 @@ function exposeVoiceInputApi() {
       });
     },
     execute(text, options = {}) {
+      if (window.JARVIS_AUDIO_POLICY?.enabled===false) return {handled:false,disabled:true};
       return executeVoiceCommand(text, options);
     },
     ingestTranscript(text, options = {}) {
@@ -655,7 +659,7 @@ function exposeVoiceInputApi() {
     enable: enableListening,
     disable: disableListening,
     sleep() { setPassiveMode({ announce: true }); },
-    wake() { activateConversation({ announceWake: true, resetTimer: true, method: 'manual' }); },
+    wake() { if (window.JARVIS_AUDIO_POLICY?.enabled===false) return false; activateConversation({ announceWake: true, resetTimer: true, method: 'manual' }); },
     get state() {
       return {
         enabled: listeningEnabled,
@@ -682,6 +686,13 @@ function exposeVoiceInputApi() {
 function initializeVoiceListener() {
   // Voice is available when the operator requests it. Microphone access
   // still requires an Android/browser permission grant; no silent recording.
+  if (window.JARVIS_AUDIO_POLICY?.enabled===false) {
+    exposeVoiceInputApi();
+    disableListening({persist:true,announce:false});
+    setMicState('off','MIC DESATIVADO');
+    if(systemMode)systemMode.textContent='MODO TEXTO';
+    return; // No SpeechRecognition creation, permissions or auto-resume.
+  }
   recognition = createRecognition();
   exposeVoiceInputApi();
   bindSpeechPauseResume();
