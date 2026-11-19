@@ -4,10 +4,154 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-18T18:44:51.160Z",
-  "oldestEventAt": "2026-11-17T18:49:00.000Z",
-  "windowStartAt": "2026-11-17T18:44:51.160Z",
+  "updatedAt": "2026-11-19T00:45:04.587Z",
+  "oldestEventAt": "2026-11-18T00:58:52.000Z",
+  "windowStartAt": "2026-11-18T00:45:04.587Z",
   "events": [
+    {
+      "id": "event-94774ac2",
+      "category": "brasil",
+      "title": "Alexandre Barreto é cotado para presidir Banco do Brasil",
+      "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxOSE4tWldTZzRFbzJjODcxVG5SQkRvVkZaT0tQQ1E4MzRqdDJLSXhVa3BSdk1FRU9RRkdjR1Mzb3dLSVBmcWJhTjRfVmFvSlNPVHBRc0JfVjRiaGJHem5xSmhWeG9HUTZleUthSk9RQ0lHNVFMVVpYWjRnQnROS1k4QzdXZEd5ak9mVW94NGYwNm5KS0ZGaEE",
+      "description": "Alexandre Barreto é cotado para presidir Banco do Brasil &nbsp;&nbsp; Vero Notícias",
+      "imageUrl": null,
+      "source": "Vero Notícias",
+      "publishedAt": "2026-11-19T00:02:48.000Z",
+      "firstSeenAt": "2026-11-19T00:45:04.587Z",
+      "lastSeenAt": "2026-11-19T00:45:04.587Z"
+    },
+    {
+      "id": "event-314b2ed9",
+      "category": "brasil",
+      "title": "Claude Monet em 4 fatos e curiosidades - e onde ver suas pinturas no Brasil",
+      "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxQQl9VcnB4MDRpOGtMcW5aVF84VHVaNVpaOUJLdlZDRXBWcW96R2R6VTAwOWxuSmlIYlh6MlhqN2dmOWNmbnp2Skw1cHdyZHlNSVZJV2xHdGNUeGg5eHJpWi1QNFFaSDBMbzFrZmRBaDhrcXZvb005X2NsWTlIaHNPZ2R3MDZoVzVzVmxWZGd6ZDF6ZWY2S0FobjhOVzZPb0Rtbi1MLTdmX0NVNHozSzZ1STdpRlFGODFKS0RLUkNpYWFDZW9EcktwcQ",
+      "description": "Claude Monet em 4 fatos e curiosidades - e onde ver suas pinturas no Brasil &nbsp;&nbsp; Estadão",
+      "imageUrl": null,
+      "source": "Estadão",
+      "publishedAt": "2026-11-18T23:22:33.000Z",
+      "firstSeenAt": "2026-11-19T00:45:04.587Z",
+      "lastSeenAt": "2026-11-19T00:45:04.587Z"
+    },
+    {
+      "id": "event-98793226",
+      "category": "mundo",
+      "title": "Principais notícias do mundo na noite de hoje (18)",
+      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPMDcxR3ROdW5DbnNmSzlPTWI5aHVYd3pxMDVaOGRTZXVnQTdLcDlCb3ZvaVJ2blkzZ25nNjNHTHRRYm5MaXBCYTd6WGU3WUktYVctMWlMbkJjb1hrZmxjZEFhR2VCWmtjUURlZGhHa2Zvei1obEZocnRraGpHTUpUbFFQRVlNUDIzbG5raE5uX2VYc1ppclhlZjVtSEVvOUNObVBoUDYtbUhjQzg1",
+      "description": "Principais notícias do mundo na noite de hoje (18) &nbsp;&nbsp; Tribuna do Sertão",
+      "imageUrl": null,
+      "source": "Tribuna do Sertão",
+      "publishedAt": "2026-11-18T23:06:01.000Z",
+      "firstSeenAt": "2026-11-19T00:45:04.587Z",
+      "lastSeenAt": "2026-11-19T00:45:04.587Z"
+    },
+    {
+      "id": "event-6d61cb50",
+      "category": "santa-catarina",
+      "title": "Formação de ciclone e temporais marcam o fim de semana em SC",
+      "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxQZncwd2I3YkdnbzV1WXVRZWlEajdpamhDd2RweFo0aHlRRnBtWmNUa1lsNHNQWVg1b3BOdkRTT3o0MlllNV80Vklyei1ydnc2c1RhdzdWNVFOeDB3VTJPZER4bzBneDlLRjRHQ0laVkJKd2JNOVIzOXMwWDR4bEpwbFFjei1hYnVJdU9sSGlGb0VtYkJTd1pEalRXQmNrNy1DZkYwQXpmeElfNkRhWnh1dW9OYXZpNDl0SFRLQ2QtZXlmRmc",
+      "description": "Formação de ciclone e temporais marcam o fim de semana em SC &nbsp;&nbsp; Diário do Iguaçu",
+      "imageUrl": null,
+      "source": "Diário do Iguaçu",
+      "publishedAt": "2026-11-18T22:48:00.000Z",
+      "firstSeenAt": "2026-11-19T00:45:04.587Z",
+      "lastSeenAt": "2026-11-19T00:45:04.587Z"
+    },
+    {
+      "id": "event-363cebf5",
+      "category": "brasil",
+      "title": "Senado rejeita mudanças no texto e aprova ajuste fiscal do governo",
+      "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2026-11/senado-rejeita-mudancas-no-texto-e-aprova-ajuste-fiscal-do-governo",
+      "description": "O Senado Federal aprovou no fim da tarde desta quarta-feira (18) o projeto de ajuste fiscal do governo , sem as alterações no texto tentadas pela oposição. Ao todo, três destaques ao projeto, que modificavam substancialmente o seu conteúdo, foram rejeitados, um a um, pela votação em plenário. A análise precisou ser adiada por 24 horas por falta de consenso e risco de derrota para o governo. O Projeto de Lei Complementar (PLP 299/2026) prevê medidas para reduzir despesas e ampliar a arrecadação, com economia estimada entre R$ 45,1 bilhões e R$ 56,1 bilhões em 2027. A projeção considera tanto o aumento da arrecadação quanto o controle das despesas e se refere ao chamado resultado primário, a diferença entre o que o governo arrecada e o que gasta antes do pagamento dos juros da dívida. Notícias relacionadas: Senado adia votação de destaques do projeto de ajuste fiscal. Senado aprova texto-base de pacote que prevê economia de até R$ 60 bi. Entre os itens do texto, está uma mudança no arcabouço fiscal para permitir ao governo fazer bloqueios adicionais de despesas para alcançar a meta fis",
+      "imageUrl": "https://imagens.ebc.com.br/FLDGjt82Rr2ESob_e7iJL6mYCdc=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/18/maioridade_12-11-26-3_0.jpg?itok=wpPlcKHc",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-18T22:39:00.000Z",
+      "firstSeenAt": "2026-11-19T00:45:04.587Z",
+      "lastSeenAt": "2026-11-19T00:45:04.587Z"
+    },
+    {
+      "id": "event-d524895f",
+      "category": "clima",
+      "title": "O El Niño de 2026-2027 pode já ter alcançado seu pico de intensidade, embora ainda não esteja descartada a possibilidade de novos aumentos na temperatura do Pacífico Equatorial. A",
+      "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE9CR0J3UXZTalkteWpxbEF2bjhDdWVZVXJNbWk3M2JZNXVUa3pnVUk2S3VxbEJZWTg0WWFFTmZCXzRGeUNmOUVvSTlaZTRhNi1adGc",
+      "description": "O El Niño de 2026-2027 pode já ter alcançado seu pico de intensidade, embora ainda não esteja descartada a possibilidade de novos aumentos na temperatura do Pacífico Equatorial. A discussão ganhou força entre meteorologistas após os dados mais rec &nbsp;&nbsp; Instagram",
+      "imageUrl": null,
+      "source": "Instagram",
+      "publishedAt": "2026-11-18T22:29:04.000Z",
+      "firstSeenAt": "2026-11-19T00:45:04.587Z",
+      "lastSeenAt": "2026-11-19T00:45:04.587Z"
+    },
+    {
+      "id": "event-871e56d7",
+      "category": "brasil",
+      "title": "Dólar sobe para R$ 5,87 com expectativa sobre votação de ajuste fiscal",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/dolar-sobe-para-r-587-com-expectativa-sobre-votacao-de-ajuste-fiscal",
+      "description": "O mercado financeiro brasileiro teve mais um dia de perdas nesta quarta-feira (18). O dólar subiu pela quinta sessão consecutiva e atingiu a maior cotação em 19 meses, fechando próximo de R$ 5,87. Na bolsa, o Ibovespa recuou 1,34% , pressionado por ações de bancos e pela cautela dos investidores diante da votação do pacote de ajuste fiscal no Senado. No exterior, o petróleo também caiu, com a perspectiva de recuperação da oferta global. Notícias relacionadas: Governo anuncia medidas de ajuste para economia de até R$ 60 bilhões . Senado adia votação de destaques do projeto de ajuste fiscal. Principais números do dia: Dólar comercial: R$ 5,868 (+1,48%); Alta do dólar em 2026: 6.9%; Ibovespa: 167.537,95 pontos (-1,34%); Petróleo tipo Brent: US$ 91,95 (-1,27%); Petróleo tipo WTI: US$ 82,31 (-2,76%); Dólar em alta O dólar comercial fechou esta quarta em alta de 1,48%, a R$ 5,868, maior valor desde 15 de abril de 2025, quando chegou a R$ 5,891. Poucos minutos antes do encerramento do pregão, a moeda atingiu R$ 5,8708, avanço de 1,54%. Com a quinta alta consecutiva, a divisa acumula alta de",
+      "imageUrl": "https://imagens.ebc.com.br/ABCzDV1BNGLK1WelR64FGvUJtDs=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/dolar_moeda_0803221211.jpg?itok=9aRcSX3F",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-18T22:26:00.000Z",
+      "firstSeenAt": "2026-11-19T00:45:04.587Z",
+      "lastSeenAt": "2026-11-19T00:45:04.587Z"
+    },
+    {
+      "id": "event-816be425",
+      "category": "mundo",
+      "title": "Embratur 60 anos: seis décadas de história e uma parceria que atravessa gerações",
+      "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxObVNtc25Dc1FCQ0phVkkyMjl6QlBMNXJkUDNIQWVua1d5bms4OHpIUnp1MVdUVFlqbWYzOXcxSTlUenJpWDVnT0NxVmtDZnpIZHh2SUJ2UVA1ckxBRHplZEltYlZDdU5mN3FNQ0daNXFfYkFmX3NOV1lqajJkY2lRY1pKUm85ZXkyV2ZiTWJ6T19aellzd3AxT1BTSnhVVUVVUUxpOXlrWVdnWC00Zl95SldaVW1XemlBaEdybVZjQllSUjVmQm5qbHdidGY4Zw",
+      "description": "Embratur 60 anos: seis décadas de história e uma parceria que atravessa gerações &nbsp;&nbsp; Mercado e Eventos",
+      "imageUrl": null,
+      "source": "Mercado e Eventos",
+      "publishedAt": "2026-11-18T20:26:00.000Z",
+      "firstSeenAt": "2026-11-19T00:45:04.587Z",
+      "lastSeenAt": "2026-11-19T00:45:04.587Z"
+    },
+    {
+      "id": "event-8bb8b842",
+      "category": "clima",
+      "title": "El Niño deve atingir o auge no verão de 2027; saiba quando começa a perder força",
+      "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxQU0dPOFJYZm5SWE5va2E3X2dydXBJVVhIWC11cE00WjdZa0RodERYTHI2M3lpclZISzl3Z2ozeTYzWkE1S3J0SHByeGhkMGFMbXV4SGw4SzBleXdyb1o5b0h0WVRvSlJodW5HUXRwLUx3QlNzVGtJMFp4ZVIyRDhEOUNJWmRvWUQxZFFQV3RFakF0ZE51cGZibWxaMGFmbHNyVmp3OWExZkl2MHlWNUQ0WjNSV3NTbWkxR1E",
+      "description": "El Niño deve atingir o auge no verão de 2027; saiba quando começa a perder força &nbsp;&nbsp; Folha Vitória",
+      "imageUrl": null,
+      "source": "Folha Vitória",
+      "publishedAt": "2026-11-18T20:10:22.000Z",
+      "firstSeenAt": "2026-11-19T00:45:04.587Z",
+      "lastSeenAt": "2026-11-19T00:45:04.587Z"
+    },
+    {
+      "id": "event-bc435f9d",
+      "category": "mundo",
+      "title": "“O Bahia é o Mundo”: Tricolor lança documentário sobre era City",
+      "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxOMEZsVnRfR1R2aGk2V2RDVWlVdWRzV0lmam56QVJDcnFONS1fb3RZZjhHNkdyZkNLTDd2X3hhMTh3TFpuOWZTd3J4amFJLTRmNVE3N0FoNEJabnp1Q21GTEluV3lUc1ZjcGJhVDJWcHhua3ZMWmdjWXB0TjJCOHkwOGdOUVIzbFF5Q01MdFNZa280U1M1RG50bUszZlN6UGNtMDJTQkZoMGx5Zw",
+      "description": "“O Bahia é o Mundo”: Tricolor lança documentário sobre era City &nbsp;&nbsp; Portal Salvador FM",
+      "imageUrl": null,
+      "source": "Portal Salvador FM",
+      "publishedAt": "2026-11-18T20:01:10.000Z",
+      "firstSeenAt": "2026-11-19T00:45:04.587Z",
+      "lastSeenAt": "2026-11-19T00:45:04.587Z"
+    },
+    {
+      "id": "event-439573bc",
+      "category": "santa-catarina",
+      "title": "Chuva intensa, granizo e vendavais: veja a previsão para Santa Catarina nos próximos dias",
+      "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxQVXpVbU1lOGM5c05CU2VxTzctMUItdkJmNDVWU1Bnbmp6OUh6Y3lqVVFxZ1BzR1BZLXhrU1REREgwV3NBNjIxcEZqcGtjRE5qclR6QW56YjBqaWJjNkdJOXBaRzVIZkRxOEdXVTJ2dmlUQ0lKd095U1R1dEh5ZzNnUG1HaFZobW9aeGRVNWJ2SlhlTnNnaTZJRTJyaDZ1UUwtZ0NtbmtXN3JTelUzRkYzVkVIei1IYWdCRUJRd1Vaekhtdw",
+      "description": "Chuva intensa, granizo e vendavais: veja a previsão para Santa Catarina nos próximos dias &nbsp;&nbsp; Jornal de Pomerode",
+      "imageUrl": null,
+      "source": "Jornal de Pomerode",
+      "publishedAt": "2026-11-18T19:43:08.000Z",
+      "firstSeenAt": "2026-11-19T00:45:04.587Z",
+      "lastSeenAt": "2026-11-19T00:45:04.587Z"
+    },
+    {
+      "id": "event-2103e80e",
+      "category": "clima",
+      "title": "Chuvas já provocam estragos em Minas Gerais antes do auge do período chuvoso, sob influência do El Niño",
+      "url": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxPUHVJeHpYVk9sdUhxeVN3QzBkWEM0cTlmYzVPaUV3WUk1ZzQ2c1J3Y1BjTU8xZDE2cDJiWG9JSzd2YjlKOFNCNHdFa3MtTUM0NVVUTlRBUWd4cVo5eVZJUE4wNGZFeVJlR0wxMjFBc3BtbThnZGtwNjhZd3p2MUtSREFMeGRDYU9NOUo4UHBVMHVVWDBxVzlmaUpvNC1FN3haNHFmd05CRkNhNkRaT0FqQ1NMeVRtbFRsQldsSndsaUVqZkJPdDBScWVOdktwZWlUUVJRbkZJWTc",
+      "description": "Chuvas já provocam estragos em Minas Gerais antes do auge do período chuvoso, sob influência do El Niño &nbsp;&nbsp; Gazeta de Patrocínio",
+      "imageUrl": null,
+      "source": "Gazeta de Patrocínio",
+      "publishedAt": "2026-11-18T19:40:00.000Z",
+      "firstSeenAt": "2026-11-19T00:45:04.587Z",
+      "lastSeenAt": "2026-11-19T00:45:04.587Z"
+    },
     {
       "id": "event-62432fdb",
       "category": "clima",
@@ -66,7 +210,7 @@
       "source": "Portal Engeplus",
       "publishedAt": "2026-11-18T17:00:00.000Z",
       "firstSeenAt": "2026-11-18T18:44:51.160Z",
-      "lastSeenAt": "2026-11-18T18:44:51.160Z"
+      "lastSeenAt": "2026-11-19T00:45:04.587Z"
     },
     {
       "id": "event-5d0cce01",
@@ -235,171 +379,9 @@
       "publishedAt": "2026-11-18T00:58:52.000Z",
       "firstSeenAt": "2026-11-18T01:59:44.467Z",
       "lastSeenAt": "2026-11-18T09:58:46.014Z"
-    },
-    {
-      "id": "event-4165a38f",
-      "category": "mundo",
-      "title": "Apagão global e fim do mundo: teorias da conspiração marcaram o 17 de novembro de 2026",
-      "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxQQXlERGd4c1NoOHV3WDVaVXgxVFdWTmMtNmJvdy1qc3BKbkpDb1BHMS1tZ1ZxTVNpNEVSeGpDU2RUZlJ5STBBNkFfSWx3WFEyMlVveUc5S3Z4V0JscDhUT1ZRNVRvUGM0Vk1Gend3eFVpdEZUbG9YUmRrZlhkYzFkU1YtUl8yeE80Q2xJbDZOcGxveUM4MjNUQnItckVuUjdJN29GRnc4THFFSGdTZUpSSldBazhVVnRQTktQb2JsV0FEVDBRcnNOQUp2Nm9oa2ZDVExwam92QjZXaTNDU0xKYdIB7wFBVV95cUxPN1k0OUJhaXlrYjFuSWFTOW9NVEctMUc1UVJtNU1Yb2cxLVRJXy00MFVGLTNDRjFqQ05mU2ZybHc5NTZlcjNZdjZGVTJuNENXNkx4RWtiak1WMEE2N3FPcUtXMTZCV2xITGhjdXV3eTg4UnRSWFhUTUcxS3Y3Ylp4V25qN1V2Qm1hWk14RXBnOUo1ckRGazFlMDdDZWhQSDRXQ0NYRFowY3o3ZzhiVndhWHA1NXNwY2JnbVRLNHJUaE9Yc0JYN0NOZ1FwdHJPTkF4SWJrTWJMbV9YRWZUaVotYmNVX3c0TkZhY3QzOEVScw",
-      "description": "Apagão global e fim do mundo: teorias da conspiração marcaram o 17 de novembro de 2026 &nbsp;&nbsp; G1",
-      "imageUrl": null,
-      "source": "G1",
-      "publishedAt": "2026-11-18T00:23:39.000Z",
-      "firstSeenAt": "2026-11-18T01:59:44.467Z",
-      "lastSeenAt": "2026-11-18T01:59:44.467Z"
-    },
-    {
-      "id": "event-296a1d2f",
-      "category": "brasil",
-      "title": "Senado aprova Brasil Soberano 3, que libera até R$ 13,5 bilhões para conter feitos do tarifaço",
-      "url": "https://news.google.com/rss/articles/CBMi4wFBVV95cUxQckNLbUg2SmgycVViZmhIR29aVXl1QXFIT2dWSGthblRoVEtwNnl5UnlkWjBXOF91MHZDTUl1X2JFQ2lmWlNBSmFJYTZXMjRNSk9oTTZlVkNZb1E3UjFHeGY2a1hJek1UU3hhanI1UE5jV1NpRmxna293UVMxR3lYSXFtenVxcUk5bHRDQndkaVVKMjZMSlRWZWk5bUlxOThHWEhMTHJXMC02SWZpdE5fVHNtcVRvNnhDamMycnYzTjY5SnFyNHhaWEs4THhFOF9iRnJ1bmF3bGhBbHBZYnVtNWlrWdIB8gFBVV95cUxQX3gyRGlnNUlLX194MmhpMG1uc0hDQWhSZ28xZ1h2N0RqMS1ONjV2OURYb2U4aS1BQTNvb2FDc2s2MVd2U0NwdExiWkxOTzViN055MjFGbC1DQ0pVeV9TYTk3UG5nVXlYdENZMzJYTTZLdzM1U0NhQzJyV0VhVjdlaGxRSE5sdTdKaE50Ui16WkIxbVpXaW5GVGxkdEhqUldXX0NRMHZKQU9ZcjJJbHEyZXVSMTk2cGpxNy0tU295Uy1qTmItMmttRGh1VTVsbmhEdk1jM0RENEp4bFNqTlNjd2FlNXlPLXVwek9BVEhiWmIzUQ",
-      "description": "Senado aprova Brasil Soberano 3, que libera até R$ 13,5 bilhões para conter feitos do tarifaço &nbsp;&nbsp; Valor Econômico",
-      "imageUrl": null,
-      "source": "Valor Econômico",
-      "publishedAt": "2026-11-18T00:04:54.000Z",
-      "firstSeenAt": "2026-11-18T01:59:44.467Z",
-      "lastSeenAt": "2026-11-18T01:59:44.467Z"
-    },
-    {
-      "id": "event-4d0320fb",
-      "category": "brasil",
-      "title": "Indígenas isolados se aproximam de aldeia e governo fica em alerta",
-      "url": "https://agenciabrasil.ebc.com.br/direitos-humanos/noticia/2026-11/indigenas-isolados-se-aproximam-de-aldeia-e-governo-fica-em-alerta",
-      "description": "Um grupo de indígenas Awá foi avistado, na segunda (16), em aproximação a um posto de controle da Fundação Nacional dos Povos Indígenas (Funai) e de uma aldeia dos indígenas Guajajara, chamada Tawari, no estado do Maranhão. A situação deixou os profissionais de saúde do governo em alerta porque doenças comuns à população em geral podem representar riscos significativos à saúde desses grupos. Notícias relacionadas: Caso Miguel: Mirtes cobra justiça no dia que filho faria 12 anos. Brasileiros percebem racismo estrutural e defendem ações de combate. Brasil gasta R$ 14,5 bilhões por ano com guerra às drogas. “Povos indígenas isolados podem apresentar elevada vulnerabilidade epidemiológica em razão da limitada exposição histórica a determinados agentes infecciosos”, alertou o governo em uma nota oficial. Segundo informou o documento, foi criada uma sala de situação para gerenciar possíveis contatos desse grupo e atuar para prevenir surtos ou epidemias que poderiam afetar esses indígenas. O governo garantiu que a atuação institucional deve priorizar a proteção da vida, a prevenção de doenç",
-      "imageUrl": "https://cdn.jsdelivr.net/gh/sergiosdlima/assets-ebc@1.0.0/public/thumbs/thumb_1200x600_agbrasil.png",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-17T23:57:00.000Z",
-      "firstSeenAt": "2026-11-18T01:59:44.467Z",
-      "lastSeenAt": "2026-11-18T09:58:46.014Z"
-    },
-    {
-      "id": "event-4efb341b",
-      "category": "brasil",
-      "title": "Defesa pede que Supremo julgue pedido para soltar Vorcaro",
-      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/defesa-pede-que-supremo-julgue-pedido-para-soltar-vorcaro",
-      "description": "A defesa do ex-banqueiro Daniel Vorcaro protocolou nesta terça-feira (17) uma petição para solicitar que o Supremo Tribunal Federal (STF) julgue o pedido de soltura feito na semana passada. Em uma manifestação encaminhada ao presidente do STF, Edson Fachin, os advogados informaram que, de acordo com as regras processuais, a necessidade da manutenção da prisão deve ser renovada a cada 90 dias. O prazo vence no dia 29 de novembro. Notícias relacionadas: Defesa quer que Mendonça analise soltura de Daniel Vorcaro. Defesa de Daniel Vorcaro pede revogação de prisão preventiva a Fachin. Paulo Gonet nega proximidade com Daniel Vorcaro. “Enquanto o recurso não anda, os autos permanecem retidos na presidência, e o agravo [recurso], que os remeteria ao ministro mais antigo da Segunda Turma, não recebe sequer despacho”, disse a defesa. A defesa quer que o pedido de soltura seja julgado pelo ministro Gilmar Mendes, ministro mais antigo do Supremo e integrante da Segunda Turma da Corte. “Pede, assim, a remessa dos autos ao ministro mais antigo da Segunda Turma, nos termos do Regimento Interno, a f",
-      "imageUrl": "https://imagens.ebc.com.br/tNESgdSebkNjmPajI4bEmul1OCg=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/03/13/daniel_vorcaro03.jpg?itok=XqCqqcyX",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-17T23:41:00.000Z",
-      "firstSeenAt": "2026-11-18T01:59:44.467Z",
-      "lastSeenAt": "2026-11-18T09:58:46.014Z"
-    },
-    {
-      "id": "event-e75d83f6",
-      "category": "brasil",
-      "title": "STF inaugura símbolo da Justiça na tradição iorubá",
-      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/stf-inaugura-simbolo-da-justica-na-tradicao-ioruba",
-      "description": "O Supremo Tribunal Federal (STF) inaugurou nesta terça-feira (17) a escultura do Oxê de Xango, símbolo da Justiça na tradição iorubá. A iniciativa é inédita no Supremo e faz parte das comemorações do Dia Nacional da Consciência Negra, celebrado na próxima sexta-feira (20). A incorporação da escultura ao acervo do Supremo foi solicitada ao presidente do Supremo, ministro Edson Fachin, pelo Instituto de Defesa dos Direitos das Religiões Afro-Brasileiras e outras entidades e líderes de religiões de matriz africana. Notícias relacionadas: Fachin sinaliza que STF pode julgar Lei da Dosimetria neste ano. PGR é a favor de prorrogação de investigação do caso Dark Horse . Os pedidos foram efetivados após a Corte reconhecer que símbolos religiosos fixados em prédios públicos não ferem a laicidade do Estado. Durante a cerimônia, Fachin disse que a incorporação da escultura é compromisso institucional do Supremo. O presidente ressaltou que a Constituição assegura o livre exercício de cultos religiosos e à proteção aos locais de culto e suas liturgias. “A liberdade religiosa só é plena quando pod",
-      "imageUrl": "https://imagens.ebc.com.br/E5zMcavqYJ7uDImf5k6hriFwhDs=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/13/esculturaoxe.jpg?itok=YNVk5PUt",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-17T23:35:00.000Z",
-      "firstSeenAt": "2026-11-18T01:59:44.467Z",
-      "lastSeenAt": "2026-11-18T09:58:46.014Z"
-    },
-    {
-      "id": "event-8364289f",
-      "category": "brasil",
-      "title": "Fachin sinaliza que STF pode julgar Lei da Dosimetria neste ano",
-      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/fachin-sinaliza-que-stf-pode-julgar-lei-da-dosimetria-neste-ano",
-      "description": "O presidente do Supremo Tribunal Federal (STF), ministro Edson Fachin, disse nesta terça-feira (17) que a Corte pode julgar, ainda neste ano, a validade da lei que diminui as penas de condenados pelos atos golpistas de 8 de janeiro de 2023 (Lei da Dosimetria) e que também pode beneficiar o ex-presidente Jair Bolsonaro. Segundo Fachin, a data do julgamento será definida somente se o ministro Alexandre de Moraes, relator do caso, liberar o processo para julgamento. Notícias relacionadas: PGR se manifesta contra suspensão da Lei da Dosimetria . AGU diz ao STF que Lei da Dosimetria é inconstitucional. Câmara e Senado defendem no STF validade da Lei da Dosimetria . Durante um evento no Supremo, o presidente foi perguntado pela imprensa se tem a intenção de julgar o caso neste ano e respondeu “sim”. Mais cedo, os presidentes da Câmara dos Deputados, Hugo Motta (Republicanos-PB), e do Senado, Davi Alcolumbre (União-AP), se reuniram com Moraes e defenderam que o ministro libere o processo para inclusão na pauta do plenário do Supremo. Em maio deste ano, Moraes suspendeu a aplicação da Lei da",
-      "imageUrl": "https://imagens.ebc.com.br/XfuQnwfXqYlkKvgtzxAK7UY-alI=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/10/21/55603645624_ea872fc2f4_o.jpg?itok=AXSGO_dE",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-17T23:01:00.000Z",
-      "firstSeenAt": "2026-11-18T09:58:46.014Z",
-      "lastSeenAt": "2026-11-18T09:58:46.014Z"
-    },
-    {
-      "id": "event-db695d9d",
-      "category": "mundo",
-      "title": "De Ozempic a IA, The Economist aponta principais tendências e desafios para 2027; confira as previsões",
-      "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxNWVc3NXVaeDk3TVJzTlo5RWQxWnlEeUp2MU1RaFFKbWo4Sks5RjRUbEV4LTB0SVk2LXFOUzlXcTd2X2kzRDBNM0dxYzRncXEtUU05Y0ZkWFZNN3B3eVpNX3VKQmpHOUg3NGpnbzZLMmpMOEo2Ylc4WXpJMWVIVlItUjhpT09seGRZdkpsQ0lfM2xoOTBEVHhqRHl3OVcxcHRwWDJiSEpxRTBjUG1uVTNxRk55YjVCNHNYQVZ0dTI2ZVB3MHJ5UzBnVDRBaUh3djVz",
-      "description": "De Ozempic a IA, The Economist aponta principais tendências e desafios para 2027; confira as previsões &nbsp;&nbsp; URB News",
-      "imageUrl": null,
-      "source": "URB News",
-      "publishedAt": "2026-11-17T22:59:41.000Z",
-      "firstSeenAt": "2026-11-18T01:59:44.467Z",
-      "lastSeenAt": "2026-11-18T01:59:44.467Z"
-    },
-    {
-      "id": "event-2ba5a101",
-      "category": "mundo",
-      "title": "Copa do Mundo Feminina completa 35 anos e se prepara para edição histórica no Brasil",
-      "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxPc1QwS2ttZl9lNkpBQVJ6MmZzeUc1Q0FnMHU2OGFwazNIWXpqZWJTQ0pFaGlOc3NtOERxZjBOcWZCUDRTUTFJQ25pQ3UxRWlWRF9jb1d4N29GUXJqNGVOa25YVFdWS0M3LU9IbVNfV3k3eVROSXJyOEk1MktxSkxqX0lQWURabVdpMTBvWHBUWTVyOVlpSGNYamstbnh0OG5SQ0xjQlZVTHJrd0MzMHBxZzNJaU02bmUzTHJuTmJITHhxMHVDSFdKOXhfZGpyNzdBX3pj",
-      "description": "Copa do Mundo Feminina completa 35 anos e se prepara para edição histórica no Brasil &nbsp;&nbsp; LANCE!",
-      "imageUrl": null,
-      "source": "LANCE!",
-      "publishedAt": "2026-11-17T22:52:38.000Z",
-      "firstSeenAt": "2026-11-18T01:59:44.467Z",
-      "lastSeenAt": "2026-11-18T01:59:44.467Z"
-    },
-    {
-      "id": "event-8940e29f",
-      "category": "santa-catarina",
-      "title": "Defesa Civil alerta para risco de temporais no Sul de SC nesta quarta e quinta-feira",
-      "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxOSFR1ZENCRXpVYk9hN1lCZEhJZ29WQkcyN3JyOGRpT2hjSFRQbHdnYWFuc3hZRkhIMDM3NGNZRUVGUFI2YW5raEJhNmI4ZGtxdHNkN1YyQmR3S3pGYm1mSnNkOFlVVUtjTnFRVXpPOFpxU2xTRDdXWnlDM1pGYThXbXNNQmZFRG1sbTRHSFZZNmNjN0ZER2NUMWVtNkVLeEtBN2NMM1J3RzYxSklGay1j",
-      "description": "Defesa Civil alerta para risco de temporais no Sul de SC nesta quarta e quinta-feira &nbsp;&nbsp; Portal Engeplus",
-      "imageUrl": null,
-      "source": "Portal Engeplus",
-      "publishedAt": "2026-11-17T20:18:09.000Z",
-      "firstSeenAt": "2026-11-18T01:59:44.467Z",
-      "lastSeenAt": "2026-11-18T01:59:44.467Z"
-    },
-    {
-      "id": "event-3488704c",
-      "category": "santa-catarina",
-      "title": "Novo ciclone coloca SC na rota de temporais severos com possibilidade de tornados",
-      "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxOVnpqSWlTSnRWUDJ1RDg5cTNqSEpXZXBTcVV3bjg4NmFSaUt2QWt2Q2dubWVnUnVFQ0ZzOFNYVXhsZFlWMFZFZGw1QjhxZkVHcXRoREJHaENGbGxvc2ttSnhGTzN0eEJPU0FLYk1rd1p6RkFkRVNnY29ORDdFc3NySHpFZlpCdHg1b3JtVDJZWERMMVY2M3FqLTBCSUxnNTFXMXM1MHFtRWFnUQ",
-      "description": "Novo ciclone coloca SC na rota de temporais severos com possibilidade de tornados &nbsp;&nbsp; TVBV ONLINE",
-      "imageUrl": null,
-      "source": "TVBV ONLINE",
-      "publishedAt": "2026-11-17T19:40:07.000Z",
-      "firstSeenAt": "2026-11-18T01:59:44.467Z",
-      "lastSeenAt": "2026-11-18T01:59:44.467Z"
-    },
-    {
-      "id": "event-717fe7e1",
-      "category": "brasil",
-      "title": "Durigan prevê impacto inicial da reforma tributária sobre inflação",
-      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/durigan-preve-impacto-inicial-da-reforma-tributaria-sobre-inflacao",
-      "description": "O ministro da Fazenda, Dario Durigan, afirmou, nesta terça-feira (17), que a implementação da reforma tributária pode gerar pequeno impacto inicial sobre a inflação. A observação foi em resposta à preocupação manifestada por senadores com uma eventual alta do índice. Segundo o ministro, esse efeito tende a diminuir gradualmente à medida que as empresas se adaptem às novas regras tributárias e ajustem a formação de preços. Notícias relacionadas: Durigan defende alíquota da reforma e estima média efetiva de 8,5%. Reforma tributária: Receita descarta punição a erros de boa-fé. Mais de 276 mil trabalhadores ainda não sacaram o abono salarial 2026. “Pode haver algum pequeno impacto inflacionário, mas estamos passando por um processo em que os empresários vão aprender a precificar seus bens e serviços de acordo com a nova legislação tributária, considerando os créditos a que têm direito e os débitos pelos quais são responsáveis”, disse Durigan durante audiência na Comissão de Assuntos Econômicos (CAE) do Senado. Na avaliação do ministro, “à medida que essa precificação for sendo compreendi",
-      "imageUrl": "https://imagens.ebc.com.br/_ekxbEBuPEJWngnKc5aLepEFQUk=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/17/sessao_do_congresso_12-11-26-16.jpg?itok=HgBUQ-i_",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-17T18:56:00.000Z",
-      "firstSeenAt": "2026-11-17T19:52:03.891Z",
-      "lastSeenAt": "2026-11-17T19:52:03.891Z"
-    },
-    {
-      "id": "event-d01fb4eb",
-      "category": "brasil",
-      "title": "Bukele, de El Salvador, projeta poder no Caribe com operação no Haiti",
-      "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/bukele-de-el-salvador-projeta-poder-no-caribe-com-operacao-no-haiti",
-      "description": "Sob a justificativa de resgatar quatro soldados de El Salvador que teriam sido capturados por gangues do Haiti, o presidente Nayib Bukele tem projetado poder no Caribe com uma operação militar na ilha Hispaniola, que dura três semanas e conta com mais de dois mil militares salvadorenhos. Os jornais haitianos registram crescente apoio popular às ações militares conduzidas por El Salvador. O colunista do Le Nouvelliste, Frantz Duval, afirma que Bukele está “no centro das atenções” do país. Notícias relacionadas: Haiti marca para dezembro primeira eleição em uma década. El Salvador retira limite de mandato presidencial, favorecendo Bukele. “Nas ruas de Porto Príncipe e em cidades do interior, as pessoas cantam seu nome. Multidões dançam, evocando suas ações. Isso é bastante incomum para um fenômeno que começou há apenas algumas semanas”, escreveu o analista haitiano . Nas redes sociais, Bukele tem se vangloriado das supostas ações contra os grupos criminosos que, na capital Porto Príncipe, controlam cerca de 80% do território e têm aterrorizado a população local. Uma das “conquistas” ce",
-      "imageUrl": "https://imagens.ebc.com.br/gQbyBg58pz-jw9f6zDiw6fJY-8I=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/17/2026-11-13t202614z_1741446206_rc2qmoatlx6l_rtrmadp_3_haiti-violence-el-salvador.jpg?itok=jPYPyH-z",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-17T18:49:00.000Z",
-      "firstSeenAt": "2026-11-17T19:52:03.891Z",
-      "lastSeenAt": "2026-11-17T19:52:03.891Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-17T19:52:03.891Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 14,
-      "newArticles": 13,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "america-latina",
-        "europa",
-        "asia"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-18T01:59:44.467Z",
       "ok": true,
@@ -453,30 +435,33 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-19T00:45:04.587Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 13,
+      "newArticles": 12,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "america-latina",
+        "europa",
+        "asia"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 4,
-  "lastSuccessfulAt": "2026-11-18T18:44:51.160Z",
+  "lastSuccessfulAt": "2026-11-19T00:45:04.587Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-18T18:44:51.160Z",
+      "checkedAt": "2026-11-19T00:45:04.587Z",
       "warnings": [
-        {
-          "id": "56446",
-          "title": "Tempestade",
-          "severity": "Perigo Potencial",
-          "phase": "previsto",
-          "regions": [
-            "DO",
-            "DO",
-            "DE"
-          ],
-          "startsAt": "2026-11-19T00:00:00.000Z",
-          "endsAt": "2026-11-19T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
-        },
         {
           "id": "56447",
           "title": "Tempestade",
@@ -496,7 +481,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-18T18:44:51.160Z",
+      "checkedAt": "2026-11-19T00:45:04.587Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
