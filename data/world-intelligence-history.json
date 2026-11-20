@@ -4,10 +4,118 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-20T04:18:25.187Z",
-  "oldestEventAt": "2026-11-19T11:49:00.000Z",
-  "windowStartAt": "2026-11-19T04:18:25.187Z",
+  "updatedAt": "2026-11-20T13:23:59.179Z",
+  "oldestEventAt": "2026-11-19T14:33:55.000Z",
+  "windowStartAt": "2026-11-19T13:23:59.179Z",
   "events": [
+    {
+      "id": "event-bb4d1da2",
+      "category": "brasil",
+      "title": "Quase 90% das usinas eólicas do país têm alertas socioambientais",
+      "url": "https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-11/quase-90-das-usinas-eolicas-do-pais-tem-alertas-socioambientais",
+      "description": "Um levantamento inédito do Instituto Internacional Arayara aponta que 89,4% dos empreendimentos eólicos terrestres no Brasil apresentam algum fator de sensibilidade socioambiental identificado. O monitoramento abrange 1.748 parques eólicos, entre usinas em operação, projetos em construção ou em fase de planejamento, distribuídos por 13 estados, a maioria no Nordeste, com capacidade total de 60,6 gigawatts (GW), equivalente a mais de quatro vezes a potência instalada da usina de Itaipu. Desse total, 1.175 usinas estão efetivamente em operação, com pouco mais de 36 GW de capacidade. As informações constam na plataforma Farol das Eólicas , lançada nessa quinta-feira (19), durante a 31ª Conferência das Nações Unidas sobre Mudanças Climáticas (COP31), em Antalya, na Turquia. Notícias relacionadas: Mapas do caminho ainda podem voltar à decisão final da COP31. Impasses entre países podem atrasar documento final da COP31. Capobianco reforça responsabilidades de países na COP31 na Turquia. Os fatores de sensibilidade identificados incluem sobreposição e proximidade dessas usinas com territóri",
+      "imageUrl": "https://imagens.ebc.com.br/iQ2wSZJWJCxwaYL3AYv0ReybAYA=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/uee-em-icara-ce_15000856682_o.jpg?itok=C054jiwW",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-20T12:32:00.000Z",
+      "firstSeenAt": "2026-11-20T13:23:59.179Z",
+      "lastSeenAt": "2026-11-20T13:23:59.179Z"
+    },
+    {
+      "id": "event-8ddae69d",
+      "category": "brasil",
+      "title": "Brasileirão: Rádio Nacional transmite duelo entre Palmeiras e Flamengo",
+      "url": "https://agenciabrasil.ebc.com.br/esportes/noticia/2026-11/brasileirao-radio-nacional-transmite-duelo-entre-palmeiras-e-flamengo-0",
+      "description": "A Rádio Nacional transmite neste sábado (21) a partida que poderá definir o grande campeão do Campeonato Brasileiro Masculino Série A 2026. A emissora pública inicia a jornada esportiva do confronto entre Palmeiras e Flamengo a partir das 16h. A bola rola na Arena Nubank Parque, em São Paulo, às 16h30. A partida deste sábado coloca frente à frente o líder e o vice-líder do Brasileirão na reta final do campeonato. O Flamengo pode conquistar o título de maneira antecipada na casa do rival: com seis pontos de vantagem na tabela, um empate contra o Palmeiras já basta para garantir a taça. A transmissão da Rádio Nacional começa com a faixa Show de Bola Nacional e contará com uma equipe completa para levar ao público todas as emoções dos confrontos. A cobertura da partida tem um time de peso na equipe de esportes da emissora: a narração fica por conta de André Luiz Mendes e comentários de Mário Silva. Por fim, Rafael Monteiro comanda a reportagem e o plantão de informações. A transmissão da partida entra no ar para parte da rede em AM e OC, além da FM no Rio de Janeiro, no Alto Solimões e",
+      "imageUrl": "https://imagens.ebc.com.br/shtL9Cl8lEIsIA7NaESvDvXAhTc=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/10/27/2026-10-27t010345z_1239050503_up1emar02y45b_rtrmadp_3_soccer-brazil-fla-atl.jpg?itok=UncuVyG7",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-20T11:32:00.000Z",
+      "firstSeenAt": "2026-11-20T13:23:59.179Z",
+      "lastSeenAt": "2026-11-20T13:23:59.179Z"
+    },
+    {
+      "id": "event-8c6f7789",
+      "category": "brasil",
+      "title": "“Percy Jackson”: terceira temporada estreia nesta sexta; relembre trama",
+      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxOSGxreVJzZmxucFpLckI4djR5cHd2b19raDBNT08tbjdaV3VVdDU0OVp1OUpTa3RWWENQS1Y0LVFHeTRvb2l3aXFTNGRreTd3T1NqZjluNXRqM0xIRC1qZkk4WDBDdjV4RVE2QkZ5TlZkYlpKZ3BMSGh2dF84N21xU21ucS0zT010alNOYzRFbFlNRGJIWWdIRHptWGYza2M2c2JibV9TNkdmdVI5MTdaSg",
+      "description": "“Percy Jackson”: terceira temporada estreia nesta sexta; relembre trama &nbsp;&nbsp; CNN Brasil",
+      "imageUrl": null,
+      "source": "CNN Brasil",
+      "publishedAt": "2026-11-20T11:30:21.000Z",
+      "firstSeenAt": "2026-11-20T13:23:59.179Z",
+      "lastSeenAt": "2026-11-20T13:23:59.179Z"
+    },
+    {
+      "id": "event-759360a9",
+      "category": "santa-catarina",
+      "title": "Feriado da Consciência Negra terá risco alto de temporais e granizo em todas as regiões de SC",
+      "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxOTHEyeU5FdFpJNXp3RVU5SFVhc3JaZWN5ZHNWZ0JMUUZNaUw2LXBxbGExSW1rVV9ZeVNORU9IbWJNcmJBSWVfazktY25wd2hVWE5qT3I1UFVVbHJvOWZtLTFNTDRUcEJ1WU9ObTF5NUlfbnBNWTRCclI5MHd5NWhlMTdsMUZFN2ZvaHJBeHFMQ2hOVm1DUmxDdHJnSzJwc1dZT0dEZFFoOV93a1dqQnRoSGxfcmMxdk1jX2J3aUtYa3hPakJxS2g1LXRVQ0E",
+      "description": "Feriado da Consciência Negra terá risco alto de temporais e granizo em todas as regiões de SC &nbsp;&nbsp; 4oito",
+      "imageUrl": null,
+      "source": "4oito",
+      "publishedAt": "2026-11-20T11:02:00.000Z",
+      "firstSeenAt": "2026-11-20T13:23:59.179Z",
+      "lastSeenAt": "2026-11-20T13:23:59.179Z"
+    },
+    {
+      "id": "event-e63d3b6c",
+      "category": "brasil",
+      "title": "Termina nesta sexta prazo para pedir reaplicação do Enem 2026",
+      "url": "https://agenciabrasil.ebc.com.br/educacao/noticia/2026-11/termina-nesta-sexta-prazo-para-pedir-reaplicacao-do-enem-2026",
+      "description": "Termina nesta sexta-feira (20) o prazo para os inscritos no Exame Nacional do Ensino Médio (Enem) 2026 que não conseguiram fazer as provas pedirem a reaplicação das avaliações. Entre as causas previstas no edital estão problemas logísticos ou doenças infectocontagiosas. Por meio da Página do Participante do Enem , o candidato pode fazer o pedido, individualmente, para cada um dos domingos em que faltou. É preciso ter senha Gov.br. Notícias relacionadas: Inep divulga gabarito oficial do Enem 2026; veja como consultar. Gabarito do Enem sai na quarta-feira, e resultado em 18 de janeiro. A solicitação será analisada pelo Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (Inep), responsável pela aplicação do exame. O Enem 2026 ocorreu nos dias 8 e 15 de novembro. As provas serão reaplicadas nos dias 15 e 16 de dezembro. Motivos Somente têm direito à reaplicação aqueles que formalizarem a solicitação na Página do Participante, de acordo com as seguintes situações: afetados por problemas logísticos: desastres naturais, falta de energia elétrica ou erro de execução de pr",
+      "imageUrl": "https://imagens.ebc.com.br/QJM_W8qRIIt_vva8Vvs1BoUM_jY=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/08/0d7a3029.jpg.jpeg?itok=0PGwcFDB",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-20T11:00:00.000Z",
+      "firstSeenAt": "2026-11-20T13:23:59.179Z",
+      "lastSeenAt": "2026-11-20T13:23:59.179Z"
+    },
+    {
+      "id": "event-c3475a4f",
+      "category": "santa-catarina",
+      "title": "Defesa Civil alerta para risco alto de temporais em SC no feriado prolongado",
+      "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxQSVVvT3Ezc1Y0eVVUZVh1S1hoR3A5c3N4eWlTalVoMHZIVlA0S3JiTmRpcjdUZXRJOGhZM1ItQU5uQ212NXQ1eDlreEQ1S0prZWl5U0dQUXVOQ0tZX3FHTU03SDZ6N2VNbF8yMlJlcU1zUTRRVV9kamk5c0FLUWFpcTlIZVVfZkdyOUZRZWZaLUVaUnNDUUZrR1pOWUtrdlM1REtPWVdNbTVUZWJXM29WZ2VSMGdKSzVoR1lRNA",
+      "description": "Defesa Civil alerta para risco alto de temporais em SC no feriado prolongado &nbsp;&nbsp; Oeste Mais",
+      "imageUrl": null,
+      "source": "Oeste Mais",
+      "publishedAt": "2026-11-20T10:27:07.000Z",
+      "firstSeenAt": "2026-11-20T13:23:59.179Z",
+      "lastSeenAt": "2026-11-20T13:23:59.179Z"
+    },
+    {
+      "id": "event-17325803",
+      "category": "clima",
+      "title": "Feriado da Consciência Negra terá chuva e tempestades em todas as regiões do país",
+      "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxQaWZUb3JaUDY0YjZHMEZQQ01VdEhQTjhxeVR4MjVicG5PeVNuRWFGaFZJQXZESS1MNzB4dDNSVFV2SmlSSmVXWVgwcTBmc1pybE5LREdNVlNUOS1vbnd4bmZJeVdEUWRkSmhTd1ozamNGUUdxOUQ0aW1uUDcwczVWc1dURWdrYkhHYm90dVI3NHVzeUl0",
+      "description": "Feriado da Consciência Negra terá chuva e tempestades em todas as regiões do país &nbsp;&nbsp; Diário do Pará",
+      "imageUrl": null,
+      "source": "Diário do Pará",
+      "publishedAt": "2026-11-20T09:23:00.000Z",
+      "firstSeenAt": "2026-11-20T13:23:59.179Z",
+      "lastSeenAt": "2026-11-20T13:23:59.179Z"
+    },
+    {
+      "id": "event-1d8b739",
+      "category": "clima",
+      "title": "Governo de MS monitora influência do El Niño nas chuvas, temperaturas e produção agrícola",
+      "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxNSlhvQ2VhRHdyWmhKX3hpWXc2SlZXU0JhUjl4eGh1WlZtWHZ0bXF2LVBST3Nxa2phZkx3YjV0c0NKMHdvUFlvc0w4TjJfYXNOdmxLX3dhMWNuc3ZJdXZkYTJqdkpMTEdVRmFrNGZ3MklyMC1DZjhBeTViOFZlWmVSd2w0UkZfSXduRXdXZ0VPYi0wN2ZoQjJtUm9NckRySjQ2MnRIWGNrWUdUMVBmOHlYaGh4Mkp0b00wQ3BZ",
+      "description": "Governo de MS monitora influência do El Niño nas chuvas, temperaturas e produção agrícola &nbsp;&nbsp; Idest",
+      "imageUrl": null,
+      "source": "Idest",
+      "publishedAt": "2026-11-20T06:09:00.000Z",
+      "firstSeenAt": "2026-11-20T13:23:59.179Z",
+      "lastSeenAt": "2026-11-20T13:23:59.179Z"
+    },
+    {
+      "id": "event-3ef64a7d",
+      "category": "mundo",
+      "title": "Estudar, construir uma carreira e prosperar? Já não é mais assim para os jovens",
+      "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxPLWpTakd4Y0pFeUJ0UzBNdk1EUjJwaXhRc3M1X3llLW9wREdMekxYNDdzTVZnb05wZkZvTGFWWnFQckp0cGFhM2Iya1NoTFpiSmduRzFScVpJY1ZPa2tNRlp2U1JxOTAwVExuUmxEUWpXVHB0Rl9XSVhyS21JcnpScGltdGRNdjlDTGd3TjVNaEcxak96LXBlSVVhZDBZZGVoSFNzWUlNX1NfSEJkQVp0ZmV0aUJNSDZNRkd6RktVVG1SYmtBd1JWeDZkRHR1Z9IB3AFBVV95cUxQaDM2c2daV1dOcG9RX2xfZ1lNU1pUMVJseEVBQ0VwQ2tsSUswN19qUUR5X180eFlrSWNiVl8tWl9rR1QxTDAxNHpkc0l3SFZmY09zQWZxb3UyejJMa1FWSEdQbmQ1V0JmNWxSaTZGWmJ3ZzVETUpybEcxN2l2UFV1RWdYVS1LWF8zbldZUENNSGlOYkdLR0xBTEpJSEhTMVdKQTFFWnhQZDdvek4yLXRsV3ZpT2Y2M0JqSXBybVd2dmFYaF9ySUtHVlY2MUROTGFHMjJ1cnhScU5yWWFs",
+      "description": "Estudar, construir uma carreira e prosperar? Já não é mais assim para os jovens &nbsp;&nbsp; O GLOBO",
+      "imageUrl": null,
+      "source": "O GLOBO",
+      "publishedAt": "2026-11-20T03:00:00.000Z",
+      "firstSeenAt": "2026-11-20T13:23:59.179Z",
+      "lastSeenAt": "2026-11-20T13:23:59.179Z"
+    },
     {
       "id": "event-f8a2b98c",
       "category": "brasil",
@@ -66,7 +174,7 @@
       "source": "Tribuna do Sertão",
       "publishedAt": "2026-11-19T23:31:22.000Z",
       "firstSeenAt": "2026-11-20T04:18:25.187Z",
-      "lastSeenAt": "2026-11-20T04:18:25.187Z"
+      "lastSeenAt": "2026-11-20T13:23:59.179Z"
     },
     {
       "id": "event-17928326",
@@ -102,7 +210,7 @@
       "source": "Prefeitura de Belo Horizonte",
       "publishedAt": "2026-11-19T22:22:29.000Z",
       "firstSeenAt": "2026-11-19T23:35:39.481Z",
-      "lastSeenAt": "2026-11-19T23:35:39.481Z"
+      "lastSeenAt": "2026-11-20T13:23:59.179Z"
     },
     {
       "id": "event-bccc351d",
@@ -114,7 +222,7 @@
       "source": "O Tempo",
       "publishedAt": "2026-11-19T22:19:13.000Z",
       "firstSeenAt": "2026-11-19T23:35:39.481Z",
-      "lastSeenAt": "2026-11-20T04:18:25.187Z"
+      "lastSeenAt": "2026-11-20T13:23:59.179Z"
     },
     {
       "id": "event-11f7a0a0",
@@ -126,7 +234,7 @@
       "source": "Hora Hiper",
       "publishedAt": "2026-11-19T22:10:00.000Z",
       "firstSeenAt": "2026-11-19T23:35:39.481Z",
-      "lastSeenAt": "2026-11-20T04:18:25.187Z"
+      "lastSeenAt": "2026-11-20T13:23:59.179Z"
     },
     {
       "id": "event-d62092ac",
@@ -343,39 +451,9 @@
       "publishedAt": "2026-11-19T14:33:55.000Z",
       "firstSeenAt": "2026-11-19T17:12:15.865Z",
       "lastSeenAt": "2026-11-19T17:12:15.865Z"
-    },
-    {
-      "id": "event-5f7cd053",
-      "category": "santa-catarina",
-      "title": "Calor acima dos 30°C antecede temporais em SC",
-      "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxPMkJ4azFRRHdCb3R3Uy11ODNZeVF6SUdYYnVXSl8teFZIeWJ6VGZ4Z1hOZ2p0U29TVzhOMkFrZXIyWG43aTBYZzk0cnVKbUNiTGxPdjNnOUpyZW16RzF3Y0FodXNmMEpROUhOZkVZYmxTSTZ4Q2hzV0VOTHRZU1pHTmpEN0haVGJfQlNQNkJkWQ",
-      "description": "Calor acima dos 30°C antecede temporais em SC &nbsp;&nbsp; Imagem da Ilha",
-      "imageUrl": null,
-      "source": "Imagem da Ilha",
-      "publishedAt": "2026-11-19T11:49:00.000Z",
-      "firstSeenAt": "2026-11-19T17:12:15.865Z",
-      "lastSeenAt": "2026-11-19T17:12:15.865Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-19T07:58:48.047Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 13,
-      "newArticles": 6,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "america-latina",
-        "europa",
-        "asia"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-19T17:12:15.865Z",
       "ok": true,
@@ -428,17 +506,34 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-20T13:23:59.179Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 13,
+      "newArticles": 9,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "america-latina",
+        "asia"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 4,
-  "lastSuccessfulAt": "2026-11-20T04:18:25.187Z",
+  "lastSuccessfulAt": "2026-11-20T13:23:59.179Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-20T04:18:25.187Z",
+      "checkedAt": "2026-11-20T13:23:59.179Z",
       "warnings": [
         {
-          "id": "56458",
+          "id": "56462",
           "title": "Tempestade",
           "severity": "Perigo Potencial",
           "phase": "previsto",
@@ -453,7 +548,7 @@
           "url": "https://avisos.inmet.gov.br/"
         },
         {
-          "id": "56459",
+          "id": "56466",
           "title": "Tempestade",
           "severity": "Perigo Potencial",
           "phase": "previsto",
@@ -463,7 +558,7 @@
             "DE"
           ],
           "startsAt": "2026-11-22T00:00:00.000Z",
-          "endsAt": "2026-11-22T00:00:00.000Z",
+          "endsAt": "2026-11-23T00:00:00.000Z",
           "source": "INMET",
           "url": "https://avisos.inmet.gov.br/"
         }
@@ -471,7 +566,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-20T04:18:25.187Z",
+      "checkedAt": "2026-11-20T13:23:59.179Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
