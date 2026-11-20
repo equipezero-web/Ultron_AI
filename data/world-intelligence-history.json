@@ -4,10 +4,82 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-19T23:35:39.481Z",
-  "oldestEventAt": "2026-11-19T00:02:48.000Z",
-  "windowStartAt": "2026-11-18T23:35:39.481Z",
+  "updatedAt": "2026-11-20T04:18:25.187Z",
+  "oldestEventAt": "2026-11-19T11:49:00.000Z",
+  "windowStartAt": "2026-11-19T04:18:25.187Z",
   "events": [
+    {
+      "id": "event-f8a2b98c",
+      "category": "brasil",
+      "title": "Mega-Sena acumula e prêmio vai para R$ 45 milhões",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/mega-sena-acumula-e-premio-vai-para-r-45-milhoes",
+      "description": "Nenhum apostador acertou as seis dezenas do Concurso 3.088 da Mega-Sena, realizado nesta quinta-feira (19). O prêmio acumulou e está estimado em R$ 45 milhões para o próximo sorteio. Os números sorteados foram: 10 - 21 - 24 -28 - 34 - 44 15 apostas acertaram cinco dezenas e irão receber R$ 93.739,59 cada 2.750 apostas acertaram quatro dezenas e irão receber R$ 730,43 O próximo concurso será no domingo (22). Apostas As apostas podem ser feitas em qualquer lotérica do país ou pela internet, no site ou aplicativo da Caixa. A aposta simples, com seis dezenas, custa R$ 6.",
+      "imageUrl": "https://imagens.ebc.com.br/uGWKQSevZCX_pTs3UH-Oh-oPDv4=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/20230622_182658.jpg?itok=s-3aV28q",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-20T01:20:00.000Z",
+      "firstSeenAt": "2026-11-20T04:18:25.187Z",
+      "lastSeenAt": "2026-11-20T04:18:25.187Z"
+    },
+    {
+      "id": "event-1fa35bec",
+      "category": "brasil",
+      "title": "Repórter da Agência Brasil vence Prêmio SBIm de Jornalismo em Saúde",
+      "url": "https://agenciabrasil.ebc.com.br/saude/noticia/2026-11/reporter-da-agencia-brasil-vence-premio-sbim-de-jornalismo-em-saude",
+      "description": "A repórter Tâmara Freire, da Agência Brasil, é vencedora do VII Prêmio SBIm de Jornalismo em Saúde, com a reportagem Resistência às vacinas contra gripe e covid coloca gestantes em risco . A cerimônia de premiação foi nesta quarta-feira (18), em São Paulo. A premiação é realizada pela Sociedade Brasileira de Imunizações (SBIm), em parceria com a Organização Pan-Americana da Saúde (OPAS/OMS) e a Federação das Associações Brasileiras de Ginecologia e Obstetrícia (Febrasgo). Esta edição teve como tema \"Vacinação da gestante: proteção para a mãe e o bebê\". Notícias relacionadas: Agência Brasil e Rádio Nacional ganham prêmio de direitos humanos. Agência Brasil conquista 1º lugar no Prêmio Einstein +Admirados. Repórter da Agência Brasil é finalista em prêmio de proteção animal. \"Vacinação é um tema prioritário para a cobertura da Agência Brasil . É uma honra ver esse esforço reconhecido por organizações tão importantes. A morte de uma gestante ou puérpera por covid ou gripe é uma tragédia completamente evitável. É urgente informar às mulheres brasileiras que todas as vacinas oferecidas pel",
+      "imageUrl": "https://imagens.ebc.com.br/L32lhoy_9Tkl1WbmX-maa0c7qhU=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/19/208a3557.jpg?itok=CUj9st7z",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-20T00:36:00.000Z",
+      "firstSeenAt": "2026-11-20T04:18:25.187Z",
+      "lastSeenAt": "2026-11-20T04:18:25.187Z"
+    },
+    {
+      "id": "event-5afa628f",
+      "category": "brasil",
+      "title": "Caso Master: Fachin encaminha à PGR citações a quatro ministros do STF",
+      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/caso-master-fachin-encaminha-pgr-citacoes-quatro-ministros-do-stf",
+      "description": "O presidente do Supremo Tribunal Federal (STF), ministro Edson Fachin, decidiu nesta quinta-feira (19) enviar à Procuradoria-Geral da República (PGR) quatro relatórios produzidos pela Polícia Federal (PF) sobre menções a ministros da Corte em conversas encontradas no celular de Daniel Vorcaro. Os relatórios referem-se às citações aos nomes dos ministros Alexandre de Moraes, André Mendonça, Kassio Nunes Marques e Dias Toffoli. Notícias relacionadas: PGR envia ao Supremo parecer favorável a manter prisão de Vorcaro. Andrei entrega a Fachin relatórios sobre ministros no caso Master. Caberá ao procurador-geral, Paulo Gonet, avaliar o material e tomar as providências que achar necessárias, entre elas, a solicitação de arquivamento por falta de provas ou eventual pedido de abertura de investigação, que precisará ser aprovado previamente pelo plenário do Supremo. Fachin também decidiu arquivar seis relatórios que tratam das menções aos ministros Luiz Fux, Cármen Lúcia, Gilmar Mendes, Flávio Dino, Cristiano Zanin e ao próprio Fachin. A decisão do presidente está em segredo de Justiça e as ju",
+      "imageUrl": "https://imagens.ebc.com.br/CAkMlRo1nXtCNzcZ8o43w9Z5W5Y=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/02/02/abertura-stf-mc_abr_30012026-9.jpg?itok=pwBEFW-j",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-19T23:56:00.000Z",
+      "firstSeenAt": "2026-11-20T04:18:25.187Z",
+      "lastSeenAt": "2026-11-20T04:18:25.187Z"
+    },
+    {
+      "id": "event-7c8a9a7b",
+      "category": "brasil",
+      "title": "Prêmio Brasil Olímpico 2026 revela finalistas a melhor atleta do ano",
+      "url": "https://agenciabrasil.ebc.com.br/esportes/noticia/2026-11/premio-brasil-olimpico-2026-revela-finalistas-melhor-atleta-do-ano",
+      "description": "O Comitê Olímpico Brasileiro (COB) anunciou nesta quinta-feira (19) os finalistas à categoria de melhor atleta do ano do Prêmio Brasil Olímpico 2026. No gênero feminino, concorrem Maria Clara Pacheco (taekwondo), Rebeca Andrade (ginástica artística) e a seleção de ginástica rítmica. Já no masculino a corrida pelo troféu reúne Alison dos Santos (atletismo), Hugo Calderano (tênis de mesa) e Lucas Pinheiro Braathen (esqui alpino). Os vencedores serão conhecidos durante cerimônia de gala no dia 2 de dezembro, a partir das 18h45 (horário de Brasília), na Cidade das Artes, no Rio de Janeiro. Notícias relacionadas: Alison dos Santos conquista o título da Liga Diamante pela 3ª vez. Rebeca Andrade conquista o tri no Mundial de Ginástica na Holanda . Brasil faz história e leva dois ouros no Mundial de ginástica rítmica. Os indicados à premiação foram definidos em votação do Colegiado do Prêmio Brasil Olímpico, formado por representantes de confederações esportivas, ex-atletas e jornalistas especializados, entre outros. O mesmo grupo elegeu os melhores atletas por modalidade em 2026 . Finalista",
+      "imageUrl": "https://imagens.ebc.com.br/SjY-9zj7BNUODJJhv2c2spxNp-Q=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/08/27/alison_dos_santos_recorde_mundial_diamond_league_2026.jpg?itok=Yk-uK3Qe",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-19T23:34:00.000Z",
+      "firstSeenAt": "2026-11-20T04:18:25.187Z",
+      "lastSeenAt": "2026-11-20T04:18:25.187Z"
+    },
+    {
+      "id": "event-62197254",
+      "category": "mundo",
+      "title": "Principais notícias do mundo na noite de hoje (19)",
+      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxOcVF0aEhRT3BGTHgwc0tmWFdLMTJIUWJlcXVXNGNTYUlfeU9WVTJiM1h2VlRZejZmVGM4SXlEUnY1Z19wZmFEYWROVTV0ZDJZVFNMWWxydU1qM0d1b19sWjFVaGZGbHh2Q2J0YXB1dmlKalUzUTlMcnd3dzJ4NlVoSXNyU3ZSeW5PRjB6eGRBTUVPR3l6M2ZSaTZhTkhIcE1XOHhnSFlBTUo5cEY4",
+      "description": "Principais notícias do mundo na noite de hoje (19) &nbsp;&nbsp; Tribuna do Sertão",
+      "imageUrl": null,
+      "source": "Tribuna do Sertão",
+      "publishedAt": "2026-11-19T23:31:22.000Z",
+      "firstSeenAt": "2026-11-20T04:18:25.187Z",
+      "lastSeenAt": "2026-11-20T04:18:25.187Z"
+    },
+    {
+      "id": "event-17928326",
+      "category": "mundo",
+      "title": "Primeiro encontro entre líderes da China, EUA e Rússia termina com compromisso para reduzir riscos de uma guerra nuclear",
+      "url": "https://news.google.com/rss/articles/CBMinAJBVV95cUxQUVg1WGx6SnR0U3pYakNCXzlrRU9iTjNnQlpkYVBIX3RGaVRGVlYwbW50aDlCQURKaWN5b3lTSktzMmpxZmNkQTdYX0xDLVh3ZlZkYWRqX3FPaWdLQ2tfMXl4eVluMC0zUXg5SnBYZnI3TVBPZE00QTd2dVNMSjVPQ0dSWE9kVGgzYTRubjIzNkdxTzNEMlIxR3c4SFhSTEVkWXdVRDFsR2czdi1IZ19wb0dxRGxBRFVhYzNZclZpa1NBall6V3MtN3NjWnRnN1FqV19rbHdVMzdiM1ZabVZjS21wbzRsWTdxUHBtT0JndkhrUlJIdjlMSXdBUVRaTDJMNEs3WWx6SlFCNUNkcER0QmNEZlFuR0c1TWNoQdIBnAJBVV95cUxQUVg1WGx6SnR0U3pYakNCXzlrRU9iTjNnQlpkYVBIX3RGaVRGVlYwbW50aDlCQURKaWN5b3lTSktzMmpxZmNkQTdYX0xDLVh3ZlZkYWRqX3FPaWdLQ2tfMXl4eVluMC0zUXg5SnBYZnI3TVBPZE00QTd2dVNMSjVPQ0dSWE9kVGgzYTRubjIzNkdxTzNEMlIxR3c4SFhSTEVkWXdVRDFsR2czdi1IZ19wb0dxRGxBRFVhYzNZclZpa1NBall6V3MtN3NjWnRnN1FqV19rbHdVMzdiM1ZabVZjS21wbzRsWTdxUHBtT0JndkhrUlJIdjlMSXdBUVRaTDJMNEs3WWx6SlFCNUNkcER0QmNEZlFuR0c1TWNoQQ",
+      "description": "Primeiro encontro entre líderes da China, EUA e Rússia termina com compromisso para reduzir riscos de uma guerra nuclear &nbsp;&nbsp; G1",
+      "imageUrl": null,
+      "source": "G1",
+      "publishedAt": "2026-11-19T23:28:40.000Z",
+      "firstSeenAt": "2026-11-20T04:18:25.187Z",
+      "lastSeenAt": "2026-11-20T04:18:25.187Z"
+    },
     {
       "id": "event-db80a0d2",
       "category": "brasil",
@@ -42,7 +114,7 @@
       "source": "O Tempo",
       "publishedAt": "2026-11-19T22:19:13.000Z",
       "firstSeenAt": "2026-11-19T23:35:39.481Z",
-      "lastSeenAt": "2026-11-19T23:35:39.481Z"
+      "lastSeenAt": "2026-11-20T04:18:25.187Z"
     },
     {
       "id": "event-11f7a0a0",
@@ -54,7 +126,7 @@
       "source": "Hora Hiper",
       "publishedAt": "2026-11-19T22:10:00.000Z",
       "firstSeenAt": "2026-11-19T23:35:39.481Z",
-      "lastSeenAt": "2026-11-19T23:35:39.481Z"
+      "lastSeenAt": "2026-11-20T04:18:25.187Z"
     },
     {
       "id": "event-d62092ac",
@@ -78,7 +150,31 @@
       "source": "Notiserra SC",
       "publishedAt": "2026-11-19T21:33:07.000Z",
       "firstSeenAt": "2026-11-19T23:35:39.481Z",
-      "lastSeenAt": "2026-11-19T23:35:39.481Z"
+      "lastSeenAt": "2026-11-20T04:18:25.187Z"
+    },
+    {
+      "id": "event-c3864a8b",
+      "category": "mundo",
+      "title": "Reunião histórica coloca Tribunal Penal Internacional na mira das maiores potências no mundo",
+      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQMnJSVlFMVG5pdUdkdlM5d3R5Q3g5UjA1dUFSN2JtMTNUQVJ3WUlQRGJFc1Ayb3hwUkdPNGJlUEcySVRQZ1VRRlNCQWlqazhjRXZTQjFVaDZBWTRQRFluUGdpdHA3SHRlUTNFSWdxSFdGb2FtR2hXOW1xVGtEb040cGd2YnU3YmxzaDA1SzdsM3dLVXBfREE1N2RjS29LeG4wS2lzZ200QjZKUFVB",
+      "description": "Reunião histórica coloca Tribunal Penal Internacional na mira das maiores potências no mundo &nbsp;&nbsp; Brasil Paralelo",
+      "imageUrl": null,
+      "source": "Brasil Paralelo",
+      "publishedAt": "2026-11-19T21:27:12.000Z",
+      "firstSeenAt": "2026-11-20T04:18:25.187Z",
+      "lastSeenAt": "2026-11-20T04:18:25.187Z"
+    },
+    {
+      "id": "event-eb852be5",
+      "category": "santa-catarina",
+      "title": "Previsão indica chuvas intensas e temporais durante o feriadão em Santa Catarina",
+      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxOcDZIYldJR0lKXzM5RHhCaXd5ZjlldWROLVlsSHZyME9RV2gyRHdBR3RIWVZaQnZWMGkyaDAzVlNMdDR6WHhDOFJFOWtoUUZGSDRjTVFkZkJoMTk1YkVRd2xDMkdlLThZSlA1UUp4UUZuQTdrNTM5YzY3LTY2TXlPckl6UGh5VjJ1Z3o1YlNRT1dpLXFUWkR6T0JnRlE2dXllWlllSGMtZnRBeVdO",
+      "description": "Previsão indica chuvas intensas e temporais durante o feriadão em Santa Catarina &nbsp;&nbsp; Governo de Santa Catarina",
+      "imageUrl": null,
+      "source": "Governo de Santa Catarina",
+      "publishedAt": "2026-11-19T20:41:00.000Z",
+      "firstSeenAt": "2026-11-20T04:18:25.187Z",
+      "lastSeenAt": "2026-11-20T04:18:25.187Z"
     },
     {
       "id": "event-5aa38469",
@@ -126,7 +222,7 @@
       "source": "O Tempo",
       "publishedAt": "2026-11-19T20:23:23.000Z",
       "firstSeenAt": "2026-11-19T23:35:39.481Z",
-      "lastSeenAt": "2026-11-19T23:35:39.481Z"
+      "lastSeenAt": "2026-11-20T04:18:25.187Z"
     },
     {
       "id": "event-ea677d51",
@@ -259,111 +355,9 @@
       "publishedAt": "2026-11-19T11:49:00.000Z",
       "firstSeenAt": "2026-11-19T17:12:15.865Z",
       "lastSeenAt": "2026-11-19T17:12:15.865Z"
-    },
-    {
-      "id": "event-3ae8ec6a",
-      "category": "brasil",
-      "title": "GTA 6 chega no Brasil hoje (19); conheça história e por que é tão popular",
-      "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxOa1A5M0FpTXUzY0t1OFNsVS1rajg5UTdPZjJncHllalFVcUllMUY1Q2JYZ3prUzRpdHdNaVlHNDZYX0NqRHQzVjhvMkdYVkIxbG1nM2Z2ZHp3THZsOHhLR1ZWVW1HTVMxelpxaV9ZUk1PNnJud25ISGFLMzA1UEloNTU0ZF9hWHpScC0tRlp6bzdwN3NsLXhib0R1eXoyc0U3SjNGR3pMVU5iZGdFWkpPRlVMeHRKR2F1QXZfODBpSlJFbGlObWh6R9IB1wFBVV95cUxQX050QURfaHQwSVBUWUxUMV9fMHBaVlN1a3AwamtMLU1ELVZmMkM2VjVQdkV3LWRJWGl5ZHpXNGgzWGpnSllHRXRuQTBXWFBoZHhGWG15R0tEeEsxNlhkZ2tsdG1kZV80Rm9RQklaeEViOXR5MU9Uc1lZWFczZV9ONXFlUW9FYnVjbDhNRmtuNUV1eWwybm5SWm9FS0Y1dWhUNDlEX2tVaVc1MDg5MVFiVmlDRklWbFFZdXhDWFJLc044aEtKcVdyN2FIc0doeDcyaVRmVkYyRQ",
-      "description": "GTA 6 chega no Brasil hoje (19); conheça história e por que é tão popular &nbsp;&nbsp; TechTudo",
-      "imageUrl": null,
-      "source": "TechTudo",
-      "publishedAt": "2026-11-19T03:00:00.000Z",
-      "firstSeenAt": "2026-11-19T07:58:48.047Z",
-      "lastSeenAt": "2026-11-19T07:58:48.047Z"
-    },
-    {
-      "id": "event-bef8a2a1",
-      "category": "mundo",
-      "title": "De ruptura com a OpenAI a gigante da bolsa: veja 5 fatos importantes sobre a Anthropic",
-      "url": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxObk1LQXZ0amRfUkFJNDd5YzFVVWdRV1pkaHdCdkdmLWhyMnF2X09hN1l3T1d6ZGE2WFRfZTlXbkctMDVuTFgzYVYtMGMzVmJ3bXpINWxmRVVtUXM4czd3ZXhBanVoUzJxQ3labmk0bzlDTDNCZ3d4NWlBLXVUVVk0dWtnQ3ZRanVDWFIyeGs3YkM5UTRmbncyekR3cHUxTHZjc09QaUZGaVdaZy0yb3pHLU9pZlhoUEtEYzhfaEZMRGxJYXIyTjBXbkZNeUwyeFFUY284RDJVdW1UUdIB6AFBVV95cUxNT1F6TFpDY1d4LUpXWVV1akdjTjd1QXRPb2k0U2xjQ3pWYWZUNXloQXVHZDhVWlVYcnhvRHktVmk3QUQ2T0NFMTdTQ0xXQ2hwcjQ1c0NvNmxzeFNFMGpUUHRYYWdtTkFva2s2Z3ZYRzU5ZWJlVjFOVmY2Z0RHLUtsaUF2ZFNxZVhjTUdmT1BOUDNjOXhmM1RTQU9CVTdvWHV6NWhVV2I3NFdVNFdkcnRaUU9NNnk4WmphMnY2VGE3Y21pdXhKeG5oZ1UzSHI1bTdIUGE2WklKX09PZHBLR1hoUnd6QWNPMEdD",
-      "description": "De ruptura com a OpenAI a gigante da bolsa: veja 5 fatos importantes sobre a Anthropic &nbsp;&nbsp; G1",
-      "imageUrl": null,
-      "source": "G1",
-      "publishedAt": "2026-11-19T03:00:00.000Z",
-      "firstSeenAt": "2026-11-19T07:58:48.047Z",
-      "lastSeenAt": "2026-11-19T07:58:48.047Z"
-    },
-    {
-      "id": "event-49befa83",
-      "category": "mundo",
-      "title": "América do Sul tem 14 vinícolas entre as 50 melhores do mundo",
-      "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxPeVlVVk1fZ3YweGZYbDRPTi1hdTFFeDNEVDBfU01IQkhLWVA3TVNUT29iLS1pQ0x1dUE5ZHRibU1SX1dPcmh0ZVVNeW5aaXFYeThRMGdiRTU2X1pZQUN1MmEyNDRqc19ScHpvc1dNRGplSVE3Mnl3MEdsM0F1LXZuRkd5dDU1QllPMkNQSjQ5eFQ1d1hzaUdtRl94cWx3ZVl1eUtWSXZEYV9hU2FMc0F4TExGbUZ0Vzhy",
-      "description": "América do Sul tem 14 vinícolas entre as 50 melhores do mundo &nbsp;&nbsp; CNN Brasil",
-      "imageUrl": null,
-      "source": "CNN Brasil",
-      "publishedAt": "2026-11-19T02:01:10.000Z",
-      "firstSeenAt": "2026-11-19T07:58:48.047Z",
-      "lastSeenAt": "2026-11-19T07:58:48.047Z"
-    },
-    {
-      "id": "event-42755723",
-      "category": "mundo",
-      "title": "Trump: Falei com Xi sobre IA e citei 'brevemente' caso do ex-CEO da Nvidia",
-      "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxNSDZPVkNlNlJyWUc5Zkh2a0JtS1pmSFRwdU1qcWUtaTNHRWw5X0gwWW9weU9ubzcwcnhsUVBXcDZKX1NwNDNLMGMxSDE1WmVOU1ZtaHRTYVN0WHRBb3JieEE1V2UtV0VTYktNcURiUVNzZHRJUFRVVWZlTEtDOWlneHBBSTlHS2dPTC1vRG1RR0d1clBJTFctVllKYzNyUQ",
-      "description": "Trump: Falei com Xi sobre IA e citei 'brevemente' caso do ex-CEO da Nvidia &nbsp;&nbsp; UOL Notícias",
-      "imageUrl": null,
-      "source": "UOL Notícias",
-      "publishedAt": "2026-11-19T01:16:02.000Z",
-      "firstSeenAt": "2026-11-19T07:58:48.047Z",
-      "lastSeenAt": "2026-11-19T07:58:48.047Z"
-    },
-    {
-      "id": "event-d71f2dd3",
-      "category": "brasil",
-      "title": "Andrei entrega a Fachin relatórios sobre ministros no caso Master",
-      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/andrei-entrega-fachin-relatorios-sobre-ministros-no-caso-master",
-      "description": "O diretor-geral da Polícia Federal (PF), Andrei Rodrigues, se encontrou na noite desta quarta-feira (18) com o presidente do Supremo Tribunal Federal (STF), Edson Fachin, para entregar os relatórios que tratam de menções a ministros da Corte encontradas nas investigações relativas ao Banco Master. Agora, Fachin remeterá os relatórios à Procuradoria-Geral da República (PGR), para análise e parecer sobre providências que o procurador-geral da República, Paulo Gonet, entender necessárias. Notícias relacionadas: Caso Master: PF entregará ao STF relatórios sobre citações a ministros. Fachin homologa delação de investigado no caso Master. Fachin devolve relatoria do caso do INSS a Mendonça e mantém Master. “As informações de polícia judiciária recebidas mantêm, por ora, caráter sigiloso e serão tratadas com a devida reserva, em observância às normas legais aplicáveis, à preservação das investigações em curso, ao devido processo legal e às competências institucionais dos órgãos envolvidos, até ulterior deliberação”, afirmou o STF, em nota. Também participaram da reunião desta noite o direto",
-      "imageUrl": "https://imagens.ebc.com.br/neTGwyVxjUHRnqeBrNh02myHtZ8=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/16/dia-do-policial-federal-mc_abr_16112026-4.jpg?itok=85-TYmLy",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-19T01:01:00.000Z",
-      "firstSeenAt": "2026-11-19T07:58:48.047Z",
-      "lastSeenAt": "2026-11-19T07:58:48.047Z"
-    },
-    {
-      "id": "event-7ba2c273",
-      "category": "clima",
-      "title": "Inmet alerta para ventos de até 60 km/h e possibilidade de granizo em SC",
-      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQM3dkYXI0ODhTMl9QeFlfMFZyOUZVOVFPdHJWUHFLczg2aEVEVmVoQVZydnI2eGFfVnRselh3bGtCWlRPdzFEYzAteDlTV085clVtNkVuZmVRQTlFVTJhOWN1NGU1YzI5WjdtRy1fTEtlMi1KWHlIQzh4d2tSTTRXc2k4Z2ZIaWl6bHVZVGFYV1RfTFFoTEpEaThXaldOcFlhaTNKQTJ5cw",
-      "description": "Inmet alerta para ventos de até 60 km/h e possibilidade de granizo em SC &nbsp;&nbsp; SCC10",
-      "imageUrl": null,
-      "source": "SCC10",
-      "publishedAt": "2026-11-19T00:46:08.000Z",
-      "firstSeenAt": "2026-11-19T23:35:39.481Z",
-      "lastSeenAt": "2026-11-19T23:35:39.481Z"
-    },
-    {
-      "id": "event-94774ac2",
-      "category": "brasil",
-      "title": "Alexandre Barreto é cotado para presidir Banco do Brasil",
-      "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxOSE4tWldTZzRFbzJjODcxVG5SQkRvVkZaT0tQQ1E4MzRqdDJLSXhVa3BSdk1FRU9RRkdjR1Mzb3dLSVBmcWJhTjRfVmFvSlNPVHBRc0JfVjRiaGJHem5xSmhWeG9HUTZleUthSk9RQ0lHNVFMVVpYWjRnQnROS1k4QzdXZEd5ak9mVW94NGYwNm5KS0ZGaEE",
-      "description": "Alexandre Barreto é cotado para presidir Banco do Brasil &nbsp;&nbsp; Vero Notícias",
-      "imageUrl": null,
-      "source": "Vero Notícias",
-      "publishedAt": "2026-11-19T00:02:48.000Z",
-      "firstSeenAt": "2026-11-19T00:45:04.587Z",
-      "lastSeenAt": "2026-11-19T07:58:48.047Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-19T00:45:04.587Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 13,
-      "newArticles": 12,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "america-latina",
-        "europa",
-        "asia"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-19T07:58:48.047Z",
       "ok": true,
@@ -417,68 +411,32 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-20T04:18:25.187Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 12,
+      "newArticles": 8,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "america-latina",
+        "asia"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 4,
-  "lastSuccessfulAt": "2026-11-19T23:35:39.481Z",
+  "lastSuccessfulAt": "2026-11-20T04:18:25.187Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-19T23:35:39.481Z",
+      "checkedAt": "2026-11-20T04:18:25.187Z",
       "warnings": [
-        {
-          "id": "56456",
-          "title": "Tempestade",
-          "severity": "Perigo",
-          "phase": "previsto",
-          "regions": [
-            "DE"
-          ],
-          "startsAt": "2026-11-20T00:00:00.000Z",
-          "endsAt": "2026-11-20T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
-        },
-        {
-          "id": "56457",
-          "title": "Tempestade",
-          "severity": "Perigo",
-          "phase": "previsto",
-          "regions": [
-            "DO",
-            "DO"
-          ],
-          "startsAt": "2026-11-20T00:00:00.000Z",
-          "endsAt": "2026-11-20T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
-        },
-        {
-          "id": "56460",
-          "title": "Tempestade",
-          "severity": "Perigo Potencial",
-          "phase": "vigente",
-          "regions": [],
-          "startsAt": "2026-11-19T00:00:00.000Z",
-          "endsAt": "2026-11-20T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
-        },
-        {
-          "id": "56455",
-          "title": "Tempestade",
-          "severity": "Perigo Potencial",
-          "phase": "previsto",
-          "regions": [
-            "DO",
-            "DO",
-            "DE"
-          ],
-          "startsAt": "2026-11-20T00:00:00.000Z",
-          "endsAt": "2026-11-20T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
-        },
         {
           "id": "56458",
           "title": "Tempestade",
@@ -513,7 +471,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-19T23:35:39.481Z",
+      "checkedAt": "2026-11-20T04:18:25.187Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
