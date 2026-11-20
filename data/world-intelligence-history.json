@@ -4,10 +4,154 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-20T13:23:59.179Z",
-  "oldestEventAt": "2026-11-19T14:33:55.000Z",
-  "windowStartAt": "2026-11-19T13:23:59.179Z",
+  "updatedAt": "2026-11-20T21:24:12.054Z",
+  "oldestEventAt": "2026-11-19T21:27:12.000Z",
+  "windowStartAt": "2026-11-19T21:24:12.054Z",
   "events": [
+    {
+      "id": "event-e42e5c10",
+      "category": "brasil",
+      "title": "Tupanciretã: o que se sabe sobre o evento extremo que deixou três mortos e destelhou mais de 5 mil casas",
+      "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE5iT2tFZk1MSmtpNnpQNnZkTXB5WjJfTEp0UUFhd1dqRkhjU1poZEpqUHVlVk51bmFVNVhsYzZtNlA0MTNpbEVfV3Z0MHp3VkRnLVV2VWVDSXd0U01KcUhoRTl0SdIBaEFVX3lxTE1Fb2lNZkc5MWdtNEZmbkVaRkpGMEs0QWE0cWZOZFdYUWRmQmxDVU5nR3NzZVhJNUdwOUM4elZIRFBad2NKekFTUzhfLXNaNEdwdU1XQTVtU0JoclVLanBjZG9uaklEdUo1",
+      "description": "Tupanciretã: o que se sabe sobre o evento extremo que deixou três mortos e destelhou mais de 5 mil casas &nbsp;&nbsp; BBC",
+      "imageUrl": null,
+      "source": "BBC",
+      "publishedAt": "2026-11-20T20:40:03.000Z",
+      "firstSeenAt": "2026-11-20T21:24:12.054Z",
+      "lastSeenAt": "2026-11-20T21:24:12.054Z"
+    },
+    {
+      "id": "event-ab373b22",
+      "category": "brasil",
+      "title": "Homenagens lembram legado de Zumbi e desafios da juventude negra",
+      "url": "https://agenciabrasil.ebc.com.br/cultura/noticia/2026-11homenagens-lembram-legado-de-zumbi-e-desafios-da-juventude-negra",
+      "description": "A estátua de Zumbi dos Palmares, instalada no centro da cidade do Rio de Janeiro, completa 40 anos em 2026. A data é celebrada com lavagem do monumento, roda de capoeira e reflexões sobre as desigualdades que afetam principalmente a população negra brasileira, neste Dia da Consciência Negra (20). A estátua de Zumbi foi uma das primeiras a fazer referência à luta pela igualdade racial no país. O projeto, de sete metros de altura, é do renomado arquiteto João Filgueiras Lima, o Lelé, e inclui uma base de mármore que remete às pirâmides do Egito. Notícias relacionadas: Denúncias de racismo chegam ao maior número da série histórica . Mulheres retomam defesa de indicação inédita de ministra negra ao STF. Arquitetura de Brasília é racista e excludente, defendem pesquisadores. Como não há imagem conhecida do líder do Quilombo dos Palmares, a peça de bronze reproduz uma máscara do século XII, de um antigo rei do Benim. O monumento de Zumbi foi projetado para o Largo da Carioca, mas a sociedade preferiu instalá-lo na Avenida Presidente Vargas. Antes conhecida como Praça Onze, a região era um",
+      "imageUrl": "https://imagens.ebc.com.br/1qTlYYXix0MIx_eDTlfmLrSqXIg=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/20/1000014121.jpg?itok=Beku2M-g",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-20T20:36:00.000Z",
+      "firstSeenAt": "2026-11-20T21:24:12.054Z",
+      "lastSeenAt": "2026-11-20T21:24:12.054Z"
+    },
+    {
+      "id": "event-db052ab5",
+      "category": "santa-catarina",
+      "title": "Defesa Civil alerta para risco de temporais e chuva intensa neste fim de semana em SC",
+      "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxQYVB2VFpyc3ZQV3B6cWpwUmtxVXhNbE95c1VnSEo4T0FKTHN4MnRzalJUZzAtbDhhZVB6S2tvb3pGbENSbE1SVVlTWE5FQjV4Mml0SVhKWlhDVEVSbVQyNGVMX2dmVERRMnNVOXBiTWlTbXJTU19kXzA3d1RPWUN5MllweHJNM2EzMEp0TjFlRWdUQVJiZ0g3MlRheHpqUVdWaDRYZF9LQ3VTYmRLbnQ4eVI1cTk0VDNkbGkxcEpCNEhIUVU",
+      "description": "Defesa Civil alerta para risco de temporais e chuva intensa neste fim de semana em SC &nbsp;&nbsp; AJ Notícias",
+      "imageUrl": null,
+      "source": "AJ Notícias",
+      "publishedAt": "2026-11-20T20:17:56.000Z",
+      "firstSeenAt": "2026-11-20T21:24:12.054Z",
+      "lastSeenAt": "2026-11-20T21:24:12.054Z"
+    },
+    {
+      "id": "event-17f12f97",
+      "category": "brasil",
+      "title": "Denúncias de racismo chegam ao maior número da série histórica",
+      "url": "https://agenciabrasil.ebc.com.br/direitos-humanos/noticia/2026-11/denuncias-de-racismo-chegam-ao-maior-numero-da-serie-historica",
+      "description": "O Ministério dos Direitos Humanos e da Cidadania contabilizou que, neste ano, o Disque 100 já recebeu 3.270 denúncias de racismo contra pessoas pretas ou pardas. Esse número já é maior do que a quantidade de registros de todo o ano passado contra esse grupo: 2879 casos. Trata-se do maior número da série histórica (desde o ano de 2015, quando houve 638 denúncias). No ano passado, o ministério avaliou que o crescimento do número de denúncias tem relação com a maior confiança da população no serviço. Mais informação Notícias relacionadas: Arquitetura de Brasília é racista e excludente, defendem pesquisadores. Mulheres retomam defesa de indicação inédita de ministra negra ao STF. SP: empreendedorismo, marcha e música marcam Dia da Consciência Negra. Não necessariamente, portanto, os números refletem a quantidade de crimes, mas os casos que são encaminhados ao Disque 100. Outro fator, segundo estima o governo, pode estar relacionado também à maior conscientização sobre o racismo, que passou a ser identificado pelos brasileiros. Registros feitos no mês de outubro foram os maiores do ano: h",
+      "imageUrl": "https://imagens.ebc.com.br/Z_6hGm-ginEsmjAo9R54CHVXfSg=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/atoms/image/negros_marcello_casal.jpg?itok=My5gx37p",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-20T20:06:00.000Z",
+      "firstSeenAt": "2026-11-20T21:24:12.054Z",
+      "lastSeenAt": "2026-11-20T21:24:12.054Z"
+    },
+    {
+      "id": "event-967e79bc",
+      "category": "santa-catarina",
+      "title": "Temporais provocam estragos em 14 municípios de SC e afetam 51 residências",
+      "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNdVpMTHBuUGN3cE1FUm1vM3dIVnVnalYxVTF3U05fXzJjNjY5UUdRb1Nnanl0RVRIVDFzUkJTZ213Zk1KdWlDWms2NWFnRmotMEJRR2xQN1dEa1ZpVFliZ0gxajNHVGpNV1Z5VTRYN2pWbGc4Y0x1aE9scXhsOFNNQ25Vak1INkdSVlUzSHBMdHM4a3BaNUtueXhUREV2WVRHNzE4",
+      "description": "Temporais provocam estragos em 14 municípios de SC e afetam 51 residências &nbsp;&nbsp; sctododia",
+      "imageUrl": null,
+      "source": "sctododia",
+      "publishedAt": "2026-11-20T19:45:24.000Z",
+      "firstSeenAt": "2026-11-20T21:24:12.054Z",
+      "lastSeenAt": "2026-11-20T21:24:12.054Z"
+    },
+    {
+      "id": "event-59c73c3f",
+      "category": "brasil",
+      "title": "Temporal no RS: governo envia equipes da Defesa Civil para Tupanciretã",
+      "url": "https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-11/temporal-no-rs-governo-envia-equipes-da-defesa-civil-para-tupancireta",
+      "description": "O governo federal determinou o deslocamento de uma equipe do Grupo de Apoio a Desastres da Defesa Civil Nacional para a cidade gaúcha de Tupanciretã, atingida por uma tempestade na madrugada desta sexta-feira (20) que deixou pelo menos três mortos. A equipe vai apoiar as ações de atendimento à população, agilizar o reconhecimento federal da situação de emergência e viabilizar a liberação de recursos para o socorro às vítimas. Notícias relacionadas: Tempestade deixa três mortos em Tupanciretã, no Rio Grande do Sul. Estragos no RS atingem mais cidades além de Tupanciretã. “A Secretaria Nacional de Proteção e Defesa Civil (Sedec) orientou o município a decretar emergência para que seja possível iniciar a liberação de recursos federais destinados ao atendimento das vítimas”, informou a Secretaria de comunicação da Presidência da República. Em uma rede social, o ministro da Integração e do Desenvolvimento Regional, Waldez Góes, informou que está em contato permanente com o governador do Rio Grande do Sul, Eduardo Leite, o governador eleito, Luciano Zucco, o prefeito de Tupanciretã, Gustav",
+      "imageUrl": "https://imagens.ebc.com.br/639LwDDwCfisFm1_TcN4aj3pobA=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/20/saveclip.app_913710003_18653668549024728_1085409618711408506_n.jpg?itok=r7LHseeL",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-20T19:28:00.000Z",
+      "firstSeenAt": "2026-11-20T21:24:12.054Z",
+      "lastSeenAt": "2026-11-20T21:24:12.054Z"
+    },
+    {
+      "id": "event-75c79872",
+      "category": "mundo",
+      "title": "Trump quer proibir construção de data centers fora dos EUA",
+      "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxPVmZLV0x6VWxUS3ByUEJsSFVnc2VhNENFcHJ3YU5jQS15dTE1eTVZUlVjaDQzOTlqTEw5QktaTWliRjR2N1FyaHVIb0hpRm1obDhsaHpkbW5IQnRDUFRXLV9OMVBUTzFETDBBZ1psYmtaMmNyWTNaTDZwLXYtem13V3FkcWJrbko4S3dmM2k0NHpfU2lSMDVSQ3NOVTZDelM1",
+      "description": "Trump quer proibir construção de data centers fora dos EUA &nbsp;&nbsp; SBT News",
+      "imageUrl": null,
+      "source": "SBT News",
+      "publishedAt": "2026-11-20T19:10:08.000Z",
+      "firstSeenAt": "2026-11-20T21:24:12.054Z",
+      "lastSeenAt": "2026-11-20T21:24:12.054Z"
+    },
+    {
+      "id": "event-1d9f41b4",
+      "category": "mundo",
+      "title": "Protestos estudantis eclodem em toda a Europa com diversos temas",
+      "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/protestos-estudantis-eclodem-em-toda-europa",
+      "description": "Uma nova onda de protestos estudantis ocorreu em toda a Europa nesta sexta-feira (20) , inspirada pelas manifestações que abalaram a França, mas de forma muito mais moderada. As reivindicações vão desde a ampliação do financiamento para a educação até justiça climática, passando até mesmo pelo fim do serviço militar obrigatório. Notícias relacionadas: Trabalhadores e estudantes protestam por salários e serviços na Itália. Xi, Trump e Putin sinalizam disposição para diálogo entre potências. Uso de drones em guerra interna da Colômbia cresce 132% sob Espriella. Os organizadores afirmam que trata-se de uma “greve internacional da juventude” em pelo menos 25 países , incluindo Reino Unido, Alemanha, Espanha, Itália e Croácia. Na Alemanha, o grupo de campanha “Gen Z regelt” -- algo como a Geração Z assume o comando, em alemão -- informou que estava organizando protestos em 73 cidades e municípios. “Certamente não estou feliz com os cortes em todos os lugares, nem na minha universidade, nem no sistema educacional como um todo, nem nas escolas. É por isso que estou aqui: para me posicionar",
+      "imageUrl": "https://imagens.ebc.com.br/1WsOZoZquIVE9gCyzipOWNuHh8o=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/20/2026-11-20t153546z_1067442347_rc2rroaekcwm_rtrmadp_3_europe-protest-germany.jpg?itok=yxqLc7dL",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-20T18:33:00.000Z",
+      "firstSeenAt": "2026-11-20T21:24:12.054Z",
+      "lastSeenAt": "2026-11-20T21:24:12.054Z"
+    },
+    {
+      "id": "event-9f4da48b",
+      "category": "santa-catarina",
+      "title": "Temporais mantêm Santa Catarina em alerta até domingo",
+      "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxOZFlEX0Q2WkN1VXN6TE84TFRQSlJzNkNfeHNkbXpsbVVFcXVSRlFDWGJnZUFRV3kwNXpiNkVxNmQtOTdJSzlnTTRXYVhHWnJRcEhONFNZb29JMXNIUWdqeC1jd3hiWTV6aHdVQ1kwZUZUclpmSllGLTAxazdRa3hmN2UtdHFoTk9GRnBOMHNBaTduR3p2TjUydzd3QWVVVWtvMlZHLXFlWncxazRYaExkSHFfQmRVVTRz",
+      "description": "Temporais mantêm Santa Catarina em alerta até domingo &nbsp;&nbsp; Diário do Iguaçu",
+      "imageUrl": null,
+      "source": "Diário do Iguaçu",
+      "publishedAt": "2026-11-20T17:55:00.000Z",
+      "firstSeenAt": "2026-11-20T21:24:12.054Z",
+      "lastSeenAt": "2026-11-20T21:24:12.054Z"
+    },
+    {
+      "id": "event-805ec5cd",
+      "category": "mundo",
+      "title": "Brasil define numeração para a Copa do Mundo Sub-17; veja a lista completa",
+      "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxNdi1uU3Z0bXFJbE1HRUR2WFQ1ZU9VelE1ZF85TVlwUkxBTnk5M2xYWElCbXk2Wnd0TDNWTTZQLXQ2bkNPVEdYc1I1SVY3UHc2VVVtaGF5dWdPUzBnWlBjN0hUbnI4ZHpiSV9YR0FUSHJOYXFkSVVJS2JQRnotdkNINE9tRENQLTcxUlFrdjc1dW5sOWtMTm9CWE9OX05rWUE2Q1pFaktrNzB3OWFQX0tFeVptLUswamVtQlZ3aUhRYw",
+      "description": "Brasil define numeração para a Copa do Mundo Sub-17; veja a lista completa &nbsp;&nbsp; LANCE!",
+      "imageUrl": null,
+      "source": "LANCE!",
+      "publishedAt": "2026-11-20T17:28:13.000Z",
+      "firstSeenAt": "2026-11-20T21:24:12.054Z",
+      "lastSeenAt": "2026-11-20T21:24:12.054Z"
+    },
+    {
+      "id": "event-3f4b1b52",
+      "category": "clima",
+      "title": "El Niño forte deve manter chuva acima da média no Sul até janeiro de 2027",
+      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxQbWxnOTBaMEVKSU9VaklSUWZhM2ZreW12M05RNzF4aVdiNTBvWjVDNzh0MW5idTNFQkZNN21FV0MwNG5aekR1Z2pxMFR4LVhpWk9jY0FTaDhDcVhnZ2JmbEItMTg5MFhvb05mXzVVSU9KZ04xNm1MX3c1dlVjT2dYNVlhb0d1TFJnZHdnaUpWNEVrcWIxeWgySmtkRUhsamRhT0syNjl6ajJaWGM",
+      "description": "El Niño forte deve manter chuva acima da média no Sul até janeiro de 2027 &nbsp;&nbsp; Mix Vale",
+      "imageUrl": null,
+      "source": "Mix Vale",
+      "publishedAt": "2026-11-20T16:56:11.000Z",
+      "firstSeenAt": "2026-11-20T21:24:12.054Z",
+      "lastSeenAt": "2026-11-20T21:24:12.054Z"
+    },
+    {
+      "id": "event-5ff1a76e",
+      "category": "clima",
+      "title": "MS reforça monitoramento climático para prevenir extremos do El Niño",
+      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE1sLVJfQ0JPdGFjQzlJU1piMWV5NjhlWk5maXNKblhJcWNLdVBtbDZJNlVjMUNGX2t1TGlacE9NOHhDSURDRE0wZ0lHSkV6Y0paUmRUTGdJY3JpdXZ2ZkhGUEtfTktYVGVwVkFmeQ",
+      "description": "MS reforça monitoramento climático para prevenir extremos do El Niño &nbsp;&nbsp; Diário Corumbaense",
+      "imageUrl": null,
+      "source": "Diário Corumbaense",
+      "publishedAt": "2026-11-20T15:39:04.000Z",
+      "firstSeenAt": "2026-11-20T21:24:12.054Z",
+      "lastSeenAt": "2026-11-20T21:24:12.054Z"
+    },
     {
       "id": "event-bb4d1da2",
       "category": "brasil",
@@ -90,7 +234,7 @@
       "source": "Diário do Pará",
       "publishedAt": "2026-11-20T09:23:00.000Z",
       "firstSeenAt": "2026-11-20T13:23:59.179Z",
-      "lastSeenAt": "2026-11-20T13:23:59.179Z"
+      "lastSeenAt": "2026-11-20T21:24:12.054Z"
     },
     {
       "id": "event-1d8b739",
@@ -271,207 +415,9 @@
       "publishedAt": "2026-11-19T21:27:12.000Z",
       "firstSeenAt": "2026-11-20T04:18:25.187Z",
       "lastSeenAt": "2026-11-20T04:18:25.187Z"
-    },
-    {
-      "id": "event-eb852be5",
-      "category": "santa-catarina",
-      "title": "Previsão indica chuvas intensas e temporais durante o feriadão em Santa Catarina",
-      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxOcDZIYldJR0lKXzM5RHhCaXd5ZjlldWROLVlsSHZyME9RV2gyRHdBR3RIWVZaQnZWMGkyaDAzVlNMdDR6WHhDOFJFOWtoUUZGSDRjTVFkZkJoMTk1YkVRd2xDMkdlLThZSlA1UUp4UUZuQTdrNTM5YzY3LTY2TXlPckl6UGh5VjJ1Z3o1YlNRT1dpLXFUWkR6T0JnRlE2dXllWlllSGMtZnRBeVdO",
-      "description": "Previsão indica chuvas intensas e temporais durante o feriadão em Santa Catarina &nbsp;&nbsp; Governo de Santa Catarina",
-      "imageUrl": null,
-      "source": "Governo de Santa Catarina",
-      "publishedAt": "2026-11-19T20:41:00.000Z",
-      "firstSeenAt": "2026-11-20T04:18:25.187Z",
-      "lastSeenAt": "2026-11-20T04:18:25.187Z"
-    },
-    {
-      "id": "event-5aa38469",
-      "category": "brasil",
-      "title": "Xi, Trump e Putin sinalizam disposição para diálogo entre potências",
-      "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/xi-trump-e-putin-sinalizam-disposicao-para-dialogo-entre-potencias",
-      "description": "O encontro presencial entre os presidentes da China, Xi Jinping, dos Estados Unidos (EUA), Donald Trump, e da Rússia, Vladimir Putin, indica que há espaço para diálogo mais direto entre as três potências em meio a cenário geopolítico turbulento. Realizada em Shenzhen, no sul da China, o encontro chamou atenção da mídia internacional pelo caráter sem precedentes da reunião que discutiu guerra na Ucrânia, controle de armas nucleares, mudança na ordem internacional, entre outros assuntos. Notícias relacionadas: Estados Unidos entram em alerta após sucessivas panes tecnológicas. Irã e Houthis pressionam EUA e aliados no Golfo em duas frentes. O anfitrião Xi Jinping informou que os três concordaram em quatro pontos sobre como os países devem se relacionar entre si: \"defender o respeito mútuo, a coexistência pacífica, a cooperação vantajosa para ambos os lados e o diálogo e a consulta”, afirmou a agência estatal chinesa Xinhua. Entre os acordos pactuados, estariam a não interferência nos assuntos internos um dos outros e, em questões sensíveis, os países devem se comunicar com antecedência",
-      "imageUrl": "https://imagens.ebc.com.br/Wx7vYlarrchrKeRXRWfLSHatEOI=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/19/2026-11-19t105625z_765833748_rc2xqoatuo07_rtrmadp_3_apec-summit.jpg?itok=8vmgrMcj",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-19T20:33:00.000Z",
-      "firstSeenAt": "2026-11-19T23:35:39.481Z",
-      "lastSeenAt": "2026-11-19T23:35:39.481Z"
-    },
-    {
-      "id": "event-a88a54dc",
-      "category": "brasil",
-      "title": "Festival Nicho apresenta cinema negro com exibições gratuitas em SP",
-      "url": "https://agenciabrasil.ebc.com.br/cultura/noticia/2026-11/festival-nicho-apresenta-cinema-negro-com-exibicoes-gratuitas-em-sp",
-      "description": "Celebrar o cinema de autoria negra. Este é o objetivo do Festival Nicho, realizado a partir desta sexta-feira (20) em quatro espaços culturais da capital paulista. Exibições gratuitas até 28 de novembro estarão no Centro Cultural São Paulo (CCSP), no Museu das Favelas, na Cinemateca Brasileira e no Vão Livre do Museu de Arte de São Paulo (MASP). A oitava edição festeja neste ano o centenário do geógrafo Milton Santos , que redefiniu a forma de compreender o espaço geográfico, articulando economia, política e sociedade. Também será homenageada a atriz portuguesa Isabél Zuaa, que participou de filmes como O Agente Secreto e As Boas Maneiras e de diversas séries na TV, como Carcereiros . Notícias relacionadas: Festival Animage reúne mais de 280 filmes de animação no Recife. Intelectual baiano Edison Carneiro será próximo homenageado da Flipelô. Festival de música e dança no Rio de Janeiro valoriza cultura negra. Entre os filmes selecionados pela curadoria estão o longa-metragem Crocodilo , que conta a história dos irmãos Godwin e Raymond, que transformam um quintal em cinema, e o curta",
-      "imageUrl": "https://imagens.ebc.com.br/7FBZcw4m2AWTS9-XPeTQKBuKk_s=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/05/01/milton_santos_100_anos_geografo_negro_teorizou_sobre_desigualdades03.jpg?itok=9PwIG_bC",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-19T20:32:00.000Z",
-      "firstSeenAt": "2026-11-19T23:35:39.481Z",
-      "lastSeenAt": "2026-11-19T23:35:39.481Z"
-    },
-    {
-      "id": "event-bd521b3f",
-      "category": "mundo",
-      "title": "Charleaux: Criminoso de guerra e donos de ogivas querem comandar mundo sós",
-      "url": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxPMk9GMlcycjFfVjFlWk5DUUtPRi1MX3lSQmlhaG9jekt3b2hEZERNQnM2TDBFWTZtNzl3aGJVMEpwU0ViYk00TXJWa0VzNTc3a3lWeU95NmZnTDNfVkNzMjZJbVRiZmsyQjZadEtXNmNGWWd4c1RwZmVEMVFVX1JHX2ZSYVRHcFBCUU9YbFFCeHhYQlJ3NlBVR3J0NXlhYUI5elplMTJjcTJnZVVUYVpFZTB4VkpWVGowTTV6S2ZSZldjODJmM0c1SzFmZ1NMNjQ0NmljNFliNS03VExiNkNVRE9n",
-      "description": "Charleaux: Criminoso de guerra e donos de ogivas querem comandar mundo sós &nbsp;&nbsp; UOL Notícias",
-      "imageUrl": null,
-      "source": "UOL Notícias",
-      "publishedAt": "2026-11-19T20:28:42.000Z",
-      "firstSeenAt": "2026-11-19T23:35:39.481Z",
-      "lastSeenAt": "2026-11-19T23:35:39.481Z"
-    },
-    {
-      "id": "event-2bef419f",
-      "category": "clima",
-      "title": "Antes do pico do El Niño, Nordeste fica com metade da chuva e 36 cidades têm setembro mais chuvoso em 10 anos",
-      "url": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxQWmZlb3V3MWR4R016WFpZdEpDaVlMYkVsdzRUdUtrbjlKTkduSS1VZTZYaU1rcGFwaWxSR3d4dGpHbWVlX2ZFVzdhT3IyRm5zaTlYSnZfVnBfUlhPZFRxeVlhVFNLc04wUlluUXcxLVhOQWU3V1FwMFVqT2xiZWhOYjA0Ym5wT1hYdzZ3OEFKTndGRlpzclBRTWRCMTJ6TnlCbWdXOWVPYlFNN211bWlPZ0x3aUxhYkRxZU1SZkxYVkxLcGhwNmRNUlppRkEwdXhMaENjSUtrSWxDTDBoMzFoWUVJaXZoZw",
-      "description": "Antes do pico do El Niño, Nordeste fica com metade da chuva e 36 cidades têm setembro mais chuvoso em 10 anos &nbsp;&nbsp; O Tempo",
-      "imageUrl": null,
-      "source": "O Tempo",
-      "publishedAt": "2026-11-19T20:23:23.000Z",
-      "firstSeenAt": "2026-11-19T23:35:39.481Z",
-      "lastSeenAt": "2026-11-20T04:18:25.187Z"
-    },
-    {
-      "id": "event-ea677d51",
-      "category": "santa-catarina",
-      "title": "Onda de temporais e até 250 mm de chuva: o que dizem as previsões para SC",
-      "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxOSVRaN3loZU9mLVBoeFQ1VGdkOVpIRDh3OEo5eXk0d0laM2NUazdrc0t3TnBBMnYzdDVPaGVVMzNGSThhLUNNVDI4ZTc1aERvRjRUOHdnQUdLcEF0dUtXRTE2UFpyZTNmNy02WlZhYjhxWVA0NDBMZEtRdzhZelNoQlhLQzhZRnJqM0ptY2lhTm1OTFQyV2p0T0JDT2M2Zw",
-      "description": "Onda de temporais e até 250 mm de chuva: o que dizem as previsões para SC &nbsp;&nbsp; TVBV ONLINE",
-      "imageUrl": null,
-      "source": "TVBV ONLINE",
-      "publishedAt": "2026-11-19T19:56:17.000Z",
-      "firstSeenAt": "2026-11-19T23:35:39.481Z",
-      "lastSeenAt": "2026-11-19T23:35:39.481Z"
-    },
-    {
-      "id": "event-f5d2739c",
-      "category": "mundo",
-      "title": "Reunidos numa cúpula pela primeira vez, Donald Trump, Xi Jinping e Vladimir Putin adotaram um discurso unificado acerca de suas responsabilidades sobre a paz global, buscando coroa",
-      "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE92THBfdFZzSm54c0lvMUVpWmdudmV6RjBlZlVpZEQ2eV9kbHNVbzVwdFFJUS1WY3JWeWZycVpNN1diZ2JINk1oQnZleW5JVXBNRW44YV9B",
-      "description": "Reunidos numa cúpula pela primeira vez, Donald Trump, Xi Jinping e Vladimir Putin adotaram um discurso unificado acerca de suas responsabilidades sobre a paz global, buscando coroar a volta de uma ordem geopolítica dominada por grandes potências &nbsp;&nbsp; Instagram",
-      "imageUrl": null,
-      "source": "Instagram",
-      "publishedAt": "2026-11-19T17:05:18.000Z",
-      "firstSeenAt": "2026-11-19T17:12:15.865Z",
-      "lastSeenAt": "2026-11-19T17:12:15.865Z"
-    },
-    {
-      "id": "event-dcef4dee",
-      "category": "mundo",
-      "title": "\"Jogos Vorazes: Amanhecer na Colheita\": veja 7 diferenças entre o livro e o filme",
-      "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxObkVhdUZYTG5wWnJ1M2pObTlNU0UxSkV0Rm82OWV5X21WaldCcDJXb05QcHQyMTNuQ2Z5SFVYdTBQejFHNHRnaWFsa251TnRjdDA2dW5jWG5SVGthajh6b21tSTd6cDFsNnM2elhqTXdkUFNJai1lbmJlR2ZqX0xyVXVtZWVCNlRCb25pUVNuaV9tUjNCd1F4WlJYcXhiaDdaUVA2UF9CRlRQdGhqVHBtYmZoeWZLQdIBuwFBVV95cUxOWjVTOERMQ0tnd3haUHB4QXlqc3JVNWtZWDhLTUZnTUFQT1VBMzlaSGJOQ19PbnhSSUJsTEFiMU5aMXViLXlraGVrSEV6aUEtc0d3SFpGY1pGbFpULWI4R3oxeWRJdDk4YXFYalpkRDBqWTdkQnVpRXNHdGM4eE11X1N0ekpLUHByNFQtaGZ5UU9GUjRBcVNDYmxhQmo1QlJDMWhLUFQxV0xHdUNBVkNHLW9FOWkzT2E0cU5j",
-      "description": "\"Jogos Vorazes: Amanhecer na Colheita\": veja 7 diferenças entre o livro e o filme &nbsp;&nbsp; Imirante.com",
-      "imageUrl": null,
-      "source": "Imirante.com",
-      "publishedAt": "2026-11-19T16:33:00.000Z",
-      "firstSeenAt": "2026-11-19T17:12:15.865Z",
-      "lastSeenAt": "2026-11-19T17:12:15.865Z"
-    },
-    {
-      "id": "event-41f2f082",
-      "category": "brasil",
-      "title": "Prevendo judicialização, Lula cobra atenção à aplicação da escala 5x2",
-      "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2026-11/prevendo-judicializacao-lula-cobra-atencao-aplicacao-da-escala-5x2",
-      "description": "O presidente Luiz Inácio Lula da Silv, alertou, nesta quinta-feira (19), que o movimento sindical, o Ministério do Trabalho e Emprego e a Justiça do Trabalho precisarão estar preparados para lidar com eventuais conflitos e interpretações divergentes durante a implementação da jornada de trabalho 5x2 e a redução da carga horária semanal, sem redução de salários. “Vai haver algumas confusões. Vai ter muitas queixas. Podem estar certos disso”, disse Lula durante a cerimônia de assinatura do decreto que extingue a atual jornada 6x1 e que reduz, gradualmente, a carga horária de trabalho semanal das atuais 44 horas para 42 horas, a partir de 16 de dezembro deste ano, e para 40 horas, a partir de dezembro de 2027. “É importante que o movimento sindical se prepare e [capacite] seus dirigentes para fazerem a negociação, [porque] o empresário não vai respeitar [o dirigente despreparado]. Acho importante que o Ministério do Trabalho prepare as delegacias do trabalho e que a Justiça esteja preparada, porque tudo que é novo [enfrenta] dificuldades.” Para Lula, a nova regra deve enfrentar resistên",
-      "imageUrl": "https://imagens.ebc.com.br/xBgImOAlEQl_bLprN_mmkdtrDL8=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/19/mcm_7925.jpg.jpg?itok=kXpuxbb8",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-19T16:28:00.000Z",
-      "firstSeenAt": "2026-11-19T17:12:15.865Z",
-      "lastSeenAt": "2026-11-19T17:12:15.865Z"
-    },
-    {
-      "id": "event-64207a8d",
-      "category": "santa-catarina",
-      "title": "Defesa Civil alerta para temporais e chuva intensa entre esta quinta e a sexta-feira em SC",
-      "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxPZ19EdFVsTlpYNHVVV1N3NDRHV0pVUDBhRnFxQ2hZcm92RmlMbU9jZXY4ZjNVdGZ6MmJnbXlya21VMWpWNlVuTXIyRkxycDFXcG9QdVY5TXZ4RVZIQlF2NmpvTzlGWExOc1JiOXR6eUVJeG9xbE04OTV1R3FJM1ZEZl9BWl8zeTRyQ1hmNF9KZ2xfVHBaVC1kLS1qc0lGRFVsOVRlQ1JmaEZyWFFIQlJqZExLQ0V4OENr",
-      "description": "Defesa Civil alerta para temporais e chuva intensa entre esta quinta e a sexta-feira em SC &nbsp;&nbsp; OCP News",
-      "imageUrl": null,
-      "source": "OCP News",
-      "publishedAt": "2026-11-19T15:59:42.000Z",
-      "firstSeenAt": "2026-11-19T17:12:15.865Z",
-      "lastSeenAt": "2026-11-19T17:12:15.865Z"
-    },
-    {
-      "id": "event-f2e351d6",
-      "category": "brasil",
-      "title": "Impasses entre países podem atrasar documento final da COP31",
-      "url": "https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-11/impasses-entre-paises-podem-atrasar-documento-final-da-cop31",
-      "description": "A menos de 48 horas do fim oficial da 31ª Conferência das Nações Unidas sobre Mudança do Clima (COP31), em Antália, na Turquia, os países participantes seguem sem grandes avanços e consensos para que haja novos acordos no documento final . No início da tarde desta quinta-feira (19), um rascunho do documento foi divulgado para reforço dos trabalhos considerados lentos por vários integrantes das delegações. E a retirada de um parágrafo que citava os mapas do caminho propostos pelo Brasil , pelo fim do desmatamento e dos combustíveis fósseis, foi um dos principais pontos de destaque. Notícias relacionadas: Capobianco reforça responsabilidades de países na COP31 na Turquia. Brasil assina na COP31 pacto global por IA sustentável e empregos. COP31: ministro defende esforço compartilhado na proteção da Amazônia. “A nova versão do texto choca ao eliminar qualquer referência à transição justa e combustíveis fósseis, que deveriam ser os maiores avanços da COP31”, afirma a especialista em políticas climáticas do Greenpeace Brasil, Anna Cárcamo. Já a líder em política internacional do Observatór",
-      "imageUrl": "https://imagens.ebc.com.br/GLj8-I0nD8Og3lmI5sug5ufbegM=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/15/cop31_negociacoes_avancam_mas_financiamento_e_desafio_para_2a_semana02.jpg?itok=XiuCKwDv",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-19T15:40:00.000Z",
-      "firstSeenAt": "2026-11-19T17:12:15.865Z",
-      "lastSeenAt": "2026-11-19T17:12:15.865Z"
-    },
-    {
-      "id": "event-48893cc4",
-      "category": "brasil",
-      "title": "Lula promete manter direitos e diz que controle fiscal é prioridade",
-      "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2026-11/lula-promete-manter-direitos-e-diz-que-controle-fiscal-e-prioridade",
-      "description": "O presidente da República, Luiz Inácio Lula da Silva, declarou, nesta quinta-feira (19), que não haverá retrocesso nos direitos sociais durante seu governo. Ao participar, no Palácio do Planalto, em Brasília, da cerimônia de assinatura do decreto que regulamenta a jornada de trabalho 5x2, Lula criticou o que classificou como “especulações” sobre a futura equipe ministerial e a condução da economia. “Enquanto eu for presidente, não haverá diminuição dos direitos que o povo brasileiro conquistou. Não há hipótese [disso ocorrer]”, garantiu Lula; Notícias relacionadas: Trinta países aderiram à Declaração de Combate ao Racismo Ambiental. Escola pública do Rio vence Prêmio Melhores Escolas do Mundo. Trump, Xi e Putin encerram reunião histórica na China. O presidente rechaçou as críticas de que o governo federal não tem compromisso com o equilíbrio das contas públicas. “Muitas vezes, o mercado reclama ou está interessado em fazer suas reivindicações. Só que não é o mercado que deseja que tenhamos controle fiscal. Quem deseja isso sou eu. Quem quer a economia séria sou eu”, disse Lula. Ele a",
-      "imageUrl": "https://imagens.ebc.com.br/0XBcvRajYuMFDkYfnBzCsVRQ8Uo=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/19/decreto-escala-5x2-mc_abr_19112026-10.jpg?itok=BH5oW1Ex",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-19T15:30:00.000Z",
-      "firstSeenAt": "2026-11-19T17:12:15.865Z",
-      "lastSeenAt": "2026-11-19T17:12:15.865Z"
-    },
-    {
-      "id": "event-cc127d43",
-      "category": "brasil",
-      "title": "Trinta países aderiram à Declaração de Combate ao Racismo Ambiental",
-      "url": "https://agenciabrasil.ebc.com.br/direitos-humanos/noticia/2026-11/trinta-paises-aderiram-%C3%A0-declaracao-de-combate-ao-racismo-ambiental",
-      "description": "Trinta países já aderiram à Declaração de Belém de Combate ao Racismo Ambiental, segundo afirmou a ministra da Igualdade Racial, Rachel Barros, em entrevista ao programa Bom dia, ministra , do Canal GOV, nesta quinta-feira (19). O documento foi proposto na COP30, a conferência do clima realizada em novembro do ano passado, em Belém, e busca fomentar o diálogo internacional sobre a interseção entre igualdade racial, meio ambiente e clima . “A nossa intenção é que a gente consiga ampliar as adesões para que esse debate não se restrinja só às nações que já aderiram, mas que elas possam ser cada vez mais ampliadas nas próximas COPs. Assim, a gente vai, de fato, conseguir falar sobre quem são os impactados das mudanças climáticas”, disse a ministra. Notícias relacionadas: Ministério da Igualdade Racial quer apurar racismo em ato bolsonarista. Plano Nacional de Promoção da Igualdade Racial recebe contribuições. De acordo com Rachel Barros, os maiores impactados pelas mudanças climáticas são pessoas negras, em especial mulheres negras e moradores de favelas e periferias. “Discutir essa dime",
-      "imageUrl": "https://imagens.ebc.com.br/i_grsn3ESljw462xLI36nKdJgds=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/19/pzzb0896.jpg?itok=p3nAQ-H1",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-19T14:53:00.000Z",
-      "firstSeenAt": "2026-11-19T17:12:15.865Z",
-      "lastSeenAt": "2026-11-19T17:12:15.865Z"
-    },
-    {
-      "id": "event-23c5bf31",
-      "category": "mundo",
-      "title": "GTA 6: Por que o jogo não é para menores de 18 anos — e o alerta de psiquiatras e psicólogos",
-      "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE85b0RNbDVHb3pUaUpFcjhkWTZDUTlNYnhtbjlHTU55NzRNaTI2Ry1fb21jNF9aTGNVMHNpQkRUaV9qRVBFUVo4THVVdXNENDFQekdXUk1Rb2NzTklLMXRMb3B0ONIBaEFVX3lxTFBxeUtJd2w2NXJlTWtDMDNRcnNSdjBPS29DT3lXS2d2Y3VIbl82Q3BtUHA1QjM5RzJEMVVEZFlPc1VCeUV6UzkySGNzVnhweDZDTHNlb2t2VXMtM1VKRHJVSHBQOG9jS1E1",
-      "description": "GTA 6: Por que o jogo não é para menores de 18 anos — e o alerta de psiquiatras e psicólogos &nbsp;&nbsp; BBC",
-      "imageUrl": null,
-      "source": "BBC",
-      "publishedAt": "2026-11-19T14:37:25.000Z",
-      "firstSeenAt": "2026-11-19T17:12:15.865Z",
-      "lastSeenAt": "2026-11-19T17:12:15.865Z"
-    },
-    {
-      "id": "event-96064bce",
-      "category": "santa-catarina",
-      "title": "Feriadão será de chuva e temporais em Santa Catarina; veja a previsão",
-      "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxQV1pDdTFvVTBGMUg5dmRhYUtOUVRXVXVMNVBIaHlLcVlzaE16Z3VxdklaTDBtbzFfU2dDR1pidDJ4Q09PMHRNT2o5TnA5TkN1U2NJcXJQaXU2clA2RjMzdDlqRUkxdnIwcU5ldGdJSGpqanhEWGxrVERROUIxQmxsM0xxTjZMVzl1dmV4b1JPZzdCY3ZRYkhEVGVCa2N6alVEYTR1cDdMWEs",
-      "description": "Feriadão será de chuva e temporais em Santa Catarina; veja a previsão &nbsp;&nbsp; Jornal de Pomerode",
-      "imageUrl": null,
-      "source": "Jornal de Pomerode",
-      "publishedAt": "2026-11-19T14:33:55.000Z",
-      "firstSeenAt": "2026-11-19T17:12:15.865Z",
-      "lastSeenAt": "2026-11-19T17:12:15.865Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-19T17:12:15.865Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 13,
-      "newArticles": 10,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "america-latina",
-        "europa",
-        "asia"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-19T23:35:39.481Z",
       "ok": true,
@@ -523,14 +469,30 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-20T21:24:12.054Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 13,
+      "newArticles": 12,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "asia"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 4,
-  "lastSuccessfulAt": "2026-11-20T13:23:59.179Z",
+  "lastSuccessfulAt": "2026-11-20T21:24:12.054Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-20T13:23:59.179Z",
+      "checkedAt": "2026-11-20T21:24:12.054Z",
       "warnings": [
         {
           "id": "56462",
@@ -566,7 +528,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-20T13:23:59.179Z",
+      "checkedAt": "2026-11-20T21:24:12.054Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
