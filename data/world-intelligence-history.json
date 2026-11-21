@@ -4,10 +4,130 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-21T10:13:20.690Z",
-  "oldestEventAt": "2026-11-20T10:27:07.000Z",
-  "windowStartAt": "2026-11-20T10:13:20.690Z",
+  "updatedAt": "2026-11-21T17:35:15.551Z",
+  "oldestEventAt": "2026-11-20T17:55:00.000Z",
+  "windowStartAt": "2026-11-20T17:35:15.551Z",
   "events": [
+    {
+      "id": "event-40f0c8de",
+      "category": "mundo",
+      "title": "Brasil Sub-17 estreia com vitória na Copa do Mundo da categoria",
+      "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxOeklPN0lLSUdwY2V6WkN1ZUd5YVJxSnkyM1VRMFJTc2pnUm1FNDUxaV9oTmZGalRkLTJmT25OOFltY3hhTjE3RUp4QzgteGQ0dVRzSWNKQ0tYUGoyODF4N25mMjdFaXpvN3ljVjdROWd5ejQ4SjhFR0FvRDJua0Z2VldPOVZfbGxITFFyZUd4b3ppTnQ5Z3NMZXBRWHpCR2FKTnVQZ3ExVXRyWmtaeFB6R1ZR",
+      "description": "Brasil Sub-17 estreia com vitória na Copa do Mundo da categoria &nbsp;&nbsp; LANCE!",
+      "imageUrl": null,
+      "source": "LANCE!",
+      "publishedAt": "2026-11-21T16:53:16.000Z",
+      "firstSeenAt": "2026-11-21T17:35:15.551Z",
+      "lastSeenAt": "2026-11-21T17:35:15.551Z"
+    },
+    {
+      "id": "event-64e2d4b9",
+      "category": "brasil",
+      "title": "Países vão negociar regulamentação de “robôs assassinos” até 2028",
+      "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/paises-vao-negociar-regulamentacao-de-robos-assassinos-ate-2028",
+      "description": "As negociações da Organização da Nações Unidas (ONU) sobre a regulamentação de armas com pouca ou nenhuma supervisão humana terminaram neste sábado (21) com o compromisso de promover novas discussões para elaborar novas regras dentro de dois anos – resultado enfraquecido pela oposição da Rússia e que decepcionou grupos de direitos humanos. Os defensores da proposta haviam solicitado regras juridicamente vinculantes em curto prazo para regulamentar sistemas de armas capazes de identificar e atacar alvos com vários graus de autonomia, às vezes chamados de “robôs assassinos”. Notícias relacionadas: Tribunal da ONU conclui que Mianmar cometeu genocídio contra rohingyas. ONU diz que 2026 será um dos anos mais quentes já registrados. ONU ressalta importância de proteger jornalistas e acesso à informação. Cerca de 100 países apoiaram essa posição, mas grandes nações produtoras de armas, como os EUA, a Rússia e Israel, se opuseram a ela, resultando em um acordo diluído que deixou em aberto a questão de se as medidas futuras seriam juridicamente vinculantes. Os Estados-Membros da Convenção so",
+      "imageUrl": "https://imagens.ebc.com.br/8vTxPVGzBYpE72VU11DrE2WNr1c=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/3379833952_292f2ef9d5_o.jpg?itok=HnkqLRB9",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-21T16:03:00.000Z",
+      "firstSeenAt": "2026-11-21T17:35:15.551Z",
+      "lastSeenAt": "2026-11-21T17:35:15.551Z"
+    },
+    {
+      "id": "event-78c81771",
+      "category": "brasil",
+      "title": "TV Brasil exibe show do trio Pietá no Cena Musical deste sábado",
+      "url": "https://agenciabrasil.ebc.com.br/cultura/noticia/2026-11/tv-brasil-exibe-show-do-trio-pieta-no-cena-musical-deste-sabado",
+      "description": "O trio carioca Pietá é a atração do Cena Musical , que a TV Brasil exibe neste sábado (21), às 23h. Formado por Fred Demarca, Juliana Linhares e Rafael Lorga, o grupo apresenta o show Nasci no Brasil, espetáculo que celebra mais de uma década de trajetória artística e reúne canções do álbum homônimo lançado em 2024. A edição integra a nova temporada do programa, apresentado pela jornalista e cantora Bia Aparecida, com direção artística de Waldecir de Oliveira. Criada em 2011, a Pietá nasceu do encontro entre os músicos Fred Demarca e Rafael Lorga com a cantora potiguar Juliana Linhares. Ao longo da carreira, o grupo construiu uma identidade marcada pela combinação de voz, percussão, poesia, teatralidade e diferentes matrizes da música brasileira, transitando entre sonoridades tradicionais e contemporâneas. O repertório autoral reflete a pesquisa musical do trio e sua valorização da diversidade cultural do país. Notícias relacionadas: Prêmio TV Brasil Petrobras Para Elas: Yanne é eleita a craque do ano. EBC inaugura nova sede em São Paulo e amplia estrutura de produção. Agência Brasil",
+      "imageUrl": "https://cdn.jsdelivr.net/gh/sergiosdlima/assets-ebc@1.0.0/public/thumbs/thumb_1200x600_agbrasil.png",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-21T16:02:00.000Z",
+      "firstSeenAt": "2026-11-21T17:35:15.551Z",
+      "lastSeenAt": "2026-11-21T17:35:15.551Z"
+    },
+    {
+      "id": "event-f6eb0dd5",
+      "category": "brasil",
+      "title": "Arthur Elias chama Taina Maranhão para Data FIFA da Seleção Feminina",
+      "url": "https://agenciabrasil.ebc.com.br/esportes/noticia/2026-11/arthur-elias-chama-taina-maranhao-para-data-fifa-da-selecao-feminina",
+      "description": "A atacante Taina Maranhão, do Palmeiras, foi chamada pelo técnico Arthur Elias para a Seleção Brasileira de futebol feminino na manhã deste sábado (21). A atleta se junta ao time para a última Data FIFA de 2026. Serão dois amistosos no Japão contra as donas da casa, nos dias 29 de novembro em Hiroshima e 5 de dezembro em Okayama. Os horários dos jogos ainda não foram confirmados pela Confederação Brasileira de Futebol. Maranhão ocupa a vaga da Isabela, do Paris Saint-Germain (PSG). A jogadora da equipe francesa teve confirmada uma lesão muscular na região posterior da coxa esquerda durante uma partida contra o Chelsea pela Champions League Feminina e segue em tratamento no clube.",
+      "imageUrl": "https://imagens.ebc.com.br/NJp5FOOQ7eLAWRWVHBdQEpggKT0=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/21/11_04_2026_fifa_series_brasil_vs_coreia_do_sul_0869_7b37cebd42.jpeg?itok=-oEENCW7",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-21T15:55:00.000Z",
+      "firstSeenAt": "2026-11-21T17:35:15.551Z",
+      "lastSeenAt": "2026-11-21T17:35:15.551Z"
+    },
+    {
+      "id": "event-200cf258",
+      "category": "brasil",
+      "title": "Ernesto Xavier é o convidado do Conversa com o Autor deste domingo",
+      "url": "https://agenciabrasil.ebc.com.br/cultura/noticia/2026-11/ernesto-xavier-e-o-convidado-do-conversa-com-o-autor-deste-domingo",
+      "description": "O Conversa com o Autor, da Rádio MEC, recebe no episódio deste domingo (22), às 12h30, o escritor, jornalista, ator, roteirista e mestre em Antropologia pela Universidade Federal Fluminense (UFF), Ernesto Xavier. Na entrevista com a jornalista Katy Navarro, o autor fala sobre sua mais recente obra: Na trilha dos orixás: sabedoria ancestral e caminhos de axé no mundo contemporâneo . Neto dos atores Chica Xavier e Clementino Kelé, Ernesto Xavier também se dedica à divulgação da história e da cultura negra e ao enfrentamento do racismo. No programa, ele conta que Na trilha dos orixás: sabedoria ancestral e caminhos de axé no mundo contemporâneo , obra publicada pela editora Goya, em 2026, aborda a filosofia e a sabedoria ancestral presentes nas tradições de matriz africana. Notícias relacionadas: Programa na Rádio MEC celebra Proclamação da República neste sábado. Rádio MEC exibe neste domingo programa inédito da série de Ruy Castro. Rádio MEC transmite ao vivo concerto da Orquestra Filarmônica de Goiás. A partir dos ensinamentos e da mitologia dos orixás, Ernesto Xavier reflete sobre t",
+      "imageUrl": "https://imagens.ebc.com.br/pGzMDeR4uwtDH7MoZSGqIu9C9cQ=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/21/ernesto.jpg?itok=ghngKulz",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-21T15:36:00.000Z",
+      "firstSeenAt": "2026-11-21T17:35:15.551Z",
+      "lastSeenAt": "2026-11-21T17:35:15.551Z"
+    },
+    {
+      "id": "event-d49624b",
+      "category": "mundo",
+      "title": "Terremoto de magnitude 6,8 atinge o Peru",
+      "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPVDFhR2FmZmNMUkJGRHRhQzNKcFU1bFlTT19WLThpeGNsdFkwTzY1ZURHOXJQNHVBeHJvQV9vS2NLWHVHMUtGbGNsSEVNNmVhRUxlaE0xeThCOENPa0Z3eExoQTltTWhsWXcxdlFFRWQ3cXNjODhKWmJvejlOczBfaUtWakRHaDVB",
+      "description": "Terremoto de magnitude 6,8 atinge o Peru &nbsp;&nbsp; SBT News",
+      "imageUrl": null,
+      "source": "SBT News",
+      "publishedAt": "2026-11-21T14:54:20.000Z",
+      "firstSeenAt": "2026-11-21T17:35:15.551Z",
+      "lastSeenAt": "2026-11-21T17:35:15.551Z"
+    },
+    {
+      "id": "event-cd1696ff",
+      "category": "santa-catarina",
+      "title": "Santa Catarina terá sequência de temporais até quarta-feira (25)",
+      "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNRDk0Tk1fVGpmbk9BSFZReXVLWG5uMmdfbnhDVWxDRmRqem1rYjBCTDhTb0IwV2ZGX3VKZ0N4ZlpBazNZVC1WQXBoS3BOeGQxU24tQzJ0ZWZZQ3dNNV9GNEVXb3FUOEluQ3pzQTd1SUdBYXNBcXlkLW1JaVVwdE40ZG15UFFpaWd4SlZiYUxreDZMX3pqa1FHU0JSNW0",
+      "description": "Santa Catarina terá sequência de temporais até quarta-feira (25) &nbsp;&nbsp; Jornal de Pomerode",
+      "imageUrl": null,
+      "source": "Jornal de Pomerode",
+      "publishedAt": "2026-11-21T14:45:03.000Z",
+      "firstSeenAt": "2026-11-21T17:35:15.551Z",
+      "lastSeenAt": "2026-11-21T17:35:15.551Z"
+    },
+    {
+      "id": "event-20051c66",
+      "category": "clima",
+      "title": "El Niño muito forte deve perder força a partir de fevereiro",
+      "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxNdThZRjRLd28xZEl5RFZSa2x2R3ZNdzZLQ0hVR1RMeWs2QXlYaFBuRjR2MzZCTTNOeGpGYXBZLXFXaFp0T3RCaHd0T3B2YjFXNWw3clhwdjhLeWpka2hReTM4emp4ak9LVGVMc0NMTXBVbmhmdkFBdDdhazg5cFk0bzVYSDZEZ0tjeXdGNEpLZlh4TElaR3dHWENGUWxJdWctc0FUN0pBbjhJYUlVVnhGMXE4MFoySnJzYlczRkJmb9IBvwFBVV95cUxPZlR6alZ0bkpsYm0yMjl2VnhoN2xJNUphb25EcjVEbTlNcDZIOGtOeEVnMTdUcVhxOWJRX2hfUkFlUG5vS1BRaU5lX0tsWUJPbnNudzBsLWpJRHlTT3lRaFdKNlk3QzdlT1RZa2RmZ3dVNVJzWjhBbDQzUGl3M0U2c2FyVk9wZm5Mclk0RzBmLXMwMmJZVGlSOENCa0QxX1hDYlhDVzM2VTRhWU9mVEJnb0hBdVI0Z2E0NHZLUk1Xcw",
+      "description": "El Niño muito forte deve perder força a partir de fevereiro &nbsp;&nbsp; Campo Grande News",
+      "imageUrl": null,
+      "source": "Campo Grande News",
+      "publishedAt": "2026-11-21T14:36:00.000Z",
+      "firstSeenAt": "2026-11-21T17:35:15.551Z",
+      "lastSeenAt": "2026-11-21T17:35:15.551Z"
+    },
+    {
+      "id": "event-933752de",
+      "category": "santa-catarina",
+      "title": "BOLETIM DE OCORRÊNCIAS Temporais em Santa Catarina* – ocorrências a partir de 20 de novembro de 2026",
+      "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxPOEl0bEtaY0ZYWTJQYU9kWnNNU2YtSjdNc1M2bXdHTUU1Q2ZsMHVwLXVWNFI4M0tLOVJ3NkZaaUhMdDJNYjFSQ2N0V3pwdXVEaEZEb1o3eTR6MWNFdVBIbDEtRGkxS1pCUHFxSnpuNkkzdkRWaWpKMER6MmxhZDNXSzhOdDZORXY1MXdhQWJ2eWZ0S29ldjlDOUViUmtQRk5BU0RTYklXNGlaVUJIQTM2VnhUTTJPeEJjVlQ4ZUZKZFlBR3lJNmhLY3RRbnJXQW_SAc8BQVVfeXFMTzhJdGxLWmNGWFkyUGFPZFpzTVNmLUo3TXNTNm13R01FNUNmbDB1cC11VjRSODNLSzlSdzZGWmlITHQyTWIxUkNjdFd6cHV1RGhGRG9aN3k0ejFjRXVQSGwxLURpMUtaQlBxcUp6bjZJM3ZEVmlqSjBEejJsYWQzV0s4TnQ2TkV2NTF3YUFidnlmdEtvZXY5QzlFYlJrUEZOQVNEU2JJVzRpWlVCSEEzNlZ4VE0yT3hCY1ZUOGVGSmRZQUd5STZoS2N0UW5yV0Fv",
+      "description": "BOLETIM DE OCORRÊNCIAS Temporais em Santa Catarina* – ocorrências a partir de 20 de novembro de 2026 &nbsp;&nbsp; Blog do Prisco",
+      "imageUrl": null,
+      "source": "Blog do Prisco",
+      "publishedAt": "2026-11-21T13:57:25.000Z",
+      "firstSeenAt": "2026-11-21T17:35:15.551Z",
+      "lastSeenAt": "2026-11-21T17:35:15.551Z"
+    },
+    {
+      "id": "event-f47b4d58",
+      "category": "santa-catarina",
+      "title": "Santa Catarina terá sol pela manhã e temporais isolados a partir da tarde",
+      "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxNNm5tRjl1SjI0RC1jTFdHMnZnTlA5aUZYajBucENYX1dYVUFrQlVnOHRrTG5jRWZnT25uOVFtWUhDWTRyWUJteWZsZkp1alhNVWVucEY3ZzFaTEU1Z1dHUEdYNjhSMF9mbmljc2doRDRsX2wyODVQX3luN0lmSFczNDdBaDVfYTd1SHZCQXBmR3RsU3NhRGplaUhVbEZvb2dvejdBVkhLcXRkWW4ycnVwVmVRWVVOTXk1UWVFbFhEQUtWSm85RUZLLU9QOUFGOEhid3dj",
+      "description": "Santa Catarina terá sol pela manhã e temporais isolados a partir da tarde &nbsp;&nbsp; Diário do Iguaçu",
+      "imageUrl": null,
+      "source": "Diário do Iguaçu",
+      "publishedAt": "2026-11-21T11:41:00.000Z",
+      "firstSeenAt": "2026-11-21T17:35:15.551Z",
+      "lastSeenAt": "2026-11-21T17:35:15.551Z"
+    },
     {
       "id": "event-5bfe0085",
       "category": "clima",
@@ -43,6 +163,18 @@
       "publishedAt": "2026-11-21T08:03:45.000Z",
       "firstSeenAt": "2026-11-21T10:13:20.690Z",
       "lastSeenAt": "2026-11-21T10:13:20.690Z"
+    },
+    {
+      "id": "event-86eb9816",
+      "category": "clima",
+      "title": "MS reforça monitoramento climático para prevenir extremos do El Niño",
+      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBubFBrbXRGdVZLdEtsVlM3RHRvU0FoRzVZZjF0eXcxTUMyYTdCN2Fmclh1bGJxNkllcXNoWWFjVXdjYmRiVFVPWWZfREJNaHgzWUpfN0dOWnFYckE",
+      "description": "MS reforça monitoramento climático para prevenir extremos do El Niño &nbsp;&nbsp; Diário Corumbaense",
+      "imageUrl": null,
+      "source": "Diário Corumbaense",
+      "publishedAt": "2026-11-21T04:04:15.000Z",
+      "firstSeenAt": "2026-11-21T17:35:15.551Z",
+      "lastSeenAt": "2026-11-21T17:35:15.551Z"
     },
     {
       "id": "event-df41b7ff",
@@ -283,134 +415,9 @@
       "publishedAt": "2026-11-20T17:55:00.000Z",
       "firstSeenAt": "2026-11-20T21:24:12.054Z",
       "lastSeenAt": "2026-11-20T21:24:12.054Z"
-    },
-    {
-      "id": "event-805ec5cd",
-      "category": "mundo",
-      "title": "Brasil define numeração para a Copa do Mundo Sub-17; veja a lista completa",
-      "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxNdi1uU3Z0bXFJbE1HRUR2WFQ1ZU9VelE1ZF85TVlwUkxBTnk5M2xYWElCbXk2Wnd0TDNWTTZQLXQ2bkNPVEdYc1I1SVY3UHc2VVVtaGF5dWdPUzBnWlBjN0hUbnI4ZHpiSV9YR0FUSHJOYXFkSVVJS2JQRnotdkNINE9tRENQLTcxUlFrdjc1dW5sOWtMTm9CWE9OX05rWUE2Q1pFaktrNzB3OWFQX0tFeVptLUswamVtQlZ3aUhRYw",
-      "description": "Brasil define numeração para a Copa do Mundo Sub-17; veja a lista completa &nbsp;&nbsp; LANCE!",
-      "imageUrl": null,
-      "source": "LANCE!",
-      "publishedAt": "2026-11-20T17:28:13.000Z",
-      "firstSeenAt": "2026-11-20T21:24:12.054Z",
-      "lastSeenAt": "2026-11-20T21:24:12.054Z"
-    },
-    {
-      "id": "event-3f4b1b52",
-      "category": "clima",
-      "title": "El Niño forte deve manter chuva acima da média no Sul até janeiro de 2027",
-      "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxQbWxnOTBaMEVKSU9VaklSUWZhM2ZreW12M05RNzF4aVdiNTBvWjVDNzh0MW5idTNFQkZNN21FV0MwNG5aekR1Z2pxMFR4LVhpWk9jY0FTaDhDcVhnZ2JmbEItMTg5MFhvb05mXzVVSU9KZ04xNm1MX3c1dlVjT2dYNVlhb0d1TFJnZHdnaUpWNEVrcWIxeWgySmtkRUhsamRhT0syNjl6ajJaWGM",
-      "description": "El Niño forte deve manter chuva acima da média no Sul até janeiro de 2027 &nbsp;&nbsp; Mix Vale",
-      "imageUrl": null,
-      "source": "Mix Vale",
-      "publishedAt": "2026-11-20T16:56:11.000Z",
-      "firstSeenAt": "2026-11-20T21:24:12.054Z",
-      "lastSeenAt": "2026-11-21T10:13:20.690Z"
-    },
-    {
-      "id": "event-5ff1a76e",
-      "category": "clima",
-      "title": "MS reforça monitoramento climático para prevenir extremos do El Niño",
-      "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE1sLVJfQ0JPdGFjQzlJU1piMWV5NjhlWk5maXNKblhJcWNLdVBtbDZJNlVjMUNGX2t1TGlacE9NOHhDSURDRE0wZ0lHSkV6Y0paUmRUTGdJY3JpdXZ2ZkhGUEtfTktYVGVwVkFmeQ",
-      "description": "MS reforça monitoramento climático para prevenir extremos do El Niño &nbsp;&nbsp; Diário Corumbaense",
-      "imageUrl": null,
-      "source": "Diário Corumbaense",
-      "publishedAt": "2026-11-20T15:39:04.000Z",
-      "firstSeenAt": "2026-11-20T21:24:12.054Z",
-      "lastSeenAt": "2026-11-21T10:13:20.690Z"
-    },
-    {
-      "id": "event-bb4d1da2",
-      "category": "brasil",
-      "title": "Quase 90% das usinas eólicas do país têm alertas socioambientais",
-      "url": "https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-11/quase-90-das-usinas-eolicas-do-pais-tem-alertas-socioambientais",
-      "description": "Um levantamento inédito do Instituto Internacional Arayara aponta que 89,4% dos empreendimentos eólicos terrestres no Brasil apresentam algum fator de sensibilidade socioambiental identificado. O monitoramento abrange 1.748 parques eólicos, entre usinas em operação, projetos em construção ou em fase de planejamento, distribuídos por 13 estados, a maioria no Nordeste, com capacidade total de 60,6 gigawatts (GW), equivalente a mais de quatro vezes a potência instalada da usina de Itaipu. Desse total, 1.175 usinas estão efetivamente em operação, com pouco mais de 36 GW de capacidade. As informações constam na plataforma Farol das Eólicas , lançada nessa quinta-feira (19), durante a 31ª Conferência das Nações Unidas sobre Mudanças Climáticas (COP31), em Antalya, na Turquia. Notícias relacionadas: Mapas do caminho ainda podem voltar à decisão final da COP31. Impasses entre países podem atrasar documento final da COP31. Capobianco reforça responsabilidades de países na COP31 na Turquia. Os fatores de sensibilidade identificados incluem sobreposição e proximidade dessas usinas com territóri",
-      "imageUrl": "https://imagens.ebc.com.br/iQ2wSZJWJCxwaYL3AYv0ReybAYA=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/uee-em-icara-ce_15000856682_o.jpg?itok=C054jiwW",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-20T12:32:00.000Z",
-      "firstSeenAt": "2026-11-20T13:23:59.179Z",
-      "lastSeenAt": "2026-11-20T13:23:59.179Z"
-    },
-    {
-      "id": "event-8ddae69d",
-      "category": "brasil",
-      "title": "Brasileirão: Rádio Nacional transmite duelo entre Palmeiras e Flamengo",
-      "url": "https://agenciabrasil.ebc.com.br/esportes/noticia/2026-11/brasileirao-radio-nacional-transmite-duelo-entre-palmeiras-e-flamengo-0",
-      "description": "A Rádio Nacional transmite neste sábado (21) a partida que poderá definir o grande campeão do Campeonato Brasileiro Masculino Série A 2026. A emissora pública inicia a jornada esportiva do confronto entre Palmeiras e Flamengo a partir das 16h. A bola rola na Arena Nubank Parque, em São Paulo, às 16h30. A partida deste sábado coloca frente à frente o líder e o vice-líder do Brasileirão na reta final do campeonato. O Flamengo pode conquistar o título de maneira antecipada na casa do rival: com seis pontos de vantagem na tabela, um empate contra o Palmeiras já basta para garantir a taça. A transmissão da Rádio Nacional começa com a faixa Show de Bola Nacional e contará com uma equipe completa para levar ao público todas as emoções dos confrontos. A cobertura da partida tem um time de peso na equipe de esportes da emissora: a narração fica por conta de André Luiz Mendes e comentários de Mário Silva. Por fim, Rafael Monteiro comanda a reportagem e o plantão de informações. A transmissão da partida entra no ar para parte da rede em AM e OC, além da FM no Rio de Janeiro, no Alto Solimões e",
-      "imageUrl": "https://imagens.ebc.com.br/shtL9Cl8lEIsIA7NaESvDvXAhTc=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/10/27/2026-10-27t010345z_1239050503_up1emar02y45b_rtrmadp_3_soccer-brazil-fla-atl.jpg?itok=UncuVyG7",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-20T11:32:00.000Z",
-      "firstSeenAt": "2026-11-20T13:23:59.179Z",
-      "lastSeenAt": "2026-11-20T13:23:59.179Z"
-    },
-    {
-      "id": "event-8c6f7789",
-      "category": "brasil",
-      "title": "“Percy Jackson”: terceira temporada estreia nesta sexta; relembre trama",
-      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxOSGxreVJzZmxucFpLckI4djR5cHd2b19raDBNT08tbjdaV3VVdDU0OVp1OUpTa3RWWENQS1Y0LVFHeTRvb2l3aXFTNGRreTd3T1NqZjluNXRqM0xIRC1qZkk4WDBDdjV4RVE2QkZ5TlZkYlpKZ3BMSGh2dF84N21xU21ucS0zT010alNOYzRFbFlNRGJIWWdIRHptWGYza2M2c2JibV9TNkdmdVI5MTdaSg",
-      "description": "“Percy Jackson”: terceira temporada estreia nesta sexta; relembre trama &nbsp;&nbsp; CNN Brasil",
-      "imageUrl": null,
-      "source": "CNN Brasil",
-      "publishedAt": "2026-11-20T11:30:21.000Z",
-      "firstSeenAt": "2026-11-20T13:23:59.179Z",
-      "lastSeenAt": "2026-11-20T13:23:59.179Z"
-    },
-    {
-      "id": "event-759360a9",
-      "category": "santa-catarina",
-      "title": "Feriado da Consciência Negra terá risco alto de temporais e granizo em todas as regiões de SC",
-      "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxOTHEyeU5FdFpJNXp3RVU5SFVhc3JaZWN5ZHNWZ0JMUUZNaUw2LXBxbGExSW1rVV9ZeVNORU9IbWJNcmJBSWVfazktY25wd2hVWE5qT3I1UFVVbHJvOWZtLTFNTDRUcEJ1WU9ObTF5NUlfbnBNWTRCclI5MHd5NWhlMTdsMUZFN2ZvaHJBeHFMQ2hOVm1DUmxDdHJnSzJwc1dZT0dEZFFoOV93a1dqQnRoSGxfcmMxdk1jX2J3aUtYa3hPakJxS2g1LXRVQ0E",
-      "description": "Feriado da Consciência Negra terá risco alto de temporais e granizo em todas as regiões de SC &nbsp;&nbsp; 4oito",
-      "imageUrl": null,
-      "source": "4oito",
-      "publishedAt": "2026-11-20T11:02:00.000Z",
-      "firstSeenAt": "2026-11-20T13:23:59.179Z",
-      "lastSeenAt": "2026-11-20T13:23:59.179Z"
-    },
-    {
-      "id": "event-e63d3b6c",
-      "category": "brasil",
-      "title": "Termina nesta sexta prazo para pedir reaplicação do Enem 2026",
-      "url": "https://agenciabrasil.ebc.com.br/educacao/noticia/2026-11/termina-nesta-sexta-prazo-para-pedir-reaplicacao-do-enem-2026",
-      "description": "Termina nesta sexta-feira (20) o prazo para os inscritos no Exame Nacional do Ensino Médio (Enem) 2026 que não conseguiram fazer as provas pedirem a reaplicação das avaliações. Entre as causas previstas no edital estão problemas logísticos ou doenças infectocontagiosas. Por meio da Página do Participante do Enem , o candidato pode fazer o pedido, individualmente, para cada um dos domingos em que faltou. É preciso ter senha Gov.br. Notícias relacionadas: Inep divulga gabarito oficial do Enem 2026; veja como consultar. Gabarito do Enem sai na quarta-feira, e resultado em 18 de janeiro. A solicitação será analisada pelo Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (Inep), responsável pela aplicação do exame. O Enem 2026 ocorreu nos dias 8 e 15 de novembro. As provas serão reaplicadas nos dias 15 e 16 de dezembro. Motivos Somente têm direito à reaplicação aqueles que formalizarem a solicitação na Página do Participante, de acordo com as seguintes situações: afetados por problemas logísticos: desastres naturais, falta de energia elétrica ou erro de execução de pr",
-      "imageUrl": "https://imagens.ebc.com.br/QJM_W8qRIIt_vva8Vvs1BoUM_jY=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/08/0d7a3029.jpg.jpeg?itok=0PGwcFDB",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-20T11:00:00.000Z",
-      "firstSeenAt": "2026-11-20T13:23:59.179Z",
-      "lastSeenAt": "2026-11-20T13:23:59.179Z"
-    },
-    {
-      "id": "event-c3475a4f",
-      "category": "santa-catarina",
-      "title": "Defesa Civil alerta para risco alto de temporais em SC no feriado prolongado",
-      "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxQSVVvT3Ezc1Y0eVVUZVh1S1hoR3A5c3N4eWlTalVoMHZIVlA0S3JiTmRpcjdUZXRJOGhZM1ItQU5uQ212NXQ1eDlreEQ1S0prZWl5U0dQUXVOQ0tZX3FHTU03SDZ6N2VNbF8yMlJlcU1zUTRRVV9kamk5c0FLUWFpcTlIZVVfZkdyOUZRZWZaLUVaUnNDUUZrR1pOWUtrdlM1REtPWVdNbTVUZWJXM29WZ2VSMGdKSzVoR1lRNA",
-      "description": "Defesa Civil alerta para risco alto de temporais em SC no feriado prolongado &nbsp;&nbsp; Oeste Mais",
-      "imageUrl": null,
-      "source": "Oeste Mais",
-      "publishedAt": "2026-11-20T10:27:07.000Z",
-      "firstSeenAt": "2026-11-20T13:23:59.179Z",
-      "lastSeenAt": "2026-11-20T13:23:59.179Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-20T13:23:59.179Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 13,
-      "newArticles": 9,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "america-latina",
-        "asia"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-20T21:24:12.054Z",
       "ok": true,
@@ -458,26 +465,55 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-21T17:35:15.551Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 12,
+      "newArticles": 11,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 4,
-  "lastSuccessfulAt": "2026-11-21T10:13:20.690Z",
+  "lastSuccessfulAt": "2026-11-21T17:35:15.551Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-21T10:13:20.690Z",
+      "checkedAt": "2026-11-21T17:35:15.551Z",
       "warnings": [
         {
-          "id": "56466",
+          "id": "56475",
           "title": "Tempestade",
           "severity": "Perigo Potencial",
-          "phase": "previsto",
+          "phase": "vigente",
           "regions": [
             "DO",
             "DO",
             "DE"
           ],
-          "startsAt": "2026-11-22T00:00:00.000Z",
+          "startsAt": "2026-11-21T00:00:00.000Z",
+          "endsAt": "2026-11-22T00:00:00.000Z",
+          "source": "INMET",
+          "url": "https://avisos.inmet.gov.br/"
+        },
+        {
+          "id": "56476",
+          "title": "Tempestade",
+          "severity": "Perigo Potencial",
+          "phase": "previsto",
+          "regions": [
+            "DO",
+            "DE"
+          ],
+          "startsAt": "2026-11-23T00:00:00.000Z",
           "endsAt": "2026-11-23T00:00:00.000Z",
           "source": "INMET",
           "url": "https://avisos.inmet.gov.br/"
@@ -486,7 +522,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-21T10:13:20.690Z",
+      "checkedAt": "2026-11-21T17:35:15.551Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
