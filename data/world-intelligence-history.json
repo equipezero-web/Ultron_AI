@@ -4,10 +4,82 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-20T21:24:12.054Z",
-  "oldestEventAt": "2026-11-19T21:27:12.000Z",
-  "windowStartAt": "2026-11-19T21:24:12.054Z",
+  "updatedAt": "2026-11-21T02:39:36.384Z",
+  "oldestEventAt": "2026-11-20T03:00:00.000Z",
+  "windowStartAt": "2026-11-20T02:39:36.384Z",
   "events": [
+    {
+      "id": "event-df41b7ff",
+      "category": "brasil",
+      "title": "Consciência Negra: espetáculo no Rio dá vida personagens que marcaram a história do Brasil",
+      "url": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxOdEpWejdoRjZSX1JwS212SGs3VFRicWNvQ1FxQXIwN3FYOE5zdUdPeXVQcXZmcVhYMVBNaTB0LVRuRjA1bElpelZpSXVNbFpPNkJxYVdvNWVzVUc0NXNrQm9WbTlqaGZabWE1azZ5NkFqdEtsVFkyZlFjNkgwVXQ3SnZwR21ldkFQWllwOUg4WE11TTVybkdQbmRFMUJmUmhvcUZ6SHJ4dE1GM1hNSjNHSlEzeWpxS3Rpdy14OU50dEUxYWdKdGN1bUNpcFV2cVhrS09YX2lpOTFhTmNOOU1mZThTRkYyUdIB9AFBVV95cUxNdy13V1V2cnlpZkJxX2lHNWZOLUowaUJYVXdrTVNhOHlZZmUwYXhwQ2x4S0FUMGZ4YkplWHlFNXNKeFFGRjNjTWFEQmJSZUZVUklESG8tZzMxbXVvSlFiRkNJX3I4WHI5N0x5a2h3cFNWbjkxVmdQeXNOUG1mSG5FRlJxM3piMWp6VDJyZmxsdjBJTVQ2cWpTUThpMXNYSXVRc1JHSnpRVWtULWdxcEFjbW9vNFFFMk1fMGhsb2NKMm5FNlBuVjZsNHdDVUh1NEx2TF9hUzU3VzhLWW5ZYmg1VXY5NGNBOUJnaVMtOERFWk1vN3N6",
+      "description": "Consciência Negra: espetáculo no Rio dá vida personagens que marcaram a história do Brasil &nbsp;&nbsp; G1",
+      "imageUrl": null,
+      "source": "G1",
+      "publishedAt": "2026-11-21T01:35:43.000Z",
+      "firstSeenAt": "2026-11-21T02:39:36.384Z",
+      "lastSeenAt": "2026-11-21T02:39:36.384Z"
+    },
+    {
+      "id": "event-5a893be4",
+      "category": "mundo",
+      "title": "Principais notícias do mundo na noite de hoje (20)",
+      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQMFd1aFFodERtcEwySkp5aDB5SlRqN0RaTVBmc1ZzdnBaeDlTUzRvZTlNY3dTbmtrc1lURmZjWnczZXRLeEtZU1FUelVWUUI4QWxDaVd0QjZtRGY2dWVMU2VjeU1XazZHYkkzM1pYdkNrVUNFMmxhcDljVE1naG8zU1BHMGR6UmIyRUxURW9lTnJIdlNDOENCYjlqS2c0TUl2Sk9Dcm4xOGEtWlVJ",
+      "description": "Principais notícias do mundo na noite de hoje (20) &nbsp;&nbsp; Tribuna do Sertão",
+      "imageUrl": null,
+      "source": "Tribuna do Sertão",
+      "publishedAt": "2026-11-20T23:32:01.000Z",
+      "firstSeenAt": "2026-11-21T02:39:36.384Z",
+      "lastSeenAt": "2026-11-21T02:39:36.384Z"
+    },
+    {
+      "id": "event-f6219d72",
+      "category": "mundo",
+      "title": "Sociedade civil diz que COP31 poderá ser a pior da história",
+      "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxPWS1ETWI0OFVLWHY1cnpXUXZMc3VEb25nbE84MGRsS2NGbGdCbDdmamVHdHJxUXNicFRPMXFGM0x3cU9SMnpYMEdaM3FuMHFKdjVzM3BtdW9tV3B6OHpQQ0g0V2hTVkh1VEtCc1pBSE5scU9sMm92S0xYbHdnRVM4MGF2Vk54MkJJd0RCejBXdGl5OUo0c3lNTU9acGxZMHFQRVdj",
+      "description": "Sociedade civil diz que COP31 poderá ser a pior da história &nbsp;&nbsp; SBT News",
+      "imageUrl": null,
+      "source": "SBT News",
+      "publishedAt": "2026-11-20T22:55:26.000Z",
+      "firstSeenAt": "2026-11-21T02:39:36.384Z",
+      "lastSeenAt": "2026-11-21T02:39:36.384Z"
+    },
+    {
+      "id": "event-49fd98ab",
+      "category": "santa-catarina",
+      "title": "VÍDEO: portal de condomínio desaba durante temporal com ventos fortes em SC",
+      "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxOUnNnS1g2ZC03ZWlRUGFLVnE5VHpBYXNZME8xMHo1UHVNaXlVVTFzUG9rLU5vUkY4QXFVWXg2REZpSlRSMEpnX2QxOEZQNnlHdWJVckMwWHR4Si0xSENvaHFGallJYXB2bmhHRF9aQmc5bldZOFlRZHU2c2RyTng0eVFLX1h1VUM1U0JDNGJhTVpMenVmTkxwQWhYVzM1S003M3J5SmxBQjRKSnpXZ3ZGZ1NuUXZzeFd5MTlPbElaZVY5ZGJoazFaSTI3Z9IB2gFBVV95cUxOY3JQY0w5R2J5TnJVZ29lSW11clZYcEV2UmxvVmN1bjBpUWZ1aTUtcHRCOXJ4U2xGbDlaRmtPSWlybUpINnNwc3ZHLVVncUtVb2FuU3ZpN1l4bFdwQjVudV9mdnFHQjdxZ21kT1dMNlBZbWxXLTdHZ2hOQXJSZEc4amtPMEMxZTdBemJDOHVrblQyTmhhNl91WFFmNmkxUklLaUlYeFRqeDhPTHpoeXo0U052Ny1ORUpCYklDVUg3eUhuVUdxSHE4OE5YdjdwaDNfNjhZcFRNcmVsUQ",
+      "description": "VÍDEO: portal de condomínio desaba durante temporal com ventos fortes em SC &nbsp;&nbsp; G1",
+      "imageUrl": null,
+      "source": "G1",
+      "publishedAt": "2026-11-20T22:41:27.000Z",
+      "firstSeenAt": "2026-11-21T02:39:36.384Z",
+      "lastSeenAt": "2026-11-21T02:39:36.384Z"
+    },
+    {
+      "id": "event-8593dafa",
+      "category": "brasil",
+      "title": "PF diz que não há conversas de Mendonça com Vorcaro",
+      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/pf-diz-que-nao-ha-conversas-de-mendonca-com-vorcaro",
+      "description": "A Polícia Federal (PF) informou ao Supremo Tribunal Federal (STF) que não foram encontrados registros de conversas entre o ex-banqueiro Daniel Vorcaro e o ministro André Mendonça. A conclusão consta no relatório entregue nesta semana ao presidente do STF, Edson Fachin , relator do caso Master. Mais cedo, o sigilo do documento foi retirado a pedido de Mendonça. Notícias relacionadas: Moraes vota para manter apreensão de passaportes de Flávio Bolsonaro. Presidente do Supremo mantém prisão de Vorcaro. Fachin manda quebrar sigilo de relatório da PF com menções a Mendonça. Nas 35 páginas do relatório, os investigadores da PF relataram que encontraram 303 ocorrências positivas ao termo \"André Mendonça\" nos celulares de Vorcaro. A palavra \"Mendonça\" apareceu 1.294 vezes, e \"Ministro André\" teve 79 ocorrências no material analisado. \"Não foram identificados, durante as buscas realizadas por palavras-chave, registros que evidenciem diálogo direto entre os interlocutores Daniel Bueno Vorcaro e o ministro André Mendonça, seja por meio de aplicativos de mensagens, seja por qualquer outro canal d",
+      "imageUrl": "https://imagens.ebc.com.br/Iez1JX-lCwCWAruHzHAs9hrtVmA=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/mca_abr_numero_de_serie_de_4_digitos_090620_7.jpg?itok=av6AQ5Kg",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-20T22:34:00.000Z",
+      "firstSeenAt": "2026-11-21T02:39:36.384Z",
+      "lastSeenAt": "2026-11-21T02:39:36.384Z"
+    },
+    {
+      "id": "event-a28c0bc",
+      "category": "brasil",
+      "title": "Michelle Bolsonaro retorna ao Brasil após internação de Jair Bolsonaro",
+      "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxObDcyWmVHVjFMSm84cUlXaldRb3FDUHZEaDlKd2dZMGRkcWVXYXR0clVoeTN3Z0FzRjdpTG5qS1dFSElCUmRQcURUc0ZuN1BzX2lRbGE3MktBM3JWemNLNWR6M3V2NU9aNlNQODNwNUtaQzMydWdkdmVSdm5BUWZQNC1fb0dqeGVsQ2luajF6S3NOR2dWS1llLXU0OGV4WDgxeThaQW9OOHk",
+      "description": "Michelle Bolsonaro retorna ao Brasil após internação de Jair Bolsonaro &nbsp;&nbsp; Vero Notícias",
+      "imageUrl": null,
+      "source": "Vero Notícias",
+      "publishedAt": "2026-11-20T22:20:34.000Z",
+      "firstSeenAt": "2026-11-21T02:39:36.384Z",
+      "lastSeenAt": "2026-11-21T02:39:36.384Z"
+    },
     {
       "id": "event-e42e5c10",
       "category": "brasil",
@@ -18,7 +90,7 @@
       "source": "BBC",
       "publishedAt": "2026-11-20T20:40:03.000Z",
       "firstSeenAt": "2026-11-20T21:24:12.054Z",
-      "lastSeenAt": "2026-11-20T21:24:12.054Z"
+      "lastSeenAt": "2026-11-21T02:39:36.384Z"
     },
     {
       "id": "event-ab373b22",
@@ -42,7 +114,7 @@
       "source": "AJ Notícias",
       "publishedAt": "2026-11-20T20:17:56.000Z",
       "firstSeenAt": "2026-11-20T21:24:12.054Z",
-      "lastSeenAt": "2026-11-20T21:24:12.054Z"
+      "lastSeenAt": "2026-11-21T02:39:36.384Z"
     },
     {
       "id": "event-17f12f97",
@@ -69,6 +141,18 @@
       "lastSeenAt": "2026-11-20T21:24:12.054Z"
     },
     {
+      "id": "event-a0b12d12",
+      "category": "santa-catarina",
+      "title": "Temporais provocam estragos em Santa Catarina e ventos chegam a 138 km/h no Oeste",
+      "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxPT09FMkc1ODdPZndUUVVBSVpqV2hqZXM3RFkyUE1JY1ZrdEs1SGdqSDlhWjg2UUlfQ1RrUUZiNFBNOG9IS0NuS2NuNjNRYzJoRTdUS1dKQXJadGN2ZUxQeHlJbk9JaUc2X20zWkk5UTRTeFV3bkFvdWp2RUFzXzEzdW9MekZUcjQzU1RxVUdLbmkxNGlPRXJuZWFBaDNjVTlQTDQwLXlTbHVQYWhoTnQyUEYzWHJ5RHU5NnlaalhOTGVSZXdpaDgwVkpRSjBpQQ",
+      "description": "Temporais provocam estragos em Santa Catarina e ventos chegam a 138 km/h no Oeste &nbsp;&nbsp; Santa Catarina em Pauta",
+      "imageUrl": null,
+      "source": "Santa Catarina em Pauta",
+      "publishedAt": "2026-11-20T19:29:00.000Z",
+      "firstSeenAt": "2026-11-21T02:39:36.384Z",
+      "lastSeenAt": "2026-11-21T02:39:36.384Z"
+    },
+    {
       "id": "event-59c73c3f",
       "category": "brasil",
       "title": "Temporal no RS: governo envia equipes da Defesa Civil para Tupanciretã",
@@ -79,6 +163,18 @@
       "publishedAt": "2026-11-20T19:28:00.000Z",
       "firstSeenAt": "2026-11-20T21:24:12.054Z",
       "lastSeenAt": "2026-11-20T21:24:12.054Z"
+    },
+    {
+      "id": "event-a3fd71b1",
+      "category": "mundo",
+      "title": "Stephen Miller rouba a cena na coletiva de Trump e promete “os maiores dois anos da história americana”",
+      "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxPME1vc3UzN1J2amdZWDFEX3dtek10Rll5V01RbjByTExTbjE4b3hZcmE5bmUtYTdianpjN2FBdnA3ellyeHFxaGV3ZnVKaHk2N3M5RURuQURDOENyTG9HUk13SE1lc0J5MGdPRnp5c3dXNHdfRzk0MUhjSHFRVG5Bd3lHNWhDS2N2a01SSzNSRjRpVWNnNVBhZWNpYlRUOEhocWVVUkZwTldNYVZWOGdhSTExX0J3eXVIdllFZ19CZTBlWlgwNXd0enhSYTFMUkpr",
+      "description": "Stephen Miller rouba a cena na coletiva de Trump e promete “os maiores dois anos da história americana” &nbsp;&nbsp; Times Brasil | CNBC",
+      "imageUrl": null,
+      "source": "Times Brasil | CNBC",
+      "publishedAt": "2026-11-20T19:11:00.000Z",
+      "firstSeenAt": "2026-11-21T02:39:36.384Z",
+      "lastSeenAt": "2026-11-21T02:39:36.384Z"
     },
     {
       "id": "event-75c79872",
@@ -138,7 +234,7 @@
       "source": "Mix Vale",
       "publishedAt": "2026-11-20T16:56:11.000Z",
       "firstSeenAt": "2026-11-20T21:24:12.054Z",
-      "lastSeenAt": "2026-11-20T21:24:12.054Z"
+      "lastSeenAt": "2026-11-21T02:39:36.384Z"
     },
     {
       "id": "event-5ff1a76e",
@@ -150,7 +246,7 @@
       "source": "Diário Corumbaense",
       "publishedAt": "2026-11-20T15:39:04.000Z",
       "firstSeenAt": "2026-11-20T21:24:12.054Z",
-      "lastSeenAt": "2026-11-20T21:24:12.054Z"
+      "lastSeenAt": "2026-11-21T02:39:36.384Z"
     },
     {
       "id": "event-bb4d1da2",
@@ -234,7 +330,7 @@
       "source": "Diário do Pará",
       "publishedAt": "2026-11-20T09:23:00.000Z",
       "firstSeenAt": "2026-11-20T13:23:59.179Z",
-      "lastSeenAt": "2026-11-20T21:24:12.054Z"
+      "lastSeenAt": "2026-11-21T02:39:36.384Z"
     },
     {
       "id": "event-1d8b739",
@@ -259,183 +355,9 @@
       "publishedAt": "2026-11-20T03:00:00.000Z",
       "firstSeenAt": "2026-11-20T13:23:59.179Z",
       "lastSeenAt": "2026-11-20T13:23:59.179Z"
-    },
-    {
-      "id": "event-f8a2b98c",
-      "category": "brasil",
-      "title": "Mega-Sena acumula e prêmio vai para R$ 45 milhões",
-      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/mega-sena-acumula-e-premio-vai-para-r-45-milhoes",
-      "description": "Nenhum apostador acertou as seis dezenas do Concurso 3.088 da Mega-Sena, realizado nesta quinta-feira (19). O prêmio acumulou e está estimado em R$ 45 milhões para o próximo sorteio. Os números sorteados foram: 10 - 21 - 24 -28 - 34 - 44 15 apostas acertaram cinco dezenas e irão receber R$ 93.739,59 cada 2.750 apostas acertaram quatro dezenas e irão receber R$ 730,43 O próximo concurso será no domingo (22). Apostas As apostas podem ser feitas em qualquer lotérica do país ou pela internet, no site ou aplicativo da Caixa. A aposta simples, com seis dezenas, custa R$ 6.",
-      "imageUrl": "https://imagens.ebc.com.br/uGWKQSevZCX_pTs3UH-Oh-oPDv4=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/20230622_182658.jpg?itok=s-3aV28q",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-20T01:20:00.000Z",
-      "firstSeenAt": "2026-11-20T04:18:25.187Z",
-      "lastSeenAt": "2026-11-20T04:18:25.187Z"
-    },
-    {
-      "id": "event-1fa35bec",
-      "category": "brasil",
-      "title": "Repórter da Agência Brasil vence Prêmio SBIm de Jornalismo em Saúde",
-      "url": "https://agenciabrasil.ebc.com.br/saude/noticia/2026-11/reporter-da-agencia-brasil-vence-premio-sbim-de-jornalismo-em-saude",
-      "description": "A repórter Tâmara Freire, da Agência Brasil, é vencedora do VII Prêmio SBIm de Jornalismo em Saúde, com a reportagem Resistência às vacinas contra gripe e covid coloca gestantes em risco . A cerimônia de premiação foi nesta quarta-feira (18), em São Paulo. A premiação é realizada pela Sociedade Brasileira de Imunizações (SBIm), em parceria com a Organização Pan-Americana da Saúde (OPAS/OMS) e a Federação das Associações Brasileiras de Ginecologia e Obstetrícia (Febrasgo). Esta edição teve como tema \"Vacinação da gestante: proteção para a mãe e o bebê\". Notícias relacionadas: Agência Brasil e Rádio Nacional ganham prêmio de direitos humanos. Agência Brasil conquista 1º lugar no Prêmio Einstein +Admirados. Repórter da Agência Brasil é finalista em prêmio de proteção animal. \"Vacinação é um tema prioritário para a cobertura da Agência Brasil . É uma honra ver esse esforço reconhecido por organizações tão importantes. A morte de uma gestante ou puérpera por covid ou gripe é uma tragédia completamente evitável. É urgente informar às mulheres brasileiras que todas as vacinas oferecidas pel",
-      "imageUrl": "https://imagens.ebc.com.br/L32lhoy_9Tkl1WbmX-maa0c7qhU=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/19/208a3557.jpg?itok=CUj9st7z",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-20T00:36:00.000Z",
-      "firstSeenAt": "2026-11-20T04:18:25.187Z",
-      "lastSeenAt": "2026-11-20T04:18:25.187Z"
-    },
-    {
-      "id": "event-5afa628f",
-      "category": "brasil",
-      "title": "Caso Master: Fachin encaminha à PGR citações a quatro ministros do STF",
-      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/caso-master-fachin-encaminha-pgr-citacoes-quatro-ministros-do-stf",
-      "description": "O presidente do Supremo Tribunal Federal (STF), ministro Edson Fachin, decidiu nesta quinta-feira (19) enviar à Procuradoria-Geral da República (PGR) quatro relatórios produzidos pela Polícia Federal (PF) sobre menções a ministros da Corte em conversas encontradas no celular de Daniel Vorcaro. Os relatórios referem-se às citações aos nomes dos ministros Alexandre de Moraes, André Mendonça, Kassio Nunes Marques e Dias Toffoli. Notícias relacionadas: PGR envia ao Supremo parecer favorável a manter prisão de Vorcaro. Andrei entrega a Fachin relatórios sobre ministros no caso Master. Caberá ao procurador-geral, Paulo Gonet, avaliar o material e tomar as providências que achar necessárias, entre elas, a solicitação de arquivamento por falta de provas ou eventual pedido de abertura de investigação, que precisará ser aprovado previamente pelo plenário do Supremo. Fachin também decidiu arquivar seis relatórios que tratam das menções aos ministros Luiz Fux, Cármen Lúcia, Gilmar Mendes, Flávio Dino, Cristiano Zanin e ao próprio Fachin. A decisão do presidente está em segredo de Justiça e as ju",
-      "imageUrl": "https://imagens.ebc.com.br/CAkMlRo1nXtCNzcZ8o43w9Z5W5Y=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/02/02/abertura-stf-mc_abr_30012026-9.jpg?itok=pwBEFW-j",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-19T23:56:00.000Z",
-      "firstSeenAt": "2026-11-20T04:18:25.187Z",
-      "lastSeenAt": "2026-11-20T04:18:25.187Z"
-    },
-    {
-      "id": "event-7c8a9a7b",
-      "category": "brasil",
-      "title": "Prêmio Brasil Olímpico 2026 revela finalistas a melhor atleta do ano",
-      "url": "https://agenciabrasil.ebc.com.br/esportes/noticia/2026-11/premio-brasil-olimpico-2026-revela-finalistas-melhor-atleta-do-ano",
-      "description": "O Comitê Olímpico Brasileiro (COB) anunciou nesta quinta-feira (19) os finalistas à categoria de melhor atleta do ano do Prêmio Brasil Olímpico 2026. No gênero feminino, concorrem Maria Clara Pacheco (taekwondo), Rebeca Andrade (ginástica artística) e a seleção de ginástica rítmica. Já no masculino a corrida pelo troféu reúne Alison dos Santos (atletismo), Hugo Calderano (tênis de mesa) e Lucas Pinheiro Braathen (esqui alpino). Os vencedores serão conhecidos durante cerimônia de gala no dia 2 de dezembro, a partir das 18h45 (horário de Brasília), na Cidade das Artes, no Rio de Janeiro. Notícias relacionadas: Alison dos Santos conquista o título da Liga Diamante pela 3ª vez. Rebeca Andrade conquista o tri no Mundial de Ginástica na Holanda . Brasil faz história e leva dois ouros no Mundial de ginástica rítmica. Os indicados à premiação foram definidos em votação do Colegiado do Prêmio Brasil Olímpico, formado por representantes de confederações esportivas, ex-atletas e jornalistas especializados, entre outros. O mesmo grupo elegeu os melhores atletas por modalidade em 2026 . Finalista",
-      "imageUrl": "https://imagens.ebc.com.br/SjY-9zj7BNUODJJhv2c2spxNp-Q=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/08/27/alison_dos_santos_recorde_mundial_diamond_league_2026.jpg?itok=Yk-uK3Qe",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-19T23:34:00.000Z",
-      "firstSeenAt": "2026-11-20T04:18:25.187Z",
-      "lastSeenAt": "2026-11-20T04:18:25.187Z"
-    },
-    {
-      "id": "event-62197254",
-      "category": "mundo",
-      "title": "Principais notícias do mundo na noite de hoje (19)",
-      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxOcVF0aEhRT3BGTHgwc0tmWFdLMTJIUWJlcXVXNGNTYUlfeU9WVTJiM1h2VlRZejZmVGM4SXlEUnY1Z19wZmFEYWROVTV0ZDJZVFNMWWxydU1qM0d1b19sWjFVaGZGbHh2Q2J0YXB1dmlKalUzUTlMcnd3dzJ4NlVoSXNyU3ZSeW5PRjB6eGRBTUVPR3l6M2ZSaTZhTkhIcE1XOHhnSFlBTUo5cEY4",
-      "description": "Principais notícias do mundo na noite de hoje (19) &nbsp;&nbsp; Tribuna do Sertão",
-      "imageUrl": null,
-      "source": "Tribuna do Sertão",
-      "publishedAt": "2026-11-19T23:31:22.000Z",
-      "firstSeenAt": "2026-11-20T04:18:25.187Z",
-      "lastSeenAt": "2026-11-20T13:23:59.179Z"
-    },
-    {
-      "id": "event-17928326",
-      "category": "mundo",
-      "title": "Primeiro encontro entre líderes da China, EUA e Rússia termina com compromisso para reduzir riscos de uma guerra nuclear",
-      "url": "https://news.google.com/rss/articles/CBMinAJBVV95cUxQUVg1WGx6SnR0U3pYakNCXzlrRU9iTjNnQlpkYVBIX3RGaVRGVlYwbW50aDlCQURKaWN5b3lTSktzMmpxZmNkQTdYX0xDLVh3ZlZkYWRqX3FPaWdLQ2tfMXl4eVluMC0zUXg5SnBYZnI3TVBPZE00QTd2dVNMSjVPQ0dSWE9kVGgzYTRubjIzNkdxTzNEMlIxR3c4SFhSTEVkWXdVRDFsR2czdi1IZ19wb0dxRGxBRFVhYzNZclZpa1NBall6V3MtN3NjWnRnN1FqV19rbHdVMzdiM1ZabVZjS21wbzRsWTdxUHBtT0JndkhrUlJIdjlMSXdBUVRaTDJMNEs3WWx6SlFCNUNkcER0QmNEZlFuR0c1TWNoQdIBnAJBVV95cUxQUVg1WGx6SnR0U3pYakNCXzlrRU9iTjNnQlpkYVBIX3RGaVRGVlYwbW50aDlCQURKaWN5b3lTSktzMmpxZmNkQTdYX0xDLVh3ZlZkYWRqX3FPaWdLQ2tfMXl4eVluMC0zUXg5SnBYZnI3TVBPZE00QTd2dVNMSjVPQ0dSWE9kVGgzYTRubjIzNkdxTzNEMlIxR3c4SFhSTEVkWXdVRDFsR2czdi1IZ19wb0dxRGxBRFVhYzNZclZpa1NBall6V3MtN3NjWnRnN1FqV19rbHdVMzdiM1ZabVZjS21wbzRsWTdxUHBtT0JndkhrUlJIdjlMSXdBUVRaTDJMNEs3WWx6SlFCNUNkcER0QmNEZlFuR0c1TWNoQQ",
-      "description": "Primeiro encontro entre líderes da China, EUA e Rússia termina com compromisso para reduzir riscos de uma guerra nuclear &nbsp;&nbsp; G1",
-      "imageUrl": null,
-      "source": "G1",
-      "publishedAt": "2026-11-19T23:28:40.000Z",
-      "firstSeenAt": "2026-11-20T04:18:25.187Z",
-      "lastSeenAt": "2026-11-20T04:18:25.187Z"
-    },
-    {
-      "id": "event-db80a0d2",
-      "category": "brasil",
-      "title": "Dólar supera R$ 5,93 e fecha no maior valor desde abril de 2025",
-      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/dolar-supera-r-593-e-fecha-no-maior-valor-desde-abril-de-2025",
-      "description": "Em mais um dia de turbulência no mercado financeiro, o dólar avançou pela sexta sessão consecutiva e superou R$ 5,93 nesta quinta-feira (19). A alta ocorreu mesmo após o Banco Central vender US$ 1 bilhão para tentar conter a alta. A moeda fechou no maior patamar desde abril de 2025, em meio à pressão do mercado financeiro por cortes no orçamento e indicações da equipe ecônomica. Na Bolsa, o Ibovespa recuou 0,69%, influenciado em parte pelas bolsas de Nova York, que também fecharam em queda. Notícias relacionadas: Lula promete manter direitos e diz que controle fiscal é prioridade. Dólar sobe para R$ 5,87 com expectativa sobre votação de ajuste fiscal. Senado rejeita mudanças no texto e aprova ajuste fiscal do governo. Ao assinar o decreto que regulamenta a jornada de trabalho 5x2, o presidente Luiz Inácio Lula da Silva afirmou que parte das críticas contra o governo federal são fruto de um movimento especulativo , encabeçado por agentes econômicos que faturam com a instabilidade. “Tem gente que quer ganhar dinheiro com a especulação, com a boataria”, disse Lula. “Os caras vão inventa",
-      "imageUrl": "https://imagens.ebc.com.br/qgr1uCa7n_TP2WKn5oQPmLd6V2M=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/07/23/2026-07-23t123806z_1_lynxmpem6m19r_rtroptp_4_usa-trump-tariffs-indonesia.jpg?itok=6u1xpzSK",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-19T22:47:00.000Z",
-      "firstSeenAt": "2026-11-19T23:35:39.481Z",
-      "lastSeenAt": "2026-11-19T23:35:39.481Z"
-    },
-    {
-      "id": "event-e24f22f6",
-      "category": "mundo",
-      "title": "Belo Horizonte participa de encontro nacional de preparação para a Copa do Mundo Feminina de 2027",
-      "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxNc3hoNUVpSmMzMmozc1hud0FJNTByb25oYUlTTGhZM3dLVk5neWtOUWVRLXZuR045ZHFiQ2hNYnlCWHdac1E1X2JKT2E3ZEVFY2gzTGRZSDJOcHFiaUQxZzNRb2tMNzdGOTBpWVBJUVFyQUk0Wi1BSmNGQldwNXc5cDVWODNVcTc2dlJmYnBlMk5UVWxzeDhvQ2xUNEwxcFZuWEpoZ2VZRnlrc0V3dEZsWEo0aFZiRUEyZk1oandxaDBSUnY2elpUNQ",
-      "description": "Belo Horizonte participa de encontro nacional de preparação para a Copa do Mundo Feminina de 2027 &nbsp;&nbsp; Prefeitura de Belo Horizonte",
-      "imageUrl": null,
-      "source": "Prefeitura de Belo Horizonte",
-      "publishedAt": "2026-11-19T22:22:29.000Z",
-      "firstSeenAt": "2026-11-19T23:35:39.481Z",
-      "lastSeenAt": "2026-11-20T13:23:59.179Z"
-    },
-    {
-      "id": "event-bccc351d",
-      "category": "clima",
-      "title": "Furacões quase somem do Atlântico, algo que não acontecia há 101 anos, e a NOAA aponta o El Niño",
-      "url": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxQZ2xudnJIRUNCRXB6N1l6SE5tY19UZzBSZkRDbWxuNWFyME9BS3NHT3V2WlV5TlpUak5TMmxydGpLRmFxSm1VdUNRc1BEREdiTHlNZ3pSRVh0NDlvUmo5VEJOM1JHUkpkWG5ZNU5nR1VuamF0R3lOczNBZk5BVml6RGlQN243YVhOTlVIRkJvNENJZFVkOEU0bUNlajBNSkdIS3NTaUQzcS1MSVFZTEk1eGc5MmNrZkxiakYtdTFZZWpTTFVfNVEzdEFUdnh4WlZvUFVzR1lVUVA0bXBKTzBZQVdnaWZadw",
-      "description": "Furacões quase somem do Atlântico, algo que não acontecia há 101 anos, e a NOAA aponta o El Niño &nbsp;&nbsp; O Tempo",
-      "imageUrl": null,
-      "source": "O Tempo",
-      "publishedAt": "2026-11-19T22:19:13.000Z",
-      "firstSeenAt": "2026-11-19T23:35:39.481Z",
-      "lastSeenAt": "2026-11-20T13:23:59.179Z"
-    },
-    {
-      "id": "event-11f7a0a0",
-      "category": "santa-catarina",
-      "title": "Mudanças nas condições do tempo devem ocorrer em Santa Catarina",
-      "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxPNWk4R0RUUDNhWVRROHVucjM1UE90UUNGTF84YUpYTWYxSVJSTnBmakxocWt3X2hEZlBqR0xwbU0zbVhOLUM5cTViYV82OEhpdXFhLWc1eXFEbThhX205c0p0SmstaUxfQTQtSHRyVldnOHZmWXI2dVk1RnJhY0xBbHQ5NnpzakRNVkhsazN0WHlINmtKNGpTZEtzXzRrQ0xvM1BV",
-      "description": "Mudanças nas condições do tempo devem ocorrer em Santa Catarina &nbsp;&nbsp; Hora Hiper",
-      "imageUrl": null,
-      "source": "Hora Hiper",
-      "publishedAt": "2026-11-19T22:10:00.000Z",
-      "firstSeenAt": "2026-11-19T23:35:39.481Z",
-      "lastSeenAt": "2026-11-20T13:23:59.179Z"
-    },
-    {
-      "id": "event-d62092ac",
-      "category": "brasil",
-      "title": "Moraes pauta julgamento da Lei da Dosimetria para o dia 4 de dezembro",
-      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/moraes-pauta-julgamento-da-lei-da-dosimetria-para-o-dia-4-de-dezembro",
-      "description": "O ministro Alexandre de Moraes, do Supremo Tribunal Federal (STF), marcou para o dia 4 de dezembro o julgamento virtual sobe a validade da lei que altera o cálculo das penas (dosimetria) de condenados pelos atos golpistas de 8 de janeiro de 2023 e que também pode beneficiar o ex-presidente Jair Bolsonaro. O processo sobre a questão foi liberado para julgamento após os presidentes da Câmara dos Deputados, Hugo Motta (Republicanos-PB), e do Senado, Davi Alcolumbre (União-AP), se reunirem com Moraes e defenderem que o ministro libere o processo para inclusão na pauta do Supremo. Notícias relacionadas: Fachin sinaliza que STF pode julgar Lei da Dosimetria neste ano. O caso será julgado pelo plenário virtual da Corte. Serão apreciadas quatro ações que contestam a Lei 15.402 de 2026, conhecida como Lei da Dosimetria. A lei foi promulgada no dia 8 de maio após o Congresso derrubar o veto do presidente Luiz Inácio Lula da Silva à anistia das penas. Em seguida, Moraes suspendeu a aplicação da norma após analisar o caso de Nara Faustino de Menezes , condenada por participação nos atos de 8 de",
-      "imageUrl": "https://imagens.ebc.com.br/JqHvFoqAEwNMxBM4sThGT3BKprI=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/manifestacao1_mcamgo_abr_080120231818-8.jpg?itok=6xDwX7zO",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-19T21:34:00.000Z",
-      "firstSeenAt": "2026-11-19T23:35:39.481Z",
-      "lastSeenAt": "2026-11-19T23:35:39.481Z"
-    },
-    {
-      "id": "event-72a0c52d",
-      "category": "santa-catarina",
-      "title": "Defesa Civil alerta para temporais com risco alto de granizo, ventos fortes e enxurradas em Santa Catarina nesta sexta-feira",
-      "url": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxObEVJanRMeThsaXUwa3g5NTVHVXhJbUp4LTJhVWdhOG9qbTZ2aTJUTUgyaUNueWlYcnh2Yi1naE1aSWNCbHF5cDl0UlJtZXhDekpLWjBIYlhqUFJFVjF4WVhSQVpiQlQ5YkhxaFRYZGtXVkZzdlVqMzlWNlNxeDJsaWdTN0dDaERvSmdNa3YxTWQ4cF95aVVvZ09mTHNnWWRReEJVWFU2WGVXbU1LNDFRUTRZZDlTS2J1MnZLRFh4aVRlOXd6MmJsWHZKU1Y0YnA3QnVYdFpPWU02aDlyNzFSVWdFMS1jZw",
-      "description": "Defesa Civil alerta para temporais com risco alto de granizo, ventos fortes e enxurradas em Santa Catarina nesta sexta-feira &nbsp;&nbsp; Notiserra SC",
-      "imageUrl": null,
-      "source": "Notiserra SC",
-      "publishedAt": "2026-11-19T21:33:07.000Z",
-      "firstSeenAt": "2026-11-19T23:35:39.481Z",
-      "lastSeenAt": "2026-11-20T04:18:25.187Z"
-    },
-    {
-      "id": "event-c3864a8b",
-      "category": "mundo",
-      "title": "Reunião histórica coloca Tribunal Penal Internacional na mira das maiores potências no mundo",
-      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQMnJSVlFMVG5pdUdkdlM5d3R5Q3g5UjA1dUFSN2JtMTNUQVJ3WUlQRGJFc1Ayb3hwUkdPNGJlUEcySVRQZ1VRRlNCQWlqazhjRXZTQjFVaDZBWTRQRFluUGdpdHA3SHRlUTNFSWdxSFdGb2FtR2hXOW1xVGtEb040cGd2YnU3YmxzaDA1SzdsM3dLVXBfREE1N2RjS29LeG4wS2lzZ200QjZKUFVB",
-      "description": "Reunião histórica coloca Tribunal Penal Internacional na mira das maiores potências no mundo &nbsp;&nbsp; Brasil Paralelo",
-      "imageUrl": null,
-      "source": "Brasil Paralelo",
-      "publishedAt": "2026-11-19T21:27:12.000Z",
-      "firstSeenAt": "2026-11-20T04:18:25.187Z",
-      "lastSeenAt": "2026-11-20T04:18:25.187Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-19T23:35:39.481Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 13,
-      "newArticles": 12,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "america-latina",
-        "europa",
-        "asia"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-20T04:18:25.187Z",
       "ok": true,
@@ -485,30 +407,31 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-21T02:39:36.384Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 13,
+      "newArticles": 8,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "asia"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 4,
-  "lastSuccessfulAt": "2026-11-20T21:24:12.054Z",
+  "lastSuccessfulAt": "2026-11-21T02:39:36.384Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-20T21:24:12.054Z",
+      "checkedAt": "2026-11-21T02:39:36.384Z",
       "warnings": [
-        {
-          "id": "56462",
-          "title": "Tempestade",
-          "severity": "Perigo Potencial",
-          "phase": "previsto",
-          "regions": [
-            "DO",
-            "DO",
-            "DE"
-          ],
-          "startsAt": "2026-11-21T00:00:00.000Z",
-          "endsAt": "2026-11-21T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
-        },
         {
           "id": "56466",
           "title": "Tempestade",
@@ -528,7 +451,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-20T21:24:12.054Z",
+      "checkedAt": "2026-11-21T02:39:36.384Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
