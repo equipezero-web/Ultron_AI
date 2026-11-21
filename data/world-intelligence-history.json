@@ -4,10 +4,130 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-21T17:35:15.551Z",
-  "oldestEventAt": "2026-11-20T17:55:00.000Z",
-  "windowStartAt": "2026-11-20T17:35:15.551Z",
+  "updatedAt": "2026-11-21T22:23:20.177Z",
+  "oldestEventAt": "2026-11-20T22:34:00.000Z",
+  "windowStartAt": "2026-11-20T22:23:20.177Z",
   "events": [
+    {
+      "id": "event-948c2698",
+      "category": "santa-catarina",
+      "title": "Defesa civil emite novo alerta de temporais e chuva extrema em Papanduva",
+      "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxObXNUaEh1ZlQ1WU9BeXpvc0xsZUhYbHdFQWg1V0FwZ1d0OTlYbnNYclBxQzVuSWdXQ3VMWmhYNlQtUzZ0SGxGeXBnZjh0a2ZXTzdfSm95Sm1yR2VIQ2ppMm9ZdVZKb0d4U2pqeGhCdGRQbkxDVkpid1R1MHBnYlVGbjIwUHNsMGtMaXIyVzZYU2o",
+      "description": "Defesa civil emite novo alerta de temporais e chuva extrema em Papanduva &nbsp;&nbsp; primeira página sc",
+      "imageUrl": null,
+      "source": "primeira página sc",
+      "publishedAt": "2026-11-21T21:55:43.000Z",
+      "firstSeenAt": "2026-11-21T22:23:20.177Z",
+      "lastSeenAt": "2026-11-21T22:23:20.177Z"
+    },
+    {
+      "id": "event-e244fba4",
+      "category": "brasil",
+      "title": "Força Nacional do SUS avalia instalar posto médico em Tupanciretã",
+      "url": "https://agenciabrasil.ebc.com.br/geral/noticia/2026-11/forca-nacional-do-sus-avalia-instalar-posto-medico-em-tupancireta",
+      "description": "Devastada por um forte temporal na madrugada dessa sexta-feira (20), a cidade de Tupanciretã, na região central do Rio Grande do Sul, pode receber um Posto Médico Avançado (PMA) instalado pela Força Nacional do SUS. A equipe chegou à cidade com 13 profissionais, entre médicos, enfermeiros, técnicos de enfermagem, psicólogo, assistente social e especialistas em diagnóstico de emergências e gestão de incidentes. Uma das prioridades do grupo é avaliar os danos e as condições de funcionamento dos serviços de saúde do município, especialmente do Hospital de Caridade Brasilina Terra, que sofreu danos estruturais no telhado. Também ficaram comprometidos serviços de diagnóstico por imagem, como raio-x e ultrassonografia. Notícias relacionadas: Lula presta solidariedade à cidade gaúcha devastada por tempestade. Temporal no RS: governo envia equipes da Defesa Civil para Tupanciretã. Tempestade no Rio Grande do Sul afeta 19,6 mil pessoas em 33 cidades. Segundo o Ministério da Saúde, a equipe também vai verificar a situação das unidades de atenção básica, a disponibilidade de profissionais e ins",
+      "imageUrl": "https://imagens.ebc.com.br/99KAl0W61Nxc6t1rLdGJY0PmauY=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/21/b33b34e7-433b-4210-9342-7805a6fa4227.jpeg?itok=-RugUHc4",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-21T21:28:00.000Z",
+      "firstSeenAt": "2026-11-21T22:23:20.177Z",
+      "lastSeenAt": "2026-11-21T22:23:20.177Z"
+    },
+    {
+      "id": "event-a7945dc6",
+      "category": "santa-catarina",
+      "title": "Prefeitura de Joinville atualiza ocorrências relacionadas ao temporal de sexta-feira",
+      "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxPdkFwVWFIak1fSDZaSTFHM21BWVhVY05CTXY5czdRNkpZNC1XZjlFYUpPVm9xdldXNkotb0I1SktZaXVFMUpsOE93UTlFSWprQVN4d01iZDlRSF9uMFMtdHVvbmhUaHItdWtLQ1d2QlRfc0RhNkdhWDFuLUFiWlJsTjNMOW1WX1hMbzV0VWZQbW1xcWZJNlllZzhVaGJ1TlROeDNVTXFhTDBmS09yXzFxcmYydi0wREZJ0gG-AUFVX3lxTE9idU5OVlBwZUp4V241cVlnTHRmSW1OYnFXaUxmNVpVbDM5d1FoZjBWSmlHaUk1ZlNRaFZObUdqVm85SDAzeng2UTlmQU9PTnpEbEU2aF9UOEwxUmtyNHdMZlF5dUpJOW1BNjRYMGc5OXFxMkJGLU1seTdueHQwWWRvbVg0dzAtNUhTRXAxWXFOVkxFU0VaOHVoNDVXMnZ1bWI1c2pCVGVGbWNSdUVrc0ZzX1JkQUhzTU5LQXlhU3c",
+      "description": "Prefeitura de Joinville atualiza ocorrências relacionadas ao temporal de sexta-feira &nbsp;&nbsp; Blog do Prisco",
+      "imageUrl": null,
+      "source": "Blog do Prisco",
+      "publishedAt": "2026-11-21T21:26:50.000Z",
+      "firstSeenAt": "2026-11-21T22:23:20.177Z",
+      "lastSeenAt": "2026-11-21T22:23:20.177Z"
+    },
+    {
+      "id": "event-4c6540e6",
+      "category": "santa-catarina",
+      "title": "Temporais com raios, chuva intensa e rajadas de vento de 80 km/h deverão marcar o fim de semana em SC",
+      "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxOQnMwcEF6NjdkclpWV2l5c210QmN0aFZ1MTFrNXV2Tk41NUdndG9wS2pLazBVMG5ZN1EyS0dVWGw3cUYzS2tYb0E5V19KQy1KMTNKdWtveWUzOExJek1ha2FGbkZpWFNqNDZlSWVsVTNNUUZ4MTFLT2xEZklzU0d1Rk5IWHFnREwzME9VMjhacjRQLVdaTFc3UkcwOXlRM09YNXlPYVJDVWx5UklkZkhTQWF5SUJaY1ZvMWQ1c3laR2R5Wmh3QjRQc0trNlhVdlVjeE5yTnh3",
+      "description": "Temporais com raios, chuva intensa e rajadas de vento de 80 km/h deverão marcar o fim de semana em SC &nbsp;&nbsp; HC Notícias",
+      "imageUrl": null,
+      "source": "HC Notícias",
+      "publishedAt": "2026-11-21T21:05:49.000Z",
+      "firstSeenAt": "2026-11-21T22:23:20.177Z",
+      "lastSeenAt": "2026-11-21T22:23:20.177Z"
+    },
+    {
+      "id": "event-8bbbb491",
+      "category": "brasil",
+      "title": "Mostra apresenta legado de Milton Santos para pensar o Brasil",
+      "url": "https://agenciabrasil.ebc.com.br/cultura/noticia/2026-11/mostra-apresenta-legado-de-milton-santos-para-pensar-o-brasil",
+      "description": "O Museu da História e da Cultura Afro-Brasileira (Muhcab), que fica na região conhecida por Pequena África, na zona portuária da cidade do Rio de Janeiro, exibe a mostra Milton Santos e Cidadania: um geógrafo negro pensando o Brasil e o mundo. Ocupando uma das salas do museu, a exibição é dividida em três eixos e tem painéis que buscam apresentar o pensamento de Santos para o público. As visitas podem ser feitas até 3 de janeiro, de terça a domingo, entre 10h e 17h. Há audiodescrição e libras disponíveis. Exposição traz estudos do geógrafo Milton Santos. Foto: Fernando Frazão/Agência Brasil Notícias relacionadas: Exposição do Muhcab celebra resistência da Pequena África, no Rio . Milton Santos, 100 anos: geógrafo negro teorizou sobre desigualdades . Acervo da USP revela novas faces do pensador negro Milton Santos . Geógrafo, professor e um dos maiores intelectuais brasileiros, ele é referência mundial na compreensão da relação entre território, desigualdades sociais e relações de poder. Santos criou chaves teóricas para compreender, por exemplo, por que alguns bairros contam com mais",
+      "imageUrl": "https://imagens.ebc.com.br/LKVgXnvpZj_GIOegu47WwY7KRH4=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/20/1000014199.jpg?itok=M2G7Fu4g",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-21T21:04:00.000Z",
+      "firstSeenAt": "2026-11-21T22:23:20.177Z",
+      "lastSeenAt": "2026-11-21T22:23:20.177Z"
+    },
+    {
+      "id": "event-1bee9931",
+      "category": "brasil",
+      "title": "Michelle Bolsonaro retorna ao Brasil após internação do ex-presidente",
+      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxNS1FqQldJbUlaQ2pWcHJNZkdzRDk5NVowUFF6SzBmZ2NGNnJkT3ppUnN6UjZsNEg1c0I0cHlzZlRLOTZrSXd2STBNRmYwY3hQalY3MENCMTZBX3JnTllKY2lFbUMzVHRXUXFpTThudFU2WGNiZnpBcW1fLWVFNWpzMjlWd01MWUNUSlcxakFrVms2MVJ5WnFUbEJXV0dZNUNyZWJkV2xmcw",
+      "description": "Michelle Bolsonaro retorna ao Brasil após internação do ex-presidente &nbsp;&nbsp; Vero Notícias",
+      "imageUrl": null,
+      "source": "Vero Notícias",
+      "publishedAt": "2026-11-21T20:40:00.000Z",
+      "firstSeenAt": "2026-11-21T22:23:20.177Z",
+      "lastSeenAt": "2026-11-21T22:23:20.177Z"
+    },
+    {
+      "id": "event-c3a82814",
+      "category": "brasil",
+      "title": "Brasil vence Irlanda por 2 a 1 em estreia na Copa do Mundo Sub-17",
+      "url": "https://agenciabrasil.ebc.com.br/esportes/noticia/2026-11/brasil-vence-irlanda-por-2-1-em-estreia-na-copa-do-mundo-sub-17",
+      "description": "A Seleção Brasileira passou pela Irlanda por 2 a 1, neste sábado (21), em Doha (Catar). A vitória verde e amarela marcou a estreia da seleção na Copa do Mundo Sub-17 . Rodrigo Jr, no primeiro tempo, e Eduardo Conceição, na etapa final, marcaram os gols. Com três pontos, o Brasil lidera o grupo I. No outro jogo desta chave, Tanzânia e Costa Rica empataram por 2 a 2 e somam um ponto cada. O próximo compromisso da Seleção será na terça-feira (24), às 12h (de Brasília), contra a Tanzânia. O Brasil começou a partida pressionando os irlandeses e, aos 29 minutos, Richard Wendel cruzou na cabeça de Rodrigo Júnior. Ele cabeceou no canto e abriu o placar. No fim do primeiro tempo, a Irlanda empatou. Notícias relacionadas: Brasil sofre goleada e termina em 4º lugar no Mundial Feminino Sub-17. Brasil vira sobre a China e alcança semi da Copa do Mundo Sub-17. Eduardo Conceição definiu a vitória brasileira aos 25 minutos do segundo tempo. Ele abriu para a finalização e chutou colocado, no ângulo.",
+      "imageUrl": "https://imagens.ebc.com.br/6rAo_j8neKAxsFYOedKNsUxcJh4=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/21/whats_app_image_2026_11_21_at_13_39_32_95ed8b27b0.jpeg?itok=FkqfArl9",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-21T19:51:00.000Z",
+      "firstSeenAt": "2026-11-21T22:23:20.177Z",
+      "lastSeenAt": "2026-11-21T22:23:20.177Z"
+    },
+    {
+      "id": "event-7c00fda9",
+      "category": "mundo",
+      "title": "Manifestantes marcham em Lisboa contra aumento no custo de vida",
+      "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/manifestantes-marcham-em-lisboa-contra-aumento-no-custo-de-vida",
+      "description": "Milhares de pessoas marcharam pelo centro de Lisboa neste sábado (21), apesar da chuva forte, para protestar contra o aumento vertiginoso do custo de vida, o agravamento da crise imobiliária e os baixos salários. A Confederação Geral dos Trabalhadores Portugueses (CGTP), maior federação sindical de Portugal e organizadora do evento, pediu salários e aposentadorias mais altos, preços mais baixos para bens e serviços essenciais e medidas para conter os custos da moradia. Notícias relacionadas: Protestos estudantis eclodem em toda a Europa com diversos temas. Trabalhadores e estudantes protestam por salários e serviços na Itália. A CGTP afirmou que a participação chegou a “milhares”, enquanto manifestantes com guarda-chuvas e capuzes desfilavam por duas das principais avenidas de Lisboa. A polícia não divulgou estimativa. “Trabalhamos mais, temos mais despesas e não temos dinheiro para o dia a dia”, disse Manuel Gomes, 44, operário de fábrica, argumentando que as políticas do governo de centro-direita pioraram a situação. “Nossos salários são baixos, os preços do diesel e da gasolina nã",
+      "imageUrl": "https://imagens.ebc.com.br/WKXkvbGQ4g8WSMaPEs0ypJkfX_4=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/21/2026-11-21t171053z_1177590545_rc2fsoahfu7e_rtrmadp_3_portugal-politics-protests.jpg?itok=8hm_Zt7E",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-21T19:30:00.000Z",
+      "firstSeenAt": "2026-11-21T22:23:20.177Z",
+      "lastSeenAt": "2026-11-21T22:23:20.177Z"
+    },
+    {
+      "id": "event-b548a963",
+      "category": "mundo",
+      "title": "Medo de bolha da inteligência artificial derruba bolsas no mundo",
+      "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxQcVgtRldpbjJhNFJ5eC1WaEYtT1NKaHF3RXo2d0Q5dFFNOHlXeC1hWEV3dHdCc0FZMnhCTEJUVnlyZkc3Nng3b0FReWlsYV9JdVBVWGRKLTlZczBlUnAxUmtUQWQzRGVYbjVYS3FVUW5feXF1T0JvSjZSNmROdDgwN25nWG5wd1lVaEtjR1o1UVAyQlQyc0R3OVpUeGdDVFROQ01EdC1ZMEZ0aHJXQk40UmZPRi1IOFNXaVlpXzdRREMwX1NSMU9fUEVyOUlHOWtqOFFpU013",
+      "description": "Medo de bolha da inteligência artificial derruba bolsas no mundo &nbsp;&nbsp; UOL Notícias",
+      "imageUrl": null,
+      "source": "UOL Notícias",
+      "publishedAt": "2026-11-21T19:15:56.000Z",
+      "firstSeenAt": "2026-11-21T22:23:20.177Z",
+      "lastSeenAt": "2026-11-21T22:23:20.177Z"
+    },
+    {
+      "id": "event-141dcd27",
+      "category": "mundo",
+      "title": "Principais notícias do mundo na tarde de hoje (21)",
+      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQNlZuRGRDVnRuNTNnSk5GRVUwbHExMFN0bzdUbG03bXJnVGl1TlZRSGd4azBrY1JGN0o1MWx6YUVuMGh6ZW1WZFNSbUswRnpuMV8zRzkyeVVDdjRDWXlQVGlTUGJ0ZFZob192cFd0NXNVTWR0UHlFTUduTlpsNHhEcUpWZHRZUTNtemVyclBkTTA5bW90RnlsZzg2QTNKUUVjLXZlenpOWmRfRmlM",
+      "description": "Principais notícias do mundo na tarde de hoje (21) &nbsp;&nbsp; Tribuna do Sertão",
+      "imageUrl": null,
+      "source": "Tribuna do Sertão",
+      "publishedAt": "2026-11-21T18:04:59.000Z",
+      "firstSeenAt": "2026-11-21T22:23:20.177Z",
+      "lastSeenAt": "2026-11-21T22:23:20.177Z"
+    },
     {
       "id": "event-40f0c8de",
       "category": "mundo",
@@ -102,7 +222,7 @@
       "source": "Campo Grande News",
       "publishedAt": "2026-11-21T14:36:00.000Z",
       "firstSeenAt": "2026-11-21T17:35:15.551Z",
-      "lastSeenAt": "2026-11-21T17:35:15.551Z"
+      "lastSeenAt": "2026-11-21T22:23:20.177Z"
     },
     {
       "id": "event-933752de",
@@ -174,7 +294,7 @@
       "source": "Diário Corumbaense",
       "publishedAt": "2026-11-21T04:04:15.000Z",
       "firstSeenAt": "2026-11-21T17:35:15.551Z",
-      "lastSeenAt": "2026-11-21T17:35:15.551Z"
+      "lastSeenAt": "2026-11-21T22:23:20.177Z"
     },
     {
       "id": "event-df41b7ff",
@@ -271,169 +391,9 @@
       "publishedAt": "2026-11-20T22:34:00.000Z",
       "firstSeenAt": "2026-11-21T02:39:36.384Z",
       "lastSeenAt": "2026-11-21T02:39:36.384Z"
-    },
-    {
-      "id": "event-a28c0bc",
-      "category": "brasil",
-      "title": "Michelle Bolsonaro retorna ao Brasil após internação de Jair Bolsonaro",
-      "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxObDcyWmVHVjFMSm84cUlXaldRb3FDUHZEaDlKd2dZMGRkcWVXYXR0clVoeTN3Z0FzRjdpTG5qS1dFSElCUmRQcURUc0ZuN1BzX2lRbGE3MktBM3JWemNLNWR6M3V2NU9aNlNQODNwNUtaQzMydWdkdmVSdm5BUWZQNC1fb0dqeGVsQ2luajF6S3NOR2dWS1llLXU0OGV4WDgxeThaQW9OOHk",
-      "description": "Michelle Bolsonaro retorna ao Brasil após internação de Jair Bolsonaro &nbsp;&nbsp; Vero Notícias",
-      "imageUrl": null,
-      "source": "Vero Notícias",
-      "publishedAt": "2026-11-20T22:20:34.000Z",
-      "firstSeenAt": "2026-11-21T02:39:36.384Z",
-      "lastSeenAt": "2026-11-21T02:39:36.384Z"
-    },
-    {
-      "id": "event-e42e5c10",
-      "category": "brasil",
-      "title": "Tupanciretã: o que se sabe sobre o evento extremo que deixou três mortos e destelhou mais de 5 mil casas",
-      "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE5iT2tFZk1MSmtpNnpQNnZkTXB5WjJfTEp0UUFhd1dqRkhjU1poZEpqUHVlVk51bmFVNVhsYzZtNlA0MTNpbEVfV3Z0MHp3VkRnLVV2VWVDSXd0U01KcUhoRTl0SdIBaEFVX3lxTE1Fb2lNZkc5MWdtNEZmbkVaRkpGMEs0QWE0cWZOZFdYUWRmQmxDVU5nR3NzZVhJNUdwOUM4elZIRFBad2NKekFTUzhfLXNaNEdwdU1XQTVtU0JoclVLanBjZG9uaklEdUo1",
-      "description": "Tupanciretã: o que se sabe sobre o evento extremo que deixou três mortos e destelhou mais de 5 mil casas &nbsp;&nbsp; BBC",
-      "imageUrl": null,
-      "source": "BBC",
-      "publishedAt": "2026-11-20T20:40:03.000Z",
-      "firstSeenAt": "2026-11-20T21:24:12.054Z",
-      "lastSeenAt": "2026-11-21T10:13:20.690Z"
-    },
-    {
-      "id": "event-ab373b22",
-      "category": "brasil",
-      "title": "Homenagens lembram legado de Zumbi e desafios da juventude negra",
-      "url": "https://agenciabrasil.ebc.com.br/cultura/noticia/2026-11homenagens-lembram-legado-de-zumbi-e-desafios-da-juventude-negra",
-      "description": "A estátua de Zumbi dos Palmares, instalada no centro da cidade do Rio de Janeiro, completa 40 anos em 2026. A data é celebrada com lavagem do monumento, roda de capoeira e reflexões sobre as desigualdades que afetam principalmente a população negra brasileira, neste Dia da Consciência Negra (20). A estátua de Zumbi foi uma das primeiras a fazer referência à luta pela igualdade racial no país. O projeto, de sete metros de altura, é do renomado arquiteto João Filgueiras Lima, o Lelé, e inclui uma base de mármore que remete às pirâmides do Egito. Notícias relacionadas: Denúncias de racismo chegam ao maior número da série histórica . Mulheres retomam defesa de indicação inédita de ministra negra ao STF. Arquitetura de Brasília é racista e excludente, defendem pesquisadores. Como não há imagem conhecida do líder do Quilombo dos Palmares, a peça de bronze reproduz uma máscara do século XII, de um antigo rei do Benim. O monumento de Zumbi foi projetado para o Largo da Carioca, mas a sociedade preferiu instalá-lo na Avenida Presidente Vargas. Antes conhecida como Praça Onze, a região era um",
-      "imageUrl": "https://imagens.ebc.com.br/1qTlYYXix0MIx_eDTlfmLrSqXIg=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/20/1000014121.jpg?itok=Beku2M-g",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-20T20:36:00.000Z",
-      "firstSeenAt": "2026-11-20T21:24:12.054Z",
-      "lastSeenAt": "2026-11-20T21:24:12.054Z"
-    },
-    {
-      "id": "event-db052ab5",
-      "category": "santa-catarina",
-      "title": "Defesa Civil alerta para risco de temporais e chuva intensa neste fim de semana em SC",
-      "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxQYVB2VFpyc3ZQV3B6cWpwUmtxVXhNbE95c1VnSEo4T0FKTHN4MnRzalJUZzAtbDhhZVB6S2tvb3pGbENSbE1SVVlTWE5FQjV4Mml0SVhKWlhDVEVSbVQyNGVMX2dmVERRMnNVOXBiTWlTbXJTU19kXzA3d1RPWUN5MllweHJNM2EzMEp0TjFlRWdUQVJiZ0g3MlRheHpqUVdWaDRYZF9LQ3VTYmRLbnQ4eVI1cTk0VDNkbGkxcEpCNEhIUVU",
-      "description": "Defesa Civil alerta para risco de temporais e chuva intensa neste fim de semana em SC &nbsp;&nbsp; AJ Notícias",
-      "imageUrl": null,
-      "source": "AJ Notícias",
-      "publishedAt": "2026-11-20T20:17:56.000Z",
-      "firstSeenAt": "2026-11-20T21:24:12.054Z",
-      "lastSeenAt": "2026-11-21T10:13:20.690Z"
-    },
-    {
-      "id": "event-17f12f97",
-      "category": "brasil",
-      "title": "Denúncias de racismo chegam ao maior número da série histórica",
-      "url": "https://agenciabrasil.ebc.com.br/direitos-humanos/noticia/2026-11/denuncias-de-racismo-chegam-ao-maior-numero-da-serie-historica",
-      "description": "O Ministério dos Direitos Humanos e da Cidadania contabilizou que, neste ano, o Disque 100 já recebeu 3.270 denúncias de racismo contra pessoas pretas ou pardas. Esse número já é maior do que a quantidade de registros de todo o ano passado contra esse grupo: 2879 casos. Trata-se do maior número da série histórica (desde o ano de 2015, quando houve 638 denúncias). No ano passado, o ministério avaliou que o crescimento do número de denúncias tem relação com a maior confiança da população no serviço. Mais informação Notícias relacionadas: Arquitetura de Brasília é racista e excludente, defendem pesquisadores. Mulheres retomam defesa de indicação inédita de ministra negra ao STF. SP: empreendedorismo, marcha e música marcam Dia da Consciência Negra. Não necessariamente, portanto, os números refletem a quantidade de crimes, mas os casos que são encaminhados ao Disque 100. Outro fator, segundo estima o governo, pode estar relacionado também à maior conscientização sobre o racismo, que passou a ser identificado pelos brasileiros. Registros feitos no mês de outubro foram os maiores do ano: h",
-      "imageUrl": "https://imagens.ebc.com.br/Z_6hGm-ginEsmjAo9R54CHVXfSg=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/atoms/image/negros_marcello_casal.jpg?itok=My5gx37p",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-20T20:06:00.000Z",
-      "firstSeenAt": "2026-11-20T21:24:12.054Z",
-      "lastSeenAt": "2026-11-20T21:24:12.054Z"
-    },
-    {
-      "id": "event-967e79bc",
-      "category": "santa-catarina",
-      "title": "Temporais provocam estragos em 14 municípios de SC e afetam 51 residências",
-      "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNdVpMTHBuUGN3cE1FUm1vM3dIVnVnalYxVTF3U05fXzJjNjY5UUdRb1Nnanl0RVRIVDFzUkJTZ213Zk1KdWlDWms2NWFnRmotMEJRR2xQN1dEa1ZpVFliZ0gxajNHVGpNV1Z5VTRYN2pWbGc4Y0x1aE9scXhsOFNNQ25Vak1INkdSVlUzSHBMdHM4a3BaNUtueXhUREV2WVRHNzE4",
-      "description": "Temporais provocam estragos em 14 municípios de SC e afetam 51 residências &nbsp;&nbsp; sctododia",
-      "imageUrl": null,
-      "source": "sctododia",
-      "publishedAt": "2026-11-20T19:45:24.000Z",
-      "firstSeenAt": "2026-11-20T21:24:12.054Z",
-      "lastSeenAt": "2026-11-21T10:13:20.690Z"
-    },
-    {
-      "id": "event-a0b12d12",
-      "category": "santa-catarina",
-      "title": "Temporais provocam estragos em Santa Catarina e ventos chegam a 138 km/h no Oeste",
-      "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxPT09FMkc1ODdPZndUUVVBSVpqV2hqZXM3RFkyUE1JY1ZrdEs1SGdqSDlhWjg2UUlfQ1RrUUZiNFBNOG9IS0NuS2NuNjNRYzJoRTdUS1dKQXJadGN2ZUxQeHlJbk9JaUc2X20zWkk5UTRTeFV3bkFvdWp2RUFzXzEzdW9MekZUcjQzU1RxVUdLbmkxNGlPRXJuZWFBaDNjVTlQTDQwLXlTbHVQYWhoTnQyUEYzWHJ5RHU5NnlaalhOTGVSZXdpaDgwVkpRSjBpQQ",
-      "description": "Temporais provocam estragos em Santa Catarina e ventos chegam a 138 km/h no Oeste &nbsp;&nbsp; Santa Catarina em Pauta",
-      "imageUrl": null,
-      "source": "Santa Catarina em Pauta",
-      "publishedAt": "2026-11-20T19:29:00.000Z",
-      "firstSeenAt": "2026-11-21T02:39:36.384Z",
-      "lastSeenAt": "2026-11-21T02:39:36.384Z"
-    },
-    {
-      "id": "event-59c73c3f",
-      "category": "brasil",
-      "title": "Temporal no RS: governo envia equipes da Defesa Civil para Tupanciretã",
-      "url": "https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-11/temporal-no-rs-governo-envia-equipes-da-defesa-civil-para-tupancireta",
-      "description": "O governo federal determinou o deslocamento de uma equipe do Grupo de Apoio a Desastres da Defesa Civil Nacional para a cidade gaúcha de Tupanciretã, atingida por uma tempestade na madrugada desta sexta-feira (20) que deixou pelo menos três mortos. A equipe vai apoiar as ações de atendimento à população, agilizar o reconhecimento federal da situação de emergência e viabilizar a liberação de recursos para o socorro às vítimas. Notícias relacionadas: Tempestade deixa três mortos em Tupanciretã, no Rio Grande do Sul. Estragos no RS atingem mais cidades além de Tupanciretã. “A Secretaria Nacional de Proteção e Defesa Civil (Sedec) orientou o município a decretar emergência para que seja possível iniciar a liberação de recursos federais destinados ao atendimento das vítimas”, informou a Secretaria de comunicação da Presidência da República. Em uma rede social, o ministro da Integração e do Desenvolvimento Regional, Waldez Góes, informou que está em contato permanente com o governador do Rio Grande do Sul, Eduardo Leite, o governador eleito, Luciano Zucco, o prefeito de Tupanciretã, Gustav",
-      "imageUrl": "https://imagens.ebc.com.br/639LwDDwCfisFm1_TcN4aj3pobA=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/20/saveclip.app_913710003_18653668549024728_1085409618711408506_n.jpg?itok=r7LHseeL",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-20T19:28:00.000Z",
-      "firstSeenAt": "2026-11-20T21:24:12.054Z",
-      "lastSeenAt": "2026-11-20T21:24:12.054Z"
-    },
-    {
-      "id": "event-a3fd71b1",
-      "category": "mundo",
-      "title": "Stephen Miller rouba a cena na coletiva de Trump e promete “os maiores dois anos da história americana”",
-      "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxPME1vc3UzN1J2amdZWDFEX3dtek10Rll5V01RbjByTExTbjE4b3hZcmE5bmUtYTdianpjN2FBdnA3ellyeHFxaGV3ZnVKaHk2N3M5RURuQURDOENyTG9HUk13SE1lc0J5MGdPRnp5c3dXNHdfRzk0MUhjSHFRVG5Bd3lHNWhDS2N2a01SSzNSRjRpVWNnNVBhZWNpYlRUOEhocWVVUkZwTldNYVZWOGdhSTExX0J3eXVIdllFZ19CZTBlWlgwNXd0enhSYTFMUkpr",
-      "description": "Stephen Miller rouba a cena na coletiva de Trump e promete “os maiores dois anos da história americana” &nbsp;&nbsp; Times Brasil | CNBC",
-      "imageUrl": null,
-      "source": "Times Brasil | CNBC",
-      "publishedAt": "2026-11-20T19:11:00.000Z",
-      "firstSeenAt": "2026-11-21T02:39:36.384Z",
-      "lastSeenAt": "2026-11-21T02:39:36.384Z"
-    },
-    {
-      "id": "event-75c79872",
-      "category": "mundo",
-      "title": "Trump quer proibir construção de data centers fora dos EUA",
-      "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxPVmZLV0x6VWxUS3ByUEJsSFVnc2VhNENFcHJ3YU5jQS15dTE1eTVZUlVjaDQzOTlqTEw5QktaTWliRjR2N1FyaHVIb0hpRm1obDhsaHpkbW5IQnRDUFRXLV9OMVBUTzFETDBBZ1psYmtaMmNyWTNaTDZwLXYtem13V3FkcWJrbko4S3dmM2k0NHpfU2lSMDVSQ3NOVTZDelM1",
-      "description": "Trump quer proibir construção de data centers fora dos EUA &nbsp;&nbsp; SBT News",
-      "imageUrl": null,
-      "source": "SBT News",
-      "publishedAt": "2026-11-20T19:10:08.000Z",
-      "firstSeenAt": "2026-11-20T21:24:12.054Z",
-      "lastSeenAt": "2026-11-20T21:24:12.054Z"
-    },
-    {
-      "id": "event-1d9f41b4",
-      "category": "mundo",
-      "title": "Protestos estudantis eclodem em toda a Europa com diversos temas",
-      "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/protestos-estudantis-eclodem-em-toda-europa",
-      "description": "Uma nova onda de protestos estudantis ocorreu em toda a Europa nesta sexta-feira (20) , inspirada pelas manifestações que abalaram a França, mas de forma muito mais moderada. As reivindicações vão desde a ampliação do financiamento para a educação até justiça climática, passando até mesmo pelo fim do serviço militar obrigatório. Notícias relacionadas: Trabalhadores e estudantes protestam por salários e serviços na Itália. Xi, Trump e Putin sinalizam disposição para diálogo entre potências. Uso de drones em guerra interna da Colômbia cresce 132% sob Espriella. Os organizadores afirmam que trata-se de uma “greve internacional da juventude” em pelo menos 25 países , incluindo Reino Unido, Alemanha, Espanha, Itália e Croácia. Na Alemanha, o grupo de campanha “Gen Z regelt” -- algo como a Geração Z assume o comando, em alemão -- informou que estava organizando protestos em 73 cidades e municípios. “Certamente não estou feliz com os cortes em todos os lugares, nem na minha universidade, nem no sistema educacional como um todo, nem nas escolas. É por isso que estou aqui: para me posicionar",
-      "imageUrl": "https://imagens.ebc.com.br/1WsOZoZquIVE9gCyzipOWNuHh8o=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/20/2026-11-20t153546z_1067442347_rc2rroaekcwm_rtrmadp_3_europe-protest-germany.jpg?itok=yxqLc7dL",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-20T18:33:00.000Z",
-      "firstSeenAt": "2026-11-20T21:24:12.054Z",
-      "lastSeenAt": "2026-11-20T21:24:12.054Z"
-    },
-    {
-      "id": "event-9f4da48b",
-      "category": "santa-catarina",
-      "title": "Temporais mantêm Santa Catarina em alerta até domingo",
-      "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxOZFlEX0Q2WkN1VXN6TE84TFRQSlJzNkNfeHNkbXpsbVVFcXVSRlFDWGJnZUFRV3kwNXpiNkVxNmQtOTdJSzlnTTRXYVhHWnJRcEhONFNZb29JMXNIUWdqeC1jd3hiWTV6aHdVQ1kwZUZUclpmSllGLTAxazdRa3hmN2UtdHFoTk9GRnBOMHNBaTduR3p2TjUydzd3QWVVVWtvMlZHLXFlWncxazRYaExkSHFfQmRVVTRz",
-      "description": "Temporais mantêm Santa Catarina em alerta até domingo &nbsp;&nbsp; Diário do Iguaçu",
-      "imageUrl": null,
-      "source": "Diário do Iguaçu",
-      "publishedAt": "2026-11-20T17:55:00.000Z",
-      "firstSeenAt": "2026-11-20T21:24:12.054Z",
-      "lastSeenAt": "2026-11-20T21:24:12.054Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-20T21:24:12.054Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 13,
-      "newArticles": 12,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "asia"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-21T02:39:36.384Z",
       "ok": true,
@@ -480,14 +440,29 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-21T22:23:20.177Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 12,
+      "newArticles": 10,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 4,
-  "lastSuccessfulAt": "2026-11-21T17:35:15.551Z",
+  "lastSuccessfulAt": "2026-11-21T22:23:20.177Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-21T17:35:15.551Z",
+      "checkedAt": "2026-11-21T22:23:20.177Z",
       "warnings": [
         {
           "id": "56475",
@@ -522,7 +497,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-21T17:35:15.551Z",
+      "checkedAt": "2026-11-21T22:23:20.177Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
