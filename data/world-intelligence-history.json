@@ -4,10 +4,46 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-21T02:39:36.384Z",
-  "oldestEventAt": "2026-11-20T03:00:00.000Z",
-  "windowStartAt": "2026-11-20T02:39:36.384Z",
+  "updatedAt": "2026-11-21T10:13:20.690Z",
+  "oldestEventAt": "2026-11-20T10:27:07.000Z",
+  "windowStartAt": "2026-11-20T10:13:20.690Z",
   "events": [
+    {
+      "id": "event-5bfe0085",
+      "category": "clima",
+      "title": "Chapecó registra dois eventos climáticos extremos em 16 dias e segue sob risco de novos temporais",
+      "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxPcDd5SDdTMmY3X3czVXp6Q25NeG85WHZ6OW5ZS1pBMzBrNzZ5SU5mY3daZkRwSVNWQzl1Yi1iR0lqRmM3Qks4RmtZS014M1VUV0I4ZHAweGFURWJmNzVEQktXeWxaNWVBS1ZfUlRqbzB5bUxPMFduMmlEckJGSF9UM193NUNUZ1QybG5qSFh4b2pjalNPZmh2QWViVG9LQlc0SzhZdkRscFhZY1lzaldPQ2VDMmlvRWpvSXZ1dnNvU3A3NDNiZ0ZybTExdENaUTM4NEE",
+      "description": "Chapecó registra dois eventos climáticos extremos em 16 dias e segue sob risco de novos temporais &nbsp;&nbsp; WH3",
+      "imageUrl": null,
+      "source": "WH3",
+      "publishedAt": "2026-11-21T09:34:00.000Z",
+      "firstSeenAt": "2026-11-21T10:13:20.690Z",
+      "lastSeenAt": "2026-11-21T10:13:20.690Z"
+    },
+    {
+      "id": "event-4bf5464e",
+      "category": "mundo",
+      "title": "Ataques cibernéticos, IA ou atualizações pendentes: o que há por trás da onda de apagões dos últimos dias",
+      "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFAzRmI4LXBTTVRNbEFEVEJUaWx0OUxtZGV5bzRldTY2eWJGU2dSdV80ZWlGSWFXTzhpX285b1FnbUY1TVJ1aW1ZOUVMRElRUEpob0Z6RjlCcHRoVmhfRnNuZVR5M1daQnFh0gFoQVVfeXFMUDNGYjgtcFNNVE1sQURUQlRpbHQ5TG1kZXlvNGV1NjZ5YkZTZ1J1XzRlaUZJYVdPOGlfbzlvUWdtRjVNUnVpbVk5RUxESVFQSmhvRnpGOUJwdGhWaF9Gc25lVHkzV1pCcWE",
+      "description": "Ataques cibernéticos, IA ou atualizações pendentes: o que há por trás da onda de apagões dos últimos dias &nbsp;&nbsp; BBC",
+      "imageUrl": null,
+      "source": "BBC",
+      "publishedAt": "2026-11-21T09:27:22.000Z",
+      "firstSeenAt": "2026-11-21T10:13:20.690Z",
+      "lastSeenAt": "2026-11-21T10:13:20.690Z"
+    },
+    {
+      "id": "event-23a9868e",
+      "category": "brasil",
+      "title": "Dia da Consciência Negra destaca a história, a resistência e a contribuição da população negra no Brasil",
+      "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxPTWhVSy1WaDNCOFI3ZU5obF9SSHBXNVlqV3N3aW9mT093V2lDOUV4bk1EcFdKeWJlZlZFc2E2TDQ5aWFiY3ZiMkgweFRPcXRCMzVPQUFfZzBhRS1YSGs2d1JURnJ3Z3VKMmxSZEU2alMySll3SUZyMHlyclBOR0JJNHNwZE1WbGlBMDJJeldoWFNJVmxwUmgxSzFXMW5IemlicjR1QmFYcnpTT0l6Smx5VElYUmRDdmMwcWM0OE1PUDY2MWFwcEF0azIzbGFWSUZObWZ3Yk9BMVFqWl80U0h3",
+      "description": "Dia da Consciência Negra destaca a história, a resistência e a contribuição da população negra no Brasil &nbsp;&nbsp; Diplomacia Business",
+      "imageUrl": null,
+      "source": "Diplomacia Business",
+      "publishedAt": "2026-11-21T08:03:45.000Z",
+      "firstSeenAt": "2026-11-21T10:13:20.690Z",
+      "lastSeenAt": "2026-11-21T10:13:20.690Z"
+    },
     {
       "id": "event-df41b7ff",
       "category": "brasil",
@@ -19,6 +55,30 @@
       "publishedAt": "2026-11-21T01:35:43.000Z",
       "firstSeenAt": "2026-11-21T02:39:36.384Z",
       "lastSeenAt": "2026-11-21T02:39:36.384Z"
+    },
+    {
+      "id": "event-ff8b4498",
+      "category": "brasil",
+      "title": "Portugal estreia com vitória de virada na Copa do Mundo de vela no RJ",
+      "url": "https://agenciabrasil.ebc.com.br/esportes/noticia/2026-11/portugal-estreia-com-vitoria-de-virada-na-copa-do-mundo-de-vela-no-rj",
+      "description": "Portugal, Estônia, Lituânia e Uruguai venceram a estreia na primeira fase da Copa do Mundo de vela na Baía de Guanabara, no Rio de Janeiro. Primeira competição internacional de vela desde os Jogos Rio 2016, a SSL Gold Cup (nome do Mundial em inglês) reúne equipes de 40 países. A seleção brasileira estreará direto nas oitavas de final, em 2 de dezembro. Entre os 10 velejadores do time canarinho está o multimedalhista olímpico Robert Scheidt (dois ouros, duas pratas e um bronze). As primeiras regatas começaram na última quinta-feira (19), com 16 seleções. Uma das estreias mais emocionantes foi a de Portugal, pelo Grupo A, que reúne ainda Ucrânia, Colômbia, e Antígua e Barbuda. A equipe ucraniana liderou boa parte da prova, mas na reta final o time português conhecido pelo apelido de Navigators, assumiu a dianteira e cruzou a linha de chegada em 37min17s, com apenas 17 segundos de vantagem sobre os ucranianos. Antígua e Barbuda e Colômbia chegaram em terceiro e quarto lugares, respectivamente. Notícias relacionadas: Filme Camisas Negras retrata luta do Vasco contra o racismo em 1923. Em",
+      "imageUrl": "https://imagens.ebc.com.br/t8POpCrGksjF2QVjF1U-eZt7rpw=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/20/copa_do_mundo_de_vela_2026_rj.jpg?itok=kkwMvNmd",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-21T01:02:00.000Z",
+      "firstSeenAt": "2026-11-21T10:13:20.690Z",
+      "lastSeenAt": "2026-11-21T10:13:20.690Z"
+    },
+    {
+      "id": "event-736d5683",
+      "category": "brasil",
+      "title": "Trump diz que exigiu que as Filipinas deixem de importar do agro brasileiro",
+      "url": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxOVVYxMjlRNWs0b24tVl9neXMyN2RtSTFhZktWbXliYnBzeDF2OTNwdnpKa1YwbzJyaE14THk5aU5HR2lIaU83bTFadmJIMEowTER3bDcta01STWQtNThsN3oyUks4bjltRTlMOXFkWUtacjA2QmlWTDJBWEViQUFZU1ZYQ2FSdWN1ZUY2eGRkdnRSRk1lLTZlakJoY2ZaVW5TTHhYOXhjTFdaRnZ5N01xbWhmNV9NWWJTQmRWajhUZ1JXT2RWaVFGcmJaM2RSSUZvRDNPWUF6VzV3Zkh2UFpaemQ3NGc",
+      "description": "Trump diz que exigiu que as Filipinas deixem de importar do agro brasileiro &nbsp;&nbsp; UOL Notícias",
+      "imageUrl": null,
+      "source": "UOL Notícias",
+      "publishedAt": "2026-11-21T00:57:08.000Z",
+      "firstSeenAt": "2026-11-21T10:13:20.690Z",
+      "lastSeenAt": "2026-11-21T10:13:20.690Z"
     },
     {
       "id": "event-5a893be4",
@@ -33,6 +93,18 @@
       "lastSeenAt": "2026-11-21T02:39:36.384Z"
     },
     {
+      "id": "event-15e0bdd0",
+      "category": "mundo",
+      "title": "Principais notícias do mundo na noite de hoje (20)",
+      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxNNWZ1RDNhUF9ZZGtya1JsYmM1cFpGaElROUVVOTY1bjZ3WEt6SUhHdXRXMzRXUTFjM3N3TlhvTlA0UVdDdy1oUGVZeUp3dUUzZmFKU2d6SnQxVlRkUW14Zk00T01NTkVYb3ROaWtiSmxzMHZBRUg3aGE2Rjl5UTZybEg1YXhnLTMxSEZaTGp6S3VIUTZibXMwM0dpRjcwTXBZeHlteXA2dw",
+      "description": "Principais notícias do mundo na noite de hoje (20) &nbsp;&nbsp; Tribuna do Sertão",
+      "imageUrl": null,
+      "source": "Tribuna do Sertão",
+      "publishedAt": "2026-11-20T23:32:01.000Z",
+      "firstSeenAt": "2026-11-21T10:13:20.690Z",
+      "lastSeenAt": "2026-11-21T10:13:20.690Z"
+    },
+    {
       "id": "event-f6219d72",
       "category": "mundo",
       "title": "Sociedade civil diz que COP31 poderá ser a pior da história",
@@ -42,7 +114,7 @@
       "source": "SBT News",
       "publishedAt": "2026-11-20T22:55:26.000Z",
       "firstSeenAt": "2026-11-21T02:39:36.384Z",
-      "lastSeenAt": "2026-11-21T02:39:36.384Z"
+      "lastSeenAt": "2026-11-21T10:13:20.690Z"
     },
     {
       "id": "event-49fd98ab",
@@ -54,7 +126,7 @@
       "source": "G1",
       "publishedAt": "2026-11-20T22:41:27.000Z",
       "firstSeenAt": "2026-11-21T02:39:36.384Z",
-      "lastSeenAt": "2026-11-21T02:39:36.384Z"
+      "lastSeenAt": "2026-11-21T10:13:20.690Z"
     },
     {
       "id": "event-8593dafa",
@@ -90,7 +162,7 @@
       "source": "BBC",
       "publishedAt": "2026-11-20T20:40:03.000Z",
       "firstSeenAt": "2026-11-20T21:24:12.054Z",
-      "lastSeenAt": "2026-11-21T02:39:36.384Z"
+      "lastSeenAt": "2026-11-21T10:13:20.690Z"
     },
     {
       "id": "event-ab373b22",
@@ -114,7 +186,7 @@
       "source": "AJ Notícias",
       "publishedAt": "2026-11-20T20:17:56.000Z",
       "firstSeenAt": "2026-11-20T21:24:12.054Z",
-      "lastSeenAt": "2026-11-21T02:39:36.384Z"
+      "lastSeenAt": "2026-11-21T10:13:20.690Z"
     },
     {
       "id": "event-17f12f97",
@@ -138,7 +210,7 @@
       "source": "sctododia",
       "publishedAt": "2026-11-20T19:45:24.000Z",
       "firstSeenAt": "2026-11-20T21:24:12.054Z",
-      "lastSeenAt": "2026-11-20T21:24:12.054Z"
+      "lastSeenAt": "2026-11-21T10:13:20.690Z"
     },
     {
       "id": "event-a0b12d12",
@@ -234,7 +306,7 @@
       "source": "Mix Vale",
       "publishedAt": "2026-11-20T16:56:11.000Z",
       "firstSeenAt": "2026-11-20T21:24:12.054Z",
-      "lastSeenAt": "2026-11-21T02:39:36.384Z"
+      "lastSeenAt": "2026-11-21T10:13:20.690Z"
     },
     {
       "id": "event-5ff1a76e",
@@ -246,7 +318,7 @@
       "source": "Diário Corumbaense",
       "publishedAt": "2026-11-20T15:39:04.000Z",
       "firstSeenAt": "2026-11-20T21:24:12.054Z",
-      "lastSeenAt": "2026-11-21T02:39:36.384Z"
+      "lastSeenAt": "2026-11-21T10:13:20.690Z"
     },
     {
       "id": "event-bb4d1da2",
@@ -319,62 +391,9 @@
       "publishedAt": "2026-11-20T10:27:07.000Z",
       "firstSeenAt": "2026-11-20T13:23:59.179Z",
       "lastSeenAt": "2026-11-20T13:23:59.179Z"
-    },
-    {
-      "id": "event-17325803",
-      "category": "clima",
-      "title": "Feriado da Consciência Negra terá chuva e tempestades em todas as regiões do país",
-      "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxQaWZUb3JaUDY0YjZHMEZQQ01VdEhQTjhxeVR4MjVicG5PeVNuRWFGaFZJQXZESS1MNzB4dDNSVFV2SmlSSmVXWVgwcTBmc1pybE5LREdNVlNUOS1vbnd4bmZJeVdEUWRkSmhTd1ozamNGUUdxOUQ0aW1uUDcwczVWc1dURWdrYkhHYm90dVI3NHVzeUl0",
-      "description": "Feriado da Consciência Negra terá chuva e tempestades em todas as regiões do país &nbsp;&nbsp; Diário do Pará",
-      "imageUrl": null,
-      "source": "Diário do Pará",
-      "publishedAt": "2026-11-20T09:23:00.000Z",
-      "firstSeenAt": "2026-11-20T13:23:59.179Z",
-      "lastSeenAt": "2026-11-21T02:39:36.384Z"
-    },
-    {
-      "id": "event-1d8b739",
-      "category": "clima",
-      "title": "Governo de MS monitora influência do El Niño nas chuvas, temperaturas e produção agrícola",
-      "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxNSlhvQ2VhRHdyWmhKX3hpWXc2SlZXU0JhUjl4eGh1WlZtWHZ0bXF2LVBST3Nxa2phZkx3YjV0c0NKMHdvUFlvc0w4TjJfYXNOdmxLX3dhMWNuc3ZJdXZkYTJqdkpMTEdVRmFrNGZ3MklyMC1DZjhBeTViOFZlWmVSd2w0UkZfSXduRXdXZ0VPYi0wN2ZoQjJtUm9NckRySjQ2MnRIWGNrWUdUMVBmOHlYaGh4Mkp0b00wQ3BZ",
-      "description": "Governo de MS monitora influência do El Niño nas chuvas, temperaturas e produção agrícola &nbsp;&nbsp; Idest",
-      "imageUrl": null,
-      "source": "Idest",
-      "publishedAt": "2026-11-20T06:09:00.000Z",
-      "firstSeenAt": "2026-11-20T13:23:59.179Z",
-      "lastSeenAt": "2026-11-20T13:23:59.179Z"
-    },
-    {
-      "id": "event-3ef64a7d",
-      "category": "mundo",
-      "title": "Estudar, construir uma carreira e prosperar? Já não é mais assim para os jovens",
-      "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxPLWpTakd4Y0pFeUJ0UzBNdk1EUjJwaXhRc3M1X3llLW9wREdMekxYNDdzTVZnb05wZkZvTGFWWnFQckp0cGFhM2Iya1NoTFpiSmduRzFScVpJY1ZPa2tNRlp2U1JxOTAwVExuUmxEUWpXVHB0Rl9XSVhyS21JcnpScGltdGRNdjlDTGd3TjVNaEcxak96LXBlSVVhZDBZZGVoSFNzWUlNX1NfSEJkQVp0ZmV0aUJNSDZNRkd6RktVVG1SYmtBd1JWeDZkRHR1Z9IB3AFBVV95cUxQaDM2c2daV1dOcG9RX2xfZ1lNU1pUMVJseEVBQ0VwQ2tsSUswN19qUUR5X180eFlrSWNiVl8tWl9rR1QxTDAxNHpkc0l3SFZmY09zQWZxb3UyejJMa1FWSEdQbmQ1V0JmNWxSaTZGWmJ3ZzVETUpybEcxN2l2UFV1RWdYVS1LWF8zbldZUENNSGlOYkdLR0xBTEpJSEhTMVdKQTFFWnhQZDdvek4yLXRsV3ZpT2Y2M0JqSXBybVd2dmFYaF9ySUtHVlY2MUROTGFHMjJ1cnhScU5yWWFs",
-      "description": "Estudar, construir uma carreira e prosperar? Já não é mais assim para os jovens &nbsp;&nbsp; O GLOBO",
-      "imageUrl": null,
-      "source": "O GLOBO",
-      "publishedAt": "2026-11-20T03:00:00.000Z",
-      "firstSeenAt": "2026-11-20T13:23:59.179Z",
-      "lastSeenAt": "2026-11-20T13:23:59.179Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-20T04:18:25.187Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 12,
-      "newArticles": 8,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "america-latina",
-        "asia"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-20T13:23:59.179Z",
       "ok": true,
@@ -423,14 +442,30 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-21T10:13:20.690Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 13,
+      "newArticles": 6,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "asia"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 4,
-  "lastSuccessfulAt": "2026-11-21T02:39:36.384Z",
+  "lastSuccessfulAt": "2026-11-21T10:13:20.690Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-21T02:39:36.384Z",
+      "checkedAt": "2026-11-21T10:13:20.690Z",
       "warnings": [
         {
           "id": "56466",
@@ -451,7 +486,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-21T02:39:36.384Z",
+      "checkedAt": "2026-11-21T10:13:20.690Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
