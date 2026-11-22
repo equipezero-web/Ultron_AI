@@ -4,10 +4,58 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-21T22:23:20.177Z",
-  "oldestEventAt": "2026-11-20T22:34:00.000Z",
-  "windowStartAt": "2026-11-20T22:23:20.177Z",
+  "updatedAt": "2026-11-22T02:28:00.783Z",
+  "oldestEventAt": "2026-11-21T04:04:15.000Z",
+  "windowStartAt": "2026-11-21T02:28:00.783Z",
   "events": [
+    {
+      "id": "event-3fea5317",
+      "category": "mundo",
+      "title": "Principais notícias do mundo na noite de hoje (21)",
+      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxOWE5CZ2p2VFBVYVZWRnFwSEtDdG1OT3hBV0VzMGswbFFoa3dUQjhpSEVUY3psbjgtbjJwOFQ5OHhTT2dJemgtci1Bb2drRUhWSE9ScU9OenROQklNTnYya014eHF4UzZVb01tTVBramloTWZSX3dYNHlwakRKX1B3MFJzRjJ3SzdQRkIyWWtmZ2Z0ZWRSVDYtOFpnYWVVMUo0R0JPTDhRWlZ4X3pt",
+      "description": "Principais notícias do mundo na noite de hoje (21) &nbsp;&nbsp; Tribuna do Sertão",
+      "imageUrl": null,
+      "source": "Tribuna do Sertão",
+      "publishedAt": "2026-11-22T01:05:01.000Z",
+      "firstSeenAt": "2026-11-22T02:28:00.783Z",
+      "lastSeenAt": "2026-11-22T02:28:00.783Z"
+    },
+    {
+      "id": "event-dfa1fd9f",
+      "category": "brasil",
+      "title": "Billie Jean King Cup: Brasil vence Canadá pela primeira vez na história e avança às qualificatórias",
+      "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxNZmE3MXNEN2dsYzJSZ2xYblE5NUZWWVdRS3MyeTR5Z0drVEltUHR6WVVZVUZMeUJ3UmJPend3d1FlRVFvczgybDBBcG82WVo0NUJ2Mm1QMk1tNHNMb1Y1WjBiRTV2c1ZYdXRqUkxWOTNKY285c3gzc01RNHV0ZnN1VTR3eGpKU1k2cWRRajIzMlpjTmlIdmwwZ3dHbE94MmRGYjNILWl5V1VNUkRaNmZ2WlU0M3VuVERMc2lPMGNxVHd2VDZfX0JHLVRGVTB0anJveERPbGdPck1GeVRjZVZ1StIB7wFBVV95cUxOVWZkZEFCRlhoTms4MV9BWjhvMGN3RGlFMUtFMTRCNmR3RDhNUEZSc3ExWktTWkMycXkwUVlYR0lndmNmc01qR1B6MHBDV3BLb0dyc2Y5MjViaFY1QlJfTHJ3M2k2WngwMDY5ZEdjYUtpbkNORW9JX3JDTjNSYmY1bUp4LWMzaXdyY0hoT1MtYkZXV0ZsSkt4SXYxWURiT1BocjBXU3VKdDI5RS0wMEVGMDJZZS1sZHFGUU1LNi1aQ2FoV2NNUUFNNlRRZG5YY20xZ0NIYXBOMjFySjEtMXg2bW12bmx6dkhOd21MYW4tVQ",
+      "description": "Billie Jean King Cup: Brasil vence Canadá pela primeira vez na história e avança às qualificatórias &nbsp;&nbsp; ge",
+      "imageUrl": null,
+      "source": "ge",
+      "publishedAt": "2026-11-21T23:27:58.000Z",
+      "firstSeenAt": "2026-11-22T02:28:00.783Z",
+      "lastSeenAt": "2026-11-22T02:28:00.783Z"
+    },
+    {
+      "id": "event-efa8eb99",
+      "category": "brasil",
+      "title": "Final da Copa do Brasil: Venda de ingressos começa na segunda-feira",
+      "url": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxNMUhiSFFkVGlBR1JqRlpTRmlHckx0bnZxU0lWM1hlUVlVZ1NaME1hc0JXTVhid0hUUFR3U096clpzMTU2VTR0U3lKQUhNQUMxZEZ4Uk1rV1Y4dnhkSWNmSVd4ZXdiVEt5bmJUdEw1Nk5WUUVWU01JWUpVOTJTRW81SjJtME9ZdWhQTE9wZHdxUjM4TU1nclNDU21OQV96d1RSZjdFOFdoT3NRdWRVWUpyZTktVF83U3l5SHJFREVTSGh1c3dNUTFPRWw1OFRERk9aOVlSbFlkNjE",
+      "description": "Final da Copa do Brasil: Venda de ingressos começa na segunda-feira &nbsp;&nbsp; CBF",
+      "imageUrl": null,
+      "source": "CBF",
+      "publishedAt": "2026-11-21T22:13:00.000Z",
+      "firstSeenAt": "2026-11-22T02:28:00.783Z",
+      "lastSeenAt": "2026-11-22T02:28:00.783Z"
+    },
+    {
+      "id": "event-42041d04",
+      "category": "brasil",
+      "title": "Deputada Talíria Petrone é ameaçada de morte e violência sexual",
+      "url": "https://agenciabrasil.ebc.com.br/direitos-humanos/noticia/2026-11/deputada-taliria-petrone-e-ameacada-de-morte-e-violencia-sexual",
+      "description": "A deputada federal Talíria Petrone (Psol- RJ) recebeu ameaça de morte às vésperas do Dia da Consciência Negra , lembrado nessa sexta sexta-feira (20). Segundo a parlamentar, trata-se de ameaça explícita de morte, violência sexual e extermínio político, assinada por alguém que se diz representante de um partido neofascista. Notícias relacionadas: Denúncias de racismo chegam ao maior número da série histórica . Manifestação em Porto Alegre pede união contra o racismo. 20 de novembro: saiba a origem da data e quem foi Zumbi dos Palmares . Em nota pública, a deputada relatou ainda que, durante a última campanha eleitoral, recebeu pelo menos dez e-mails com ameaças diretas. Ela ressalta que a violência política contra mulheres negras busca esgotar emocionalmente, impor estado de alerta permanente, ameaçar a família e tentar fazer com que recuem. “Quando um extremista de direita me ataca com ofensas racistas, reivindica um movimento neofascista e descreve minuciosamente uma cena de violência sexual e assassinato em praça pública, ele não está apenas ameaçando uma pessoa. Ele está tentando",
+      "imageUrl": "https://imagens.ebc.com.br/MV9t9dJxujLL0yB4_p6zQeUoSMk=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/03/img20261014194830229.jpg?itok=NZIuAJOf",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-21T21:59:00.000Z",
+      "firstSeenAt": "2026-11-22T02:28:00.783Z",
+      "lastSeenAt": "2026-11-22T02:28:00.783Z"
+    },
     {
       "id": "event-948c2698",
       "category": "santa-catarina",
@@ -18,7 +66,19 @@
       "source": "primeira página sc",
       "publishedAt": "2026-11-21T21:55:43.000Z",
       "firstSeenAt": "2026-11-21T22:23:20.177Z",
-      "lastSeenAt": "2026-11-21T22:23:20.177Z"
+      "lastSeenAt": "2026-11-22T02:28:00.783Z"
+    },
+    {
+      "id": "event-6b36951",
+      "category": "brasil",
+      "title": "Flamengo empata com Palmeiras e é campeão brasileiro de 2026",
+      "url": "https://agenciabrasil.ebc.com.br/esportes/noticia/2026-11/flamengo-empata-com-palmeiras-e-e-campeao-brasileiro-de-2026",
+      "description": "O Flamengo é campeão brasileiro de 2026. O Palmeiras até tentou, mas não conseguiu vencer o rival nesta tarde em São Paulo no NuBank Parque, pela 36ª rodada. Com o placar final de 1 a 1, o Rubro-negro confirmou a taça com duas rodadas de antecedência. O placar foi aberto aos 11 minutos. Após cruzamento de Giay, Jhon Arias pulou no meio da zaga flamenguista e abriu o placar para o Palmeiras. Gustavo Gómez ainda acertou o travessão na primeira etapa. Notícias relacionadas: Brasileirão: Rádio Nacional transmite duelo entre Palmeiras e Flamengo. Mas, no segundo tempo, o Flamengo melhorou e empatou o jogo. Aos 30, Arrascaeta começou a jogada. Bruno Henrique achou Samuel Lin, que tocou rasteiro no canto direito de Carlos Miguel para empatar o jogo. Campeão antecipado Com o resultado, o time carioca chegou aos 80 pontos e 24 vitórias. O Palmeiras ficou com apenas 74, com 21 vitórias. Dessa forma, mesmo vencendo os dois últimos jogos, com duas derrotas combinadas do Flamengo, o Palmeiras não alcança mais o grande rival. Agora, o Flamengo soma nove títulos oficiais do Brasileirão (1980, 1982,",
+      "imageUrl": "https://imagens.ebc.com.br/xuLPRB7Aplk4lM9AxazgDpXCOCI=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/21/2026-11-21t211613z_1371119473_up1embl1n307i_rtrmadp_3_soccer-brazil-pal-fla.jpg?itok=Fc0QONSK",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-21T21:39:00.000Z",
+      "firstSeenAt": "2026-11-22T02:28:00.783Z",
+      "lastSeenAt": "2026-11-22T02:28:00.783Z"
     },
     {
       "id": "event-e244fba4",
@@ -42,7 +102,7 @@
       "source": "Blog do Prisco",
       "publishedAt": "2026-11-21T21:26:50.000Z",
       "firstSeenAt": "2026-11-21T22:23:20.177Z",
-      "lastSeenAt": "2026-11-21T22:23:20.177Z"
+      "lastSeenAt": "2026-11-22T02:28:00.783Z"
     },
     {
       "id": "event-4c6540e6",
@@ -54,7 +114,7 @@
       "source": "HC Notícias",
       "publishedAt": "2026-11-21T21:05:49.000Z",
       "firstSeenAt": "2026-11-21T22:23:20.177Z",
-      "lastSeenAt": "2026-11-21T22:23:20.177Z"
+      "lastSeenAt": "2026-11-22T02:28:00.783Z"
     },
     {
       "id": "event-8bbbb491",
@@ -93,6 +153,18 @@
       "lastSeenAt": "2026-11-21T22:23:20.177Z"
     },
     {
+      "id": "event-afca10ac",
+      "category": "mundo",
+      "title": "Haddad critica oligarquia global e propõe que países negociem taxas às grandes fortunas",
+      "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxNNkMzRDZpMWhmZndNODRYSExhdk1RaldWU2tQb0FOeFNYM1RMWjFfNU9SVXBMSk5OaGVaTldPZ3oxM0Fack1ITW5TN0Qxa3R6NzEtY0RpZ0JqSjEtSldMRFpnXy1selBjNW4zLWpfZ1l3NmNwUGVUMGdZbzhLSHZpWU80S3ZDV0FWenRvdW9xNTMtdXI2UERVb05OUnI5VHZxMF8wM0NuQ3R2QU82dERxQ3o2U3hESDlfbVRxMzJicVNZeTZzYmJNYl9BamlvY1U",
+      "description": "Haddad critica oligarquia global e propõe que países negociem taxas às grandes fortunas &nbsp;&nbsp; ICL Notícias",
+      "imageUrl": null,
+      "source": "ICL Notícias",
+      "publishedAt": "2026-11-21T19:43:41.000Z",
+      "firstSeenAt": "2026-11-22T02:28:00.783Z",
+      "lastSeenAt": "2026-11-22T02:28:00.783Z"
+    },
+    {
       "id": "event-7c00fda9",
       "category": "mundo",
       "title": "Manifestantes marcham em Lisboa contra aumento no custo de vida",
@@ -102,7 +174,7 @@
       "source": "Agência Brasil",
       "publishedAt": "2026-11-21T19:30:00.000Z",
       "firstSeenAt": "2026-11-21T22:23:20.177Z",
-      "lastSeenAt": "2026-11-21T22:23:20.177Z"
+      "lastSeenAt": "2026-11-22T02:28:00.783Z"
     },
     {
       "id": "event-b548a963",
@@ -222,7 +294,7 @@
       "source": "Campo Grande News",
       "publishedAt": "2026-11-21T14:36:00.000Z",
       "firstSeenAt": "2026-11-21T17:35:15.551Z",
-      "lastSeenAt": "2026-11-21T22:23:20.177Z"
+      "lastSeenAt": "2026-11-22T02:28:00.783Z"
     },
     {
       "id": "event-933752de",
@@ -294,103 +366,7 @@
       "source": "Diário Corumbaense",
       "publishedAt": "2026-11-21T04:04:15.000Z",
       "firstSeenAt": "2026-11-21T17:35:15.551Z",
-      "lastSeenAt": "2026-11-21T22:23:20.177Z"
-    },
-    {
-      "id": "event-df41b7ff",
-      "category": "brasil",
-      "title": "Consciência Negra: espetáculo no Rio dá vida personagens que marcaram a história do Brasil",
-      "url": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxOdEpWejdoRjZSX1JwS212SGs3VFRicWNvQ1FxQXIwN3FYOE5zdUdPeXVQcXZmcVhYMVBNaTB0LVRuRjA1bElpelZpSXVNbFpPNkJxYVdvNWVzVUc0NXNrQm9WbTlqaGZabWE1azZ5NkFqdEtsVFkyZlFjNkgwVXQ3SnZwR21ldkFQWllwOUg4WE11TTVybkdQbmRFMUJmUmhvcUZ6SHJ4dE1GM1hNSjNHSlEzeWpxS3Rpdy14OU50dEUxYWdKdGN1bUNpcFV2cVhrS09YX2lpOTFhTmNOOU1mZThTRkYyUdIB9AFBVV95cUxNdy13V1V2cnlpZkJxX2lHNWZOLUowaUJYVXdrTVNhOHlZZmUwYXhwQ2x4S0FUMGZ4YkplWHlFNXNKeFFGRjNjTWFEQmJSZUZVUklESG8tZzMxbXVvSlFiRkNJX3I4WHI5N0x5a2h3cFNWbjkxVmdQeXNOUG1mSG5FRlJxM3piMWp6VDJyZmxsdjBJTVQ2cWpTUThpMXNYSXVRc1JHSnpRVWtULWdxcEFjbW9vNFFFMk1fMGhsb2NKMm5FNlBuVjZsNHdDVUh1NEx2TF9hUzU3VzhLWW5ZYmg1VXY5NGNBOUJnaVMtOERFWk1vN3N6",
-      "description": "Consciência Negra: espetáculo no Rio dá vida personagens que marcaram a história do Brasil &nbsp;&nbsp; G1",
-      "imageUrl": null,
-      "source": "G1",
-      "publishedAt": "2026-11-21T01:35:43.000Z",
-      "firstSeenAt": "2026-11-21T02:39:36.384Z",
-      "lastSeenAt": "2026-11-21T02:39:36.384Z"
-    },
-    {
-      "id": "event-ff8b4498",
-      "category": "brasil",
-      "title": "Portugal estreia com vitória de virada na Copa do Mundo de vela no RJ",
-      "url": "https://agenciabrasil.ebc.com.br/esportes/noticia/2026-11/portugal-estreia-com-vitoria-de-virada-na-copa-do-mundo-de-vela-no-rj",
-      "description": "Portugal, Estônia, Lituânia e Uruguai venceram a estreia na primeira fase da Copa do Mundo de vela na Baía de Guanabara, no Rio de Janeiro. Primeira competição internacional de vela desde os Jogos Rio 2016, a SSL Gold Cup (nome do Mundial em inglês) reúne equipes de 40 países. A seleção brasileira estreará direto nas oitavas de final, em 2 de dezembro. Entre os 10 velejadores do time canarinho está o multimedalhista olímpico Robert Scheidt (dois ouros, duas pratas e um bronze). As primeiras regatas começaram na última quinta-feira (19), com 16 seleções. Uma das estreias mais emocionantes foi a de Portugal, pelo Grupo A, que reúne ainda Ucrânia, Colômbia, e Antígua e Barbuda. A equipe ucraniana liderou boa parte da prova, mas na reta final o time português conhecido pelo apelido de Navigators, assumiu a dianteira e cruzou a linha de chegada em 37min17s, com apenas 17 segundos de vantagem sobre os ucranianos. Antígua e Barbuda e Colômbia chegaram em terceiro e quarto lugares, respectivamente. Notícias relacionadas: Filme Camisas Negras retrata luta do Vasco contra o racismo em 1923. Em",
-      "imageUrl": "https://imagens.ebc.com.br/t8POpCrGksjF2QVjF1U-eZt7rpw=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/20/copa_do_mundo_de_vela_2026_rj.jpg?itok=kkwMvNmd",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-21T01:02:00.000Z",
-      "firstSeenAt": "2026-11-21T10:13:20.690Z",
-      "lastSeenAt": "2026-11-21T10:13:20.690Z"
-    },
-    {
-      "id": "event-736d5683",
-      "category": "brasil",
-      "title": "Trump diz que exigiu que as Filipinas deixem de importar do agro brasileiro",
-      "url": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxOVVYxMjlRNWs0b24tVl9neXMyN2RtSTFhZktWbXliYnBzeDF2OTNwdnpKa1YwbzJyaE14THk5aU5HR2lIaU83bTFadmJIMEowTER3bDcta01STWQtNThsN3oyUks4bjltRTlMOXFkWUtacjA2QmlWTDJBWEViQUFZU1ZYQ2FSdWN1ZUY2eGRkdnRSRk1lLTZlakJoY2ZaVW5TTHhYOXhjTFdaRnZ5N01xbWhmNV9NWWJTQmRWajhUZ1JXT2RWaVFGcmJaM2RSSUZvRDNPWUF6VzV3Zkh2UFpaemQ3NGc",
-      "description": "Trump diz que exigiu que as Filipinas deixem de importar do agro brasileiro &nbsp;&nbsp; UOL Notícias",
-      "imageUrl": null,
-      "source": "UOL Notícias",
-      "publishedAt": "2026-11-21T00:57:08.000Z",
-      "firstSeenAt": "2026-11-21T10:13:20.690Z",
-      "lastSeenAt": "2026-11-21T10:13:20.690Z"
-    },
-    {
-      "id": "event-5a893be4",
-      "category": "mundo",
-      "title": "Principais notícias do mundo na noite de hoje (20)",
-      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQMFd1aFFodERtcEwySkp5aDB5SlRqN0RaTVBmc1ZzdnBaeDlTUzRvZTlNY3dTbmtrc1lURmZjWnczZXRLeEtZU1FUelVWUUI4QWxDaVd0QjZtRGY2dWVMU2VjeU1XazZHYkkzM1pYdkNrVUNFMmxhcDljVE1naG8zU1BHMGR6UmIyRUxURW9lTnJIdlNDOENCYjlqS2c0TUl2Sk9Dcm4xOGEtWlVJ",
-      "description": "Principais notícias do mundo na noite de hoje (20) &nbsp;&nbsp; Tribuna do Sertão",
-      "imageUrl": null,
-      "source": "Tribuna do Sertão",
-      "publishedAt": "2026-11-20T23:32:01.000Z",
-      "firstSeenAt": "2026-11-21T02:39:36.384Z",
-      "lastSeenAt": "2026-11-21T02:39:36.384Z"
-    },
-    {
-      "id": "event-15e0bdd0",
-      "category": "mundo",
-      "title": "Principais notícias do mundo na noite de hoje (20)",
-      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxNNWZ1RDNhUF9ZZGtya1JsYmM1cFpGaElROUVVOTY1bjZ3WEt6SUhHdXRXMzRXUTFjM3N3TlhvTlA0UVdDdy1oUGVZeUp3dUUzZmFKU2d6SnQxVlRkUW14Zk00T01NTkVYb3ROaWtiSmxzMHZBRUg3aGE2Rjl5UTZybEg1YXhnLTMxSEZaTGp6S3VIUTZibXMwM0dpRjcwTXBZeHlteXA2dw",
-      "description": "Principais notícias do mundo na noite de hoje (20) &nbsp;&nbsp; Tribuna do Sertão",
-      "imageUrl": null,
-      "source": "Tribuna do Sertão",
-      "publishedAt": "2026-11-20T23:32:01.000Z",
-      "firstSeenAt": "2026-11-21T10:13:20.690Z",
-      "lastSeenAt": "2026-11-21T10:13:20.690Z"
-    },
-    {
-      "id": "event-f6219d72",
-      "category": "mundo",
-      "title": "Sociedade civil diz que COP31 poderá ser a pior da história",
-      "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxPWS1ETWI0OFVLWHY1cnpXUXZMc3VEb25nbE84MGRsS2NGbGdCbDdmamVHdHJxUXNicFRPMXFGM0x3cU9SMnpYMEdaM3FuMHFKdjVzM3BtdW9tV3B6OHpQQ0g0V2hTVkh1VEtCc1pBSE5scU9sMm92S0xYbHdnRVM4MGF2Vk54MkJJd0RCejBXdGl5OUo0c3lNTU9acGxZMHFQRVdj",
-      "description": "Sociedade civil diz que COP31 poderá ser a pior da história &nbsp;&nbsp; SBT News",
-      "imageUrl": null,
-      "source": "SBT News",
-      "publishedAt": "2026-11-20T22:55:26.000Z",
-      "firstSeenAt": "2026-11-21T02:39:36.384Z",
-      "lastSeenAt": "2026-11-21T10:13:20.690Z"
-    },
-    {
-      "id": "event-49fd98ab",
-      "category": "santa-catarina",
-      "title": "VÍDEO: portal de condomínio desaba durante temporal com ventos fortes em SC",
-      "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxOUnNnS1g2ZC03ZWlRUGFLVnE5VHpBYXNZME8xMHo1UHVNaXlVVTFzUG9rLU5vUkY4QXFVWXg2REZpSlRSMEpnX2QxOEZQNnlHdWJVckMwWHR4Si0xSENvaHFGallJYXB2bmhHRF9aQmc5bldZOFlRZHU2c2RyTng0eVFLX1h1VUM1U0JDNGJhTVpMenVmTkxwQWhYVzM1S003M3J5SmxBQjRKSnpXZ3ZGZ1NuUXZzeFd5MTlPbElaZVY5ZGJoazFaSTI3Z9IB2gFBVV95cUxOY3JQY0w5R2J5TnJVZ29lSW11clZYcEV2UmxvVmN1bjBpUWZ1aTUtcHRCOXJ4U2xGbDlaRmtPSWlybUpINnNwc3ZHLVVncUtVb2FuU3ZpN1l4bFdwQjVudV9mdnFHQjdxZ21kT1dMNlBZbWxXLTdHZ2hOQXJSZEc4amtPMEMxZTdBemJDOHVrblQyTmhhNl91WFFmNmkxUklLaUlYeFRqeDhPTHpoeXo0U052Ny1ORUpCYklDVUg3eUhuVUdxSHE4OE5YdjdwaDNfNjhZcFRNcmVsUQ",
-      "description": "VÍDEO: portal de condomínio desaba durante temporal com ventos fortes em SC &nbsp;&nbsp; G1",
-      "imageUrl": null,
-      "source": "G1",
-      "publishedAt": "2026-11-20T22:41:27.000Z",
-      "firstSeenAt": "2026-11-21T02:39:36.384Z",
-      "lastSeenAt": "2026-11-21T10:13:20.690Z"
-    },
-    {
-      "id": "event-8593dafa",
-      "category": "brasil",
-      "title": "PF diz que não há conversas de Mendonça com Vorcaro",
-      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/pf-diz-que-nao-ha-conversas-de-mendonca-com-vorcaro",
-      "description": "A Polícia Federal (PF) informou ao Supremo Tribunal Federal (STF) que não foram encontrados registros de conversas entre o ex-banqueiro Daniel Vorcaro e o ministro André Mendonça. A conclusão consta no relatório entregue nesta semana ao presidente do STF, Edson Fachin , relator do caso Master. Mais cedo, o sigilo do documento foi retirado a pedido de Mendonça. Notícias relacionadas: Moraes vota para manter apreensão de passaportes de Flávio Bolsonaro. Presidente do Supremo mantém prisão de Vorcaro. Fachin manda quebrar sigilo de relatório da PF com menções a Mendonça. Nas 35 páginas do relatório, os investigadores da PF relataram que encontraram 303 ocorrências positivas ao termo \"André Mendonça\" nos celulares de Vorcaro. A palavra \"Mendonça\" apareceu 1.294 vezes, e \"Ministro André\" teve 79 ocorrências no material analisado. \"Não foram identificados, durante as buscas realizadas por palavras-chave, registros que evidenciem diálogo direto entre os interlocutores Daniel Bueno Vorcaro e o ministro André Mendonça, seja por meio de aplicativos de mensagens, seja por qualquer outro canal d",
-      "imageUrl": "https://imagens.ebc.com.br/Iez1JX-lCwCWAruHzHAs9hrtVmA=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/mca_abr_numero_de_serie_de_4_digitos_090620_7.jpg?itok=av6AQ5Kg",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-20T22:34:00.000Z",
-      "firstSeenAt": "2026-11-21T02:39:36.384Z",
-      "lastSeenAt": "2026-11-21T02:39:36.384Z"
+      "lastSeenAt": "2026-11-22T02:28:00.783Z"
     }
   ],
   "checks": [
@@ -455,30 +431,30 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-22T02:28:00.783Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 12,
+      "newArticles": 6,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
-  "checkCount": 4,
-  "lastSuccessfulAt": "2026-11-21T22:23:20.177Z",
+  "checkCount": 5,
+  "lastSuccessfulAt": "2026-11-22T02:28:00.783Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-21T22:23:20.177Z",
+      "checkedAt": "2026-11-22T02:28:00.783Z",
       "warnings": [
-        {
-          "id": "56475",
-          "title": "Tempestade",
-          "severity": "Perigo Potencial",
-          "phase": "vigente",
-          "regions": [
-            "DO",
-            "DO",
-            "DE"
-          ],
-          "startsAt": "2026-11-21T00:00:00.000Z",
-          "endsAt": "2026-11-22T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
-        },
         {
           "id": "56476",
           "title": "Tempestade",
@@ -497,7 +473,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-21T22:23:20.177Z",
+      "checkedAt": "2026-11-22T02:28:00.783Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
