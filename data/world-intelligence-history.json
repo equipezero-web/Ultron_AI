@@ -4,10 +4,46 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-22T02:28:00.783Z",
-  "oldestEventAt": "2026-11-21T04:04:15.000Z",
-  "windowStartAt": "2026-11-21T02:28:00.783Z",
+  "updatedAt": "2026-11-22T10:07:17.343Z",
+  "oldestEventAt": "2026-11-21T11:41:00.000Z",
+  "windowStartAt": "2026-11-21T10:07:17.343Z",
   "events": [
+    {
+      "id": "event-f020a16a",
+      "category": "santa-catarina",
+      "title": "Defesa Civil coloca mais da metade de SC em alerta laranja para temporais neste domingo",
+      "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxQbzBTQU0wR3c3SEk3QXp3bXg4QkpTVGtYV252TzFnXzRlR2tpSzNodjVJUi1EZjFZZjJmMVN5T09sSXA5WGR4eHhJS3ppdlhPLW5JY0ZXS3piWlRjMm9hSDE4S1NsRk1ZdGdkTlZxelJjamFqd29CTkhRbTVlM1Z2RThkemJTNnBJZld3NVZiOW9IRnZ0YVBVMWVrTU8tbU1tV29GOTNMUG9HWktXRFU5Y25hU3kxUkdPUlZ6eml3VFU",
+      "description": "Defesa Civil coloca mais da metade de SC em alerta laranja para temporais neste domingo &nbsp;&nbsp; Sul. Agora",
+      "imageUrl": null,
+      "source": "Sul. Agora",
+      "publishedAt": "2026-11-22T09:18:00.000Z",
+      "firstSeenAt": "2026-11-22T10:07:17.343Z",
+      "lastSeenAt": "2026-11-22T10:07:17.343Z"
+    },
+    {
+      "id": "event-51ec225",
+      "category": "brasil",
+      "title": "Conheça a história por trás de \"Pitangas Verdes\", vencedor do Jabuti 2026",
+      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQLVh3OG4zaUxTeDV1d0R1YllZVmUyazFYdlBtSVBTbjlwYmRHV1o0c0ZtNXBnaDBfS0tBaGRvVkdWTlhqMkRvX0pVT0cxM2FONHBCWFVWWWtFUUQtWGlSM0FEcS1jdTN4YWwtNDQzYW5mYnNpU2dpM2dROUVCMDdRbjdKb3R6RTVZSm43RThRRExtV1ZqLW85Sk9vZTdsM2JITWdCMWNzNA",
+      "description": "Conheça a história por trás de \"Pitangas Verdes\", vencedor do Jabuti 2026 &nbsp;&nbsp; CNN Brasil",
+      "imageUrl": null,
+      "source": "CNN Brasil",
+      "publishedAt": "2026-11-22T08:00:52.000Z",
+      "firstSeenAt": "2026-11-22T10:07:17.343Z",
+      "lastSeenAt": "2026-11-22T10:07:17.343Z"
+    },
+    {
+      "id": "event-5b8e2798",
+      "category": "brasil",
+      "title": "Quase 90% dos parques eólicos do Brasil apresentam alertas socioambientais",
+      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxOaFpZQ1FZWTRXOFNxd005U2p5Xzc3WWxkZElnZ1duRzF5LWVUT0NUdktWVl9uX20wMC1SQUw1dk4zSXB6Xy1JbEhLenljZUxRckhHZC1DOVVmbzBSbGtwdG9LN1VfQURBODZpLW9EVkNzYlpGMHNhNmlvZnFyX2U4OWJBSFc2SmtzMGR1WHQ1SE9RZ2FmQUxWVTdKT3dWWGlUakl6OHRjVTQ2WDk0",
+      "description": "Quase 90% dos parques eólicos do Brasil apresentam alertas socioambientais &nbsp;&nbsp; Vero Notícias",
+      "imageUrl": null,
+      "source": "Vero Notícias",
+      "publishedAt": "2026-11-22T02:30:00.000Z",
+      "firstSeenAt": "2026-11-22T10:07:17.343Z",
+      "lastSeenAt": "2026-11-22T10:07:17.343Z"
+    },
     {
       "id": "event-3fea5317",
       "category": "mundo",
@@ -18,7 +54,7 @@
       "source": "Tribuna do Sertão",
       "publishedAt": "2026-11-22T01:05:01.000Z",
       "firstSeenAt": "2026-11-22T02:28:00.783Z",
-      "lastSeenAt": "2026-11-22T02:28:00.783Z"
+      "lastSeenAt": "2026-11-22T10:07:17.343Z"
     },
     {
       "id": "event-dfa1fd9f",
@@ -30,7 +66,43 @@
       "source": "ge",
       "publishedAt": "2026-11-21T23:27:58.000Z",
       "firstSeenAt": "2026-11-22T02:28:00.783Z",
-      "lastSeenAt": "2026-11-22T02:28:00.783Z"
+      "lastSeenAt": "2026-11-22T10:07:17.343Z"
+    },
+    {
+      "id": "event-f75d4fd2",
+      "category": "mundo",
+      "title": "COP31 avança pelo sábado (21) sem acordo",
+      "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxPQTluRXRkR1J3cDNDU2VjX2o5eE04QlE3TXNHeWFmYlBha3J1amN4QTl4WHh6OW9HSXBzM1Z4UkxoNHVDYUhEZFhUQzJNbF9GTTcwdktJVHZFQlVfdy1zWUdUam9JNHNNQ1JlbnV5V3pkOU9vRVdUbmpFNjI5NzUyNms3MA",
+      "description": "COP31 avança pelo sábado (21) sem acordo &nbsp;&nbsp; SBT News",
+      "imageUrl": null,
+      "source": "SBT News",
+      "publishedAt": "2026-11-21T23:11:24.000Z",
+      "firstSeenAt": "2026-11-22T10:07:17.343Z",
+      "lastSeenAt": "2026-11-22T10:07:17.343Z"
+    },
+    {
+      "id": "event-defbbdde",
+      "category": "mundo",
+      "title": "Diferentes protestos ocorrem na Europa neste sábado (21)",
+      "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxQY0N2QkJZYzZwVGw4VFo4dC1lRjUyMjRaZzl6VU9tTGUtV3BldXNWX3pPUVptV2lqNDFnWlQ1bEVSa0VlZFV4ZEdyaFAwSDBSNzNnR0Faak81OTZ0T1pSZmVXNkVpdG1vZjBwNzhnLWhxdkRXdWY3dHUxYU9EeDJEVUhQLUM0VkY1ZTROcnNNQW9rUnZXVTFYdg",
+      "description": "Diferentes protestos ocorrem na Europa neste sábado (21) &nbsp;&nbsp; SBT News",
+      "imageUrl": null,
+      "source": "SBT News",
+      "publishedAt": "2026-11-21T22:58:05.000Z",
+      "firstSeenAt": "2026-11-22T10:07:17.343Z",
+      "lastSeenAt": "2026-11-22T10:07:17.343Z"
+    },
+    {
+      "id": "event-dacd94f2",
+      "category": "brasil",
+      "title": "Dez vezes Flamengo",
+      "url": "https://agenciabrasil.ebc.com.br/esportes/noticia/2026-11/dez-vezes-flamengo",
+      "description": "Em pleno gramado sintético do Nubank Parque, o Flamengo correu atrás do resultado e conseguiu seu décimo título brasileiro (já tinha sido campeão em 1980, 1982, 1983, 1987, 1992, 2009, 2019, 2020 e 2025). Precisando apenas de um empate para ganhar o Campeonato Brasileiro de 2026 com duas rodadas de antecedência, o rubro-negro não quis esperar. O empate em 1 a 1 com o Palmeiras foi suficiente para que o time do técnico Leonardo Jardim ganhasse o título. A taça oficial, porém, só é entregue ao campeão ao término da competição, depois do jogo da última rodada. Apesar de que, a diretoria rubro-negra providenciou a taça da conquista de 2025 para que os jogadores dessem a volta olímpica na casa do grande rival. A festa dos 45 milhões de flamenguistas em todo o país e dos 2 mil rubro-negros que estavam dentro do estádio só começou mesmo aos 30 minutos do 2° tempo, quando o Mengão empatou o jogo, com um gol do atacante Samuel Lino. Na tabela de classificação, o Fla tem 80 pontos, o Palmeiras tem 74 pontos. O Verdão ficou com o vice do Brasileirão, assim como já ocorreu em 2024 e 2025, mas co",
+      "imageUrl": "https://imagens.ebc.com.br/xuLPRB7Aplk4lM9AxazgDpXCOCI=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/21/2026-11-21t211613z_1371119473_up1embl1n307i_rtrmadp_3_soccer-brazil-pal-fla.jpg?itok=Fc0QONSK",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-21T22:49:00.000Z",
+      "firstSeenAt": "2026-11-22T10:07:17.343Z",
+      "lastSeenAt": "2026-11-22T10:07:17.343Z"
     },
     {
       "id": "event-efa8eb99",
@@ -66,7 +138,7 @@
       "source": "primeira página sc",
       "publishedAt": "2026-11-21T21:55:43.000Z",
       "firstSeenAt": "2026-11-21T22:23:20.177Z",
-      "lastSeenAt": "2026-11-22T02:28:00.783Z"
+      "lastSeenAt": "2026-11-22T10:07:17.343Z"
     },
     {
       "id": "event-6b36951",
@@ -102,7 +174,19 @@
       "source": "Blog do Prisco",
       "publishedAt": "2026-11-21T21:26:50.000Z",
       "firstSeenAt": "2026-11-21T22:23:20.177Z",
-      "lastSeenAt": "2026-11-22T02:28:00.783Z"
+      "lastSeenAt": "2026-11-22T10:07:17.343Z"
+    },
+    {
+      "id": "event-aaca895e",
+      "category": "clima",
+      "title": "El Niño mantém alerta de estiagem no Sertão no início de 2027",
+      "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxOWTlzeDkwUVdPd3lQZ1FHZW1lTWs5QnBrRmtaY2Z1LWRDcnM2SU5tWVM5aW9zN0lodl9CZkI0dS1sSDI5ZUdPN2RRSjVtWDlYRXo4Q1lDMUI4TmhwNlFIeGdNM0ZZeVpLcDV6UnBzeDFfcnNVajgySnlvaVNvV0RVMzZwQnJ3WExVRmQ5cENRMnRBXzV6VExna3kzNksyWmFY",
+      "description": "El Niño mantém alerta de estiagem no Sertão no início de 2027 &nbsp;&nbsp; Radar Sertanejo",
+      "imageUrl": null,
+      "source": "Radar Sertanejo",
+      "publishedAt": "2026-11-21T21:11:33.000Z",
+      "firstSeenAt": "2026-11-22T10:07:17.343Z",
+      "lastSeenAt": "2026-11-22T10:07:17.343Z"
     },
     {
       "id": "event-4c6540e6",
@@ -187,6 +271,18 @@
       "publishedAt": "2026-11-21T19:15:56.000Z",
       "firstSeenAt": "2026-11-21T22:23:20.177Z",
       "lastSeenAt": "2026-11-21T22:23:20.177Z"
+    },
+    {
+      "id": "event-12a82f58",
+      "category": "clima",
+      "title": "Governo não está preparado para El Niño e mudanças climáticas, aponta auditoria do TCU",
+      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxQN2t0RllTc3cwcmVBeUVNS1pHUDcxbEtRSS1sNTJRN3pZZEVpbjNycjNWYjBQZ1pieHo1b0xRWWJWSXFKeEtpNktTbXRfbVNKZFA3OE9zVm5ZeVhDU2tEWG14WDZwWVlsSjR6aWpsdmhINm1aSlBOVGFCclpsZndRZzdnd3N1ZjI3MV9pYzhxclJCM2tLcWNNN0JKbVNFNWFCTEZyR25zTV9aSmdURXM1LUtPeFEzWVk",
+      "description": "Governo não está preparado para El Niño e mudanças climáticas, aponta auditoria do TCU &nbsp;&nbsp; Paraíba dia a dia",
+      "imageUrl": null,
+      "source": "Paraíba dia a dia",
+      "publishedAt": "2026-11-21T19:13:34.000Z",
+      "firstSeenAt": "2026-11-22T10:07:17.343Z",
+      "lastSeenAt": "2026-11-22T10:07:17.343Z"
     },
     {
       "id": "event-141dcd27",
@@ -294,7 +390,7 @@
       "source": "Campo Grande News",
       "publishedAt": "2026-11-21T14:36:00.000Z",
       "firstSeenAt": "2026-11-21T17:35:15.551Z",
-      "lastSeenAt": "2026-11-22T02:28:00.783Z"
+      "lastSeenAt": "2026-11-22T10:07:17.343Z"
     },
     {
       "id": "event-933752de",
@@ -319,73 +415,9 @@
       "publishedAt": "2026-11-21T11:41:00.000Z",
       "firstSeenAt": "2026-11-21T17:35:15.551Z",
       "lastSeenAt": "2026-11-21T17:35:15.551Z"
-    },
-    {
-      "id": "event-5bfe0085",
-      "category": "clima",
-      "title": "Chapecó registra dois eventos climáticos extremos em 16 dias e segue sob risco de novos temporais",
-      "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxPcDd5SDdTMmY3X3czVXp6Q25NeG85WHZ6OW5ZS1pBMzBrNzZ5SU5mY3daZkRwSVNWQzl1Yi1iR0lqRmM3Qks4RmtZS014M1VUV0I4ZHAweGFURWJmNzVEQktXeWxaNWVBS1ZfUlRqbzB5bUxPMFduMmlEckJGSF9UM193NUNUZ1QybG5qSFh4b2pjalNPZmh2QWViVG9LQlc0SzhZdkRscFhZY1lzaldPQ2VDMmlvRWpvSXZ1dnNvU3A3NDNiZ0ZybTExdENaUTM4NEE",
-      "description": "Chapecó registra dois eventos climáticos extremos em 16 dias e segue sob risco de novos temporais &nbsp;&nbsp; WH3",
-      "imageUrl": null,
-      "source": "WH3",
-      "publishedAt": "2026-11-21T09:34:00.000Z",
-      "firstSeenAt": "2026-11-21T10:13:20.690Z",
-      "lastSeenAt": "2026-11-21T10:13:20.690Z"
-    },
-    {
-      "id": "event-4bf5464e",
-      "category": "mundo",
-      "title": "Ataques cibernéticos, IA ou atualizações pendentes: o que há por trás da onda de apagões dos últimos dias",
-      "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTFAzRmI4LXBTTVRNbEFEVEJUaWx0OUxtZGV5bzRldTY2eWJGU2dSdV80ZWlGSWFXTzhpX285b1FnbUY1TVJ1aW1ZOUVMRElRUEpob0Z6RjlCcHRoVmhfRnNuZVR5M1daQnFh0gFoQVVfeXFMUDNGYjgtcFNNVE1sQURUQlRpbHQ5TG1kZXlvNGV1NjZ5YkZTZ1J1XzRlaUZJYVdPOGlfbzlvUWdtRjVNUnVpbVk5RUxESVFQSmhvRnpGOUJwdGhWaF9Gc25lVHkzV1pCcWE",
-      "description": "Ataques cibernéticos, IA ou atualizações pendentes: o que há por trás da onda de apagões dos últimos dias &nbsp;&nbsp; BBC",
-      "imageUrl": null,
-      "source": "BBC",
-      "publishedAt": "2026-11-21T09:27:22.000Z",
-      "firstSeenAt": "2026-11-21T10:13:20.690Z",
-      "lastSeenAt": "2026-11-21T10:13:20.690Z"
-    },
-    {
-      "id": "event-23a9868e",
-      "category": "brasil",
-      "title": "Dia da Consciência Negra destaca a história, a resistência e a contribuição da população negra no Brasil",
-      "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxPTWhVSy1WaDNCOFI3ZU5obF9SSHBXNVlqV3N3aW9mT093V2lDOUV4bk1EcFdKeWJlZlZFc2E2TDQ5aWFiY3ZiMkgweFRPcXRCMzVPQUFfZzBhRS1YSGs2d1JURnJ3Z3VKMmxSZEU2alMySll3SUZyMHlyclBOR0JJNHNwZE1WbGlBMDJJeldoWFNJVmxwUmgxSzFXMW5IemlicjR1QmFYcnpTT0l6Smx5VElYUmRDdmMwcWM0OE1PUDY2MWFwcEF0azIzbGFWSUZObWZ3Yk9BMVFqWl80U0h3",
-      "description": "Dia da Consciência Negra destaca a história, a resistência e a contribuição da população negra no Brasil &nbsp;&nbsp; Diplomacia Business",
-      "imageUrl": null,
-      "source": "Diplomacia Business",
-      "publishedAt": "2026-11-21T08:03:45.000Z",
-      "firstSeenAt": "2026-11-21T10:13:20.690Z",
-      "lastSeenAt": "2026-11-21T10:13:20.690Z"
-    },
-    {
-      "id": "event-86eb9816",
-      "category": "clima",
-      "title": "MS reforça monitoramento climático para prevenir extremos do El Niño",
-      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTFBubFBrbXRGdVZLdEtsVlM3RHRvU0FoRzVZZjF0eXcxTUMyYTdCN2Fmclh1bGJxNkllcXNoWWFjVXdjYmRiVFVPWWZfREJNaHgzWUpfN0dOWnFYckE",
-      "description": "MS reforça monitoramento climático para prevenir extremos do El Niño &nbsp;&nbsp; Diário Corumbaense",
-      "imageUrl": null,
-      "source": "Diário Corumbaense",
-      "publishedAt": "2026-11-21T04:04:15.000Z",
-      "firstSeenAt": "2026-11-21T17:35:15.551Z",
-      "lastSeenAt": "2026-11-22T02:28:00.783Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-21T02:39:36.384Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 13,
-      "newArticles": 8,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "asia"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-21T10:13:20.690Z",
       "ok": true,
@@ -446,14 +478,29 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-22T10:07:17.343Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 13,
+      "newArticles": 8,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 5,
-  "lastSuccessfulAt": "2026-11-22T02:28:00.783Z",
+  "lastSuccessfulAt": "2026-11-22T10:07:17.343Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-22T02:28:00.783Z",
+      "checkedAt": "2026-11-22T10:07:17.343Z",
       "warnings": [
         {
           "id": "56476",
@@ -473,7 +520,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-22T02:28:00.783Z",
+      "checkedAt": "2026-11-22T10:07:17.343Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
