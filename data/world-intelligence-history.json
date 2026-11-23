@@ -4,10 +4,94 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-22T23:06:43.926Z",
-  "oldestEventAt": "2026-11-21T23:11:24.000Z",
-  "windowStartAt": "2026-11-21T23:06:43.926Z",
+  "updatedAt": "2026-11-23T03:42:22.779Z",
+  "oldestEventAt": "2026-11-22T08:00:52.000Z",
+  "windowStartAt": "2026-11-22T03:42:22.779Z",
   "events": [
+    {
+      "id": "event-b29f4b06",
+      "category": "santa-catarina",
+      "title": "Temporais em SC afetaram mais de 350 residências, informa Defesa Civil",
+      "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxOZ1BsOC1lenpBWmprdjB3ZFVRWm51Sk5vbHAxd1dVSzN3czlTMEt5alB4VTB2Q19BMG56YndJdm1NMjY3QkpBUGtOVzA4Z2V6SnhYN042VmlLWEdXbnZvSEU3Z1ZrOTRHRlpXZ3lOZ00tY0NoZmVwYUZldkNaX0hkajNGY0xtWVV5MmtJaG0xSWt0T2RXWDZWM2tSbnFJVmRHTEJ3",
+      "description": "Temporais em SC afetaram mais de 350 residências, informa Defesa Civil &nbsp;&nbsp; Portal Engeplus",
+      "imageUrl": null,
+      "source": "Portal Engeplus",
+      "publishedAt": "2026-11-23T02:57:00.000Z",
+      "firstSeenAt": "2026-11-23T03:42:22.779Z",
+      "lastSeenAt": "2026-11-23T03:42:22.779Z"
+    },
+    {
+      "id": "event-b074ac87",
+      "category": "brasil",
+      "title": "Michelle atualiza estado de saúde de Jair Bolsonaro na UTI: \"Boas notícias\"",
+      "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPMXFFQnUyTm5qZWpBdnM0Z1o4blZma2tnZlpzOWF0SE1ReG5uT2xwS3RmcHFQQVp0dTRNYm03akNiQWY2VEJWUE5BbWpNa0lDSDU2LXBPOXE1OFlUbTlnNnJvUC1ybnZCRGpJT1kzTlVLQnd5TmRId29NVDh1UG9ucVdld1BYYm1ZVjFIdHdFTjNJV2o0MjNib0ZvWGpNWHZkbDZtUVhSRGJQZw",
+      "description": "Michelle atualiza estado de saúde de Jair Bolsonaro na UTI: \"Boas notícias\" &nbsp;&nbsp; Metrópoles",
+      "imageUrl": null,
+      "source": "Metrópoles",
+      "publishedAt": "2026-11-23T02:21:00.000Z",
+      "firstSeenAt": "2026-11-23T03:42:22.779Z",
+      "lastSeenAt": "2026-11-23T03:42:22.779Z"
+    },
+    {
+      "id": "event-8048624",
+      "category": "santa-catarina",
+      "title": "VÍDEO: Chuvas intensas provocam alagamentos em Laguna na manhã deste domingo (22)",
+      "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxPcHpsQWo1ZnVTMGNydi05U0FySUpnWmdFR0VNaUkwdG9iR3ZudTVuTzA5cjNVSXFoZkl6dDBIemIxcGRSVWhkQ1NhM1laM2ZlN29TM3BVM3c4UHlGUlRFRGhldGwta1dBM0MyWEpNMlQ0WHg5Smh2amFYZ3EzOTI4S00tbVF5T3RLeHFnWjRleF92T0RTQkIwdWdMc29tcGZibTRVdm9EQ19EME9iM29VTW9OZlRWUHdo",
+      "description": "VÍDEO: Chuvas intensas provocam alagamentos em Laguna na manhã deste domingo (22) &nbsp;&nbsp; HC Notícias",
+      "imageUrl": null,
+      "source": "HC Notícias",
+      "publishedAt": "2026-11-23T01:04:46.000Z",
+      "firstSeenAt": "2026-11-23T03:42:22.779Z",
+      "lastSeenAt": "2026-11-23T03:42:22.779Z"
+    },
+    {
+      "id": "event-a19b9fcf",
+      "category": "santa-catarina",
+      "title": "Temporais com granizo e vento forte voltam na terça e ganham força no leste de SC",
+      "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxNTDI5U0hBcWpWX2IzRFk3Q0tfdWdBOWhyRFhVQzVyNWlaa2lmLXhxaFJlVFdFek9NSmdBQkh0Y2JyLVRkX0dVekg4YmdQSUl2eDA3RTA0aUN0QlFjQmc5c2JJQndIdklzNXdzbzI3YU1kNWwxNDdtYUJKU2xRbEI1Rk9sQ3lCd05lZ21uSTJvSGQ5a2xJQjFDdGJqRnFUM3Z0eWRfVVE4MXNLYjRHLUZmOG9BdE41dy1hb0E",
+      "description": "Temporais com granizo e vento forte voltam na terça e ganham força no leste de SC &nbsp;&nbsp; TopElegance",
+      "imageUrl": null,
+      "source": "TopElegance",
+      "publishedAt": "2026-11-23T00:57:00.000Z",
+      "firstSeenAt": "2026-11-23T03:42:22.779Z",
+      "lastSeenAt": "2026-11-23T03:42:22.779Z"
+    },
+    {
+      "id": "event-971e2ce4",
+      "category": "brasil",
+      "title": "Música, arte e história celebram Dia da Consciência Negra",
+      "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxOcHNkT21oMXhTUTJYdTVQV3kyMHBHTVBqQTBWcWlMeVVvLWZHT0ZkMEpFZGRHQUx6SnlybkliNFY0MTRuSWRZak54RWloNVR5akN2SzhnTVBBNG5iV0NTN0JvNGNBYnpnR2JLNDFIbTZ4TnhvRG8xcFZ2Szg3bjFmQnI3aFB5TGNRQWVJakM2cm0",
+      "description": "Música, arte e história celebram Dia da Consciência Negra &nbsp;&nbsp; Portal A12",
+      "imageUrl": null,
+      "source": "Portal A12",
+      "publishedAt": "2026-11-23T00:21:48.000Z",
+      "firstSeenAt": "2026-11-23T03:42:22.779Z",
+      "lastSeenAt": "2026-11-23T03:42:22.779Z"
+    },
+    {
+      "id": "event-8107713",
+      "category": "clima",
+      "title": "El Niño pode ser o mais forte desde 1950 e atingir pico na virada do ano",
+      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxOcllMa01zZDQ5SW5pMmRQb0ZXY0QzVUUtRW4yN2JzMFItajNpUUJzWG9WcWR1cjR5ZnYzZ1FYTEZWVFBueW9qd2ltNDhUbE81NFh2TWJoOFZOb291emQwSS1mYlVkNGlCZGNsSUtiX3JqZ2dpMWpQcUFrcFlySlFUaTFKTjRZc0pwdFRFbjRkTE04SlNNaGtoWTFJYVctdUVLYV9meFlPOUFpSHlpTlppMQ",
+      "description": "El Niño pode ser o mais forte desde 1950 e atingir pico na virada do ano &nbsp;&nbsp; Folha Vitória",
+      "imageUrl": null,
+      "source": "Folha Vitória",
+      "publishedAt": "2026-11-22T23:34:20.000Z",
+      "firstSeenAt": "2026-11-23T03:42:22.779Z",
+      "lastSeenAt": "2026-11-23T03:42:22.779Z"
+    },
+    {
+      "id": "event-8866248f",
+      "category": "brasil",
+      "title": "Isso é Fantástico — a história por trás das nove pessoas mortas em barco no Pará",
+      "url": "https://news.google.com/rss/articles/CBMi8wFBVV95cUxPTmdzN1A1a2dMeGtmVkVlY3NMNHJBTFFUZ2hmOG9adVZjZTRvdjVyUlBGVkI5cnBjZFcxaDVGRlFiOGVTdm1GUUgzNU9GN3RLRTktSGNFMEsyd25jTVFGMzk5S0NhbExZc2lOTlgxWHAyUHlJazc0dGNNSzRGejY2STlSZVFKWGs0dy1objU4V05fSEhnd3lWZzc2dEZMT1c5c21jby01NG1MZmUyVFdvMl9nRHBxMGw5R2dDN0pIVl9ETGRZT25ULWhZNG4tUHhwdXQ4NDN6ZDFoNzRIWThhQnprMXNUYjVYTHFJQzNna2ltZ2vSAYICQVVfeXFMT0J5Q2JtQkt5YnZNdWZCbU1yckY1bG9yY3plYmhiWm5yVGpEYVhqX2NTbEtKdHJvU3NUYmVsMFluVjAzeEJVV20xTXNTVEM5a1NqNjc4OHFzTWNCUGNjNnc0VExhUzdNYmpJaWpZbVRzeXhib1JjSDJCTFd3YkRFSDM2cm4xVWtlZUpPYllqSlJ6bnBldnFNbmZVYjh1UWdBcXJjV2NTM2NHSzY1aUFGTll6cGRvSzFSM0tJZV9oVnE5MXA1Y2Zid2dxSk05TWUzeUZWcGdTZFZMOEt5UkNEdDBUcXVmSVFxNTFuMk1yNG5laXBxUGIwcjlkNEFjS2N3MGV3",
+      "description": "Isso é Fantástico — a história por trás das nove pessoas mortas em barco no Pará &nbsp;&nbsp; G1",
+      "imageUrl": null,
+      "source": "G1",
+      "publishedAt": "2026-11-22T22:41:32.000Z",
+      "firstSeenAt": "2026-11-23T03:42:22.779Z",
+      "lastSeenAt": "2026-11-23T03:42:22.779Z"
+    },
     {
       "id": "event-e860ecb2",
       "category": "brasil",
@@ -18,7 +102,7 @@
       "source": "Aventuras na História",
       "publishedAt": "2026-11-22T22:00:25.000Z",
       "firstSeenAt": "2026-11-22T23:06:43.926Z",
-      "lastSeenAt": "2026-11-22T23:06:43.926Z"
+      "lastSeenAt": "2026-11-23T03:42:22.779Z"
     },
     {
       "id": "event-f682e361",
@@ -31,6 +115,18 @@
       "publishedAt": "2026-11-22T22:00:00.000Z",
       "firstSeenAt": "2026-11-22T23:06:43.926Z",
       "lastSeenAt": "2026-11-22T23:06:43.926Z"
+    },
+    {
+      "id": "event-aeaed744",
+      "category": "mundo",
+      "title": "O fracasso da COP31, segundo quem estava lá",
+      "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxOWTcxQXVRNDJOTDQzV0JrbkRXOEFUOE82YUZaUE9qdGNXSDhNY21MLV95a0NvMXpiaXNzc284SzJuUjl6Vi1Cd2k1Nzk0R3hNelFOVE1TQl8wYzBGN1c1c2JNT1VOU0Z1N21BR1l1c0ZRZTdUZExDaGVhU0lPb1l2V2w0dHpBdnh1TklpWW9jdUZ6SnpIcTFScHpsbldUT1Raa3c",
+      "description": "O fracasso da COP31, segundo quem estava lá &nbsp;&nbsp; Nexo Jornal",
+      "imageUrl": null,
+      "source": "Nexo Jornal",
+      "publishedAt": "2026-11-22T21:58:39.000Z",
+      "firstSeenAt": "2026-11-23T03:42:22.779Z",
+      "lastSeenAt": "2026-11-23T03:42:22.779Z"
     },
     {
       "id": "event-34c1be59",
@@ -66,7 +162,7 @@
       "source": "Olympics",
       "publishedAt": "2026-11-22T19:47:46.000Z",
       "firstSeenAt": "2026-11-22T23:06:43.926Z",
-      "lastSeenAt": "2026-11-22T23:06:43.926Z"
+      "lastSeenAt": "2026-11-23T03:42:22.779Z"
     },
     {
       "id": "event-1a961e1d",
@@ -78,7 +174,7 @@
       "source": "SBT News",
       "publishedAt": "2026-11-22T19:29:38.000Z",
       "firstSeenAt": "2026-11-22T23:06:43.926Z",
-      "lastSeenAt": "2026-11-22T23:06:43.926Z"
+      "lastSeenAt": "2026-11-23T03:42:22.779Z"
     },
     {
       "id": "event-4196f3a8",
@@ -114,7 +210,7 @@
       "source": "SpaceMoney",
       "publishedAt": "2026-11-22T18:27:10.000Z",
       "firstSeenAt": "2026-11-22T23:06:43.926Z",
-      "lastSeenAt": "2026-11-22T23:06:43.926Z"
+      "lastSeenAt": "2026-11-23T03:42:22.779Z"
     },
     {
       "id": "event-8cc6e4df",
@@ -234,7 +330,7 @@
       "source": "ND Mais",
       "publishedAt": "2026-11-22T14:03:39.000Z",
       "firstSeenAt": "2026-11-22T17:48:53.991Z",
-      "lastSeenAt": "2026-11-22T23:06:43.926Z"
+      "lastSeenAt": "2026-11-23T03:42:22.779Z"
     },
     {
       "id": "event-5587d239",
@@ -307,72 +403,9 @@
       "publishedAt": "2026-11-22T08:00:52.000Z",
       "firstSeenAt": "2026-11-22T10:07:17.343Z",
       "lastSeenAt": "2026-11-22T10:07:17.343Z"
-    },
-    {
-      "id": "event-5b8e2798",
-      "category": "brasil",
-      "title": "Quase 90% dos parques eólicos do Brasil apresentam alertas socioambientais",
-      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxOaFpZQ1FZWTRXOFNxd005U2p5Xzc3WWxkZElnZ1duRzF5LWVUT0NUdktWVl9uX20wMC1SQUw1dk4zSXB6Xy1JbEhLenljZUxRckhHZC1DOVVmbzBSbGtwdG9LN1VfQURBODZpLW9EVkNzYlpGMHNhNmlvZnFyX2U4OWJBSFc2SmtzMGR1WHQ1SE9RZ2FmQUxWVTdKT3dWWGlUakl6OHRjVTQ2WDk0",
-      "description": "Quase 90% dos parques eólicos do Brasil apresentam alertas socioambientais &nbsp;&nbsp; Vero Notícias",
-      "imageUrl": null,
-      "source": "Vero Notícias",
-      "publishedAt": "2026-11-22T02:30:00.000Z",
-      "firstSeenAt": "2026-11-22T10:07:17.343Z",
-      "lastSeenAt": "2026-11-22T10:07:17.343Z"
-    },
-    {
-      "id": "event-3fea5317",
-      "category": "mundo",
-      "title": "Principais notícias do mundo na noite de hoje (21)",
-      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxOWE5CZ2p2VFBVYVZWRnFwSEtDdG1OT3hBV0VzMGswbFFoa3dUQjhpSEVUY3psbjgtbjJwOFQ5OHhTT2dJemgtci1Bb2drRUhWSE9ScU9OenROQklNTnYya014eHF4UzZVb01tTVBramloTWZSX3dYNHlwakRKX1B3MFJzRjJ3SzdQRkIyWWtmZ2Z0ZWRSVDYtOFpnYWVVMUo0R0JPTDhRWlZ4X3pt",
-      "description": "Principais notícias do mundo na noite de hoje (21) &nbsp;&nbsp; Tribuna do Sertão",
-      "imageUrl": null,
-      "source": "Tribuna do Sertão",
-      "publishedAt": "2026-11-22T01:05:01.000Z",
-      "firstSeenAt": "2026-11-22T02:28:00.783Z",
-      "lastSeenAt": "2026-11-22T10:07:17.343Z"
-    },
-    {
-      "id": "event-dfa1fd9f",
-      "category": "brasil",
-      "title": "Billie Jean King Cup: Brasil vence Canadá pela primeira vez na história e avança às qualificatórias",
-      "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxNZmE3MXNEN2dsYzJSZ2xYblE5NUZWWVdRS3MyeTR5Z0drVEltUHR6WVVZVUZMeUJ3UmJPend3d1FlRVFvczgybDBBcG82WVo0NUJ2Mm1QMk1tNHNMb1Y1WjBiRTV2c1ZYdXRqUkxWOTNKY285c3gzc01RNHV0ZnN1VTR3eGpKU1k2cWRRajIzMlpjTmlIdmwwZ3dHbE94MmRGYjNILWl5V1VNUkRaNmZ2WlU0M3VuVERMc2lPMGNxVHd2VDZfX0JHLVRGVTB0anJveERPbGdPck1GeVRjZVZ1StIB7wFBVV95cUxOVWZkZEFCRlhoTms4MV9BWjhvMGN3RGlFMUtFMTRCNmR3RDhNUEZSc3ExWktTWkMycXkwUVlYR0lndmNmc01qR1B6MHBDV3BLb0dyc2Y5MjViaFY1QlJfTHJ3M2k2WngwMDY5ZEdjYUtpbkNORW9JX3JDTjNSYmY1bUp4LWMzaXdyY0hoT1MtYkZXV0ZsSkt4SXYxWURiT1BocjBXU3VKdDI5RS0wMEVGMDJZZS1sZHFGUU1LNi1aQ2FoV2NNUUFNNlRRZG5YY20xZ0NIYXBOMjFySjEtMXg2bW12bmx6dkhOd21MYW4tVQ",
-      "description": "Billie Jean King Cup: Brasil vence Canadá pela primeira vez na história e avança às qualificatórias &nbsp;&nbsp; ge",
-      "imageUrl": null,
-      "source": "ge",
-      "publishedAt": "2026-11-21T23:27:58.000Z",
-      "firstSeenAt": "2026-11-22T02:28:00.783Z",
-      "lastSeenAt": "2026-11-22T10:07:17.343Z"
-    },
-    {
-      "id": "event-f75d4fd2",
-      "category": "mundo",
-      "title": "COP31 avança pelo sábado (21) sem acordo",
-      "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxPQTluRXRkR1J3cDNDU2VjX2o5eE04QlE3TXNHeWFmYlBha3J1amN4QTl4WHh6OW9HSXBzM1Z4UkxoNHVDYUhEZFhUQzJNbF9GTTcwdktJVHZFQlVfdy1zWUdUam9JNHNNQ1JlbnV5V3pkOU9vRVdUbmpFNjI5NzUyNms3MA",
-      "description": "COP31 avança pelo sábado (21) sem acordo &nbsp;&nbsp; SBT News",
-      "imageUrl": null,
-      "source": "SBT News",
-      "publishedAt": "2026-11-21T23:11:24.000Z",
-      "firstSeenAt": "2026-11-22T10:07:17.343Z",
-      "lastSeenAt": "2026-11-22T10:07:17.343Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-22T02:28:00.783Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 12,
-      "newArticles": 6,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-22T10:07:17.343Z",
       "ok": true,
@@ -417,42 +450,30 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-23T03:42:22.779Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 13,
+      "newArticles": 8,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 4,
-  "lastSuccessfulAt": "2026-11-22T23:06:43.926Z",
+  "lastSuccessfulAt": "2026-11-23T03:42:22.779Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-22T23:06:43.926Z",
+      "checkedAt": "2026-11-23T03:42:22.779Z",
       "warnings": [
-        {
-          "id": "56476",
-          "title": "Tempestade",
-          "severity": "Perigo Potencial",
-          "phase": "previsto",
-          "regions": [
-            "DO",
-            "DE"
-          ],
-          "startsAt": "2026-11-23T00:00:00.000Z",
-          "endsAt": "2026-11-23T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
-        },
-        {
-          "id": "56479",
-          "title": "Baixa Umidade",
-          "severity": "Perigo Potencial",
-          "phase": "previsto",
-          "regions": [
-            "DO"
-          ],
-          "startsAt": "2026-11-23T00:00:00.000Z",
-          "endsAt": "2026-11-23T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
-        },
         {
           "id": "56480",
           "title": "Tempestade",
@@ -472,7 +493,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-22T23:06:43.926Z",
+      "checkedAt": "2026-11-23T03:42:22.779Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
