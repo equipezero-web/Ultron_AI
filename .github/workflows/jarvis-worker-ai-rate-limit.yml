@@ -1,0 +1,28 @@
+name: JARVIS Worker AI rate-limit contract
+on:
+  pull_request:
+    paths:
+      - 'backend/worker.js'
+      - 'backend/worker-ai-rate-limit.js'
+      - 'backend/wrangler.jsonc'
+      - 'wrangler.jsonc'
+      - 'tests/jarvis-worker-ai-rate-limit.mjs'
+      - '.github/workflows/jarvis-worker-ai-rate-limit.yml'
+  push:
+    branches: [main]
+jobs:
+  quota:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+      - name: Check native Cloudflare quota binding and 429 route
+        run: node tests/jarvis-worker-ai-rate-limit.mjs
+      - name: Check worker and rate module syntax
+        run: |
+          node --check backend/worker.js
+          node --check backend/worker-ai-rate-limit.js
