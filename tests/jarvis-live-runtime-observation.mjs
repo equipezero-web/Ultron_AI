@@ -96,8 +96,10 @@ const combined=await showJarvisEvolutionProgress({
  showAnswer:text=>shown.push(text)
 });
 assert.equal(combined.ok,true);
-assert.equal(combined.accepted,0);
-assert.equal(combined.partial,6);
+assert.equal(combined.accepted,manifest.capabilities.filter(x=>x.acceptance==="accepted").length);
+assert.equal(combined.partial,manifest.capabilities.filter(x=>x.acceptance==="pending"&&
+  x.checks?.code?.state==="partial-scope-verified"&&
+  x.checks?.ci?.state==="partial-scope-verified").length);
 assert.equal(combined.liveObserved,5);
 assert.equal(combined.liveTotal,6);
 assert.equal(shown.length,1);
