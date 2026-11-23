@@ -1,3 +1,4 @@
+import {searchSerpApi} from "./serpapi-search.js";
 const SERPER_ENDPOINT = "https://google.serper.dev/search";
 const SEARCH_TIMEOUT_MS = 3200;
 const VISUAL_REQUEST=/\b(imagem|imagens|foto|fotos|fotografia|fotografias|mostre uma|mostre imagens|quero ver|exiba|visualize|ilustre|picture|photos)\b/i;
@@ -246,7 +247,7 @@ export function youtubeVideoId(value){
     return /^[A-Za-z0-9_-]{11}$/.test(id||'')?id:null;
   }catch{return null;}
 }
-export async function searchGoogle(env, query, { limit = 6, media = null } = {}) {
+async function searchSerper(env, query, { limit = 6, media = null } = {}) {
   const startedAt = Date.now();
   const selected=media===false?{images:false,videos:false}:media===true?{images:true,videos:true}:mediaPolicy(query);
   const apiKey = String(env?.SERPER_API_KEY || "").trim();
@@ -356,6 +357,42 @@ export async function searchGoogle(env, query, { limit = 6, media = null } = {})
       elapsedMs: Date.now() - startedAt
     };
   }
+}
+
+// Preserve the Serper response contract. Only spend SerpApi credits when
+// the primary engine has failed to provide organic sources (or isn't configured).
+export async function searchGoogle(env,query,options={}){
+ const primary=await searchSerper(env,query,options);
+ if(Array.isArray(primary.results)&&primary.results.length)return primary;
+ if(!env?.SERPAPI_API_KEY)return primary;
+ const normalized=clean(normalizeResearchQuestion(query),500);
+ if(!normalized)return primary;
+ const wantImages=(options.media===false?false:options.media===true?true:mediaPolicy(query).images)&&
+   !(Array.isArray(primary.images)&&primary.images.length);
+ const alternate=await searchSerpApi(env,normalized,{
+   includeImages:wantImages,limit:options.limit||6
+ });
+ if(!alternate.ok)return {...primary,
+   fallback:{provider:"serpapi-google",configured:alternate.configured,used:false,
+     error:alternate.error}};
+ const results=dedupeAndRank(alternate.results.map(normalizeResult).filter(Boolean),
+   Math.max(3,Math.min(8,Number(options.limit)||6)));
+ const images=(Array.isArray(primary.images)?primary.images:[]).concat(alternate.images||[]).slice(0,4);
+ const videos=Array.isArray(primary.videos)?primary.videos:[];
+ const extras={answerBox:"",knowledgeGraph:""};
+ return {...primary,configured:true,provider:"serpapi-google",
+   providerLabel:"Google Search via SerpApi",results,images,videos,
+   contextText:results.length?buildGoogleContext(normalized,results,extras):"",
+   extras,quality:{sourceCount:results.length,
+     averageScore:results.length?Math.round(results.reduce((a,b)=>a+b.score,0)/results.length):0,
+     diverseDomains:new Set(results.map(x=>x.source)).size},
+   error:results.length?null:"SerpApi retornou imagens, mas nenhuma fonte textual.",
+   searchedAt:new Date().toISOString(),
+   mediaStatus:{automatic:true,imageCount:images.length,videoCount:videos.length,
+     imageError:alternate.mediaStatus?.imageError||primary.mediaStatus?.imageError||null,
+     videoError:primary.mediaStatus?.videoError||null},
+   fallback:{provider:"serpapi-google",configured:true,used:true,
+     imagesRequested:wantImages}};
 }
 
 export function researchVisualContext(research) {
