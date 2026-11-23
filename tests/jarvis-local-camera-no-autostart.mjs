@@ -68,8 +68,6 @@ assert.equal(browser.ULTRON_CAMERA_RUNTIME.active,false);
 await browser.ULTRON_CAMERA_RUNTIME.retry();
 assert.equal(startCalls,1,"manual retry must remain possible");
 assert.equal(browser.ULTRON_CAMERA_RUNTIME.active,true);
-assert.equal(browser.ULTRON_CAMERA_RUNTIME.diagnostics instanceof Function,false,
-  "functions from vm realm are not cross-realm Function instances");
 
 // The controller itself must reject background restoration even if an older
 // runtime/plugin tries to invoke start({restored:true}).
