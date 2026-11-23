@@ -1,4 +1,5 @@
 import {vetClientTaskContext,contextSearchQuery} from "./task-context.js";
+import {checkPublicAiQuota} from "./worker-ai-rate-limit.js";
 import {loadLiveWeather} from "./weather-live.js";
 import {loadSpatialIntensity} from "../modules/jarvis-spatial-intensity.js";
 import {loadWorldGeo} from "../modules/jarvis-world-geodata.js";
@@ -828,7 +829,7 @@ async function handleAi(request, env) {
   }
 
   // Text-only mode: do not generate cloud voice or trigger browser TTS fallbacks.
-  // Microphone input is a separate feature and remains available on permission.
+  // Operator maintenance: no voice output or microphone activation here.
   data.audioBase64=null;
   data.audioMimeType=null;
   data.voice={enabled:false,provider:null,providerLabel:null,nextFallback:null,
@@ -1135,6 +1136,7 @@ async function health(env) {
     privateGitHub: {enabled:privateGitHubConfig(env).enabled,access:"access-jwt+repo-allowlist",mode:"read-only"},
     // Public configuration signal; no tokens, emails or policy values are disclosed.
     // This does not prove that the hostname is actually protected by Access.
+    aiRateLimit: {configured:typeof env?.AI_RATE_LIMITER?.limit==="function",scope:"per-cloudflare-location",approximate:true},
     accountPlugins: {configured:accountAccessConfig(env).enabled,
       uiOriginAllowed:accountAccessConfig(env).origins.includes("https://equipezero-web.github.io"),
       scope:"per-account",authenticated:true,arbitraryCode:false},
@@ -1754,7 +1756,20 @@ export default {
       return json(await unifiedState(env, operatorId));
     }
 
-    if (path === "/api/ai" && request.method === "POST") return handleAi(request, env);
+    if (path === "/api/ai" && request.method === "POST") {
+      // Charge the published Cloudflare rate-limit binding before expensive
+      // provider/news/research requests. Public health and devices unaffected.
+      const quota=await checkPublicAiQuota(request,env);
+      if(!quota.ok){
+        return new Response(JSON.stringify({
+          ok:false,error:quota.error,retryAfterSeconds:quota.status===429?60:null
+        }),{status:quota.status||503,headers:{
+          ...corsHeaders(),"Cache-Control":"no-store",
+          ...(quota.status===429?{"Retry-After":"60"}:{})
+        }});
+      }
+      return handleAi(request,env);
+    }
 
     return json({
       error: "Rota não encontrada.",
