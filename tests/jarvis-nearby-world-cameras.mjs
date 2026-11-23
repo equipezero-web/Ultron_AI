@@ -1,0 +1,17 @@
+import assert from "node:assert/strict";
+import {nearbyWorldCameras} from "../modules/jarvis-nearby-world-cameras.js";
+const nearRecife=nearbyWorldCameras({lat:-8.126,lng:-34.923});
+assert.equal(nearRecife[0]?.id,"recife-airport");
+assert.equal(nearRecife[0]?.distanceKm,0);
+assert.equal(nearRecife[0]?.liveVerified,false);
+assert.equal(nearRecife[0]?.distanceType,"approximate-reference");
+assert.ok(nearRecife.every(x=>x.distanceKm<=50));
+const ny=nearbyWorldCameras({lat:40.757,lng:-73.986,maxKm:50});
+assert.ok(ny.some(x=>x.id==="times-square"));
+assert.ok(!ny.some(x=>x.id==="recife-airport"));
+const remote=nearbyWorldCameras({lat:-3.8,lng:-61.1,maxKm:50});
+assert.deepEqual(remote,[]);
+assert.deepEqual(nearbyWorldCameras({lat:101,lng:0}),[]);
+assert.deepEqual(nearbyWorldCameras({lat:NaN,lng:0}),[]);
+assert.deepEqual(nearbyWorldCameras({lat:0,lng:0,maxKm:0}),[]);
+console.log("WORLD CAMERAS: verified curated catalog, approximate geospatial matching and no invented feeds PASS");
