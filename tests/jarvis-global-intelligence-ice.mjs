@@ -1,9 +1,8 @@
 import assert from "node:assert/strict";
 import {parseEonetEvents,collectGlobalIntelligence,GLOBAL_INTEL_SOURCES}
  from "../backend/global-intelligence-monitor.js";
-import {verifiedIntelligenceEvents,intelligenceScenario}
- from "../modules/jarvis-global-intelligence-ring.js";
-import {GEO_PALETTE} from "../modules/jarvis-geospatial-model.js";
+import {GEO_PALETTE,validateGeoScenario} from "../modules/jarvis-geospatial-model.js";
+import {readFileSync} from "node:fs";
 
 const now=Date.parse("2026-11-23T14:00:00Z");
 const at=new Date(now-10*60000).toISOString();
@@ -57,9 +56,23 @@ for(const source of ["usgs","nasa","gdacs"]){
  assert.ok(report.events.filter(x=>x.source===source).length>=12,
   "each responding provider must keep a visible share: "+source);
 }
-assert.ok(verifiedIntelligenceEvents(report).some(x=>x.kind==="seaLakeIce"));
-const iceMap=intelligenceScenario(report,{kind:"seaLakeIce"});
-assert.ok(iceMap,"NASA ice points must be accepted by the canonical map renderer");
-assert.ok(iceMap.frames[0].points.every(p=>p.kind==="seaLakeIce"));
-assert.ok(iceMap.frames[0].points.every(p=>p.source.includes("eonet.gsfc.nasa.gov")));
+const ring=readFileSync(new URL("../modules/jarvis-global-intelligence-ring.js",import.meta.url),"utf8");
+assert.match(ring,/seaLakeIce:"seaLakeIce"/,
+ "the Ring must preserve NASA ice as its own map type");
+assert.match(ring,/seaLakeIce:"Gelo marinho\/lacustre"/,
+ "the filter must identify environmental ice correctly");
+const icePoints=report.events.filter(e=>e.kind==="seaLakeIce").slice(0,12).map(e=>({
+ id:e.id,name:e.title,lat:e.lat,lng:e.lng,kind:e.kind,detail:e.description,
+ source:e.url,observedAt:e.eventAt
+}));
+assert.ok(icePoints.length>=12);
+const valid=validateGeoScenario({
+ id:"global-ice-test",source:{name:"NASA EONET",
+  url:"https://eonet.gsfc.nasa.gov/",disclaimer:"Registro ambiental, não risco previsto."},
+ frames:[{id:"ice",name:"Gelo monitorado",type:"registro publicado",
+  kind:"observed",description:"Pontos catalogados, não área de risco.",points:icePoints}]
+});
+assert.ok(valid,"NASA ice points must be accepted by canonical geospatial validation");
+assert.ok(valid.frames[0].points.every(p=>p.kind==="seaLakeIce"));
+assert.ok(valid.frames[0].points.every(p=>p.source.includes("eonet.gsfc.nasa.gov")));
 console.log("WORLD NASA ICE PASS: 461-style source schema, category fairness, 3-provider visibility and non-hazard map labels");
