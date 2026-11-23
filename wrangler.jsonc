@@ -24,6 +24,14 @@
     "GOOGLE_TTS_SPEAKING_RATE": "0.96"
   },
 
+  "ratelimits": [
+    {
+      "name": "AI_RATE_LIMITER",
+      "namespace_id": "61232817",
+      "simple": {"limit": 60, "period": 60}
+    }
+  ],
+
   "ai": {
     "binding": "AI"
   },
