@@ -1,6 +1,7 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
+import {allowLocalOrigin,createLocalApiGuard,requireSafeLocalBind} from "./local-api-guard.js";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import {
@@ -15,55 +16,28 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = Number(process.env.PORT || 3000);
 
-const elevenLabsConfigured = Boolean(
-  process.env.ELEVENLABS_API_KEY &&
-    process.env.ELEVENLABS_VOICE_ID
-);
-const deviceBridgeConfigured = Boolean(
-  process.env.DEVICE_BRIDGE_URL
-);
+const deviceBridgeConfigured = Boolean(process.env.DEVICE_BRIDGE_URL);
+const localBind=requireSafeLocalBind(process.env.ULTRON_LOCAL_HOST,
+  process.env.ULTRON_LOCAL_API_TOKEN);
+const originExtra=process.env.ULTRON_LOCAL_ALLOWED_ORIGINS||"";
 
-app.use(cors());
-app.use(express.json({ limit: "8mb" }));
-
-async function elevenLabsTTS(text) {
-  const voiceId = process.env.ELEVENLABS_VOICE_ID;
-  const modelId =
-    process.env.ELEVENLABS_MODEL || "eleven_flash_v2_5";
-  const outputFormat =
-    process.env.ELEVENLABS_OUTPUT_FORMAT || "mp3_22050_32";
-
-  const response = await fetch(
-    `https://api.elevenlabs.io/v1/text-to-speech/${encodeURIComponent(voiceId)}?output_format=${encodeURIComponent(outputFormat)}`,
-    {
-      method: "POST",
-      headers: {
-        "xi-api-key": process.env.ELEVENLABS_API_KEY,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        text,
-        model_id: modelId
-      })
-    }
-  );
-
-  if (!response.ok) {
-    const detail = await response.text();
-    throw new Error(
-      `HTTP ${response.status}: ${detail.slice(0, 500)}`
-    );
-  }
-
-  const buffer = Buffer.from(
-    await response.arrayBuffer()
-  );
-
-  return {
-    base64: buffer.toString("base64"),
-    mimeType: "audio/mpeg"
-  };
-}
+// The Node server is a local developer fallback. Reject origins that would
+// otherwise spend provider API keys through another webpage or a malicious LAN
+// host. Production continues to use the canonical Cloudflare Worker.
+app.use(createLocalApiGuard({
+  originExtra,networkExposed:localBind.networkExposed,
+  networkToken:process.env.ULTRON_LOCAL_API_TOKEN
+}));
+app.use(cors({
+  origin(origin,callback){
+    return callback(null,origin&&allowLocalOrigin(origin,{extra:originExtra})?origin:false);
+  },
+  methods:["GET","POST","OPTIONS"],
+  allowedHeaders:["Content-Type","Authorization"],
+  credentials:false,
+  maxAge:600
+}));
+app.use(express.json({limit:"8mb"}));
 
 app.post("/api/ai", async (req, res) => {
   try {
@@ -146,55 +120,11 @@ app.post("/api/vision/analyze", async (req, res) => {
   }
 });
 
-app.post("/api/voice", async (req, res) => {
-  return res.status(503).json({error:"Voz do J.A.R.V.I.S. desativada pelo operador."});
-  try {
-    if (!elevenLabsConfigured) {
-      return res.status(503).json({
-        error:
-          "ElevenLabs não configurado. Defina ELEVENLABS_API_KEY e ELEVENLABS_VOICE_ID no .env."
-      });
-    }
-
-    const text = String(
-      req.body?.text || ""
-    ).trim();
-
-    if (!text) {
-      return res.status(400).json({
-        error: "Texto vazio."
-      });
-    }
-
-    if (text.length > 3000) {
-      return res.status(413).json({
-        error:
-          "Texto muito longo para teste de voz."
-      });
-    }
-
-    const audio = await elevenLabsTTS(text);
-
-    res.json({
-      audioBase64: audio.base64,
-      audioMimeType: audio.mimeType
-    });
-  } catch (error) {
-    console.error(
-      "[ULTRON AI] ElevenLabs:",
-      error
-    );
-
-    res.status(500).json({
-      error:
-        "Falha ao gerar voz ElevenLabs.",
-      detail:
-        process.env.NODE_ENV === "development"
-          ? error.message
-          : undefined
-    });
-  }
-});
+// Voice and microphone functions remain unavailable during maintenance.
+app.post("/api/voice",(_req,res)=>res.status(503).json({
+  ok:false,error:"voice-operator-maintenance",
+  message:"Voz do J.A.R.V.I.S. desativada pelo operador."
+}));
 
 app.get("/api/health", (_req, res) => {
   res.json({
@@ -209,7 +139,10 @@ app.get("/api/health", (_req, res) => {
       .split(",")
       .map((item) => item.trim())
       .filter(Boolean),
-    elevenlabs: elevenLabsConfigured,
+    elevenlabs: false,
+    voiceEnabled: false,
+    voiceMaintenance: {mode:"text-only",inputEnabled:false,outputEnabled:false},
+    localNodeBackend: true,
     deviceBridge: deviceBridgeConfigured,
     visualAnalysis: Boolean(process.env.GEMINI_API_KEY)
   });
@@ -245,8 +178,6 @@ app.get("/{*splat}", (_req, res) =>
   res.sendFile(path.join(publicRoot, "index.html"))
 );
 
-app.listen(PORT, () =>
-  console.log(
-    `ULTRON AI online: http://localhost:${PORT}`
-  )
+app.listen(PORT,localBind.host,() =>
+  console.log(`ULTRON AI local online: http://${localBind.host}:${PORT} (rate-limited; voice off)`)
 );
