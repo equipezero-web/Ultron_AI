@@ -18,9 +18,18 @@ const ACTIONS=[
   {agent:"visual",pattern:/\b(globo|mapa|visualiz\w*|neural ring)\b/,tool:"visual.render"}
 ];
 const NEGATORS=/\b(?:nao|nunca|jamais|sem|evite|dispense)\b/g;
-const CLAUSE_BOUNDARY=/[,;.!?]+|\b(?:mas|porem|contudo|e sim|em vez disso)\b/;
+// Coordinated requests can contain independent positive and negative clauses:
+ // "não quero notícias e quero a previsão" must keep the forecast.
+const CLAUSE_BOUNDARY=/[,;.!?]+|\b(?:mas|porem|contudo|e sim|em vez disso)\b|\be\s+(?=(?:quero|preciso|mostre|mostrar|exiba|exibir|consulte|consultar|verifique|verificar|pesquise|pesquisar|analise|analisar|visualize|visualizar|abra|abrir|veja|lembre|use)\b)/;
 // A negative instruction is not authorization to plan its opposite. Each
 // capability is matched within an affirmative clause, never just by keywords.
+const DEVICE_ACTION=/\b(?:status|estado|bateria|conexao|conectado|pareado|pareamento|sincroniz\w*|notificac\w*|verifique|verificar|teste|testar|conecte|conectar|monitore|monitorar|inspecione|inspecionar|desconecte|desconectar)\b/;
+function isDeviceAction(clause,action){
+  if(action.agent!=="devices")return true;
+  // A display target is not a request to control or inspect a device:
+  // "notícias no celular" / "previsão na TV".
+  return /\bdispositivos?\b/.test(clause)||DEVICE_ACTION.test(clause);
+}
 function affirmativeMatch(clause,pattern) {
   const matcher=new RegExp(pattern.source,"g");
   let hit;
@@ -37,9 +46,11 @@ function affirmativeMatch(clause,pattern) {
   return false;
 }
 export function planAgents(input,{maxSteps=6}={}) {
-  const message=String(input||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().slice(0,2000);
+  const message=String(input||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().slice(0,2000).trim();
+  if(!message)return {steps:[],parallelizable:false,requiresApproval:false,advisory:true,reason:"EMPTY_COMMAND"};
   const clauses=message.split(CLAUSE_BOUNDARY).map(x=>x.trim()).filter(Boolean);
-  const recognized=ACTIONS.filter(a=>clauses.some(c=>affirmativeMatch(c,a.pattern)));
+  const recognized=ACTIONS.filter(a=>clauses.some(c=>
+    isDeviceAction(c,a)&&affirmativeMatch(c,a.pattern)));
   // A fully negated request must not silently become an unrelated web search.
   const onlyNegation=recognized.length===0&&clauses.some(c=>/\b(?:nao|nunca|jamais|sem|evite|dispense)\b/.test(c));
   const selected=recognized.length?recognized:onlyNegation?[]:[{agent:"research",tool:"research.search"}];

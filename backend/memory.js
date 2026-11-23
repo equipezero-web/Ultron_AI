@@ -4,7 +4,7 @@ const DEFAULT_RECENT_MESSAGES = 24;
 const DEFAULT_MEMORIES = 10;
 const MAX_MEMORY_CANDIDATES = 160; // bounded, operator-scoped D1 retrieval pool
 
-let schemaReady = false;
+const schemaReady = new WeakSet();
 let schemaError = null;
 
 const SCHEMA_STATEMENTS = [
@@ -91,7 +91,7 @@ export function hasMemoryDatabase(env) {
 
 export async function ensureMemorySchema(env) {
   if (!hasMemoryDatabase(env)) return false;
-  if (schemaReady) return true;
+  if (schemaReady.has(env.ULTRON_DB)) return true;
 
   schemaError = null;
 
@@ -107,7 +107,7 @@ export async function ensureMemorySchema(env) {
     }
   }
 
-  schemaReady = true;
+  schemaReady.add(env.ULTRON_DB);
   return true;
 }
 
@@ -314,38 +314,46 @@ export async function saveExchange(
           (id, operator_id, created_at, updated_at)
          VALUES (?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
          ON CONFLICT(id) DO UPDATE SET
-           updated_at = CURRENT_TIMESTAMP`
+           updated_at = CURRENT_TIMESTAMP
+         WHERE conversations.operator_id = excluded.operator_id`
       )
       .bind(conversationId, operatorId),
     env.ULTRON_DB
       .prepare(
         `INSERT INTO messages
           (id, conversation_id, operator_id, role, content, provider, model, created_at)
-         VALUES (?, ?, ?, 'user', ?, NULL, NULL, CURRENT_TIMESTAMP)`
+         SELECT ?, c.id, c.operator_id, 'user', ?, NULL, NULL, CURRENT_TIMESTAMP
+         FROM conversations AS c
+         WHERE c.id = ? AND c.operator_id = ?`
       )
-      .bind(userMessageId, conversationId, operatorId, String(userMessage)),
+      .bind(userMessageId, String(userMessage), conversationId, operatorId),
     env.ULTRON_DB
       .prepare(
         `INSERT INTO messages
           (id, conversation_id, operator_id, role, content, provider, model, created_at)
-         VALUES (?, ?, ?, 'assistant', ?, ?, ?, CURRENT_TIMESTAMP)`
+         SELECT ?, c.id, c.operator_id, 'assistant', ?, ?, ?, CURRENT_TIMESTAMP
+         FROM conversations AS c
+         WHERE c.id = ? AND c.operator_id = ?`
       )
       .bind(
         assistantMessageId,
-        conversationId,
-        operatorId,
         String(assistantMessage),
         provider,
-        model
+        model,
+        conversationId,
+        operatorId
       ),
     env.ULTRON_DB
       .prepare(
         `UPDATE conversations
          SET message_count = message_count + 2,
              updated_at = CURRENT_TIMESTAMP
-         WHERE id = ? AND operator_id = ?`
+         WHERE id = ? AND operator_id = ?
+           AND EXISTS (SELECT 1 FROM messages WHERE id = ? AND operator_id = ?)
+           AND EXISTS (SELECT 1 FROM messages WHERE id = ? AND operator_id = ?)`
       )
-      .bind(conversationId, operatorId)
+      .bind(conversationId, operatorId,
+        userMessageId, operatorId, assistantMessageId, operatorId)
   ];
 
   if (explicitMemory) {
@@ -354,22 +362,29 @@ export async function saveExchange(
         .prepare(
           `INSERT OR IGNORE INTO memories
             (id, operator_id, category, content, importance, source_message_id, created_at, updated_at)
-           VALUES (?, ?, 'explicit', ?, 90, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)`
+           SELECT ?, c.operator_id, 'explicit', ?, 90, m.id, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+           FROM conversations AS c JOIN messages AS m
+             ON m.conversation_id = c.id AND m.operator_id = c.operator_id
+           WHERE c.id = ? AND c.operator_id = ? AND m.id = ?`
         )
         .bind(
-          crypto.randomUUID(),
-          operatorId,
-          explicitMemory,
-          userMessageId
+          crypto.randomUUID(), explicitMemory,
+          conversationId, operatorId, userMessageId
         )
     );
   }
 
   try {
-    await env.ULTRON_DB.batch(statements);
+    const writes = await env.ULTRON_DB.batch(statements);
+    // D1 batch commits atomically. A conversation ID belonging to another
+    // operator must not create messages, memories, or a false "saved" result.
+    const recorded = Array.isArray(writes) &&
+      writes.slice(0, 4).every(write => Number(write?.meta?.changes) === 1);
+    if (!recorded) return { saved: false, error: "CONVERSATION_SCOPE_CONFLICT" };
     return {
       saved: true,
-      explicitMemorySaved: Boolean(explicitMemory)
+      explicitMemorySaved: Boolean(explicitMemory &&
+        Number(writes[4]?.meta?.changes) === 1)
     };
   } catch (error) {
     console.error("[ULTRON MEMORY] Falha ao salvar conversa:", error);
