@@ -161,22 +161,28 @@ export async function collectGlobalIntelligence({fetchImpl=fetch,now=()=>Date.no
     headers:{Accept:"application/geo+json, application/json"}
    });
    if(!res?.ok)throw Error("HTTP "+(res?.status??"indisponível"));
-   const events=parser(await res.json(),{now:now()});
+   const payload=await res.json();
+   const events=parser(payload,{now:now()});
    if(!events)throw Error("Formato geográfico inválido");
-   return events;
+   // Counts reveal when an upstream GeoJSON feed responded but its features
+   // were outside the supported event/date/geometry requirements.
+   return {events,receivedCount:Array.isArray(payload?.features)?payload.features.length:0};
   }finally{clearTimeout(timer);}
  }
  const output=await Promise.all(tasks.map(async([source,url,parser])=>{
   try{
-   const events=await fetchEvents(url,parser);
+   const {events,receivedCount}=await fetchEvents(url,parser);
    return {source,ok:true,events,status:{source,ok:true,count:events.length,
+     receivedCount,discardedCount:Math.max(0,receivedCount-events.length),
      url:GLOBAL_INTEL_SOURCES[source].url,mode:"primary"}};
   }catch(error){
    if(source==="gdacs"){
     try{
-     const events=await fetchEvents(GDACS_BACKUP_URL,parser,6500);
+     const {events,receivedCount}=await fetchEvents(GDACS_BACKUP_URL,parser,6500);
      return {source,ok:true,events,status:{
-      source,ok:true,count:events.length,url:GLOBAL_INTEL_SOURCES.gdacs.url,
+      source,ok:true,count:events.length,
+      receivedCount,discardedCount:Math.max(0,receivedCount-events.length),
+      url:GLOBAL_INTEL_SOURCES.gdacs.url,
       mode:"official-recent-fallback",
       note:"Fonte oficial alternativa recente; cobertura e janela podem diferir da consulta SEARCH."
      }};
