@@ -12,6 +12,7 @@ on:
       - 'index.html'
       - 'tests/jarvis-phase8-continuity.mjs'
       - 'tests/jarvis-global-intelligence-recovery.mjs'
+      - 'tests/jarvis-global-intelligence-ice.mjs'
       - 'scripts/jarvis-world-public-probe.mjs'
       - '.github/workflows/jarvis-phase8-continuity.yml'
   push:
@@ -26,6 +27,7 @@ on:
       - 'index.html'
       - 'tests/jarvis-phase8-continuity.mjs'
       - 'tests/jarvis-global-intelligence-recovery.mjs'
+      - 'tests/jarvis-global-intelligence-ice.mjs'
       - 'scripts/jarvis-world-public-probe.mjs'
       - '.github/workflows/jarvis-phase8-continuity.yml'
 permissions:
@@ -51,6 +53,7 @@ jobs:
           node tests/jarvis-phase8-continuity.mjs
           node tests/jarvis-global-intelligence.mjs
           node tests/jarvis-global-intelligence-recovery.mjs
+          node tests/jarvis-global-intelligence-ice.mjs
           node tests/jarvis-world-priority-notice.mjs
           node tests/jarvis-weather-monitor.mjs
           node tests/jarvis-phase7-recovery.mjs
