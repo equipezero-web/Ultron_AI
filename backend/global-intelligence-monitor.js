@@ -5,7 +5,7 @@
  */
 export const GLOBAL_INTEL_SOURCES=Object.freeze({
  usgs:{name:"USGS",url:"https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_day.geojson"},
- nasa:{name:"NASA EONET",url:"https://eonet.gsfc.nasa.gov/api/v3/events/geojson?status=open&days=7&limit=80"},
+ nasa:{name:"NASA EONET",url:"https://eonet.gsfc.nasa.gov/api/v3/events/geojson?status=all&days=30&limit=300"},
  gdacs:{name:"GDACS",url:"https://www.gdacs.org/gdacsapi/api/events/geteventlist/SEARCH"}
 });
 // Failover is to GDACS's own documented recent-events feed, never to an
@@ -28,9 +28,9 @@ const CREATE=[
  "CREATE INDEX IF NOT EXISTS idx_jarvis_global_intelligence_checked ON jarvis_global_intelligence(checked_at DESC)"
 ];
 const safe=(s,n=160)=>String(s??"").replace(/[<>\r\n]/g," ").replace(/\s+/g," ").trim().slice(0,n);
-const validDate=(v,now)=>{
+const validDate=(v,now,maxAgeDays=15)=>{
  const d=typeof v==="number"?v:Date.parse(String(v??""));
- return Number.isFinite(d)&&d>now-15*86400000&&d<=now+300000?new Date(d).toISOString():null;
+ return Number.isFinite(d)&&d>now-maxAgeDays*86400000&&d<=now+300000?new Date(d).toISOString():null;
 };
 const safeLink=(url,hosts)=>{
  try{const x=new URL(String(url||""));return x.protocol==="https:"&&hosts.some(h=>x.hostname===h||x.hostname.endsWith("."+h))?x.href:null;}
@@ -95,14 +95,23 @@ export function parseEonetEvents(payload,{now=Date.now()}={}){
  // Some NASA feeds contain hundreds of ice records before other categories;
  // scan a bounded larger window and enforce fair per-category limits.
  const events=[],kindCounts=new Map();
+ const diagnostics={receivedCount:payload.features.length,acceptedCount:0,discardedCount:0,reasons:{}};
+ const reject=reason=>{diagnostics.reasons[reason]=(diagnostics.reasons[reason]||0)+1;};
  for(const feature of payload.features.slice(0,800)){
   const p=feature?.properties||{},xy=point(feature?.geometry);
   const id=safe(p.id||feature.id,80);
-  const eventAt=validDate(p.date||p.geometryDates?.at?.(-1)||feature.properties?.date,now);
-  const categories=(Array.isArray(p.categories)?p.categories:[]).map(c=>typeof c==="string"?c:c?.id||c?.title||"");
+  const dates=Array.isArray(p.geometryDates)?p.geometryDates:[];
+  const candidateDates=[p.date,...dates].map(v=>Date.parse(String(v??""))).filter(Number.isFinite);
+  const mostRecent=candidateDates.length?Math.max(...candidateDates):NaN;
+  const eventAt=validDate(mostRecent,now,30);
+  const categories=(Array.isArray(p.categories)?p.categories:[]).flatMap(c=>
+   typeof c==="string"?[c]:[c?.id,c?.title].filter(Boolean));
   const kind=categoryOf(categories.join(" "));
-  if(!xy||!id||!eventAt||kind==="other")continue;
-  if((kindCounts.get(kind)||0)>=32)continue;
+  if(!xy){reject("invalid_geometry");continue;}
+  if(!id){reject("missing_id");continue;}
+  if(!eventAt){reject("invalid_or_out_of_window_date");continue;}
+  if(kind==="other"){reject("unsupported_category");continue;}
+  if((kindCounts.get(kind)||0)>=32){reject("category_limit");continue;}
   const url=safeLink(p.link,["eonet.gsfc.nasa.gov"])||
       "https://eonet.gsfc.nasa.gov/api/v3/events/"+encodeURIComponent(id);
   const event=normEvent({id:"nasa:"+id,source:"nasa",kind,
@@ -113,7 +122,12 @@ export function parseEonetEvents(payload,{now=Date.now()}={}){
    lat:xy.lat,lng:xy.lng,eventAt,updatedAt:eventAt,url,gdacsAlert:null,
    location:safe(p.title,140),representative:xy.representative});
   if(event){events.push(event);kindCounts.set(kind,(kindCounts.get(kind)||0)+1);}
+  else reject("invalid_normalized_event");
  }
+ if(payload.features.length>800)diagnostics.reasons.scan_limit=payload.features.length-800;
+ diagnostics.acceptedCount=events.length;
+ diagnostics.discardedCount=payload.features.length-events.length;
+ Object.defineProperty(events,"diagnostics",{value:diagnostics,enumerable:false});
  return events;
 }
 export function parseGdacsEvents(payload,{now=Date.now()}={}){
@@ -172,14 +186,15 @@ export async function collectGlobalIntelligence({fetchImpl=fetch,now=()=>Date.no
    if(!events)throw Error("Formato geográfico inválido");
    // Counts reveal when an upstream GeoJSON feed responded but its features
    // were outside the supported event/date/geometry requirements.
-   return {events,receivedCount:Array.isArray(payload?.features)?payload.features.length:0};
+   return {events,receivedCount:Array.isArray(payload?.features)?payload.features.length:0,diagnostics:events.diagnostics||null};
   }finally{clearTimeout(timer);}
  }
  const output=await Promise.all(tasks.map(async([source,url,parser])=>{
   try{
-   const {events,receivedCount}=await fetchEvents(url,parser);
+   const {events,receivedCount,diagnostics}=await fetchEvents(url,parser);
    return {source,ok:true,events,status:{source,ok:true,count:events.length,
      receivedCount,discardedCount:Math.max(0,receivedCount-events.length),
+     ...(diagnostics?{discardReasons:diagnostics.reasons}:{}),
      url:GLOBAL_INTEL_SOURCES[source].url,mode:"primary"}};
   }catch(error){
    if(source==="gdacs"){
