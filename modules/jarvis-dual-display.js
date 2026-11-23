@@ -1,7 +1,7 @@
 // Operator-controlled two-monitor layout for one browser window spanning extended Windows displays.
 // No display enumeration, screen capture, monitor permission, telemetry or device pairing.
 const KEY="jarvis-dual-display-settings-v1";
-const PARAM=new URLSearchParams(location.search);
+const PARAM=new URLSearchParams(typeof location==="undefined"?"":location.search);
 function clampSplit(v){return Math.max(30,Math.min(70,Math.round(Number(v)||50)));}
 export function dualDisplaySettings({split=50,ringSide="left"}={}){
  return {split:clampSplit(split),ringSide:ringSide==="right"?"right":"left"};
@@ -45,5 +45,7 @@ function install(){
  body.classList.add("ultron-dual-display");
  save();
 }
-if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",install,{once:true});
-else install();
+if(typeof document!=="undefined"){
+ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",install,{once:true});
+ else install();
+}
