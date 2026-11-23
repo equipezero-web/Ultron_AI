@@ -7,7 +7,8 @@
     "Percentual anterior é referência histórica, não evidência nem valor atual automaticamente atualizado.",
     "100% exige teste de uso real, comprovante verificável e dependências externas autorizadas.",
     "Nenhum check de CI sozinho comprova produção, transmissões externas ou funcionamento de hardware.",
-    "Seis capacidades possuem provas parciais de código/CI com escopo delimitado; nenhuma foi aceita em produção/dispositivo real, portanto não aumentar automaticamente o percentual final."
+    "Seis capacidades possuem provas parciais de código/CI com escopo delimitado; nenhuma foi aceita em produção/dispositivo real, portanto não aumentar automaticamente o percentual final.",
+    "Em 23/11/2026, quatro capacidades adicionais ganharam evidências PARCIAIS de código/CI referentes às PR #217 e #219. A observação pública de produção registra 7/8 checks e falhou na recusa anônima do Access; nenhuma homologação integral adicional foi concedida."
   ],
   "phases": [
     {
@@ -49,8 +50,18 @@
       "codeReference": "README.md",
       "acceptanceRequirement": "Homologação contínua da produção, falhas externas e identidade de conta.",
       "checks": {
-        "code": "not-certified",
-        "ci": "not-certified",
+        "code": {
+          "state": "partial-scope-verified",
+          "url": "https://github.com/equipezero-web/Ultron_AI/pull/219",
+          "verifiedAt": "2026-11-23",
+          "scope": "Worker recebeu limitador nativo para /api/ai, com retorno 429 e contrato testado, e deploy público do commit #219 aprovado; Cloudflare Access permanece com falha na prova anônima, D1 real e homologação global pendentes."
+        },
+        "ci": {
+          "state": "partial-scope-verified",
+          "url": "https://github.com/equipezero-web/Ultron_AI/actions/runs/45160706784",
+          "verifiedAt": "2026-11-23",
+          "scope": "CI de regressão de código aprovada; não comprova a capacidade inteira, credenciais, serviço publicado ou dispositivo físico."
+        },
         "production": "not-certified",
         "physical": "not-certified"
       },
@@ -108,8 +119,18 @@
       "codeReference": "modules/ultron-orchestrator-v4270.js",
       "acceptanceRequirement": "Compreender comandos flexíveis e compostos; no log, “...feche a previsão” caiu na IA.",
       "checks": {
-        "code": "not-certified",
-        "ci": "not-certified",
+        "code": {
+          "state": "partial-scope-verified",
+          "url": "https://github.com/equipezero-web/Ultron_AI/pull/217",
+          "verifiedAt": "2026-11-23",
+          "scope": "Interpretação de comandos compostos e referências de celular/TV ajustada com testes de regressão; comandos naturais abertos e execução no navegador ainda não certificados."
+        },
+        "ci": {
+          "state": "partial-scope-verified",
+          "url": "https://github.com/equipezero-web/Ultron_AI/actions/runs/45159060402",
+          "verifiedAt": "2026-11-23",
+          "scope": "CI de regressão de código aprovada; não comprova a capacidade inteira, credenciais, serviço publicado ou dispositivo físico."
+        },
         "production": "not-certified",
         "physical": "not-certified"
       },
@@ -947,8 +968,18 @@
       "codeReference": "docs/jarvis-memory-hub-increment.md",
       "acceptanceRequirement": "Validar recuperação, exclusão e isolamento no ambiente real.",
       "checks": {
-        "code": "not-certified",
-        "ci": "not-certified",
+        "code": {
+          "state": "partial-scope-verified",
+          "url": "https://github.com/equipezero-web/Ultron_AI/pull/217",
+          "verifiedAt": "2026-11-23",
+          "scope": "Memória D1 corrigida para impedir colisão cross-account do conversationId, inserts condicionados ao operador e recibos SQL transacionais; testes executados em SQLite, D1 de produção ainda não homologado."
+        },
+        "ci": {
+          "state": "partial-scope-verified",
+          "url": "https://github.com/equipezero-web/Ultron_AI/actions/runs/45159060402",
+          "verifiedAt": "2026-11-23",
+          "scope": "CI de regressão de código aprovada; não comprova a capacidade inteira, credenciais, serviço publicado ou dispositivo físico."
+        },
         "production": "not-certified",
         "physical": "not-certified"
       },
@@ -1096,8 +1127,18 @@
       "codeReference": "docs/jarvis-phase14-supervised-autonomy.md",
       "acceptanceRequirement": "Planejar solicitações abertas sem perder contexto nem sair executando ações não autorizadas.",
       "checks": {
-        "code": "not-certified",
-        "ci": "not-certified",
+        "code": {
+          "state": "partial-scope-verified",
+          "url": "https://github.com/equipezero-web/Ultron_AI/pull/217",
+          "verifiedAt": "2026-11-23",
+          "scope": "Planejador de agentes corrigido para distinguir intenção negativa de afirmativa na mesma frase e evitar despacho não solicitado a dispositivos; missões abertas e ações físicas continuam sem homologação."
+        },
+        "ci": {
+          "state": "partial-scope-verified",
+          "url": "https://github.com/equipezero-web/Ultron_AI/actions/runs/45159060402",
+          "verifiedAt": "2026-11-23",
+          "scope": "CI de regressão de código aprovada; não comprova a capacidade inteira, credenciais, serviço publicado ou dispositivo físico."
+        },
         "production": "not-certified",
         "physical": "not-certified"
       },
