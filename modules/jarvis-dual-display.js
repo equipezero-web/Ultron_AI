@@ -45,6 +45,42 @@ function install(){
  body.classList.add("ultron-dual-display");
  save();
 }
+if(typeof window!=="undefined"){
+ window.ULTRON_DUAL_DISPLAY={
+  apply(action){
+   if(!["activate","disable","swap"].includes(action))
+     return {ok:false,message:"Comando de tela inválido."};
+   try{
+    const next=new URL(location.href);
+    if(action==="swap"){
+     const cfg=read();
+     const changed=dualDisplaySettings({...cfg,ringSide:cfg.ringSide==="left"?"right":"left"});
+     localStorage.setItem(KEY,JSON.stringify(changed));
+     if(!document.body.classList.contains("ultron-dual-display")){
+       next.searchParams.set("display","dual");location.assign(next.href);
+       return {ok:true,message:"Ativando modo duas telas com Ring invertido."};
+     }
+     document.body.classList.toggle("dual-ring-right",changed.ringSide==="right");
+     window.dispatchEvent(new Event("resize"));
+     return {ok:true,message:"Lado do Neural Ring invertido. Ajuste a divisão se necessário."};
+    }
+    if(action==="activate"){
+     if(next.searchParams.get("display")==="dual")
+       return {ok:true,message:"Modo duas telas já está ativo. Ajuste DIVISÃO no cabeçalho."};
+     next.searchParams.set("display","dual");
+     location.assign(next.href);
+     return {ok:true,message:"Ativando modo duas telas. Estenda a janela entre os monitores."};
+    }
+    if(!next.searchParams.has("display"))
+     return {ok:true,message:"Modo normal já está ativo."};
+    next.searchParams.delete("display");location.assign(next.href);
+    return {ok:true,message:"Restaurando o modo normal."};
+   }catch{
+    return {ok:false,message:"Não foi possível modificar o modo de exibição."};
+   }
+  }
+ };
+}
 if(typeof document!=="undefined"){
  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",install,{once:true});
  else install();
