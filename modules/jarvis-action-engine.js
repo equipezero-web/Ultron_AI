@@ -141,7 +141,7 @@ async function executeStep(step,original){
    const data=validateGeoScenario(report.dataset);
    if(!data?.theme||data.theme.topic!==a.topic||data.projection!==(a.region==="world"?"world":"brazil"))
      throw Error("Fonte mundial não forneceu uma visualização geográfica validada");
-   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.96.1");
+   if(!w.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.96.2");
    const geo=requireApi(w.ULTRON_GEO_VISUAL,"open");
    const result=await geo.open({data,view:a.view});
    if(!result?.ok||!geo.state.visible||geo.state.scenario!==data.id||geo.state.mode!==a.view)
