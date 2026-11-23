@@ -13,4 +13,12 @@ assert.match(css,/grid-row:2 \/ 4/);
 const html=readFileSync(new URL("../index.html",import.meta.url),"utf8");
 assert.match(html,/jarvis-dual-display\.css/);
 assert.match(html,/jarvis-dual-display\.js/);
+const {parseLocalCommand}=await import("../modules/jarvis-local-commands.js");
+for(const phrase of ["modo duas telas","Jarvis, ativar modo duas telas","abra duas telas","dois monitores","tela dupla"])
+ assert.deepEqual(parseLocalCommand(phrase),{type:"dual-display",action:"activate"},phrase);
+for(const phrase of ["desativar modo duas telas","modo normal"])
+ assert.deepEqual(parseLocalCommand(phrase),{type:"dual-display",action:"disable"},phrase);
+assert.deepEqual(parseLocalCommand("inverter lado do neural ring"),{type:"dual-display",action:"swap"});
+for(const phrase of ["como ativar modo duas telas?","não ativar modo duas telas","dois computadores"])
+ assert.notEqual(parseLocalCommand(phrase)?.type,"dual-display",phrase);
 console.log("DUAL DISPLAY PASS: bounded split, optional mode, adaptive layout, original UI preserved");
