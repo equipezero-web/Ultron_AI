@@ -76,7 +76,7 @@ export async function renderVerifiedWeatherScene(weather,view,{geoController,isC
     return {ok:false,reason:"FORECAST_SCENE_NOT_VERIFIED"};
   let geo=geoController||globalThis.window?.ULTRON_GEO_VISUAL;
   if(!geo){
-    try{await import("./jarvis-geospatial-visual.js?v=4.96.1");}
+    try{await import("./jarvis-geospatial-visual.js?v=4.96.2");}
     catch{return {ok:false,reason:"GEO_MODULE_NOT_LOADED"};}
     geo=globalThis.window?.ULTRON_GEO_VISUAL;
   }
