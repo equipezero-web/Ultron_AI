@@ -120,7 +120,10 @@ function installGlobalIntelligence(){
  const sourcePanel=()=>{
   footer.replaceChildren();
   for(const s of report?.sourceStatus||[]){
-   const detail=s.ok?(s.mode==="official-recent-fallback"?"confirmada · feed oficial alternativo":"confirmada"):
+   const accepted=Math.max(0,Number(s.count)||0),raw=Math.max(0,Number(s.receivedCount)||0);
+   const coverage=s.ok?(raw>accepted?" · "+accepted+"/"+raw+" registros válidos":
+     accepted===0?" · 0 eventos elegíveis":""):"";
+   const detail=s.ok?(s.mode==="official-recent-fallback"?"confirmada · feed oficial alternativo":"confirmada")+coverage:
      "não confirmada"+(s.error?" · "+clean(s.error,55):"");
    const item=elt("span","",s.source.toUpperCase()+": "+detail);
    item.className="jarvis-global-source"+(s.ok?"":" missing");footer.append(item);
