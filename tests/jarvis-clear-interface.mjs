@@ -115,7 +115,7 @@ for(const [label,source] of [
 ])assert.ok(source.includes("jarvis-geospatial-visual.js?v=4.96.2"),label+
  " must use canonical geospatial module URL to prevent scene replacement");
 
-assert.ok(globalModule.includes('jarvis-geospatial-visual.js?v=4.96.1'),
+assert.ok(globalModule.includes('jarvis-geospatial-visual.js?v=4.96.2'),
  "Global map must use the same geospatial module URL as the host page");
 assert.match(meteoBridge,/ultron:meteo-center-ready/);
 
