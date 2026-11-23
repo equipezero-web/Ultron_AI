@@ -65,7 +65,10 @@ const icePoints=report.events.filter(e=>e.kind==="seaLakeIce").slice(0,12).map(e
  id:e.id,name:e.title,lat:e.lat,lng:e.lng,kind:e.kind,detail:e.description,
  source:e.url,observedAt:e.eventAt
 }));
-assert.ok(icePoints.length>=12);
+assert.ok(icePoints.length>=10,
+ "the source fair-share also reserves room for NASA wildfire alongside ice");
+assert.ok(report.events.some(e=>e.source==="nasa"&&e.kind==="wildfires"),
+ "NASA ice cannot crowd out NASA's later wildfire category");
 const valid=validateGeoScenario({
  id:"global-ice-test",source:{name:"NASA EONET",
   url:"https://eonet.gsfc.nasa.gov/",disclaimer:"Registro ambiental, não risco previsto."},
