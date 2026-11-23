@@ -47,5 +47,6 @@ export function continuityView(report){
   return {ok:true,ring,lines,
     text:"CONTINUIDADE // "+lines.slice(0,3).join(" "),
     status:{world:w.state,weather:t.state,worldAt:w.checkedAt||null,
-      weatherAt:t.checkedAt||null}};
+      weatherAt:t.checkedAt||null,
+      failedSources:failedSources.map(s=>s.name)}};
 }
