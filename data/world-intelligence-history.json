@@ -4,10 +4,154 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-23T03:42:22.779Z",
-  "oldestEventAt": "2026-11-22T08:00:52.000Z",
-  "windowStartAt": "2026-11-22T03:42:22.779Z",
+  "updatedAt": "2026-11-23T13:41:50.635Z",
+  "oldestEventAt": "2026-11-22T14:03:39.000Z",
+  "windowStartAt": "2026-11-22T13:41:50.635Z",
   "events": [
+    {
+      "id": "event-7a372790",
+      "category": "brasil",
+      "title": "CNN Brasil demite 16 profissionais e reduz equipes após queda na publicidade",
+      "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxOVExLX2hfc2FDb1BubnpMUE84Z2VOSnI3X3lyNXFoQTRoS3pBM0RZS0NhNkplSHcwZDMtbjVOSHlMYWlzRllnTWctcHJxeWRfRUcxME1qUmNORV9maS1CZi1XVUZBVVhhNFVaMlJCVlA1eU5xeGVtYUdVWHo0Sm9KbFdxLUpCdWlIVmRNY3R0dHY0dXhEZFRJTUFRSkdJSDV2bDNWWm1ncnpLVzU1N2prYURYR0M2X2k0X0otelRBTEJ0ZGlIZkxiUnpjNFIzZ9IB3AFBVV95cUxOdjRkQ0ljMUw4NGdXTVNXZHZ3S0w5eGJnanBObUMyamZTYzBtaXlhbEpjV2ZveENOMEh4ckZMbHVCVHFLNTZHejMycUpaNkM2cFhwZi1aOGctTE8tQUZGU3BQNHR2OVRZX2VaaGhOUkxtTjFxelU0dm5mcDlUZXBjcnhFNU03LTJYQy1Bek5vQmhIaExVR3huajRlSm1ldERLMlJNZ2tMV1l2VVpvcFc2ZU5HMnBmeE93WFVxT2FOQ2tiYXdDMzktZWpmbmFlUEw1eWhrV0RfMHBaeGpW",
+      "description": "CNN Brasil demite 16 profissionais e reduz equipes após queda na publicidade &nbsp;&nbsp; Notícias da TV",
+      "imageUrl": null,
+      "source": "Notícias da TV",
+      "publishedAt": "2026-11-23T13:20:00.000Z",
+      "firstSeenAt": "2026-11-23T13:41:50.635Z",
+      "lastSeenAt": "2026-11-23T13:41:50.635Z"
+    },
+    {
+      "id": "event-70ddb4a8",
+      "category": "brasil",
+      "title": "História da Fiat no Brasil: de Betim ao topo das vendas e liderança de mercado",
+      "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxNNE1xM2xVYlhtNks3WW1sSmhTY0tsYjN5RzlVYWdGZC1sS3NLWkstVFNaMVM2WU5EUjNYdEpPREhiR3k2Q0E3QnlaZVMxaUx5bmdxdVpOUWJZR3o0OFRTNWxOMnR1RjBYb3dON0xpOFR1cHdOMWxOTGQwd3pTLWQ0RXNjLVJKbVE3aktPY1Q4Qk1MTTFqWXBUVHUxajZWeDZvUmZwVmFWY1p0RkdoUmVWT21TVkdsU2MxMVVTajk0OHd4REFveGcw",
+      "description": "História da Fiat no Brasil: de Betim ao topo das vendas e liderança de mercado &nbsp;&nbsp; Quatro Rodas",
+      "imageUrl": null,
+      "source": "Quatro Rodas",
+      "publishedAt": "2026-11-23T13:00:00.000Z",
+      "firstSeenAt": "2026-11-23T13:41:50.635Z",
+      "lastSeenAt": "2026-11-23T13:41:50.635Z"
+    },
+    {
+      "id": "event-b083e24a",
+      "category": "brasil",
+      "title": "'Jogos Vorazes – Amanhecer na Colheita' ultrapassa 1 milhão de espectadores nos cinemas do Brasil",
+      "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxQT3haczlkaWw0OEhDclhmdnVfUkFHSkREOXJDZ2kwOTJxVm9XTjJtZXNPSFVxNF90cUZ6SEl1Rm9RaF8zS2E5am5UUDJncUcxcElxd01uSzZsUEx1emV2UndmbVVVeGtWYTZqLU4zSlV4RzI2TXEzb2xOdEJmaG5RV1BkdGF2WlpWT3kteUVwdGo4RXRMUWZKZkJPck1xOEF2dThNeG5OYnllUm5sbzNIdDdrMmVCRVhDZUFoc3NYbWdPckZFTWc",
+      "description": "'Jogos Vorazes – Amanhecer na Colheita' ultrapassa 1 milhão de espectadores nos cinemas do Brasil &nbsp;&nbsp; Ingresso.com",
+      "imageUrl": null,
+      "source": "Ingresso.com",
+      "publishedAt": "2026-11-23T12:54:13.000Z",
+      "firstSeenAt": "2026-11-23T13:41:50.635Z",
+      "lastSeenAt": "2026-11-23T13:41:50.635Z"
+    },
+    {
+      "id": "event-1bca90e4",
+      "category": "brasil",
+      "title": "Biografia narra jornada de dois séculos de uma família entrelaçada à História do Brasil - JDV",
+      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNNjlvVE11QVNGbmUwZDBQVVVlbUlRTXF5R0FJbnphUUxadG5rSnFHay1nLWZKYXl0Ym1WbFEwMTVQSWdRbk9ZU3VZQU9qanA1MF9Fc2hlUDUzYWtaVGc0MXFsNDJmNjRRS1ZSX2MyZ0NzUUhsTFc5cG5MOTdBQnhGQ1Vxb1B6RVRlNllUNUlLVWFkZjNveDFlR2dyaWVaeUk5ZjR5UDEyak54LTBSNFAyUA",
+      "description": "Biografia narra jornada de dois séculos de uma família entrelaçada à História do Brasil &nbsp;&nbsp; JDV - Jornal do Vale",
+      "imageUrl": null,
+      "source": "JDV - Jornal do Vale",
+      "publishedAt": "2026-11-23T12:23:44.000Z",
+      "firstSeenAt": "2026-11-23T13:41:50.635Z",
+      "lastSeenAt": "2026-11-23T13:41:50.635Z"
+    },
+    {
+      "id": "event-a63de5a6",
+      "category": "clima",
+      "title": "El Niño atingirá pico na virada do ano e pode superar todos os registros desde 1950; veja o que esperar",
+      "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxObUNrR1JJZWVCX2ZhelU2UGRLejg5WWthN0VrMlhDeDF0RVpLckRqdWJQV0tLQTBKb1dTMkpPWEZBMmNFek9DZ0xzMmMtX2hMbzd3VUNRcjlnN01xOFBPVEw4Mkc5dDdPb2o2czlwVlJuRlJ5UkRrMnZlRnNuQUk2NExLb0FQVm1PeWZVbkMtTEo4aFlrbTB5ZEdFYTFkdUFiMHRxM20xdVVvNXJnelRPUkd3cWt0QlpaMDZqSlByYXhjVUNWdTQ3VmhDVzJSNFZ0d25pZHBaaldnWVF6N1k3edIB4AFBVV95cUxObUNrR1JJZWVCX2ZhelU2UGRLejg5WWthN0VrMlhDeDF0RVpLckRqdWJQV0tLQTBKb1dTMkpPWEZBMmNFek9DZ0xzMmMtX2hMbzd3VUNRcjlnN01xOFBPVEw4Mkc5dDdPb2o2czlwVlJuRlJ5UkRrMnZlRnNuQUk2NExLb0FQVm1PeWZVbkMtTEo4aFlrbTB5ZEdFYTFkdUFiMHRxM20xdVVvNXJnelRPUkd3cWt0QlpaMDZqSlByYXhjVUNWdTQ3VmhDVzJSNFZ0d25pZHBaaldnWVF6N1k3eQ",
+      "description": "El Niño atingirá pico na virada do ano e pode superar todos os registros desde 1950; veja o que esperar &nbsp;&nbsp; GMC Online",
+      "imageUrl": null,
+      "source": "GMC Online",
+      "publishedAt": "2026-11-23T11:49:48.000Z",
+      "firstSeenAt": "2026-11-23T13:41:50.635Z",
+      "lastSeenAt": "2026-11-23T13:41:50.635Z"
+    },
+    {
+      "id": "event-772ba22a",
+      "category": "clima",
+      "title": "El Niño deve atingir o pico na virada do ano e tem cerca de 60% de chance de superar recorde desde 1950",
+      "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxNVm9OcWpmanBCUjg5ZGcwemtmdE45TXRJb3UwZHFCU2Z1Y25kbGh4elNrd2tKeVhHcVlKQ3BKdjQ5Wi1vZ1ZmN1ZHZVpRdjBjN2hNLTRYODczeDRZYmc5MUJCTWNQUGo3ckhLWXFYellSZnB5OW1uc2V2MWtKSGJ5S2NmSjdLZm9iSXZ1N0kySVhsR014MGdwc1NrWk5YWUVia083TUpwdENnXzUtOTdyOFJEYmlJaV9RV1lzaS1vWXdYblh2a1hyd21mVUZLbzYxUFM1dmFzSEk2RWtkbU44",
+      "description": "El Niño deve atingir o pico na virada do ano e tem cerca de 60% de chance de superar recorde desde 1950 &nbsp;&nbsp; Rádio Rural",
+      "imageUrl": null,
+      "source": "Rádio Rural",
+      "publishedAt": "2026-11-23T11:33:00.000Z",
+      "firstSeenAt": "2026-11-23T13:41:50.635Z",
+      "lastSeenAt": "2026-11-23T13:41:50.635Z"
+    },
+    {
+      "id": "event-9b7c1c80",
+      "category": "santa-catarina",
+      "title": "Frente fria coloca SC em alerta para novos temporais",
+      "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNbWZtazJMc0lJTVBSMTlhdEdqd3FmcFdRc1JwR3diQjhacXRySjZSZ3VzbUFxOXlpUnIyVXppVVUwM3ktVmNMN1p1bVV2aExUR0c2WE15a2dVRHR3T2RRUlY1anV2Z29hTF9SUmd3am01dW1uTlFmYkR0emYzMG1hTlhSNFk4VlIwV19UQU16eWpGYzRDeWZnU21B",
+      "description": "Frente fria coloca SC em alerta para novos temporais &nbsp;&nbsp; Imagem da Ilha",
+      "imageUrl": null,
+      "source": "Imagem da Ilha",
+      "publishedAt": "2026-11-23T11:21:00.000Z",
+      "firstSeenAt": "2026-11-23T13:41:50.635Z",
+      "lastSeenAt": "2026-11-23T13:41:50.635Z"
+    },
+    {
+      "id": "event-b64b7957",
+      "category": "santa-catarina",
+      "title": "Prefeitura de Joinville atualiza ocorrências relacionadas ao temporal de sexta-feira",
+      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPM0tvaDNINkY1Nms0aUZDa1ozaVlkUm4yX2JqQVJrckRSNjI3U3RiaWMwSk9Fbmhkbm55YzdEaHMxbFkxTHhYTzZkWm53T3dBNDF6OHUxbzU3OWRqakpETG9fUmEzTFpWXzJHRHhCakxIdmMxTENKYTZNRFplY2JHTmFkVXVOLTJwdFJGQUoxZEdoc3M4ZE5pelo5VFlKdURKZk1QLUE2Zk1XeDZVM1E",
+      "description": "Prefeitura de Joinville atualiza ocorrências relacionadas ao temporal de sexta-feira &nbsp;&nbsp; Real News",
+      "imageUrl": null,
+      "source": "Real News",
+      "publishedAt": "2026-11-23T11:20:27.000Z",
+      "firstSeenAt": "2026-11-23T13:41:50.635Z",
+      "lastSeenAt": "2026-11-23T13:41:50.635Z"
+    },
+    {
+      "id": "event-3d1658ee",
+      "category": "mundo",
+      "title": "COP31 termina sem acordo após impasse sobre combustíveis fósseis",
+      "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxQWE91bVlFaHRza3czYWhaczB0aHB3TGFGblFkSWs2eXAxbVdqd214SThuRjVNQkRTQ2Q2amJXbWRQcHZ3Z2IzOVlSbm50MUZHMC1Xb1JGWERmTHVPM0NpR0QtSzVEeExMc0YxNFFQNTk5cW92NkR0UWVHMmhOQ3lmUVIxWE5PMG9jV05ZZFpSemdOQ3d0MVRSdG1SS3ZVRFI1a2xvMHZzVlF5NGJya2tsaklkLVZXbGZ5c1pEYTNGYndZTzRpVTMwdUZleXJvOG1ibzJoeDJB",
+      "description": "COP31 termina sem acordo após impasse sobre combustíveis fósseis &nbsp;&nbsp; UOL Notícias",
+      "imageUrl": null,
+      "source": "UOL Notícias",
+      "publishedAt": "2026-11-23T11:17:21.000Z",
+      "firstSeenAt": "2026-11-23T13:41:50.635Z",
+      "lastSeenAt": "2026-11-23T13:41:50.635Z"
+    },
+    {
+      "id": "event-b5c7ffe5",
+      "category": "mundo",
+      "title": "Confira os principais destaques do Jornal O Dia desta segunda (23)",
+      "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxQN0o1UXo2WHAyakV1aUVER1F3YS11S211cVNxTTVRVmhSVlVPU09BWDNCbTJvTmRiZDFiOHp6bkJwc3RCOEVKMVVfT0xEY25pVmxINjNGQmlZOHExc29abkQyaFJuOGlvWnRPaEtKS2lEdDdSMllUbEEzNDJkTzJlQ0tXdFdkNlpzR20wZTlXRVFlWUR3alhsY21udFpUb3RkSjFBd1NZMW9kZEJlZERYUWpwMjlKVDJn",
+      "description": "Confira os principais destaques do Jornal O Dia desta segunda (23) &nbsp;&nbsp; Portal O Dia",
+      "imageUrl": null,
+      "source": "Portal O Dia",
+      "publishedAt": "2026-11-23T11:13:39.000Z",
+      "firstSeenAt": "2026-11-23T13:41:50.635Z",
+      "lastSeenAt": "2026-11-23T13:41:50.635Z"
+    },
+    {
+      "id": "event-c4f3e8a9",
+      "category": "mundo",
+      "title": "França: Ministério Público investiga denúncias de racismo e apologia ao nazismo em escola da polícia",
+      "url": "https://news.google.com/rss/articles/CBMinAJBVV95cUxPNHYycGRuYlpkamJwRzB5UGtjdnFVMWp2ci1nNk1PQnZrUzV6S0w0bUhLWENpU1JIYVVxVFBUbndPS25zb2N2UjJQSHFabmhwSm10NGF0WkRsX1FJaElWV1lMdUxmeXhjVEt5SlhVdHBaVDBUbnVvc3oyQzdzVHZEeVhac1N1aFRUY1c2cjIySGg2QUxRWnM5bklHQkhUZzAta0hDOUp6ZDVyVkR4ODBOWXhtblQ2cHJCUlRIZXcxZk8xLU5kUEVxUlJ5d0NRUUkxT3pzVGJta3FRc0xadVpwTEd4OHRrNGNfZWhnZmpfQU1aTFpDN19zQzBmMk54cDd4Y2pnRWpEd0VxX3p3aVRydERaYzNBaE1hdXpwSA",
+      "description": "França: Ministério Público investiga denúncias de racismo e apologia ao nazismo em escola da polícia &nbsp;&nbsp; Terra",
+      "imageUrl": null,
+      "source": "Terra",
+      "publishedAt": "2026-11-23T11:12:00.000Z",
+      "firstSeenAt": "2026-11-23T13:41:50.635Z",
+      "lastSeenAt": "2026-11-23T13:41:50.635Z"
+    },
+    {
+      "id": "event-493b7de1",
+      "category": "santa-catarina",
+      "title": "Temporais deixam mortos, provocam desabamentos e atingem milhares de pessoas no Brasil",
+      "url": "https://news.google.com/rss/articles/CBMi8AFBVV95cUxNTktCYlg1ZnJIcm1ybTB4eW1scTh1QmR5MWVsMmVLZ2NFSUZ3RmFFdThhdk1hNEZoMDVyRmp3MklNUzJDdVdOeXVvS0NfZHk3ZWVHUWRIelgzeldfQ1VPcVdvMmpnbUp4bHRuZDk3WHlOMy03M3FXQmkzRFd6bkhjTjduS2RpbFBTOXJWTzJHQktOX0FLZG0ya1ppTkpBWGRuNnYwUTk4MzlKTXNvb1BJMXlOWElUb1BtTnFxLXZ1UXdIcnVNcWhydFRlZnk2OVhGU1EtVFF1enRJd040aGdDMmhRcDlHLUdiTU0xY1Rqd2E",
+      "description": "Temporais deixam mortos, provocam desabamentos e atingem milhares de pessoas no Brasil &nbsp;&nbsp; www.correiodamanha.com.br",
+      "imageUrl": null,
+      "source": "www.correiodamanha.com.br",
+      "publishedAt": "2026-11-23T10:56:00.000Z",
+      "firstSeenAt": "2026-11-23T13:41:50.635Z",
+      "lastSeenAt": "2026-11-23T13:41:50.635Z"
+    },
     {
       "id": "event-b29f4b06",
       "category": "santa-catarina",
@@ -78,7 +222,7 @@
       "source": "Folha Vitória",
       "publishedAt": "2026-11-22T23:34:20.000Z",
       "firstSeenAt": "2026-11-23T03:42:22.779Z",
-      "lastSeenAt": "2026-11-23T03:42:22.779Z"
+      "lastSeenAt": "2026-11-23T13:41:50.635Z"
     },
     {
       "id": "event-8866248f",
@@ -331,96 +475,9 @@
       "publishedAt": "2026-11-22T14:03:39.000Z",
       "firstSeenAt": "2026-11-22T17:48:53.991Z",
       "lastSeenAt": "2026-11-23T03:42:22.779Z"
-    },
-    {
-      "id": "event-5587d239",
-      "category": "santa-catarina",
-      "title": "Temporais deixam cinco mortos, 265 feridos e mais de 25 mil pessoas afetadas no RS",
-      "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxOWXgyVFlpdENrSEIwYmtVeExpQnhpMlAwYU5raHdqWmI4ZEFHT1czYnZoQnNHY3dBNVNSNDNQaHJoSFl3Y0hQdGN4NjVTZjQxbmpTcFFhWWQ4dEkwNHdUdEUzdzFMVXFrRlN4U1lGMGxqYlJzQXBxa1lqNGRZZ1c3VEFSUnpBeThQQy1SajVEdjdWVC1pd2JyZHlxOVBlb2dNOVV2eXlnc1FDUnRLd24zX2RpOA",
-      "description": "Temporais deixam cinco mortos, 265 feridos e mais de 25 mil pessoas afetadas no RS &nbsp;&nbsp; Olho Vivo Can",
-      "imageUrl": null,
-      "source": "Olho Vivo Can",
-      "publishedAt": "2026-11-22T13:19:18.000Z",
-      "firstSeenAt": "2026-11-22T17:48:53.991Z",
-      "lastSeenAt": "2026-11-22T17:48:53.991Z"
-    },
-    {
-      "id": "event-d47010c",
-      "category": "santa-catarina",
-      "title": "Temporais deixam 5 mortos e quase 20.000 fora de casa no RS",
-      "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxObEpvRGZEYk16NjJ0QjY4UGE0UWIxeVVIcTlSN3VkaFVmZEwxam93UmhwR3RNUGlKTlUyZFZYekJLUzlxcXZfWlV5cjVmWldlT280eGs4cndBMkJXUTdLVDM3VkJqSmVDWnNkX1d4Zld4NjVlZnlSTFpwXzdQZ0ZjT0tfVDZ6MnJHcHhHLVlKWWxrVEhoSjVSdjJ6ZTNLLU1rZ1d3",
-      "description": "Temporais deixam 5 mortos e quase 20.000 fora de casa no RS &nbsp;&nbsp; Poder360",
-      "imageUrl": null,
-      "source": "Poder360",
-      "publishedAt": "2026-11-22T11:53:51.000Z",
-      "firstSeenAt": "2026-11-22T17:48:53.991Z",
-      "lastSeenAt": "2026-11-22T17:48:53.991Z"
-    },
-    {
-      "id": "event-f5c8713f",
-      "category": "santa-catarina",
-      "title": "Frente fria provoca instabilidade climática em Santa Catarina neste domingo (22)",
-      "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxNc19GZDJNYnAzU3lHU29abW9HVHlWQlFkZ082ek1jMXJfNmU0Z2hfUkJuZjVYMFZMb2NJRUdBMmoxVG96XzhQazRVVzBvZlg3U05BZWx0aTQwZkhVeFN2NHBqS2ktbUNyOEpfVVA4NG4yeFlWaFhKaGxZUmRybUpjTmU3UFY4SjFaTGtYX29KYXpBSlUtX3dMYUpmMERhanRaS0tRU1lB",
-      "description": "Frente fria provoca instabilidade climática em Santa Catarina neste domingo (22) &nbsp;&nbsp; TVBV ONLINE",
-      "imageUrl": null,
-      "source": "TVBV ONLINE",
-      "publishedAt": "2026-11-22T11:48:45.000Z",
-      "firstSeenAt": "2026-11-22T17:48:53.991Z",
-      "lastSeenAt": "2026-11-22T17:48:53.991Z"
-    },
-    {
-      "id": "event-c2f88ac1",
-      "category": "clima",
-      "title": "Super El Niño e o verão 2026/2027: o que os órgãos federais preveem de chuva acima da média no Sul e de seca no Norte e no Nordeste até o início de 2027",
-      "url": "https://news.google.com/rss/articles/CBMilgJBVV95cUxPV2pSVmFaUkNldlpwRlFWZWoyR241SEp4Y014b2dVM2tJTFB3aFJiRmYtOE1mTFVvWmtUb2x1NjdLRGliTzNsRkc4RmRxQ1dLZ2ZYYU1LdVRUcFhlcFBxaXJUZEE4cXoxVlNnbGxOSy0tNndpb2tVZGFMOU8tc0htMi1ENUVBLUE3cDUtOU5nekl6aVdqZ3VGSXJBNmJDekhDNkVXcUNEWlNONHhDNEwyV1hUZ05sRHhPYXU3aFN4UG1mZko5a3lSeGVpczE4NE1kOXhvS1JPS1ZVZWpPRFRjQXhxeGdiZGRRLVpEZnRfcko0RXFoY1JDc01rQldCN0RMeEQtdmFZdWNNTmpqSTlqMF9rUGx1dw",
-      "description": "Super El Niño e o verão 2026/2027: o que os órgãos federais preveem de chuva acima da média no Sul e de seca no Norte e no Nordeste até o início de 2027 &nbsp;&nbsp; Super Rádio Tupi",
-      "imageUrl": null,
-      "source": "Super Rádio Tupi",
-      "publishedAt": "2026-11-22T10:43:08.000Z",
-      "firstSeenAt": "2026-11-22T17:48:53.991Z",
-      "lastSeenAt": "2026-11-22T23:06:43.926Z"
-    },
-    {
-      "id": "event-f020a16a",
-      "category": "santa-catarina",
-      "title": "Defesa Civil coloca mais da metade de SC em alerta laranja para temporais neste domingo",
-      "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxQbzBTQU0wR3c3SEk3QXp3bXg4QkpTVGtYV252TzFnXzRlR2tpSzNodjVJUi1EZjFZZjJmMVN5T09sSXA5WGR4eHhJS3ppdlhPLW5JY0ZXS3piWlRjMm9hSDE4S1NsRk1ZdGdkTlZxelJjamFqd29CTkhRbTVlM1Z2RThkemJTNnBJZld3NVZiOW9IRnZ0YVBVMWVrTU8tbU1tV29GOTNMUG9HWktXRFU5Y25hU3kxUkdPUlZ6eml3VFU",
-      "description": "Defesa Civil coloca mais da metade de SC em alerta laranja para temporais neste domingo &nbsp;&nbsp; Sul. Agora",
-      "imageUrl": null,
-      "source": "Sul. Agora",
-      "publishedAt": "2026-11-22T09:18:00.000Z",
-      "firstSeenAt": "2026-11-22T10:07:17.343Z",
-      "lastSeenAt": "2026-11-22T10:07:17.343Z"
-    },
-    {
-      "id": "event-51ec225",
-      "category": "brasil",
-      "title": "Conheça a história por trás de \"Pitangas Verdes\", vencedor do Jabuti 2026",
-      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQLVh3OG4zaUxTeDV1d0R1YllZVmUyazFYdlBtSVBTbjlwYmRHV1o0c0ZtNXBnaDBfS0tBaGRvVkdWTlhqMkRvX0pVT0cxM2FONHBCWFVWWWtFUUQtWGlSM0FEcS1jdTN4YWwtNDQzYW5mYnNpU2dpM2dROUVCMDdRbjdKb3R6RTVZSm43RThRRExtV1ZqLW85Sk9vZTdsM2JITWdCMWNzNA",
-      "description": "Conheça a história por trás de \"Pitangas Verdes\", vencedor do Jabuti 2026 &nbsp;&nbsp; CNN Brasil",
-      "imageUrl": null,
-      "source": "CNN Brasil",
-      "publishedAt": "2026-11-22T08:00:52.000Z",
-      "firstSeenAt": "2026-11-22T10:07:17.343Z",
-      "lastSeenAt": "2026-11-22T10:07:17.343Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-22T10:07:17.343Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 13,
-      "newArticles": 8,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-22T17:48:53.991Z",
       "ok": true,
@@ -465,17 +522,73 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-23T13:41:50.635Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 13,
+      "newArticles": 12,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 4,
-  "lastSuccessfulAt": "2026-11-23T03:42:22.779Z",
+  "lastSuccessfulAt": "2026-11-23T13:41:50.635Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-23T03:42:22.779Z",
+      "checkedAt": "2026-11-23T13:41:50.635Z",
       "warnings": [
         {
-          "id": "56480",
+          "id": "56492",
+          "title": "Tempestade",
+          "severity": "Grande Perigo",
+          "phase": "previsto",
+          "regions": [
+            "DO",
+            "DO"
+          ],
+          "startsAt": "2026-11-24T00:00:00.000Z",
+          "endsAt": "2026-11-24T00:00:00.000Z",
+          "source": "INMET",
+          "url": "https://avisos.inmet.gov.br/"
+        },
+        {
+          "id": "56494",
+          "title": "Tempestade",
+          "severity": "Perigo",
+          "phase": "previsto",
+          "regions": [
+            "DO",
+            "DO"
+          ],
+          "startsAt": "2026-11-24T00:00:00.000Z",
+          "endsAt": "2026-11-24T00:00:00.000Z",
+          "source": "INMET",
+          "url": "https://avisos.inmet.gov.br/"
+        },
+        {
+          "id": "56481",
+          "title": "Baixa Umidade",
+          "severity": "Perigo Potencial",
+          "phase": "vigente",
+          "regions": [
+            "DO"
+          ],
+          "startsAt": "2026-11-23T00:00:00.000Z",
+          "endsAt": "2026-11-25T00:00:00.000Z",
+          "source": "INMET",
+          "url": "https://avisos.inmet.gov.br/"
+        },
+        {
+          "id": "56490",
           "title": "Tempestade",
           "severity": "Perigo Potencial",
           "phase": "previsto",
@@ -488,12 +601,27 @@
           "endsAt": "2026-11-24T00:00:00.000Z",
           "source": "INMET",
           "url": "https://avisos.inmet.gov.br/"
+        },
+        {
+          "id": "56496",
+          "title": "Tempestade",
+          "severity": "Perigo Potencial",
+          "phase": "previsto",
+          "regions": [
+            "DO",
+            "DO",
+            "DE"
+          ],
+          "startsAt": "2026-11-25T00:00:00.000Z",
+          "endsAt": "2026-11-25T00:00:00.000Z",
+          "source": "INMET",
+          "url": "https://avisos.inmet.gov.br/"
         }
       ]
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-23T03:42:22.779Z",
+      "checkedAt": "2026-11-23T13:41:50.635Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
