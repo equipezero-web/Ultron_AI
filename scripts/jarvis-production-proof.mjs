@@ -12,14 +12,31 @@ const WORKER="https://ultron-backend.lucaalves17-20.workers.dev";
 const publicFiles=["index.html","data/jarvis-100-acceptance-manifest.json",
   "modules/jarvis-evidence-progress.js","modules/jarvis-acceptance-validation.js"];
 const hash=s=>createHash("sha256").update(s).digest("hex");
+// Only a redirect to the Cloudflare Access login path is proof that the
+// anonymous request was rejected at the edge. Other 3xx responses fail.
+// We intentionally never retain or log Location query strings or cookies.
+export function isCloudflareAccessLoginRedirect(value){
+  if(typeof value!=="string"||!value||value.length>4096)return false;
+  try{
+    const url=new URL(value,WORKER);
+    const trustedHost=url.origin===WORKER||
+      /^[a-z0-9-]+\\.cloudflareaccess\\.com$/i.test(url.hostname);
+    return url.protocol==="https:"&&!url.username&&!url.password&&
+      trustedHost&&/^\\/cdn-cgi\\/access\\/login(?:\\/|$)/.test(url.pathname);
+  }catch{return false;}
+}
 function safeError(e){
   return String(e?.message||e||"unavailable").replace(/https?:\/\/\S+/g,"[source]")
     .replace(/[\r\n\t]/g," ").slice(0,140);
 }
-async function getResponse(fetchImpl,url,init={}){
+async function getResponse(fetchImpl,url,init={},{allowAccessLoginRedirect=false}={}){
   const r=await fetchImpl(url,{redirect:"manual",cache:"no-store",
     signal:AbortSignal.timeout(16000),...init});
-  if(r.status>=300&&r.status<400)throw Error("unexpected-redirect");
+  if(r.status>=300&&r.status<400){
+    if(allowAccessLoginRedirect)return {status:r.status,body:"",
+      accessLoginRedirect:isCloudflareAccessLoginRedirect(r.headers?.get?.("location"))};
+    throw Error("unexpected-redirect");
+  }
   const size=Number(r.headers?.get?.("content-length")||0);
   if(size>1_000_000)throw Error("response-too-large");
   const body=await r.text();
@@ -63,15 +80,20 @@ export async function checkJarvisProduction({fetchImpl=fetch,now=Date.now,readFi
   try{
     const result=await getResponse(fetchImpl,WORKER+"/api/account/intelligence/execute",{
       method:"POST",headers:{"Content-Type":"application/json"},body:"{}"
-    });
+    },{allowAccessLoginRedirect:true});
     let body={};
     try{body=JSON.parse(result.body);}catch{}
-    const denied=result.status===401&&body?.error==="account-login-required";
+    const workerDenied=result.status===401&&body?.error==="account-login-required";
+    const edgeDenied=result.status===302&&result.accessLoginRedirect===true;
+    const denied=workerDenied||edgeDenied;
     checks["unauthenticated-account-denial"]={
       status:denied?"verified":"failed",httpStatus:result.status,
       source:WORKER+"/api/account/intelligence/execute",
-      reason:denied?"anonymous-request-denied":
-        result.status===503?"access-configuration-or-provider-unavailable":"auth-contract-not-verified"
+      reason:edgeDenied?"anonymous-redirected-to-cloudflare-access-login":
+        workerDenied?"anonymous-request-denied-by-worker":
+        result.status>=300&&result.status<400?"unrecognized-login-redirect":
+        result.status===503?"access-configuration-or-provider-unavailable":"auth-contract-not-verified",
+      boundary:edgeDenied?"cloudflare-access-edge":workerDenied?"worker-jwt":"not-verified"
     };
   }catch(error){checks["unauthenticated-account-denial"]={status:"failed",reason:safeError(error)};}
   // An exact manifest hash is necessary but NOT enough to certify the
