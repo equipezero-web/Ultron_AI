@@ -7,6 +7,7 @@ on:
       - 'script.js'
       - 'modules/camera.js'
       - 'modules/camera-runtime.js'
+      - 'tests/jarvis-local-camera-no-autostart.mjs'
       - 'modules/camera-hardening-v422.js'
       - 'modules/camera-external-stream-v4223.js'
       - 'modules/mobile-camera-source.js'
@@ -36,6 +37,7 @@ on:
       - 'script.js'
       - 'modules/camera.js'
       - 'modules/camera-runtime.js'
+      - 'tests/jarvis-local-camera-no-autostart.mjs'
       - 'modules/camera-hardening-v422.js'
       - 'modules/camera-external-stream-v4223.js'
       - 'modules/mobile-camera-source.js'
@@ -96,6 +98,9 @@ jobs:
           node --check backend/worker.js
           node --check backend/webrtc-ice.js
           node --check backend/microphone-bridge.js
+
+      - name: Verify no local webcam capture without operator action
+        run: node tests/jarvis-local-camera-no-autostart.mjs
 
       - name: Test frame health detector
         run: |
