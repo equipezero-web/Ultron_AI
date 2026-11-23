@@ -7,15 +7,16 @@ import {collectGlobalIntelligence} from "../backend/global-intelligence-monitor.
 const BACKEND=String(API_CONFIG.backendUrl||"").replace(/\/+$/,"");
 const SCENARIO="global-intelligence-events-v1";
 const kindMap={earthquake:"earthquake",wildfires:"wildfires",volcanoes:"volcanoes",
- severeStorms:"severeStorms",floods:"floods",landslides:"landslides",seaLakeIce:"seaLakeIce"};
+ severeStorms:"severeStorms",floods:"floods",landslides:"landslides",seaLakeIce:"seaLakeIce",heatDetection:"wildfires"};
 const kindLabel={earthquake:"Sismo",wildfires:"Incêndio",volcanoes:"Vulcão",
  severeStorms:"Tempestade",floods:"Inundação",landslides:"Deslizamento",
- seaLakeIce:"Gelo marinho/lacustre"};
+ seaLakeIce:"Gelo marinho/lacustre",heatDetection:"Foco de calor (satélite)"};
 const validUrl=s=>{
  try{
   const u=new URL(String(s||""));
   return u.protocol==="https:"&&[
-   "earthquake.usgs.gov","eonet.gsfc.nasa.gov","gdacs.org","www.gdacs.org"
+   "earthquake.usgs.gov","eonet.gsfc.nasa.gov","gdacs.org","www.gdacs.org",
+   "firms.modaps.eosdis.nasa.gov"
   ].some(host=>u.hostname===host)?u.href:null;
  }catch{return null;}
 };
@@ -47,7 +48,7 @@ export function intelligenceScenario(report,{scope="world",kind="all"}={}){
    source:validUrl(e.url),observedAt:e.eventAt}));
  const data={id:SCENARIO,title:"INTELIGÊNCIA GLOBAL · eventos publicados",
   projection:"world",source:{
-   name:"USGS / NASA EONET / GDACS ("+sourceCount+"/3 fontes)",
+   name:"USGS / NASA EONET / GDACS / NASA FIRMS ("+sourceCount+"/"+report.sourceStatus.length+" fontes)",
    url:"https://eonet.gsfc.nasa.gov/",
    basePeriod:"Última coleta "+time(report.checkedAt),
    disclaimer:"Eventos reais publicados nas fontes; atualização e cobertura variam. Pinos são localização informada ou aproximada. Prioridade na lista não é gravidade calculada."
@@ -130,6 +131,26 @@ function installGlobalIntelligence(){
    item.className="jarvis-global-source"+(s.ok?"":" missing");footer.append(item);
   }
  };
+ async function withFirms(base){
+   if(!BACKEND||!base?.ok)return base;
+   const ctl=new AbortController(),timer=setTimeout(()=>ctl.abort(),4500);
+   try{
+     const response=await fetch(BACKEND+"/api/intelligence/firms",{
+       headers:{Accept:"application/json"},signal:ctl.signal,cache:"no-store"});
+     if(!response.ok)return base;
+     const firms=await response.json();
+     if(!firms?.ok||!Array.isArray(firms.events))return base;
+     const selected=firms.events.filter(e=>e?.source==="firms"&&e.kind==="heatDetection"&&
+       Number.isFinite(e.lat)&&Number.isFinite(e.lng)&&Number.isFinite(Date.parse(e.eventAt))&&
+       validUrl(e.url)).slice(0,15);
+     return {...base,events:[...selected,...base.events].slice(0,110),
+       sourceStatus:[...base.sourceStatus,{source:"firms",ok:true,count:firms.acceptedCount,
+         receivedCount:firms.receivedCount,discardedCount:firms.discardedCount,
+         note:"VIIRS NOAA-20 · apenas área aproximada Brasil · anomalias térmicas"}],
+       firmsCoverage:"Brazil approximate bounding box",firmsCheckedAt:firms.checkedAt};
+   }catch{return base;}
+   finally{clearTimeout(timer);}
+ }
  async function getReport(force=false){
   if(!force&&report&&Date.now()-fetchAt<4*60000)return report;
   // Several buttons may request one update at the same time; share the fetch.
@@ -144,9 +165,9 @@ function installGlobalIntelligence(){
         const data=await res.json().catch(()=>null);
         if(!res.ok||!data?.ok||!Array.isArray(data.sourceStatus))
           throw Error(data?.error||"HTTP "+res.status);
-        report=data;fetchAt=Date.now();
+        report=await withFirms(data);fetchAt=Date.now();
         lastFetchMode=data.persistence==="direct-live-fallback"?"worker-live":"d1";
-        lastError="";return data;
+        lastError="";return report;
       }catch(error){backendError=clean(error?.message||error,130);}
       finally{clearTimeout(timer);}
     }
@@ -208,8 +229,8 @@ function installGlobalIntelligence(){
     (scope==="world"||e.nearBrazil===true)&&(kind==="all"||e.kind===kind));
   const available=report.sourceStatus.filter(s=>s.ok).length;
   const age=Date.now()-Date.parse(report.checkedAt);
-  status.textContent="COLETA "+time(report.checkedAt)+" · "+available+"/3 fontes · "+
-   selected.length+" registros no filtro · "+(report.stale||age>2*3600000?
+  status.textContent="COLETA "+time(report.checkedAt)+" · "+available+"/"+report.sourceStatus.length+" fontes · "+
+   selected.length+" registros no filtro · "+(report.firmsCoverage?"FIRMS: apenas área aproximada do Brasil · ":"")+(report.stale||age>2*3600000?
    "DADOS DEFASADOS · ":"")+
    (report.partial?"Cobertura parcial. ":"")+
    (scope==="brazil"?"Brasil: área retangular aproximada, não fronteira oficial. ":"")+
@@ -325,7 +346,7 @@ function installGlobalIntelligence(){
     const events=verifiedIntelligenceEvents(data);
     const age=Date.now()-Date.parse(data.checkedAt);
     wakeText.textContent="Global: "+events.length+" eventos publicados · "+
-      sources+"/3 fontes · "+time(data.checkedAt)+
+      sources+"/"+data.sourceStatus.length+" fontes · "+time(data.checkedAt)+
       (data.stale||age>2*3600000?" · dados defasados":"");
     wake.hidden=false;
     window.dispatchEvent(new CustomEvent("ultron:global-intelligence-update",{detail:{
