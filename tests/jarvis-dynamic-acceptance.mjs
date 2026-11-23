@@ -24,7 +24,10 @@ const report=summarizeJarvisEvidence(fake,{now});
 assert.ok(report);
 assert.equal(report.accepted,1);
 assert.match(report.text,/1\/60 capacidades aceitas integralmente/);
-assert.equal(report.partial,6,"partial improvement evidence must remain separate");
+const expectedPartials=original.capabilities.filter(x=>x.id!=="CORE-01"&&
+  x.acceptance==="pending"&&x.checks?.code?.state==="partial-scope-verified"&&
+  x.checks?.ci?.state==="partial-scope-verified").length;
+assert.equal(report.partial,expectedPartials,"accepting one capability cannot freeze or inflate partial proof counts");
 const allAccepted=structuredClone(original);
 for(const c of allAccepted.capabilities){
   c.acceptance="accepted";
