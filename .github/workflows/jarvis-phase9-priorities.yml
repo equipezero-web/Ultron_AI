@@ -13,6 +13,7 @@ on:
       - 'tests/jarvis-phase9-priorities.mjs'
       - 'tests/jarvis-world-priority-notice.mjs'
       - 'tests/jarvis-global-intelligence-recovery.mjs'
+      - 'tests/jarvis-global-intelligence-ice.mjs'
       - '.github/workflows/jarvis-phase9-priorities.yml'
   push:
     paths:
@@ -27,6 +28,7 @@ on:
       - 'tests/jarvis-phase9-priorities.mjs'
       - 'tests/jarvis-world-priority-notice.mjs'
       - 'tests/jarvis-global-intelligence-recovery.mjs'
+      - 'tests/jarvis-global-intelligence-ice.mjs'
       - '.github/workflows/jarvis-phase9-priorities.yml'
 permissions:
   contents: read
@@ -54,5 +56,6 @@ jobs:
           node tests/jarvis-global-intelligence.mjs
           node tests/jarvis-world-priority-notice.mjs
           node tests/jarvis-global-intelligence-recovery.mjs
+          node tests/jarvis-global-intelligence-ice.mjs
           node tests/jarvis-phase7-recovery.mjs
           node tests/jarvis-mission-safety.mjs
