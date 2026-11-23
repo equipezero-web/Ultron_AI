@@ -43,6 +43,12 @@ jobs:
           grep -q 'jarvis-runtime-v4320' modules/stark-bootstrap.js
           grep -q "version: '4.32.0'" modules/jarvis-runtime-v4320.js
 
+      - name: NASA FIRMS integration tests
+        run: |
+          node --check backend/nasa-firms-monitor.js
+          node --check modules/jarvis-global-intelligence-ring.js
+          node tests/jarvis-nasa-firms.mjs
+
       - name: Guard production secrets
         run: |
           ! grep -RInE '(CLOUDFLARE_API_TOKEN|GEMINI_API_KEY|GROQ_API_KEY|OPENROUTER_API_KEY|COHERE_API_KEY)[[:space:]]*[:=][[:space:]]*["'"'][^"'"']+["'"']' --exclude='*.yml' --exclude='*.yaml' .
