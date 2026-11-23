@@ -31,6 +31,23 @@ assert.equal(fullyNegative.reason,"NO_AFFIRMATIVE_ACTION");
 assert.ok(planAgents("Mostre meteorologia e visualize no mapa").steps.some(s=>s.agent==="meteorology"));
 assert.ok(planAgents("Mostre meteorologia e visualize no mapa").steps.some(s=>s.agent==="visual"));
 
+// Multi-clause commands must not turn a negated preference into the opposite,
+// or mistake a visual presentation device for a privileged device operation.
+const conditional=planAgents("Não quero notícias e quero previsão do tempo no globo");
+assert.deepEqual(conditional.steps.map(s=>s.agent),["meteorology","visual"],
+  "negated news and affirmative weather+globe must be independently parsed");
+const mobileForecast=planAgents("Quero a previsão do tempo no celular");
+assert.deepEqual(mobileForecast.steps.map(s=>s.agent),["meteorology"],
+  "display on mobile is not permission to inspect or control the device");
+assert.deepEqual(planAgents("Mostre notícias na TV").steps.map(s=>s.agent),["news"]);
+assert.deepEqual(planAgents("Verifique o status do celular").steps.map(s=>s.agent),["devices"]);
+assert.deepEqual(planAgents("Quero notícias no celular e verifique a bateria do celular")
+  .steps.map(s=>s.agent),["news","devices"]);
+assert.deepEqual(planAgents("Não quero notícias e quero previsão meteorológica no celular")
+  .steps.map(s=>s.agent),["meteorology"]);
+assert.deepEqual(planAgents("").steps,[],"empty input must never dispatch research");
+assert.equal(planAgents("").reason,"EMPTY_COMMAND");
+
 const execution=await executeAgents(plan,{agents:{
   meteorology:async({tool})=>({ok:tool==="weather.read",result:{verified:true}}),
   visual:async({tool})=>({ok:tool==="visual.render",result:{view:"globe"}})
