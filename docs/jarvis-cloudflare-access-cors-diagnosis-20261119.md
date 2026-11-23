@@ -53,3 +53,21 @@ O botão utiliza somente a URL fixa `https://ultron-backend.lucaalves17-20.worke
 Após o login, retornar ao J.A.R.V.I.S. e executar novamente o comando de teste. Se o destino abrir uma resposta JSON 401 em vez de uma tela de login, ou se a nova tentativa falhar novamente, conferir a proteção do domínio no painel Cloudflare. Políticas de cookies de terceiros e CORS ainda podem impedir o uso do Access entre `github.io` e `workers.dev`.
 
 Este botão é um facilitador de login, **não corrige automaticamente a política Cloudflare Access** e não representa homologação das 60 capacidades.
+
+## Diagnóstico da sessão de 23/11/2026: redirecionamento 302
+
+No navegador, `Jarvis, testar globo e acesso` confirmou **1/2**: globo com canvas visível, mas nenhum JWT Access foi confirmado no Worker. Não se trata de falha de renderização; o próprio teste está desenhado para **não** aprovar sessão quando o navegador não consegue obter a resposta autenticada.
+
+No CI, `unauthenticated-account-denial` exigia apenas HTTP 401 JSON, mas uma aplicação Cloudflare Access protegida pode responder HTTP **302** para sua **própria rota de login** antes de a requisição chegar ao Worker. A observação agora aceita esse redirecionamento apenas quando o destino for `/cdn-cgi/access/login` no domínio protegido ou em um subdomínio válido `*.cloudflareaccess.com`. **Nenhum outro 3xx é considerado êxito.** O código não acompanha o redirecionamento nem coleta parâmetros de URL, cookies ou JWT. O relatório registra `boundary=cloudflare-access-edge` ou `worker-jwt` para distinguir onde ocorreu o bloqueio.
+
+Esse sucesso de **negação anônima** não é o mesmo que confirmar autenticação. A prova `accessAuthenticatedQuery` continua `not-tested-no-jwt`, e o teste de navegador continua **1/2** até a confirmação criptográfica da sessão em `/api/account/session/verify`.
+
+### Ação obrigatória no painel Cloudflare quando 1/2 persistir
+
+1. Em **Zero Trust → Access controls → Applications**, edite a aplicação que realmente protege `ultron-backend.lucaalves17-20.workers.dev/api/account/*`. Confira domínio, caminho, política para a identidade do operador e identificadores de aplicação/Team usados no Worker.
+2. Em **Advanced settings → Cross-Origin Resource Sharing (CORS) settings**, configure resposta de preflight ou encaminhamento de OPTIONS à origem conforme a documentação oficial. Para origem `https://equipezero-web.github.io`, autorize `GET, POST, OPTIONS`, `Content-Type` e credenciais com origem específica (nunca `*` com credenciais). No Worker, as respostas `/api/account/*` já têm allowlist.
+3. Inicie sessão diretamente no domínio protegido, em uma **aba normal**, e verifique apenas a **presença** de `CF_Authorization` (sem revelar valor). Atualize o J.A.R.V.I.S. e repita o teste. O `CF_AppSession` observado anteriormente não comprova autenticação do Cloudflare Access.
+4. Caso a chamada de `github.io` continue bloqueada depois de login válido, revise bloqueio de **cookies de terceiros** ou migre site e API para um domínio próprio com arquitetura same-site, sem expor segredos no frontend.
+5. **Não** desative autenticação, não adicione tokens Access em `config.js`, GitHub Pages ou parâmetros URL e não conclua 60/60 com base em checks anônimos.
+
+Documento oficial: https://developers.cloudflare.com/cloudflare-one/access-controls/applications/http-apps/authorization-cookie/cors/
