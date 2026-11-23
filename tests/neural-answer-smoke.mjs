@@ -176,7 +176,7 @@ try {
           }]})});
       }
       if(globalBackendOffline&&req.url().includes(
-          'https://www.gdacs.org/gdacsapi/api/events/geteventlist/SEARCH')){
+          'https://www.gdacs.org/gdacsapi/api/events/geteventlist/')){
         return req.respond({status:503,headers:{'access-control-allow-origin':'*'},
           contentType:'application/json',body:JSON.stringify({error:'Fonte indisponível'})});
       }
