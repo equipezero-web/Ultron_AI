@@ -1,5 +1,5 @@
 import API_CONFIG from "../config.js";
-import {validateGeoScenario} from "./jarvis-geospatial-model.js?v=4.96.0";
+import {validateGeoScenario} from "./jarvis-geospatial-model.js?v=4.96.1";
 import {collectGlobalIntelligence} from "../backend/global-intelligence-monitor.js?v=5.13.0";
 
 // Global Intelligence uses the SAME Ring geospatial module and existing globe.
@@ -7,9 +7,10 @@ import {collectGlobalIntelligence} from "../backend/global-intelligence-monitor.
 const BACKEND=String(API_CONFIG.backendUrl||"").replace(/\/+$/,"");
 const SCENARIO="global-intelligence-events-v1";
 const kindMap={earthquake:"earthquake",wildfires:"wildfires",volcanoes:"volcanoes",
- severeStorms:"severeStorms",floods:"floods",landslides:"landslides"};
+ severeStorms:"severeStorms",floods:"floods",landslides:"landslides",seaLakeIce:"seaLakeIce"};
 const kindLabel={earthquake:"Sismo",wildfires:"Incêndio",volcanoes:"Vulcão",
- severeStorms:"Tempestade",floods:"Inundação",landslides:"Deslizamento"};
+ severeStorms:"Tempestade",floods:"Inundação",landslides:"Deslizamento",
+ seaLakeIce:"Gelo marinho/lacustre"};
 const validUrl=s=>{
  try{
   const u=new URL(String(s||""));
@@ -230,7 +231,7 @@ function installGlobalIntelligence(){
       "Confira horários, origem e formato das coordenadas.";
     return {ok:false,error:"Não foi possível validar dados geográficos"};
   }
-  if(!window.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.96.1");
+  if(!window.ULTRON_GEO_VISUAL)await import("./jarvis-geospatial-visual.js?v=4.96.2");
   const result=await window.ULTRON_GEO_VISUAL.open({data,view});
   if(request!==requestId||!visible)return {ok:false,error:"Visualização substituída"};
   if((!result?.ok||window.ULTRON_GEO_VISUAL.state.scenario!==SCENARIO)&&view==="3d"){
