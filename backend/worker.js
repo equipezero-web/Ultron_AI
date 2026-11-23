@@ -622,7 +622,7 @@ async function executeAiCore(env, body) {
 
   const aiStartedAt = Date.now();
   let aiResult = isSelfCapabilityQuestion(message)
-    ? {text:capabilityAnswer({...telemetry,systemCapabilities:{...telemetry.systemCapabilities,deviceBridge:Boolean(env.ULTRON_DB),googleSearch:Boolean(env.SERPER_API_KEY)}}),provider:"jarvis-local",providerLabel:"JARVIS",model:"capability-catalog",attempts:[]}
+    ? {text:capabilityAnswer({...telemetry,systemCapabilities:{...telemetry.systemCapabilities,deviceBridge:Boolean(env.ULTRON_DB),googleSearch:Boolean(env.SERPER_API_KEY||env.SERPAPI_API_KEY)}}),provider:"jarvis-local",providerLabel:"JARVIS",model:"capability-catalog",attempts:[]}
     : await generateWithProviders(env, aiMessage, telemetry, { aiBinding: env.AI });
   let aiPasses = 1;
   let researchMs = 0;
@@ -637,7 +637,7 @@ async function executeAiCore(env, body) {
   if (
     !alreadyGrounded &&
     body?.allowUncertaintyResearch !== false &&
-    env.SERPER_API_KEY &&
+    (env.SERPER_API_KEY||env.SERPAPI_API_KEY) &&
     answerLooksUncertain(aiResult.text)
   ) {
     const researchStartedAt = Date.now();
@@ -849,9 +849,9 @@ async function handleAi(request, env) {
         used: false,
         reason: policy.reason,
         provider: research?.providerLabel || (newsIntent ? "Google News + GDELT" : null),
-        configured: research?.configured ?? Boolean(env.SERPER_API_KEY),
+        configured: research?.configured ?? Boolean(env.SERPER_API_KEY||env.SERPAPI_API_KEY),
         error: research?.error || newsState?.error || cache?.error ||
-          (env.SERPER_API_KEY ? "Nenhuma fonte confiável foi retornada." : "SERPER_API_KEY não configurada."),
+          ((env.SERPER_API_KEY||env.SERPAPI_API_KEY) ? "Nenhuma fonte confiável foi retornada." : "SERPER_API_KEY e SERPAPI_API_KEY não configuradas."),
         sourceCount: 0,
         fromCache: false,
         searchMs: researchMs
@@ -925,7 +925,7 @@ async function handleAi(request, env) {
   if(prepared.active){
     data.mediaStatus={
       automatic:true,
-      configured:Boolean(env.SERPER_API_KEY),
+      configured:Boolean(env.SERPER_API_KEY||env.SERPAPI_API_KEY),
       imageCount:data.visualContext?.images?.length||0,
       videoCount:data.visualContext?.videos?.length||0,
       imageError:prepared.research?.mediaStatus?.imageError||null,
@@ -1127,7 +1127,7 @@ async function health(env) {
     visualContext: true,
     localFileContextBridge: true,
     laTeamContextBridge: true,
-    uncertaintyResearchRetry: Boolean(env.SERPER_API_KEY),
+    uncertaintyResearchRetry: Boolean(env.SERPER_API_KEY||env.SERPAPI_API_KEY),
     internalSystems: {
       laTeamContextBridge: true,
       internalContextPriority: true,
@@ -1143,16 +1143,17 @@ async function health(env) {
     communicationPush: {configured:pushConfiguration(env).enabled,consentRequired:true,source:"INMET",authenticated:true},
     webResearch: {
       enabled: true,
-      googleSearch: Boolean(env.SERPER_API_KEY),
+      googleSearch: Boolean(env.SERPER_API_KEY||env.SERPAPI_API_KEY),
       automaticMedia: true,
-      googleImagesConfigured: Boolean(env.SERPER_API_KEY),
-      googleVideosConfigured: Boolean(env.SERPER_API_KEY),
+      googleImagesConfigured: Boolean(env.SERPER_API_KEY||env.SERPAPI_API_KEY),
+      googleVideosConfigured: Boolean(env.SERPER_API_KEY||env.SERPAPI_API_KEY),
       mediaMode:"automatic-google-youtube-v2",
-      provider: env.SERPER_API_KEY ? "Google Search via Serper" : null,
+      provider: env.SERPER_API_KEY ? "Google Search via Serper (SerpApi fallback)" : env.SERPAPI_API_KEY ? "Google Search via SerpApi" : null,
+      serpapiConfigured:Boolean(env.SERPAPI_API_KEY),
       memoryCache: Boolean(env.ULTRON_DB),
       expiringResearchCache: Boolean(env.ULTRON_DB),
       sourceRanking: true,
-      uncertaintyRetry: Boolean(env.SERPER_API_KEY),
+      uncertaintyRetry: Boolean(env.SERPER_API_KEY||env.SERPAPI_API_KEY),
       conversationMemorySafe: true,
       mode: "research-gate-v3"
     },
