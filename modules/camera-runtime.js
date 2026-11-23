@@ -13,7 +13,7 @@ let recovering = false;
 let lastTransientLogAt = 0;
 let streamRecoveryAttempts = 0;
 let streamRecoveryTimer = null;
-const MAX_STREAM_RECOVERY = 3;
+const MAX_STREAM_RECOVERY = 0; // automatic local-webcam retries intentionally disabled
 
 function log(message, alert = false) {
   if (!output || !message) return;
@@ -117,33 +117,14 @@ function updateDeviceUi(detail = {}) {
 async function recoverWhenAvailable(detail = {}) {
   const controller = window.ULTRON_CAMERA_CONTROLLER;
   const devices = Array.isArray(detail.devices) ? detail.devices : [];
-  const count = devices.length;
-  if (!controller || count <= 0 || controller.isActive?.() || recovering) return;
+  if (!controller || !devices.length || controller.isActive?.()) return;
 
+  // Device discovery is informational, never operator consent to capture.
+  // A previous browser GRANTED permission must not restart the local webcam.
   const permission = await controller.permissionState?.().catch(() => "unknown") || "unknown";
-
-  if (permission === "granted") {
-    state("AVAILABLE", "GRANTED", false);
-    recovering = true;
-    log(`Câmera disponível: ${devices[0]?.label || "videoinput"}. Tentando recuperar o sensor óptico automaticamente.`);
-    try {
-      await controller.start({ restored: true });
-    } catch (error) {
-      log(`A câmera apareceu, mas não pôde ser iniciada automaticamente: ${error?.message || error}`, true);
-    } finally {
-      recovering = false;
-    }
-    return;
-  }
-
-  if (permission === "denied") {
-    state("AVAILABLE", "BLOCKED", true);
-    log(`Hardware detectado (${devices[0]?.label || "câmera"}), porém a permissão do navegador está bloqueada. Libere a câmera para este site e pressione MOSTRAR TELA.`, true);
-    return;
-  }
-
-  state("AVAILABLE", permission === "prompt" ? "ASK" : "AVAILABLE", false);
-  log(`Hardware detectado (${devices[0]?.label || "câmera"}). Pressione MOSTRAR TELA para concluir a autorização.`);
+  state("AVAILABLE", permission === "granted" ? "GRANTED" :
+    permission === "denied" ? "BLOCKED" : "AVAILABLE", false);
+  log(`Hardware detectado (${devices[0]?.label || "câmera"}). Webcam local permanece desligada; abertura somente por ação explícita do operador.`);
 }
 
 function clearRecoveryTimer() {
@@ -152,32 +133,11 @@ function clearRecoveryTimer() {
 }
 
 function scheduleStreamRecovery() {
+  // Automatic recovery after track-ended would recapture hardware without
+  // operator action. Keep the diagnostic hook, but never retry by timer.
   clearRecoveryTimer();
-  if (streamRecoveryAttempts >= MAX_STREAM_RECOVERY) {
-    log("Recuperação automática esgotada após 3 tentativas. O Ultron continuará monitorando novas fontes de câmera.", true);
-    return;
-  }
-
-  streamRecoveryAttempts += 1;
-  const delay = 700 * streamRecoveryAttempts;
-  log(`Tentativa automática ${streamRecoveryAttempts}/${MAX_STREAM_RECOVERY} para recuperar o stream em ${delay} ms.`);
-
-  streamRecoveryTimer = setTimeout(async () => {
-    streamRecoveryTimer = null;
-    const controller = window.ULTRON_CAMERA_CONTROLLER;
-    if (!controller || controller.isActive?.()) return;
-    const permission = await controller.permissionState?.().catch(() => "unknown") || "unknown";
-    const devices = await controller.refreshDevices?.({ announce: true }).catch(() => []) || [];
-    if (permission !== "granted" || !devices.length) return;
-
-    try {
-      await controller.start({ restored: true });
-      streamRecoveryAttempts = 0;
-    } catch (error) {
-      log(`Recuperação ${streamRecoveryAttempts}/${MAX_STREAM_RECOVERY} falhou: ${error?.message || error}`, true);
-      scheduleStreamRecovery();
-    }
-  }, delay);
+  streamRecoveryAttempts = 0;
+  log("Stream local interrompido. A webcam continuará desligada até ativação manual.", true);
 }
 
 window.addEventListener("ultron:camera-devices", (event) => {
@@ -189,7 +149,7 @@ window.addEventListener("ultron:camera-devices", (event) => {
     const now = Date.now();
     if (now - lastTransientLogAt > 5000) {
       lastTransientLogAt = now;
-      log("O driver retornou 0 entradas momentaneamente; mantendo a última câmera conhecida e tentando fallbacks genéricos.");
+      log("O driver retornou 0 entradas momentaneamente; mantendo a última câmera conhecida sem iniciar a webcam.");
     }
     return;
   }
@@ -274,13 +234,10 @@ async function syncPermission() {
     if (permissionState) permissionState.textContent = String(permission.state || "UNKNOWN").toUpperCase();
     permission.onchange = async () => {
       if (permissionState) permissionState.textContent = String(permission.state || "UNKNOWN").toUpperCase();
-      if (permission.state === "granted") {
-        const controller = window.ULTRON_CAMERA_CONTROLLER;
-        const devices = await controller?.refreshDevices?.({ announce: true }).catch(() => []) || [];
-        if (devices.length && !controller?.isActive?.()) {
-          controller.start({ restored: true }).catch(() => {});
-        }
-      }
+      // Refresh inventory only. Permission GRANTED is not permission to
+      // auto-start or restore a local camera.
+      await window.ULTRON_CAMERA_CONTROLLER?.refreshDevices?.().catch(() => {});
+
     };
   } catch {}
 }

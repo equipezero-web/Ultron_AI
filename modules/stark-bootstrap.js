@@ -48,7 +48,7 @@ if (!window[BOOT_KEY]) {
   await import('./vision-client.js?v=4.23.3');
   await import('./vision-remote-source-v4224.js?v=4.22.4');
   await import('./vision-command-router.js?v=4.17.0');
-  await import('./camera-runtime.js?v=4.16.0');
+  await import('./camera-runtime.js?v=4.16.1');
   await import('./camera-external-stream-v4223.js?v=4.22.3');
   await import('./remote-camera-display-v4232.js?v=4.23.2');
   await import('./local-files-client.js?v=4.14.0');

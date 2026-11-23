@@ -1,7 +1,7 @@
 import {TASK_CONTEXT} from "./modules/jarvis-task-context.js?v=4.69.0";
 import {directPlan,runActionPlan} from "./modules/jarvis-action-engine.js?v=4.71.0";
 import {runLocalCommand} from "./modules/jarvis-local-commands.js?v=5.10.0";
-import { CameraController } from "./modules/camera.js";
+import { CameraController } from "./modules/camera.js?v=5.65.0";
 import { loadPreferences } from "./modules/storage.js";
 import { addLog, clock } from "./modules/system.js";
 import API_CONFIG from "./config.js";
@@ -180,8 +180,8 @@ const camera = new CameraController(video, (state) => {
   }
 });
 
-// O computador não abre a webcam local automaticamente. A fonte principal é o celular.
-camera.restoreIfGranted = async () => false;
+// CameraController now enforces manual-only local capture itself.
+// The phone Bridge is the preferred optical source.
 
 async function activateCamera({ openPreview = false } = {}) {
   try {
