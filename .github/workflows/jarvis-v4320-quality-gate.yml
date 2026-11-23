@@ -43,6 +43,12 @@ jobs:
           grep -q 'jarvis-runtime-v4320' modules/stark-bootstrap.js
           grep -q "version: '4.32.0'" modules/jarvis-runtime-v4320.js
 
+      - name: Clear globe local routing
+        run: |
+          node --check modules/jarvis-local-commands.js
+          node --check modules/ultron-orchestrator-v4270.js
+          node tests/jarvis-clear-globe-command.mjs
+
       - name: Guard production secrets
         run: |
           ! grep -RInE '(CLOUDFLARE_API_TOKEN|GEMINI_API_KEY|GROQ_API_KEY|OPENROUTER_API_KEY|COHERE_API_KEY)[[:space:]]*[:=][[:space:]]*["'"'][^"'"']+["'"']' --exclude='*.yml' --exclude='*.yaml' .
