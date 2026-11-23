@@ -1,0 +1,27 @@
+name: JARVIS local Node backend safety
+on:
+  pull_request:
+    paths:
+      - 'backend/server.js'
+      - 'backend/local-api-guard.js'
+      - 'backend/.env.example'
+      - 'tests/jarvis-local-backend-guard.mjs'
+      - '.github/workflows/jarvis-local-backend-safety.yml'
+  push:
+    branches: [main]
+jobs:
+  safety:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+      - name: Verify origin allowlist, rate limiter, host and token
+        run: node tests/jarvis-local-backend-guard.mjs
+      - name: Verify syntax and voice-off mode
+        run: |
+          node --check backend/local-api-guard.js
+          node --check backend/server.js
