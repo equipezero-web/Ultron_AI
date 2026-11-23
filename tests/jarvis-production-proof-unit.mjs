@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import {readFileSync} from "node:fs";
-import {checkJarvisProduction} from "../scripts/jarvis-production-proof.mjs";
+import {checkJarvisProduction,isCloudflareAccessLoginRedirect} from "../scripts/jarvis-production-proof.mjs";
 const page="https://equipezero-web.github.io/Ultron_AI/";
 const backend="https://ultron-backend.lucaalves17-20.workers.dev";
 const local=path=>readFileSync(new URL("../"+path,import.meta.url),"utf8");
@@ -9,7 +9,7 @@ const health={
  legacyWorkerChain:false,voiceOutputEnabled:false,
  voiceMaintenance:{mode:"text-only",inputEnabled:false,outputEnabled:false,remoteMicEnabled:false}
 };
-const fetchFactory=({backendOnline=true,accessConfigured=true,staleFrontend=false}={})=>
+const fetchFactory=({backendOnline=true,accessConfigured=true,staleFrontend=false,accessRedirect=null}={})=>
   async (url,options={})=>{
     assert.ok([page,backend].some(origin=>url.startsWith(origin)),
       "the production probe must access only fixed public hosts");
@@ -27,6 +27,7 @@ const fetchFactory=({backendOnline=true,accessConfigured=true,staleFrontend=fals
     if(u.pathname==="/api/account/intelligence/execute"){
       assert.equal(options.method,"POST");
       assert.equal(options.body,"{}","only unsigned harmless JSON should be used");
+      if(accessRedirect)return new Response(null,{status:302,headers:{"Location":accessRedirect}});
       return new Response(JSON.stringify(accessConfigured?
         {ok:false,error:"account-login-required"}:{ok:false,error:"account-login-not-configured"}),
         {status:accessConfigured?401:503,headers:{"Content-Type":"application/json"}});
@@ -53,6 +54,45 @@ const loginMissing=await checkJarvisProduction({fetchImpl:fetchFactory({accessCo
 assert.equal(loginMissing.passed,false);
 assert.equal(loginMissing.checks["unauthenticated-account-denial"].reason,
   "access-configuration-or-provider-unavailable");
+
+const redirectCases=[
+  "/cdn-cgi/access/login",
+  "/cdn-cgi/access/login/example?redirect_url=https%3A%2F%2Fexample.invalid",
+  "https://ultron-backend.lucaalves17-20.workers.dev/cdn-cgi/access/login/",
+  "https://jarvis-team.cloudflareaccess.com/cdn-cgi/access/login/example?state=untrusted-token"
+];
+for(const redirect of redirectCases){
+  assert.equal(isCloudflareAccessLoginRedirect(redirect),true,
+    "only the trusted login path may count as an anonymous edge denial");
+  const edge=await checkJarvisProduction({
+    fetchImpl:fetchFactory({accessRedirect:redirect}),now:time
+  });
+  assert.equal(edge.passed,true,"confirmed edge login redirect is a valid anonymous denial");
+  assert.equal(edge.checks["unauthenticated-account-denial"].boundary,"cloudflare-access-edge");
+  assert.equal(edge.checks["unauthenticated-account-denial"].httpStatus,302);
+  assert.equal(edge.limits.accessAuthenticatedQuery,"not-tested-no-jwt",
+    "anonymous 302 must never be treated as an authenticated success");
+  assert.doesNotMatch(JSON.stringify(edge),/state=untrusted-token|redirect_url=/,
+    "do not disclose redirect query data in reports or logs");
+}
+const unrelatedRedirects=[
+  "https://attacker.invalid/cdn-cgi/access/login",
+  "http://jarvis-team.cloudflareaccess.com/cdn-cgi/access/login",
+  "https://jarvis-team.cloudflareaccess.com.evil.invalid/cdn-cgi/access/login",
+  "https://jarvis-team.cloudflareaccess.com/other",
+  "https://ultron-backend.lucaalves17-20.workers.dev/api/ai",
+  "//attacker.invalid/cdn-cgi/access/login",
+  "https://user:password@jarvis-team.cloudflareaccess.com/cdn-cgi/access/login"
+];
+for(const redirect of unrelatedRedirects){
+  assert.equal(isCloudflareAccessLoginRedirect(redirect),false,redirect);
+  const edge=await checkJarvisProduction({
+    fetchImpl:fetchFactory({accessRedirect:redirect}),now:time
+  });
+  assert.equal(edge.checks["unauthenticated-account-denial"].status,"failed");
+  assert.equal(edge.checks["unauthenticated-account-denial"].reason,"unrecognized-login-redirect");
+}
+
 const networkDown=await checkJarvisProduction({fetchImpl:async()=>{throw Error("DNS offline");},now:time});
 assert.equal(networkDown.passed,false);
 assert.equal(networkDown.verified,0);
