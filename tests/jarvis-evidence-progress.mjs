@@ -18,6 +18,18 @@ const expectedPartials=manifest.capabilities.filter(x=>x.acceptance==="pending"&
   x.checks?.ci?.state==="partial-scope-verified").length;
 assert.equal(summary.accepted,expectedAccepted,"accepted count must come from valid evidence");
 assert.equal(summary.partial,expectedPartials,"partial proof count must be derived from manifest");
+const future=structuredClone(manifest);
+const additional=future.capabilities.find(x=>x.acceptance==="pending"&&
+  x.checks.code==="not-certified"&&x.checks.ci==="not-certified");
+assert.ok(additional,"must retain unevaluated capabilities for progressive certification");
+additional.checks.code={state:"partial-scope-verified",url:"https://github.com/equipezero-web/Ultron_AI/pull/217",
+  verifiedAt:"2026-11-23",scope:"Future scoped code proof in a synthetic regression"};
+additional.checks.ci={state:"partial-scope-verified",url:"https://github.com/equipezero-web/Ultron_AI/actions/runs/45159060402",
+  verifiedAt:"2026-11-23",scope:"Future CI proof, without operational certification"};
+assert.equal(summarizeJarvisEvidence(future).partial,expectedPartials+1,
+  "progress of partial technical evidence must remain possible without changing test fixtures");
+assert.equal(summarizeJarvisEvidence(future).accepted,expectedAccepted);
+
 assert.equal(summary.pending,60-expectedAccepted);
 assert.deepEqual(summary.areas.map(x=>[x.name,x.total]),
  [["Inteligência",20],["Funcionalidades",17],["Comunicação",7],["Integridade",8],["Dispositivos",8]]);
