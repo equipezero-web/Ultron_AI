@@ -48,6 +48,12 @@ jobs:
           node --check modules/jarvis-dual-display.js
           node tests/jarvis-dual-display.mjs
 
+      - name: Semantic operator intent
+        run: |
+          node --check backend/worker.js
+          node --check modules/jarvis-action-engine.js
+          node tests/jarvis-semantic-operator.mjs
+
       - name: Guard production secrets
         run: |
           ! grep -RInE '(CLOUDFLARE_API_TOKEN|GEMINI_API_KEY|GROQ_API_KEY|OPENROUTER_API_KEY|COHERE_API_KEY)[[:space:]]*[:=][[:space:]]*["'"'][^"'"']+["'"']' --exclude='*.yml' --exclude='*.yaml' .
