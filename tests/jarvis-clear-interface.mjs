@@ -95,7 +95,7 @@ const globalModule=readFileSync(new URL("../modules/jarvis-global-intelligence-r
 const meteoBridge=readFileSync(new URL("../modules/jarvis-meteo-ring-bridge.js",import.meta.url),"utf8");
 for(const [module,version] of [
  ["jarvis-meteorological-center.js","4.99.3"],
- ["jarvis-global-intelligence-ring.js","5.25.2"]
+ ["jarvis-global-intelligence-ring.js","5.25.3"]
 ]){
  assert.ok(pageHtml.includes(module+"?v="+version),"Indexed module must be cache-busted");
  assert.ok(localSource.includes("./"+module+"?v="+version),"Dynamic import must match static script URL");
