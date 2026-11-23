@@ -7,10 +7,11 @@ Data: 23 de novembro de 2026. Repositório: `equipezero-web/Ultron_AI`.
 ## Resultado verificável
 
 - Inventário: **60 capacidades**, distribuídas em 20 Inteligência, 17 Funcionalidades, 7 Comunicação, 8 Integridade e 8 Dispositivos.
-- **0/60 capacidades homologadas integralmente** na data desta auditoria. As seis evidências técnicas parciais previamente registradas não constituem homologação integral.
+- Evidência parcial de código/CI: **10 capacidades** após registrar AGENT-01, AGENT-08, CORE-04 e CORE-01, além das seis anteriormente documentadas. **0 integralmente homologadas.**
+- **0/60 capacidades homologadas integralmente** na data desta auditoria. As dez evidências técnicas parciais registradas não constituem homologação integral.
 - PR #217: colisão de identificadores de conversas entre operadores e despacho equivocado para agentes de dispositivos corrigidos, com regressão SQL/CI.
 - PR #218: servidor Node local com proteção de origem, limitação de tráfego e bind loopback; retorno de voz desabilitado e não enganoso.
-- PR #219: rate limiting nativo Cloudflare de `POST /api/ai` proposto com config e testes. **Não declarar implantado enquanto não houver merge e deploy confirmados.**
+- PR #219: rate limiting nativo Cloudflare de `POST /api/ai` validado em 22 workflows, integrado e publicado; execução de deployment Cloudflare `45160841806` e GitHub Pages `45160839433` concluídas com sucesso.
 
 ## Bloqueios que continuam fora da prova de código
 
