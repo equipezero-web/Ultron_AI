@@ -51,7 +51,7 @@ try{
 // A live 200 with zero accepted events could mean there are no eligible
 // events or that a schema/date/category change filtered all features.
 try{
- const source="https://eonet.gsfc.nasa.gov/api/v3/events/geojson?status=open&days=7&limit=80";
+ const source="https://eonet.gsfc.nasa.gov/api/v3/events/geojson?status=all&days=30&limit=300";
  const response=await fetch(source,{redirect:"error",cache:"no-store",
   headers:{Accept:"application/geo+json, application/json"},
   signal:AbortSignal.timeout(12000)});
@@ -74,6 +74,8 @@ try{
   receivedCount:entries.length,validDateFieldCount:dated,
   categories:[...categories].slice(0,15).sort(),
   acceptedCount:accepted?.length??null,
+  discardedCount:accepted?.diagnostics?.discardedCount??null,
+  discardReasons:accepted?.diagnostics?.reasons??{},
   note:"Read-only schema summary; no coordinates, titles, URLs or personal data logged"
  }));
 }catch(error){
