@@ -430,6 +430,13 @@ function isRingHomeCommand(message) {
 async function executeMessage(message, source = "terminal", approvedMission = false) {
   const clean = String(message || "").trim();
   if (!clean) return null;
+  if(parseLocalCommand(clean)?.type==="globe-close"){
+    const result=await runLocalCommand(clean);
+    if(!result?.quiet)log(result?.text||"Falha ao fechar globo",!result?.ok);
+    state.lastRoute="local-globe-close";
+    return {ok:result?.ok===true,status:result?.ok?"completed":"failed",results:[
+      {route:"local-globe-close",ok:result?.ok===true,result}]};
+  }
   // Local navigation never invokes a model, provider, or public web lookup.
   if(isRingHomeCommand(clean)) {
     try {
@@ -854,7 +861,7 @@ window.addEventListener("ultron:emergency-stop",event=>{
 });
 function enqueue(message, source = "terminal", approvedMission = false) {
   // Critical local UI commands bypass generic knowledge, media and TV routers.
-  if(isRingHomeCommand(message)||["clear-interface","capabilities","meteorological-close"].includes(parseLocalCommand(message)?.type)){
+  if(isRingHomeCommand(message)||["clear-interface","capabilities","meteorological-close","globe-close"].includes(parseLocalCommand(message)?.type)){
     const generation=queueGeneration;
     queue=queue.catch(()=>null).then(()=>generation!==queueGeneration
       ? {ok:false,status:"cancelled",route:"p0-stop"}:

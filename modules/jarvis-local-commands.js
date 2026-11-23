@@ -12,6 +12,10 @@ export function parseLocalCommand(value){
   if(/^(?:nao|nunca|se |e se |como (?:eu |posso |faco |faz)|por que|porque)\b/.test(q))return null;
   const plain=q.replace(/[.!?]+$/,"").trim();
 
+  // Closing/clearing the globe is local navigation, never mobile control or AI.
+  if(/^(?:(?:limpar|limpe|fechar|feche|ocultar|oculte|desligar|desligue|remover|remova)\\s+(?:o\\s+)?(?:globo(?:\\s*3d)?|mapa(?:\\s*3d)?|globo terrestre))$/.test(plain))
+    return {type:"globe-close"};
+
   if(/^(?:ative|ativar|habilite|habilitar|ligue|ligar|inicie|iniciar)\s+(?:a\s+)?(?:escuta|microfone|comandos? de voz)(?:\s+(?:do|no)\s+jarvis)?$/.test(plain))
     return {type:"voice-listening",enabled:true};
   if(/^(?:desative|desativar|desligue|desligar|pare|parar)\s+(?:a\s+)?(?:escuta|microfone|comandos? de voz)(?:\s+(?:do|no)\s+jarvis)?$/.test(plain))
@@ -174,6 +178,29 @@ export async function runLocalCommand(command){
        "Painel de consultas independentes aberto no Neural Jarvis. Até três leituras simultâneas, sem ações destrutivas.":
        "Editor local de arquivos autorizado. Selecione manualmente um documento; acesso remoto ao armazenamento do celular não foi concedido."):
        String(result?.error||"Módulo não disponível.")};
+  }
+  if(intent.type==="globe-close"){
+    // Do not touch stored maps, source data, devices, camera permissions or D1.
+    const earth=window.ULTRON_EARTH;
+    const geo=window.ULTRON_GEO_VISUAL;
+    const global=window.ULTRON_GLOBAL_INTELLIGENCE;
+    const weather=window.ULTRON_METEO_CENTER;
+    const hadGlobe=Boolean(earth?.state?.visible||geo?.state?.visible||
+      global?.state?.visible||weather?.state?.visible);
+    try{
+      global?.close?.();
+      weather?.close?.();
+      geo?.close?.();
+      earth?.close?.();
+      window.JARVIS_COMMAND_CENTER?.setVisualMode?.("ring");
+      return {ok:true,handled:true,route:"local-globe-close",provider:"jarvis-local",
+        text:hadGlobe?"Globo e mapas fechados. Neural Ring restaurado; dados preservados.":
+          "Globo já estava fechado. Neural Ring mantido; dados preservados."};
+    }catch(error){
+      return {ok:false,handled:true,route:"local-globe-close",provider:"jarvis-local",
+        text:"Não foi possível fechar completamente o globo: "+
+          String(error?.message||error).slice(0,120)};
+    }
   }
   if(intent.type==="clear-interface"){
     const result=clearVisibleInterface();
