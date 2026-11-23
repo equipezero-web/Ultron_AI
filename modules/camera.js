@@ -1,4 +1,4 @@
-import { cameraWasAccepted, rememberCameraAccepted } from "./storage.js";
+import { rememberCameraAccepted } from "./storage.js";
 
 const CAMERA_DEVICE_KEY = "ultron_camera_device_id_v1";
 const DEVICE_GRACE_MS = 7000;
@@ -32,9 +32,10 @@ export class CameraController {
       setTimeout(() => this.refreshDevices({ announce: true }).catch(() => {}), 180);
     });
 
+    // Detect devices only. A previously granted browser permission must NOT
+    // reopen the local webcam: the operator chose mobile camera as default.
     setTimeout(() => {
       this.refreshDevices().catch(() => {});
-      this.restoreIfGranted().catch(() => {});
     }, 900);
   }
 
@@ -48,16 +49,14 @@ export class CameraController {
     }
   }
 
+  // Retained for older integrations, but intentionally disabled. Browser
+  // permission is not consent to start capturing on every page load.
   async canAutoStart() {
-    if (!cameraWasAccepted()) return false;
-    return (await this.permissionState()) === "granted";
+    return false;
   }
 
   async restoreIfGranted() {
-    if (this.isActive()) return true;
-    if (!(await this.canAutoStart())) return false;
-    await this.start({ restored: true });
-    return true;
+    return false;
   }
 
   isActive() {
@@ -316,6 +315,11 @@ export class CameraController {
   }
 
   async start({ restored = false } = {}) {
+    // Refuse every historical background-recovery path. An operator action
+    // calls start() or selectDevice() explicitly with restored=false.
+    if (restored) {
+      throw new DOMException("Webcam local desativada para restauração automática.", "NotAllowedError");
+    }
     if (!navigator.mediaDevices?.getUserMedia) {
       throw new Error("Câmera indisponível. Use HTTPS ou localhost.");
     }
