@@ -641,6 +641,13 @@ function installGeospatialVisual(){
    detail.append(b,line,link);
    for(const node of list.querySelectorAll("button"))node.setAttribute("aria-pressed",String(node.dataset.id===selected));
    for(const node of svg.querySelectorAll(".jarvis-geo-marker"))node.setAttribute("aria-pressed",String(node.dataset.regionId===selected));
+   // Published coordinates are scenario points; observers may offer read-only,
+   // opt-in public cameras without triggering a stream or opening a new page.
+   window.dispatchEvent(new CustomEvent("ultron:geo-point-selected",{
+     detail:{scenario:dataset?.id||null,point:{
+       id:p.id,name:p.name,lat:p.lat,lng:p.lng,source:p.source
+     }}
+   }));
    if(!skipGlobe&&mode==="3d"&&typeof window.ULTRON_EARTH?.focus==="function"){
      try{window.ULTRON_EARTH.focus(p.lat,p.lng,5,false,p.name);}catch{}
    }
