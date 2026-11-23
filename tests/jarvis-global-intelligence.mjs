@@ -69,7 +69,7 @@ const store=new Map();
 const db={prepare(query){
  return {bind(...args){
    return {async first(){
-     if(query.includes("WHERE bucket = ?"))return store.has(args[0])?{bucket:args[0]}:null;
+     if(query.includes("WHERE bucket = ?"))return store.get(args[0])||null;
      if(query.includes("ORDER BY checked_at"))return [...store.values()].at(-1)||null;
      return null;
    },async run(){
@@ -88,7 +88,7 @@ assert.equal(inserted.ok,true);assert.equal(inserted.eventCount,3);
 assert.equal(store.size,1);
 const dedup=await pollGlobalIntelligence(env,{now:()=>checkpoint,fetchImpl});
 assert.equal(dedup.skipped,true);assert.equal(store.size,1);
-const outside=await pollGlobalIntelligence(env,{now:()=>new Date(now+15*60000),fetchImpl});
+const outside=await pollGlobalIntelligence({ULTRON_DB:db},{now:()=>new Date(now+75*60000),fetchImpl});
 assert.equal(outside.reason,"outside-hourly-window");
 const cached=await latestGlobalIntelligence(env,{now:()=>now+30*60000});
 assert.equal(cached.ok,true);assert.equal(cached.stale,false);

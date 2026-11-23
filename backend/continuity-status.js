@@ -19,6 +19,15 @@ function safeSourceLink(raw,source){
   } catch{return null;}
 }
 const SOURCE_KEYS=["usgs","nasa","gdacs"];
+const sourceFailure=item=>{
+ if(!item||item.ok===true)return null;
+ const message=String(item.error||"").trim();
+ if(/^HTTP [0-9]{3}$/.test(message))return message;
+ if(/AbortError|timeout|tempo limite/i.test(message))return "TEMPO LIMITE";
+ if(/Formato geogr[aá]fico inv[aá]lido/i.test(message))return "FORMATO INVALIDO";
+ return "FALHA DE CONSULTA";
+};
+
 export function buildContinuityStatus({
   globalReport=null,weatherReport=null,now=Date.now()
 }={}){
@@ -31,7 +40,10 @@ export function buildContinuityStatus({
     const item=globalAvailable?globalReport.sourceStatus.find(s=>s?.source===source):null;
     return {name:source.toUpperCase(),available:globalFresh&&item?.ok===true,
       reported:globalAvailable&&item?.ok===true,
-      status:!globalAvailable?"unavailable":!globalFresh?"stale":item?.ok===true?"ready":"failed"};
+      status:!globalAvailable?"unavailable":!globalFresh?"stale":item?.ok===true?"ready":"failed",
+      reason:globalFresh?sourceFailure(item):null,
+      fallbackOfficial:globalFresh&&item?.ok===true&&
+        item?.mode==="official-recent-fallback"};
   });
   const valid=globalAvailable?globalReport.events.filter(event=>
     event&&SOURCE_KEYS.includes(event.source)&&

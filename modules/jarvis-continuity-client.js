@@ -21,7 +21,7 @@ function publish(view,{wake=false}={}){
 }
 function say(report,{details=false}={}){
   const view=continuityView(report);
-  const notice=view.ring;
+  const notice=view.ring+"|"+(view.status?.failedSources||[]).join(",");
   if(details){
     for(const line of view.lines)log(line);
   }else if(notice!==lastNotice){

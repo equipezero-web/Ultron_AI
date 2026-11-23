@@ -5,6 +5,7 @@ const output=document.getElementById("output-box");
 const MIN_MANUAL=10000;
 let wakePending=false,wakeTimer=null,worldDone=false,historyDone=false;
 let worldUnavailable=false,latestDigest=null,lastManualAt=0,lastSeenNotice="",wakeState=false;
+let lastUnverifiedNotice="";
 function readSeen(){
  try{return readPriorityLedger(localStorage.getItem(STORAGE_KEY));}
  catch{return readPriorityLedger(null);}
@@ -50,10 +51,17 @@ function render({wake=false,manual=false,quiet=false}={}){
  const available=(digest.worldState==="healthy"||digest.worldState==="partial"||
    digest.archiveState==="verified");
  if(!available){
-  if(!quiet)log("Fontes persistidas não verificadas ou desatualizadas; nenhuma prioridade atual será presumida.");
+  // Two independent collectors often emit one event each on startup.
+  // Log the unverified state once per state transition, but always publish
+  // each new verified digest to refresh the Neural Ring without inventing data.
+  const key=digest.worldState+"|"+digest.archiveState;
+  if(!quiet&&(manual||wake||key!==lastUnverifiedNotice))
+   log("Fontes persistidas não verificadas ou desatualizadas; nenhuma prioridade atual será presumida.");
+  lastUnverifiedNotice=key;
   publish(digest,{wake,manual});
   return digest;
  }
+ lastUnverifiedNotice="";
  if(wake||manual){
   const intro=!digest.hasBaseline?"Primeira revisão dos registros públicos. ":
     digest.newCount+" item(ns) não exibido(s) desde a última revisão. ";

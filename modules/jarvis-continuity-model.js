@@ -13,9 +13,14 @@ export function continuityView(report){
   }
   const w=report.world,t=report.weather;
   const names={healthy:"ATUALIZADA",partial:"PARCIAL",stale:"DESATUALIZADA",unavailable:"INDISPONÍVEL"};
+  const failedSources=(w.state==="healthy"||w.state==="partial")
+    ?w.sources.filter(s=>s.status!=="ready"):[];
+  const failures=failedSources.map(s=>clean(s.name,20)+
+    (s.reason?" ("+clean(s.reason,30)+")":"")).join(", ");
   const lines=[
     "MUNDO // "+names[w.state]+" // coleta há "+formatAge(w.ageMinutes)+
-      " // fontes: "+Number(w.sourceCount||0)+"/3.",
+      " // fontes: "+Number(w.sourceCount||0)+"/3"+
+      (failures?" // não confirmada(s): "+failures:"")+".",
     "METEOROLOGIA // "+names[t.state]+" // coleta há "+formatAge(t.ageMinutes)+
       " // amostras recentes: "+Number(t.sampledRegions||0)+"/6."
   ];
@@ -34,8 +39,7 @@ export function continuityView(report){
       " // publicado "+clean(event.eventAt,30)+(w.state==="stale"?" // DADO ANTIGO":""));
   }
   if(w.state==="healthy"||w.state==="partial"){
-    const failed=w.sources.filter(s=>s.status!=="ready").map(s=>clean(s.name,16));
-    if(failed.length)lines.push("FONTES NÃO CONFIRMADAS // "+failed.join(", ")+".");
+    if(failedSources.length)lines.push("FONTES NÃO CONFIRMADAS // "+failures+".");
   }
   lines.push("Os mapas e boletins usam fontes específicas. Estes registros não são previsões de risco nem alertas oficiais.");
   const ring="CONTINUIDADE · MUNDO "+names[w.state]+" ("+Number(w.sourceCount||0)+
@@ -43,5 +47,6 @@ export function continuityView(report){
   return {ok:true,ring,lines,
     text:"CONTINUIDADE // "+lines.slice(0,3).join(" "),
     status:{world:w.state,weather:t.state,worldAt:w.checkedAt||null,
-      weatherAt:t.checkedAt||null}};
+      weatherAt:t.checkedAt||null,
+      failedSources:failedSources.map(s=>s.name)}};
 }
