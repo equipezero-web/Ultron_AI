@@ -6,6 +6,7 @@ import {parseJarvisOperationalSelfTest,runJarvisOperationalSelfTest} from "./jar
 import {classifyOperatorTurn,splitOperatorSteps} from "./jarvis-intent-engine.js?v=4.69.0";
 import {directPlan,resolveActionPlan,runActionPlan} from "./jarvis-action-engine.js?v=4.101.2";
 import {parseLocalCommand,runLocalCommand} from "./jarvis-local-commands.js?v=5.66.0";
+import {parseSystemGlobalCommand} from "./jarvis-system-global-command.js";
 import {parseDirectorIntent,parseRegionalNewsVisualIntent,parseBriefingIntent,parsePublicCameraAudioIntent,parseCommunicationNotificationIntent,parseNewsVisualCloseIntent,parseMobilePairingIntent} from "./jarvis-communication-intents.js?v=5.55.0";
 import {buildRegionalNewsVisual} from "./jarvis-regional-news-visual.js?v=5.54.0";
 import {parseMissionControl,assessCompoundMission,createMissionGate} from "./jarvis-mission-safety.js";
@@ -666,6 +667,37 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
       return {ok:false,status:"waiting-confirmation",code:preview.code,results:[]};
     }
 
+
+  // Execute the two requested read-only operations, not an unrelated LLM answer.
+  // A connected mobile device is not a prerequisite for opening the globe.
+  const systemGlobal=parseSystemGlobalCommand(clean);
+  if(systemGlobal){
+    const core=window.ULTRON_CORE;
+    let diagnostics=null;
+    try{
+      diagnostics=typeof core?.status==="function"?await core.status():null;
+    }catch(error){
+      log("SISTEMAS // não foi possível consultar o estado: "+
+        String(error?.message||error).slice(0,110),true);
+    }
+    if(diagnostics){
+      const summary=typeof diagnostics==="string"?diagnostics:
+        typeof diagnostics?.text==="string"?diagnostics.text:
+        "Diagnóstico obtido do núcleo do J.A.R.V.I.S.; consulte o painel SISTEMA para os detalhes.";
+      log("SISTEMAS // "+summary.slice(0,500));
+    }else log("SISTEMAS // diagnóstico indisponível; não há estado confirmado para todos os módulos.",true);
+    // Explicitly open the real Ring, preserving text-only maintenance.
+    const local=await runLocalCommand("abra a inteligencia global no globo 3d");
+    const ok=local?.ok===true;
+    log(local?.text||"Inteligência mundial indisponível.",!ok);
+    state.processed++;
+    if(!ok)state.failed++;
+    state.lastRoute="system-global-composite";
+    state.lastResult={route:state.lastRoute,ok,result:{
+      diagnosticsAvailable:Boolean(diagnostics),globeResult:local
+    }};
+    return {ok,status:ok?"completed":"failed",results:[state.lastResult]};
+  }
 
   // Explicit worldwide intelligence commands must reach the real D1/map module
   // BEFORE generic autonomy or atmospheric mapping plans consume "monitoramento mundial".
