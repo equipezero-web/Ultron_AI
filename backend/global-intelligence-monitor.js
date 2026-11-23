@@ -63,6 +63,7 @@ const categoryOf=(name)=>{
  if(/severestorm|storm|cyclon|typhoon|hurrican|^tc$/.test(n))return "severeStorms";
  if(/flood|^fl$/.test(n))return "floods";
  if(/landslide|^ls$/.test(n))return "landslides";
+ if(/sealakeice|sea.lake.ice/.test(n))return "seaLakeIce";
  return "other";
 };
 const normEvent=(input)=>{
@@ -91,22 +92,27 @@ export function parseUsgsEvents(payload,{now=Date.now()}={}){
 }
 export function parseEonetEvents(payload,{now=Date.now()}={}){
  if(payload?.type!=="FeatureCollection"||!Array.isArray(payload.features))return null;
- const events=[];
- for(const feature of payload.features.slice(0,140)){
+ // Some NASA feeds contain hundreds of ice records before other categories;
+ // scan a bounded larger window and enforce fair per-category limits.
+ const events=[],kindCounts=new Map();
+ for(const feature of payload.features.slice(0,800)){
   const p=feature?.properties||{},xy=point(feature?.geometry);
   const id=safe(p.id||feature.id,80);
   const eventAt=validDate(p.date||p.geometryDates?.at?.(-1)||feature.properties?.date,now);
   const categories=(Array.isArray(p.categories)?p.categories:[]).map(c=>typeof c==="string"?c:c?.id||c?.title||"");
   const kind=categoryOf(categories.join(" "));
   if(!xy||!id||!eventAt||kind==="other")continue;
+  if((kindCounts.get(kind)||0)>=32)continue;
   const url=safeLink(p.link,["eonet.gsfc.nasa.gov"])||
       "https://eonet.gsfc.nasa.gov/api/v3/events/"+encodeURIComponent(id);
   const event=normEvent({id:"nasa:"+id,source:"nasa",kind,
    title:safe(p.title||"Evento natural reportado",170),
-   description:"Evento catalogado na NASA EONET. Localização pontual ou representativa; a categoria não indica gravidade.",
+   description:kind==="seaLakeIce"?
+    "Gelo marinho ou lacustre catalogado na NASA EONET. Registro ambiental; não é alerta de desastre nem delimitação de risco.":
+    "Evento catalogado na NASA EONET. Localização pontual ou representativa; a categoria não indica gravidade.",
    lat:xy.lat,lng:xy.lng,eventAt,updatedAt:eventAt,url,gdacsAlert:null,
    location:safe(p.title,140),representative:xy.representative});
-  if(event)events.push(event);
+  if(event){events.push(event);kindCounts.set(kind,(kindCounts.get(kind)||0)+1);}
  }
  return events;
 }
@@ -208,9 +214,20 @@ export async function collectGlobalIntelligence({fetchImpl=fetch,now=()=>Date.no
   if(seen.has(e.id))continue;seen.add(e.id);events.push(e);
  }
  events.sort((a,b)=>b.priority-a.priority||Date.parse(b.eventAt)-Date.parse(a.eventAt));
+ // Preserve minimum visibility for every responding official source. Without
+ // this quota a large GDACS feed could consume all 110 slots, hiding NASA
+ // even though the NASA feed had valid records.
+ const selected=[],selectedIds=new Set();
+ const add=e=>{
+  if(selected.length>=110||selectedIds.has(e.id))return;
+  selected.push(e);selectedIds.add(e.id);
+ };
+ for(const source of SOURCE_IDS)for(const event of events.filter(e=>e.source===source).slice(0,12))add(event);
+ for(const event of events)add(event);
+ selected.sort((a,b)=>b.priority-a.priority||Date.parse(b.eventAt)-Date.parse(a.eventAt));
  return {ok:true,checkedAt,partial:successful.length!==output.length,
   coverage:"Eventos publicados nas fontes consultadas. Não é vigilância integral do planeta.",
-  sourceStatus,eventCount:events.length,events:events.slice(0,110),
+  sourceStatus,eventCount:events.length,events:selected,
   disclaimer:"USGS, NASA EONET e GDACS possuem coberturas e critérios diferentes. Ordenação é de exibição, não uma previsão de risco, número de vítimas ou gravidade calculada."};
 }
 
