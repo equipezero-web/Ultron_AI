@@ -62,7 +62,7 @@ assert.match(orchestration,/isRingHomeCommand\(message\)/);
 assert.match(orchestration,/state\.lastRoute="local-neural-ring"/);
 // Keep P0-critical local commands fast, while allowing additional verified
 // local intents such as the optional dual-display layout.
-const fastLocalList=orchestration.match(/\\[([^\\]]+)\\]\\.includes\\(parseLocalCommand\\(message\\)\\?\\.type\\)/)?.[1]||"";
+const fastLocalList=orchestration.split(".includes(parseLocalCommand(message)?.type)")[0]?.split("[").at(-1)||"";
 for(const intent of ["clear-interface","capabilities","meteorological-close","dual-display"])
   assert.ok(fastLocalList.includes('"'+intent+'"'),"Critical route missing: "+intent);
 assert.match(orchestration,/state\.lastRoute="local-meteorological-close"/);
