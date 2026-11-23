@@ -13,12 +13,12 @@ export function parseLocalCommand(value){
   const plain=q.replace(/[.!?]+$/,"").trim();
 
   // Local extended-window layout commands must never be sent to AI or Android.
-  if(/^(?:(?:ative|ativar|abrir|abra|habilite|habilitar|inicie|iniciar)\\s+(?:o\\s+)?)?(?:modo\\s+)?(?:duas\\s+telas|tela\\s+dupla|dois\\s+monitores)$/.test(plain))
+  if(/^(?:(?:ative|ativar|abrir|abra|habilite|habilitar|inicie|iniciar)\s+(?:o\s+)?)?(?:modo\s+)?(?:duas\s+telas|tela\s+dupla|dois\s+monitores)$/.test(plain))
     return {type:"dual-display",action:"activate"};
-  if(/^(?:(?:desative|desativar|feche|fechar|saia|sair)\\s+(?:do\\s+|o\\s+)?)?(?:modo\\s+duas\\s+telas|modo\\s+tela\\s+dupla)$/.test(plain)||
-     /^(?:modo\\s+normal|voltar\\s+(?:ao\\s+)?modo\\s+normal)$/.test(plain))
+  if(/^(?:(?:desative|desativar|feche|fechar|saia|sair)\s+(?:do\s+|o\s+)?)?(?:modo\s+duas\s+telas|modo\s+tela\s+dupla)$/.test(plain)||
+     /^(?:modo\s+normal|voltar\s+(?:ao\s+)?modo\s+normal)$/.test(plain))
     return {type:"dual-display",action:"disable"};
-  if(/^(?:inverta|inverter|troque|trocar)\\s+(?:o\\s+)?(?:lado\\s+do\\s+)?(?:neural\\s+ring|ring)(?:\\s+de\\s+tela)?$/.test(plain))
+  if(/^(?:inverta|inverter|troque|trocar)\s+(?:o\s+)?(?:lado\s+do\s+)?(?:neural\s+ring|ring)(?:\s+de\s+tela)?$/.test(plain))
     return {type:"dual-display",action:"swap"};
 
   if(/^(?:ative|ativar|habilite|habilitar|ligue|ligar|inicie|iniciar)\s+(?:a\s+)?(?:escuta|microfone|comandos? de voz)(?:\s+(?:do|no)\s+jarvis)?$/.test(plain))
