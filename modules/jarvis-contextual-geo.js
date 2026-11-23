@@ -2,7 +2,7 @@ import {validateGeoScenario} from "./jarvis-geospatial-model.js";
 
 // Phase X: render ONLY source-geocoded cataloged records, not news headlines,
 // statewide INMET notices, inferred impact polygons or AI-generated coordinates.
-const KINDS=new Set(["earthquake","wildfires","volcanoes","severeStorms","floods","landslides"]);
+const KINDS=new Set(["earthquake","wildfires","volcanoes","severeStorms","floods","landslides","seaLakeIce"]);
 const PROVIDERS=Object.freeze({
  USGS:["earthquake.usgs.gov"],
  NASA:["eonet.gsfc.nasa.gov"],
