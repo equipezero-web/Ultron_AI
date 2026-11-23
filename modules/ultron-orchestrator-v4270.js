@@ -687,7 +687,7 @@ async function executeMessage(message, source = "terminal", approvedMission = fa
       log("SISTEMAS // "+summary.slice(0,500));
     }else log("SISTEMAS // diagnóstico indisponível; não há estado confirmado para todos os módulos.",true);
     // Explicitly open the real Ring, preserving text-only maintenance.
-    const local=await runLocalCommand("abra a inteligencia mundial no globo 3d");
+    const local=await runLocalCommand("abra a inteligencia global no globo 3d");
     const ok=local?.ok===true;
     log(local?.text||"Inteligência mundial indisponível.",!ok);
     state.processed++;
