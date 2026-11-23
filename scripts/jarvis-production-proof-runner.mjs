@@ -16,6 +16,8 @@ const lines=[
   "",
   "**Resultado:** "+report.verified+"/"+report.total+" verificações públicas confirmadas.",
   "",
+  "**Negação anônima:** um 302 apontando estritamente para o login Cloudflare Access comprova bloqueio de acesso, NÃO uma sessão autenticada.",
+  "",
   "**Ainda não comprovado:** login autenticado real, cena WebGL no navegador, dispositivos físicos, outras capacidades do inventário.",
   ""
 ];
