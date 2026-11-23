@@ -61,6 +61,7 @@ import {runVerifiedReadOnlyIntelligence} from "./jarvis-authenticated-intelligen
 import { listSkills } from "./skill-hub.js";
 import { listTrajectories } from "./trajectory-hub.js";
 import {classifyConsultativeTurn,consultativeGuidance} from "./consultative-dialogue.js";
+import {semanticActionUnderstandingGuidance} from "./jarvis-linguistic-context.js";
 import {inspectPublicGitHubRepository,githubInspectionContext,contradictsVerifiedGitHubInspection,verifiedGitHubFallback} from "./github-public-inspector.js";
 import {authorizePrivateGitHub,privateGitHubHeaders,privateGitHubConfig,inspectPrivateGitHub,privateGitHubContext} from "./github-private-inspector.js";
 import {authorizeJarvisAccount,accountAccessConfig,accountAccessHeaders} from "./jarvis-account-access.js";
@@ -333,7 +334,8 @@ function buildMemoryAwareMessage(
     "Nunca repita o comando do operador como se fosse uma pergunta. Responda de forma objetiva.",
     "Se o operador disser sim, quero, pode ou não, interprete a resposta à luz da última pergunta do assistente.",
     "Não diga que executou uma ação de interface, câmera, dispositivo ou globo se o sistema não confirmou a execução.",
-    "Se uma ação depende do aplicativo, explique brevemente que precisa ser executada pelo módulo correspondente; não ofereça executar repetidamente."
+    "Se uma ação depende do aplicativo, explique brevemente que precisa ser executada pelo módulo correspondente; não ofereça executar repetidamente.",
+    "Quando não compreender uma gíria, frase ou referência, admita a dúvida com naturalidade e faça uma única pergunta específica. Não invente significado, intenção, ação nem memória."
   );
   blocks.push("MENSAGEM ATUAL DO OPERADOR:", message);
   return blocks.join("\n");
@@ -1359,6 +1361,7 @@ export default {
           ?JSON.stringify(body.taskContext).slice(0,1200):"";
         const instruction=[
           "Você é o interpretador semântico do J.A.R.V.I.S. Não exija comandos decorados nem palavras específicas. Identifique o RESULTADO que o operador está querendo, mesmo em linguagem coloquial, indireta ou com pequenos erros.",
+          semanticActionUnderstandingGuidance(),
           "Retorne SOMENTE JSON no formato "+JSON.stringify({steps:[{action:"earth.open",args:{}}]})+". Máximo 3 ações em sequência.",
           "AÇÃO apenas quando a intenção de alterar a interface ou consultar um estado estiver claramente presente. Para conversa, desabafo, hipótese, exemplo, pergunta sobre como fazer, negação, ambiguidade ou menção sem pedido de ação, retorne plano vazio: "+JSON.stringify({steps:[]})+ ".",
           "Nunca execute compras, envio de mensagens, exclusões, acesso a arquivos, credenciais, câmera ou comandos de dispositivos por inferência. Essas ações exigem outra rota autorizada.",
