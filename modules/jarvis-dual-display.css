@@ -1,0 +1,92 @@
+/* Two physical displays presented as one extended browser viewport.
+   Display boundary is user-adjusted; physical monitor geometry is NOT inferred.
+   At narrow widths the normal layout takes over. */
+@media (min-width:1500px){
+ body.jarvis-command-center.ultron-dual-display .app-shell,
+ body.jarvis-command-center.ultron-dual-display .hud-layout,
+ body.jarvis-command-center.ultron-dual-display .center-column,
+ body.jarvis-command-center.ultron-dual-display .neural-stage,
+ body.jarvis-command-center.ultron-dual-display .orb-stage,
+ body.jarvis-command-center.ultron-dual-display .jarvis-command-center-ui{
+   width:100%!important;max-width:none!important;min-width:0!important;
+   margin-inline:0!important;box-sizing:border-box!important;
+ }
+ body.jarvis-command-center.ultron-dual-display .jarvis-command-center-ui{
+   --dual-split:50%;
+   display:grid!important;
+   grid-template-columns:minmax(0,var(--dual-split)) minmax(0,1fr)!important;
+   grid-template-rows:minmax(46px,auto) minmax(350px,1fr) minmax(260px,auto)!important;
+   min-height:100dvh!important;
+   width:100%!important;max-width:none!important;
+   column-gap:0!important;
+ }
+ body.jarvis-command-center.ultron-dual-display .jarvis-cc-top{
+   grid-column:1 / -1!important;grid-row:1!important;
+   min-width:0!important;flex-wrap:wrap!important;gap:7px!important;
+ }
+ body.jarvis-command-center.ultron-dual-display .jarvis-cc-center{
+   grid-column:1!important;grid-row:2 / 4!important;
+   min-width:0!important;width:100%!important;max-width:100%!important;
+   height:calc(100dvh - 54px)!important;min-height:600px!important;
+   padding:clamp(16px,2vw,38px)!important;
+   overflow:hidden!important;
+   border-right:2px solid rgba(212,175,55,.48)!important;
+   border-left:0!important;
+   align-self:stretch!important;
+ }
+ body.jarvis-command-center.ultron-dual-display .jarvis-cc-visual:not(.jarvis-earth-active){
+   width:min(90%,72vh,780px)!important;
+   max-width:min(90%,72vh,780px)!important;
+   max-height:min(72vh,780px)!important;
+   aspect-ratio:1!important;
+ }
+ body.jarvis-command-center.ultron-dual-display .jarvis-cc-sidebar{
+   grid-column:2!important;grid-row:2!important;
+   display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;
+   align-content:start!important;overflow:auto!important;min-width:0!important;
+   padding:clamp(12px,1.3vw,24px)!important;
+ }
+ body.jarvis-command-center.ultron-dual-display .jarvis-command-center-ui > .jarvis-cc-bottom{
+   grid-column:2!important;grid-row:3!important;
+   min-width:0!important;width:100%!important;max-width:100%!important;
+   overflow:auto!important;max-height:min(55dvh,800px)!important;
+   padding:clamp(10px,1.1vw,22px)!important;
+   border-top:1px solid rgba(212,175,55,.32)!important;
+ }
+ body.jarvis-command-center.ultron-dual-display .jarvis-cc-bottom .jarvis-cc-console-layout{
+   width:100%!important;max-width:none!important;
+   grid-template-columns:minmax(0,1fr)!important;
+ }
+ body.jarvis-command-center.ultron-dual-display .jarvis-cc-bottom :is(input,textarea,select){
+   max-width:100%!important;min-width:0!important;
+ }
+ body.jarvis-command-center.ultron-dual-display.dual-ring-right .jarvis-command-center-ui{
+   grid-template-columns:minmax(0,calc(100% - var(--dual-split))) minmax(0,var(--dual-split))!important;
+ }
+ body.jarvis-command-center.ultron-dual-display.dual-ring-right .jarvis-cc-center{
+   grid-column:2!important;grid-row:2 / 4!important;
+   border-left:2px solid rgba(212,175,55,.48)!important;
+   border-right:0!important;
+ }
+ body.jarvis-command-center.ultron-dual-display.dual-ring-right .jarvis-cc-sidebar{
+   grid-column:1!important;
+ }
+ body.jarvis-command-center.ultron-dual-display.dual-ring-right .jarvis-command-center-ui > .jarvis-cc-bottom{
+   grid-column:1!important;
+ }
+ body.jarvis-command-center.ultron-dual-display .jarvis-dual-toolbar{
+   display:flex;align-items:center;justify-content:center;gap:9px;
+   flex-wrap:wrap;max-width:100%;padding:4px 6px;
+   color:#ffe4a5;font:12px ui-monospace,Consolas,monospace;
+ }
+ body.jarvis-command-center.ultron-dual-display .jarvis-dual-toolbar input[type=range]{
+   width:125px;min-width:80px;accent-color:#d4af37;cursor:pointer;
+ }
+ body.jarvis-command-center.ultron-dual-display .jarvis-dual-toolbar button{
+   min-height:34px;padding:5px 11px;border:1px solid #b98e43;
+   border-radius:7px;background:#101520;color:#ffe4a5;cursor:pointer;
+ }
+ body.jarvis-command-center.ultron-dual-display .jarvis-cc-center :is(.jarvis-geo-visual,.jarvis-global-intel-panel,.jarvis-earth-globe){
+   max-width:100%!important;min-width:0!important;
+ }
+}

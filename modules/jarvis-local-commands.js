@@ -12,6 +12,15 @@ export function parseLocalCommand(value){
   if(/^(?:nao|nunca|se |e se |como (?:eu |posso |faco |faz)|por que|porque)\b/.test(q))return null;
   const plain=q.replace(/[.!?]+$/,"").trim();
 
+  // Local extended-window layout commands must never be sent to AI or Android.
+  if(/^(?:(?:ative|ativar|abrir|abra|habilite|habilitar|inicie|iniciar)\s+(?:o\s+)?)?(?:modo\s+)?(?:duas\s+telas|tela\s+dupla|dois\s+monitores)$/.test(plain))
+    return {type:"dual-display",action:"activate"};
+  if(/^(?:(?:desative|desativar|feche|fechar|saia|sair)\s+(?:do\s+|o\s+)?)?(?:modo\s+duas\s+telas|modo\s+tela\s+dupla)$/.test(plain)||
+     /^(?:modo\s+normal|voltar\s+(?:ao\s+)?modo\s+normal)$/.test(plain))
+    return {type:"dual-display",action:"disable"};
+  if(/^(?:inverta|inverter|troque|trocar)\s+(?:o\s+)?(?:lado\s+do\s+)?(?:neural\s+ring|ring)(?:\s+de\s+tela)?$/.test(plain))
+    return {type:"dual-display",action:"swap"};
+
   if(/^(?:ative|ativar|habilite|habilitar|ligue|ligar|inicie|iniciar)\s+(?:a\s+)?(?:escuta|microfone|comandos? de voz)(?:\s+(?:do|no)\s+jarvis)?$/.test(plain))
     return {type:"voice-listening",enabled:true};
   if(/^(?:desative|desativar|desligue|desligar|pare|parar)\s+(?:a\s+)?(?:escuta|microfone|comandos? de voz)(?:\s+(?:do|no)\s+jarvis)?$/.test(plain))
@@ -174,6 +183,16 @@ export async function runLocalCommand(command){
        "Painel de consultas independentes aberto no Neural Jarvis. Até três leituras simultâneas, sem ações destrutivas.":
        "Editor local de arquivos autorizado. Selecione manualmente um documento; acesso remoto ao armazenamento do celular não foi concedido."):
        String(result?.error||"Módulo não disponível.")};
+  }
+  if(intent.type==="dual-display"){
+    const ui=window.ULTRON_DUAL_DISPLAY;
+    if(!ui?.apply)
+      return {handled:true,ok:false,route:"local-dual-display",provider:"jarvis-local",
+        text:"O modo duas telas ainda não está publicado ou não carregou neste navegador."};
+    const result=ui.apply(intent.action);
+    return {handled:true,ok:result?.ok===true,route:"local-dual-display",
+      provider:"jarvis-local",text:result?.message||
+        "Não foi possível alterar o modo duas telas."};
   }
   if(intent.type==="clear-interface"){
     const result=clearVisibleInterface();
