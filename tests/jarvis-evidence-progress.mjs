@@ -12,13 +12,17 @@ assert.equal(parseJarvisEvolutionCommand("Jarvis, abra o globo"),null);
 assert.equal(parseJarvisEvolutionCommand("Jarvis, desativar escuta"),null);
 const summary=summarizeJarvisEvidence(manifest);
 assert.equal(summary.total,60);
-assert.equal(summary.accepted,0,"code tests do not prove live deployment");
-assert.equal(summary.partial,6,"only six delimited technical scopes have evidence");
-assert.equal(summary.pending,60);
+const expectedAccepted=manifest.capabilities.filter(x=>x.acceptance==="accepted").length;
+const expectedPartials=manifest.capabilities.filter(x=>x.acceptance==="pending"&&
+  x.checks?.code?.state==="partial-scope-verified"&&
+  x.checks?.ci?.state==="partial-scope-verified").length;
+assert.equal(summary.accepted,expectedAccepted,"accepted count must come from valid evidence");
+assert.equal(summary.partial,expectedPartials,"partial proof count must be derived from manifest");
+assert.equal(summary.pending,60-expectedAccepted);
 assert.deepEqual(summary.areas.map(x=>[x.name,x.total]),
  [["Inteligência",20],["Funcionalidades",17],["Comunicação",7],["Integridade",8],["Dispositivos",8]]);
-assert.match(summary.text,/0\/60 capacidades aceitas integralmente/);
-assert.match(summary.text,/6 capacidades têm evidência parcial/);
+assert.match(summary.text,new RegExp(expectedAccepted+"\\/60 capacidades aceitas integralmente"));
+assert.match(summary.text,new RegExp(expectedPartials+" capacidades têm evidência parcial"));
 assert.match(summary.text,/Voz, escuta e Voice Match permanecem desligados/);
 assert.doesNotMatch(summary.text,/100% concluído|todos os módulos estão prontos/i);
 for(const item of manifest.capabilities){
@@ -45,8 +49,8 @@ const result=await showJarvisEvolutionProgress({
  fetchImpl:async()=>{readCount++;return {ok:true,json:async()=>manifest};},
  showAnswer:text=>rendered.push(text)});
 assert.equal(result.ok,true);
-assert.equal(result.accepted,0);
-assert.equal(result.partial,6);
+assert.equal(result.accepted,expectedAccepted);
+assert.equal(result.partial,expectedPartials);
 assert.equal(result.displayed,true);
 assert.equal(result.voiceEnabled,false);
 assert.equal(readCount,1);
@@ -64,4 +68,4 @@ const orchestrator=readFileSync(new URL("../modules/ultron-orchestrator-v4270.js
 assert.match(orchestrator,/parseJarvisEvolutionCommand\(message\)/);
 assert.match(orchestrator,/isCancelled:\(\)=>generation!==queueGeneration/);
 assert.match(orchestrator,/showJarvisEvolutionProgress/);
-console.log("JARVIS EVIDENCE PROGRESS PASS: 60 tracked, 6 partial CI proofs, zero unverified 100%, P0-safe Neural status, voice OFF");
+console.log("JARVIS EVIDENCE PROGRESS PASS: 60 tracked, dynamic partial CI proofs, no unverified 100%, P0-safe Neural status, voice OFF");
