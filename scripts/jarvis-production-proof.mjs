@@ -19,10 +19,13 @@ export function isCloudflareAccessLoginRedirect(value){
   if(typeof value!=="string"||!value||value.length>4096)return false;
   try{
     const url=new URL(value,WORKER);
-    const trustedHost=url.origin===WORKER||
-      /^[a-z0-9-]+\\.cloudflareaccess\\.com$/i.test(url.hostname);
-    return url.protocol==="https:"&&!url.username&&!url.password&&
-      trustedHost&&/^\\/cdn-cgi\\/access\\/login(?:\\/|$)/.test(url.pathname);
+    const team=url.hostname.toLowerCase().split(".cloudflareaccess.com");
+    const teamHost=team.length===2&&team[1]===""&&
+      /^[a-z0-9-]+$/i.test(team[0]);
+    const trustedHost=url.origin===WORKER||teamHost;
+    const loginPath=url.pathname==="/cdn-cgi/access/login"||
+      url.pathname.startsWith("/cdn-cgi/access/login/");
+    return url.protocol==="https:"&&!url.username&&!url.password&&trustedHost&&loginPath;
   }catch{return false;}
 }
 function safeError(e){
