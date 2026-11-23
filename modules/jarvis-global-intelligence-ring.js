@@ -1,4 +1,5 @@
 import API_CONFIG from "../config.js";
+import {nearbyWorldCameras} from "./jarvis-nearby-world-cameras.js";
 import {validateGeoScenario} from "./jarvis-geospatial-model.js?v=4.96.1";
 import {collectGlobalIntelligence} from "../backend/global-intelligence-monitor.js?v=5.13.0";
 
@@ -110,6 +111,18 @@ function installGlobalIntelligence(){
  let report=null,fetchAt=0,visible=false,view="2d",scope="world",kind="all",requestId=0;
  let lastFetchMode="unknown",lastError="",inflight=null;
  let lastWakeAt=0,awakened=false;
+ // A click on a geospatial point also offers camera matches; never auto-plays.
+ const onGeoSelect=event=>{
+   const p=event?.detail?.point;
+   if(!visible||event?.detail?.scenario!==SCENARIO||!p)return;
+   const existing=feed.querySelector(".jarvis-global-selected-cameras");
+   existing?.remove();
+   const group=elt("section","jarvis-global-selected-cameras");
+   group.append(elt("strong","","Câmeras públicas para o ponto selecionado"));
+   appendNearby(group,p);
+   feed.prepend(group);
+ };
+ window.addEventListener("ultron:geo-point-selected",onGeoSelect);
  const close=()=>{
   ++requestId;visible=false;panel.hidden=true;panel.setAttribute("aria-busy","false");
   if(window.ULTRON_GEO_VISUAL?.state?.scenario===SCENARIO){
@@ -169,6 +182,36 @@ function installGlobalIntelligence(){
   try{return await inflight;}
   finally{inflight=null;}
  }
+ async function openCamera(camera){
+   if(!visible)return;
+   try{
+     if(!window.ULTRON_WORLD_CAMERAS?.open)
+       await import("./jarvis-public-world-cameras.js");
+     const result=window.ULTRON_WORLD_CAMERAS?.open?.({cameraId:camera.id});
+     status.textContent=result?.ok===false?
+       "Não foi possível abrir a câmera pública no Neural Ring.":
+       "Câmera selecionada: "+clean(camera.name,90)+
+       ". Referência geográfica aproximada, sinal ao vivo não verificado.";
+   }catch(error){
+     status.textContent="Módulo de câmeras indisponível: "+clean(error?.message,100);
+   }
+ }
+ function appendNearby(container,point){
+   const matches=nearbyWorldCameras({lat:point?.lat,lng:point?.lng,maxKm:50,limit:3});
+   const area=elt("div","jarvis-global-nearby-cameras");
+   area.append(elt("small","",matches.length?
+     "Câmeras públicas catalogadas próximas (distância aproximada ao local de referência):":
+     "Nenhuma câmera catalogada em até 50 km deste ponto. Não há imagem local confirmada."));
+   for(const camera of matches){
+     const b=elt("button","jarvis-global-nearby-camera",
+       "Câmera: "+camera.name+" · ~"+camera.distanceKm+" km"+
+       (camera.hasPublishedPlayer?" · player divulgado":" · página da fonte"));
+     b.type="button";b.setAttribute("aria-label","Abrir câmera pública "+camera.name);
+     b.addEventListener("click",()=>void openCamera(camera));
+     area.append(b);
+   }
+   container.append(area);
+ }
  function renderList(selected,request){
   feed.replaceChildren();
   for(const item of selected.slice(0,14)){
@@ -199,7 +242,7 @@ function installGlobalIntelligence(){
        " · "+time(item.eventAt)+". Fonte: "+item.source.toUpperCase()+
        ". Posição representativa pode não ser o centro real da área afetada.";
    });
-   article.append(button,meta,link);feed.append(article);
+   article.append(button,meta,link);appendNearby(article,item);feed.append(article);
   }
  }
  async function draw(request){
