@@ -7,6 +7,7 @@ import {searchGlobalLocations,loadGlobalWeather} from "./weather-global.js";
 import {loadWeatherInsight} from "./weather-intelligence.js";
 import {pollWeatherMonitor,latestWeatherMonitor} from "./weather-monitor.js";
 import {pollGlobalIntelligence,latestGlobalIntelligence,collectGlobalIntelligence} from "./global-intelligence-monitor.js";
+import {pollFirms,latestFirms} from "./nasa-firms-monitor.js";
 import {pollTrendIntelligence,latestTrendIntelligence} from "./trend-intelligence.js";
 import {buildContinuityStatus} from "./continuity-status.js";
 import {configureWeatherWatch,listWeatherWatches,pollPersonalWeatherWatches} from "./weather-watchlist.js";
@@ -1241,6 +1242,13 @@ export default {
           "X-Content-Type-Options":"nosniff"}
       });
     }
+    if(path==="/api/intelligence/firms"&&request.method==="GET"){
+      // Public D1 snapshot only; MAP_KEY never exposed to browser or logs.
+      const result=await latestFirms(env);
+      return new Response(JSON.stringify(result),{status:result.ok?200:503,
+       headers:{...corsHeaders(),"Cache-Control":"public, max-age=120",
+       "X-Content-Type-Options":"nosniff"}});
+    }
     if(path==="/api/intelligence/global"&&request.method==="GET"){
       // First boot may occur BEFORE the first hourly cron wrote a D1 bucket.
       // Return real public-source data immediately, NEVER a fake empty map.
@@ -1781,6 +1789,7 @@ export default {
   async scheduled(controller, env, ctx) {
     ctx.waitUntil(processDueAutomations(env, { limit: 50 }));
     ctx.waitUntil(pollWeatherMonitor(env).catch(error=>console.warn("JARVIS weather monitor unavailable",String(error?.message||error))));
+    ctx.waitUntil(pollFirms(env).catch(()=>console.warn("NASA FIRMS collection unavailable")));
     ctx.waitUntil(pollGlobalIntelligence(env).catch(error=>
       console.warn("JARVIS global intelligence collection failed",String(error?.message||error))));
     ctx.waitUntil(pollTrendIntelligence(env).catch(error=>
