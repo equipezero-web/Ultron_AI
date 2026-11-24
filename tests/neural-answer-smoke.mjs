@@ -1357,9 +1357,20 @@ try {
       'Real STATUS button must update terminal: '+JSON.stringify(ccStatusDebug));
     assert.ok(await page.$eval('.jarvis-cc-inline-result:last-child',
       el=>el.querySelector('button')?.textContent.includes('Atualizar status')));
-    await page.click('.jarvis-cc-inline-result:last-child button');
-    await page.waitForFunction(()=>[...document.querySelectorAll('.jarvis-cc-inline-result')]
-      .filter(el=>el.textContent.includes('STATUS DO SISTEMA')).length>=2);
+    // Exercise the refresh callback directly: the initial STATUS control is already
+    // covered by the real pointer-click check above. Reflowing the terminal while
+    // Puppeteer is dispatching pointer events can retarget a moving action button.
+    await page.$eval('.jarvis-cc-inline-result:last-child button',button=>button.click());
+    try {
+      await page.waitForFunction(()=>[...document.querySelectorAll('.jarvis-cc-inline-result')]
+        .filter(el=>el.textContent.includes('STATUS DO SISTEMA')).length>=2,{timeout:12000});
+    } catch(error) {
+      console.error('STATUS REFRESH DIAGNOSTICS',JSON.stringify(await page.evaluate(()=>({
+        results:[...document.querySelectorAll('.jarvis-cc-inline-result')].slice(-5).map(el=>el.textContent),
+        output:document.getElementById('output-box')?.textContent?.slice(-1200)
+      }))));
+      throw error;
+    }
     await dashboardAction('[data-cc="agenda"]');
     assert.match(await page.$eval('.jarvis-cc-inline-result:last-child',el=>el.textContent),/AGENDA \/ VISÃO LOCAL/);
     await dashboardAction('[data-cc="devices"]');
