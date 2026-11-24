@@ -57,6 +57,7 @@ jobs:
           node --check backend/jarvis-conversation-router.js
           node tests/jarvis-unified-intent.mjs
           node tests/jarvis-p0-intent-regression.mjs
+          node tests/jarvis-gateway-fallback-safety.mjs
 
       - name: Guard production secrets
         run: |
