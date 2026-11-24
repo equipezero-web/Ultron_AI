@@ -1,6 +1,7 @@
 import {JARVIS_CAPABILITIES,JARVIS_AUTONOMY} from "./jarvis-capabilities.js";
 import {providerCircuitBreaker} from "./provider-circuit-breaker.js";
 import {providerDiagnostics} from "./provider-diagnostics.js";
+import {persistProviderAttempts} from "./provider-diagnostics-db.js";
 export const SYSTEM_INSTRUCTION = `
 Você é J.A.R.V.I.S., o núcleo conversacional deste sistema.
 
@@ -487,6 +488,7 @@ export async function generateWithProviders(
         durationMs: Date.now() - startedAt
       });
 
+      await persistProviderAttempts(env, attempts);
       return {
         text: result.text,
         provider,
@@ -510,6 +512,7 @@ export async function generateWithProviders(
     }
   }
 
+  await persistProviderAttempts(env, attempts);
   throw new ProviderGatewayError(
     "Nenhum provedor de IA conseguiu responder.",
     attempts
