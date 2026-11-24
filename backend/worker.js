@@ -1,3 +1,4 @@
+import {interfacePreferenceIntent} from "./jarvis-memory-intents.js";
 import {vetClientTaskContext,contextSearchQuery} from "./task-context.js";
 import {checkPublicAiQuota} from "./worker-ai-rate-limit.js";
 import {loadLiveWeather} from "./weather-live.js";
@@ -154,18 +155,6 @@ function normalize(value) {
     .toLowerCase()
     .replace(/\s+/g, " ")
     .trim();
-}
-
-function interfacePreferenceIntent(message){
-  const q=normalize(message).replace(/[?!.,;:]+$/g,"").trim();
-  const isPreference=/\bpreferencia de interface\b/.test(q);
-  if(isPreference && /^(?:lembre-se de que|lembre se de que|lembre-se que|lembre que|guarde|salve|registre)\b/.test(q))
-    return "store";
-  if(isPreference && /^(?:qual|quais|e qual|voce lembra|lembra|o que)\b/.test(q))
-    return "recall";
-  if(/^(?:e qual foi|qual foi|e qual era|qual era) a preferencia que (?:eu )?(?:acabei de )?(?:informar|disser|falar)\b/.test(q))
-    return "recall";
-  return null;
 }
 
 function isNewsIntent(message) {
