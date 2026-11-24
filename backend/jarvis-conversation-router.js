@@ -7,7 +7,7 @@ const normalized=value=>String(value||"").normalize("NFD").replace(/[\u0300-\u03
  .replace(/[!?.,;:]+/g," ").replace(/\s+/g," ").trim();
 const address=text=>normalized(text).replace(/^(?:ei |hey |ola |oi )?(?:jarvis|j a r v i s|ultron)(?: |$)/,"").trim();
 const names=text=>normalized(text).replace(/\b(?:jarvis|j a r v i s|ultron)\b/g,"").replace(/\s+/g," ").trim();
-const SOCIAL=/^(?:(?:e ?ai|eae|ea[eê]|opa|o[il]|ola|alo|fala|salve|bom dia|boa tarde|boa noite|tudo bem|tudo bom|como vai|como voce ta|como tu ta|ta tudo bem|qual e a boa|qual a boa|beleza|blz|suave|de boa|e as novidades|firmeza|oi tudo bem|e ai tudo bem|eae tudo bem)(?: (?:meu parceiro|meu chapa|meu rei|mano|cara|amigo|por ai|contigo|com voce|com tu|meu patr[ao]))?)$/;
+const SOCIAL=/^(?:(?:e ?ai|eae|ea[eê]|opa|o[il]|ola|alo|fala|salve|bom dia|boa tarde|boa noite|tudo bem|tudo bom|como vai|como voce ta|como tu ta|ta tudo bem|qual e a boa|qual a boa|beleza|blz|suave|de boa|e as novidades|firmeza|oi tudo bem|e ai tudo bem|eae tudo bem)(?: (?:meu parceiro|meu chapa|meu rei|mano|cara|amigo|por ai|contigo|com voce|com tu|meu patrao))?)$/;
 const ACK=/^(?:valeu|obrigado|obrigada|vlw|tmj|show|top|massa|arretado|brigado|brigada|agradecido|ate logo|tchau|falou|ate mais)$/;
 const DONT=/^(?:nao |nunca |jamais |sem |pare |parar |cancele |cancelar |stop\b)/;
 const EXPLICIT_RESEARCH=/\b(?:pesquise|pesquisar|procure na web|busque na internet|consulte fontes|noticias de hoje|ultimas noticias|ultimos acontecimentos)\b/;
