@@ -261,7 +261,14 @@ export async function loadMemoryContext(
       ? [...messageResult.results].reverse()
       : [];
     const recentUserMessage = [...messages].reverse().find((item) => item.role === "user")?.content || "";
-    const memories = selectMemoriesForTurn(memoryResult?.results, query || recentUserMessage, { limit: DEFAULT_MEMORIES });
+    // Referential follow-ups must recover the previous topic rather than
+    // matching only pronouns like "qual foi a preferência que informei".
+    // Scoped to the same operator + conversation; no general stale-context injection.
+    const referential=/^(?:e\s+)?(?:qual foi|qual era|e qual|o que eu|voce lembra|você lembra|e isso|e essa|e esse)\b/i.test(String(query||"").trim());
+    const memoryQuery=referential && recentUserMessage
+      ? query+" "+recentUserMessage
+      : (query || recentUserMessage);
+    const memories = selectMemoriesForTurn(memoryResult?.results, memoryQuery, { limit: DEFAULT_MEMORIES });
 
     const rendered = composeMemoryContext(memories, messages);
     return {
