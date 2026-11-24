@@ -1,3 +1,4 @@
+import {classifyJarvisTurn} from "./jarvis-conversation-router.js";
 // Bounded multi-agent planner. Explicitly registered read-only agents only.
 export const AGENTS=Object.freeze({
   research:{tools:["research.search"],level:1},
@@ -46,6 +47,10 @@ function affirmativeMatch(clause,pattern) {
   return false;
 }
 export function planAgents(input,{maxSteps=6}={}) {
+  const turn=classifyJarvisTurn(input);
+  if(turn.isSocial||turn.kind==="contextual-observation")
+    return {steps:[],parallelizable:false,requiresApproval:false,advisory:true,
+      reason:"NO_CLEAR_AGENT_INTENT"};
   const message=String(input||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().slice(0,2000).trim();
   if(!message)return {steps:[],parallelizable:false,requiresApproval:false,advisory:true,reason:"EMPTY_COMMAND"};
   const clauses=message.split(CLAUSE_BOUNDARY).map(x=>x.trim()).filter(Boolean);
@@ -53,13 +58,13 @@ export function planAgents(input,{maxSteps=6}={}) {
     isDeviceAction(c,a)&&affirmativeMatch(c,a.pattern)));
   // A fully negated request must not silently become an unrelated web search.
   const onlyNegation=recognized.length===0&&clauses.some(c=>/\b(?:nao|nunca|jamais|sem|evite|dispense)\b/.test(c));
-  const selected=recognized.length?recognized:onlyNegation?[]:[{agent:"research",tool:"research.search"}];
+  const selected=recognized; // Unknown requests are not permission to start a research agent.
   const steps=selected.slice(0,Math.max(1,Math.min(6,Number(maxSteps)||6))).map((a,i)=>({
     id:"step-"+(i+1),agent:a.agent,tool:a.tool,level:AGENTS[a.agent].level,
     requiresApproval:AGENTS[a.agent].level>2
   }));
   return {steps,parallelizable:steps.every(x=>x.level===1),requiresApproval:steps.some(x=>x.requiresApproval),
-    advisory:true,...(onlyNegation?{reason:"NO_AFFIRMATIVE_ACTION"}:{})};
+    advisory:true,reason:onlyNegation?"NO_AFFIRMATIVE_ACTION":!selected.length?"NO_CLEAR_AGENT_INTENT":"RECOGNIZED_INTENT"};
 }
 export async function executeAgents(plan,{agents={},signal,onStep=()=>{},approved=false,concurrency=2}={}) {
   const tasks=plan?.steps;

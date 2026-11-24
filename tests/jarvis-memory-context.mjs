@@ -74,6 +74,8 @@ assert.equal(requests.find(r=>r.sql.includes("FROM memories")).args[1],160,
 assert.ok(state.context.includes("Globo meteorológico de Recife"));
 assert.equal(state.lastUserMessage,"Consulta sobre clima");
 assert.equal(state.lastAssistantMessage,"Resposta anterior");
-assert.equal(state.recalledMemories,10);
+assert.equal(state.recalledMemories,1,
+  "only the relevant globo memory may enter context; unrelated colors must not leak");
+assert.ok(!state.context.includes("Cor preferida"),"No unrelated memories in model context");
 assert.equal(state.recalledMessages,2);
 console.log("JARVIS LONG CONTEXT PASS: scoped candidate pool, bounded recent chat and retained topical memory");

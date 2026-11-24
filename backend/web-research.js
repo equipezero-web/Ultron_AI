@@ -1,3 +1,4 @@
+import {classifyJarvisTurn} from "./jarvis-conversation-router.js";
 const SERPER_ENDPOINT = "https://google.serper.dev/search";
 const SEARCH_TIMEOUT_MS = 3200;
 const VISUAL_REQUEST=/\b(imagem|imagens|foto|fotos|fotografia|fotografias|mostre uma|mostre imagens|quero ver|exiba|visualize|ilustre|picture|photos)\b/i;
@@ -134,6 +135,11 @@ function dedupeAndRank(results, limit = 6) {
 }
 
 export function shouldResearchBeforeAnswer(message) {
+  const turn=classifyJarvisTurn(message);
+  // Shared intent boundary: never research social speech or local actions,
+  // regardless of punctuation, device names in history, or model uncertainty.
+  if(["social","operation-candidate","contextual-observation","caution"].includes(turn.kind))
+    return {needed:false,reason:"unified-"+turn.kind,ttlMinutes:0};
   const text = normalizeResearchQuestion(message);
   if (!text) return { needed: false, reason: "empty", ttlMinutes: 0 };
   if(isSelfCapabilityQuestion(text))return {needed:false,reason:"self-capabilities",ttlMinutes:0};
@@ -151,6 +157,12 @@ export function shouldResearchBeforeAnswer(message) {
   const localAction=/^(abra|abrir|ligue|ligar|desligue|desligar|ative|ativar|pause|parar|pare|toque|execute|rodar|mostre meu|leia meu)\b/i;
   if (conversational.test(text)||localAction.test(text)) return { needed:false,reason:"local-action",ttlMinutes:0 };
   if (/^(?:crie|escreva|redija|rascunhe|invente|gere)\b/i.test(text)&&!SEARCH_TERMS.test(text))return {needed:false,reason:"creative",ttlMinutes:0};
+  // Opinions about the conversation, projects or the assistant's judgment
+  // require reasoning, not external lookup, unless a public source is explicit.
+  if(/^(?:o que (?:voce|tu) acha|qual (?:e )?sua opiniao|na sua opiniao|voce acha que|voce gostou|o que achou)\b/i.test(
+    text.normalize("NFD").replace(/[\u0300-\u036f]/g,""))
+    && !SEARCH_TERMS.test(text))
+    return {needed:false,reason:"conversational-opinion",ttlMinutes:0};
   if (VISUAL_REQUEST.test(text)) return { needed:true,reason:"visual-request",ttlMinutes:180 };
   if (SEARCH_TERMS.test(text)) return { needed: true, reason: "explicit-search", ttlMinutes: 180 };
   if (CURRENT_TERMS.test(text)||/\b(?:quanto custa|quanto vale|como está|como esta|como anda|em que pé|última atualização|ultima atualizacao|está acontecendo|esta acontecendo)(?=\s|[?!.,:]|$)/i.test(text)) return { needed: true, reason: "freshness", ttlMinutes: 15 };

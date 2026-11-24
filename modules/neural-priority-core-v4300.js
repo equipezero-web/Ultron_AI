@@ -19,10 +19,10 @@ function normalize(text) {
 }
 
 const P0 = [
-  /^(?:ultron[ ,:-]*)?(?:stop|parar|pare|congelar|congele|freeze|cancelar|cancele|abortar|aborte)(?: tudo| agora)?[.!]?$/,
-  /^(?:ultron[ ,:-]*)?(?:abaixa isso|baixe isso|interrompa tudo|interromper tudo)[.!]?$/
+  /^(?:(?:jarvis|ultron)[ ,:-]*)?(?:stop|parar|pare|congelar|congele|freeze|cancelar|cancele|abortar|aborte)(?: tudo| agora)?[.!]?$/,
+  /^(?:(?:jarvis|ultron)[ ,:-]*)?(?:abaixa isso|baixe isso|interrompa tudo|interromper tudo)[.!]?$/
 ];
-const RESUME = /^(?:ultron[ ,:-]*)?(?:retomar|retome|continuar|continue|descongelar|descongele|resume)[.!]?$/;
+const RESUME = /^(?:(?:jarvis|ultron)[ ,:-]*)?(?:retomar|retome|descongelar|descongele|resume)[.!]?$/;
 const P1 = /\b(emergencia|risco|falha critica|integridade|seguranca|superaquec|incendio|perigo|brecha)\b/;
 
 function classify(text, source = 'terminal') {
@@ -124,7 +124,7 @@ function installOrchestratorGate() {
     if (p.label === 'EMERGENCY STOP') return Promise.resolve(emergencyStop(source));
     if (p.label === 'RESUME') return Promise.resolve(resume(source));
     if (state.frozen) {
-      log(`P0 ACTIVE // comando ${p.level} bloqueado. Diga “Ultron, retomar”.`, true);
+      log(`P0 ACTIVE // comando ${p.level} bloqueado. Diga “Jarvis, retomar”.`, true);
       return Promise.resolve({ ok: false, stopped: true, priority: 'P0' });
     }
     return original(message, source);

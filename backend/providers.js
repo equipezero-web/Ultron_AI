@@ -92,11 +92,10 @@ function buildGroundedTelemetry(env, telemetry = {}, aiBinding = null) {
     ...(telemetry || {}),
     systemCapabilities: {
       ...(telemetry?.systemCapabilities || {}),
-      tts: Boolean(env.ELEVENLABS_API_KEY && env.ELEVENLABS_VOICE_ID),
-      ttsProvider:
-        env.ELEVENLABS_API_KEY && env.ELEVENLABS_VOICE_ID
-          ? "ElevenLabs"
-          : null,
+      // Credentials mean "configured", not "actively speaking".
+      // Operator-requested text-only maintenance has precedence over secrets.
+      tts: false,
+      ttsProvider: null,
       visualContext: true,
       liveNews: true,
       visualResearch: Boolean(env.SERPER_API_KEY),

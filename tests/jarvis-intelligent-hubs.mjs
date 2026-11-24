@@ -17,7 +17,12 @@ const plan=planAgents("Jarvis, analise a previsão do tempo e mostre no globo");
 assert.ok(plan.steps.some(s=>s.agent==="meteorology"));
 assert.ok(plan.steps.some(s=>s.agent==="visual"));
 assert.ok(plan.steps.length<=6);
-assert.equal(planAgents("qual o resultado?").steps[0].agent,"research");
+assert.equal(planAgents("qual o resultado?").steps.length,0,
+ "Ambiguous follow-up cannot silently create a public research agent");
+for(const q of ["Eae, Jarvis?","Oxente!","Esse negócio tá uma marmota"]){
+ assert.equal(planAgents(q).steps.length,0,q+" must remain conversational");
+ assert.equal(planAgents(q).reason,"NO_CLEAR_AGENT_INTENT");
+}
 
 const mixed=planAgents("Jarvis, não mostre notícias; mostre a previsão meteorológica no mapa");
 assert.ok(mixed.steps.some(s=>s.agent==="meteorology"));
