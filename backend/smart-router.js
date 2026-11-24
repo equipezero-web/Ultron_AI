@@ -1,3 +1,4 @@
+import {classifyJarvisTurn} from "./jarvis-conversation-router.js";
 const PROVIDERS = ["gemini", "groq", "openrouter", "cloudflare", "cohere"];
 
 function normalize(value) {
@@ -27,6 +28,9 @@ function mergeOrder(preferred, available) {
 export function classifyTask(message, telemetry = {}) {
   const text = normalize(message);
   const words = text ? text.split(" ").length : 0;
+  const unified=classifyJarvisTurn(message);
+  if(unified.isSocial||unified.kind==="contextual-observation"||unified.kind==="caution")
+    return {class:"fast",confidence:0.99,localConversation:unified.isSocial};
 
   if (/\b(imagem|foto|camera|tela|screenshot|print|visual|objeto|documento fotografado)\b/.test(text)) {
     return { class: "visual", confidence: 0.9 };
