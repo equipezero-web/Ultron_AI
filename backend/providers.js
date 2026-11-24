@@ -57,15 +57,22 @@ export class ProviderGatewayError extends Error {
   }
 }
 
-function providerOrder(env) {
-  const configured = String(env.AI_PROVIDER_ORDER || "")
+function providerOrder(env, status) {
+  const preferred = String(env.AI_PROVIDER_ORDER || "")
     .split(",")
     .map((item) => item.trim().toLowerCase())
     .filter((item) => DEFAULT_PROVIDER_ORDER.includes(item));
 
-  return configured.length
-    ? [...new Set(configured)]
-    : DEFAULT_PROVIDER_ORDER;
+  // AI_PROVIDER_ORDER specifies preference, not an allowlist. If all preferred
+  // providers fail, try other *configured* providers instead of reporting total
+  // outage while a healthy backup exists. Never attempt unconfigured backups.
+  const ordered = [...new Set(preferred.length ? preferred : DEFAULT_PROVIDER_ORDER)];
+  for (const provider of DEFAULT_PROVIDER_ORDER) {
+    if (status[provider]?.configured && !ordered.includes(provider)) {
+      ordered.push(provider);
+    }
+  }
+  return ordered;
 }
 
 function compactError(error) {
@@ -393,7 +400,7 @@ export async function generateWithProviders(
   const groundedTelemetry = buildGroundedTelemetry(env, telemetry, aiBinding);
   const attempts = [];
 
-  for (const provider of providerOrder(env)) {
+  for (const provider of providerOrder(env, status)) {
     if (!status[provider]?.configured) {
       attempts.push({
         provider,

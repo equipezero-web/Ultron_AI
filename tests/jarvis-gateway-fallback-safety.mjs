@@ -30,5 +30,15 @@ try{
  assert.equal(r.attempts[1].status,"success");
  assert.equal(calls.length,2);
  assert.match(r.text,/Entendi/);
+
+ // An explicit primary-only order must NOT strand a healthy configured backup.
+ // Unconfigured providers must never trigger network requests.
+ calls.length=0;
+ const backup=await generateWithProviders({...env,AI_PROVIDER_ORDER:"gemini"},
+  "Preciso de ajuda",{}, {});
+ assert.equal(backup.provider,"groq");
+ assert.deepEqual(backup.attempts.map(a=>a.provider),["gemini","groq"]);
+ assert.deepEqual(calls.map(url=>new URL(url).hostname),
+  ["generativelanguage.googleapis.com","api.groq.com"]);
 }finally{globalThis.fetch=oldFetch;}
 console.log("GATEWAY PASS: failed upstream -> working fallback; no false TTS claim");
