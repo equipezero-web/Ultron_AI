@@ -391,7 +391,7 @@ export async function loadLiveNewsContext(message, { limit = 6 } = {}) {
       eventCorrelation:correlation,
       contextText: buildContextText(articles)+
         "\n\nCORRELAÇÃO CONSERVADORA DE NOTÍCIAS (não é verificação factual):\n"+
-        JSON.stringify(correlation.events.slice(0,6).map(({event_id,title,sourceCount,independentDomains,verificationStatus,divergenceStatus,sources})=>({event_id,title,sourceCount,independentDomains,verificationStatus,divergenceStatus,sources:sources.map(({source,url})=>({source,url}))}))),
+        JSON.stringify(correlation.events.slice(0,6).map(({event_id,title,sourceCount,independentDomains,verificationStatus,divergenceStatus,evidenceReview,sources})=>({event_id,title,sourceCount,independentDomains,verificationStatus,divergenceStatus,evidenceStatus:evidenceReview?.evidenceStatus||"not-reviewed",potentialNumericDiscrepancies:evidenceReview?.discrepancies||[],sources:sources.map(({source,url})=>({source,url}))}))),
       visualContext: {
         mode: "news",
         label: "LIVE NEWS",
