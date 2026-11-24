@@ -7,6 +7,14 @@ const old={text:"Olá, Lucas! Com base na telemetria disponível, posso ver que 
 const repaired=verifyProjectOpinionReply(message,old);
 assert.equal(repaired.text,JARVIS_PROJECT_OPINION);
 assert.equal(repaired.correctedLegacyReply,true);
+const explanation=verifyProjectOpinionReply("Não entendi isso que você falou.",{
+ text:"Não há dados suficientes para avaliar o projeto de forma detalhada.",
+ provider:"gemini",model:"generic"
+});
+assert.match(explanation.text,/módulos ainda precisam trabalhar melhor juntos/);
+assert.equal(explanation.correctedLegacyReply,true);
+assert.doesNotMatch(explanation.text,/Não há dados suficientes/);
+
 assert.equal(repaired.webResearch.used,false);
 assert.match(repaired.text,/Neural Ring/);
 assert.doesNotMatch(repaired.text,/Olá|Lucas|com base na telemetria disponível|não há informações suficientes/i);
