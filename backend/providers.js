@@ -74,7 +74,7 @@ function promptFrom(message, telemetry) {
   // Telemetry is operational metadata, NOT conversational history. Exposing
   // the whole snapshot to the model makes it repeat past questions and say
   // "com base na telemetria" for unrelated ordinary conversation.
-  const currentTurn=String(message||"").split("MENSAGEM ATUAL DO OPERADOR:\\n").pop();
+  const currentTurn=String(message||"").split("MENSAGEM ATUAL DO OPERADOR:\n").pop();
   const needsDiagnostics=/(?:telemetria|estado do sistema|status (?:do|dos|da)|provedores? de ia|diagnostico|diagnóstico|modulos ativos|módulos ativos|capacidades ativas)/i.test(currentTurn);
   return needsDiagnostics
     ? ["Mensagem do operador:",message,"","Estado técnico solicitado:",JSON.stringify({
