@@ -22,7 +22,7 @@ const P0 = [
   /^(?:(?:jarvis|ultron)[ ,:-]*)?(?:stop|parar|pare|congelar|congele|freeze|cancelar|cancele|abortar|aborte)(?: tudo| agora)?[.!]?$/,
   /^(?:(?:jarvis|ultron)[ ,:-]*)?(?:abaixa isso|baixe isso|interrompa tudo|interromper tudo)[.!]?$/
 ];
-const RESUME = /^(?:(?:jarvis|ultron)[ ,:-]*)?(?:retomar|retome|continuar|continue|descongelar|descongele|resume)[.!]?$/;
+const RESUME = /^(?:(?:jarvis|ultron)[ ,:-]*)?(?:retomar|retome|descongelar|descongele|resume)[.!]?$/;
 const P1 = /\b(emergencia|risco|falha critica|integridade|seguranca|superaquec|incendio|perigo|brecha)\b/;
 
 function classify(text, source = 'terminal') {
