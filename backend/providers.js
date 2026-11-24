@@ -160,7 +160,7 @@ async function fetchJson(url, options = {}, timeoutMs = 12000) {
       // Safe structured metadata, without exposing upstream error bodies.
       const retryAfter = response.headers.get("retry-after");
       if (retryAfter) {
-        const seconds = /^\\d+$/.test(retryAfter.trim())
+        const seconds = /^\d+$/.test(retryAfter.trim())
           ? Number(retryAfter.trim())
           : (Date.parse(retryAfter) - Date.now()) / 1000;
         if (Number.isFinite(seconds) && seconds > 0)
