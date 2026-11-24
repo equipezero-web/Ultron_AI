@@ -37,3 +37,24 @@ export function rankMemories(memories, query="", {limit=10,now=Date.now()}={}) {
     String(b.updated_at||"").localeCompare(String(a.updated_at||"")))
     .slice(0,Math.max(0,Math.min(40,Number(limit)||10)));
 }
+
+/**
+ * Select only memories connected to the CURRENT task. Keep rankMemories()
+ * backward-compatible for administrative preference browsing, but never
+ * inject high-importance unrelated memories just because no topic matched.
+ * This is explicitly lexical; vector retrieval requires separate consent,
+ * indexing, isolation and production validation.
+ */
+export function selectMemoriesForTurn(memories,query="",options={}){
+ const wanted=tokens(query),items=rankMemories(memories,query,options);
+ // Without a meaningful topic, no memory injection is safer than guessing.
+ if(!wanted.size)return [];
+ const allowGeneral=/\b(?:minhas? memorias?|minhas? preferencias?|o que voce (?:lembra|sabe) de mim|meu perfil)\b/i
+  .test(String(query||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase());
+ if(allowGeneral)return items;
+ return items.filter(item=>{
+  const shared=item.retrieval.overlap*wanted.size;
+  return shared>=Math.min(2,wanted.size) ||
+   (shared>=1&&item.retrieval.overlap>=0.33);
+ });
+}
