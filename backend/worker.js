@@ -958,7 +958,7 @@ async function handleAi(request, env) {
       newsState, sources, fromCache, researchMs, researchContext
     } = prepared;
 
-    const askedForSources=/\\b(?:cite|citar|fontes|referencias|referências|links das fontes)\\b/i.test(String(originalBody?.message||""));
+    const askedForSources=/\b(?:cite|citar|fontes|referencias|referências|links das fontes)\b/i.test(String(originalBody?.message||""));
     if (!researchContext || !sources.length) {
       const mediaOnly=researchVisualContext(research)||fallbackVisual;
       if(visualHasContent(mediaOnly))data.visualContext={...mediaOnly,caption:data.text||""};
@@ -1019,9 +1019,9 @@ async function handleAi(request, env) {
           try{return new URL(String(item?.url)).protocol==="https:";}catch{return false;}
         }).slice(0,4);
         if(refs.length)
-          data.text=String(data.text||"").trim()+"\\n\\nFontes consultadas:\\n"+
+          data.text=String(data.text||"").trim()+"\n\nFontes consultadas:\n"+
             refs.map((item,i)=>(i+1)+". "+(item.title||item.source||"Fonte")+
-              " — "+item.url).join("\\n");
+              " — "+item.url).join("\n");
       }
       data.webResearch = {
         requested: true,
