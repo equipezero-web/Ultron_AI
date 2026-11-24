@@ -54,7 +54,7 @@ function compareSnapshots(previous,current){
   possibleDiscrepancyChanged:differenceChanged,titleChanged:descriptionChanged,
   hasChange:Boolean(addedSources.length||updatedSources.length||differenceChanged||descriptionChanged)};
 }
-export function matchWorldEvent(event,previousEvents,{now=Date.now(),maxAgeDays=7,usedIds=[]}={}){
+export function matchWorldEvent(event,previousEvents,{now=Date.now(),maxAgeDays=3,usedIds=[]}={}){
  const ownUrls=new Set(urls(event));
  const words=signature(event.title);
  let best=null,score=0;
@@ -121,8 +121,18 @@ export async function advanceWorldEventTimeline(env,correlation,{now=Date.now()}
    if(usedIds.includes(id)){events.push(event);continue;}
    usedIds.push(id);
    const current=summaryEntry(event);
+   if(existing?.data){
+     // Retain previously observed source links to avoid rediscovering old
+     // sources as 'new' when successive fetches return alternating outlets.
+     const combined=new Map((existing.data.sources||[]).map(item=>[safeUrl(item.url),item]));
+     for(const item of current.sources)combined.set(safeUrl(item.url),item);
+     current.sources=[...combined.values()].filter(item=>item.url).slice(-8);
+     // A different outlet's headline is not a correction of the original
+     // headline. Same-URL edits are captured by updatedSources instead.
+     current.title=existing.data.title;
+   }
    const changes=compareSnapshots(existing?.data||{sources:[],title:null,potentialDiscrepancies:0},current);
-   const stored=serialize(event,id,observedAt,existing,changes);
+   const stored=serialize({...event,title:current.title,sources:current.sources},id,observedAt,existing,changes);
    const evolution={
     event_id:id,firstSeen:stored.firstSeen,lastSeen:observedAt,
     status:!existing?"first-observed":changes.hasChange?"updated":"unchanged",
