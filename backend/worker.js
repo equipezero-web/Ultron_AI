@@ -62,6 +62,7 @@ import { listSkills } from "./skill-hub.js";
 import { listTrajectories } from "./trajectory-hub.js";
 import {classifyConsultativeTurn,consultativeGuidance} from "./consultative-dialogue.js";
 import {semanticActionUnderstandingGuidance} from "./jarvis-linguistic-context.js";
+import {classifyJarvisTurn,greetingResponse} from "./jarvis-conversation-router.js";
 import {inspectPublicGitHubRepository,githubInspectionContext,contradictsVerifiedGitHubInspection,verifiedGitHubFallback} from "./github-public-inspector.js";
 import {authorizePrivateGitHub,privateGitHubHeaders,privateGitHubConfig,inspectPrivateGitHub,privateGitHubContext} from "./github-private-inspector.js";
 import {authorizeJarvisAccount,accountAccessConfig,accountAccessHeaders} from "./jarvis-account-access.js";
@@ -408,6 +409,15 @@ async function unifiedState(env, operatorId) {
 // facts about the conversation, not new system instructions or authenticated data.
 async function prepareResearch(env, body) {
   const message = String(body?.message || "").trim();
+  const entryIntent=classifyJarvisTurn(message);
+  // A harmless greeting must never reach GitHub inspection, public search,
+  // news enrichment, prior-task search resolution or automatic web fallback.
+  if(entryIntent.isSocial)return {
+    body:{...body,allowUncertaintyResearch:false,
+      webResearchContext:"",taskContext:null,
+      researchMeta:{active:false,reason:"social-intent",skipLegacyResearch:true}},
+    policy:{needed:false,reason:"social-intent"},active:false
+  };
   const laTeamContext = String(body?.laTeamContext || "").trim();
   const localFilesContext=String(body?.localFilesContext||"").trim();
 
@@ -583,6 +593,20 @@ async function executeAiCore(env, body) {
   if (!message) return { status: 400, data: { error: "Mensagem vazia." } };
   if (message.length > 8000) return { status: 413, data: { error: "Mensagem muito longa." } };
 
+  const turn=classifyJarvisTurn(message);
+  if(turn.isSocial){
+    // Short deterministic safety boundary. Do not inject previous devices,
+    // weather, news, telemetry or memories into a social response.
+    return {status:200,data:{
+      text:greetingResponse(message),dialogueMode:{name:"conversation",followup:false,claimedCompletion:false},
+      provider:"jarvis-local",providerLabel:"J.A.R.V.I.S.",model:"safe-social-turn",
+      attempts:[],memory:{active:false,recalledMessages:0,recalledMemories:0,saved:false,
+        explicitMemorySaved:false,error:null},liveData:{news:false,resultCount:0},
+      visualContext:null,webResearch:{requested:false,used:false,sourceCount:0,sources:[]},
+      performance:{aiMs:0,researchMs:0,aiPasses:0,voiceMs:0,totalMs:Date.now()-requestStartedAt},
+      audioBase64:null,audioMimeType:null
+    }};
+  }
   const [memoryState, newsState] = await Promise.all([
     loadMemoryContext(env, { operatorId, conversationId, query: message, recentLimit: 16 }),
     skipLegacyResearch ? Promise.resolve(emptyNewsState()) : loadLiveNewsContext(message, { limit: 6 })
@@ -799,7 +823,10 @@ async function handleAi(request, env) {
     }
   }
 
-  const operationalPlan = buildOperationalPlan(body?.message, telemetry);
+  const unifiedTurn=classifyJarvisTurn(body?.message);
+  const operationalPlan = unifiedTurn.isSocial
+    ? {kind:"conversation",steps:[],requiresApproval:false}
+    : buildOperationalPlan(body?.message, telemetry);
   telemetry = { ...telemetry, operationalPlan };
   const routing = chooseProviderOrder(env, body?.message, telemetry);
   const routedEnv = withSmartProviderOrder(env, routing);
