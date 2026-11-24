@@ -1,3 +1,4 @@
+import {classifyJarvisTurn} from "./jarvis-conversation-router.js";
 import {classifyConsultativeTurn} from "./consultative-dialogue.js";
 
 const TOOL_POLICY = {
@@ -7,9 +8,9 @@ const TOOL_POLICY = {
   "news.search": { level: "auto", description: "Consultar notícias e fontes públicas." },
   "research.search": { level: "auto", description: "Pesquisar contexto público para explicações." },
   "device.status": { level: "auto", description: "Consultar estado de dispositivo pareado." },
-  "app.open": { level: "auto", description: "Abrir aplicativo em dispositivo pareado." },
+  "app.open": { level: "confirm", description: "Abrir aplicativo em dispositivo pareado." },
   "notification.push": { level: "confirm", description: "Enviar notificação ao dispositivo." },
-  "tv.control": { level: "auto", description: "Executar controle ativo na TV." },
+  "tv.control": { level: "confirm", description: "Executar controle ativo na TV." },
   "message.send": { level: "blocked", description: "Envio de mensagens ainda não implementado com autorização adequada." },
   "file.delete": { level: "blocked", description: "Exclusão de arquivos não implementada." },
   "purchase.execute": { level: "blocked", description: "Compras/pagamentos não podem ser executados pelo núcleo atual." },
@@ -62,11 +63,13 @@ function sensitiveSignals(text) {
 
 export function buildOperationalPlan(message, telemetry = {}) {
   const text = normalize(message);
-  const intent = detectIntent(text);
+  const intent = classifyJarvisTurn(message).isSocial ? "conversation" : detectIntent(text);
   const sensitive = sensitiveSignals(text);
   const steps = [];
 
-  if (intent === "troubleshoot") {
+  if (intent === "conversation") {
+    steps.push(step("respond", "Responder naturalmente", null, "Sem pesquisar ou iniciar ferramentas."));
+  } else if (intent === "troubleshoot") {
     steps.push(
       step("inspect", "Inspecionar estado atual e evidências", "telemetry.read", "Entender o problema antes de agir."),
       step("context", "Consultar contexto e histórico relevante", "memory.read", "Evitar repetir tentativas e recuperar decisões anteriores."),
@@ -84,7 +87,7 @@ export function buildOperationalPlan(message, telemetry = {}) {
     steps.push(
       step("status", "Confirmar dispositivo e estado atual", "device.status", "Evitar enviar comando ao dispositivo errado ou offline."),
       step("select", "Selecionar a ação compatível", null, "Mapear a intenção para uma ferramenta autorizada."),
-      step("control", "Executar o comando explícito autorizado", "tv.control", "Comando explícito do operador autoriza a ação compatível."),
+      step("control", "Submeter controle para confirmação do operador", "tv.control", "Comando explícito NÃO substitui autorização por operação e dispositivo."),
       step("verify", "Confirmar resultado do comando", "device.status", "Verificar se a alteração ocorreu.")
     );
   } else if (intent === "project") {
