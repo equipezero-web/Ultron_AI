@@ -1,4 +1,5 @@
 import {classifyJarvisTurn} from "./jarvis-conversation-router.js";
+import {isProviderDisabled} from "./provider-policy.js";
 const PROVIDERS = ["gemini", "groq", "openrouter", "cloudflare", "cohere"];
 
 function normalize(value) {
@@ -14,8 +15,8 @@ function configuredOrder(env) {
   const configured = String(env?.AI_PROVIDER_ORDER || "")
     .split(",")
     .map((item) => item.trim().toLowerCase())
-    .filter((item) => PROVIDERS.includes(item));
-  return configured.length ? [...new Set(configured)] : PROVIDERS;
+    .filter((item) => PROVIDERS.includes(item) && !isProviderDisabled(env,item));
+  return configured.length ? [...new Set(configured)] : PROVIDERS.filter(name=>!isProviderDisabled(env,name));
 }
 
 function mergeOrder(preferred, available) {
