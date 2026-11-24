@@ -17,7 +17,7 @@ let answer=providerDiagnosticsAnswer(breaker,diagnostics);
 assert.match(answer.text,/sem observações/);
 assert.doesNotMatch(answer.text,/todos online/i);
 assert.equal(answer.providerDiagnostics.scope,"worker-isolate");
-assert.equal(answer.providerDiagnostics.providers.length,5);
+assert.equal(answer.providerDiagnostics.providers.length,8);
 assert.equal(diagnostics.record({provider:"unknown",status:"success"}),false);
 assert.equal(diagnostics.record({provider:"groq",status:"skipped"}),false);
 diagnostics.record({provider:"gemini",status:"failed",durationMs:125});

@@ -3,6 +3,7 @@ import {providerCircuitBreaker} from "./provider-circuit-breaker.js";
 import {isProviderDisabled} from "./provider-policy.js";
 import {providerDiagnostics} from "./provider-diagnostics.js";
 import {persistProviderAttempts} from "./provider-diagnostics-db.js";
+import {callExtraProvider,extraProviderDefinition} from "./extra-ai-providers.js";
 export const SYSTEM_INSTRUCTION = `
 Você é J.A.R.V.I.S., o núcleo conversacional deste sistema.
 
@@ -41,7 +42,10 @@ const DEFAULT_PROVIDER_ORDER = [
   "groq",
   "openrouter",
   "cloudflare",
-  "cohere"
+  "cohere",
+  "mistral",
+  "deepseek",
+  "cerebras"
 ];
 
 const PROVIDER_LABELS = {
@@ -49,7 +53,10 @@ const PROVIDER_LABELS = {
   groq: "Groq",
   openrouter: "OpenRouter",
   cloudflare: "Cloudflare Workers AI",
-  cohere: "Cohere"
+  cohere: "Cohere",
+  mistral: "Mistral AI",
+  deepseek: "DeepSeek",
+  cerebras: "Cerebras"
 };
 
 export class ProviderGatewayError extends Error {
@@ -397,6 +404,8 @@ export async function probeSingleProvider(env, provider){
   case "openrouter": result=await callOpenRouter(env,question,telemetry); break;
   case "cloudflare": result=await callCloudflare(env,question,telemetry,env.AI,9000); break;
   case "cohere": result=await callCohere(env,question,telemetry); break;
+  case "mistral": case "deepseek": case "cerebras":
+   result=await callExtraProvider(env,provider,chatMessages(question,telemetry)); break;
   default: throw new Error("invalid-provider");
  }
  if(!result?.text)throw new Error("empty-response");
@@ -405,6 +414,12 @@ export async function probeSingleProvider(env, provider){
 
 export function getProviderStatus(env, aiBinding = null) {
   return {
+    mistral: {label:PROVIDER_LABELS.mistral,enabled:!isProviderDisabled(env,"mistral"),
+      configured:Boolean(env.MISTRAL_API_KEY),model:env.MISTRAL_MODEL||"mistral-small-latest"},
+    deepseek: {label:PROVIDER_LABELS.deepseek,enabled:!isProviderDisabled(env,"deepseek"),
+      configured:Boolean(env.DEEPSEEK_API_KEY),model:env.DEEPSEEK_MODEL||"deepseek-chat"},
+    cerebras: {label:PROVIDER_LABELS.cerebras,enabled:!isProviderDisabled(env,"cerebras"),
+      configured:Boolean(env.CEREBRAS_API_KEY),model:env.CEREBRAS_MODEL||"llama3.1-8b"},
     gemini: {
       label: PROVIDER_LABELS.gemini,
       enabled: !isProviderDisabled(env,"gemini"),
@@ -513,6 +528,9 @@ export async function generateWithProviders(
           break;
         case "cohere":
           result = await callCohere(env, message, groundedTelemetry);
+          break;
+        case "mistral": case "deepseek": case "cerebras":
+          result = await callExtraProvider(env, provider,chatMessages(message,groundedTelemetry));
           break;
         default:
           continue;

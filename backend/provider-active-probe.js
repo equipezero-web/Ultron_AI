@@ -5,7 +5,7 @@ import {isProviderDisabled} from "./provider-policy.js";
 import { persistProviderAttempts } from "./provider-diagnostics-db.js";
 import { providerDiagnostics } from "./provider-diagnostics.js";
 
-const PROVIDERS = new Set(["gemini","groq","openrouter","cloudflare","cohere"]);
+const PROVIDERS = new Set(["gemini","groq","openrouter","cloudflare","cohere","mistral","deepseek","cerebras"]);
 const FIFTEEN_MINUTES = 15*60*1000;
 function authorized(request,env){
  const expected=String(env?.JARVIS_PROVIDER_PROBE_TOKEN||"");

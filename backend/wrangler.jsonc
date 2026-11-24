@@ -13,13 +13,16 @@
   },
 
   "vars": {
-    "AI_PROVIDER_ORDER": "groq,cloudflare,cohere",
+    "AI_PROVIDER_ORDER": "groq,cloudflare,cohere,mistral,deepseek,cerebras",
     "AI_DISABLED_PROVIDERS": "gemini,openrouter",
     "GEMINI_MODEL": "gemini-3.8-flash",
     "GROQ_MODEL": "openai/gpt-oss-20b",
     "OPENROUTER_MODEL": "openrouter/free",
     "CLOUDFLARE_AI_MODEL": "@cf/meta/llama-3.1-8b-instruct-fp8-fast",
     "COHERE_MODEL": "command-a-plus-05-2026",
+    "MISTRAL_MODEL": "mistral-small-latest",
+    "DEEPSEEK_MODEL": "deepseek-chat",
+    "CEREBRAS_MODEL": "llama3.1-8b",
     "ELEVENLABS_AUTOSPEAK": "false",
     "GOOGLE_TTS_NEURAL2_VOICE": "pt-BR-Neural2-B",
     "GOOGLE_TTS_WAVENET_VOICE": "pt-BR-Wavenet-B",

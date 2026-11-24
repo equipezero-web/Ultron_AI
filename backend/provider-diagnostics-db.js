@@ -1,7 +1,7 @@
 // Shared D1 diagnostics, strictly aggregate and content-free.
 // Unlike the circuit breaker, these records are shared between Worker isolates.
 // No prompts, responses, secrets, IPs, identity, error bodies or device IDs.
-const VALID_PROVIDERS=new Set(["gemini","groq","openrouter","cloudflare","cohere"]);
+const VALID_PROVIDERS=new Set(["gemini","groq","openrouter","cloudflare","cohere","mistral","deepseek","cerebras"]);
 const WINDOW_MS=15*60*1000;
 const MAX_DURATION=60000;
 const SCHEMA=`CREATE TABLE IF NOT EXISTS jarvis_provider_attempts (
