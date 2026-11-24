@@ -85,6 +85,6 @@ assert.equal(script.includes("camera.restoreIfGranted ="),false,
   "no superficial monkey-patch required after fixing the controller");
 assert.match(script,/camera\.js\?v=5\.65\.0/);
 assert.match(bootstrap,/camera-runtime\.js\?v=4\.16\.1/);
-assert.match(html,/script\\.js\\?v=5\\.65\\.1/);
+assert.match(html,/script\.js\?v=5\.65\.1/);
 assert.match(html,/stark-bootstrap\.js\?v=5\.59\.0/);
 console.log("JARVIS LOCAL CAMERA CONSENT PASS: zero capture on startup, permission grant, hotplug or track-ended; explicit manual start retained");
