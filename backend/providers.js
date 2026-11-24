@@ -1,4 +1,5 @@
 import {JARVIS_CAPABILITIES,JARVIS_AUTONOMY} from "./jarvis-capabilities.js";
+import {providerCircuitBreaker} from "./provider-circuit-breaker.js";
 export const SYSTEM_INSTRUCTION = `
 Você é J.A.R.V.I.S., o núcleo conversacional deste sistema.
 
@@ -416,13 +417,27 @@ export async function generateWithProviders(
   const status = getProviderStatus(env, aiBinding);
   const groundedTelemetry = buildGroundedTelemetry(env, telemetry, aiBinding);
   const attempts = [];
+  const breaker = options.circuitBreaker || providerCircuitBreaker;
+  const ordered = providerOrder(env, status);
+  // Only skip cooled providers when at least one configured non-cooled
+  // alternative exists. Never strand the final configured provider.
+  const healthyAlternatives = ordered.some((name) =>
+    status[name]?.configured && !breaker.isCooling(name));
 
-  for (const provider of providerOrder(env, status)) {
+  for (const provider of ordered) {
     if (!status[provider]?.configured) {
       attempts.push({
         provider,
         status: "skipped",
         reason: "não configurado"
+      });
+      continue;
+    }
+    if (healthyAlternatives && breaker.isCooling(provider)) {
+      attempts.push({
+        provider,
+        status: "skipped",
+        reason: "falhas transitórias recentes; aguardando recuperação"
       });
       continue;
     }
@@ -459,6 +474,7 @@ export async function generateWithProviders(
           continue;
       }
 
+      breaker.onSuccess(provider);
       attempts.push({
         provider,
         status: "success",
@@ -474,6 +490,7 @@ export async function generateWithProviders(
         attempts
       };
     } catch (error) {
+      breaker.onFailure(provider, error);
       console.error(
         `[JARVIS AI] ${PROVIDER_LABELS[provider]} falhou:`,
         compactError(error)
