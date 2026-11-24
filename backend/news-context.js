@@ -1,4 +1,5 @@
 import { loadResearchContext } from "./research-context.js";
+import {correlateNewsEvents} from "./news-event-correlation.js";
 
 const GDELT_ENDPOINT = "https://api.gdeltproject.org/api/v2/doc/doc";
 const GOOGLE_NEWS_RSS = "https://news.google.com/rss/search";
@@ -349,6 +350,7 @@ export async function loadLiveNewsContext(message, { limit = 6 } = {}) {
   try {
     const result = await fetchLiveArticles(message, limit);
     const articles = result.articles;
+    const correlation=correlateNewsEvents(articles);
 
     if (!articles.length) {
       return {
@@ -385,7 +387,10 @@ export async function loadLiveNewsContext(message, { limit = 6 } = {}) {
     return {
       active: true,
       articles,
-      contextText: buildContextText(articles),
+      eventCorrelation:correlation,
+      contextText: buildContextText(articles)+
+        "\n\nCORRELAÇÃO CONSERVADORA DE NOTÍCIAS (não é verificação factual):\n"+
+        JSON.stringify(correlation.events.slice(0,6).map(({event_id,title,sourceCount,independentDomains,verificationStatus,divergenceStatus,sources})=>({event_id,title,sourceCount,independentDomains,verificationStatus,divergenceStatus,sources:sources.map(({source,url})=>({source,url}))}))),
       visualContext: {
         mode: "news",
         label: "LIVE NEWS",
