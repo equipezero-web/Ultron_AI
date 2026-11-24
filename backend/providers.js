@@ -4,6 +4,7 @@ import {isProviderDisabled} from "./provider-policy.js";
 import {providerDiagnostics} from "./provider-diagnostics.js";
 import {persistProviderAttempts} from "./provider-diagnostics-db.js";
 import {callExtraProvider,extraProviderDefinition} from "./extra-ai-providers.js";
+import {mistral429Gate} from "./mistral-rate-limit.js";
 export const SYSTEM_INSTRUCTION = `
 Você é J.A.R.V.I.S., o núcleo conversacional deste sistema.
 
@@ -473,6 +474,7 @@ export async function generateWithProviders(
     providerDiagnostics.record(attempt);
   };
   const breaker = options.circuitBreaker || providerCircuitBreaker;
+  const mistralRateGate = options.mistralRateGate || mistral429Gate;
   const ordered = providerOrder(env, status);
   // Only skip cooled providers when at least one configured non-cooled
   // alternative exists. Never strand the final configured provider.
@@ -482,6 +484,10 @@ export async function generateWithProviders(
   for (const provider of ordered) {
     if (isProviderDisabled(env,provider)) {
       recordAttempt({provider,status:"skipped",reason:"desativado pelo operador"});
+      continue;
+    }
+    if (provider === "mistral" && mistralRateGate.isCooling()) {
+      recordAttempt({provider,status:"skipped",reason:"limite Mistral HTTP 429 observado; pausa temporária local"});
       continue;
     }
     if (!status[provider]?.configured) {
@@ -553,6 +559,7 @@ export async function generateWithProviders(
         attempts
       };
     } catch (error) {
+      if (provider === "mistral") mistralRateGate.observe(error);
       breaker.onFailure(provider, error);
       console.error(
         `[JARVIS AI] ${PROVIDER_LABELS[provider]} falhou:`,
