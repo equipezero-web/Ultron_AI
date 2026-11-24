@@ -111,6 +111,14 @@ function promptFrom(message, telemetry) {
     : ["Mensagem do operador:",message].join("\n");
 }
 
+// Allow complete multi-part answers without requesting an excessive generation
+// on every greeting. These are ceilings; providers charge actual output.
+export function jarvisResponseTokenBudget(message){
+ const current=String(message||"").split("MENSAGEM ATUAL DO OPERADOR:\n").pop()
+   .normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+ const complex=/\b(?:analise|analise a arquitetura|compare|comparar|plano|planeje|planejar|etapas|prioridades|criterios de validacao|relatorio|auditoria|projeto|revisao interna limitada)\b/.test(current);
+ return complex?1400:720;
+}
 function chatMessages(message, telemetry) {
   return [
     { role: "system", content: SYSTEM_INSTRUCTION },
@@ -256,7 +264,7 @@ async function callGroq(env, message, telemetry) {
         model,
         messages: chatMessages(message, telemetry),
         temperature: 0.45,
-        max_completion_tokens: 220
+        max_completion_tokens: jarvisResponseTokenBudget(message)
       })
     }
   );
@@ -287,7 +295,7 @@ async function callOpenRouter(env, message, telemetry) {
         model,
         messages: chatMessages(message, telemetry),
         temperature: 0.45,
-        max_tokens: 220
+        max_tokens: jarvisResponseTokenBudget(message)
       })
     }
   );
@@ -338,7 +346,7 @@ async function callCloudflare(env, message, telemetry, aiBinding, timeoutMs = 90
   const input = {
     messages: chatMessages(message, telemetry),
     temperature: 0.45,
-    max_tokens: 220
+    max_tokens: jarvisResponseTokenBudget(message)
   };
 
   if (aiBinding && typeof aiBinding.run === "function") {
@@ -386,7 +394,8 @@ async function callCohere(env, message, telemetry) {
       body: JSON.stringify({
         model,
         messages: chatMessages(message, telemetry),
-        temperature: 0.45
+        temperature: 0.45,
+        max_tokens: jarvisResponseTokenBudget(message)
       })
     }
   );
