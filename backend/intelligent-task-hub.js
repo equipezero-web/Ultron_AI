@@ -48,7 +48,7 @@ function affirmativeMatch(clause,pattern) {
 }
 export function planAgents(input,{maxSteps=6}={}) {
   const turn=classifyJarvisTurn(input);
-  if(turn.isSocial||turn.kind==="contextual-observation"||turn.kind==="caution")
+  if(turn.isSocial||turn.kind==="contextual-observation")
     return {steps:[],parallelizable:false,requiresApproval:false,advisory:true,
       reason:"NO_CLEAR_AGENT_INTENT"};
   const message=String(input||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().slice(0,2000).trim();
