@@ -419,11 +419,18 @@ export async function saveExchange(
     const recorded = Array.isArray(writes) &&
       writes.slice(0, 4).every(write => Number(write?.meta?.changes) === 1);
     if (!recorded) return { saved: false, error: "CONVERSATION_SCOPE_CONFLICT" };
-    return {
-      saved: true,
-      explicitMemorySaved: Boolean(explicitMemory &&
-        Number(writes[4]?.meta?.changes) === 1)
-    };
+    let explicitSaved=Boolean(explicitMemory &&
+      Number(writes[4]?.meta?.changes) === 1);
+    if(explicitMemory && !explicitSaved){
+      // INSERT OR IGNORE reports 0 changes when an identical memory already
+      // exists. Verify it within the SAME operator scope before reporting
+      // failure. Never infer successful persistence from an ignored write.
+      const existing=await env.ULTRON_DB.prepare(
+        "SELECT id FROM memories WHERE operator_id = ? AND content = ? LIMIT 1"
+      ).bind(operatorId,explicitMemory).first();
+      explicitSaved=Boolean(existing?.id);
+    }
+    return {saved:true,explicitMemorySaved:explicitSaved};
   } catch (error) {
     console.error("[ULTRON MEMORY] Falha ao salvar conversa:", error);
     return {
