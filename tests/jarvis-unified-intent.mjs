@@ -13,6 +13,11 @@ for(const q of ["Eae, Jarvis?","E aí, Jarvis?","Opa, meu patrão!","Fala, Jarvi
  assert.equal(mediaPolicy(q).images,false,q);
  assert.ok(greetingResponse(q).length<150,q);
 }
+for(const q of ["Esse negócio tá uma marmota","O globo tá perto demais","Eita, Jarvis","Oxente!","Isso aí ficou estranho"]){
+ assert.equal(classifyJarvisTurn(q).kind,"contextual-observation",q);
+ assert.equal(shouldResearchBeforeAnswer(q).needed,false,q);
+ assert.equal(classifyJarvisTurn(q).mayExecute,false,q);
+}
 for(const q of ["Jarvis, ligue a TV","Mostre o globo","Desligue o celular","Não mexa nos arquivos"]){
  assert.notEqual(classifyJarvisTurn(q).kind,"social",q);
  assert.equal(classifyJarvisTurn(q).mayExecute,false,q);
