@@ -183,6 +183,11 @@ export function explicitMemoryCandidate(message) {
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase();
 
+  // Questions about an existing preference are READS, not requests to
+  // store the question itself as an explicit long-term memory.
+  if(/[?？]/.test(text) || /^(?:qual|quais|o que|como|quando|onde|voce|você|lembra do|lembra da)\b/.test(normalized))
+    return null;
+
   const cues = [
     "lembre que",
     "lembre-se de que",
