@@ -1,3 +1,4 @@
+import {isJarvisProjectOpinion,JARVIS_PROJECT_OPINION} from "./jarvis-project-opinion.js";
 import {interfacePreferenceIntent} from "./jarvis-memory-intents.js";
 import {vetClientTaskContext,contextSearchQuery} from "./task-context.js";
 import {checkPublicAiQuota} from "./worker-ai-rate-limit.js";
@@ -603,6 +604,28 @@ async function executeAiCore(env, body) {
 
   if (!message) return { status: 400, data: { error: "Mensagem vazia." } };
   if (message.length > 8000) return { status: 413, data: { error: "Mensagem muito longa." } };
+
+  // The operator is evaluating this very project, not asking for telemetry.
+  // Respond to this narrow, unambiguous question without a speculative model
+  // completion; persist the answer for a possible "não entendi" follow-up.
+  if(isJarvisProjectOpinion(message)){
+    const memoryWrite=operatorId&&conversationId
+      ? await saveExchange(env,{operatorId,conversationId,userMessage:message,
+          assistantMessage:JARVIS_PROJECT_OPINION,provider:"jarvis-local",model:"project-evaluation"})
+      : {saved:false};
+    return {status:200,data:{
+      text:JARVIS_PROJECT_OPINION,provider:"jarvis-local",providerLabel:"J.A.R.V.I.S.",
+      model:"project-evaluation",attempts:[],
+      dialogueMode:{name:"conversation",followup:false,claimedCompletion:false},
+      memory:{active:Boolean(memoryWrite.saved),identityReceived:Boolean(operatorId&&conversationId),
+        recalledMessages:0,recalledMemories:0,saved:Boolean(memoryWrite.saved),
+        explicitMemorySaved:false,error:memoryWrite.error||null},
+      liveData:{news:false,resultCount:0},visualContext:null,
+      webResearch:{requested:false,used:false,sourceCount:0,sources:[]},
+      performance:{aiMs:0,researchMs:0,aiPasses:0,voiceMs:0,totalMs:Date.now()-requestStartedAt},
+      audioBase64:null,audioMimeType:null
+    }};
+  }
 
   const preferenceIntent=interfacePreferenceIntent(message);
   if(preferenceIntent){
