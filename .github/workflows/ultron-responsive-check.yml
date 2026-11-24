@@ -111,7 +111,9 @@ jobs:
         run: |
           npm install --no-save --no-package-lock --ignore-scripts puppeteer-core@24.33.0
           echo "CHROME_BIN=$(command -v google-chrome || command -v chromium || command -v chromium-browser)" >> "$GITHUB_ENV"
-      - name: Verify mobile ring and globe
+      # This shared smoke suite also verifies weather maps and the new evidence panel.
+      # Running it in two concurrent jobs previously caused nondeterministic Chromium timeouts.
+      - name: Verify mobile ring, worldwide weather map and evidence panel
         run: |
           python3 -m http.server 8766 --bind 127.0.0.1 >/tmp/ultron-responsive-http.log 2>&1 &
           sleep 2
@@ -150,21 +152,3 @@ jobs:
           } finally { await browser.close(); }
           NODE
 
-
-  weather-map-browser:
-    runs-on: ubuntu-latest
-    timeout-minutes: 6
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-      - name: Install headless browser
-        run: |
-          npm install --no-save --no-package-lock --ignore-scripts puppeteer-core@24.33.0
-          echo "CHROME_BIN=$(command -v google-chrome || command -v chromium || command -v chromium-browser)" >> "$GITHUB_ENV"
-      - name: Assert weather map metrics, zoom and mobile UI
-        run: |
-          python3 -m http.server 8766 --bind 127.0.0.1 >/tmp/jarvis-weather-map-http.log 2>&1 &
-          sleep 2
-          node tests/neural-answer-smoke.mjs
