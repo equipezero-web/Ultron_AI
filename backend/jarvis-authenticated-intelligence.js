@@ -18,6 +18,12 @@ export async function runVerifiedReadOnlyIntelligence(input={},{
 }={}){
   const message=typeof input?.message==="string"?input.message.trim():"";
   if(!message||message.length>500)return fail("INVALID_COMMAND",400);
+  // Never let an unsupported sensitive command degrade into a web-search
+  // suggestion. Deny before consulting the read-only multi-agent planner.
+  if(/\b(?:apagar|apague|excluir|exclua|deletar|delete|formatar|transfira|transferir|pagar|pagamento|pix|comprar|compre|enviar mensagem|envie mensagem)\b/i
+     .test(message))return fail("AGENT_NOT_AVAILABLE",422,{
+       supported:["meteorology","news"],unsupported:["privileged-operation"]
+     });
   const plan=planAgents(message,{maxSteps:4});
   if(!plan.steps.length)return fail("NO_AFFIRMATIVE_ACTION",422,{plan});
   if(plan.steps.some(s=>!allowed.has(s.agent)))return fail("AGENT_NOT_AVAILABLE",422,{
