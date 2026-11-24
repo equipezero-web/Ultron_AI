@@ -813,8 +813,9 @@ async function handleAi(request, env) {
 
   const prepared = await prepareResearch(env, originalBody);
   const body = prepared.body;
-  const operatorId = await deriveOperatorId(body?.memoryKey);
-  let telemetry = body?.telemetry || {};
+  const unifiedTurn=classifyJarvisTurn(body?.message);
+  const operatorId = unifiedTurn.isSocial ? null : await deriveOperatorId(body?.memoryKey);
+  let telemetry = unifiedTurn.isSocial ? {} : (body?.telemetry || {});
 
   if (operatorId) {
     const latest = await getLatestTelemetry(env, operatorId);
@@ -823,7 +824,6 @@ async function handleAi(request, env) {
     }
   }
 
-  const unifiedTurn=classifyJarvisTurn(body?.message);
   const operationalPlan = unifiedTurn.isSocial
     ? {kind:"conversation",steps:[],requiresApproval:false}
     : buildOperationalPlan(body?.message, telemetry);
