@@ -1,5 +1,6 @@
 import {JARVIS_CAPABILITIES,JARVIS_AUTONOMY} from "./jarvis-capabilities.js";
 import {providerCircuitBreaker} from "./provider-circuit-breaker.js";
+import {isProviderDisabled} from "./provider-policy.js";
 import {providerDiagnostics} from "./provider-diagnostics.js";
 import {persistProviderAttempts} from "./provider-diagnostics-db.js";
 export const SYSTEM_INSTRUCTION = `
@@ -64,14 +65,14 @@ function providerOrder(env, status) {
   const preferred = String(env.AI_PROVIDER_ORDER || "")
     .split(",")
     .map((item) => item.trim().toLowerCase())
-    .filter((item) => DEFAULT_PROVIDER_ORDER.includes(item));
+    .filter((item) => DEFAULT_PROVIDER_ORDER.includes(item) && !isProviderDisabled(env,item));
 
   // AI_PROVIDER_ORDER specifies preference, not an allowlist. If all preferred
   // providers fail, try other *configured* providers instead of reporting total
   // outage while a healthy backup exists. Never attempt unconfigured backups.
-  const ordered = [...new Set(preferred.length ? preferred : DEFAULT_PROVIDER_ORDER)];
+  const ordered = [...new Set(preferred.length ? preferred : DEFAULT_PROVIDER_ORDER.filter(provider=>!isProviderDisabled(env,provider)))];
   for (const provider of DEFAULT_PROVIDER_ORDER) {
-    if (status[provider]?.configured && !ordered.includes(provider)) {
+    if (status[provider]?.configured && !isProviderDisabled(env,provider) && !ordered.includes(provider)) {
       ordered.push(provider);
     }
   }
@@ -386,6 +387,7 @@ async function callCohere(env, message, telemetry) {
 // An isolated, low-volume probe; no fallback and no circuit-breaker side effects.
 // The caller must enforce authentication and the shared D1 rate limit.
 export async function probeSingleProvider(env, provider){
+ if(isProviderDisabled(env,provider)) throw new Error("provider-disabled");
  const question="Responda apenas OK.";
  const telemetry={};
  let result;
@@ -405,21 +407,25 @@ export function getProviderStatus(env, aiBinding = null) {
   return {
     gemini: {
       label: PROVIDER_LABELS.gemini,
+      enabled: !isProviderDisabled(env,"gemini"),
       configured: Boolean(env.GEMINI_API_KEY),
       model: env.GEMINI_MODEL || "gemini-3.8-flash"
     },
     groq: {
       label: PROVIDER_LABELS.groq,
+      enabled: !isProviderDisabled(env,"groq"),
       configured: Boolean(env.GROQ_API_KEY),
       model: env.GROQ_MODEL || "openai/gpt-oss-20b"
     },
     openrouter: {
       label: PROVIDER_LABELS.openrouter,
+      enabled: !isProviderDisabled(env,"openrouter"),
       configured: Boolean(env.OPENROUTER_API_KEY),
       model: env.OPENROUTER_MODEL || "openrouter/free"
     },
     cloudflare: {
       label: PROVIDER_LABELS.cloudflare,
+      enabled: !isProviderDisabled(env,"cloudflare"),
       configured: Boolean(
         (aiBinding && typeof aiBinding.run === "function") ||
           (env.CLOUDFLARE_AI_API_TOKEN && env.CLOUDFLARE_ACCOUNT_ID)
@@ -430,6 +436,7 @@ export function getProviderStatus(env, aiBinding = null) {
     },
     cohere: {
       label: PROVIDER_LABELS.cohere,
+      enabled: !isProviderDisabled(env,"cohere"),
       configured: Boolean(env.COHERE_API_KEY),
       model: env.COHERE_MODEL || "command-a-plus-05-2026"
     }
@@ -458,6 +465,10 @@ export async function generateWithProviders(
     status[name]?.configured && !breaker.isCooling(name));
 
   for (const provider of ordered) {
+    if (isProviderDisabled(env,provider)) {
+      recordAttempt({provider,status:"skipped",reason:"desativado pelo operador"});
+      continue;
+    }
     if (!status[provider]?.configured) {
       recordAttempt({
         provider,
