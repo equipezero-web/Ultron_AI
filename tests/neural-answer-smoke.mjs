@@ -3,7 +3,7 @@ import puppeteer from 'puppeteer-core';
 
 const browser=await puppeteer.launch({
   executablePath:process.env.CHROME_BIN||'/usr/bin/google-chrome',
-  headless:true,args:['--no-sandbox','--disable-dev-shm-usage','--enable-webgl','--enable-unsafe-swiftshader']
+  headless:true,pipe:true,timeout:60000,args:['--no-sandbox','--disable-dev-shm-usage','--no-zygote','--disable-background-networking','--enable-webgl','--enable-unsafe-swiftshader']
 });
 try {
   // The full 1,600-line interaction suite executes once on the constrained
