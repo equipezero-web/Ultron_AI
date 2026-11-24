@@ -1360,6 +1360,7 @@ try {
     // Exercise the refresh callback directly: the initial STATUS control is already
     // covered by the real pointer-click check above. Reflowing the terminal while
     // Puppeteer is dispatching pointer events can retarget a moving action button.
+    console.log('CC CHECKPOINT 1: refresh-status');
     await page.$eval('.jarvis-cc-inline-result:last-child button',button=>button.click());
     try {
       await page.waitForFunction(()=>[...document.querySelectorAll('.jarvis-cc-inline-result')]
@@ -1371,8 +1372,10 @@ try {
       }))));
       throw error;
     }
+    console.log('CC CHECKPOINT 2: agenda');
     await dashboardAction('[data-cc="agenda"]');
     assert.match(await page.$eval('.jarvis-cc-inline-result:last-child',el=>el.textContent),/AGENDA \/ VISÃO LOCAL/);
+    console.log('CC CHECKPOINT 3: devices');
     await dashboardAction('[data-cc="devices"]');
     await page.waitForFunction(()=>[...document.querySelectorAll('.jarvis-cc-inline-result button')]
       .some(el=>el.textContent.includes('Configurar TV')));
@@ -1380,8 +1383,10 @@ try {
       const tv=[...el.querySelectorAll('button')].find(b=>b.textContent.includes('Configurar TV'));
       tv?.setAttribute('data-test-tv','true');
     });
+    console.log('CC CHECKPOINT 4: pair-tv');
     await page.click('[data-test-tv="true"]');
     await page.waitForFunction(()=>window.__ccAuditTv===1);
+    console.log('CC CHECKPOINT 5: files');
     await dashboardAction('[data-cc="files"]');
     await page.waitForFunction(()=>[...document.querySelectorAll('.jarvis-cc-inline-result')]
       .some(el=>el.textContent.includes('ARQUIVOS LOCAIS (1)')));
@@ -1390,16 +1395,19 @@ try {
     await page.click('.jarvis-cc-inline-result:last-child button');
     await page.waitForFunction(()=>[...document.querySelectorAll('.jarvis-cc-inline-result')]
       .filter(el=>el.textContent.includes('ARQUIVOS LOCAIS (1)')).length>=2);
+    console.log('CC CHECKPOINT 6: camera');
     await dashboardAction('[data-cc="camera"]');
     await page.waitForFunction(()=>window.__ccAuditCamera===1);
     await page.$eval('[data-visual="globe"]',button=>
       button.scrollIntoView({block:'center',behavior:'instant'}));
+    console.log('CC CHECKPOINT 7: globe');
     await dashboardAction('[data-visual="globe"]');
     await page.waitForFunction(()=>window.__phase3MockState.visible===true);
     // The stable return-to-Ring tool must work even when a moving 3D
     // visual prevents a click on the tiny sphere-mode toggle.
     await page.$eval('[data-cc="ring"]',button=>
       button.scrollIntoView({behavior:'instant',block:'center'}));
+    console.log('CC CHECKPOINT 8: ring');
     await dashboardAction('[data-cc="ring"]');
     await page.waitForFunction(()=>window.__phase3MockState.visible===false&&
       document.querySelector('.jarvis-cc-visual')?.dataset.mode==='ring',{timeout:9000});
