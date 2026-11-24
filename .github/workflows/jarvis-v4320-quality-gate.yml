@@ -65,6 +65,7 @@ jobs:
           node tests/jarvis-stage-b-disable-providers.mjs
           node tests/jarvis-stage-b-extra-providers.mjs
           node tests/jarvis-stage-b-mistral-429.mjs
+          node tests/jarvis-three-provider-operational-mode.mjs
           node --test tests/jarvis-stage-b-provider-error-diagnostics.test.mjs
           node tests/jarvis-time-intent.mjs
           node tests/jarvis-selective-memory.mjs
