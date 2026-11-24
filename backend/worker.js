@@ -15,6 +15,7 @@ import {loadWeatherInsight} from "./weather-intelligence.js";
 import {pollWeatherMonitor,latestWeatherMonitor} from "./weather-monitor.js";
 import {pollGlobalIntelligence,latestGlobalIntelligence,collectGlobalIntelligence} from "./global-intelligence-monitor.js";
 import {recordWorldEvidenceAudit} from "./news-evidence-audit.js";
+import {advanceWorldEventTimeline} from "./news-world-evolution.js";
 import {pollTrendIntelligence,latestTrendIntelligence} from "./trend-intelligence.js";
 import {buildContinuityStatus} from "./continuity-status.js";
 import {configureWeatherWatch,listWeatherWatches,pollPersonalWeatherWatches} from "./weather-watchlist.js";
@@ -735,6 +736,25 @@ async function executeAiCore(env, body) {
     skipLegacyResearch ? Promise.resolve(emptyNewsState()) : loadLiveNewsContext(message, { limit: 6 })
   ]);
 
+  // Link publicly sourced event snapshots across news queries without sharing
+  // operator identity or private conversation with the global news history.
+  const worldEvolution= newsState.active && newsState.eventCorrelation
+    ? await advanceWorldEventTimeline(env,newsState.eventCorrelation)
+    : {correlation:newsState.eventCorrelation,summary:{available:false,reason:"not-news"}};
+  if(worldEvolution.summary.available){
+    newsState.eventCorrelation=worldEvolution.correlation;
+    // Keep the factuality caveat: "updated" reflects new PUBLIC coverage,
+    // not independent confirmation of a statement.
+    newsState.contextText += "\n\nHISTÓRICO DE ACONTECIMENTOS (mudanças em fontes, não checagem factual):\n"+
+      JSON.stringify(worldEvolution.correlation.events.slice(0,4).map(event=>({
+        event_id:event.event_id,title:event.title,
+        firstSeen:event.evolution?.firstSeen,
+        status:event.evolution?.status,
+        newSources:event.evolution?.changes?.newSources||0,
+        timeline:event.evolution?.timeline?.slice(-3)||[]
+      })));
+  }
+
   // Persist only bounded PUBLIC news evidence for auditability. Fail-soft:
   // D1 unavailability never blocks normal conversation or alters claims.
   const newsAudit= newsState.active && newsState.eventCorrelation
@@ -924,7 +944,8 @@ async function executeAiCore(env, body) {
         attempts: newsState.attempts || [],
         fetchedAt: newsState.visualContext?.fetchedAt || null,
         eventCorrelation: newsState.eventCorrelation || null,
-        evidenceAudit: newsAudit
+        evidenceAudit: newsAudit,
+        worldEvolution: worldEvolution.summary
       },
       visualContext,
       webResearch: fallbackResearch

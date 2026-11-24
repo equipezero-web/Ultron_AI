@@ -111,6 +111,35 @@ if(center){
           mismatch.sources.map(s=>s.name+' — '+s.value).join(' / ')+'. Compare as datas das publicações.';
         content.append(note);
       }
+      if(item.evolution){
+        const history=document.createElement('section');
+        history.className='ultron-evidence-timeline';
+        history.setAttribute('aria-label','Histórico do acontecimento');
+        const heading=document.createElement('strong');
+        heading.textContent='EVOLUÇÃO DO ACONTECIMENTO';
+        const state=document.createElement('p');
+        state.textContent=item.evolution.status==='first-observed'?'Primeira observação registrada.':
+          item.evolution.status==='updated'?'Novas informações de fontes identificadas.':
+          item.evolution.status==='unchanged'?'Nenhuma mudança identificada nesta consulta.':
+          'Histórico de fontes disponível.';
+        const first=document.createElement('small');
+        first.textContent='Primeiro registro: '+item.evolution.firstSeen;
+        const list=document.createElement('ol');list.className='ultron-evidence-timeline-list';
+        for(const entry of item.evolution.timeline){
+          const line=document.createElement('li');
+          const date=document.createElement('small');date.textContent=entry.observedAt;
+          const info=document.createElement('p');
+          info.textContent=entry.kind+' · '+entry.newSources+' novas fontes, '+
+            entry.updatedSources+' fontes alteradas'+
+            (entry.possibleDiscrepancyChanged?' · possíveis divergências numéricas alteradas':'');
+          const subtitle=document.createElement('p');subtitle.textContent=entry.title;
+          line.append(date,info,subtitle);list.append(line);
+        }
+        const caution=document.createElement('small');
+        caution.textContent='Linha do tempo de publicações, não confirmação independente dos fatos.';
+        history.append(heading,state,first,list,caution);
+        content.append(history);
+      }
       const caveat=document.createElement('small');caveat.textContent=item.caveat;
       content.append(caveat);details.append(summary,content);panel.append(details);
     }
