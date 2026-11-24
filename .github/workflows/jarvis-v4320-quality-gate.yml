@@ -60,6 +60,8 @@ jobs:
           node tests/jarvis-gateway-fallback-safety.mjs
           node tests/jarvis-selective-memory.mjs
           node tests/jarvis-stage-a-integrated.mjs
+          node --check backend/worker.js
+          node tests/jarvis-stage-a-live-regressions.mjs
 
       - name: Guard production secrets
         run: |
