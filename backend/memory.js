@@ -185,6 +185,10 @@ function explicitMemoryCandidate(message) {
 
   const cues = [
     "lembre que",
+    "lembre-se de que",
+    "lembre se de que",
+    "lembre-se que",
+    "lembre de que",
     "lembra que",
     "nao esqueca",
     "não esqueça",
