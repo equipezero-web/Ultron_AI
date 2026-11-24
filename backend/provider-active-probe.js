@@ -15,10 +15,22 @@ function category(error){
  const status=Number(error?.status||0);
  if(status===401||status===403)return "authentication";
  if(status===429)return "rate_limit";
+ if(status===404)return "model_or_endpoint_not_found";
+ if(status===400||status===422)return "invalid_model_or_request";
  if(status>=500)return "upstream";
  if(status>=400)return "request_rejected";
  if(error?.name==="AbortError"||/timeout|excedeu o prazo/i.test(String(error?.message||"")))return "timeout";
  return "network_or_unknown";
+}
+function safeFailureMetadata(error){
+ const status=Number(error?.status);
+ const retry=Number(error?.retryAfterSeconds);
+ return {
+  errorCategory:category(error),
+  ...(Number.isInteger(status)&&status>=400&&status<=599?{upstreamHttpStatus:status}:{}),
+  ...(status===429&&Number.isFinite(retry)&&retry>0?
+    {retryAfterSeconds:Math.min(86400,Math.ceil(retry))}:{})
+ };
 }
 // D1 atomic slot avoids concurrent checks in different Worker isolates.
 async function reserve(env,provider,now=Date.now()){
@@ -57,7 +69,7 @@ export async function handleProviderProbe(request,env){
   const attempt={provider,status:"failed",durationMs:Date.now()-started};
   providerDiagnostics.record(attempt);
   await persistProviderAttempts(env,[attempt]);
-  return {status:200,body:{ok:false,provider,state:"failed_observed",errorCategory:category(error),
+  return {status:200,body:{ok:false,provider,state:"failed_observed",...safeFailureMetadata(error),
     durationMs:Date.now()-started,observedAt:new Date().toISOString(),scope:"single-check"}};
  }
 }
