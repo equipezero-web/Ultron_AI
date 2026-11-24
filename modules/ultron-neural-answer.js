@@ -1,4 +1,5 @@
 import {buildMediaModel} from "./jarvis-media-model.js?v=4.70.0";
+import {createNewsEvidenceViewModel} from "./jarvis-news-evidence-view-model.js";
 /* One response surface in the Neural Jarvis, without news or images at boot. */
 const center=document.querySelector('.jarvis-cc-center');
 if(center){
@@ -76,7 +77,46 @@ if(center){
       return ['https:','http:'].includes(u.protocol)&&!u.username&&!u.password?u.href:null;
     }catch{return null;}
   };
-  const present=(value,{pending=false,visual=null,webResearch=null}={})=>{
+  function renderEvidencePanel(liveData){
+    const rows=createNewsEvidenceViewModel(liveData);
+    if(!rows.length)return;
+    const panel=document.createElement('section');panel.className='ultron-news-evidence';
+    panel.setAttribute('aria-label','Evidências e fontes das notícias');
+    const heading=document.createElement('h3');heading.textContent='ACONTECIMENTOS E FONTES';
+    const warning=document.createElement('p');warning.className='ultron-evidence-caveat';
+    warning.textContent='Agrupamento automático. Múltiplas publicações não comprovam que um fato seja verdadeiro.';
+    panel.append(heading,warning);
+    for(const item of rows){
+      const details=document.createElement('details');details.className='ultron-evidence-event';
+      const summary=document.createElement('summary');summary.textContent=item.title;
+      const content=document.createElement('div');content.className='ultron-evidence-body';
+      const time=document.createElement('small');time.textContent=item.timestamp;
+      const statusLine=document.createElement('p');statusLine.className='ultron-evidence-status';
+      statusLine.textContent=item.status;
+      const description=document.createElement('p');description.textContent=item.summary;
+      content.append(time,statusLine,description);
+      const sourceList=document.createElement('ul');sourceList.className='ultron-evidence-source-list';
+      for(const source of item.sources){
+        const li=document.createElement('li');
+        const link=document.createElement('a');link.href=source.url;
+        link.target='_blank';link.rel='noopener noreferrer';
+        link.textContent=source.name+' · '+source.date;
+        li.append(link);sourceList.append(li);
+      }
+      const sourceTitle=document.createElement('strong');sourceTitle.textContent='Fontes consultadas';
+      content.append(sourceTitle,sourceList);
+      for(const mismatch of item.discrepancies){
+        const note=document.createElement('p');note.className='ultron-evidence-mismatch';
+        note.textContent='Possível divergência sobre '+mismatch.label+': '+
+          mismatch.sources.map(s=>s.name+' — '+s.value).join(' / ')+'. Compare as datas das publicações.';
+        content.append(note);
+      }
+      const caveat=document.createElement('small');caveat.textContent=item.caveat;
+      content.append(caveat);details.append(summary,content);panel.append(details);
+    }
+    text.append(panel);
+  }
+  const present=(value,{pending=false,visual=null,webResearch=null,liveData=null}={})=>{
     if(dismissed)return;
     syncLayout();
     currentMode=visual?.mode||null;
@@ -122,6 +162,7 @@ if(center){
         }
       }
     }
+    renderEvidencePanel(liveData);
     const collection=buildMediaModel(visual);
     const makeHeading=(name)=>{const h=document.createElement('h3');h.className='ultron-media-heading';h.textContent=name;return h;};
     const makeMeta=(source,date)=>{
@@ -221,7 +262,7 @@ if(center){
   window.addEventListener('ultron:answer',event=>{
     if(dismissed||(event.detail?.id&&Number(event.detail.id)!==requestId))return;
     pendingAnswer=false;
-    present(event.detail?.text,{visual:event.detail?.visualContext,webResearch:event.detail?.webResearch});
+    present(event.detail?.text,{visual:event.detail?.visualContext,webResearch:event.detail?.webResearch,liveData:event.detail?.liveData});
   });
   window.addEventListener('ultron:answer-error',event=>{
     if(dismissed||(event.detail?.id&&Number(event.detail.id)!==requestId))return;
