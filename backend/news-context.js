@@ -19,7 +19,7 @@ export function isGeneralNewsIntent(message) {
   // Explicit generic Brazilian news (without another country/city) is a
   // domestic briefing, not an international or stale-context follow-up.
   if(/^(?:(?:quais? (?:sao )?(?:as )?|me (?:diga|mostre|traga|informe) (?:as )?|mostre (?:as )?|quero (?:ver|saber) (?:as )?)?)?(?:noticias|manchetes|destaques|acontecimentos)(?: (?:mais )?(?:recentes|atuais|ultimas|de hoje|do dia))?(?: (?:do|no|sobre o) brasil)?$/.test(cleaned)
-    &&(/\\bbrasil\\b/.test(cleaned)||/^(?:noticias|manchetes|destaques|acontecimentos)(?: |$)/.test(cleaned)))
+    &&(/\bbrasil\b/.test(cleaned)||/^(?:noticias|manchetes|destaques|acontecimentos)(?: |$)/.test(cleaned)))
     return true;
 
   return /^(?:(?:quais?|qual|me diga|me fale|mostre|traga|quero saber|me informe|me atualize)\s+)*(?:(?:sao|e|a|as|o|os|principal|principais|ultimas?|ultimos?|novas?)\s+)*(?:noticias?|novidades?|manchetes?|destaques?|acontecimentos?)(?:\s+(?:principal|principais|recentes?|atuais?|de hoje|hoje|agora|do dia|da semana|mais importantes?))*$/.test(cleaned)
