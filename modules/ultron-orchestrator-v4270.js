@@ -865,6 +865,9 @@ function enqueue(message, source = "terminal", approvedMission = false) {
   // It never starts a mission, action planner, web search, device operation,
   // voice runtime, map or news refresh. Preserve conversational UI only.
   if(classifyJarvisTurn(message).isSocial){
+    // P0 remains authoritative even for harmless greetings; never reopen UI.
+    if(window.ULTRON_PRIORITY?.state?.frozen)
+      return Promise.resolve({ok:false,status:"blocked",route:"p0-stop",priority:"P0"});
     const text=greetingResponse(message);
     const id=window.__ultronQuestionSequence=(Number(window.__ultronQuestionSequence)||0)+1;
     window.dispatchEvent(new CustomEvent("ultron:question-start",{detail:{id,question:message}}));
