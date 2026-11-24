@@ -6,6 +6,6 @@ export function isUnifiedIdentityQuestion(message){
  const q=normalize(message).replace(/^(?:agora\s+)?(?:(?:jarvis|j\.a\.r\.v\.i\.s)[,]?\s+)?/,"");
  if(!/\b(?:ias?|inteligencias? artificiais?|provedores?|modelos? de ia|arquitetura de ia)\b/.test(q))return false;
  return /^(?:(?:explique|me explique|como funciona|fale sobre|descreva|quais sao|qual e|quantas?|voce tem|voce usa|como voce usa|por que voce usa|o que sao|o que e|me diga|agora explique|me fale)\b)/.test(q) &&
-  /\b(?:suas?|seus?|tres|3|quantas?|provedores?|arquitetura|voce|jarvis)\b/.test(q);
+  /\b(?:suas?|seus?|voce|jarvis|j\.a\.r\.v\.i\.s)\b/.test(q);
 }
 export function unifiedIdentityAnswer(message){return isUnifiedIdentityQuestion(message)?JARVIS_UNIFIED_IDENTITY:null;}
