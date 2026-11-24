@@ -9,7 +9,7 @@ import {isJarvisProjectOpinion,JARVIS_PROJECT_OPINION} from "../backend/jarvis-p
 let legacyOpinionRecentlyPresented=false;
 const CLEAR_EXPLANATION="O J.A.R.V.I.S. já tem funções úteis, como o Neural Ring, a pesquisa e a memória. Mas os módulos ainda precisam trabalhar melhor juntos. O principal próximo passo é corrigir falhas de integração e confirmar cada capacidade em produção antes de considerá-la pronta.";
 function isClarification(message){
- const q=String(message||"").normalize("NFD").replace(/[\\u0300-\\u036f]/g,"")
+ const q=String(message||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"")
    .toLowerCase().replace(/[!?.,;:]+$/g,"").trim();
  return /^(?:nao entendi(?: isso que voce falou)?|pode explicar melhor|explique melhor|o que voce quis dizer)$/.test(q);
 }
