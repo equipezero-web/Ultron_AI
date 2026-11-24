@@ -73,6 +73,8 @@ import {classifyConsultativeTurn,consultativeGuidance} from "./consultative-dial
 import {semanticActionUnderstandingGuidance} from "./jarvis-linguistic-context.js";
 import {classifyJarvisTurn,greetingResponse} from "./jarvis-conversation-router.js";
 import {continuityGuidance} from "./contextual-continuity.js";
+import {generateUnifiedResponse} from "./unified-cognition.js";
+import {classifyTask} from "./smart-router.js";
 import {unifiedIdentityAnswer} from "./jarvis-unified-identity.js";
 import {inspectPublicGitHubRepository,githubInspectionContext,contradictsVerifiedGitHubInspection,verifiedGitHubFallback} from "./github-public-inspector.js";
 import {authorizePrivateGitHub,privateGitHubHeaders,privateGitHubConfig,inspectPrivateGitHub,privateGitHubContext} from "./github-private-inspector.js";
@@ -768,10 +770,21 @@ async function executeAiCore(env, body) {
     laTeamContext
   );
 
+  // Only public, non-sensitive complex reasoning receives an optional second
+  // model review. Private context, authenticated results and regular turns
+  // remain on the existing single-provider path with fallback.
+  const unifiedGeneration=(prompt)=>generateUnifiedResponse({
+    env,prompt,userMessage:message,telemetry,aiBinding:env.AI,
+    taskClass:classifyTask(message,telemetry).class,
+    privateContext:Boolean(localFilesContext||laTeamContext||externalResearchContext||
+      body?.researchMeta?.active||body?.telemetry?.central?.privateData),
+    generate:generateWithProviders
+  });
+
   const aiStartedAt = Date.now();
   let aiResult = isSelfCapabilityQuestion(message)
     ? {text:capabilityAnswer({...telemetry,systemCapabilities:{...telemetry.systemCapabilities,deviceBridge:Boolean(env.ULTRON_DB),googleSearch:Boolean(env.SERPER_API_KEY)}}),provider:"jarvis-local",providerLabel:"JARVIS",model:"capability-catalog",attempts:[]}
-    : await generateWithProviders(env, aiMessage, telemetry, { aiBinding: env.AI });
+    : await unifiedGeneration(aiMessage);
   let aiPasses = 1;
   let researchMs = 0;
   let fallbackResearch = null;
@@ -800,7 +813,7 @@ async function executeAiCore(env, body) {
         localFilesContext,
         laTeamContext
       );
-      aiResult = await generateWithProviders(env, aiMessage, telemetry, { aiBinding: env.AI });
+      aiResult = await unifiedGeneration(aiMessage);
       aiPasses = 2;
       if (operatorId && aiResult?.text) {
         fallbackResearchWrite = await saveResearchMemory(env, {
