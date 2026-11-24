@@ -66,6 +66,7 @@ jobs:
           node --check backend/providers.js
           node tests/jarvis-stage-a-conversation-d1-proof.mjs
           node tests/jarvis-stage-a-project-opinion.mjs
+          node tests/jarvis-stage-a-frontend-response.mjs
 
       - name: Guard production secrets
         run: |
