@@ -10,8 +10,10 @@ globalThis.fetch=async(url,options)=>{
  if(target.includes("api.groq.com")){
   const request=JSON.parse(options.body);
   const content=request.messages.find(x=>x.role==="user")?.content||"";
-  assert.match(content,/"tts":false/);
-  assert.match(content,/"ttsProvider":null/);
+  // Ordinary chat must not receive raw telemetry; voice-off is system policy.
+  assert.doesNotMatch(content,/"tts":(?:true|false)/);
+  const policy=request.messages.find(x=>x.role==="system")?.content||"";
+  assert.match(policy,/TTS estão DESATIVADOS/);
   assert.ok(!content.includes("confidential-real-token"));
   return new Response(JSON.stringify({choices:[{message:{content:"Entendi a solicitação, posso ajudar."}}]}),
    {status:200,headers:{"Content-Type":"application/json"}});
