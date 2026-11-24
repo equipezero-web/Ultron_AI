@@ -12,6 +12,9 @@ try {
     {width:1920,height:1080}
   ]){
     const page=await browser.newPage();
+    page.on('pageerror',error=>console.error('NEURAL PAGEERROR',String(error?.message||error)));
+    page.on('console',item=>{if(item.type()==='error')console.error('NEURAL CONSOLE ERROR',item.text());});
+    page.on('requestfailed',req=>{if(/neural-answer|evidence-view-model/.test(req.url()))console.error('NEURAL REQUEST FAIL',req.url(),req.failure()?.errorText);});
     await page.setViewport(viewport);
     // Use a deterministic local response for test pictures rather than
     // depending on example.org or the external network.
@@ -348,7 +351,17 @@ try {
       return req.continue();
     });
     await page.goto('http://127.0.0.1:8766/'+(viewport.width===1920?'?display=tv':''),{waitUntil:'domcontentloaded'});
+    try{
     await page.waitForFunction(()=>Boolean(window.ULTRON_NEURAL_ANSWER),{timeout:20000});
+    }catch(error){
+      console.error('NEURAL BOOT DEBUG',JSON.stringify(await page.evaluate(()=>({
+        readyState:document.readyState,
+        scriptCount:document.querySelectorAll('script[type="module"]').length,
+        answerElement:Boolean(document.querySelector('.ultron-neural-answer')),
+        responseModule:[...document.querySelectorAll('script')].find(x=>x.src.includes('ultron-neural-answer.js'))?.src||null
+      }))));
+      throw error;
+    }
     const initial=await page.evaluate(()=>({
       hidden:document.querySelector('.ultron-neural-answer').hidden,
       newsHidden:getComputedStyle(document.querySelector('.jarvis-neural-news')).display==='none',
