@@ -624,7 +624,12 @@ async function executeAiCore(env, body) {
     lastAssistantMessage:lastAssistant,
     lastUserMessage:memoryState.lastUserMessage||""
   });
-  const continuityInstruction = shortReply
+  const clarificationTurn = /^(?:nao entendi|não entendi|pode explicar|explique melhor|o que voce quis dizer|o que você quis dizer|nao compreendi|não compreendi)\b/i.test(message);
+  const continuityInstruction = clarificationTurn
+    ? lastAssistant
+      ? 'REGRA PRIORITÁRIA DE ESCLARECIMENTO: O operador não entendeu sua última resposta. Explique a mesma questão com palavras simples, sem mudar de assunto nem pesquisar por conta própria. Última resposta: '+lastAssistant.slice(0,1800)
+      : 'O operador pediu um esclarecimento, mas a resposta anterior não foi recuperada. Pergunte qual trecho deseja esclarecer; não invente contexto.'
+    : shortReply
     ? lastAssistant
       ? ['REGRA PRIORITÁRIA DE CONTINUIDADE:', 'A mensagem atual é uma resposta curta do operador à última fala do assistente.', 'Última fala do assistente: ' + lastAssistant.slice(0, 1800), 'Continue a conversa e responda à confirmação ou recusa no contexto. Não cumprimente novamente nem reinicie a conversa.'].join('\n')
       : 'REGRA PRIORITÁRIA: O operador respondeu com uma confirmação ou recusa curta, mas não existe pergunta anterior disponível. Peça brevemente a que ele se refere. Não cumprimente nem invente contexto.'
