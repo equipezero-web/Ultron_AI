@@ -138,7 +138,7 @@ export function shouldResearchBeforeAnswer(message) {
   const turn=classifyJarvisTurn(message);
   // Shared intent boundary: never research social speech or local actions,
   // regardless of punctuation, device names in history, or model uncertainty.
-  if(turn.kind==="social"||turn.kind==="operation-candidate"||turn.kind==="caution")
+  if(["social","operation-candidate","contextual-observation","caution"].includes(turn.kind))
     return {needed:false,reason:"unified-"+turn.kind,ttlMinutes:0};
   const text = normalizeResearchQuestion(message);
   if (!text) return { needed: false, reason: "empty", ttlMinutes: 0 };
