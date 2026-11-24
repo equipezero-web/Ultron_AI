@@ -1,3 +1,4 @@
+import {classifyJarvisTurn} from "./jarvis-conversation-router.js";
 const SERPER_ENDPOINT = "https://google.serper.dev/search";
 const SEARCH_TIMEOUT_MS = 3200;
 const VISUAL_REQUEST=/\b(imagem|imagens|foto|fotos|fotografia|fotografias|mostre uma|mostre imagens|quero ver|exiba|visualize|ilustre|picture|photos)\b/i;
@@ -134,6 +135,11 @@ function dedupeAndRank(results, limit = 6) {
 }
 
 export function shouldResearchBeforeAnswer(message) {
+  const turn=classifyJarvisTurn(message);
+  // Shared intent boundary: never research social speech or local actions,
+  // regardless of punctuation, device names in history, or model uncertainty.
+  if(turn.kind==="social"||turn.kind==="operation-candidate"||turn.kind==="caution")
+    return {needed:false,reason:"unified-"+turn.kind,ttlMinutes:0};
   const text = normalizeResearchQuestion(message);
   if (!text) return { needed: false, reason: "empty", ttlMinutes: 0 };
   if(isSelfCapabilityQuestion(text))return {needed:false,reason:"self-capabilities",ttlMinutes:0};
