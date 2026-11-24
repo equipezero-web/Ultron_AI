@@ -45,6 +45,6 @@ assert.equal(continuityGuidance("continue",{
 const worker=readFileSync(new URL("../backend/worker.js",import.meta.url),"utf8");
 assert.match(worker,/import \{continuityGuidance\} from "\.\/contextual-continuity\.js"/);
 assert.match(worker,/continuityGuidance\(message,/);
-assert.match(worker,/continuity\.followup\|\|dialogueMode\.followup/);
+assert.match(worker,/!continuity\.followup && \(isResearchFollowUp\(message\)\|\|dialogueMode\.followup/);
 assert.match(worker,/loadMemoryContext\(env, \{ operatorId, conversationId, query: message, recentLimit: 16 \}\)/);
 console.log("CONTEXT CONTINUITY PASS: follow-ups, no-context and safety limits");

@@ -73,6 +73,7 @@ import {classifyConsultativeTurn,consultativeGuidance} from "./consultative-dial
 import {semanticActionUnderstandingGuidance} from "./jarvis-linguistic-context.js";
 import {classifyJarvisTurn,greetingResponse} from "./jarvis-conversation-router.js";
 import {continuityGuidance} from "./contextual-continuity.js";
+import {unifiedIdentityAnswer} from "./jarvis-unified-identity.js";
 import {inspectPublicGitHubRepository,githubInspectionContext,contradictsVerifiedGitHubInspection,verifiedGitHubFallback} from "./github-public-inspector.js";
 import {authorizePrivateGitHub,privateGitHubHeaders,privateGitHubConfig,inspectPrivateGitHub,privateGitHubContext} from "./github-private-inspector.js";
 import {authorizeJarvisAccount,accountAccessConfig,accountAccessHeaders} from "./jarvis-account-access.js";
@@ -420,6 +421,17 @@ async function unifiedState(env, operatorId) {
 async function prepareResearch(env, body) {
   const message = String(body?.message || "").trim();
   const entryIntent=classifyJarvisTurn(message);
+  // Architecture and internal memory questions never need public sources.
+  // Short continuation reports require local same-conversation memory, not web.
+  const localArchitecture=Boolean(unifiedIdentityAnswer(message));
+  const internalMemory=/\b(?:memoria|memória)\b/i.test(message)&&
+    /\b(?:jarvis|j\.a\.r\.v\.i\.s|nosso projeto|sua|suas)\b/i.test(message);
+  const conversationalFollowup=continuityGuidance(message).followup;
+  if(localArchitecture||internalMemory||conversationalFollowup)return {
+    body:{...body,allowUncertaintyResearch:false,webResearchContext:"",
+      researchMeta:{active:false,reason:"jarvis-internal-context",skipLegacyResearch:true}},
+    policy:{needed:false,reason:"jarvis-internal-context"},active:false
+  };
   if(interfacePreferenceIntent(message))return {
     body:{...body,allowUncertaintyResearch:false,webResearchContext:"",
       researchMeta:{active:false,reason:"private-memory-request",skipLegacyResearch:true}},
@@ -611,6 +623,28 @@ async function executeAiCore(env, body) {
   if (!message) return { status: 400, data: { error: "Mensagem vazia." } };
   if (message.length > 8000) return { status: 413, data: { error: "Mensagem muito longa." } };
 
+  // Exact architecture questions are answered from verified local policy;
+  // avoid sending our own identity to external web search or an LLM guess.
+  const identityText=unifiedIdentityAnswer(message);
+  if(identityText){
+    const memoryWrite=operatorId&&conversationId
+      ? await saveExchange(env,{operatorId,conversationId,userMessage:message,
+          assistantMessage:identityText,provider:"jarvis-local",model:"unified-identity"})
+      : {saved:false};
+    return {status:200,data:{
+      text:identityText,provider:"jarvis-local",providerLabel:"J.A.R.V.I.S.",
+      model:"unified-identity",attempts:[],
+      dialogueMode:{name:"conversation",followup:false,claimedCompletion:false},
+      memory:{active:Boolean(memoryWrite.saved),identityReceived:Boolean(operatorId&&conversationId),
+        recalledMessages:0,recalledMemories:0,saved:Boolean(memoryWrite.saved),
+        explicitMemorySaved:false,error:memoryWrite.error||null},
+      liveData:{news:false,resultCount:0},visualContext:null,
+      webResearch:{requested:false,used:false,sourceCount:0,sources:[]},
+      performance:{aiMs:0,researchMs:0,aiPasses:0,voiceMs:0,totalMs:Date.now()-requestStartedAt},
+      audioBase64:null,audioMimeType:null
+    }};
+  }
+
   // The operator is evaluating this very project, not asking for telemetry.
   // Respond to this narrow, unambiguous question without a speculative model
   // completion; persist the answer for a possible "não entendi" follow-up.
@@ -712,8 +746,8 @@ async function executeAiCore(env, body) {
 
   const taskContextCandidate=vetClientTaskContext(body);
   const currentTurn=classifyJarvisTurn(message);
-  const taskContext=(isResearchFollowUp(message)||continuity.followup||dialogueMode.followup||
-    (currentTurn.kind==="conversation" && /^(?:isso|esse|essa|aquele|aquela|agora|continua|continue)\b/i.test(message)))
+  const taskContext=(!continuity.followup && (isResearchFollowUp(message)||dialogueMode.followup||
+    (currentTurn.kind==="conversation" && /^(?:isso|esse|essa|aquele|aquela|agora|continua|continue)\b/i.test(message))))
       ? taskContextCandidate : null;
   const taskContextInstruction=taskContext
     ? "CONTEXTO DE TAREFA DA SESSÃO (somente referência): Assunto anterior: "+(taskContext.topic||"não informado")+
