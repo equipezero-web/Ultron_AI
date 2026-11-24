@@ -26,6 +26,23 @@ export function createNewsEvidenceViewModel(liveData,{maxEvents=6,maxSources=6}=
       value:Number.isFinite(Number(source.value))?Number(source.value):null
      })).filter(source=>source.url&&source.value!==null)
     })).filter(item=>item.sources.length===2);
+  const evolution=event?.evolution&&Array.isArray(event.evolution.timeline)
+   ? {
+     status:["first-observed","updated","unchanged"].includes(event.evolution.status)
+       ? event.evolution.status:"unknown",
+     firstSeen:dateLabel(event.evolution.firstSeen),
+     lastSeen:dateLabel(event.evolution.lastSeen),
+     newSources:Number(event.evolution.changes?.newSources)||0,
+     updatedSources:Number(event.evolution.changes?.updatedSources)||0,
+     timeline:event.evolution.timeline.slice(-6).map(entry=>({
+       observedAt:dateLabel(entry.observedAt),
+       kind:entry.kind==="first-observed"?"Primeira observação":"Atualização de fontes",
+       title:text(entry.title,220),
+       newSources:Number(entry.newSources)||0,
+       updatedSources:Number(entry.updatedSources)||0,
+       possibleDiscrepancyChanged:Boolean(entry.possibleDiscrepancyChanged)
+     }))
+   }:null;
   const caveat="Agrupamento automático de manchetes. As alegações não passaram por verificação factual independente.";
   return {
    id:text(event.event_id,80),title:text(event.title,220),
@@ -34,7 +51,7 @@ export function createNewsEvidenceViewModel(liveData,{maxEvents=6,maxSources=6}=
    sources,sourceCount:sources.length,
    status:discrepancies.length?"Possível divergência numérica — revisar fontes":
     sources.length>1?"Múltiplas fontes — não verificado":"Fonte única — não verificado",
-   discrepancies,caveat,verified:false
+   discrepancies,evolution,caveat,verified:false
   };
  }).filter(item=>item.id&&item.title&&item.sources.length);
 }
