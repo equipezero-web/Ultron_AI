@@ -1,4 +1,4 @@
-import { rankMemories } from "./memory-relevance.js";
+import { selectMemoriesForTurn } from "./memory-relevance.js";
 import { composeMemoryContext } from "./memory-context.js";
 const DEFAULT_RECENT_MESSAGES = 24;
 const DEFAULT_MEMORIES = 10;
@@ -257,7 +257,7 @@ export async function loadMemoryContext(
       ? [...messageResult.results].reverse()
       : [];
     const recentUserMessage = [...messages].reverse().find((item) => item.role === "user")?.content || "";
-    const memories = rankMemories(memoryResult?.results, query || recentUserMessage, { limit: DEFAULT_MEMORIES });
+    const memories = selectMemoriesForTurn(memoryResult?.results, query || recentUserMessage, { limit: DEFAULT_MEMORIES });
 
     const rendered = composeMemoryContext(memories, messages);
     return {
