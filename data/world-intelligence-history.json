@@ -4,10 +4,106 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-24T01:13:47.200Z",
-  "oldestEventAt": "2026-11-23T02:21:00.000Z",
-  "windowStartAt": "2026-11-23T01:13:47.200Z",
+  "updatedAt": "2026-11-24T10:58:09.451Z",
+  "oldestEventAt": "2026-11-23T11:12:00.000Z",
+  "windowStartAt": "2026-11-23T10:58:09.451Z",
   "events": [
+    {
+      "id": "event-f870e363",
+      "category": "brasil",
+      "title": "Mega-Sena sorteia prêmio de R$ 65 milhões nesta terça-feira",
+      "url": "https://agenciabrasil.ebc.com.br/geral/noticia/2026-11/mega-sena-sorteia-premio-de-r-65-milhoes-nesta-terca-feira",
+      "description": "A Mega-Sena sorteia nesta terça-feira (24) prêmio estimado em R$ 65 milhões. As seis dezenas do concurso 3.090 serão sorteadas a partir das 21h (horário de Brasília) no Espaço da Sorte, em São Paulo. As apostas podem ser feitas até às 20h (horário de Brasília) em casas lotéricas credenciadas pela Caixa em todo o país ou pela internet, no site ou aplicativo da Caixa. A aposta simples, com seis dezenas, custa R$ 6. Notícias relacionadas: Mega da Virada: Caixa anuncia que prêmio deve superar R$ 1 bilhão. No último concurso, foram sorteados os números 17, 18, 27, 36, 58 e 59 e nenhuma aposta acertou as seis dezenas .",
+      "imageUrl": "https://imagens.ebc.com.br/NI0hmU2ObG3i_RPjHekxclU6KSE=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/mega_sena-111220202168.jpg?itok=h3fJuH0H",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-24T10:02:00.000Z",
+      "firstSeenAt": "2026-11-24T10:58:09.451Z",
+      "lastSeenAt": "2026-11-24T10:58:09.451Z"
+    },
+    {
+      "id": "event-6acb51f6",
+      "category": "brasil",
+      "title": "Metodologia da Abin mostra diferenças entre organizações criminosas",
+      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/metodologia-da-abin-mostra-diferencas-entre-organizacoes-criminosas",
+      "description": "A Agência Brasileira de Inteligência (Abin) desenvolveu uma metodologia para identificar e analisar as organizações criminosas consideradas mais relevantes para a dinâmica criminal do país. Segundo a Abin, o levantamento permitiu compreender particularidades de cada organização criminosa, identificando como cada grupo atua, quais danos produz e de que forma se diferencia dos demais. Notícias relacionadas: Classificar PCC e CV como terroristas favorece o crime, diz secretário. O trabalho, feito em parceria com o Fórum Brasileiro de Segurança Pública (FBSP), deu origem ao estudo Cenários do Crime Organizado no Brasil, apresentado nesta segunda-feira (23) pela Abin aos demais órgãos integrantes do Sistema Brasileiro de Inteligência (Sisbin). Particularidades Segundo a Abin, o levantamento permitiu compreender particularidades de cada organização criminosa, identificando como cada grupo atua, quais danos produz e de que forma se diferencia dos demais. De acordo com o estudo, diferentes organizações criminosas apresentam estruturas, estratégias e formas de atuação distintas. A identificaç",
+      "imageUrl": "https://imagens.ebc.com.br/1Q7JR_ZFf7h3dphK_EtNGwd7YiE=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2025/10/28/2025-10-28t151656z_1384057025_rc22lhauapg0_rtrmadp_3_brazil-violence_0.jpg?itok=R1nsTYfx",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-24T09:01:00.000Z",
+      "firstSeenAt": "2026-11-24T10:58:09.451Z",
+      "lastSeenAt": "2026-11-24T10:58:09.451Z"
+    },
+    {
+      "id": "event-5ebea710",
+      "category": "brasil",
+      "title": "Brasil tem 31 organizações criminosas relevantes, aponta Abin",
+      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/brasil-tem-31-organizacoes-criminosas-relevantes-aponta-abin",
+      "description": "A Agência Brasileira de Inteligência (Abin) identificou 31 organizações criminosas relevantes e 75 células estaduais em um levantamento sobre os cenários do crime organizado no Brasil. O material foi apresentado na segunda-feira (23) aos órgãos integrantes do Sistema Brasileiro de Inteligência (Sisbin). O estudo, chamado de Cenários do Crime Organizado no Brasil, aponta: Consolidação de três grupos com atuação nacional; Expansão do Comando Vermelho (CV) no Norte e Nordeste; e Crescimento do Terceiro Comando Puro (TCP) como terceira via entre os principais grupos criminosos do país. Notícias relacionadas: AGU busca recuperar R$ 190 milhões de integrantes do PCC e do CV . Classificar PCC e CV como terroristas favorece o crime, diz secretário. Segundo a Abin, o levantamento utilizou uma metodologia desenvolvida em parceria com o Fórum Brasileiro de Segurança Pública (FBSP) para identificar as organizações consideradas “mais relevantes” para a dinâmica criminal do país. Foram analisados fatores como influência territorial, capacidade econômica e operacional dos grupos – excluindo organiz",
+      "imageUrl": "https://imagens.ebc.com.br/XgmY5H7CHlFfi0ub08oSCF3aEMw=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/atoms/image/1049422-1_10102016-_dsc7151.jpg?itok=eip5wC1m",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-24T09:00:00.000Z",
+      "firstSeenAt": "2026-11-24T10:58:09.451Z",
+      "lastSeenAt": "2026-11-24T10:58:09.451Z"
+    },
+    {
+      "id": "event-1bf78f1",
+      "category": "clima",
+      "title": "\"Super\" El Niño pode permanecer forte no outono de 2027 e bater recorde histórico: “Nunca observado”",
+      "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxOVGJveF8zS25Dc1RzRm1JTGg2ZUtKSEJSSEN5dl90N25DWkk5Z2FZZjRBUnZiMDlscVhFdXlEaENndWtWZkxoT0NKNUxjSHpLQ2h0Q3AyeVRpSHZUVjlodGRDYWJ1S2MzYXd0QWJLLTVKQXpvcU5JbUZlN1VfaXFQS3g2UVdRbkJKQ2xaa2FPdTU2SzRNSW1sdXM0WTlkTzYzTGJlTkI4Ri1vdDlXbWtsU2pvN01XVi10NzRJSFZNbUc1d2dDdEtvTg",
+      "description": "\"Super\" El Niño pode permanecer forte no outono de 2027 e bater recorde histórico: “Nunca observado” &nbsp;&nbsp; NSC Total",
+      "imageUrl": null,
+      "source": "NSC Total",
+      "publishedAt": "2026-11-24T09:00:00.000Z",
+      "firstSeenAt": "2026-11-24T10:58:09.451Z",
+      "lastSeenAt": "2026-11-24T10:58:09.451Z"
+    },
+    {
+      "id": "event-e84b6b6c",
+      "category": "mundo",
+      "title": "Conferência da ONU termina sem consenso para regular armas autônomas",
+      "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxQSTFpYmFkdzE3T1N6QlRHbUdSMG42S2Zxa0dENlBZdmY3WEk3WHVtSTZicEh5SUdxZnFqZ3hYQ3hjc0JXOXVxb3NTTUdwRjNyZ0xtN3hKZG1ReS1vWm5GeURBbTZNR29SR1U5V3lHT1F0NlRERDg5bHNGUHNqZUhpZXhYcE96UzZsQ0RoSnYzLXl3WWVkSmlyT3p5WTluOFNkRGItcUl3anpJRkh1bjBUTWdLMnFNVldVVlE",
+      "description": "Conferência da ONU termina sem consenso para regular armas autônomas &nbsp;&nbsp; Folha de S.Paulo",
+      "imageUrl": null,
+      "source": "Folha de S.Paulo",
+      "publishedAt": "2026-11-24T09:00:00.000Z",
+      "firstSeenAt": "2026-11-24T10:58:09.451Z",
+      "lastSeenAt": "2026-11-24T10:58:09.451Z"
+    },
+    {
+      "id": "event-600d9bd3",
+      "category": "mundo",
+      "title": "Jogos de hoje: quem joga no futebol e onde assistir ao vivo – terça-feira (24/11/2026)",
+      "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxObEd4bEswTkl0dHl4U25ia28xZjdUd202SlVUQURwYXVqSHotTndlZmxMZmJVWG15YXJoVlJCMzE4dGtXUnlvTG9VVVVjWTU4R00wcm42bFdkVzRnVF92Tm1VUXB5YkZNeC1CNnhuWGZSRnoxbG1qZ1VDUHhLT3h2dVNXbktQbHB1cUh5aVpLS3lxTWd5VGtMMTdjM091UTk0UEQ0V21RNkFRb3l5c05kTjcwYTRiV0RLdGY4N003aGRnSGM",
+      "description": "Jogos de hoje: quem joga no futebol e onde assistir ao vivo – terça-feira (24/11/2026) &nbsp;&nbsp; LANCE!",
+      "imageUrl": null,
+      "source": "LANCE!",
+      "publishedAt": "2026-11-24T08:30:00.000Z",
+      "firstSeenAt": "2026-11-24T10:58:09.451Z",
+      "lastSeenAt": "2026-11-24T10:58:09.451Z"
+    },
+    {
+      "id": "event-bc4a5f14",
+      "category": "mundo",
+      "title": "Análise: Captura de líder do narcotráfico expõe nova estratégia do México contra cartéis",
+      "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxQZ19jdUZEVWkzdDNNa0V3UjF5djJKNU1XckF5TTNRQWQ5Mkg0dVMxVS0wTDF5WkNSbkZZeC1LNVhreUJfTURSeFpwSlYyeWdtclBRanBZTzFOWXBFeXJjMGpmMURCYmJQOE1IaUFONk5xc2RIQXdiejFFcnkxQ18tOXdZR0RYRTBkaTFETjNfbmxNZzZDZjJ5OFFSOHg0VFc0M3ltbDJJdFRjSWFRc1owNGdiQ2RRQXE1MlkzVDgyRTlzQUc0VGxTclltWTZyYnhUdC01XzZuQ1ZfWTjSAeoBQVVfeXFMT1FpTnh1cGNuZmFVMmtRSEJyZ0ItbG12bklXQmMyb0xKQWhfaTVJak40WnFWNE9HU2N3U2p1WXN4cFFEREhIeFUwMFBIdmRMd0xWWjFGRWhNT201Sm0ya2dQanhsYkNhN2gxdDRmMGNNTHZ2UHk0czBUV3BwOVQyZWR3R0Rtb0NfYWRCb25HblZLaFgxcURqY2JKVTluRFc0WGtfbWFaTmZ1aGxLX3VWQzM1UjI0YnhLbnRDTjZzcUlWSmFmRGY5VDhvbS03QlhQaXgtLVkxVnZzWFo5R3VQdEhkN0pFTEx5MnhR",
+      "description": "Análise: Captura de líder do narcotráfico expõe nova estratégia do México contra cartéis &nbsp;&nbsp; O GLOBO",
+      "imageUrl": null,
+      "source": "O GLOBO",
+      "publishedAt": "2026-11-24T03:00:00.000Z",
+      "firstSeenAt": "2026-11-24T10:58:09.451Z",
+      "lastSeenAt": "2026-11-24T10:58:09.451Z"
+    },
+    {
+      "id": "event-38d7a0e9",
+      "category": "brasil",
+      "title": "Câmara aprova texto-base do projeto de ajuste fiscal",
+      "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2026-11/camara-aprova-texto-base-do-projeto-de-ajuste-fiscal",
+      "description": "A Câmara dos Deputados aprovou na noite desta segunda-feira (23) o texto-base do projeto de lei complementar que prevê ajuste fiscal nas contas públicas em 2027. Foram 353 votos a favor, 128 contra e cinco abstenções. O relator do projeto, deputado Mauro Benevides Filho (União-CE), apresentou parecer pela aprovação do projeto sem alterações. Notícias relacionadas: Câmara aprova urgência para votação do projeto de ajuste fiscal. O projeto prevê redução de despesas para se atingir superávit primário de cerca de R$ 18,7 bilhões no ano que vem. Os deputados ainda irão discutir os destaques, que são mudanças em determinados pontos do projeto. O texto do ajuste fiscal foi aprovado pelo Senado na última quarta-feira (18). Entenda o ajuste O projeto prevê medidas para reduzir despesas e ampliar a arrecadação, com economia estimada entre R$ 45,1 bilhões e R$ 56,1 bilhões em 2027. A projeção considera tanto o aumento da arrecadação quanto o controle das despesas e se refere ao chamado resultado primário, a diferença entre o que o governo arrecada e o que gasta antes do pagamento dos juros da d",
+      "imageUrl": "https://imagens.ebc.com.br/Dno21uT388zduEjPgYl7LNOASSQ=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/23/0d9a5339.jpg?itok=27unCJnR",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-24T01:44:00.000Z",
+      "firstSeenAt": "2026-11-24T10:58:09.451Z",
+      "lastSeenAt": "2026-11-24T10:58:09.451Z"
+    },
     {
       "id": "event-4cfb8c4b",
       "category": "brasil",
@@ -54,7 +150,7 @@
       "source": "Terra",
       "publishedAt": "2026-11-23T23:51:00.000Z",
       "firstSeenAt": "2026-11-24T01:13:47.200Z",
-      "lastSeenAt": "2026-11-24T01:13:47.200Z"
+      "lastSeenAt": "2026-11-24T10:58:09.451Z"
     },
     {
       "id": "event-23591d0d",
@@ -126,7 +222,7 @@
       "source": "AJ Notícias",
       "publishedAt": "2026-11-23T21:07:41.000Z",
       "firstSeenAt": "2026-11-24T01:13:47.200Z",
-      "lastSeenAt": "2026-11-24T01:13:47.200Z"
+      "lastSeenAt": "2026-11-24T10:58:09.451Z"
     },
     {
       "id": "event-5e69c0ec",
@@ -138,7 +234,7 @@
       "source": "Portal TN Sul",
       "publishedAt": "2026-11-23T21:00:00.000Z",
       "firstSeenAt": "2026-11-24T01:13:47.200Z",
-      "lastSeenAt": "2026-11-24T01:13:47.200Z"
+      "lastSeenAt": "2026-11-24T10:58:09.451Z"
     },
     {
       "id": "event-ec7fcca7",
@@ -150,7 +246,19 @@
       "source": "Mix Vale",
       "publishedAt": "2026-11-23T19:39:46.000Z",
       "firstSeenAt": "2026-11-24T01:13:47.200Z",
-      "lastSeenAt": "2026-11-24T01:13:47.200Z"
+      "lastSeenAt": "2026-11-24T10:58:09.451Z"
+    },
+    {
+      "id": "event-a7b93287",
+      "category": "santa-catarina",
+      "title": "Frente fria traz chuva forte a Santa Catarina entre terça e quarta-feira",
+      "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxORzgtWFZ3ekZEX011TzhYR2tVZXcyRVN4SU9hU051V3QtYzNLc3laTUNSakRFdmVQTzVmOGtvRXBTckVmaGVYcW9XUEJYWThjRlcycmU0OHk4cFVRUWlUMlUzVGYza1RCZkNsR0EtRHNWNnBUbEpuWTUtdE5nWWh3Mk8yT0x6elFmZzZNVk5CQzB1ZzVKTDluQVAyMVg2Mkw5NEE",
+      "description": "Frente fria traz chuva forte a Santa Catarina entre terça e quarta-feira &nbsp;&nbsp; Governo de Santa Catarina",
+      "imageUrl": null,
+      "source": "Governo de Santa Catarina",
+      "publishedAt": "2026-11-23T19:16:00.000Z",
+      "firstSeenAt": "2026-11-24T10:58:09.451Z",
+      "lastSeenAt": "2026-11-24T10:58:09.451Z"
     },
     {
       "id": "event-24a03b13",
@@ -162,7 +270,7 @@
       "source": "Olhar Digital",
       "publishedAt": "2026-11-23T18:57:00.000Z",
       "firstSeenAt": "2026-11-24T01:13:47.200Z",
-      "lastSeenAt": "2026-11-24T01:13:47.200Z"
+      "lastSeenAt": "2026-11-24T10:58:09.451Z"
     },
     {
       "id": "event-80a0d7ae",
@@ -307,60 +415,9 @@
       "publishedAt": "2026-11-23T11:12:00.000Z",
       "firstSeenAt": "2026-11-23T13:41:50.635Z",
       "lastSeenAt": "2026-11-23T13:41:50.635Z"
-    },
-    {
-      "id": "event-493b7de1",
-      "category": "santa-catarina",
-      "title": "Temporais deixam mortos, provocam desabamentos e atingem milhares de pessoas no Brasil",
-      "url": "https://news.google.com/rss/articles/CBMi8AFBVV95cUxNTktCYlg1ZnJIcm1ybTB4eW1scTh1QmR5MWVsMmVLZ2NFSUZ3RmFFdThhdk1hNEZoMDVyRmp3MklNUzJDdVdOeXVvS0NfZHk3ZWVHUWRIelgzeldfQ1VPcVdvMmpnbUp4bHRuZDk3WHlOMy03M3FXQmkzRFd6bkhjTjduS2RpbFBTOXJWTzJHQktOX0FLZG0ya1ppTkpBWGRuNnYwUTk4MzlKTXNvb1BJMXlOWElUb1BtTnFxLXZ1UXdIcnVNcWhydFRlZnk2OVhGU1EtVFF1enRJd040aGdDMmhRcDlHLUdiTU0xY1Rqd2E",
-      "description": "Temporais deixam mortos, provocam desabamentos e atingem milhares de pessoas no Brasil &nbsp;&nbsp; www.correiodamanha.com.br",
-      "imageUrl": null,
-      "source": "www.correiodamanha.com.br",
-      "publishedAt": "2026-11-23T10:56:00.000Z",
-      "firstSeenAt": "2026-11-23T13:41:50.635Z",
-      "lastSeenAt": "2026-11-23T13:41:50.635Z"
-    },
-    {
-      "id": "event-b29f4b06",
-      "category": "santa-catarina",
-      "title": "Temporais em SC afetaram mais de 350 residências, informa Defesa Civil",
-      "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxOZ1BsOC1lenpBWmprdjB3ZFVRWm51Sk5vbHAxd1dVSzN3czlTMEt5alB4VTB2Q19BMG56YndJdm1NMjY3QkpBUGtOVzA4Z2V6SnhYN042VmlLWEdXbnZvSEU3Z1ZrOTRHRlpXZ3lOZ00tY0NoZmVwYUZldkNaX0hkajNGY0xtWVV5MmtJaG0xSWt0T2RXWDZWM2tSbnFJVmRHTEJ3",
-      "description": "Temporais em SC afetaram mais de 350 residências, informa Defesa Civil &nbsp;&nbsp; Portal Engeplus",
-      "imageUrl": null,
-      "source": "Portal Engeplus",
-      "publishedAt": "2026-11-23T02:57:00.000Z",
-      "firstSeenAt": "2026-11-23T03:42:22.779Z",
-      "lastSeenAt": "2026-11-23T03:42:22.779Z"
-    },
-    {
-      "id": "event-b074ac87",
-      "category": "brasil",
-      "title": "Michelle atualiza estado de saúde de Jair Bolsonaro na UTI: \"Boas notícias\"",
-      "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPMXFFQnUyTm5qZWpBdnM0Z1o4blZma2tnZlpzOWF0SE1ReG5uT2xwS3RmcHFQQVp0dTRNYm03akNiQWY2VEJWUE5BbWpNa0lDSDU2LXBPOXE1OFlUbTlnNnJvUC1ybnZCRGpJT1kzTlVLQnd5TmRId29NVDh1UG9ucVdld1BYYm1ZVjFIdHdFTjNJV2o0MjNib0ZvWGpNWHZkbDZtUVhSRGJQZw",
-      "description": "Michelle atualiza estado de saúde de Jair Bolsonaro na UTI: \"Boas notícias\" &nbsp;&nbsp; Metrópoles",
-      "imageUrl": null,
-      "source": "Metrópoles",
-      "publishedAt": "2026-11-23T02:21:00.000Z",
-      "firstSeenAt": "2026-11-23T03:42:22.779Z",
-      "lastSeenAt": "2026-11-23T03:42:22.779Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-23T03:42:22.779Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 13,
-      "newArticles": 8,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-23T13:41:50.635Z",
       "ok": true,
@@ -391,14 +448,30 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-24T10:58:09.451Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 14,
+      "newArticles": 9,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "europa"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 3,
-  "lastSuccessfulAt": "2026-11-24T01:13:47.200Z",
+  "lastSuccessfulAt": "2026-11-24T10:58:09.451Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-24T01:13:47.200Z",
+      "checkedAt": "2026-11-24T10:58:09.451Z",
       "warnings": [
         {
           "id": "56481",
@@ -432,7 +505,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-24T01:13:47.200Z",
+      "checkedAt": "2026-11-24T10:58:09.451Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
