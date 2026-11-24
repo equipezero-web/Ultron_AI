@@ -7,7 +7,8 @@ import {isJarvisProjectOpinion,JARVIS_PROJECT_OPINION} from "../backend/jarvis-p
  * success or claims that a remote action completed.
  */
 export function verifyProjectOpinionReply(message,data){
- if(!isJarvisProjectOpinion(message)||!data||typeof data!=="object")return data;
+ if(!isJarvisProjectOpinion(message)||!data||typeof data!=="object"||
+    typeof data.text!=="string"||!data.text.trim()||data.error||data.ok===false)return data;
  if(data.model==="project-evaluation"&&String(data.text||"").trim()===JARVIS_PROJECT_OPINION)return data;
  return {...data,text:JARVIS_PROJECT_OPINION,provider:"jarvis-local",
   providerLabel:"J.A.R.V.I.S.",model:"project-evaluation-ui-verified",
