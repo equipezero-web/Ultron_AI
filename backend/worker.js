@@ -421,6 +421,17 @@ async function unifiedState(env, operatorId) {
 async function prepareResearch(env, body) {
   const message = String(body?.message || "").trim();
   const entryIntent=classifyJarvisTurn(message);
+  // Architecture and internal memory questions never need public sources.
+  // Short continuation reports require local same-conversation memory, not web.
+  const localArchitecture=Boolean(unifiedIdentityAnswer(message));
+  const internalMemory=/\\b(?:memoria|memória)\\b/i.test(message)&&
+    /\\b(?:jarvis|j\\.a\\.r\\.v\\.i\\.s|nosso projeto|sua|suas)\\b/i.test(message);
+  const conversationalFollowup=continuityGuidance(message).followup;
+  if(localArchitecture||internalMemory||conversationalFollowup)return {
+    body:{...body,allowUncertaintyResearch:false,webResearchContext:"",
+      researchMeta:{active:false,reason:"jarvis-internal-context",skipLegacyResearch:true}},
+    policy:{needed:false,reason:"jarvis-internal-context"},active:false
+  };
   if(interfacePreferenceIntent(message))return {
     body:{...body,allowUncertaintyResearch:false,webResearchContext:"",
       researchMeta:{active:false,reason:"private-memory-request",skipLegacyResearch:true}},
