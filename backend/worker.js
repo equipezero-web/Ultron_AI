@@ -14,6 +14,7 @@ import {searchGlobalLocations,loadGlobalWeather} from "./weather-global.js";
 import {loadWeatherInsight} from "./weather-intelligence.js";
 import {pollWeatherMonitor,latestWeatherMonitor} from "./weather-monitor.js";
 import {pollGlobalIntelligence,latestGlobalIntelligence,collectGlobalIntelligence} from "./global-intelligence-monitor.js";
+import {recordWorldEvidenceAudit} from "./news-evidence-audit.js";
 import {pollTrendIntelligence,latestTrendIntelligence} from "./trend-intelligence.js";
 import {buildContinuityStatus} from "./continuity-status.js";
 import {configureWeatherWatch,listWeatherWatches,pollPersonalWeatherWatches} from "./weather-watchlist.js";
@@ -734,6 +735,12 @@ async function executeAiCore(env, body) {
     skipLegacyResearch ? Promise.resolve(emptyNewsState()) : loadLiveNewsContext(message, { limit: 6 })
   ]);
 
+  // Persist only bounded PUBLIC news evidence for auditability. Fail-soft:
+  // D1 unavailability never blocks normal conversation or alters claims.
+  const newsAudit= newsState.active && newsState.eventCorrelation
+    ? await recordWorldEvidenceAudit(env,newsState.eventCorrelation)
+    : {saved:false,reason:"not-news"};
+
   // Same-conversation follow-ups use bounded recovered history, never a
   // client claim of completion or an implicit permission to execute tools.
   const lastAssistant = String(memoryState.lastAssistantMessage || '').trim();
@@ -916,7 +923,8 @@ async function executeAiCore(env, body) {
         error: newsState.error || null,
         attempts: newsState.attempts || [],
         fetchedAt: newsState.visualContext?.fetchedAt || null,
-        eventCorrelation: newsState.eventCorrelation || null
+        eventCorrelation: newsState.eventCorrelation || null,
+        evidenceAudit: newsAudit
       },
       visualContext,
       webResearch: fallbackResearch
