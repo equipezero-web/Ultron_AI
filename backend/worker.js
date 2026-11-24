@@ -72,6 +72,7 @@ import { listTrajectories } from "./trajectory-hub.js";
 import {classifyConsultativeTurn,consultativeGuidance} from "./consultative-dialogue.js";
 import {semanticActionUnderstandingGuidance} from "./jarvis-linguistic-context.js";
 import {classifyJarvisTurn,greetingResponse} from "./jarvis-conversation-router.js";
+import {continuityGuidance} from "./contextual-continuity.js";
 import {inspectPublicGitHubRepository,githubInspectionContext,contradictsVerifiedGitHubInspection,verifiedGitHubFallback} from "./github-public-inspector.js";
 import {authorizePrivateGitHub,privateGitHubHeaders,privateGitHubConfig,inspectPrivateGitHub,privateGitHubContext} from "./github-private-inspector.js";
 import {authorizeJarvisAccount,accountAccessConfig,accountAccessHeaders} from "./jarvis-account-access.js";
@@ -697,28 +698,21 @@ async function executeAiCore(env, body) {
     skipLegacyResearch ? Promise.resolve(emptyNewsState()) : loadLiveNewsContext(message, { limit: 6 })
   ]);
 
-  // Short answers such as "sim" or "não" are replies to the last assistant turn,
-  // not independent greetings. Force explicit conversational continuity.
-  const shortReply = /^(?:sim|s|isso|isso mesmo|claro|pode|pode sim|confirmo|confirmado|ok|okay|certo|beleza|nao|não|n|negativo|agora nao|agora não)(?:[.!?\s]*)$/i.test(message);
+  // Same-conversation follow-ups use bounded recovered history, never a
+  // client claim of completion or an implicit permission to execute tools.
   const lastAssistant = String(memoryState.lastAssistantMessage || '').trim();
-  const dialogueMode=classifyConsultativeTurn(message,{
-    lastAssistantMessage:lastAssistant,
-    lastUserMessage:memoryState.lastUserMessage||""
+  const lastUser = String(memoryState.lastUserMessage || '').trim();
+  const continuity=continuityGuidance(message,{
+    lastAssistantMessage:lastAssistant,lastUserMessage:lastUser
   });
-  const clarificationTurn = /^(?:nao entendi|não entendi|pode explicar|explique melhor|o que voce quis dizer|o que você quis dizer|nao compreendi|não compreendi)\b/i.test(message);
-  const continuityInstruction = clarificationTurn
-    ? lastAssistant
-      ? 'REGRA PRIORITÁRIA DE ESCLARECIMENTO: O operador não entendeu sua última resposta. Explique a mesma questão com palavras simples, sem mudar de assunto nem pesquisar por conta própria. Última resposta: '+lastAssistant.slice(0,1800)
-      : 'O operador pediu um esclarecimento, mas a resposta anterior não foi recuperada. Pergunte qual trecho deseja esclarecer; não invente contexto.'
-    : shortReply
-    ? lastAssistant
-      ? ['REGRA PRIORITÁRIA DE CONTINUIDADE:', 'A mensagem atual é uma resposta curta do operador à última fala do assistente.', 'Última fala do assistente: ' + lastAssistant.slice(0, 1800), 'Continue a conversa e responda à confirmação ou recusa no contexto. Não cumprimente novamente nem reinicie a conversa.'].join('\n')
-      : 'REGRA PRIORITÁRIA: O operador respondeu com uma confirmação ou recusa curta, mas não existe pergunta anterior disponível. Peça brevemente a que ele se refere. Não cumprimente nem invente contexto.'
-    : '';
+  const dialogueMode=classifyConsultativeTurn(message,{
+    lastAssistantMessage:lastAssistant,lastUserMessage:lastUser
+  });
+  const continuityInstruction=continuity.instruction;
 
   const taskContextCandidate=vetClientTaskContext(body);
   const currentTurn=classifyJarvisTurn(message);
-  const taskContext=(isResearchFollowUp(message)||dialogueMode.followup||
+  const taskContext=(isResearchFollowUp(message)||continuity.followup||dialogueMode.followup||
     (currentTurn.kind==="conversation" && /^(?:isso|esse|essa|aquele|aquela|agora|continua|continue)\b/i.test(message)))
       ? taskContextCandidate : null;
   const taskContextInstruction=taskContext
