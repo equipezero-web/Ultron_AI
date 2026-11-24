@@ -1,3 +1,4 @@
+import {verifyProjectOpinionReply} from "./modules/jarvis-project-opinion-ui.js";
 import {TASK_CONTEXT} from "./modules/jarvis-task-context.js?v=4.69.0";
 import {directPlan,runActionPlan} from "./modules/jarvis-action-engine.js?v=4.71.0";
 import {runLocalCommand} from "./modules/jarvis-local-commands.js?v=5.10.0";
@@ -339,11 +340,13 @@ async function askUltron(command) {
       })
     });
 
-    const data = await readApiResponse(response);
+    const rawData = await readApiResponse(response);
+    const data = verifyProjectOpinionReply(command,rawData);
     if (!response.ok) throw new Error(getErrorMessage(data, response.status));
     if (!data?.text) throw new Error("O gateway respondeu sem texto.");
     if(questionId!==window.__ultronQuestionSequence)return; // Discard stale results from older questions.
 
+    if(data.correctedLegacyReply) log("ROTA DE CONVERSAÇÃO // resposta legada corrigida pela interface.", true);
     const provider = data.providerLabel || data.provider || "AI";
     addLog(output, `ULTRON [${provider}]: ${data.text}`);
     prepareNeuralResponse(data);
