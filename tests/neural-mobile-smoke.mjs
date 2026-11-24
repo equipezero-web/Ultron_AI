@@ -122,9 +122,13 @@ try {
     {x:Math.round(x+spread),y:Math.round(y),id:2}
   ];
   await client.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:points(22)});
+  // Chromium may coalesce a burst of CDP events into a single rendering frame.
+  // Give each genuine two-finger movement a frame to reach the globe's handler.
   for(const gap of [28,38,49,65]){
+    await new Promise(resolve=>setTimeout(resolve,50));
     await client.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:points(gap)});
   }
+  await new Promise(resolve=>setTimeout(resolve,60));
   await client.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
   // Globe.gl updates its camera between animation frames. Verify the actual
   // final altitude with a bounded wait; do not accept a mere touch event.
