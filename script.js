@@ -351,7 +351,7 @@ async function askUltron(command) {
     addLog(output, `ULTRON [${provider}]: ${data.text}`);
     prepareNeuralResponse(data);
     TASK_CONTEXT?.captureQuestion(command);
-    window.dispatchEvent(new CustomEvent("ultron:answer",{detail:{id:questionId,text:data.text,visualContext:data.visualContext,webResearch:data.webResearch}}));
+    window.dispatchEvent(new CustomEvent("ultron:answer",{detail:{id:questionId,text:data.text,visualContext:data.visualContext,webResearch:data.webResearch,liveData:data.liveData||null}}));
     if (data.audioBase64) playVoice(data.audioBase64, data.audioMimeType || "audio/mpeg");
     else window.ULTRON_VOICE_OUTPUT?.speak?.(data.text,{reason:"fallback",announce:false});
   } catch (error) {

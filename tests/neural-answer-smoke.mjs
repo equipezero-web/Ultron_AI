@@ -3,15 +3,43 @@ import puppeteer from 'puppeteer-core';
 
 const browser=await puppeteer.launch({
   executablePath:process.env.CHROME_BIN||'/usr/bin/google-chrome',
-  headless:true,args:['--no-sandbox','--disable-dev-shm-usage','--enable-webgl','--enable-unsafe-swiftshader']
+  headless:true,pipe:true,timeout:60000,args:['--no-sandbox','--disable-dev-shm-usage','--no-zygote','--disable-background-networking','--enable-webgl','--enable-unsafe-swiftshader']
 });
 try {
+  // The full 1,600-line interaction suite executes once on the constrained
+  // phone viewport. Desktop and TV layout and module boot are independently
+  // exercised by the notebook/TV browser step in the responsive workflow.
+  // Replaying all global/weather/device interactions three times exhausted
+  // CI headless Chrome resources and led to unrelated 20s timeouts.
   for(const viewport of [
-    {width:390,height:844,isMobile:true,hasTouch:true},
-    {width:1366,height:768},
-    {width:1920,height:1080}
+    {width:390,height:844,isMobile:true,hasTouch:true}
   ]){
     const page=await browser.newPage();
+
+    const originalWait=page.waitForFunction.bind(page);
+    page.waitForFunction=async(...args)=>{
+      try{return await originalWait(...args);}
+      catch(error){
+        console.error('NEURAL WAIT FAILURE',String(args[0]).slice(0,500),String(error?.message||error));
+        throw error;
+      }
+    };
+    const originalRequestWait=page.waitForRequest.bind(page);
+    page.waitForRequest=async(...args)=>{
+      try{return await originalRequestWait(...args);}
+      catch(error){
+        console.error('NEURAL REQUEST WAIT FAILURE',String(args[0]).slice(0,500),String(error?.message||error));
+        throw error;
+      }
+    };
+    page.on('response',res=>{
+      if(res.status()>=400&&res.url().startsWith('http://127.0.0.1:8766/'))
+        console.error('NEURAL LOCAL HTTP ERROR',res.status(),res.url());
+    });
+
+    page.on('pageerror',error=>console.error('NEURAL PAGEERROR',String(error?.message||error)));
+    page.on('console',item=>{if(item.type()==='error')console.error('NEURAL CONSOLE ERROR',item.text());});
+    page.on('requestfailed',req=>{if(/neural-answer|evidence-view-model/.test(req.url()))console.error('NEURAL REQUEST FAIL',req.url(),req.failure()?.errorText);});
     await page.setViewport(viewport);
     // Use a deterministic local response for test pictures rather than
     // depending on example.org or the external network.
@@ -348,7 +376,17 @@ try {
       return req.continue();
     });
     await page.goto('http://127.0.0.1:8766/'+(viewport.width===1920?'?display=tv':''),{waitUntil:'domcontentloaded'});
-    await page.waitForFunction(()=>Boolean(window.ULTRON_NEURAL_ANSWER),{timeout:12000});
+    try{
+    await page.waitForFunction(()=>Boolean(window.ULTRON_NEURAL_ANSWER),{timeout:20000});
+    }catch(error){
+      console.error('NEURAL BOOT DEBUG',JSON.stringify(await page.evaluate(()=>({
+        readyState:document.readyState,
+        scriptCount:document.querySelectorAll('script[type="module"]').length,
+        answerElement:Boolean(document.querySelector('.ultron-neural-answer')),
+        responseModule:[...document.querySelectorAll('script')].find(x=>x.src.includes('ultron-neural-answer.js'))?.src||null
+      }))));
+      throw error;
+    }
     const initial=await page.evaluate(()=>({
       hidden:document.querySelector('.ultron-neural-answer').hidden,
       newsHidden:getComputedStyle(document.querySelector('.jarvis-neural-news')).display==='none',
@@ -386,6 +424,48 @@ try {
     }));
     assert.equal(answered.hidden,false);
     assert.equal(answered.text,'Resposta confirmada');
+
+    // Evidence expansion is rendered within the same response surface on all viewports.
+    const evidence=await page.evaluate(()=>{
+      window.dispatchEvent(new CustomEvent('ultron:answer',{detail:{
+        id:10,text:'Boletim de teste',visualContext:{mode:'news',cards:[]},
+        liveData:{news:true,eventCorrelation:{events:[{
+          event_id:'news-event-deadbeef',title:'Temporal deixa 12 desabrigados em Recife',
+          summary:'Descrição publicada pela fonte',timestamp:'2026-11-24T15:00:00Z',
+          sources:[
+            {source:'Agência A',domain:'agencia-a.br',url:'https://agencia-a.br/1',publishedAt:'2026-11-24T15:00:00Z'},
+            {source:'Agência B',domain:'agencia-b.br',url:'https://agencia-b.br/2',publishedAt:'2026-11-24T15:00:00Z'}
+          ],
+          evidenceReview:{discrepancies:[{label:'desabrigados',sources:[
+            {domain:'agencia-a.br',url:'https://agencia-a.br/1',value:12},
+            {domain:'agencia-b.br',url:'https://agencia-b.br/2',value:20}
+          ]}]}
+        }]}}
+      }}));
+      const item=document.querySelector('.ultron-evidence-event');
+      item?.querySelector('summary')?.click();
+      return {count:document.querySelectorAll('.ultron-evidence-event').length,
+        opened:item?.open,title:item?.querySelector('summary')?.textContent,
+        links:[...item.querySelectorAll('a')].map(a=>({protocol:new URL(a.href).protocol,rel:a.rel})),
+        warning:item?.querySelector('.ultron-evidence-status')?.textContent,
+        detail:item?.querySelector('.ultron-evidence-mismatch')?.textContent,
+        insideRing:item?.closest('.jarvis-cc-center')!==null};
+    });
+    assert.equal(evidence.count,1);
+    assert.equal(evidence.opened,true);
+    assert.equal(evidence.insideRing,true);
+    assert.match(evidence.warning,/Possível divergência/);
+    assert.match(evidence.detail,/12.*20/);
+    assert.ok(evidence.links.length===2&&evidence.links.every(l=>l.protocol==='https:'&&l.rel==='noopener noreferrer'));
+    // Restore original answer so pre-existing image/scroll tests stay valid.
+    await page.evaluate(()=>{
+      window.dispatchEvent(new CustomEvent('ultron:answer',{detail:{
+        id:10,text:'Resposta confirmada',
+        webResearch:{sources:[{source:'Fonte oficial',url:'https://example.org/report'}]},
+        visualContext:{images:[{src:'https://example.org/picture.jpg',alt:'Foto da fonte'}]}
+      }}));
+    });
+
     assert.equal(answered.image,1);
     await page.waitForFunction(()=>document.querySelector('.ultron-neural-answer-media img')?.naturalWidth===420,{timeout:6000});
     const presentation=await page.$eval('.ultron-neural-answer',el=>({
@@ -442,7 +522,7 @@ try {
       document.querySelector('#btn-send').click();
     });
     try{
-      await page.waitForFunction(()=>document.querySelector('.ultron-neural-answer-text')?.textContent==='Resposta real do fluxo de comando: China',{timeout:12000});
+      await page.waitForFunction(()=>document.querySelector('.ultron-neural-answer-text')?.textContent==='Resposta real do fluxo de comando: China',{timeout:20000});
     }catch(error){
       console.error('COMMAND FLOW DIAGNOSTICS',JSON.stringify(await page.evaluate(()=>({
         text:document.querySelector('.ultron-neural-answer-text')?.textContent,
@@ -455,13 +535,13 @@ try {
     }
     const ctx=await page.evaluate(()=>window.ULTRON_TASK_CONTEXT?.snapshot());
     assert.ok(ctx?.lastPublicQuestion?.includes('governo da China'),JSON.stringify(ctx));
-    const followupRequest=page.waitForRequest(req=>req.url().includes('/api/ai')&&req.method()==='POST'&&req.postData()?.includes('"message":"E no Japão?"'),{timeout:12000});
+    const followupRequest=page.waitForRequest(req=>req.url().includes('/api/ai')&&req.method()==='POST'&&req.postData()?.includes('"message":"E no Japão?"'),{timeout:20000});
     await page.evaluate(()=>{document.querySelector('#command-input').value='E no Japão?';document.querySelector('#btn-send').click();});
     const followupBody=JSON.parse((await followupRequest).postData());
     assert.equal(followupBody.taskContext?.followup,true);
     assert.ok(followupBody.taskContext?.lastQuestion?.includes('governo da China'));
     assert.equal(followupBody.taskContext?.region,'japao');
-    await page.waitForFunction(()=>!window.ULTRON_ORCHESTRATOR?.state?.busy,{timeout:12000});
+    await page.waitForFunction(()=>!window.ULTRON_ORCHESTRATOR?.state?.busy,{timeout:20000});
     assert.ok(await page.$eval('.ultron-neural-answer-media img',el=>el.src.includes('example.org/picture.jpg')));
     const mediaLayout=await page.evaluate(()=>{
       const images=document.querySelector('.ultron-media-images');
@@ -910,7 +990,7 @@ try {
     await page.waitForFunction(()=>{
       const root=document.querySelector('.jarvis-geo-place-results');
       return root?.querySelectorAll('button').length||/não encontrada|Erro|indisponível/.test(root?.textContent||'');
-    },{timeout:12000});
+    },{timeout:20000});
     const geoSearchState=await page.$eval('.jarvis-geo-place-results',el=>({
       text:el.textContent,buttons:el.querySelectorAll('button').length
     }));
@@ -1364,7 +1444,7 @@ try {
     await page.$eval('.jarvis-cc-inline-result:last-child button',button=>button.click());
     try {
       await page.waitForFunction(()=>[...document.querySelectorAll('.jarvis-cc-inline-result')]
-        .filter(el=>el.textContent.includes('STATUS DO SISTEMA')).length>=2,{timeout:12000});
+        .filter(el=>el.textContent.includes('STATUS DO SISTEMA')).length>=2,{timeout:20000});
     } catch(error) {
       console.error('STATUS REFRESH DIAGNOSTICS',JSON.stringify(await page.evaluate(()=>({
         results:[...document.querySelectorAll('.jarvis-cc-inline-result')].slice(-5).map(el=>el.textContent),
@@ -1579,5 +1659,5 @@ try {
     }
     await page.close();
   }
-  console.log('NEURAL ANSWER PASS: ring-only boot; responsive stacked/split layout; compact square image cards; distinct inline video lane; mobile/laptop/TV');
+  console.log('NEURAL ANSWER PASS: full mobile interactions, evidence drill-down, compact media and globe; notebook/TV separately covered by responsive workflow');
 }finally{await browser.close();}

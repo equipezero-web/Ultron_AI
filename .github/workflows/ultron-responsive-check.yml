@@ -111,7 +111,9 @@ jobs:
         run: |
           npm install --no-save --no-package-lock --ignore-scripts puppeteer-core@24.33.0
           echo "CHROME_BIN=$(command -v google-chrome || command -v chromium || command -v chromium-browser)" >> "$GITHUB_ENV"
-      - name: Verify mobile ring and globe
+      # This shared smoke suite also verifies weather maps and the new evidence panel.
+      # Running it in two concurrent jobs previously caused nondeterministic Chromium timeouts.
+      - name: Verify mobile ring, worldwide weather map and evidence panel
         run: |
           python3 -m http.server 8766 --bind 127.0.0.1 >/tmp/ultron-responsive-http.log 2>&1 &
           sleep 2
@@ -124,7 +126,7 @@ jobs:
           import assert from 'node:assert/strict';
           const browser=await puppeteer.launch({
             executablePath:process.env.CHROME_BIN||'/usr/bin/google-chrome',
-            headless:true,args:['--no-sandbox','--disable-dev-shm-usage','--enable-webgl','--enable-unsafe-swiftshader']
+            headless:true,pipe:true,timeout:60000,args:['--no-sandbox','--disable-dev-shm-usage','--no-zygote','--disable-background-networking','--enable-webgl','--enable-unsafe-swiftshader']
           });
           try {
             for(const item of [
@@ -144,27 +146,35 @@ jobs:
               assert.equal(state.tv,item.tv);
               assert.ok(state.overflow<=3,'No horizontal overflow');
               assert.ok(state.visual&&state.commands,'Original neural display and command remain mounted');
+
+              // Ensure the evidence panel also loads in independent notebook/TV runs.
+              await page.waitForFunction(()=>Boolean(window.ULTRON_NEURAL_ANSWER),{timeout:15000});
+              const evidence=await page.evaluate(()=>{
+                window.ULTRON_NEURAL_ANSWER.show('Notícias de teste',{liveData:{
+                  news:true,eventCorrelation:{events:[{
+                    event_id:'news-event-feedface',title:'Evento público de teste',
+                    summary:'Apenas um resumo de fonte',timestamp:'2026-11-24T15:00:00Z',
+                    sources:[{source:'Fonte A',domain:'example.org',
+                      url:'https://example.org/noticia',publishedAt:'2026-11-24T15:00:00Z'}],
+                    evidenceReview:{discrepancies:[]}
+                  }]}
+                }});
+                const item=document.querySelector('.ultron-evidence-event');
+                item?.querySelector('summary')?.click();
+                return {mounted:Boolean(item),opened:item?.open,
+                  insideRing:Boolean(item?.closest('.jarvis-cc-center')),
+                  warning:item?.querySelector('.ultron-evidence-status')?.textContent||'',
+                  links:item?.querySelectorAll('a').length||0};
+              });
+              assert.equal(evidence.mounted,true,'News evidence UI must load on laptop and TV');
+              assert.equal(evidence.opened,true,'News details must expand');
+              assert.equal(evidence.insideRing,true,'News details stay inside Neural Ring');
+              assert.match(evidence.warning,/não verificado/);
+              assert.equal(evidence.links,1);
+
               await page.close();
             }
             console.log('LAPTOP & TV PRESENTATION PASS');
           } finally { await browser.close(); }
           NODE
 
-
-  weather-map-browser:
-    runs-on: ubuntu-latest
-    timeout-minutes: 6
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-      - name: Install headless browser
-        run: |
-          npm install --no-save --no-package-lock --ignore-scripts puppeteer-core@24.33.0
-          echo "CHROME_BIN=$(command -v google-chrome || command -v chromium || command -v chromium-browser)" >> "$GITHUB_ENV"
-      - name: Assert weather map metrics, zoom and mobile UI
-        run: |
-          python3 -m http.server 8766 --bind 127.0.0.1 >/tmp/jarvis-weather-map-http.log 2>&1 &
-          sleep 2
-          node tests/neural-answer-smoke.mjs

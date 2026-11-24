@@ -320,3 +320,47 @@ body.jarvis-command-center .ultron-neural-answer.ultron-text-disabled:not([hidde
 body.jarvis-command-center .ultron-neural-answer.ultron-text-disabled .ultron-neural-answer-media{
  grid-column:1/-1!important
 }
+
+
+/* Correlated public-news evidence remains inside the existing response panel. */
+body.jarvis-command-center .ultron-news-evidence{
+ display:grid;gap:8px;margin:12px 0 6px;min-width:0;
+ border-top:1px solid #35536a;padding-top:10px
+}
+body.jarvis-command-center .ultron-news-evidence>h3{
+ margin:0;color:#a9eaff;font:700 12px/1.4 system-ui,sans-serif;letter-spacing:.06em
+}
+body.jarvis-command-center .ultron-evidence-caveat{
+ margin:0;color:#a6bdcc;font:11px/1.5 system-ui,sans-serif
+}
+body.jarvis-command-center .ultron-evidence-event{
+ min-width:0;border:1px solid #32546b;border-radius:8px;
+ background:rgba(4,20,33,.78);overflow:hidden
+}
+body.jarvis-command-center .ultron-evidence-event>summary{
+ padding:10px;cursor:pointer;color:#dcf3ff;
+ font:600 12px/1.4 system-ui,sans-serif;touch-action:manipulation;
+ overflow-wrap:anywhere
+}
+body.jarvis-command-center .ultron-evidence-event>summary:focus-visible{
+ outline:2px solid #85ddfa;outline-offset:-3px
+}
+body.jarvis-command-center .ultron-evidence-body{
+ display:grid;gap:7px;padding:10px;border-top:1px solid #31546b;
+ color:#b9d7e6;font:11px/1.5 system-ui,sans-serif;
+ overflow-wrap:anywhere
+}
+body.jarvis-command-center .ultron-evidence-body p{
+ margin:0;overflow-wrap:anywhere
+}
+body.jarvis-command-center .ultron-evidence-status{
+ color:#f4d18b;font-weight:600
+}
+body.jarvis-command-center .ultron-evidence-source-list{
+ margin:0;padding-left:17px;display:grid;gap:5px
+}
+body.jarvis-command-center .ultron-evidence-source-list a{
+ color:#8fdffc;text-decoration:underline;text-underline-offset:2px;
+ overflow-wrap:anywhere;touch-action:manipulation
+}
+body.jarvis-command-center .ultron-evidence-mismatch{color:#f4cc91}
