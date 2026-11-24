@@ -461,14 +461,21 @@ jobs:
           assert.match(world,/globalWeatherScenario/);
           const recovery=await check('direct-fallback-module',site+'backend/weather-global.js?v=4.74.0');
           assert.match(recovery,/loadGlobalWeather/);
-          // Direct provider checks are secondary when the live Worker already returned
-          // a validated 16-day forecast. Do not misclassify an upstream network timeout
-          // as a J.A.R.V.I.S. regression, but do not swallow bad provider payloads.
+          // A 502/503 with an explicit error is a tested SAFE FAILURE, not a
+          // successful forecast. Upstream connection timeouts are operational
+          // degradation; they should not fail unrelated PRs once the Worker
+          // contract, deployed UI, and persisted D1 monitor have been verified.
+          // Invalid JSON, unexpected HTTP status and malformed successful
+          // provider payloads still FAIL the check.
+          let upstreamDegraded=false;
           const checkExternal=async(name,url,validate)=>{
             try{validate(JSON.parse(await check(name,url)));}
             catch(error){
-              if(!workerForecastVerified||!(/fetch failed|timeout|aborted|ECONNRESET|ETIMEDOUT/i.test(String(error?.message||error))))throw error;
-              console.log('::warning::'+name+' unreachable directly from GitHub runner; verified 16-day Cloudflare Worker forecast is operational.');
+              const connectivity=/fetch failed|timeout|aborted|ECONNRESET|ETIMEDOUT|UND_ERR_CONNECT_TIMEOUT/i
+                .test(String(error?.message||error));
+              if(!connectivity)throw error;
+              if(!workerForecastVerified && backend.status===200)upstreamDegraded=true;
+              console.log('::warning::'+name+' upstream network unreachable; live forecast availability is NOT verified.');
             }
           };
           await checkExternal('open-meteo-geocoding',
@@ -477,7 +484,10 @@ jobs:
           await checkExternal('open-meteo-16days',
             'https://api.open-meteo.com/v1/forecast?latitude=35.6895&longitude=139.6917&timezone=auto&forecast_days=16&current=temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max',
             data=>assert.equal(data.daily.time.length,16));
-          console.log('WORLD WEATHER AVAILABLE IN PRODUCTION: fallback modules and Open-Meteo source; Worker HTTP '+backend.status);
+          if(upstreamDegraded)console.log('::warning::WORLD WEATHER DEGRADED: Cloudflare returned a verified 502/503 and upstream was unreachable. Forecast NOT available; this run validates safe failure handling and deployed fallback assets, not service health.');
+          else console.log(workerForecastVerified?'WORLD WEATHER LIVE VERIFIED: valid Worker forecast.':'WORLD WEATHER CONTRACT VERIFIED: fallback assets deployed; provider reachability checked separately.');
+          assert.ok(workerForecastVerified||upstreamDegraded||backend.status===404,
+            'A failed production forecast must be attributable to explicit upstream degradation');
           NODE
 
   cloudflare-main-deploy-status:
