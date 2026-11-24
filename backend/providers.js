@@ -288,7 +288,24 @@ function extractCloudflareText(data) {
   );
 }
 
-async function callCloudflare(env, message, telemetry, aiBinding) {
+// Workers AI bindings do not expose a fetch AbortSignal. Bound their wait so
+// a stalled binding cannot indefinitely prevent the configured AI fallback.
+// This is a response deadline, not a claim that remote inference was cancelled.
+async function withBindingDeadline(task, timeoutMs = 9000) {
+  let timer;
+  try {
+    return await Promise.race([
+      Promise.resolve().then(task),
+      new Promise((_, reject) => {
+        timer = setTimeout(() => reject(new Error("Cloudflare Workers AI excedeu o prazo de resposta.")), timeoutMs);
+      })
+    ]);
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function callCloudflare(env, message, telemetry, aiBinding, timeoutMs = 9000) {
   const model =
     env.CLOUDFLARE_AI_MODEL ||
     "@cf/meta/llama-3.1-8b-instruct-fp8-fast";
@@ -300,7 +317,7 @@ async function callCloudflare(env, message, telemetry, aiBinding) {
   };
 
   if (aiBinding && typeof aiBinding.run === "function") {
-    const data = await aiBinding.run(model, input);
+    const data = await withBindingDeadline(() => aiBinding.run(model, input), timeoutMs);
     const text = extractCloudflareText(data);
 
     if (!text) {
@@ -429,7 +446,10 @@ export async function generateWithProviders(
             env,
             message,
             groundedTelemetry,
-            aiBinding
+            aiBinding,
+            Number.isFinite(options.bindingTimeoutMs)
+              ? Math.max(50, Math.min(9000, options.bindingTimeoutMs))
+              : 9000
           );
           break;
         case "cohere":
