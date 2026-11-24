@@ -54,6 +54,8 @@ jobs:
           node --check modules/jarvis-action-engine.js
           node tests/jarvis-semantic-operator.mjs
           node tests/jarvis-linguistic-context.mjs
+          node --check backend/jarvis-conversation-router.js
+          node tests/jarvis-unified-intent.mjs
 
       - name: Guard production secrets
         run: |
