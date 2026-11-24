@@ -14,7 +14,7 @@ function clean(value) {
 export function isProviderDiagnosticsIntent(message){
   const q=clean(message).replace(/^(?:(?:ei|ola|oi) )?(?:jarvis|ultron) /,"");
   if(!q || q.length>180)return false;
-  return /\b(?:provedores? (?:de )?ia|modelos? (?:de )?ia|gateway (?:de )?ia)\b/.test(q)
+  return /\b(?:provedor(?:es)? (?:de )?ia|modelos? (?:de )?ia|gateway (?:de )?ia)\b/.test(q)
     && /\b(?:status|estado|diagnostico|diagnosticos|saude|falhas|recuperacao|disponibilidade|monitoramento|monitorar)\b/.test(q);
 }
 
