@@ -1,5 +1,7 @@
 import {isJarvisProjectOpinion,JARVIS_PROJECT_OPINION} from "./jarvis-project-opinion.js";
 import {clockAnswer} from "./jarvis-time-intent.js";
+import {isProviderDiagnosticsIntent,providerDiagnosticsAnswer} from "./provider-diagnostics.js";
+import {providerCircuitBreaker} from "./provider-circuit-breaker.js";
 import {interfacePreferenceIntent} from "./jarvis-memory-intents.js";
 import {vetClientTaskContext,contextSearchQuery} from "./task-context.js";
 import {checkPublicAiQuota} from "./worker-ai-rate-limit.js";
@@ -918,6 +920,15 @@ async function handleAi(request, env) {
   if(clock)return json({...clock,backendVersion:BACKEND_VERSION,
     performance:{aiMs:0,researchMs:0,aiPasses:0,voiceMs:0,
       totalMs:Date.now()-startedAt}},200);
+
+  // Respond to explicit provider-health inquiries using observed local data,
+  // never a language-model guess about provider availability.
+  if(isProviderDiagnosticsIntent(originalBody?.message)){
+    const diagnostic=providerDiagnosticsAnswer(providerCircuitBreaker);
+    return json({...diagnostic,backendVersion:BACKEND_VERSION,
+      performance:{aiMs:0,researchMs:0,aiPasses:0,voiceMs:0,
+        totalMs:Date.now()-startedAt}},200);
+  }
 
   const prepared = await prepareResearch(env, originalBody);
   const body = prepared.body;
