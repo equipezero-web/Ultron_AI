@@ -1,5 +1,6 @@
 import {JARVIS_CAPABILITIES,JARVIS_AUTONOMY} from "./jarvis-capabilities.js";
 import {providerCircuitBreaker} from "./provider-circuit-breaker.js";
+import {providerDiagnostics} from "./provider-diagnostics.js";
 export const SYSTEM_INSTRUCTION = `
 Você é J.A.R.V.I.S., o núcleo conversacional deste sistema.
 
@@ -417,6 +418,10 @@ export async function generateWithProviders(
   const status = getProviderStatus(env, aiBinding);
   const groundedTelemetry = buildGroundedTelemetry(env, telemetry, aiBinding);
   const attempts = [];
+  const recordAttempt = (attempt) => {
+    attempts.push(attempt);
+    providerDiagnostics.record(attempt);
+  };
   const breaker = options.circuitBreaker || providerCircuitBreaker;
   const ordered = providerOrder(env, status);
   // Only skip cooled providers when at least one configured non-cooled
@@ -426,7 +431,7 @@ export async function generateWithProviders(
 
   for (const provider of ordered) {
     if (!status[provider]?.configured) {
-      attempts.push({
+      recordAttempt({
         provider,
         status: "skipped",
         reason: "não configurado"
@@ -434,7 +439,7 @@ export async function generateWithProviders(
       continue;
     }
     if (healthyAlternatives && breaker.isCooling(provider)) {
-      attempts.push({
+      recordAttempt({
         provider,
         status: "skipped",
         reason: "falhas transitórias recentes; aguardando recuperação"
@@ -475,7 +480,7 @@ export async function generateWithProviders(
       }
 
       breaker.onSuccess(provider);
-      attempts.push({
+      recordAttempt({
         provider,
         status: "success",
         model: result.model,
@@ -496,7 +501,7 @@ export async function generateWithProviders(
         compactError(error)
       );
 
-      attempts.push({
+      recordAttempt({
         provider,
         status: "failed",
         durationMs: Date.now() - startedAt,
