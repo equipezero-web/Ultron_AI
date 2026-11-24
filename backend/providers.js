@@ -374,6 +374,24 @@ async function callCohere(env, message, telemetry) {
   return { text, model };
 }
 
+// An isolated, low-volume probe; no fallback and no circuit-breaker side effects.
+// The caller must enforce authentication and the shared D1 rate limit.
+export async function probeSingleProvider(env, provider){
+ const question="Responda apenas OK.";
+ const telemetry={};
+ let result;
+ switch(provider){
+  case "gemini": result=await callGemini(env,question,telemetry); break;
+  case "groq": result=await callGroq(env,question,telemetry); break;
+  case "openrouter": result=await callOpenRouter(env,question,telemetry); break;
+  case "cloudflare": result=await callCloudflare(env,question,telemetry,env.AI,9000); break;
+  case "cohere": result=await callCohere(env,question,telemetry); break;
+  default: throw new Error("invalid-provider");
+ }
+ if(!result?.text)throw new Error("empty-response");
+ return {ok:true};
+}
+
 export function getProviderStatus(env, aiBinding = null) {
   return {
     gemini: {
