@@ -1,6 +1,7 @@
 // Explicit, secret-authenticated one-provider live checks.
 // Disabled unless JARVIS_PROVIDER_PROBE_TOKEN is set. No prompts/responses stored.
 import { getProviderStatus, probeSingleProvider } from "./providers.js";
+import {isProviderDisabled} from "./provider-policy.js";
 import { persistProviderAttempts } from "./provider-diagnostics-db.js";
 import { providerDiagnostics } from "./provider-diagnostics.js";
 
@@ -52,6 +53,7 @@ export async function handleProviderProbe(request,env){
  try{data=await request.json();}catch{return {status:400,body:{ok:false,error:"invalid-json"}};}
  const provider=String(data?.provider||"").toLowerCase();
  if(!PROVIDERS.has(provider))return {status:400,body:{ok:false,error:"invalid-provider"}};
+ if(isProviderDisabled(env,provider))return {status:200,body:{ok:false,provider,state:"disabled_by_operator"}};
  if(!getProviderStatus(env,env.AI)[provider]?.configured)
   return {status:200,body:{ok:false,provider,state:"not_configured"}};
  const slot=await reserve(env,provider);
