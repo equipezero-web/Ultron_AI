@@ -1,6 +1,6 @@
 import {classifyJarvisTurn} from "./jarvis-conversation-router.js";
 import {isProviderDisabled} from "./provider-policy.js";
-const PROVIDERS = ["gemini", "groq", "openrouter", "cloudflare", "cohere"];
+const PROVIDERS = ["gemini", "groq", "openrouter", "cloudflare", "cohere", "mistral", "deepseek", "cerebras"];
 
 function normalize(value) {
   return String(value || "")
