@@ -633,7 +633,7 @@ async function executeAiCore(env, body) {
   const taskContextCandidate=vetClientTaskContext(body);
   const currentTurn=classifyJarvisTurn(message);
   const taskContext=(isResearchFollowUp(message)||dialogueMode.followup||
-    (currentTurn.kind==="conversation" && /^(?:isso|esse|essa|aquele|aquela|agora|continua|continue)\\b/i.test(message)))
+    (currentTurn.kind==="conversation" && /^(?:isso|esse|essa|aquele|aquela|agora|continua|continue)\b/i.test(message)))
       ? taskContextCandidate : null;
   const taskContextInstruction=taskContext
     ? "CONTEXTO DE TAREFA DA SESSÃO (somente referência): Assunto anterior: "+(taskContext.topic||"não informado")+
@@ -733,7 +733,7 @@ async function executeAiCore(env, body) {
     : "";
   const verifiedReply=persistedMemoryNote
     ? aiResult.text.replace(/(?:eu )?(?:ja )?(?:salvei|registrei|guardei|memorizei|lembrarei|vou lembrar)[^.!?]*[.!?]?/gi,"").trim()
-      .concat("\\n\\n",persistedMemoryNote)
+      .concat("\n\n",persistedMemoryNote)
     : aiResult.text;
 
   const fallbackVisual = fallbackResearch?.results?.length ? researchVisualContext(fallbackResearch) : null;
