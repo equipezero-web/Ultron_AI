@@ -72,6 +72,10 @@ export async function handleProviderProbe(request,env){
   providerDiagnostics.record(attempt);
   await persistProviderAttempts(env,[attempt]);
   return {status:200,body:{ok:false,provider,state:"failed_observed",...safeFailureMetadata(error),
+    ...(provider==="mistral"&&Number(error?.status)===429?{
+      possibleCauses:["workspace_spending_limit","model_rate_limit"],
+      guidance:"Conferir Admin > Workspaces > Spending limit e Admin > API > Limits na Mistral; HTTP 429 sozinho nao confirma a causa."
+    }:{}),
     durationMs:Date.now()-started,observedAt:new Date().toISOString(),scope:"single-check"}};
  }
 }
