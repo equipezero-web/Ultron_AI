@@ -364,3 +364,21 @@ body.jarvis-command-center .ultron-evidence-source-list a{
  overflow-wrap:anywhere;touch-action:manipulation
 }
 body.jarvis-command-center .ultron-evidence-mismatch{color:#f4cc91}
+
+
+/* Public news evolution remains expandable inside the existing Neural Ring. */
+body.jarvis-command-center .ultron-evidence-timeline{
+ display:grid;gap:7px;padding:9px;border:1px solid #31546b;
+ background:rgba(7,27,43,.64);border-radius:8px;min-width:0
+}
+body.jarvis-command-center .ultron-evidence-timeline>strong{
+ font:700 11px/1.4 system-ui,sans-serif;color:#b2efff
+}
+body.jarvis-command-center .ultron-evidence-timeline-list{
+ margin:0;padding-left:18px;display:grid;gap:7px
+}
+body.jarvis-command-center .ultron-evidence-timeline-list li{
+ padding-left:2px;overflow-wrap:anywhere;border-bottom:1px solid #254354
+}
+body.jarvis-command-center .ultron-evidence-timeline-list li p{margin:2px 0 5px}
+body.jarvis-command-center .ultron-evidence-timeline-list small{color:#a7c9dc}
