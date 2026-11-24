@@ -1,7 +1,7 @@
 // Diagnostics are aggregate, bounded, isolate-local observations, not a
 // credential/configuration probe or global provider availability monitor.
 // Never persist user prompts, upstream error bodies, keys or operator IDs.
-const PROVIDERS = ["gemini","groq","openrouter","cloudflare","cohere"];
+const PROVIDERS = ["gemini","groq","openrouter","cloudflare","cohere","mistral","deepseek","cerebras"];
 const WINDOW_MS = 15*60*1000;
 const MAX_EVENTS = 120;
 const events = [];
