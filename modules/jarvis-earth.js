@@ -877,6 +877,10 @@ if (earthVisual) {
             altitude: view.altitude
           };
           dragState = null;
+          // Only our custom pinch driver should handle multi-touch. Globe.gl
+          // OrbitControls is disabled and would otherwise also see this event,
+          // competing with the independently controlled camera altitude.
+          event.stopImmediatePropagation();
           event.preventDefault();
         }, {passive:false,capture:true});
         canvasHost.addEventListener('touchmove', event => {
@@ -896,6 +900,7 @@ if (earthVisual) {
           globe.pointOfView({...view,altitude},0);
           if (altitude <= DETAIL_ENTRY_ALTITUDE && hasMapboxToken())
             prepareStreetDetails({...view,altitude},mapZoomFromAltitude(altitude),false);
+          event.stopImmediatePropagation();
           event.preventDefault();
         }, {passive:false,capture:true});
         const endNativePinch = event => {
