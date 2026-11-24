@@ -1,3 +1,4 @@
+import {handleProviderProbe} from "./provider-active-probe.js";
 import {isJarvisProjectOpinion,JARVIS_PROJECT_OPINION} from "./jarvis-project-opinion.js";
 import {clockAnswer} from "./jarvis-time-intent.js";
 import {isProviderDiagnosticsIntent,providerDiagnosticsAnswer} from "./provider-diagnostics.js";
@@ -1934,6 +1935,15 @@ export default {
       const operatorId = await operatorFrom(body);
       if (!operatorId) return missingOperator();
       return json(await unifiedState(env, operatorId));
+    }
+
+    // A separate maintenance-only route: requires its own high-entropy secret,
+    // and each provider has one globally reserved D1 slot per 15 minutes.
+    if (path === "/api/provider-probe" && request.method === "POST") {
+      const result=await handleProviderProbe(request,env);
+      return new Response(JSON.stringify(result.body),{
+        status:result.status,headers:{...corsHeaders(),"Cache-Control":"no-store"}
+      });
     }
 
     if (path === "/api/ai" && request.method === "POST") {
