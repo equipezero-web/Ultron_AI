@@ -424,8 +424,8 @@ async function prepareResearch(env, body) {
   // Architecture and internal memory questions never need public sources.
   // Short continuation reports require local same-conversation memory, not web.
   const localArchitecture=Boolean(unifiedIdentityAnswer(message));
-  const internalMemory=/\\b(?:memoria|memória)\\b/i.test(message)&&
-    /\\b(?:jarvis|j\\.a\\.r\\.v\\.i\\.s|nosso projeto|sua|suas)\\b/i.test(message);
+  const internalMemory=/\b(?:memoria|memória)\b/i.test(message)&&
+    /\b(?:jarvis|j\.a\.r\.v\.i\.s|nosso projeto|sua|suas)\b/i.test(message);
   const conversationalFollowup=continuityGuidance(message).followup;
   if(localArchitecture||internalMemory||conversationalFollowup)return {
     body:{...body,allowUncertaintyResearch:false,webResearchContext:"",
