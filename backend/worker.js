@@ -22,6 +22,7 @@ import {
 import {
   deriveOperatorId,
   explicitMemoryCandidate,
+  readExplicitInterfacePreference,
   loadMemoryContext,
   memoryHealth,
   normalizeConversationId,
@@ -153,6 +154,18 @@ function normalize(value) {
     .toLowerCase()
     .replace(/\s+/g, " ")
     .trim();
+}
+
+function interfacePreferenceIntent(message){
+  const q=normalize(message).replace(/[?!.,;:]+$/g,"").trim();
+  const isPreference=/\bpreferencia de interface\b/.test(q);
+  if(isPreference && /^(?:lembre-se de que|lembre se de que|lembre-se que|lembre que|guarde|salve|registre)\b/.test(q))
+    return "store";
+  if(isPreference && /^(?:qual|quais|e qual|voce lembra|lembra|o que)\b/.test(q))
+    return "recall";
+  if(/^(?:e qual foi|qual foi|e qual era|qual era) a preferencia que (?:eu )?(?:acabei de )?(?:informar|disser|falar)\b/.test(q))
+    return "recall";
+  return null;
 }
 
 function isNewsIntent(message) {
@@ -411,6 +424,11 @@ async function unifiedState(env, operatorId) {
 async function prepareResearch(env, body) {
   const message = String(body?.message || "").trim();
   const entryIntent=classifyJarvisTurn(message);
+  if(interfacePreferenceIntent(message))return {
+    body:{...body,allowUncertaintyResearch:false,webResearchContext:"",
+      researchMeta:{active:false,reason:"private-memory-request",skipLegacyResearch:true}},
+    policy:{needed:false,reason:"private-memory-request"},active:false
+  };
   // A harmless greeting must never reach GitHub inspection, public search,
   // news enrichment, prior-task search resolution or automatic web fallback.
   if(entryIntent.isSocial)return {
@@ -596,6 +614,52 @@ async function executeAiCore(env, body) {
 
   if (!message) return { status: 400, data: { error: "Mensagem vazia." } };
   if (message.length > 8000) return { status: 413, data: { error: "Mensagem muito longa." } };
+
+  const preferenceIntent=interfacePreferenceIntent(message);
+  if(preferenceIntent){
+    const identityReady=Boolean(operatorId&&conversationId);
+    let text="",memoryWrite={saved:false,explicitMemorySaved:false};
+    let recall={found:false,ready:false};
+    if(preferenceIntent==="store"){
+      if(identityReady){
+        memoryWrite=await saveExchange(env,{
+          operatorId,conversationId,userMessage:message,
+          assistantMessage:"Pedido de memória de interface recebido.",
+          provider:"jarvis-local",model:"d1-explicit-write"
+        });
+      }
+      text=memoryWrite.explicitMemorySaved
+        ? "Registrei sua preferência de interface no D1."
+        : "Não consegui salvar sua preferência na memória persistente. Verifique o diagnóstico de memória do sistema.";
+    }else{
+      recall=await readExplicitInterfacePreference(env,{operatorId});
+      text=recall.found
+        ? "A preferência de interface que você informou é "+recall.value+"."
+        : recall.ready
+          ? "Não encontrei uma preferência de interface salva para sua identidade atual."
+          : "Não consegui consultar sua preferência no D1 nesta tentativa.";
+      if(identityReady){
+        memoryWrite=await saveExchange(env,{
+          operatorId,conversationId,userMessage:message,assistantMessage:text,
+          provider:"jarvis-local",model:"d1-explicit-read"
+        });
+      }
+    }
+    return {status:200,data:{
+      text,provider:"jarvis-local",providerLabel:"J.A.R.V.I.S.",model:"d1-explicit-memory",
+      attempts:[],dialogueMode:{name:"memory",followup:preferenceIntent==="recall",claimedCompletion:false},
+      memory:{active:preferenceIntent==="recall"?recall.ready:Boolean(memoryWrite.saved),
+        identityReceived:identityReady,recalledMessages:0,
+        recalledMemories:recall.found?1:0,saved:Boolean(memoryWrite.saved),
+        explicitMemorySaved:Boolean(memoryWrite.explicitMemorySaved),
+        error:memoryWrite.error||recall.error||(!identityReady?"MEMORY_IDENTITY_MISSING":null)},
+      liveData:{news:false,resultCount:0},visualContext:null,
+      webResearch:{requested:false,used:false,sourceCount:0,sources:[]},
+      performance:{aiMs:0,researchMs:0,aiPasses:0,voiceMs:0,totalMs:Date.now()-requestStartedAt},
+      audioBase64:null,audioMimeType:null
+    }};
+  }
+
 
   const turn=classifyJarvisTurn(message);
   if(turn.isSocial){
