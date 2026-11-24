@@ -776,7 +776,7 @@ async function executeAiCore(env, body) {
   const unifiedGeneration=(prompt)=>generateUnifiedResponse({
     env,prompt,userMessage:message,telemetry,aiBinding:env.AI,
     taskClass:classifyTask(message,telemetry).class,
-    privateContext:Boolean(localFilesContext||laTeamContext||externalResearchContext||
+    privateContext:Boolean(memoryState.context||localFilesContext||laTeamContext||externalResearchContext||
       body?.researchMeta?.active||body?.telemetry?.central?.privateData),
     generate:generateWithProviders
   });
