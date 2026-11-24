@@ -1,4 +1,5 @@
 import {isJarvisProjectOpinion,JARVIS_PROJECT_OPINION} from "./jarvis-project-opinion.js";
+import {clockAnswer} from "./jarvis-time-intent.js";
 import {interfacePreferenceIntent} from "./jarvis-memory-intents.js";
 import {vetClientTaskContext,contextSearchQuery} from "./task-context.js";
 import {checkPublicAiQuota} from "./worker-ai-rate-limit.js";
@@ -910,6 +911,13 @@ async function handleAi(request, env) {
   let originalBody;
   try { originalBody = await request.json(); }
   catch { return json({ error: "JSON inválido." }, 400); }
+
+  // Current time is a live operational value; cached web snippets and a model
+  // must never override the server observation or accuse a device of drift.
+  const clock=clockAnswer(originalBody?.message);
+  if(clock)return json({...clock,backendVersion:BACKEND_VERSION,
+    performance:{aiMs:0,researchMs:0,aiPasses:0,voiceMs:0,
+      totalMs:Date.now()-startedAt}},200);
 
   const prepared = await prepareResearch(env, originalBody);
   const body = prepared.body;
