@@ -13,8 +13,8 @@
   },
 
   "vars": {
-    "AI_PROVIDER_ORDER": "groq,cloudflare,cohere,mistral,deepseek,cerebras",
-    "AI_DISABLED_PROVIDERS": "gemini,openrouter",
+    "AI_PROVIDER_ORDER": "groq,cloudflare,cohere",
+    "AI_DISABLED_PROVIDERS": "gemini,openrouter,mistral,deepseek,cerebras",
     "GEMINI_MODEL": "gemini-3.8-flash",
     "GROQ_MODEL": "openai/gpt-oss-20b",
     "OPENROUTER_MODEL": "openrouter/free",
