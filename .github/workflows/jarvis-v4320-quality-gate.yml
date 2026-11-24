@@ -56,6 +56,7 @@ jobs:
           node tests/jarvis-linguistic-context.mjs
           node tests/jarvis-contextual-continuity.mjs
           node tests/jarvis-unified-identity.mjs
+          node tests/jarvis-unified-cognition.mjs
           node --check backend/jarvis-conversation-router.js
           node tests/jarvis-unified-intent.mjs
           node tests/jarvis-p0-intent-regression.mjs
