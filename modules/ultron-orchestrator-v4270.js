@@ -1,4 +1,5 @@
 import {TASK_CONTEXT} from "./jarvis-task-context.js?v=4.69.0";
+import {classifyJarvisTurn,greetingResponse} from "../backend/jarvis-conversation-router.js?v=1.0.0";
 import {planAgents} from "../backend/intelligent-task-hub.js";
 import {parseVerifiedIntelligenceCommand,runVerifiedIntelligenceCommand} from "./jarvis-verified-intelligence-client.js";
 import {parseJarvisEvolutionCommand,showJarvisEvolutionProgress} from "./jarvis-evidence-progress.js?v=5.72.0";
@@ -860,6 +861,19 @@ window.addEventListener("ultron:emergency-stop",event=>{
   cancelP0Operations("priority-core",event?.detail?.epoch);
 });
 function enqueue(message, source = "terminal", approvedMission = false) {
+  // Shared high-confidence social route comes before every legacy parser.
+  // It never starts a mission, action planner, web search, device operation,
+  // voice runtime, map or news refresh. Preserve conversational UI only.
+  if(classifyJarvisTurn(message).isSocial){
+    const text=greetingResponse(message);
+    const id=window.__ultronQuestionSequence=(Number(window.__ultronQuestionSequence)||0)+1;
+    window.dispatchEvent(new CustomEvent("ultron:question-start",{detail:{id,question:message}}));
+    window.dispatchEvent(new CustomEvent("ultron:answer",{detail:{
+      id,text,visualContext:null,webResearch:{requested:false,used:false,sources:[]}
+    }}));
+    return Promise.resolve({ok:true,status:"completed",route:"local-conversation",
+      results:[{route:"local-conversation",ok:true,result:{text,verified:true}}]});
+  }
   // Critical local UI commands bypass generic knowledge, media and TV routers.
   if(isRingHomeCommand(message)||["clear-interface","capabilities","meteorological-close","dual-display"].includes(parseLocalCommand(message)?.type)){
     const generation=queueGeneration;
