@@ -61,19 +61,40 @@ export function createProviderDiagnostics({now=Date.now}={}){
 
 export const providerDiagnostics=createProviderDiagnostics();
 
-export function providerDiagnosticsAnswer(breaker, diagnostic=providerDiagnostics){
-  const rows=diagnostic.report(breaker);
+export function providerDiagnosticsAnswer(breaker, diagnostic=providerDiagnostics, persistent=null){
+  const shared=persistent?.ok===true;
+  const local=diagnostic.report(breaker);
+  const rows=shared?local.map(item=>{
+    const db=persistent.rows.find(row=>row.provider===item.provider);
+    if(!db)return {...item,state:item.cooling?"resfriamento local":"sem observações",successes:0,failures:0,
+      lastObservedAt:null,averageSuccessMs:null};
+    const successes=Math.max(0,Number(db.successes)||0);
+    const failures=Math.max(0,Number(db.failures)||0);
+    const lastAt=Number(db.lastObservedMs);
+    const mean=Number(db.averageSuccessMs);
+    return {...item,successes,failures,
+      state:item.cooling?"resfriamento local":db.lastOutcome==="success"?"sucesso observado":
+        db.lastOutcome==="failed"?"falha observada":"sem observações",
+      lastObservedAt:Number.isFinite(lastAt)&&lastAt>0?new Date(lastAt).toISOString():null,
+      averageSuccessMs:db.averageSuccessMs!=null&&Number.isFinite(mean)?mean:null};
+  }):local;
   const lines=rows.map(item=>{
     const count=item.successes+item.failures;
-    const suffix=count?" ("+item.successes+" sucesso(s), "+item.failures+" falha(s) nos registros locais)": "";
-    return item.provider+": "+item.state+suffix;
+    return item.provider+": "+item.state+
+      (count?" ("+item.successes+" sucesso(s), "+item.failures+" falha(s) observada(s))":"");
   });
+  const scope=shared?"d1-shared":"worker-isolate";
+  const title=shared?"registros compartilhados no Cloudflare D1":
+    "observações desta instância (D1 indisponível ou ainda não configurado)";
+  const disclaimer=shared?
+    "Resultados agregados entre instâncias, sem teste ativo de disponibilidade. O resfriamento é local à instância; sem observações não significa offline.":
+    "O histórico persistente não está disponível nesta consulta; estes registros são apenas locais. Sem observações não significa offline.";
   return {
-    text:"Diagnóstico dos provedores de IA do J.A.R.V.I.S. (observações da instância atual, janela de 15 minutos):\n"+
-      lines.join("\n")+"\nEsses dados não verificam disponibilidade mundial, nem provam que um provedor está online. "+
-      "Instâncias diferentes do servidor podem ter registros diferentes; sem observações não significa falha.",
+    text:"Diagnóstico dos provedores de IA do J.A.R.V.I.S. ("+title+", últimos 15 minutos):\n"+
+      lines.join("\n")+"\n"+disclaimer,
     provider:"jarvis-local",providerLabel:"J.A.R.V.I.S.",model:"provider-diagnostics",
-    attempts:[],providerDiagnostics:{scope:"worker-isolate",windowMinutes:15,providers:rows},
+    attempts:[],providerDiagnostics:{scope,windowMinutes:15,providers:rows,
+      sharedStorage:shared,storageError:shared?null:(persistent?.reason||"d1-not-checked")},
     webResearch:{requested:false,used:false,sourceCount:0,sources:[]},
     audioBase64:null,audioMimeType:null
   };
