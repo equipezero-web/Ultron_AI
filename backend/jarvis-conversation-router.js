@@ -13,6 +13,9 @@ const DONT=/^(?:nao |nunca |jamais |sem |pare |parar |cancele |cancelar |stop\b)
 const EXPLICIT_RESEARCH=/\b(?:pesquise|pesquisar|procure na web|busque na internet|consulte fontes|noticias de hoje|ultimas noticias|ultimos acontecimentos)\b/;
 const ACTION=/^(?:abra|abre|abrir|feche|fecha|fechar|ative|ativar|desative|desativar|ligue|desligue|localize|localizar|mostre|mostrar|aumente|diminua|afaste|aproxime|ajuste|configure|pare|pause|continue|controle|envie|apague|exclua|mude|troque|conecte|reinicie)\b/;
 const INFORMATION=/^(?:quem|quando|onde|qual|quais|quanto|quantos|quantas|como|o que|por que|porque|pra que|sera que)\b/;
+// Vague observations and regional interjections are conversational context, not
+// search queries and never permission for tools.
+const CONTEXTUAL=/^(?:esse|essa|isso|isto|aquele|aquela|aquilo|eita|rapaz|oxe|oxente|vixe|visse|aff|putz|o globo ta|o mapa ta|ta muito|ta estranho|tava melhor|ficou esquisito|ficou estranho|nao entendi)\b/;
 export function classifyJarvisTurn(message){
  const raw=normalized(message);
  const plain=names(raw);
@@ -23,6 +26,7 @@ export function classifyJarvisTurn(message){
  if(EXPLICIT_RESEARCH.test(raw))return {kind:"research",reason:"explicit",requiresResearch:true,mayExecute:false,isSocial:false};
  if(ACTION.test(address(message)))return {kind:"operation-candidate",reason:"explicit-action",requiresResearch:false,mayExecute:false,isSocial:false};
  if(INFORMATION.test(address(message)))return {kind:"question",reason:"information",requiresResearch:null,mayExecute:false,isSocial:false};
+ if(CONTEXTUAL.test(address(message)))return {kind:"contextual-observation",reason:"clarify-or-context",requiresResearch:false,mayExecute:false,isSocial:false};
  return {kind:"conversation",reason:"contextual",requiresResearch:null,mayExecute:false,isSocial:false};
 }
 export function greetingResponse(message){
