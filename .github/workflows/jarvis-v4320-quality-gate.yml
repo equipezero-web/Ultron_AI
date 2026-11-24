@@ -59,6 +59,7 @@ jobs:
           node tests/jarvis-unified-cognition.mjs
           node tests/jarvis-complete-answer-budget.mjs
           node tests/jarvis-world-news-correlation.mjs
+          node tests/jarvis-world-evidence-audit.mjs
           node --check backend/jarvis-conversation-router.js
           node tests/jarvis-unified-intent.mjs
           node tests/jarvis-p0-intent-regression.mjs
