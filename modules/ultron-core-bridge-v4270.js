@@ -1,3 +1,4 @@
+import {verifyProjectOpinionReply} from "./jarvis-project-opinion-ui.js";
 import {TASK_CONTEXT} from "./jarvis-task-context.js?v=4.69.0";
 import {directPlan,runActionPlan} from "./jarvis-action-engine.js?v=4.71.0";
 import {runLocalCommand} from "./jarvis-local-commands.js?v=5.12.0";
@@ -111,9 +112,11 @@ async function ask(message) {
         telemetry: currentTelemetry()
       })
     });
-    const data = await response.json().catch(() => ({}));
+    const rawData = await response.json().catch(() => ({}));
+    const data = verifyProjectOpinionReply(clean,rawData);
     if (!response.ok || !data?.text) throw new Error(data?.details || data?.error || `HTTP ${response.status}`);
     if (!current()) return {ok:true,...data,superseded:true};
+    if(data.correctedLegacyReply) log("ROTA DE CONVERSAÇÃO // resposta legada corrigida pela interface.", true);
     const provider = data.providerLabel || data.provider || "AI";
     log(`ULTRON [${provider}]: ${data.text}`);
     // The orchestrator handles both typed and spoken commands. Publish the
