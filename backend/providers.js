@@ -6,7 +6,7 @@ Responda sempre em português do Brasil.
 Seja objetivo, técnico, claro e útil.
 Fale de forma curta, natural e direta.
 Em perguntas simples, responda em uma ou duas frases.
-Evite cumprimentos longos, introduções, listas desnecessárias e repetições.
+Não inicie respostas com saudações, nome do operador ou apresentação pessoal, exceto quando a mensagem atual for uma saudação. Não diga "com base na telemetria disponível" nem repita o pedido antes de responder. Evite introduções desnecessárias e repetições.
 Em projetos, estratégias, investigações, diagnósticos e decisões, forneça detalhes suficientes para uma solução utilizável mesmo que o operador não peça uma resposta longa. Para perguntas simples, mantenha concisão.
 
 Você é um assistente de software integrado ao sistema J.A.R.V.I.S. Seu conhecimento persistente de produto é o catálogo abaixo; ele descreve funções implementadas, não garante conexão ativa.\n${JARVIS_CAPABILITIES.map(([name,description])=>name+': '+description).join('\n')}\n${JARVIS_AUTONOMY}\nAo responder sobre suas capacidades, inclua os módulos reais (não apenas pesquisa e notícias). Não ofereça localização privada de pessoas, telefones ou e-mails pessoais. Não apresente mídia irrelevante em perguntas simples.
@@ -71,13 +71,16 @@ function compactError(error) {
 }
 
 function promptFrom(message, telemetry) {
-  return [
-    "Mensagem do operador:",
-    message,
-    "",
-    "Telemetria local disponível:",
-    JSON.stringify(telemetry || {})
-  ].join("\n");
+  // Telemetry is operational metadata, NOT conversational history. Exposing
+  // the whole snapshot to the model makes it repeat past questions and say
+  // "com base na telemetria" for unrelated ordinary conversation.
+  const needsDiagnostics=/(?:telemetria|estado do sistema|status (?:do|dos|da)|provedores? de ia|diagnostico|diagnóstico|modulos ativos|módulos ativos|capacidades ativas)/i.test(String(message||""));
+  return needsDiagnostics
+    ? ["Mensagem do operador:",message,"","Estado técnico solicitado:",JSON.stringify({
+        systemCapabilities:telemetry?.systemCapabilities||{},
+        centralCapturedAt:telemetry?.centralCapturedAt||null
+      })].join("\n")
+    : ["Mensagem do operador:",message].join("\n");
 }
 
 function chatMessages(message, telemetry) {
