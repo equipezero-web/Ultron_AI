@@ -8,6 +8,8 @@ const orchestrator=f("modules/ultron-orchestrator-v4270.js");
 const p0=priority.slice(priority.indexOf("const P0 ="),priority.indexOf("const P1 ="));
 assert.match(p0,/\(\?:jarvis\|ultron\)/,"P0 must understand the current JARVIS name");
 assert.match(p0,/const RESUME/);
+assert.doesNotMatch(p0,/\|continuar\|continue\|/,"Generic continue must never silently unfreeze P0");
+assert.match(p0,/retomar\|retome/,"Explicit P0 resume must remain available");
 for(const phrase of ["Jarvis, pare!","Jarvis, parar","Ultron, stop","parar"]){
  assert.equal(parseMissionControl(phrase)?.type,"stop",phrase);
  assert.equal(classifyJarvisTurn(phrase).isSocial,false,phrase);
