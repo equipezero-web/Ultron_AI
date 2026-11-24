@@ -1,0 +1,24 @@
+import assert from "node:assert/strict";
+import {readFileSync} from "node:fs";
+import {validatePlan} from "../backend/action-catalog.js";
+const client=readFileSync(new URL("../modules/jarvis-action-engine.js",import.meta.url),"utf8");
+const backend=readFileSync(new URL("../backend/worker.js",import.meta.url),"utf8");
+const start=client.indexOf("export async function resolveActionPlan");
+const end=client.indexOf("\n}",start)+2;
+const resolver=client.slice(start,end);
+assert.ok(resolver.includes("fetch("),"semantic planner should call AI-backed endpoint");
+assert.ok(!resolver.includes("if(!intent.action&&!isActionRequest(message))"),"No fixed command verb gate");
+assert.ok(!resolver.includes("noticias)"),"No fixed UI keyword gate");
+for(const safe of ["earth.open","earth.close","geo.show","system.status"])
+ assert.ok(resolver.includes('"'+safe+'"'),"Missing safe semantic capability "+safe);
+assert.ok(resolver.includes("safe.has(s.action)"),"Semantic actions need allowlist");
+assert.ok(resolver.includes('intent.kind==="question"'),"Questions must not automatically trigger actions");
+assert.ok(resolver.includes('intent.kind==="negated"'),"Negated expressions must not execute");
+assert.ok(!resolver.includes('safe.has("device.command")'),"Devices cannot be authorized by inference");
+const route=backend.slice(backend.indexOf('if(path==="/api/action-plan"'),backend.indexOf('if(path==="/api/news-details"'));
+assert.ok(route.includes("interpretador semântico"),"Model must understand free language");
+assert.ok(!route.includes('if(!isActionRequest(message)'),"Backend cannot require exact command verbs");
+assert.ok(route.includes('!["device.command","files.list","research"].includes(id)'),"Planner excludes dangerous tools");
+assert.equal(validatePlan({steps:[{action:"earth.open",args:{}}]})?.steps?.[0]?.action,"earth.open");
+assert.equal(validatePlan({steps:[{action:"unknown.unsafe",args:{}}]}),null);
+console.log("SEMANTIC OPERATOR PASS: language-neutral planning and safe action contract");

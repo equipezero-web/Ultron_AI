@@ -398,18 +398,27 @@ export async function runActionPlan(plan,original,{signal}={}){
 export async function resolveActionPlan(message){
  const direct=directPlan(message);if(direct)return direct;
  const intent=classifyOperatorTurn(message);
+ // Any natural expression can describe a desired result; do not require an
+ // exact verb, command prefix, or known UI noun before consulting the model.
+ // Questions, negations and private-context instructions remain non-executable.
  if(intent.kind==="negated"||intent.kind==="question"||intent.private)return null;
- if(!intent.action&&!isActionRequest(message))return null;
- // Only ask the semantic planner for explicit operational requests. Public
- // questions remain on the research path; no untrusted search content is executed.
  const q=normalizeCommand(message);
- if(!/\b(?:painel|neural|globo|mapa|anel|textos?|resposta|dispositivos?|arquivos|memoria|parity|boletim|sistema|noticias)\b/.test(q))return null;
+ if(!q||q.length>1500)return null;
  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),6000);
  try{
   const r=await fetch(String(API_CONFIG.backendUrl||"").replace(/\/$/,"")+"/api/action-plan",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message,taskContext:TASK_CONTEXT?.publicContextFor(message)||null}),signal:controller.signal});
   if(!r.ok)return null;const data=await r.json();
   const plan=validatePlan(data);
   // Semantic plans never receive authority to issue a new device command.
-  return plan&&plan.steps.every(s=>s.action!=="device.command")?plan:null;
+  // Model inference is permitted only for non-destructive UI changes and
+  // read-only views. Device commands and sensitive mutations require a
+  // separate explicit, consent-aware route.
+  const safe=new Set(["text.set","answer.close","earth.open","earth.locate",
+   "earth.close","ring.reset","ring.zoom","news.refresh","devices.list",
+   "system.status","memory.health","parity.check","geo.show","geo.global",
+   "geo.spatial","weather.show","weather.global","weather.insight",
+   "weather.monitor","geo.view2d","geo.view3d","geo.play","geo.pause",
+   "geo.next","geo.previous","geo.filter","geo.close"]);
+  return plan&&plan.steps.every(s=>safe.has(s.action))?plan:null;
  }catch{return null;}finally{clearTimeout(timer);}
 }

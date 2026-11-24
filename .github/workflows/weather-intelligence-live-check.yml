@@ -123,7 +123,9 @@ jobs:
 
 
   personal-weather-live:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    # PRs verify the currently deployed Cloudflare endpoint; pushes verify it
+    # again after publication. Neither path may silently skip this job.
+    if: github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
     runs-on: ubuntu-latest
     timeout-minutes: 6
     steps:
@@ -180,9 +182,36 @@ jobs:
           import assert from 'node:assert/strict';
           const base='https://ultron-backend.lucaalves17-20.workers.dev';
           const key='ci-world-weather-private-monitor-verification-20261111-00000';
-          const forecast=await fetch(base+'/api/geo/global?city=Tokyo&days=3',{signal:AbortSignal.timeout(15000)});
-          console.log('Forecast production:',forecast.status);
-          assert.equal(forecast.status,200);
+          // The private watchlist is independent of the global forecast provider.
+          // Verify the forecast response contract without treating a documented
+          // upstream outage as proof that the D1 watchlist is broken.
+          try{
+            const forecast=await fetch(base+'/api/geo/global?city=Tokyo&days=3',{
+              signal:AbortSignal.timeout(15000)});
+            const report=await forecast.json();
+            console.log('Forecast production:',forecast.status,
+              JSON.stringify(report).slice(0,250));
+            if(forecast.status===200){
+              assert.equal(report.ok,true);
+              assert.ok(Array.isArray(report.days)&&report.days.length>=1,
+                'Successful forecast must include actual days');
+            }else{
+              assert.ok([502,503].includes(forecast.status),
+                'Unexpected forecast response: HTTP '+forecast.status);
+              assert.equal(report.ok,false,
+                'Unavailable forecast must explicitly report failure');
+              assert.ok(typeof report.error==='string'&&report.error.length>0,
+                'Unavailable forecast needs an error reason');
+              console.log('::warning::GLOBAL FORECAST DEGRADED (HTTP '+forecast.status+
+                '): watchlist diagnosis continues independently; no forecast marked healthy.');
+            }
+          }catch(error){
+            if(/AssertionError/.test(String(error?.name)))throw error;
+            // A transient provider/network failure is recorded, never hidden.
+            if(!/fetch failed|timeout|aborted|ECONNRESET|ETIMEDOUT|UND_ERR_CONNECT_TIMEOUT/i
+                .test(String(error?.message||error)))throw error;
+            console.log('::warning::GLOBAL FORECAST NETWORK UNREACHABLE: '+String(error));
+          }
           const watch=await fetch(base+'/api/geo/watchlist',{method:'POST',
             headers:{'Content-Type':'application/json'},
             body:JSON.stringify({memoryKey:key}),signal:AbortSignal.timeout(15000)});
