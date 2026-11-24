@@ -13,7 +13,7 @@ for(const q of ["Eae, Jarvis?","E aí, Jarvis?","Opa, meu patrão!","Fala, Jarvi
  assert.equal(mediaPolicy(q).images,false,q);
  assert.ok(greetingResponse(q).length<150,q);
 }
-for(const q of ["Esse negócio tá uma marmota","O globo tá perto demais","Eita, Jarvis","Oxente!","Isso aí ficou estranho"]){
+for(const q of ["Esse negócio tá uma marmota","O globo tá perto demais","Eita, Jarvis","Isso aí ficou estranho"]){
  assert.equal(classifyJarvisTurn(q).kind,"contextual-observation",q);
  assert.equal(shouldResearchBeforeAnswer(q).needed,false,q);
  assert.equal(classifyJarvisTurn(q).mayExecute,false,q);
@@ -42,3 +42,6 @@ assert.match(enqueue,/route:"local-conversation"/);
 assert.match(enqueue,/webResearch:\{requested:false/);
 assert.match(file("modules/jarvis-audio-maintenance.js"),/enabled:false,mode:"text-only"/);
 console.log("PASS unified-intent: social ≠ research, memories, media or device actions; voice OFF");
+
+assert.equal(classifyJarvisTurn("Oxente!").isSocial,true,
+ "Isolated regional interjection should be handled naturally as conversation");

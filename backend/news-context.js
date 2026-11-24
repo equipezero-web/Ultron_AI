@@ -16,6 +16,12 @@ function normalizeText(value) {
 export function isGeneralNewsIntent(message) {
   const text=normalizeText(message);
   const cleaned=text.replace(/^(?:jarvis|ultron)[, ]+/,'').replace(/[?!.,]/g,'').trim();
+  // Explicit generic Brazilian news (without another country/city) is a
+  // domestic briefing, not an international or stale-context follow-up.
+  if(/^(?:(?:quais? (?:sao )?(?:as )?|me (?:diga|mostre|traga|informe) (?:as )?|mostre (?:as )?|quero (?:ver|saber) (?:as )?)?)?(?:noticias|manchetes|destaques|acontecimentos)(?: (?:mais )?(?:recentes|atuais|ultimas|de hoje|do dia))?(?: (?:do|no|sobre o) brasil)?$/.test(cleaned)
+    &&(/\bbrasil\b/.test(cleaned)||/^(?:noticias|manchetes|destaques|acontecimentos)(?: |$)/.test(cleaned)))
+    return true;
+
   return /^(?:(?:quais?|qual|me diga|me fale|mostre|traga|quero saber|me informe|me atualize)\s+)*(?:(?:sao|e|a|as|o|os|principal|principais|ultimas?|ultimos?|novas?)\s+)*(?:noticias?|novidades?|manchetes?|destaques?|acontecimentos?)(?:\s+(?:principal|principais|recentes?|atuais?|de hoje|hoje|agora|do dia|da semana|mais importantes?))*$/.test(cleaned)
     || /^(?:o que|que) (?:esta acontecendo|aconteceu) (?:hoje|agora)$/.test(cleaned);
 }

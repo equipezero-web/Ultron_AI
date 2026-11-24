@@ -174,7 +174,7 @@ export async function memoryHealth(env) {
   }
 }
 
-function explicitMemoryCandidate(message) {
+export function explicitMemoryCandidate(message) {
   const text = String(message || "").trim();
   if (!text || text.length > 1600) return null;
 
@@ -183,8 +183,17 @@ function explicitMemoryCandidate(message) {
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase();
 
+  // Questions about an existing preference are READS, not requests to
+  // store the question itself as an explicit long-term memory.
+  if(/[?？]/.test(text) || /^(?:qual|quais|o que|como|quando|onde|voce|você|lembra do|lembra da)\b/.test(normalized))
+    return null;
+
   const cues = [
     "lembre que",
+    "lembre-se de que",
+    "lembre se de que",
+    "lembre-se que",
+    "lembre de que",
     "lembra que",
     "nao esqueca",
     "não esqueça",
@@ -257,7 +266,14 @@ export async function loadMemoryContext(
       ? [...messageResult.results].reverse()
       : [];
     const recentUserMessage = [...messages].reverse().find((item) => item.role === "user")?.content || "";
-    const memories = selectMemoriesForTurn(memoryResult?.results, query || recentUserMessage, { limit: DEFAULT_MEMORIES });
+    // Referential follow-ups must recover the previous topic rather than
+    // matching only pronouns like "qual foi a preferência que informei".
+    // Scoped to the same operator + conversation; no general stale-context injection.
+    const referential=/^(?:e\s+)?(?:qual foi|qual era|e qual|o que eu|voce lembra|você lembra|e isso|e essa|e esse)\b/i.test(String(query||"").trim());
+    const memoryQuery=referential && recentUserMessage
+      ? query+" "+recentUserMessage
+      : (query || recentUserMessage);
+    const memories = selectMemoriesForTurn(memoryResult?.results, memoryQuery, { limit: DEFAULT_MEMORIES });
 
     const rendered = composeMemoryContext(memories, messages);
     return {

@@ -159,7 +159,7 @@ export function shouldResearchBeforeAnswer(message) {
   if (/^(?:crie|escreva|redija|rascunhe|invente|gere)\b/i.test(text)&&!SEARCH_TERMS.test(text))return {needed:false,reason:"creative",ttlMinutes:0};
   // Opinions about the conversation, projects or the assistant's judgment
   // require reasoning, not external lookup, unless a public source is explicit.
-  if(/^(?:o que (?:voce|tu) acha|qual (?:e )?sua opiniao|na sua opiniao|voce acha que|voce gostou|o que achou)\b/i.test(
+  if(/^(?:o que (?:voce|tu) (?:acha|achou)|qual (?:e )?sua opiniao|na sua opiniao|voce (?:acha|achou) que|voce gostou|o que achou)\b/i.test(
     text.normalize("NFD").replace(/[\u0300-\u036f]/g,""))
     && !SEARCH_TERMS.test(text))
     return {needed:false,reason:"conversational-opinion",ttlMinutes:0};

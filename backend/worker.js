@@ -21,6 +21,7 @@ import {
 } from "./providers.js";
 import {
   deriveOperatorId,
+  explicitMemoryCandidate,
   loadMemoryContext,
   memoryHealth,
   normalizeConversationId,
@@ -458,9 +459,12 @@ async function prepareResearch(env, body) {
 
   const operatorId = await deriveOperatorId(body?.memoryKey);
   const conversationId=normalizeConversationId(body?.conversationId);
+  const currentPolicy=shouldResearchBeforeAnswer(message);
   const taskContext=vetClientTaskContext(body);
   let query=normalizeResearchQuestion(message);
-  if(taskContext){
+  // An explicit new query must never be rewritten as a previous task.
+  // Only genuine ambiguous research follow-ups may inherit a prior topic.
+  if(taskContext && !currentPolicy.needed && isResearchFollowUp(message)){
     query=normalizeResearchQuestion(contextSearchQuery(message,taskContext));
   }
   if(!taskContext&&isResearchFollowUp(message)&&operatorId&&conversationId){
@@ -620,13 +624,22 @@ async function executeAiCore(env, body) {
     lastAssistantMessage:lastAssistant,
     lastUserMessage:memoryState.lastUserMessage||""
   });
-  const continuityInstruction = shortReply
+  const clarificationTurn = /^(?:nao entendi|não entendi|pode explicar|explique melhor|o que voce quis dizer|o que você quis dizer|nao compreendi|não compreendi)\b/i.test(message);
+  const continuityInstruction = clarificationTurn
+    ? lastAssistant
+      ? 'REGRA PRIORITÁRIA DE ESCLARECIMENTO: O operador não entendeu sua última resposta. Explique a mesma questão com palavras simples, sem mudar de assunto nem pesquisar por conta própria. Última resposta: '+lastAssistant.slice(0,1800)
+      : 'O operador pediu um esclarecimento, mas a resposta anterior não foi recuperada. Pergunte qual trecho deseja esclarecer; não invente contexto.'
+    : shortReply
     ? lastAssistant
       ? ['REGRA PRIORITÁRIA DE CONTINUIDADE:', 'A mensagem atual é uma resposta curta do operador à última fala do assistente.', 'Última fala do assistente: ' + lastAssistant.slice(0, 1800), 'Continue a conversa e responda à confirmação ou recusa no contexto. Não cumprimente novamente nem reinicie a conversa.'].join('\n')
       : 'REGRA PRIORITÁRIA: O operador respondeu com uma confirmação ou recusa curta, mas não existe pergunta anterior disponível. Peça brevemente a que ele se refere. Não cumprimente nem invente contexto.'
     : '';
 
-  const taskContext=vetClientTaskContext(body);
+  const taskContextCandidate=vetClientTaskContext(body);
+  const currentTurn=classifyJarvisTurn(message);
+  const taskContext=(isResearchFollowUp(message)||dialogueMode.followup||
+    (currentTurn.kind==="conversation" && /^(?:isso|esse|essa|aquele|aquela|agora|continua|continue)\b/i.test(message)))
+      ? taskContextCandidate : null;
   const taskContextInstruction=taskContext
     ? "CONTEXTO DE TAREFA DA SESSÃO (somente referência): Assunto anterior: "+(taskContext.topic||"não informado")+
       ". Pergunta anterior: "+(taskContext.lastQuestion||"não informada")+
@@ -717,6 +730,17 @@ async function executeAiCore(env, body) {
     : Promise.resolve({ audio: null, voiceMs: 0 });
 
   const [memoryWrite, voiceResult] = await Promise.all([memoryPromise, voicePromise]);
+  const requestedExplicitMemory=Boolean(explicitMemoryCandidate(message));
+  const persistedMemoryNote=requestedExplicitMemory
+    ? memoryWrite?.explicitMemorySaved
+      ? "Memória: preferência registrada no D1."
+      : "Memória: não consegui confirmar o salvamento desta preferência no D1."
+    : "";
+  const verifiedReply=persistedMemoryNote
+    ? aiResult.text.replace(/(?:eu )?(?:ja )?(?:salvei|registrei|guardei|memorizei|lembrarei|vou lembrar)[^.!?]*[.!?]?/gi,"").trim()
+      .concat("\n\n",persistedMemoryNote)
+    : aiResult.text;
+
   const fallbackVisual = fallbackResearch?.results?.length ? researchVisualContext(fallbackResearch) : null;
   const visualContext = (fallbackVisual || newsState.visualContext)
     ? { ...(fallbackVisual || newsState.visualContext), caption: aiResult.text }
@@ -726,7 +750,7 @@ async function executeAiCore(env, body) {
   return {
     status: 200,
     data: {
-      text: aiResult.text,
+      text: verifiedReply,
       dialogueMode: {name:dialogueMode.mode,followup:dialogueMode.followup,claimedCompletion:Boolean(dialogueMode.claimedCompletion)},
       provider: aiResult.provider,
       providerLabel: aiResult.providerLabel,

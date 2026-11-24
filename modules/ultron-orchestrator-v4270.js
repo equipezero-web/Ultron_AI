@@ -431,6 +431,11 @@ function isRingHomeCommand(message) {
 async function executeMessage(message, source = "terminal", approvedMission = false) {
   const clean = String(message || "").trim();
   if (!clean) return null;
+  // This guard is inside the execution path as well as at the queue door:
+  // a task scheduled before STOP cannot run after STOP, including direct
+  // UI/earth commands and previously approved missions.
+  if(window.ULTRON_PRIORITY?.state?.frozen)
+    return {ok:false,status:"blocked",route:"p0-stop",priority:"P0"};
   if(parseLocalCommand(clean)?.type==="dual-display"){
     const result=await runLocalCommand(clean);
     if(!result?.quiet)log(result?.text||"Modo duas telas indisponível",!result?.ok);
@@ -861,6 +866,9 @@ window.addEventListener("ultron:emergency-stop",event=>{
   cancelP0Operations("priority-core",event?.detail?.epoch);
 });
 function enqueue(message, source = "terminal", approvedMission = false) {
+  if(window.ULTRON_PRIORITY?.state?.frozen)
+    return Promise.resolve({ok:false,status:"blocked",route:"p0-stop",priority:"P0"});
+
   // Shared high-confidence social route comes before every legacy parser.
   // It never starts a mission, action planner, web search, device operation,
   // voice runtime, map or news refresh. Preserve conversational UI only.
