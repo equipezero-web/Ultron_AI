@@ -22,3 +22,14 @@ A observação compartilhada do D1 continua passiva por padrão. Este recurso ad
 `available_observed`: respondeu ao teste; `failed_observed`: não respondeu ao teste (categoria `authentication`, `rate_limit`, `upstream`, `timeout`, `request_rejected` ou `network_or_unknown`); `not_configured`: não há credencial/binding; `cooldown`: tentativa recente; `d1-unavailable`/`d1-required`: falha fechada, nenhuma chamada ao provedor.
 
 A checagem direta em produção deve ser feita somente após configurar o segredo e aprovar a implantação. Nenhum teste remoto ativo foi executado ao criar este PR.
+
+## Interpretar falhas de Gemini e OpenRouter
+
+A sondagem informa somente metadados seguros: `errorCategory`, `upstreamHttpStatus` (quando o serviço retornou HTTP 400–599) e `retryAfterSeconds` **apenas quando o upstream informou Retry-After válido para um HTTP 429**. Não retorna texto de erro fornecido pelo serviço, prompt, credenciais ou resposta do modelo.
+
+- Gemini `upstream` com HTTP 500/502/503: falha observada do upstream; não concluir que a chave está incorreta. Verificar logs privados do provedor ou aguardar a próxima janela de 15 minutos. Não alternar modelos automaticamente com base apenas nesse sinal.
+- Gemini `model_or_endpoint_not_found` com HTTP 404: conferir o valor efetivo de `GEMINI_MODEL` e acesso do projeto ao modelo. `invalid_model_or_request` com 400/422 indica rejeição da requisição ou modelo; exige análise.
+- OpenRouter `rate_limit` com HTTP 429: observar `retryAfterSeconds` quando presente. Limites podem vir da conta, da rota gratuita `openrouter/free` ou do modelo. Sem cabeçalho, não presumir duração nem tentar repetidamente.
+- Os três provedores com sondagem bem-sucedida (Groq, Cloudflare e Cohere) continuam sem alteração. O circuito de fallback e a sondagem restrita em D1 permanecem independentes.
+
+O diagnóstico é um passo para identificar causas reais; não substitui configuração de quotas ou créditos nas contas externas. A API pode retornar erro genérico sem detalhes. Não compartilhar chaves nem logs que exponham identificadores da conta.

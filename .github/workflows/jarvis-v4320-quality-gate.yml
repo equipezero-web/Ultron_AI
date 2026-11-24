@@ -62,6 +62,7 @@ jobs:
           node tests/jarvis-stage-b-provider-circuit-breaker.mjs
           node tests/jarvis-stage-b-provider-diagnostics.mjs
           node tests/jarvis-stage-b-provider-d1.mjs
+          node --test tests/jarvis-stage-b-provider-error-diagnostics.test.mjs
           node tests/jarvis-time-intent.mjs
           node tests/jarvis-selective-memory.mjs
           node tests/jarvis-stage-a-integrated.mjs
