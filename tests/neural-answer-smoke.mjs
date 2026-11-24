@@ -15,6 +15,28 @@ try {
     {width:390,height:844,isMobile:true,hasTouch:true}
   ]){
     const page=await browser.newPage();
+
+    const originalWait=page.waitForFunction.bind(page);
+    page.waitForFunction=async(...args)=>{
+      try{return await originalWait(...args);}
+      catch(error){
+        console.error('NEURAL WAIT FAILURE',String(args[0]).slice(0,500),String(error?.message||error));
+        throw error;
+      }
+    };
+    const originalRequestWait=page.waitForRequest.bind(page);
+    page.waitForRequest=async(...args)=>{
+      try{return await originalRequestWait(...args);}
+      catch(error){
+        console.error('NEURAL REQUEST WAIT FAILURE',String(args[0]).slice(0,500),String(error?.message||error));
+        throw error;
+      }
+    };
+    page.on('response',res=>{
+      if(res.status()>=400&&res.url().startsWith('http://127.0.0.1:8766/'))
+        console.error('NEURAL LOCAL HTTP ERROR',res.status(),res.url());
+    });
+
     page.on('pageerror',error=>console.error('NEURAL PAGEERROR',String(error?.message||error)));
     page.on('console',item=>{if(item.type()==='error')console.error('NEURAL CONSOLE ERROR',item.text());});
     page.on('requestfailed',req=>{if(/neural-answer|evidence-view-model/.test(req.url()))console.error('NEURAL REQUEST FAIL',req.url(),req.failure()?.errorText);});
