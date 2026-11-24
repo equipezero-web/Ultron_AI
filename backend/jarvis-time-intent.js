@@ -8,7 +8,7 @@ export function isClockQuestion(message){
  const q=clean(message);
  if(!q || q.length>420)return false;
  if(/\b(?:alarme|temporizador|cronometro|fuso horario de|quando foi|que horas abre|que horas fecha|hora de dormir|quantas horas|quanto tempo|horas extras)\b/.test(q))return false;
- return /\b(?:que horas sao|que horas e|qual(?: e)? o horario(?: agora| atual| de brasilia| em recife| no brasil)?|qual(?: e)? a hora(?: agora| atual)?|me diga as horas|informe as horas|horario agora|hora certa agora|hora atual|horario atual|hora oficial de brasilia|horario oficial de brasilia)\b/.test(q)
+ return /\b(?:que horas sao|que horas e|qual(?: e)? o horario(?: oficial)?(?: agora| atual| de brasilia| em recife| no brasil)?|qual(?: e)? a hora(?: certa| agora| atual)?|me diga as horas|informe as horas|horario agora|hora certa agora|hora atual|horario atual|hora oficial de brasilia|horario oficial de brasilia)\b/.test(q)
   || /^(?:jarvis |ultron )?(?:horas|horario|hora)(?: agora| atual)?$/.test(q);
 }
 
