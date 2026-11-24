@@ -58,6 +58,7 @@ jobs:
           node tests/jarvis-unified-intent.mjs
           node tests/jarvis-p0-intent-regression.mjs
           node tests/jarvis-gateway-fallback-safety.mjs
+          node tests/jarvis-stage-b-binding-deadline.mjs
           node tests/jarvis-time-intent.mjs
           node tests/jarvis-selective-memory.mjs
           node tests/jarvis-stage-a-integrated.mjs
