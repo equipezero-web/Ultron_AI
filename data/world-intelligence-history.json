@@ -4,10 +4,166 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-24T10:58:09.451Z",
-  "oldestEventAt": "2026-11-23T11:12:00.000Z",
-  "windowStartAt": "2026-11-23T10:58:09.451Z",
+  "updatedAt": "2026-11-24T21:00:35.624Z",
+  "oldestEventAt": "2026-11-23T21:07:41.000Z",
+  "windowStartAt": "2026-11-23T21:00:35.624Z",
   "events": [
+    {
+      "id": "event-b779c494",
+      "category": "brasil",
+      "title": "Superlua pode ser observada nesta terça-feira; veja melhor horário",
+      "url": "https://agenciabrasil.ebc.com.br/geral/noticia/2026-11/superlua-pode-ser-observada-nesta-terca-feira-veja-melhor-horario",
+      "description": "Nesta terça-feira (24), os brasileiros podem observar uma superlua. Pode ser vista de todo o país, mas dependerá das condições climáticas para uma melhor observação. E após o pôr do sol deverá ser o melhor momento para avistar o astro. Segundo o Observatório Nacional (ON), o instante exato da Lua Cheia foi às 11h53, no horário de Brasília, com a Lua a 360.768 km de distância da Terra. Para ser considerada uma superlua, é preciso preencher alguns critérios, entre eles, estar a uma distância menor ou igual a 360 mil km no instante da Lua Cheia, que é o critério oficial do Observatório Nacional; e estar a pelo menos 90% de proximidade do perigeu, que é ponto da órbita em que a Lua atinge a maior proximidade com a Terra. Esta superlua, de acordo com o ON, cumpre o segundo critério. Há ainda um terceiro critério, que não é cumprido pela superlua desta terça, que é um intervalo de tempo entre a Lua cheia e o perigeu menor ou igual a 12 horas. O perigeu ocorrerá nesta quarta-feira (25), às 18h02, a uma distância de aproximação máxima. Superluas do ano No dia 3 de janeiro deste ano, a Lua ch",
+      "imageUrl": "https://imagens.ebc.com.br/tMPZxkH4AyNBY8sbOL3ocu2wgcM=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2024/08/19/superlua_sp04.jpg?itok=4WzmYQ0s",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-24T20:24:00.000Z",
+      "firstSeenAt": "2026-11-24T21:00:35.624Z",
+      "lastSeenAt": "2026-11-24T21:00:35.624Z"
+    },
+    {
+      "id": "event-c7feb36b",
+      "category": "brasil",
+      "title": "Julgamento de extradição de Zambelli é adiado novamente na Itália",
+      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/julgamento-de-extraditcao-de-zambelli-e-adiado-novamente-na-italia",
+      "description": "A Justiça da Itália adiou nesta terça-feira (24) o julgamento do novo pedido do governo brasileiro para extraditar a ex-deputada federal Carla Zambelli. O julgamento estava previsto para ser realizado na Corte de Apelação de Roma, mas foi adiado para 2 de fevereiro de 2027. O tribunal citou uma greve de advogados criminalistas para cancelar os julgamentos previstos. Notícias relacionadas: Justiça italiana adia julgamento sobre extradição de Zambelli. Corte da Itália manda refazer julgamento sobre extradição de Zambelli. O caso envolve a segunda condenação de Zambelli pelo Supremo Tribunal Federal (STF). Em agosto do ano passado, o plenário da Corte condenou a ex-deputada a cinco anos e três meses de prisão pelos crimes de porte ilegal de arma de fogo e constrangimento ilegal com emprego de arma de fogo. Zambelli foi acusada de perseguir o jornalista Luan Araújo às vésperas do segundo turno das eleições de 2022. A perseguição começou após Zambelli e Luan trocarem provocações durante um ato político no bairro dos Jardins, em São Paulo. Após a condenação, o ministro Gilmar Mendes, relat",
+      "imageUrl": "https://imagens.ebc.com.br/CvcQsiWHGs1jaAFtrtNSfSGqtLs=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2025/09/24/lula7126.jpg?itok=tUsWU6iY",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-24T20:02:00.000Z",
+      "firstSeenAt": "2026-11-24T21:00:35.624Z",
+      "lastSeenAt": "2026-11-24T21:00:35.624Z"
+    },
+    {
+      "id": "event-23ad3396",
+      "category": "clima",
+      "title": "Até quando vai durar o El Niño no Brasil? Veja quando fenômeno deve perder força",
+      "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxOWDZpUjNKMDhQcEJDRDdjZjIwOVZaakdnSDhtN3piRE90Y09GMG15bVVSU3hTdDNxS0Z1SEdmYUhQZW83QmRlV0xNWS1yRWY5dVR1Vjl4VVowRDhJei1DNXNfTWZISnZMOVlNc1JUaVBTb0lfRG4zRHNRcFQwMi1zeGZpUUZEN09WaTZrZVBsUmRQeFBJQTFKTkZyN0JsVWF0aGVJZ1hUX2xjUjBoQS1IQ3JtQmZranoyTmRyWdIBwgFBVV95cUxNR1VjdzdGcUVmYW1VRjJLMG5hOFVrZG9nQXpFV2pzN0Q3UXFVRW1PQnd1Wm9HVjFQMHFyYXJYNHllR2ZnczBzWVN6MThDNkItZ2R1SkRiMmhtbWphUWEzNkM2NFZMay1ydmVMNXo4RzhLUzM2U0pwbmpCWFNCakVYeW5ZYVY0emxRZ0VJbThyMkZlNmhsTGctdGJGd3otY3ZwdUd0RXJVVk5FNHlpZjZObzNfX0l5Sk5HX1pSWnFpREcxZw",
+      "description": "Até quando vai durar o El Niño no Brasil? Veja quando fenômeno deve perder força &nbsp;&nbsp; GMC Online",
+      "imageUrl": null,
+      "source": "GMC Online",
+      "publishedAt": "2026-11-24T19:43:00.000Z",
+      "firstSeenAt": "2026-11-24T21:00:35.624Z",
+      "lastSeenAt": "2026-11-24T21:00:35.624Z"
+    },
+    {
+      "id": "event-1f4faefb",
+      "category": "brasil",
+      "title": "Extinta na natureza, ararinha-azul nasce no zoológico de São Paulo",
+      "url": "https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-11/extinta-na-natureza-ararinha-azul-nasce-no-zoologico-de-sao-paulo",
+      "description": "Uma ararinha-azul, uma das espécies de aves mais ameaçadas do planeta, nasceu no final de outubro no Zoológico de São Paulo. O filhote — uma fêmea chamada Hope —, que veio ao mundo por meio de reprodução assistida e manejo genético, foi apresentado nesta terça-feira (24) para a imprensa. Hope é a primeira ave a nascer em um zoológico no Brasil. Notícias relacionadas: Zoológico de São Paulo abre novo espaço dedicado às ararinhas-azuis. O animal nasceu com 12,4 gramas e precisou de ajuda para sair do ovo, a chamada eclosão. Hope estava mal posicionada e já havia atingido o limite do período de incubação, por isso precisou de auxílio dos biólogos para nascer. São Paulo (SP), 24/11/2026 - O Ministério do Meio Ambiente e Mudança do Clima (MMA), o Instituto Chico Mendes de Conservação da Biodiversidade (ICMBio) e o Zoológico de São Paulo apresentam o primeiro filhote de ararinha-azul (Cyanopsitta spixii) nascido em um zoológico brasileiro. Foto : Paulo Pinto/Agência Brasil Desde que saiu do ovo, recebe alimentação assistida e está sob monitoramento constante da equipe técnica. O nascimento",
+      "imageUrl": "https://imagens.ebc.com.br/CgT9k9NF6jz_XjCc2w7gCbtT1yo=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/24/_int0652.jpg?itok=wh2CtqOB",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-24T19:41:00.000Z",
+      "firstSeenAt": "2026-11-24T21:00:35.624Z",
+      "lastSeenAt": "2026-11-24T21:00:35.624Z"
+    },
+    {
+      "id": "event-2df5b459",
+      "category": "clima",
+      "title": "A NOAA calcula cerca de 60% de chance de o El Niño atual ser o mais forte desde 1950, com pico entre dezembro e janeiro: o que isso muda na chuva do Sul, do Norte e do Nordeste",
+      "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxOdzRYZm0wc1M2UFpTMjN2QmY0cEFZTldYNzFrUDUyWkRzVE5wX1pUbW1pNl8zNFBVZkVKQklMM09qX2tSZUFMcXp6VUdUdExyTS1XbkRNclF1T0lvWDRrTWVvVWZBaFFiWms3c2lrX0tMcUtOMjc2M2R0LXhmZUttZ2pVQVIwejQ2Ry1tX2lPaE45bkJsVXp2ZzFXakdiWG8",
+      "description": "A NOAA calcula cerca de 60% de chance de o El Niño atual ser o mais forte desde 1950, com pico entre dezembro e janeiro: o que isso muda na chuva do Sul, do Norte e do Nordeste &nbsp;&nbsp; Correio Braziliense",
+      "imageUrl": null,
+      "source": "Correio Braziliense",
+      "publishedAt": "2026-11-24T19:31:58.000Z",
+      "firstSeenAt": "2026-11-24T21:00:35.624Z",
+      "lastSeenAt": "2026-11-24T21:00:35.624Z"
+    },
+    {
+      "id": "event-d6dfc9c2",
+      "category": "brasil",
+      "title": "Pé-de-Meia começa a pagar oitava parcela de 2026 a estudantes",
+      "url": "https://agenciabrasil.ebc.com.br/educacao/noticia/2026-11/pe-de-meia-comeca-pagar-oitava-parcela-de-2026-estudantes",
+      "description": "Os beneficiários do programa Pé-de-Meia de 2026 do ensino médio regular e da educação de jovens e adultos (EJA) que atingiram pelo menos 80% de frequência nas aulas em setembro começaram a receber, nesta segunda-feira (23), a oitava parcela do incentivo à frequência. O repasse aos estudantes do ensino médio beneficiários do Pé-de-Meia será feito até 30 de novembro, de forma escalonada, de acordo com o mês de nascimento dos estudantes. Valores Notícias relacionadas: Pé-de-Meia Universitário deve começar em 2027 para aluno do CadÚnico. A parcela é no valor de R$ 200 para o estudante do ensino regular. Já o incentivo mensal pela frequência da educação de jovens e adultos (EJA) é de R$ 225. Ambos ficam disponíveis para saque. Também poderão ser pagas parcelas de meses anteriores para estudantes que tenham informações enviadas ou corrigidas pelas redes de ensino. O Pé-de-Meia é o programa de incentivo financeiro-educacional na modalidade de poupança, criado e coordenado pelo Ministério da Educação (MEC). A iniciativa é voltada à permanência escolar e conclusão dos estudos por alunos matri",
+      "imageUrl": "https://imagens.ebc.com.br/7M-FhEhukdDaBK-DTenfkQlP4yA=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/06/25/img_7273.jpg_0.jpg?itok=HIHkUuZK",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-24T19:30:00.000Z",
+      "firstSeenAt": "2026-11-24T21:00:35.624Z",
+      "lastSeenAt": "2026-11-24T21:00:35.624Z"
+    },
+    {
+      "id": "event-efbffff3",
+      "category": "mundo",
+      "title": "Trump cogita impor novas tarifas a parceiros comerciais",
+      "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQWXBoeDIwQXlYR3N1VVpkcmZVWkg4M0x0a21hdkY4X1lqc05fU2F6VWZoVFZiUkR0YlpDN3c4cjRIYmtqOUFCUXJHUGlNYjZOZGVlVVRlSFBRTEFiRHg5SUU0SWp3LU8wd3EtVGMwZmdSRi1QZW0wMXloMWhWd2ZfeEwzM2lKdEpCdmNEcDNndzVvdXlxZl90LUhaemE",
+      "description": "Trump cogita impor novas tarifas a parceiros comerciais &nbsp;&nbsp; SBT News",
+      "imageUrl": null,
+      "source": "SBT News",
+      "publishedAt": "2026-11-24T18:50:18.000Z",
+      "firstSeenAt": "2026-11-24T21:00:35.624Z",
+      "lastSeenAt": "2026-11-24T21:00:35.624Z"
+    },
+    {
+      "id": "event-7a1e2bc6",
+      "category": "mundo",
+      "title": "Sabores do Pará ultrapassam fronteiras e conquistam o mundo",
+      "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxPSE5WSXFTb2xCcXlTNmVuSTRvc2xlSUxVc016S0RCLUl2RTBTdFVxb3Vsak1FQ1F1UlZDS2V5YVFQSUJUTGx6S09kSld5QjhQVUhWVnhrVGZHZW1GUllsVGlsRXZPOEozVEhDN1RyRkZCei1PNFdsZXE1cWtuZVJqZElFelpiTkRoVkFPT1JEbTBXbUY0NEFHSUZESDlQbno1OXc",
+      "description": "Sabores do Pará ultrapassam fronteiras e conquistam o mundo &nbsp;&nbsp; Agência Pará de Notícias",
+      "imageUrl": null,
+      "source": "Agência Pará de Notícias",
+      "publishedAt": "2026-11-24T18:50:00.000Z",
+      "firstSeenAt": "2026-11-24T21:00:35.624Z",
+      "lastSeenAt": "2026-11-24T21:00:35.624Z"
+    },
+    {
+      "id": "event-2b3964e4",
+      "category": "mundo",
+      "title": "ABRAPE reunirá profissionais e empresas de destaque para debater futuro do mercado de música ao vivo e grandes eventos",
+      "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxNcV9LWFhHYmNWWl9KVVF1YjlON0RnXzFyX0hPb2puWVk5b2VwUmNxTXZCOExyU2ttSGRsY2RYX2hWZUNDVklHVFZIMldhWnV6aGE3dkdUdVI4bWltQ2tlcHF2YllLamIwRzVaZTlhNXNaZHhsb25OeDlCLS1mWXlfWVJ4ZUxNMm5qbHlF",
+      "description": "ABRAPE reunirá profissionais e empresas de destaque para debater futuro do mercado de música ao vivo e grandes eventos &nbsp;&nbsp; Mundo da Música",
+      "imageUrl": null,
+      "source": "Mundo da Música",
+      "publishedAt": "2026-11-24T18:09:35.000Z",
+      "firstSeenAt": "2026-11-24T21:00:35.624Z",
+      "lastSeenAt": "2026-11-24T21:00:35.624Z"
+    },
+    {
+      "id": "event-731e3d7",
+      "category": "clima",
+      "title": "Inmet prevê formação de ciclone extratropical na costa do Sul do Brasil nas próximas 24h; veja o que diz o alerta",
+      "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE1IaEFzc0tRTEpHV2pmTFJsZng0ZzZicEVxMWQ5ZGhnQTVtVFRIX29zZGEtSUdNM3UtQk9KWFNGb1lnMjZIamZtd0JNZFYyckI2cWpDWTNfNjBMRUowaVVOdDREMWFXb3lPQTM5azlqdUhnUTFMNFFZdV9LMS0wQQ",
+      "description": "Inmet prevê formação de ciclone extratropical na costa do Sul do Brasil nas próximas 24h; veja o que diz o alerta &nbsp;&nbsp; ND Mais",
+      "imageUrl": null,
+      "source": "ND Mais",
+      "publishedAt": "2026-11-24T17:38:54.000Z",
+      "firstSeenAt": "2026-11-24T21:00:35.624Z",
+      "lastSeenAt": "2026-11-24T21:00:35.624Z"
+    },
+    {
+      "id": "event-264bfe50",
+      "category": "santa-catarina",
+      "title": "Defesa Civil atualiza previsão e eleva para “alto” risco de ocorrências associadas a temporais em Lages",
+      "url": "https://news.google.com/rss/articles/CBMigAJBVV95cUxQbTdxWWluTTFFWklJdUZNZTU0amp6elNrV0lmd3M5SVdWTHp1MlJMbURKX1FndFk4ZkxsQ0toRzhvTWtHa1dqUnljWm43RFpTOG5lSXBud2lmOEhibm0tQ1hBZDdhV3NNMzl3TFM5Q3RtNk5KM3hlbEVDcGlxd0s5UWM4TlV0WVJaWFJjQW5COHAyNUxteFIzQ3JwU3RUZDhSUnZkVXJhN0NOMXR1clJkRWZWOC1QdUUzSDN0MmRhbmN0U3BSckZYZzU1WVBXTWpCMnB6NzZDMEhVSWpyMHA2dno0ZXpfXzRNS0dWYk5UM2FJY2RHcElkN2hBWm1kRFRv",
+      "description": "Defesa Civil atualiza previsão e eleva para “alto” risco de ocorrências associadas a temporais em Lages &nbsp;&nbsp; Prefeitura de Lages",
+      "imageUrl": null,
+      "source": "Prefeitura de Lages",
+      "publishedAt": "2026-11-24T14:48:21.000Z",
+      "firstSeenAt": "2026-11-24T21:00:35.624Z",
+      "lastSeenAt": "2026-11-24T21:00:35.624Z"
+    },
+    {
+      "id": "event-8aa45d88",
+      "category": "santa-catarina",
+      "title": "Frente fria traz chuva intensa e risco de temporais a Santa Catarina",
+      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxNWkM0bFZFVVRUMXpaT2F3UjJKR08xOFJPZ3I1UTVXMURjWlZoeVU0bmZIcnVCZXRzTUxoU2hGcldZX2xhZ1BZVzRkSFVQY3h5TUZ2WUlCTUt4VjhUSUhaX0h2WDcydUJ3a1pKTXY3eDRIV3ZFQ25EUHVjVnBmcnpudk9ody1GMlN0bjdUUWJiR21BZW9abFI5QWxBcVlFcHJHbk5FVXBSMA",
+      "description": "Frente fria traz chuva intensa e risco de temporais a Santa Catarina &nbsp;&nbsp; Sul. Agora",
+      "imageUrl": null,
+      "source": "Sul. Agora",
+      "publishedAt": "2026-11-24T14:43:00.000Z",
+      "firstSeenAt": "2026-11-24T21:00:35.624Z",
+      "lastSeenAt": "2026-11-24T21:00:35.624Z"
+    },
+    {
+      "id": "event-e655c962",
+      "category": "santa-catarina",
+      "title": "Frente fria traz chuva forte a Santa Catarina entre terça e quarta-feira",
+      "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxQQXQ0a0pVTHNtSmszMzBaamducnhkUlpHdVc3TkM2Zy1udnJKZ2NlQW41eTdaRE5Wckd6Y3dvSG5LQWtpbkVwR0NoblNBcG93RnY0NzhlTU9RaWlvel9MUFhYRmlYaWV4Smg4RHpwTTZ2SHNQSnU4Qkd3a2tYLUhmS2tLdjAzT1dJaFZ2VmJQRkIyT3BGMkMtLTZVM0M5Mm4wa1Y4M2dCVm9uZkw1TFk3R3dnbTV0OTN3b3lRZ0RSVHk4WGhmQ1Q0",
+      "description": "Frente fria traz chuva forte a Santa Catarina entre terça e quarta-feira &nbsp;&nbsp; Tudo Sobre Xanxerê",
+      "imageUrl": null,
+      "source": "Tudo Sobre Xanxerê",
+      "publishedAt": "2026-11-24T11:53:00.000Z",
+      "firstSeenAt": "2026-11-24T21:00:35.624Z",
+      "lastSeenAt": "2026-11-24T21:00:35.624Z"
+    },
     {
       "id": "event-f870e363",
       "category": "brasil",
@@ -150,7 +306,7 @@
       "source": "Terra",
       "publishedAt": "2026-11-23T23:51:00.000Z",
       "firstSeenAt": "2026-11-24T01:13:47.200Z",
-      "lastSeenAt": "2026-11-24T10:58:09.451Z"
+      "lastSeenAt": "2026-11-24T21:00:35.624Z"
     },
     {
       "id": "event-23591d0d",
@@ -223,216 +379,9 @@
       "publishedAt": "2026-11-23T21:07:41.000Z",
       "firstSeenAt": "2026-11-24T01:13:47.200Z",
       "lastSeenAt": "2026-11-24T10:58:09.451Z"
-    },
-    {
-      "id": "event-5e69c0ec",
-      "category": "santa-catarina",
-      "title": "Frente fria traz temporais e risco de alagamentos a SC",
-      "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxQa21XVDlhd2Y3TVV3emxOMTJFenZva045dHduRXVqYS1ydlNwaElaN01vLXYxbklIamJsajRKNGN3OXV0enFYUzdKcmF1N3YxT3BVU19YR3lkQ3NCaDZsY0ZYbGQ0MHllRmdrYzVGdnlyNm9xX09UQmNjSFo2TVNrX2hyTnA",
-      "description": "Frente fria traz temporais e risco de alagamentos a SC &nbsp;&nbsp; Portal TN Sul",
-      "imageUrl": null,
-      "source": "Portal TN Sul",
-      "publishedAt": "2026-11-23T21:00:00.000Z",
-      "firstSeenAt": "2026-11-24T01:13:47.200Z",
-      "lastSeenAt": "2026-11-24T10:58:09.451Z"
-    },
-    {
-      "id": "event-ec7fcca7",
-      "category": "clima",
-      "title": "Alerta: El Niño chega ao pico entre novembro de 2026 e janeiro de 2027 no país",
-      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPZFhQU3M3QmFSUEhjMWJmNm5fSElNVXhfOXR4NDM2cUJZRHVPSk1OMldsaXNwVUxaNnc4U05pRXJnSkpvV2hVdm96a1JJQUJzd01UVFlkVGVrR0oxaWJvNjlyTlQzam55aE5fT2NOZFN6N1VxYWIzZTlTX19FZXZzRk5xS0dQZkhMVnFSLTJCLTBWR1EwZFdIM3RSczR5T1FfaUh0ODFDVV9JV0pl",
-      "description": "Alerta: El Niño chega ao pico entre novembro de 2026 e janeiro de 2027 no país &nbsp;&nbsp; Mix Vale",
-      "imageUrl": null,
-      "source": "Mix Vale",
-      "publishedAt": "2026-11-23T19:39:46.000Z",
-      "firstSeenAt": "2026-11-24T01:13:47.200Z",
-      "lastSeenAt": "2026-11-24T10:58:09.451Z"
-    },
-    {
-      "id": "event-a7b93287",
-      "category": "santa-catarina",
-      "title": "Frente fria traz chuva forte a Santa Catarina entre terça e quarta-feira",
-      "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxORzgtWFZ3ekZEX011TzhYR2tVZXcyRVN4SU9hU051V3QtYzNLc3laTUNSakRFdmVQTzVmOGtvRXBTckVmaGVYcW9XUEJYWThjRlcycmU0OHk4cFVRUWlUMlUzVGYza1RCZkNsR0EtRHNWNnBUbEpuWTUtdE5nWWh3Mk8yT0x6elFmZzZNVk5CQzB1ZzVKTDluQVAyMVg2Mkw5NEE",
-      "description": "Frente fria traz chuva forte a Santa Catarina entre terça e quarta-feira &nbsp;&nbsp; Governo de Santa Catarina",
-      "imageUrl": null,
-      "source": "Governo de Santa Catarina",
-      "publishedAt": "2026-11-23T19:16:00.000Z",
-      "firstSeenAt": "2026-11-24T10:58:09.451Z",
-      "lastSeenAt": "2026-11-24T10:58:09.451Z"
-    },
-    {
-      "id": "event-24a03b13",
-      "category": "clima",
-      "title": "El Niño tem 60% de chance de ser o mais forte desde 1950, diz a NOAA, e o Sul deve ter mais chuva no verão",
-      "url": "https://news.google.com/rss/articles/CBMi7AFBVV95cUxONGpFMktCcFRMNGJ1YVFmeWdVekZidWxNRnZBRDVINlN1UG5SSFhHbkk1bXVWT0pxTEdGcEFtRWtzbWJpTXdoZWFHVXRnSWpaeFlDdXNCY21mWG45NnZMUnJoX3g2Tmx5dU9ncGpWeTRsMFV0cmNEUnZyNUIzdmRpcjBhSHRZODFmdUVfZHVsUEZENzFJb2FLSlhwTUhBcC04VVdXWElvMW1NQUhNYkpRenZqMkFpZ1Jxd0VKN2RJd0dMWXpMa3ZISVZvNm51STVzRU1VZWxIazB3RFF2YnczeTdlOHViUV9CRWFGTA",
-      "description": "El Niño tem 60% de chance de ser o mais forte desde 1950, diz a NOAA, e o Sul deve ter mais chuva no verão &nbsp;&nbsp; Olhar Digital",
-      "imageUrl": null,
-      "source": "Olhar Digital",
-      "publishedAt": "2026-11-23T18:57:00.000Z",
-      "firstSeenAt": "2026-11-24T01:13:47.200Z",
-      "lastSeenAt": "2026-11-24T10:58:09.451Z"
-    },
-    {
-      "id": "event-80a0d7ae",
-      "category": "clima",
-      "title": "El Niño atinge força máxima na virada do ano e deve agravar a seca em estados do Nordeste",
-      "url": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxORHFoUnBGV2VQZnBQNzdJaGl0QURtUmllWGY1WHRfX285dXpjbmkzZGlsamJxbTE5bVZPWjEzUHFyVlpwMHJHclY4aXZVMjRaMHZPd2tza0FjMlV3eFdzbkNMUFlMU1pDUEcydFNjZUJYZ203X0xEaGNOTnhtTFNOVHR1LURUZi13QzdwRnVmR3d2eTBHVW5FbE1MSDN5Zm5QVm5YaFc1SnFlYXhsclZGMTJMUFZERW5rUUhTYWVpRXRGTnVMckQ2MVY5MDk0dmVta0tqR3pHNEZZUdIB3wFBVV95cUxNRnlfWVA1U0xBcWRYVlBmZjh6bU1HdDJnRFk4bFkyR3Q4QkxON3lFVWItWFFYSGNyTE01d2lEeVZ6NnUtTkp5RTNfLWtmMm9XZk00YUVYakdYUkQ3WTNVcmVveUR4QkVJRkhyalJJOE41OEt1LWFSbW1PYkdqbWpSbk5JYmtzU3JaVFI1YW9mcXZOXzhnYWZMQTJNcWRsaV9uX0xubk5RRjRCVndjclhncXRYMVhhNFc3NllLSmE5eW5pWVQ1SGhvaERqc3VzY1NzVTBrMXpfWE03ZnZ2bVZr",
-      "description": "El Niño atinge força máxima na virada do ano e deve agravar a seca em estados do Nordeste &nbsp;&nbsp; Bnews",
-      "imageUrl": null,
-      "source": "Bnews",
-      "publishedAt": "2026-11-23T18:11:00.000Z",
-      "firstSeenAt": "2026-11-24T01:13:47.200Z",
-      "lastSeenAt": "2026-11-24T01:13:47.200Z"
-    },
-    {
-      "id": "event-7a372790",
-      "category": "brasil",
-      "title": "CNN Brasil demite 16 profissionais e reduz equipes após queda na publicidade",
-      "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxOVExLX2hfc2FDb1BubnpMUE84Z2VOSnI3X3lyNXFoQTRoS3pBM0RZS0NhNkplSHcwZDMtbjVOSHlMYWlzRllnTWctcHJxeWRfRUcxME1qUmNORV9maS1CZi1XVUZBVVhhNFVaMlJCVlA1eU5xeGVtYUdVWHo0Sm9KbFdxLUpCdWlIVmRNY3R0dHY0dXhEZFRJTUFRSkdJSDV2bDNWWm1ncnpLVzU1N2prYURYR0M2X2k0X0otelRBTEJ0ZGlIZkxiUnpjNFIzZ9IB3AFBVV95cUxOdjRkQ0ljMUw4NGdXTVNXZHZ3S0w5eGJnanBObUMyamZTYzBtaXlhbEpjV2ZveENOMEh4ckZMbHVCVHFLNTZHejMycUpaNkM2cFhwZi1aOGctTE8tQUZGU3BQNHR2OVRZX2VaaGhOUkxtTjFxelU0dm5mcDlUZXBjcnhFNU03LTJYQy1Bek5vQmhIaExVR3huajRlSm1ldERLMlJNZ2tMV1l2VVpvcFc2ZU5HMnBmeE93WFVxT2FOQ2tiYXdDMzktZWpmbmFlUEw1eWhrV0RfMHBaeGpW",
-      "description": "CNN Brasil demite 16 profissionais e reduz equipes após queda na publicidade &nbsp;&nbsp; Notícias da TV",
-      "imageUrl": null,
-      "source": "Notícias da TV",
-      "publishedAt": "2026-11-23T13:20:00.000Z",
-      "firstSeenAt": "2026-11-23T13:41:50.635Z",
-      "lastSeenAt": "2026-11-23T13:41:50.635Z"
-    },
-    {
-      "id": "event-70ddb4a8",
-      "category": "brasil",
-      "title": "História da Fiat no Brasil: de Betim ao topo das vendas e liderança de mercado",
-      "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxNNE1xM2xVYlhtNks3WW1sSmhTY0tsYjN5RzlVYWdGZC1sS3NLWkstVFNaMVM2WU5EUjNYdEpPREhiR3k2Q0E3QnlaZVMxaUx5bmdxdVpOUWJZR3o0OFRTNWxOMnR1RjBYb3dON0xpOFR1cHdOMWxOTGQwd3pTLWQ0RXNjLVJKbVE3aktPY1Q4Qk1MTTFqWXBUVHUxajZWeDZvUmZwVmFWY1p0RkdoUmVWT21TVkdsU2MxMVVTajk0OHd4REFveGcw",
-      "description": "História da Fiat no Brasil: de Betim ao topo das vendas e liderança de mercado &nbsp;&nbsp; Quatro Rodas",
-      "imageUrl": null,
-      "source": "Quatro Rodas",
-      "publishedAt": "2026-11-23T13:00:00.000Z",
-      "firstSeenAt": "2026-11-23T13:41:50.635Z",
-      "lastSeenAt": "2026-11-23T13:41:50.635Z"
-    },
-    {
-      "id": "event-b083e24a",
-      "category": "brasil",
-      "title": "'Jogos Vorazes – Amanhecer na Colheita' ultrapassa 1 milhão de espectadores nos cinemas do Brasil",
-      "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxQT3haczlkaWw0OEhDclhmdnVfUkFHSkREOXJDZ2kwOTJxVm9XTjJtZXNPSFVxNF90cUZ6SEl1Rm9RaF8zS2E5am5UUDJncUcxcElxd01uSzZsUEx1emV2UndmbVVVeGtWYTZqLU4zSlV4RzI2TXEzb2xOdEJmaG5RV1BkdGF2WlpWT3kteUVwdGo4RXRMUWZKZkJPck1xOEF2dThNeG5OYnllUm5sbzNIdDdrMmVCRVhDZUFoc3NYbWdPckZFTWc",
-      "description": "'Jogos Vorazes – Amanhecer na Colheita' ultrapassa 1 milhão de espectadores nos cinemas do Brasil &nbsp;&nbsp; Ingresso.com",
-      "imageUrl": null,
-      "source": "Ingresso.com",
-      "publishedAt": "2026-11-23T12:54:13.000Z",
-      "firstSeenAt": "2026-11-23T13:41:50.635Z",
-      "lastSeenAt": "2026-11-23T13:41:50.635Z"
-    },
-    {
-      "id": "event-1bca90e4",
-      "category": "brasil",
-      "title": "Biografia narra jornada de dois séculos de uma família entrelaçada à História do Brasil - JDV",
-      "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNNjlvVE11QVNGbmUwZDBQVVVlbUlRTXF5R0FJbnphUUxadG5rSnFHay1nLWZKYXl0Ym1WbFEwMTVQSWdRbk9ZU3VZQU9qanA1MF9Fc2hlUDUzYWtaVGc0MXFsNDJmNjRRS1ZSX2MyZ0NzUUhsTFc5cG5MOTdBQnhGQ1Vxb1B6RVRlNllUNUlLVWFkZjNveDFlR2dyaWVaeUk5ZjR5UDEyak54LTBSNFAyUA",
-      "description": "Biografia narra jornada de dois séculos de uma família entrelaçada à História do Brasil &nbsp;&nbsp; JDV - Jornal do Vale",
-      "imageUrl": null,
-      "source": "JDV - Jornal do Vale",
-      "publishedAt": "2026-11-23T12:23:44.000Z",
-      "firstSeenAt": "2026-11-23T13:41:50.635Z",
-      "lastSeenAt": "2026-11-23T13:41:50.635Z"
-    },
-    {
-      "id": "event-a63de5a6",
-      "category": "clima",
-      "title": "El Niño atingirá pico na virada do ano e pode superar todos os registros desde 1950; veja o que esperar",
-      "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxObUNrR1JJZWVCX2ZhelU2UGRLejg5WWthN0VrMlhDeDF0RVpLckRqdWJQV0tLQTBKb1dTMkpPWEZBMmNFek9DZ0xzMmMtX2hMbzd3VUNRcjlnN01xOFBPVEw4Mkc5dDdPb2o2czlwVlJuRlJ5UkRrMnZlRnNuQUk2NExLb0FQVm1PeWZVbkMtTEo4aFlrbTB5ZEdFYTFkdUFiMHRxM20xdVVvNXJnelRPUkd3cWt0QlpaMDZqSlByYXhjVUNWdTQ3VmhDVzJSNFZ0d25pZHBaaldnWVF6N1k3edIB4AFBVV95cUxObUNrR1JJZWVCX2ZhelU2UGRLejg5WWthN0VrMlhDeDF0RVpLckRqdWJQV0tLQTBKb1dTMkpPWEZBMmNFek9DZ0xzMmMtX2hMbzd3VUNRcjlnN01xOFBPVEw4Mkc5dDdPb2o2czlwVlJuRlJ5UkRrMnZlRnNuQUk2NExLb0FQVm1PeWZVbkMtTEo4aFlrbTB5ZEdFYTFkdUFiMHRxM20xdVVvNXJnelRPUkd3cWt0QlpaMDZqSlByYXhjVUNWdTQ3VmhDVzJSNFZ0d25pZHBaaldnWVF6N1k3eQ",
-      "description": "El Niño atingirá pico na virada do ano e pode superar todos os registros desde 1950; veja o que esperar &nbsp;&nbsp; GMC Online",
-      "imageUrl": null,
-      "source": "GMC Online",
-      "publishedAt": "2026-11-23T11:49:48.000Z",
-      "firstSeenAt": "2026-11-23T13:41:50.635Z",
-      "lastSeenAt": "2026-11-23T13:41:50.635Z"
-    },
-    {
-      "id": "event-772ba22a",
-      "category": "clima",
-      "title": "El Niño deve atingir o pico na virada do ano e tem cerca de 60% de chance de superar recorde desde 1950",
-      "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxNVm9OcWpmanBCUjg5ZGcwemtmdE45TXRJb3UwZHFCU2Z1Y25kbGh4elNrd2tKeVhHcVlKQ3BKdjQ5Wi1vZ1ZmN1ZHZVpRdjBjN2hNLTRYODczeDRZYmc5MUJCTWNQUGo3ckhLWXFYellSZnB5OW1uc2V2MWtKSGJ5S2NmSjdLZm9iSXZ1N0kySVhsR014MGdwc1NrWk5YWUVia083TUpwdENnXzUtOTdyOFJEYmlJaV9RV1lzaS1vWXdYblh2a1hyd21mVUZLbzYxUFM1dmFzSEk2RWtkbU44",
-      "description": "El Niño deve atingir o pico na virada do ano e tem cerca de 60% de chance de superar recorde desde 1950 &nbsp;&nbsp; Rádio Rural",
-      "imageUrl": null,
-      "source": "Rádio Rural",
-      "publishedAt": "2026-11-23T11:33:00.000Z",
-      "firstSeenAt": "2026-11-23T13:41:50.635Z",
-      "lastSeenAt": "2026-11-23T13:41:50.635Z"
-    },
-    {
-      "id": "event-9b7c1c80",
-      "category": "santa-catarina",
-      "title": "Frente fria coloca SC em alerta para novos temporais",
-      "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNbWZtazJMc0lJTVBSMTlhdEdqd3FmcFdRc1JwR3diQjhacXRySjZSZ3VzbUFxOXlpUnIyVXppVVUwM3ktVmNMN1p1bVV2aExUR0c2WE15a2dVRHR3T2RRUlY1anV2Z29hTF9SUmd3am01dW1uTlFmYkR0emYzMG1hTlhSNFk4VlIwV19UQU16eWpGYzRDeWZnU21B",
-      "description": "Frente fria coloca SC em alerta para novos temporais &nbsp;&nbsp; Imagem da Ilha",
-      "imageUrl": null,
-      "source": "Imagem da Ilha",
-      "publishedAt": "2026-11-23T11:21:00.000Z",
-      "firstSeenAt": "2026-11-23T13:41:50.635Z",
-      "lastSeenAt": "2026-11-23T13:41:50.635Z"
-    },
-    {
-      "id": "event-b64b7957",
-      "category": "santa-catarina",
-      "title": "Prefeitura de Joinville atualiza ocorrências relacionadas ao temporal de sexta-feira",
-      "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPM0tvaDNINkY1Nms0aUZDa1ozaVlkUm4yX2JqQVJrckRSNjI3U3RiaWMwSk9Fbmhkbm55YzdEaHMxbFkxTHhYTzZkWm53T3dBNDF6OHUxbzU3OWRqakpETG9fUmEzTFpWXzJHRHhCakxIdmMxTENKYTZNRFplY2JHTmFkVXVOLTJwdFJGQUoxZEdoc3M4ZE5pelo5VFlKdURKZk1QLUE2Zk1XeDZVM1E",
-      "description": "Prefeitura de Joinville atualiza ocorrências relacionadas ao temporal de sexta-feira &nbsp;&nbsp; Real News",
-      "imageUrl": null,
-      "source": "Real News",
-      "publishedAt": "2026-11-23T11:20:27.000Z",
-      "firstSeenAt": "2026-11-23T13:41:50.635Z",
-      "lastSeenAt": "2026-11-23T13:41:50.635Z"
-    },
-    {
-      "id": "event-3d1658ee",
-      "category": "mundo",
-      "title": "COP31 termina sem acordo após impasse sobre combustíveis fósseis",
-      "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxQWE91bVlFaHRza3czYWhaczB0aHB3TGFGblFkSWs2eXAxbVdqd214SThuRjVNQkRTQ2Q2amJXbWRQcHZ3Z2IzOVlSbm50MUZHMC1Xb1JGWERmTHVPM0NpR0QtSzVEeExMc0YxNFFQNTk5cW92NkR0UWVHMmhOQ3lmUVIxWE5PMG9jV05ZZFpSemdOQ3d0MVRSdG1SS3ZVRFI1a2xvMHZzVlF5NGJya2tsaklkLVZXbGZ5c1pEYTNGYndZTzRpVTMwdUZleXJvOG1ibzJoeDJB",
-      "description": "COP31 termina sem acordo após impasse sobre combustíveis fósseis &nbsp;&nbsp; UOL Notícias",
-      "imageUrl": null,
-      "source": "UOL Notícias",
-      "publishedAt": "2026-11-23T11:17:21.000Z",
-      "firstSeenAt": "2026-11-23T13:41:50.635Z",
-      "lastSeenAt": "2026-11-23T13:41:50.635Z"
-    },
-    {
-      "id": "event-b5c7ffe5",
-      "category": "mundo",
-      "title": "Confira os principais destaques do Jornal O Dia desta segunda (23)",
-      "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxQN0o1UXo2WHAyakV1aUVER1F3YS11S211cVNxTTVRVmhSVlVPU09BWDNCbTJvTmRiZDFiOHp6bkJwc3RCOEVKMVVfT0xEY25pVmxINjNGQmlZOHExc29abkQyaFJuOGlvWnRPaEtKS2lEdDdSMllUbEEzNDJkTzJlQ0tXdFdkNlpzR20wZTlXRVFlWUR3alhsY21udFpUb3RkSjFBd1NZMW9kZEJlZERYUWpwMjlKVDJn",
-      "description": "Confira os principais destaques do Jornal O Dia desta segunda (23) &nbsp;&nbsp; Portal O Dia",
-      "imageUrl": null,
-      "source": "Portal O Dia",
-      "publishedAt": "2026-11-23T11:13:39.000Z",
-      "firstSeenAt": "2026-11-23T13:41:50.635Z",
-      "lastSeenAt": "2026-11-23T13:41:50.635Z"
-    },
-    {
-      "id": "event-c4f3e8a9",
-      "category": "mundo",
-      "title": "França: Ministério Público investiga denúncias de racismo e apologia ao nazismo em escola da polícia",
-      "url": "https://news.google.com/rss/articles/CBMinAJBVV95cUxPNHYycGRuYlpkamJwRzB5UGtjdnFVMWp2ci1nNk1PQnZrUzV6S0w0bUhLWENpU1JIYVVxVFBUbndPS25zb2N2UjJQSHFabmhwSm10NGF0WkRsX1FJaElWV1lMdUxmeXhjVEt5SlhVdHBaVDBUbnVvc3oyQzdzVHZEeVhac1N1aFRUY1c2cjIySGg2QUxRWnM5bklHQkhUZzAta0hDOUp6ZDVyVkR4ODBOWXhtblQ2cHJCUlRIZXcxZk8xLU5kUEVxUlJ5d0NRUUkxT3pzVGJta3FRc0xadVpwTEd4OHRrNGNfZWhnZmpfQU1aTFpDN19zQzBmMk54cDd4Y2pnRWpEd0VxX3p3aVRydERaYzNBaE1hdXpwSA",
-      "description": "França: Ministério Público investiga denúncias de racismo e apologia ao nazismo em escola da polícia &nbsp;&nbsp; Terra",
-      "imageUrl": null,
-      "source": "Terra",
-      "publishedAt": "2026-11-23T11:12:00.000Z",
-      "firstSeenAt": "2026-11-23T13:41:50.635Z",
-      "lastSeenAt": "2026-11-23T13:41:50.635Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-23T13:41:50.635Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 13,
-      "newArticles": 12,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-24T01:13:47.200Z",
       "ok": true,
@@ -464,15 +413,60 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-24T21:00:35.624Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 14,
+      "newArticles": 13,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "europa",
+        "asia"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 3,
-  "lastSuccessfulAt": "2026-11-24T10:58:09.451Z",
+  "lastSuccessfulAt": "2026-11-24T21:00:35.624Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-24T10:58:09.451Z",
+      "checkedAt": "2026-11-24T21:00:35.624Z",
       "warnings": [
+        {
+          "id": "56501",
+          "title": "Tempestade",
+          "severity": "Perigo",
+          "phase": "previsto",
+          "regions": [
+            "DO",
+            "DE"
+          ],
+          "startsAt": "2026-11-25T00:00:00.000Z",
+          "endsAt": "2026-11-25T00:00:00.000Z",
+          "source": "INMET",
+          "url": "https://avisos.inmet.gov.br/"
+        },
+        {
+          "id": "56503",
+          "title": "Chuvas Intensas",
+          "severity": "Perigo",
+          "phase": "previsto",
+          "regions": [
+            "DO",
+            "DE"
+          ],
+          "startsAt": "2026-11-26T00:00:00.000Z",
+          "endsAt": "2026-11-26T00:00:00.000Z",
+          "source": "INMET",
+          "url": "https://avisos.inmet.gov.br/"
+        },
         {
           "id": "56481",
           "title": "Baixa Umidade",
@@ -487,7 +481,7 @@
           "url": "https://avisos.inmet.gov.br/"
         },
         {
-          "id": "56496",
+          "id": "56499",
           "title": "Tempestade",
           "severity": "Perigo Potencial",
           "phase": "previsto",
@@ -500,12 +494,39 @@
           "endsAt": "2026-11-25T00:00:00.000Z",
           "source": "INMET",
           "url": "https://avisos.inmet.gov.br/"
+        },
+        {
+          "id": "56502",
+          "title": "Chuvas Intensas",
+          "severity": "Perigo Potencial",
+          "phase": "previsto",
+          "regions": [
+            "DO",
+            "DE"
+          ],
+          "startsAt": "2026-11-26T00:00:00.000Z",
+          "endsAt": "2026-11-26T00:00:00.000Z",
+          "source": "INMET",
+          "url": "https://avisos.inmet.gov.br/"
+        },
+        {
+          "id": "56504",
+          "title": "Ventos Costeiros",
+          "severity": "Perigo Potencial",
+          "phase": "previsto",
+          "regions": [
+            "DO"
+          ],
+          "startsAt": "2026-11-25T00:00:00.000Z",
+          "endsAt": "2026-11-25T00:00:00.000Z",
+          "source": "INMET",
+          "url": "https://avisos.inmet.gov.br/"
         }
       ]
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-24T10:58:09.451Z",
+      "checkedAt": "2026-11-24T21:00:35.624Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
