@@ -1,6 +1,8 @@
 // Explicit, secret-authenticated one-provider live checks.
 // Disabled unless JARVIS_PROVIDER_PROBE_TOKEN is set. No prompts/responses stored.
 import { getProviderStatus, probeSingleProvider } from "./providers.js";
+import { persistProviderAttempts } from "./provider-diagnostics-db.js";
+import { providerDiagnostics } from "./provider-diagnostics.js";
 
 const PROVIDERS = new Set(["gemini","groq","openrouter","cloudflare","cohere"]);
 const FIFTEEN_MINUTES = 15*60*1000;
@@ -46,9 +48,15 @@ export async function handleProviderProbe(request,env){
  const started=Date.now();
  try{
   await probeSingleProvider(env,provider);
+  const attempt={provider,status:"success",durationMs:Date.now()-started};
+  providerDiagnostics.record(attempt);
+  await persistProviderAttempts(env,[attempt]);
   return {status:200,body:{ok:true,provider,state:"available_observed",durationMs:Date.now()-started,
     observedAt:new Date().toISOString(),scope:"single-check",costNotice:"A sondagem pode consumir créditos do provedor."}};
  }catch(error){
+  const attempt={provider,status:"failed",durationMs:Date.now()-started};
+  providerDiagnostics.record(attempt);
+  await persistProviderAttempts(env,[attempt]);
   return {status:200,body:{ok:false,provider,state:"failed_observed",errorCategory:category(error),
     durationMs:Date.now()-started,observedAt:new Date().toISOString(),scope:"single-check"}};
  }
