@@ -915,7 +915,8 @@ async function executeAiCore(env, body) {
         resultCount: newsState.articles?.length || 0,
         error: newsState.error || null,
         attempts: newsState.attempts || [],
-        fetchedAt: newsState.visualContext?.fetchedAt || null
+        fetchedAt: newsState.visualContext?.fetchedAt || null,
+        eventCorrelation: newsState.eventCorrelation || null
       },
       visualContext,
       webResearch: fallbackResearch
