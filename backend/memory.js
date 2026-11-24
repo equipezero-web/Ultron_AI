@@ -174,7 +174,7 @@ export async function memoryHealth(env) {
   }
 }
 
-function explicitMemoryCandidate(message) {
+export function explicitMemoryCandidate(message) {
   const text = String(message || "").trim();
   if (!text || text.length > 1600) return null;
 
