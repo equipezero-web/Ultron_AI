@@ -49,12 +49,12 @@ export function classifyTask(message, telemetry = {}) {
     return { class: "coding", confidence: 0.9 };
   }
 
-  if (/\b(celular|telefone|tv|televisao|dispositivo|microfone|volume|abrir aplicativo|ligar|desligar|parear)\b/.test(text)) {
-    return { class: "device", confidence: 0.86 };
-  }
-
   if (/\b(planeje|planejar|plano|estrategia|arquitetura|analise|analisar|decisao|compare|projeto complexo|passo a passo)\b/.test(text) || words >= 70) {
     return { class: "planning", confidence: words >= 70 ? 0.82 : 0.86 };
+  }
+
+  if (/\b(celular|telefone|tv|televisao|dispositivo|microfone|volume|abrir aplicativo|ligar|desligar|parear)\b/.test(text)) {
+    return { class: "device", confidence: 0.86 };
   }
 
   // Temporal adjectives alone do not justify live web searches. Pair them
