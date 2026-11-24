@@ -17,7 +17,7 @@ for(const message of [
  assert.equal(reply.webResearch.used,false);
 }
 const withDevice=clockAnswer("Que horas são? Meu notebook mostra 11:26.",instant);
-assert.match(withDevice.text,/não posso afirmar|Não posso afirmar/);
+assert.match(withDevice.text,/Uma diferença entre os horários não comprova, por si só, problema no relógio do seu dispositivo\./);
 assert.doesNotMatch(withDevice.text,/sincroniz(e|ar) seu notebook|está errado|incorreto/i);
 for(const message of ["Que horas abre a loja?", "Quantas horas de viagem?", "Ajuste o alarme", "Qual o fuso horário de Tóquio?"]){
  assert.equal(isClockQuestion(message),false,message);
