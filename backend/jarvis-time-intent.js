@@ -22,7 +22,7 @@ export function clockAnswer(message, now=new Date()){
  return {
   text:"Pelo relógio do servidor do J.A.R.V.I.S., em Brasília (UTC−3), agora são "+value+". "+
    "Esta é uma leitura do servidor, não uma certificação de um serviço oficial de horário."+
-   (userMentionedDevice?" Não posso afirmar que o relógio do seu dispositivo está incorreto apenas porque os horários divergem.":""),
+   (userMentionedDevice?" Uma diferença entre os horários não comprova, por si só, problema no relógio do seu dispositivo.":""),
   provider:"jarvis-local",providerLabel:"J.A.R.V.I.S.",model:"server-clock",
   attempts:[],clock:{source:"server",timezone:zone,observedAt:now.toISOString(),official:false},
   visualContext:null,webResearch:{requested:false,used:false,sourceCount:0,sources:[]},
