@@ -216,6 +216,26 @@ export function explicitMemoryCandidate(message) {
   return matched ? text : null;
 }
 
+/** Read only the current operator's explicit interface preference. No cross-account fallback. */
+export async function readExplicitInterfacePreference(env,{operatorId}={}){
+  if(!operatorId||!hasMemoryDatabase(env)||!(await ensureMemorySchema(env)))
+    return {found:false,ready:false};
+  try {
+    const rows=await env.ULTRON_DB.prepare(
+      "SELECT content FROM memories WHERE operator_id = ? AND category = 'explicit' AND content LIKE ? ORDER BY updated_at DESC, rowid DESC LIMIT 20"
+    ).bind(operatorId,"%interface%").all();
+    for(const row of rows?.results||[]){
+      const text=String(row.content||"");
+      const match=text.match(/prefer[eê]ncia\s+de\s+interface(?:\s+para\s+[^.!?]{0,90}?)?\s+(?:é|e|:|será|sera)\s+([\p{L}\p{M}\p{N}\s-]{2,45})(?:[.!?]|$)/iu);
+      if(match)return {found:true,ready:true,value:match[1].trim()};
+    }
+    return {found:false,ready:true};
+  }catch(error){
+    console.error("[ULTRON MEMORY] Falha ao recuperar preferência:",error);
+    return {found:false,ready:false,error:"MEMORY_READ_FAILED"};
+  }
+}
+
 export async function loadMemoryContext(
   env,
   { operatorId, conversationId, query = "", recentLimit = DEFAULT_RECENT_MESSAGES } = {}
@@ -394,14 +414,23 @@ export async function saveExchange(
     const writes = await env.ULTRON_DB.batch(statements);
     // D1 batch commits atomically. A conversation ID belonging to another
     // operator must not create messages, memories, or a false "saved" result.
+    // D1's change counters are checked for each conversation write. Do not
+    // accept an ignored insert for a foreign-owned conversation.
     const recorded = Array.isArray(writes) &&
       writes.slice(0, 4).every(write => Number(write?.meta?.changes) === 1);
     if (!recorded) return { saved: false, error: "CONVERSATION_SCOPE_CONFLICT" };
-    return {
-      saved: true,
-      explicitMemorySaved: Boolean(explicitMemory &&
-        Number(writes[4]?.meta?.changes) === 1)
-    };
+    let explicitSaved=Boolean(explicitMemory &&
+      Number(writes[4]?.meta?.changes) === 1);
+    if(explicitMemory && !explicitSaved){
+      // INSERT OR IGNORE reports 0 changes when an identical memory already
+      // exists. Verify it within the SAME operator scope before reporting
+      // failure. Never infer successful persistence from an ignored write.
+      const existing=await env.ULTRON_DB.prepare(
+        "SELECT id FROM memories WHERE operator_id = ? AND content = ? LIMIT 1"
+      ).bind(operatorId,explicitMemory).first();
+      explicitSaved=Boolean(existing?.id);
+    }
+    return {saved:true,explicitMemorySaved:explicitSaved};
   } catch (error) {
     console.error("[ULTRON MEMORY] Falha ao salvar conversa:", error);
     return {
