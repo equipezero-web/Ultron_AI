@@ -36,20 +36,32 @@ export function classifyTask(message, telemetry = {}) {
     return { class: "visual", confidence: 0.9 };
   }
 
-  if (/\b(noticia|noticias|hoje|agora|atual|recentes|tempo real|pesquise|pesquisa|fontes)\b/.test(text)) {
-    return { class: "realtime", confidence: 0.88 };
+  // An explicit request for public sources takes precedence over topics that
+  // also happen to mention code or devices ("pesquise falhas do Android").
+  if (/\b(noticia|noticias|pesquise|pesquisa|pesquisar|fontes|tempo real|ultimas noticias|acontecimentos recentes)\b/.test(text)) {
+    return { class: "realtime", confidence: 0.9 };
   }
 
+  // "agora", "hoje" and "atual" are NOT evidence of a research request:
+  // "corrija o erro agora" and "desligue a TV agora" must stay on their
+  // technical / permission-checked paths.
   if (/\b(codigo|javascript|java|python|html|css|sql|bug|erro|debug|github|repositorio|deploy|api|backend|frontend|worker)\b/.test(text)) {
     return { class: "coding", confidence: 0.9 };
+  }
+
+  if (/\b(celular|telefone|tv|televisao|dispositivo|microfone|volume|abrir aplicativo|ligar|desligar|parear)\b/.test(text)) {
+    return { class: "device", confidence: 0.86 };
   }
 
   if (/\b(planeje|planejar|plano|estrategia|arquitetura|analise|analisar|decisao|compare|projeto complexo|passo a passo)\b/.test(text) || words >= 70) {
     return { class: "planning", confidence: words >= 70 ? 0.82 : 0.86 };
   }
 
-  if (/\b(celular|telefone|tv|televisao|dispositivo|microfone|volume|abrir aplicativo|ligar|desligar|parear)\b/.test(text)) {
-    return { class: "device", confidence: 0.86 };
+  // Temporal adjectives alone do not justify live web searches. Pair them
+  // with a public, time-varying subject before preferring realtime providers.
+  if (/\b(hoje|agora|atual|recentes)\b/.test(text) &&
+      /\b(previsao|temperatura|clima|cotacao|bolsa|indice|indicador|taxa|preco|valor|resultado|condicoes|aconteceu|acontecendo)\b/.test(text)) {
+    return { class: "realtime", confidence: 0.82 };
   }
 
   if (words <= 18 && !telemetry?.central?.event) {
