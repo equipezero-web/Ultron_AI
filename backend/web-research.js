@@ -32,14 +32,22 @@ export function needsVisualResearch(message){
 export function normalizeResearchQuestion(message){
   return String(message||'').trim().replace(/^(?:(?:ei|olá|ola|hey)\s+)?(?:jarvis|ultron)[,!:\s]+/i,'').replace(/^(?:por favor[,\s]+|me diga[,\s]+|me fale[,\s]+|me informe[,\s]+)+/i,'').trim();
 }
+// Geographic follow-ups inherit only an earlier public research topic.
+// "E em Recife?" must not be treated as a new unrelated web search.
+const GEOGRAPHIC_FOLLOWUP=/^(?:e\s+)?(?:em|no|na|nos|nas)\s+(?:o\s+|a\s+)?[\p{L}][\p{L}\s'-]{1,60}[?!.]*$/iu;
+const PRIVATE_FOLLOWUP=/\b(?:meu|minha|meus|minhas|nosso|nossa|cpf|senha|token|credenciais|conta|saldo|pedido|arquivos?|clientes?|faturamento|estoque)\b/i;
 export function isResearchFollowUp(message){
   const q=normalizeResearchQuestion(message);
+  if(GEOGRAPHIC_FOLLOWUP.test(q)&&!PRIVATE_FOLLOWUP.test(q))return true;
   return /^(?:e\s+(?:agora|hoje|ontem|lá|la|isso|ele|ela|os|as)|(?:e\s+)?(?:como está|como esta|como anda|qual é|qual e|quanto custa)\s*(?:ele|ela|isso|lá|la|agora|hoje)?[?!.]*$|(?:e\s+)?(?:o que aconteceu|por quê|por que|quais os detalhes|mais detalhes)(?:\s+com (?:ele|ela|isso))?[?!.]*$)/i.test(q);
 }
 export function resolveResearchQuery(message,previousQuestion=''){
   const q=normalizeResearchQuestion(message);
   const previous=normalizeResearchQuestion(previousQuestion);
-  if(isResearchFollowUp(q)&&previous&&shouldResearchBeforeAnswer(previous).needed&&!isResearchFollowUp(previous)&&!/\b(meu|minha|meus|minhas|senha|cpf|token|chave|endereco|endereço)\b/i.test(previous))return previous+' — '+q;
+  if(!previous||!isResearchFollowUp(q)||PRIVATE_FOLLOWUP.test(q))return q;
+  if(shouldResearchBeforeAnswer(previous).needed&&!isResearchFollowUp(previous)&&
+      !/\b(meu|minha|meus|minhas|senha|cpf|token|chave|endereco|endereço)\b/i.test(previous))
+    return previous+' — '+q;
   return q;
 }
 const CURRENT_TERMS = /\b(hoje|agora|atual|atuais|recentemente|atualmente|ultimamente|recente|recentes|ultimo|último|ultimos|últimos|latest|2026|preco|preço|cotacao|cotação|resultado|placar|eleicao|eleição|presidente|ceo|versao|versão|lancamento|lançamento)\b/i;
