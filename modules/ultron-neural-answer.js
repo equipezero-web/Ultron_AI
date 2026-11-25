@@ -77,6 +77,39 @@ if(center){
       return ['https:','http:'].includes(u.protocol)&&!u.username&&!u.password?u.href:null;
     }catch{return null;}
   };
+  function renderWorldNewsAlerts(liveData){
+    const feed=liveData?.worldNewsAlerts;
+    if(!feed?.ok||!Array.isArray(feed.alerts)||!feed.alerts.length)return;
+    const panel=document.createElement('section');panel.className='ultron-world-news-alerts';
+    panel.setAttribute('aria-label','Atualizações de notícias monitoradas');
+    const heading=document.createElement('h3');heading.textContent='ATUALIZAÇÕES MONITORADAS';
+    const caption=document.createElement('p');
+    caption.textContent='Mudanças em publicações; nenhum fato foi verificado independentemente.';
+    panel.append(heading,caption);
+    for(const alert of feed.alerts.slice(0,5)){
+      const detail=document.createElement('details');detail.className='ultron-world-news-alert';
+      const summary=document.createElement('summary');
+      summary.textContent=String(alert.title||'Acontecimento atualizado').slice(0,230);
+      const body=document.createElement('div');
+      const status=document.createElement('p');
+      status.textContent='Novas fontes: '+(Number(alert.newSources)||0)+
+        ' · fontes alteradas: '+(Number(alert.updatedSources)||0)+
+        (alert.possibleDiscrepancyChanged?' · divergência potencial alterada':'');
+      const date=document.createElement('small');
+      date.textContent='Observado: '+(new Date(alert.createdAt).toLocaleString('pt-BR')||'Não informado');
+      const links=document.createElement('ul');
+      for(const source of (Array.isArray(alert.sources)?alert.sources:[]).slice(0,5)){
+        const target=url(source.url);
+        if(!target)continue;
+        const li=document.createElement('li'),a=document.createElement('a');
+        a.href=target;a.target='_blank';a.rel='noopener noreferrer';
+        a.textContent=String(source.name||'Fonte').slice(0,80);
+        li.append(a);links.append(li);
+      }
+      body.append(status,date,links);detail.append(summary,body);panel.append(detail);
+    }
+    text.append(panel);
+  }
   function renderEvidencePanel(liveData){
     const rows=createNewsEvidenceViewModel(liveData);
     if(!rows.length)return;
@@ -191,6 +224,7 @@ if(center){
         }
       }
     }
+    renderWorldNewsAlerts(liveData);
     renderEvidencePanel(liveData);
     const collection=buildMediaModel(visual);
     const makeHeading=(name)=>{const h=document.createElement('h3');h.className='ultron-media-heading';h.textContent=name;return h;};
