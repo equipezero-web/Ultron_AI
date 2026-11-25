@@ -66,7 +66,8 @@ assert.equal(feed.monitoring,"public-news-30-minute-cron");
 const noDB=await pollWorldNewsMonitor({});
 assert.equal(noDB.reason,"d1-unavailable");
 const noNews=await pollWorldNewsMonitor(env,{now:timestamp+65*60000,
- loadNews:async()=>({active:true,articles:[],eventCorrelation:{events:[]}}),advance});
+ loadNews:async()=>({active:true,articles:[],eventCorrelation:{events:[]}}),
+ collectFallback:async()=>({ok:false,articles:[],diagnostics:{error:"simulated"}}),advance});
 assert.equal(noNews.reason,"no-reliable-news");
 const firstObserved={...newsEvent,evolution:{...newsEvent.evolution,status:"first-observed"}};
 assert.equal(selectWorldNewsAlerts([firstObserved]).length,0);
