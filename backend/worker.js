@@ -84,7 +84,8 @@ import {authorizeJarvisAccount,accountAccessConfig,accountAccessHeaders} from ".
 import {accountPluginList,accountPluginInstall,executeAccountPlugin,accountPluginReceipt,accountPluginPairDevice,accountAndroidStatus,revokeAccountPluginDevice} from "./jarvis-account-plugins.js";
 import { analyzeVisualFrame } from "./vision-analysis.js";
 import { getWebRtcIceServers, webRtcIceHealth } from "./webrtc-ice.js";
-import { loadLiveNewsContext, isGeneralNewsIntent, isLiveNewsIntent } from "./news-context.js";
+import { loadLiveNewsContext, isGeneralNewsIntent, isLiveNewsIntent, isNewsHistoryRefreshIntent } from "./news-context.js";
+import {buildWorldNewsRefreshReport} from "./news-refresh-report.js";
 import { createWorldBriefing } from "./world-briefing.js";
 import {pushConfiguration,pushAccountStatus,checkPushSubscription,registerPush,removePush,pollOfficialPush} from "./jarvis-push.js";
 import {
@@ -501,7 +502,9 @@ async function prepareResearch(env, body) {
     const prior=await loadMemoryContext(env,{operatorId,conversationId,recentLimit:4});
     query=resolveResearchQuery(message,prior.lastUserMessage);
   }
-  const generalNews=isGeneralNewsIntent(query);
+  // An update of prior public news must search current news sources, never
+  // marketplace results for applications with the same name as J.A.R.V.I.S.
+  const generalNews=isGeneralNewsIntent(query)||isNewsHistoryRefreshIntent(query);
   const classified=shouldResearchBeforeAnswer(query);
   const policy = generalNews && classified.reason!=="private-context" ? {needed:true,reason:"brazil-first-news",ttlMinutes:15} : classified;
   if (!policy.needed) return { body: {...body,allowUncertaintyResearch:false,researchMeta:{...(body.researchMeta||{}),skipLegacyResearch:true}}, policy, active: false };
@@ -1041,6 +1044,20 @@ async function handleAi(request, env) {
 
   if (core.status !== 200) return json({ ...core.data, githubInspection:prepared.githubInspection||null, smartRouting: routing, operationalPlan, backendVersion: BACKEND_VERSION }, core.status);
   let data = { ...core.data, ...(prepared.githubInspection?{githubInspection:prepared.githubInspection}:{}), smartRouting: routing, operationalPlan, backendVersion: BACKEND_VERSION };
+
+  // Explicit historical news comparisons are evidence-only, never model-
+  // invented summaries or unrelated search results for products named Jarvis.
+  if(isNewsHistoryRefreshIntent(originalBody?.message)){
+    const report=buildWorldNewsRefreshReport(data.liveData);
+    data.text=report.text;
+    data.webResearch={
+      requested:true,used:report.sources.length>0,
+      reason:"world-news-history-evidence",
+      sourceCount:report.sources.length,
+      sources:report.sources,verifiedComparison:report.verifiedComparison
+    };
+    if(!report.verifiedComparison)data.visualContext=null;
+  }
 
   // Correct provably false "GitHub blocked" claims after a successful public API read.
   // Keep the model answer unchanged when it uses the verified evidence correctly.
