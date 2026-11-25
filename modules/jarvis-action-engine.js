@@ -22,6 +22,13 @@ export function directPlan(message){
    return {steps:[action("earth.locate",{place:followup.region})],contextual:true};
  }
  const q=normalizeCommand(message).replace(/[.!?]+$/,"").trim();
+ // Explicit MONITOR WORLD NEWS commands are deterministic read-only actions.
+ // Resolve BEFORE semantic action planning or the generic system.status route.
+ if(/\b(?:monitorad[ao]s?|monitoramento|alertas?|coleta|coletas|novas fontes)\b/.test(q)&&
+    /\b(?:noticias?|acontecimentos?|inteligencia mundial|fontes|ultima coleta)\b/.test(q)&&
+    /\b(?:apresente|mostre|informe|liste|consulte|verifique|qual|quando|status|estado|houve|tem|existem)\b/.test(q))
+   return {steps:[action("news.monitor.status")]};
+
  // Scientific visualizations require a known, cited dataset. Bare model
  // guesses must never become mapped "risk scores".
  const currentGeo=typeof window!=="undefined"?window.ULTRON_GEO_VISUAL?.state:null;
@@ -354,6 +361,47 @@ async function executeStep(step,original){
  case "news.refresh":{const data=await requireApi(w.ULTRON_INTELLIGENCE,"refresh").refresh({reason:"manual"});if(!data?.ok)throw Error("Não foi possível atualizar notícias");const cards=(data.topics||[]).flatMap(t=>t.articles||[]).slice(0,6).map(x=>({...x,image:x.imageUrl||x.image}));publish("Boletim atualizado.",{mode:"news",introduction:"Principais acontecimentos das fontes consultadas, Brasil primeiro.",cards});return "Boletim atualizado e exibido.";}
  case "devices.list":{const list=await requireApi(w.ULTRON_DEVICES,"listDevices").listDevices();if(!Array.isArray(list))throw Error("Lista não confirmada");const text=list.length?list.map(d=>(d.deviceName||d.name||"Dispositivo")+" — "+(d.status||"estado desconhecido")).join("\n"):"Nenhum dispositivo pareado encontrado.";publish(text);return text;}
  case "files.list":{const data=await requireApi(w.ULTRON_LOCAL_FILES,"files").files();const list=Array.isArray(data)?data:data?.files;if(!Array.isArray(list))throw Error("Arquivos indisponíveis");const text=list.length?list.slice(0,25).map(x=>typeof x==="string"?x:x.path||x.name||"Arquivo").join("\n"):"Nenhum arquivo autorizado encontrado.";publish(text);return text;}
+ case "news.monitor.status":{
+   const endpoint=String(API_CONFIG.backendUrl||"").replace(/\/$/,"")+"/api/intelligence/news-alerts";
+   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),15000);
+   let report;
+   try{
+     const response=await fetch(endpoint,{headers:{Accept:"application/json"},signal:controller.signal,cache:"no-store"});
+     report=await response.json();
+     if(!response.ok||!report?.ok)throw Error("Consulta do monitor mundial indisponível no backend");
+   }finally{clearTimeout(timer);}
+   const lines=["J.A.R.V.I.S. // MONITOR MUNDIAL DE NOTÍCIAS"];
+   const run=report.latestRun;
+   if(run){
+     lines.push("Última coleta: "+String(run.checkedAt||"não informada")+
+       ". Situação: "+String(run.status||"não informada")+
+       ". Artigos: "+Number(run.articleCount||0)+".");
+     if(!report.scheduledRunObserved)
+       lines.push("Execução automática do cron ainda não confirmada; a coleta pode ter sido feita sob demanda.");
+   }else{
+     lines.push("Última coleta: nenhuma execução registrada no D1.");
+   }
+   if(report.bootstrap?.attempted)
+     lines.push("Inicialização sob demanda: "+(report.bootstrap.ok?"registrada":"não concluída")+".");
+
+   const alerts=(Array.isArray(report.alerts)?report.alerts:[]).slice(0,6);
+   if(!alerts.length)lines.push("Nenhum alerta registrado de novas fontes nesta consulta; isso não comprova ausência de novidades.");
+   for(const alert of alerts){
+     const links=(Array.isArray(alert.sources)?alert.sources:[]).slice(0,3).map(source=>{
+       try{const link=new URL(String(source.url||""));
+         return ["https:","http:"].includes(link.protocol)&&!link.username&&!link.password?link.href:null;
+       }catch{return null;}
+     }).filter(Boolean);
+     lines.push(String(alert.title||"Acontecimento atualizado").slice(0,220)+
+       " — novas fontes: "+Number(alert.newSources||0)+
+       "; fontes modificadas: "+Number(alert.updatedSources||0)+
+       "; coletado em: "+String(alert.createdAt||"não informado")+
+       ". Fontes: "+(links.join("; ")||"indisponíveis"));
+   }
+   lines.push("O monitor registra mudanças em publicações; não verifica fatos independentemente.");
+   const text=lines.join("\n\n");
+   publish(text);return text;
+ }
  case "system.status":{const status=await requireApi(w.ULTRON_CORE,"status").status();const text="Estado do sistema: "+JSON.stringify(status||{}).slice(0,1800);publish(text);return text;}
  case "memory.health":{const result=await requireApi(w.ULTRON_MEMORY,"refreshMemoryHealth").refreshMemoryHealth();return "Consulta de saúde da memória concluída.";}
  case "parity.check":{const report=await requireApi(w.ULTRON_NEURAL_PARITY,"sync").sync("operator");const text="PARITY CHECK: "+Object.entries(report||{}).map(([k,v])=>k+": "+String(v)).join(" · ");publish(text);return text;}
@@ -392,7 +440,7 @@ export async function runActionPlan(plan,original,{signal}={}){
  const status=cancelled?"cancelled":!ok?"failed":verified?"completed":"submitted";
  const text=cancelled?"P0 STOP: missão interrompida. Etapas concluídas: "+results.length+"/"+valid.steps.length+".":
   results.map(x=>x.text).join(" ");
- if(!cancelled&&(!ok||!results.some(x=>["research","news.refresh","devices.list","files.list","system.status","parity.check"].includes(x.action))))W().ULTRON_VOICE_OUTPUT?.speak?.(text,{reason:"autonomy",announce:false});
+ if(!cancelled&&(!ok||!results.some(x=>["research","news.refresh","news.monitor.status","devices.list","files.list","system.status","parity.check"].includes(x.action))))W().ULTRON_VOICE_OUTPUT?.speak?.(text,{reason:"autonomy",announce:false});
  return {ok,verified,cancelled,status,handled:true,route:"autonomy",text,steps:results};
 }
 export async function resolveActionPlan(message){
@@ -414,7 +462,7 @@ export async function resolveActionPlan(message){
   // read-only views. Device commands and sensitive mutations require a
   // separate explicit, consent-aware route.
   const safe=new Set(["text.set","answer.close","earth.open","earth.locate",
-   "earth.close","ring.reset","ring.zoom","news.refresh","devices.list",
+   "earth.close","ring.reset","ring.zoom","news.refresh","news.monitor.status","devices.list",
    "system.status","memory.health","parity.check","geo.show","geo.global",
    "geo.spatial","weather.show","weather.global","weather.insight",
    "weather.monitor","geo.view2d","geo.view3d","geo.play","geo.pause",
