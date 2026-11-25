@@ -16,7 +16,7 @@ import {pollWeatherMonitor,latestWeatherMonitor} from "./weather-monitor.js";
 import {pollGlobalIntelligence,latestGlobalIntelligence,collectGlobalIntelligence} from "./global-intelligence-monitor.js";
 import {recordWorldEvidenceAudit} from "./news-evidence-audit.js";
 import {advanceWorldEventTimeline} from "./news-world-evolution.js";
-import {pollWorldNewsMonitor,latestWorldNewsAlerts,readWorldNewsMonitorWithBootstrap,isWorldNewsMonitorStatusIntent,buildWorldNewsMonitorStatusReply} from "./world-news-monitor.js";
+import {pollWorldNewsMonitor,latestWorldNewsAlerts,readWorldNewsMonitorWithBootstrap,readWorldNewsHistory,isWorldNewsMonitorStatusIntent,buildWorldNewsMonitorStatusReply} from "./world-news-monitor.js";
 import {pollTrendIntelligence,latestTrendIntelligence} from "./trend-intelligence.js";
 import {buildContinuityStatus} from "./continuity-status.js";
 import {configureWeatherWatch,listWeatherWatches,pollPersonalWeatherWatches} from "./weather-watchlist.js";
@@ -1025,10 +1025,12 @@ async function handleAi(request, env) {
 
   // Monitoring status questions are served only from the actual D1 feed.
   // Never answer them with generic live headlines or a fabricated last run.
-  if(isWorldNewsMonitorStatusIntent(originalBody?.message)){
+  if(isWorldNewsMonitorStatusIntent(originalBody?.message)||newsMonitorQueryMode(originalBody?.message)==="history"){
     const report=await readWorldNewsMonitorWithBootstrap(env);
+    const mode=newsMonitorQueryMode(originalBody?.message);
+    if(mode==="history")report.history=await readWorldNewsHistory(env);
     return json({
-      text:formatNewsMonitorReply(report,{mode:newsMonitorQueryMode(originalBody?.message)}),
+      text:formatNewsMonitorReply(report,{mode}),
       provider:"jarvis-local",providerLabel:"J.A.R.V.I.S. / MONITOR MUNDIAL",
       model:"d1-world-news-monitor-status",
       attempts:[],audioBase64:null,audioMimeType:null,visualContext:null,
@@ -1527,6 +1529,7 @@ export default {
     }
     if(path==="/api/intelligence/news-alerts"&&request.method==="GET"){
       const report=await readWorldNewsMonitorWithBootstrap(env);
+      if(url.searchParams.get("history")==="1")report.history=await readWorldNewsHistory(env);
       return new Response(JSON.stringify(report),{
         status:report.ok?200:503,
         headers:{...corsHeaders(),"Cache-Control":"public, max-age=60",

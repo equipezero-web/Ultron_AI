@@ -5,7 +5,7 @@ import {parseVerifiedIntelligenceCommand,runVerifiedIntelligenceCommand} from ".
 import {parseJarvisEvolutionCommand,showJarvisEvolutionProgress} from "./jarvis-evidence-progress.js?v=5.72.0";
 import {parseJarvisOperationalSelfTest,runJarvisOperationalSelfTest} from "./jarvis-operational-selftest.js?v=1.0.2";
 import {classifyOperatorTurn,splitOperatorSteps} from "./jarvis-intent-engine.js?v=4.69.0";
-import {directPlan,resolveActionPlan,runActionPlan} from "./jarvis-action-engine.js?v=4.103.0";
+import {directPlan,resolveActionPlan,runActionPlan} from "./jarvis-action-engine.js?v=4.104.0";
 import {parseLocalCommand,runLocalCommand} from "./jarvis-local-commands.js?v=5.66.0";
 import {parseDirectorIntent,parseRegionalNewsVisualIntent,parseBriefingIntent,parsePublicCameraAudioIntent,parseCommunicationNotificationIntent,parseNewsVisualCloseIntent,parseMobilePairingIntent} from "./jarvis-communication-intents.js?v=5.55.0";
 import {buildRegionalNewsVisual} from "./jarvis-regional-news-visual.js?v=5.54.0";
