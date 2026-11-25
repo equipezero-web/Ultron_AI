@@ -16,7 +16,7 @@ import {pollWeatherMonitor,latestWeatherMonitor} from "./weather-monitor.js";
 import {pollGlobalIntelligence,latestGlobalIntelligence,collectGlobalIntelligence} from "./global-intelligence-monitor.js";
 import {recordWorldEvidenceAudit} from "./news-evidence-audit.js";
 import {advanceWorldEventTimeline} from "./news-world-evolution.js";
-import {pollWorldNewsMonitor,latestWorldNewsAlerts} from "./world-news-monitor.js";
+import {pollWorldNewsMonitor,latestWorldNewsAlerts,readWorldNewsMonitorWithBootstrap,isWorldNewsMonitorStatusIntent,buildWorldNewsMonitorStatusReply} from "./world-news-monitor.js";
 import {pollTrendIntelligence,latestTrendIntelligence} from "./trend-intelligence.js";
 import {buildContinuityStatus} from "./continuity-status.js";
 import {configureWeatherWatch,listWeatherWatches,pollPersonalWeatherWatches} from "./weather-watchlist.js";
@@ -1022,6 +1022,23 @@ async function handleAi(request, env) {
         totalMs:Date.now()-startedAt}},200);
   }
 
+  // Monitoring status questions are served only from the actual D1 feed.
+  // Never answer them with generic live headlines or a fabricated last run.
+  if(isWorldNewsMonitorStatusIntent(originalBody?.message)){
+    const report=await readWorldNewsMonitorWithBootstrap(env);
+    return json({
+      text:buildWorldNewsMonitorStatusReply(report),
+      provider:"jarvis-local",providerLabel:"J.A.R.V.I.S. / MONITOR MUNDIAL",
+      model:"d1-world-news-monitor-status",
+      attempts:[],audioBase64:null,audioMimeType:null,visualContext:null,
+      liveData:{news:true,resultCount:0,eventCorrelation:null,
+        worldNewsAlerts:report.ok?report:{ok:false,alerts:[],reason:report.reason}},
+      webResearch:{requested:false,used:false,sourceCount:0,sources:[]},
+      backendVersion:BACKEND_VERSION,
+      performance:{aiMs:0,researchMs:0,aiPasses:0,voiceMs:0,totalMs:Date.now()-startedAt}
+    },report.ok?200:503);
+  }
+
   const prepared = await prepareResearch(env, originalBody);
   const body = prepared.body;
   const unifiedTurn=classifyJarvisTurn(body?.message);
@@ -1508,7 +1525,7 @@ export default {
       });
     }
     if(path==="/api/intelligence/news-alerts"&&request.method==="GET"){
-      const report=await latestWorldNewsAlerts(env);
+      const report=await readWorldNewsMonitorWithBootstrap(env);
       return new Response(JSON.stringify(report),{
         status:report.ok?200:503,
         headers:{...corsHeaders(),"Cache-Control":"public, max-age=60",
