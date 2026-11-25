@@ -28,6 +28,15 @@ export function isGeneralNewsIntent(message) {
     || /^(?:o que|que) (?:esta acontecendo|aconteceu) (?:hoje|agora)$/.test(cleaned);
 }
 
+// A historical-news refresh is a news retrieval request, not a search for
+// the J.A.R.V.I.S. application or the literal wording of the command.
+export function isNewsHistoryRefreshIntent(message){
+  const text=normalizeText(message);
+  return /\b(atualiz|atualize|atualizar|compare|comparar|mudanc|mudancas|alterac|alteracoes|evoluc|evolucao)\w*\b/.test(text)
+    && /\b(noticia|noticias|acontecimento|acontecimentos|manchete|manchetes|fontes|registros armazenados)\b/.test(text)
+    && /\b(anterior|anteriores|armazenad|armazenados|historico|historica|registro|registros|ultima|ultimas)\b/.test(text);
+}
+
 export function isLiveNewsIntent(message) {
   const text = normalizeText(message);
   if (!text) return false;
@@ -349,7 +358,8 @@ export async function loadLiveNewsContext(message, { limit = 6 } = {}) {
   if (!isLiveNewsIntent(message)) return loadNonNewsVisualContext(message, limit);
 
   try {
-    const result = await fetchLiveArticles(message, limit);
+    const searchQuery=isNewsHistoryRefreshIntent(message)?"notícias Brasil hoje":message;
+    const result = await fetchLiveArticles(searchQuery, limit);
     const articles = result.articles;
     const correlation=reviewCorrelatedEvents(correlateNewsEvents(articles));
 
