@@ -1025,7 +1025,7 @@ async function handleAi(request, env) {
 
   // Monitoring status questions are served only from the actual D1 feed.
   // Never answer them with generic live headlines or a fabricated last run.
-  if(isWorldNewsMonitorStatusIntent(originalBody?.message)){
+  if(isWorldNewsMonitorStatusIntent(originalBody?.message)||newsMonitorQueryMode(originalBody?.message)==="history"){
     const report=await readWorldNewsMonitorWithBootstrap(env);
     const mode=newsMonitorQueryMode(originalBody?.message);
     if(mode==="history")report.history=await readWorldNewsHistory(env);
