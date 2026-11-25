@@ -63,6 +63,7 @@ jobs:
           node tests/jarvis-world-evolution.mjs
           node tests/jarvis-world-news-refresh.mjs
           node tests/jarvis-world-news-monitor.mjs
+          node tests/jarvis-world-news-monitor-status.mjs
           node tests/jarvis-neural-evidence-panel.mjs
           node --check backend/jarvis-conversation-router.js
           node tests/jarvis-unified-intent.mjs
