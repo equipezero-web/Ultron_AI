@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {needsVisualResearch,shouldResearchBeforeAnswer,searchGoogle,researchVisualContext,normalizeResearchQuestion,resolveResearchQuery,answerLooksUncertain,youtubeVideoId,isSelfCapabilityQuestion,mediaPolicy} from '../backend/web-research.js';
+import {needsVisualResearch,shouldResearchBeforeAnswer,searchGoogle,researchVisualContext,normalizeResearchQuestion,isResearchFollowUp,resolveResearchQuery,answerLooksUncertain,youtubeVideoId,isSelfCapabilityQuestion,mediaPolicy} from '../backend/web-research.js';
 import {isGeneralNewsIntent,isLiveNewsIntent,loadLiveNewsContext} from '../backend/news-context.js';
 assert.ok(isGeneralNewsIntent('Qual a notícia principal de hoje?'));
 assert.ok(isGeneralNewsIntent('JARVIS, quais são as principais notícias de hoje?'));
