@@ -178,6 +178,14 @@ export function explicitMemoryCandidate(message) {
   const text = String(message || "").trim();
   if (!text || text.length > 1600) return null;
 
+  // Explicit memory is not a secret vault. Reject credential-bearing
+  // statements instead of persisting them as reusable long-term memories.
+  // Ordinary conversation persistence follows a separate account-scoped policy.
+  const secretLabel=/\b(?:senha|password|passphrase|api[ _-]?key|chave (?:api|secreta|privada)|access[ _-]?token|refresh[ _-]?token|token(?: de acesso)?|credenciais?|codigo de recuperacao|c[oó]digo de recupera[cç][aã]o)\b/i;
+  const privateKey=/-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/i;
+  const sensitiveIdentifier=/\b\d{3}\.\d{3}\.\d{3}-\d{2}\b/;
+  if (secretLabel.test(text)||privateKey.test(text)||sensitiveIdentifier.test(text)) return null;
+
   const normalized = text
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
