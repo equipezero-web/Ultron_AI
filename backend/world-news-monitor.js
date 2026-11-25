@@ -157,6 +157,38 @@ export async function latestWorldNewsAlerts(env,{limit=8}={}){
 }
 
 
+// Read-only historical event snapshots. The last-seen time is a recorded observation,
+// not proof that the whole world was unchanged between cron windows.
+export async function readWorldNewsHistory(env,{limit=6}={}){
+ const db=env?.ULTRON_DB;
+ if(!db?.prepare)return {ok:false,reason:"d1-unavailable",events:[]};
+ try{
+  const records=await db.prepare(
+   "SELECT event_id,first_seen,last_seen,event_json FROM jarvis_world_event_state "+
+   "ORDER BY last_seen DESC LIMIT ?"
+  ).bind(Math.max(1,Math.min(12,limit))).all();
+  const events=(Array.isArray(records?.results)?records.results:[]).flatMap(row=>{
+   try{
+    const entry=JSON.parse(row.event_json);
+    if(!validEvent(row.event_id))return [];
+    const timeline=(Array.isArray(entry.timeline)?entry.timeline:[]).slice(-6).map(t=>({
+     observedAt:t.observedAt||null,kind:t.kind==="source-update"?"source-update":"first-observed",
+     newSources:Array.isArray(t.addedSources)?t.addedSources.length:0,
+     updatedSources:Array.isArray(t.updatedSources)?t.updatedSources.length:0,
+     sourceUrls:[...(Array.isArray(t.addedSources)?t.addedSources:[]),
+       ...(Array.isArray(t.updatedSources)?t.updatedSources:[])].slice(0,5).map(url).filter(Boolean)
+    }));
+    const sources=(Array.isArray(entry.data?.sources)?entry.data.sources:[]).slice(0,4)
+     .map(item=>({url:url(item.url),publishedAt:item.publishedAt||null})).filter(item=>item.url);
+    return [{eventId:row.event_id,title:clean(entry.title||entry.data?.title,200),
+     firstSeen:row.first_seen,lastSeen:row.last_seen,timeline,sources}];
+   }catch{return [];}
+  });
+  return {ok:true,events,scope:"recent-observed-events",
+   disclaimer:"Somente eventos preservados no D1, não uma comparação exaustiva de notícias."};
+ }catch{return {ok:false,reason:"d1-history-read-failed",events:[]};}
+}
+
 // Commands about monitored updates are NOT generic news searches.
 export function isWorldNewsMonitorStatusIntent(message){
  const value=String(message||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
