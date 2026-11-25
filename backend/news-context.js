@@ -133,7 +133,7 @@ async function fetchWithTimeout(url, options = {}, timeoutMs = FETCH_TIMEOUT_MS)
   }
 }
 
-async function runGdeltQuery(query, { limit = 6, timespan = "24h", sort = "HybridRel" } = {}) {
+async function runGdeltQuery(query, { limit = 6, timespan = "24h", sort = "HybridRel", timeoutMs = FETCH_TIMEOUT_MS } = {}) {
   const params = new URLSearchParams({
     query,
     mode: "ArtList",
@@ -148,7 +148,7 @@ async function runGdeltQuery(query, { limit = 6, timespan = "24h", sort = "Hybri
       "User-Agent": "UltronAI/1.2",
       "Accept": "application/json"
     }
-  });
+  }, timeoutMs);
 
   if (!response.ok) throw new Error(`GDELT HTTP ${response.status}`);
 
@@ -157,7 +157,7 @@ async function runGdeltQuery(query, { limit = 6, timespan = "24h", sort = "Hybri
   return articles.map(normalizeArticle).filter(Boolean);
 }
 
-async function fetchGoogleNewsArticles(message, limit = 6) {
+async function fetchGoogleNewsArticles(message, limit = 6, timeoutMs = 2600) {
   const subject = stripNewsBoilerplate(message);
   const query = subject || "Brasil";
   const isWorld=/\b(internacionais|mundo)\b/i.test(query);
@@ -173,7 +173,7 @@ async function fetchGoogleNewsArticles(message, limit = 6) {
       "User-Agent": "UltronAI/1.2",
       "Accept": "application/rss+xml, application/xml, text/xml"
     }
-  }, 2600);
+  }, timeoutMs);
 
   if (!response.ok) throw new Error(`Google News HTTP ${response.status}`);
   const xml = await response.text();
@@ -220,7 +220,7 @@ function dedupeArticles(items, limit) {
   return output;
 }
 
-async function fetchGdeltArticlesParallel(message, limit = 6) {
+async function fetchGdeltArticlesParallel(message, limit = 6, timeoutMs = FETCH_TIMEOUT_MS) {
   const subject = stripNewsBoilerplate(message);
   const generalWorld=/\b(internacionais|mundo)\b/i.test(subject);
   const queryPlan = generalWorld ? [
@@ -242,7 +242,7 @@ async function fetchGdeltArticlesParallel(message, limit = 6) {
     const articles = await runGdeltQuery(step.query, {
       limit: Math.max(limit * 2, 8),
       timespan: step.timespan,
-      sort: "HybridRel"
+      sort: "HybridRel",timeoutMs
     });
     return { step, articles };
   }));
@@ -267,11 +267,11 @@ async function fetchGdeltArticlesParallel(message, limit = 6) {
   return { articles: dedupeArticles(collected, limit), attempts };
 }
 
-async function fetchLiveArticles(message, limit = 6) {
+async function fetchLiveArticles(message, limit = 6, timeoutMs = FETCH_TIMEOUT_MS) {
   if(isGeneralNewsIntent(message)){
     const [br,world]=await Promise.allSettled([
-      fetchLiveArticles("notícias Brasil hoje",Math.max(4,limit)),
-      fetchLiveArticles("notícias internacionais mundo hoje",Math.max(3,limit))
+      fetchLiveArticles("notícias Brasil hoje",Math.max(4,limit),timeoutMs),
+      fetchLiveArticles("notícias internacionais mundo hoje",Math.max(3,limit),timeoutMs)
     ]);
     const cutoff=Date.now()-24*60*60*1000;
     const recent=items=>(items||[]).filter(a=>Date.parse(a.publishedAt)>=cutoff&&Date.parse(a.publishedAt)<=Date.now()+300000);
@@ -281,8 +281,8 @@ async function fetchLiveArticles(message, limit = 6) {
     return {articles,attempts:[...(br.status==="fulfilled"?br.value.attempts:[]),...(world.status==="fulfilled"?world.value.attempts:[])]};
   }
   const [gdelt, google] = await Promise.allSettled([
-    fetchGdeltArticlesParallel(message, limit),
-    fetchGoogleNewsArticles(message, limit)
+    fetchGdeltArticlesParallel(message, limit,timeoutMs),
+    fetchGoogleNewsArticles(message, limit,timeoutMs===FETCH_TIMEOUT_MS?2600:timeoutMs)
   ]);
 
   const collected = [];
@@ -354,12 +354,12 @@ async function loadNonNewsVisualContext(message, limit) {
   };
 }
 
-export async function loadLiveNewsContext(message, { limit = 6 } = {}) {
+export async function loadLiveNewsContext(message, { limit = 6, timeoutMs = FETCH_TIMEOUT_MS } = {}) {
   if (!isLiveNewsIntent(message)) return loadNonNewsVisualContext(message, limit);
 
   try {
     const searchQuery=isNewsHistoryRefreshIntent(message)?"notícias Brasil hoje":message;
-    const result = await fetchLiveArticles(searchQuery, limit);
+    const result = await fetchLiveArticles(searchQuery, limit,Math.max(1500,Math.min(7000,timeoutMs)));
     const articles = result.articles;
     const correlation=reviewCorrelatedEvents(correlateNewsEvents(articles));
 

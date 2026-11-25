@@ -2,7 +2,7 @@
 // No private/operator data, external push, voice or microphone activation.
 import {loadLiveNewsContext} from "./news-context.js";
 import {advanceWorldEventTimeline} from "./news-world-evolution.js";
-import {collectAgencyBrasilNews} from "./news-public-rss.js";
+import {collectPublicNewsFallback} from "./news-public-sources.js";
 import {correlateNewsEvents} from "./news-event-correlation.js";
 import {reviewCorrelatedEvents} from "./news-evidence-review.js";
 const SCHEMA=[
@@ -44,7 +44,7 @@ export function selectWorldNewsAlerts(events,{now=Date.now(),limit=6}={}){
  }).filter(alert=>alert.sources.length);
 }
 export async function pollWorldNewsMonitor(env,{now=Date.now(),loadNews=loadLiveNewsContext,
- advance=advanceWorldEventTimeline,collectFallback=collectAgencyBrasilNews,trigger="scheduled"}={}){
+ advance=advanceWorldEventTimeline,collectFallback=collectPublicNewsFallback,trigger="scheduled"}={}){
  const db=env?.ULTRON_DB;
  if(!db?.prepare)return {ok:false,reason:"d1-unavailable"};
  if(!Number.isFinite(now))return {ok:false,reason:"invalid-clock"};
@@ -56,7 +56,7 @@ export async function pollWorldNewsMonitor(env,{now=Date.now(),loadNews=loadLive
    "(bucket,checked_at,status,article_count) VALUES(?,?,?,?)"
   ).bind(bucket,at(now),"running",0).run();
   if(!Number(reservation?.meta?.changes))return {ok:true,skipped:"already-started",bucket};
-  const news=await loadNews("notícias Brasil hoje",{limit:6});
+  const news=await loadNews("notícias Brasil hoje",{limit:6,timeoutMs:6000});
   const attempts=Array.isArray(news?.attempts)?news.attempts.slice(0,12).map(item=>({
    provider:clean(item.label,60),ok:Boolean(item.ok),count:Number(item.count||0),
    error:item.error?clean(item.error,100):null
@@ -68,10 +68,12 @@ export async function pollWorldNewsMonitor(env,{now=Date.now(),loadNews=loadLive
   // GDELT/Google News pipeline yielded no correlatable articles.
   if(!news?.active||!count||!correlation?.events?.length){
    const fallback=await collectFallback({now,limit:8});
-   attempts.push({provider:"agencia-brasil-rss",ok:Boolean(fallback.ok),
-    count:fallback.articles?.length||0,
-    error:fallback.diagnostics?.error||null,
-    stale:fallback.diagnostics?.stale||0,invalid:fallback.diagnostics?.invalid||0});
+   const sourceDiagnostics=Array.isArray(fallback.diagnostics?.providers)?
+    fallback.diagnostics.providers:
+    [{provider:"agencia-brasil-rss",ok:Boolean(fallback.ok),
+      count:fallback.articles?.length||0,error:fallback.diagnostics?.error||null,
+      stale:fallback.diagnostics?.stale||0,invalid:fallback.diagnostics?.invalid||0}];
+   attempts.push(...sourceDiagnostics.slice(0,4));
    if(fallback.ok&&Array.isArray(fallback.articles)&&fallback.articles.length){
     correlation=reviewCorrelatedEvents(correlateNewsEvents(fallback.articles));
     count=fallback.articles.length;
@@ -82,6 +84,7 @@ export async function pollWorldNewsMonitor(env,{now=Date.now(),loadNews=loadLive
   try{await db.prepare(
    "INSERT OR REPLACE INTO jarvis_world_news_monitor_diagnostics (bucket,diagnostics_json) VALUES (?,?)"
   ).bind(bucket,JSON.stringify({providers:attempts.slice(0,14),recovered,
+   successfulProviders:attempts.filter(item=>item.ok&&item.count>0).length,
    checkedAt:at(now)})).run();}catch{}
   if(!count||!correlation?.events?.length){
    await db.prepare("UPDATE jarvis_world_news_monitor_runs SET status=?,article_count=? WHERE bucket=?")
