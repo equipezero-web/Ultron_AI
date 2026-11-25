@@ -4,10 +4,94 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-24T21:00:35.624Z",
-  "oldestEventAt": "2026-11-23T21:07:41.000Z",
-  "windowStartAt": "2026-11-23T21:00:35.624Z",
+  "updatedAt": "2026-11-25T04:10:35.018Z",
+  "oldestEventAt": "2026-11-24T08:30:00.000Z",
+  "windowStartAt": "2026-11-24T04:10:35.018Z",
   "events": [
+    {
+      "id": "event-ddd0e68c",
+      "category": "brasil",
+      "title": "Final do Miss Universo 2026: Brasil busca 3ª coroa na história; acompanhe",
+      "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxOT044YmI1SEJMaF9QNWhzVXIxRTJuRHJjY1NqNHJKMjlXX3R1cDdVRTl2LU5nbkNlX2JLXzV4dU83VzNzeGlzRUswRFdIVVNZeEdodEUtaHBTSXFvakJlUDdPQThpVW5tMHZBRWlNVF9KUjFpQkZtRElLMDFqZHg4a245RjExdw",
+      "description": "Final do Miss Universo 2026: Brasil busca 3ª coroa na história; acompanhe &nbsp;&nbsp; UOL",
+      "imageUrl": null,
+      "source": "UOL",
+      "publishedAt": "2026-11-25T01:02:24.000Z",
+      "firstSeenAt": "2026-11-25T04:10:35.018Z",
+      "lastSeenAt": "2026-11-25T04:10:35.018Z"
+    },
+    {
+      "id": "event-50e73d68",
+      "category": "brasil",
+      "title": "Mega-Sena acumula para R$ 75 milhões; confira os números sorteados",
+      "url": "https://agenciabrasil.ebc.com.br/geral/noticia/2026-11/mega-sena-acumula-para-r-75-milhoes-confira-os-numeros-sorteados",
+      "description": "Nenhum apostador acertou as seis dezenas do Concurso 3.090 da Mega-Sena, realizado nesta terça-feira (24). O prêmio acumulou e está estimado em R$ 75 milhões para o próximo sorteio. Os números sorteados foram: 10 - 14 - 27 - 28 - 47 - 57. 41 apostas acertaram cinco dezenas e irão receber R$ 38.160,32 cada 3.800 apostas acertaram quatro dezenas e irão receber R$ 588,18 cada Apostas Notícias relacionadas: Mega da Virada: Caixa anuncia que prêmio deve superar R$ 1 bilhão. Para o próximo concurso, as apostas podem ser feitas até às 20h de quinta-feira (26) em qualquer lotérica do país ou pela internet, no site ou aplicativo da Caixa. A aposta simples, com seis dezenas, custa R$ 6.",
+      "imageUrl": "https://imagens.ebc.com.br/-ejdlONl_IKBmajjlY6Wr2cCfMk=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/mega_sena-1112203504_0.jpg?itok=96awa_l8",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-25T00:32:00.000Z",
+      "firstSeenAt": "2026-11-25T04:10:35.018Z",
+      "lastSeenAt": "2026-11-25T04:10:35.018Z"
+    },
+    {
+      "id": "event-cfc5871b",
+      "category": "mundo",
+      "title": "Copa do Mundo feminina deve movimentar R$ 8,8 bi no Brasil",
+      "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxPc0hyZVo5eVVBc3VXQmR4NWRLM1l0aGMwbmxEZWN2Uk5UazRIWnM4bURvckdycGlIdGphQUNkbnh4Nnp4c0ZCeUI1Q1RDMkhwS0dwSFBwQmRHb3V1VWtDUnpQQ3RnbUdYVVBsOHYwel9CdWpvSTkyeWtEOGo2SWtvaHZra0xDMHA0M0hLQVppU0pXTGlBVU0zdVZwWWNzOE8wcndn",
+      "description": "Copa do Mundo feminina deve movimentar R$ 8,8 bi no Brasil &nbsp;&nbsp; SBT News",
+      "imageUrl": null,
+      "source": "SBT News",
+      "publishedAt": "2026-11-24T23:34:05.000Z",
+      "firstSeenAt": "2026-11-25T04:10:35.018Z",
+      "lastSeenAt": "2026-11-25T04:10:35.018Z"
+    },
+    {
+      "id": "event-a65498df",
+      "category": "mundo",
+      "title": "Aliado dos Bolsonaros e crítico de Moraes deixa Departamento de Estado dos EUA",
+      "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxQT3c1M3hfLTNLcmRZbTlCSUNIZGZ3R1ptUXVhcDNTN1gxZTFGMTlHMjNpbWRVMXlXcnpkS091N01YRmNfODNTR1BRX3ZCdjZzV2dwQWJPWGwxME1NNFZENWRQN0RMdDAzWERzeGxXT3gxR1JwMEd2STJSTGJRbURZTkNiVFB0Nk4tbDUzQ2lQZlVSVWlKZEZwUXo5Rk5yOU5wY3oyOTBneTFsTHR3UEtmbldHU0Y2djBka1VjRjIzTDlqTmJmS2xz",
+      "description": "Aliado dos Bolsonaros e crítico de Moraes deixa Departamento de Estado dos EUA &nbsp;&nbsp; Folha de S.Paulo",
+      "imageUrl": null,
+      "source": "Folha de S.Paulo",
+      "publishedAt": "2026-11-24T23:34:00.000Z",
+      "firstSeenAt": "2026-11-25T04:10:35.018Z",
+      "lastSeenAt": "2026-11-25T04:10:35.018Z"
+    },
+    {
+      "id": "event-1cdf42b0",
+      "category": "mundo",
+      "title": "Principais notícias do mundo na noite de hoje (24)",
+      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxOamRRdXhiUF91Vm9DenJGbEU1TXh1VEtDVktsZlE3T05HUU9yWG9vM0k0T1d3dXdiZXNmLU9HcWZIMThha0xHVVcwYkRCRVRMNktvUFdneE9xV0lMWVdFWm8yckJGRk56NXZxcjR1ZGxDN0pacVVoYUFaQktoWFoyamRNcV9KaHNORmgwYUlSSS1hSG1GUVc2dnB2cU5ha0RmSEd5RHVvRWc1TGRt",
+      "description": "Principais notícias do mundo na noite de hoje (24) &nbsp;&nbsp; Tribuna do Sertão",
+      "imageUrl": null,
+      "source": "Tribuna do Sertão",
+      "publishedAt": "2026-11-24T23:31:01.000Z",
+      "firstSeenAt": "2026-11-25T04:10:35.018Z",
+      "lastSeenAt": "2026-11-25T04:10:35.018Z"
+    },
+    {
+      "id": "event-cfbf9e4b",
+      "category": "brasil",
+      "title": "MPF pede mudanças na gestão de políticas para população de rua em SP",
+      "url": "https://agenciabrasil.ebc.com.br/direitos-humanos/noticia/2026-11/mpf-pede-mudancas-na-gestao-de-politicas-para-populacao-de-rua-em-sp",
+      "description": "O Ministério Público Federal (MPF) e o Ministério Público de Contas do Estado de São Paulo (MPC-SP) divulgaram na tarde desta terça-feira (24) um documento de 150 páginas no qual fazem diversas recomendações sobre políticas estaduais voltadas para a população em situação de rua. Os órgãos apontaram problemas de acompanhamento de atuação de organizações terceirizadas e entidades assistenciais, equívocos na escolha de modelos de assistência, má gestão e falhas na transparência de atendimento e prestação de contas. Segundo o documento, os problemas identificados incluem resultados muito abaixo das metas estipuladas, falta de transparência na aplicação de valores milionários e ausência de padrões orçamentários que permitam o acompanhamento das políticas assistenciais. As políticas públicas analisadas estão ligadas à Secretaria de Desenvolvimento Social do Estado de São Paulo (SEDS) e à Secretaria de Desenvolvimento Urbano e Habitação (SDUH). Notícias relacionadas: Saúde anuncia ampliação do atendimento à população em situação de rua. Governo anuncia R$ 130 milhões em apoio à população em",
+      "imageUrl": "https://imagens.ebc.com.br/5aC3ZX8lJfDNnDqOpXQFOoct0h8=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/atoms/image/1025309-14062016-dsc_0266_1.jpg?itok=0yxR_WSW",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-24T23:29:00.000Z",
+      "firstSeenAt": "2026-11-25T04:10:35.018Z",
+      "lastSeenAt": "2026-11-25T04:10:35.018Z"
+    },
+    {
+      "id": "event-40c2b0f9",
+      "category": "brasil",
+      "title": "Projeto de regulação das big techs será votado na próxima semana",
+      "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2026-11/projeto-de-regulacao-das-big-techs-sera-votado-na-proxima-semana",
+      "description": "O Projeto de Lei 4675/2025 , conhecido como PL dos Mercados Digitais, vai entrar na pauta de votação do plenário da Câmara dos Deputados na próxima semana, informou o relator da matéria, deputado Aliel Machado (PV-PR). Em pronunciamento na tarde desta terça-feira (24), Machado afirmou que o calendário foi definido diretamente com o presidente da Casa, Hugo Motta (Republicanos-PB), e conta com apoio de líderes partidários. Notícias relacionadas: Lula sanciona ajuste fiscal aprovado no Congresso. Lula lamenta falta de acordo na COP31 e pede união pelo meio ambiente. Câmara aprova ajuste fiscal sem alterações; projeto segue para sanção. \"Esse é um projeto que não trata de regulamentação de conteúdo. É um projeto que pode trazer uma economia de até R$ 50 bilhões para os brasileiros , para os pequenos empresários, para os consumidores. É um projeto de lei que vem sendo debatido há mais de dois anos pelo governo federal e depois encaminhado a essa Casa\", disse o parlamentar. Apresentada pelo governo federal no ano passado, a proposta pretende atualizar a legislação brasileira de defesa da",
+      "imageUrl": "https://imagens.ebc.com.br/CYDf8pNNb9WBN3JlcbhSYYWjHGg=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/05/20/big_techs.jpeg?itok=vUweTTYa",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-24T23:23:00.000Z",
+      "firstSeenAt": "2026-11-25T04:10:35.018Z",
+      "lastSeenAt": "2026-11-25T04:10:35.018Z"
+    },
     {
       "id": "event-b779c494",
       "category": "brasil",
@@ -42,7 +126,7 @@
       "source": "GMC Online",
       "publishedAt": "2026-11-24T19:43:00.000Z",
       "firstSeenAt": "2026-11-24T21:00:35.624Z",
-      "lastSeenAt": "2026-11-24T21:00:35.624Z"
+      "lastSeenAt": "2026-11-25T04:10:35.018Z"
     },
     {
       "id": "event-1f4faefb",
@@ -66,7 +150,7 @@
       "source": "Correio Braziliense",
       "publishedAt": "2026-11-24T19:31:58.000Z",
       "firstSeenAt": "2026-11-24T21:00:35.624Z",
-      "lastSeenAt": "2026-11-24T21:00:35.624Z"
+      "lastSeenAt": "2026-11-25T04:10:35.018Z"
     },
     {
       "id": "event-d6dfc9c2",
@@ -105,6 +189,18 @@
       "lastSeenAt": "2026-11-24T21:00:35.624Z"
     },
     {
+      "id": "event-196d8e2e",
+      "category": "santa-catarina",
+      "title": "Florianópolis entra em alerta laranja para temporais e ventos fortes",
+      "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxNM2JRcDNfX0lFem1iMzN2anZ2akNqRVZFbFdZaHBxNkl6Y2VHOWdjOGVkZGJ4Ql85MEhCaDBQOVRDcExTdEJRNDcyZ1NwNUNrOG5aZEkwMmRMY1VNbXZ0M0hvd3V6a3V3c20xeU5lbVN0N3hUdmhURXpycmZ3UW5MbDRfa2Z5M1BKdjdPdWpvUzVycXJTQmJUTEd4cw",
+      "description": "Florianópolis entra em alerta laranja para temporais e ventos fortes &nbsp;&nbsp; sctododia",
+      "imageUrl": null,
+      "source": "sctododia",
+      "publishedAt": "2026-11-24T18:24:11.000Z",
+      "firstSeenAt": "2026-11-25T04:10:35.018Z",
+      "lastSeenAt": "2026-11-25T04:10:35.018Z"
+    },
+    {
       "id": "event-2b3964e4",
       "category": "mundo",
       "title": "ABRAPE reunirá profissionais e empresas de destaque para debater futuro do mercado de música ao vivo e grandes eventos",
@@ -129,6 +225,30 @@
       "lastSeenAt": "2026-11-24T21:00:35.624Z"
     },
     {
+      "id": "event-2c51971f",
+      "category": "clima",
+      "title": "Até quando vai durar o El Niño no Brasil? Fenômeno que ameaça bater recorde histórico já tem previsão para perder força em 2027",
+      "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE1fSmlIYURTUjg0ZklNa1o1OGQ0SmVjWUtVQWd4cEM3WGFSTjdJRmtaeS1rTy1GQWpIb0loVjFSSUxZUWFtNnRMOHRDR21YeVpZZUkxbkVSUndLTnVVRV9GYl9JYlRtb0FRYUE1WFltQTlQendLLXhfUA",
+      "description": "Até quando vai durar o El Niño no Brasil? Fenômeno que ameaça bater recorde histórico já tem previsão para perder força em 2027 &nbsp;&nbsp; ND Mais",
+      "imageUrl": null,
+      "source": "ND Mais",
+      "publishedAt": "2026-11-24T17:33:57.000Z",
+      "firstSeenAt": "2026-11-25T04:10:35.018Z",
+      "lastSeenAt": "2026-11-25T04:10:35.018Z"
+    },
+    {
+      "id": "event-80955224",
+      "category": "santa-catarina",
+      "title": "Temporais severos e novo ciclone colocam Santa Catarina em alerta",
+      "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNTnhjNTNiamdCSURQM0J0dTlWTkdINFhEakFRd20yeTdvR1lRc0otNGNzOW5rZmFsbjBxZWZHbVV1cDZUOVR3TU0wSHJZdnRVYng0WmE1UGxjRGhLRkd4WmVxaVBwQkVKdGtIOEExUkV5dkdHb2VDMU5od3NkbkJhWVRHNVI0bWg3TF9VRWZyTTlSTjJm",
+      "description": "Temporais severos e novo ciclone colocam Santa Catarina em alerta &nbsp;&nbsp; TVBV ONLINE",
+      "imageUrl": null,
+      "source": "TVBV ONLINE",
+      "publishedAt": "2026-11-24T16:03:44.000Z",
+      "firstSeenAt": "2026-11-25T04:10:35.018Z",
+      "lastSeenAt": "2026-11-25T04:10:35.018Z"
+    },
+    {
       "id": "event-264bfe50",
       "category": "santa-catarina",
       "title": "Defesa Civil atualiza previsão e eleva para “alto” risco de ocorrências associadas a temporais em Lages",
@@ -138,7 +258,7 @@
       "source": "Prefeitura de Lages",
       "publishedAt": "2026-11-24T14:48:21.000Z",
       "firstSeenAt": "2026-11-24T21:00:35.624Z",
-      "lastSeenAt": "2026-11-24T21:00:35.624Z"
+      "lastSeenAt": "2026-11-25T04:10:35.018Z"
     },
     {
       "id": "event-8aa45d88",
@@ -235,169 +355,9 @@
       "publishedAt": "2026-11-24T08:30:00.000Z",
       "firstSeenAt": "2026-11-24T10:58:09.451Z",
       "lastSeenAt": "2026-11-24T10:58:09.451Z"
-    },
-    {
-      "id": "event-bc4a5f14",
-      "category": "mundo",
-      "title": "Análise: Captura de líder do narcotráfico expõe nova estratégia do México contra cartéis",
-      "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxQZ19jdUZEVWkzdDNNa0V3UjF5djJKNU1XckF5TTNRQWQ5Mkg0dVMxVS0wTDF5WkNSbkZZeC1LNVhreUJfTURSeFpwSlYyeWdtclBRanBZTzFOWXBFeXJjMGpmMURCYmJQOE1IaUFONk5xc2RIQXdiejFFcnkxQ18tOXdZR0RYRTBkaTFETjNfbmxNZzZDZjJ5OFFSOHg0VFc0M3ltbDJJdFRjSWFRc1owNGdiQ2RRQXE1MlkzVDgyRTlzQUc0VGxTclltWTZyYnhUdC01XzZuQ1ZfWTjSAeoBQVVfeXFMT1FpTnh1cGNuZmFVMmtRSEJyZ0ItbG12bklXQmMyb0xKQWhfaTVJak40WnFWNE9HU2N3U2p1WXN4cFFEREhIeFUwMFBIdmRMd0xWWjFGRWhNT201Sm0ya2dQanhsYkNhN2gxdDRmMGNNTHZ2UHk0czBUV3BwOVQyZWR3R0Rtb0NfYWRCb25HblZLaFgxcURqY2JKVTluRFc0WGtfbWFaTmZ1aGxLX3VWQzM1UjI0YnhLbnRDTjZzcUlWSmFmRGY5VDhvbS03QlhQaXgtLVkxVnZzWFo5R3VQdEhkN0pFTEx5MnhR",
-      "description": "Análise: Captura de líder do narcotráfico expõe nova estratégia do México contra cartéis &nbsp;&nbsp; O GLOBO",
-      "imageUrl": null,
-      "source": "O GLOBO",
-      "publishedAt": "2026-11-24T03:00:00.000Z",
-      "firstSeenAt": "2026-11-24T10:58:09.451Z",
-      "lastSeenAt": "2026-11-24T10:58:09.451Z"
-    },
-    {
-      "id": "event-38d7a0e9",
-      "category": "brasil",
-      "title": "Câmara aprova texto-base do projeto de ajuste fiscal",
-      "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2026-11/camara-aprova-texto-base-do-projeto-de-ajuste-fiscal",
-      "description": "A Câmara dos Deputados aprovou na noite desta segunda-feira (23) o texto-base do projeto de lei complementar que prevê ajuste fiscal nas contas públicas em 2027. Foram 353 votos a favor, 128 contra e cinco abstenções. O relator do projeto, deputado Mauro Benevides Filho (União-CE), apresentou parecer pela aprovação do projeto sem alterações. Notícias relacionadas: Câmara aprova urgência para votação do projeto de ajuste fiscal. O projeto prevê redução de despesas para se atingir superávit primário de cerca de R$ 18,7 bilhões no ano que vem. Os deputados ainda irão discutir os destaques, que são mudanças em determinados pontos do projeto. O texto do ajuste fiscal foi aprovado pelo Senado na última quarta-feira (18). Entenda o ajuste O projeto prevê medidas para reduzir despesas e ampliar a arrecadação, com economia estimada entre R$ 45,1 bilhões e R$ 56,1 bilhões em 2027. A projeção considera tanto o aumento da arrecadação quanto o controle das despesas e se refere ao chamado resultado primário, a diferença entre o que o governo arrecada e o que gasta antes do pagamento dos juros da d",
-      "imageUrl": "https://imagens.ebc.com.br/Dno21uT388zduEjPgYl7LNOASSQ=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/23/0d9a5339.jpg?itok=27unCJnR",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-24T01:44:00.000Z",
-      "firstSeenAt": "2026-11-24T10:58:09.451Z",
-      "lastSeenAt": "2026-11-24T10:58:09.451Z"
-    },
-    {
-      "id": "event-4cfb8c4b",
-      "category": "brasil",
-      "title": "BRB diz que banco segue funcionando após suspensão da CVM",
-      "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxNQ2YyLWYyQV94UmVJcGZYdzd6b0R6eHFSMDlPRkZhczJncG5xQVlQTko4bC1DWklQMDhNOUs3X2FNLTAzWGhpWTFscDdFbXhGVEJzb0NyZ25vNFN4RTA1OWtZMExGOWxZbmk2U05UZ2U0bDhDaFNhSEMwWVRaZmphUWNkVnU2MWdScHV0XzVuUFpfam5sdU9PNVBSRXAtbG5DWFZMaWw3NXZLUThkYUJrdGpoZW1RQQ",
-      "description": "BRB diz que banco segue funcionando após suspensão da CVM &nbsp;&nbsp; Agência Brasil",
-      "imageUrl": null,
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-24T00:29:00.000Z",
-      "firstSeenAt": "2026-11-24T01:13:47.200Z",
-      "lastSeenAt": "2026-11-24T01:13:47.200Z"
-    },
-    {
-      "id": "event-28745aa8",
-      "category": "brasil",
-      "title": "Petrobras aprova pagamento de R$ 15,6 bilhões a acionistas",
-      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/petrobras-aprova-pagamento-de-r-156-bilhoes-acionistas",
-      "description": "O Conselho de Administração da Petrobras, em reunião realizada nesta segunda-feira (23), aprovou o pagamento de remuneração extraordinária aos acionistas no valor de R$ 15, 6 bilhões, equivalente a R$ 1,21035949 por ação ordinária e preferencial em circulação. O montante será pago em parcela única e integralmente sob a forma de dividendos intercalares (durante o próprio exercício em curso, antes do fechamento do balanço anual da empresa). Para os detentores de ações de emissão da Petrobras negociadas na B3, a data-base será 7 de dezembro de 2026. As ações da Petrobras serão negociadas ex-direitos a partir do dia seguinte, 8 de dezembro de 2026. Notícias relacionadas: Petrobras tem lucro de R$ 39,8 bilhões no 3º trimestre, alta de 21,5%. O valor será pago em parcela única no dia 23 de dezembro de 2026, no valor de R$ 1,21035949 por ação ordinária e preferencial em circulação, integralmente sob a forma de dividendos. A Petrobras informou que o montante a ser pago estará sujeito à incidência de Imposto de Renda, nos termos da legislação tributária vigente. De acordo com a companhia, par",
-      "imageUrl": "https://imagens.ebc.com.br/fKLGIJxxhphK7C_A8TvGRIz1VzI=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/_mg_1446_0.jpg?itok=3kB3K3zp",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-24T00:03:00.000Z",
-      "firstSeenAt": "2026-11-24T01:13:47.200Z",
-      "lastSeenAt": "2026-11-24T01:13:47.200Z"
-    },
-    {
-      "id": "event-939b7aad",
-      "category": "santa-catarina",
-      "title": "Defesa Civil alerta: Frente fria traz chuva forte a Santa Catarina entre terça e quarta-feira",
-      "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxPc0tCUzBrR0Z1Rm5ZUmdlazFYTHZZbFk3TFlxUVl6TGkxQXRoWkdmUngyTUNWUEdzazcxcHpoeU95R2V1cWZVWW1UcHl6QlM5MTlDeHpia01jMjBHX2xJTXNOUVlNMlR2M2lfUEFGbDRnd1dmYlhTeHFhcThPenNNdUJmbHMtQU1yakpROHFfd2NrUWtxQU1LaXpCRFpHc0pQd252RWpIYUdnOGRWU2w4SzR3Q2RDNUZ3bDRJ",
-      "description": "Defesa Civil alerta: Frente fria traz chuva forte a Santa Catarina entre terça e quarta-feira &nbsp;&nbsp; OCP News",
-      "imageUrl": null,
-      "source": "OCP News",
-      "publishedAt": "2026-11-23T23:54:22.000Z",
-      "firstSeenAt": "2026-11-24T01:13:47.200Z",
-      "lastSeenAt": "2026-11-24T01:13:47.200Z"
-    },
-    {
-      "id": "event-288ed0c3",
-      "category": "europa",
-      "title": "Jorge Jesus manda recado, Filipe Luís vive crise e Lino chama atenção na Europa: as últimas notícias do Flamengo - Terra",
-      "url": "https://news.google.com/rss/articles/CBMipgJBVV95cUxOajZrUkwxbWVUelpiSG1pVWQxVHQzenl0NHBia2NQNndWd0NBYU1pV2MxSF83eFFHaHNDb3hkRlF6eVFmNTdLOWtfLUUwNk1qMWxLZWJ0emNKSVd4Ny1hXzlJb0hUdWtnbmJBYXhjUGhLT1EzNXEzd21MTFJpenN2NjljaTR3Z3R6aGhZZnV1SXZlOEJLQUdkTEFXdVJzM211RjdQRzF2V0JQMlBETkJwaWRFb18tSUpsUWpmZy0wQjRNRlpHaGN4aHlnbkZjeFk0TnRrcVQ1OEZSU2h5OUZQNzVnbVpmS01iREhHclFWNmVsa09NSG1qdXdFcHlZQ2Q1d29KclIwblI0TFB3MWdlSTVVY2FUX040VlU1MVp3WUtNYmRiSVE",
-      "description": "Jorge Jesus manda recado, Filipe Luís vive crise e Lino chama atenção na Europa: as últimas notícias do Flamengo &nbsp;&nbsp; Terra",
-      "imageUrl": null,
-      "source": "Terra",
-      "publishedAt": "2026-11-23T23:51:00.000Z",
-      "firstSeenAt": "2026-11-24T01:13:47.200Z",
-      "lastSeenAt": "2026-11-24T21:00:35.624Z"
-    },
-    {
-      "id": "event-23591d0d",
-      "category": "brasil",
-      "title": "Jornada 5x2: veja como ficam regras de salário, folgas e horas extras",
-      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/jornada-5x2-veja-como-ficam-regras-de-salario-folgas-e-horas-extras",
-      "description": "O ministério do Trabalho publicou, nesta segunda-feira (23), uma portaria com regras complementares ao decreto assinado na última quinta-feira (19), que regulamentou a jornada de trabalho 5x2, com cinco dias de trabalho e dois de descanso , a partir de 16 de dezembro. Entenda como fica o cálculo salarial a partir do dia 16, bem como as regras do descanso semanal e o papel dos acordos coletivos de trabalho: Dias do descanso Notícias relacionadas: Veja como será o cálculo da hora extra com a escala de trabalho 5x2. Lula promete manter direitos e diz que controle fiscal é prioridade. Todos os empregados terão direito a dois dias de descanso por semana, cada um com 24 horas consecutivas. Ou seja, o descanso deverá ser tirado durante um dia inteiro, sem fracioná-lo em dias de meio período de trabalho. Um desses dias deve ser, preferencialmente, aos domingos. Mesmo que não sejam em dias consecutivos, esses dias devem ser tirados dentro da mesma semana. É possível, mediante convenção ou acordo coletivo de trabalho, uma distribuição dos dias de descanso diferente ao longo do mês. Nesses caso",
-      "imageUrl": "https://imagens.ebc.com.br/X-BX6wO8jBPcB23jGpoN9IisKnA=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/_fantasias_de_carnaval_abr_2801209348_0.jpg?itok=KeHYbcz7",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-23T23:40:00.000Z",
-      "firstSeenAt": "2026-11-24T01:13:47.200Z",
-      "lastSeenAt": "2026-11-24T01:13:47.200Z"
-    },
-    {
-      "id": "event-e0770345",
-      "category": "mundo",
-      "title": "Principais notícias do mundo na noite de hoje (23)",
-      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxNalh1dzlkOFpaY3V3c1RBSnJES1hidDRwNzRvaHB3TkNtSUhmR2lDaHhUcXlpSUFIbHltWGxKNWEtMXZHd1VQVURCRWZBbnR0UXM4V0pvREV0bnh5eEItQlQ4TnhhdWRqTHhFUHZwTnFLa0Q3QmpEdnB5RU1iaTUxS0VfS01Fc0tiQU83Sk44UjctRjJ3S3JxWER0elZ3V0lJRGd1bkxxYWhHUXlY",
-      "description": "Principais notícias do mundo na noite de hoje (23) &nbsp;&nbsp; Tribuna do Sertão",
-      "imageUrl": null,
-      "source": "Tribuna do Sertão",
-      "publishedAt": "2026-11-23T23:32:01.000Z",
-      "firstSeenAt": "2026-11-24T01:13:47.200Z",
-      "lastSeenAt": "2026-11-24T01:13:47.200Z"
-    },
-    {
-      "id": "event-463af05e",
-      "category": "brasil",
-      "title": "Câmara aprova urgência para votação do projeto de ajuste fiscal",
-      "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2026-11/camara-aprova-urgencia-para-votacao-do-projeto-de-ajuste-fiscal",
-      "description": "A Câmara dos Deputados aprovou nesta segunda-feira (23) o requerimento de urgência para a votação do projeto de Lei Complementar (PLP) 299/26, que trata de medidas de ajuste fiscal das contas públicas. Foram 318 votos favoráveis, 135 contrários e seis abstenções. Com isso, o texto será votado diretamente em plenário, sem necessidade de tramitar nas comissões da casa. Os deputados agora iniciaram a discussão do projeto. Notícias relacionadas: Senado rejeita mudanças no texto e aprova ajuste fiscal do governo. Governo anuncia medidas de ajuste para economia de até R$ 60 bilhões . A urgência para a votação do texto foi pedida pelo governo e partidos da base, durante a sessão extraordinária convocada para analisar a proposta. O deputado Hildo Rocha (MDB-MA) argumentou que a votação do ajuste abrirá espaço para o parlamento analisar o Orçamento da União de 2027. “Se nós não aprovarmos esse projeto de Lei Complementar, se não tiver urgência e ele tiver que tramitar em todas as comissões, nós não teremos o Orçamento de 2027, não tem como fechar o orçamento de 2027. É importante que [o proje",
-      "imageUrl": "https://imagens.ebc.com.br/MhAdgFWE7k0DzFsFVA0AcFmTYxM=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/23/img20261123193037676.jpg?itok=kzST26xC",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-23T22:59:00.000Z",
-      "firstSeenAt": "2026-11-24T01:13:47.200Z",
-      "lastSeenAt": "2026-11-24T01:13:47.200Z"
-    },
-    {
-      "id": "event-a5bc40be",
-      "category": "mundo",
-      "title": "Os testes que garantem a segurança de vacinas - e como combater desinformação sobre elas",
-      "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE1kTmpwWUpKTDJEMERaSXF1cjV3UXFCLWF6dllrdUpZMFNnRWZzWGJuQWR1ckJzNmVIY1VMbVZSekxMczk1Y0xPWXdTc1ZlZDVCaUJVOUdqN0ZjaVJqZ3FTZk1za9IBaEFVX3lxTFAxV0tKMkpVNnlXdVgyX0NYcDBVUmxZel9SQ1AyMHJ3dEpzSjJ5OWpFRm1pb2d0Ym1FT3hJSEhVX1ZENU9VdWE3TG1MV01VbTdaSkxSSDlHY3JJaGV0dzJmZG12WWZ4NVNB",
-      "description": "Os testes que garantem a segurança de vacinas - e como combater desinformação sobre elas &nbsp;&nbsp; BBC",
-      "imageUrl": null,
-      "source": "BBC",
-      "publishedAt": "2026-11-23T22:24:36.000Z",
-      "firstSeenAt": "2026-11-24T01:13:47.200Z",
-      "lastSeenAt": "2026-11-24T01:13:47.200Z"
-    },
-    {
-      "id": "event-4d6d5b26",
-      "category": "mundo",
-      "title": "Goleiro brasileiro supera lendas e é eleito por jornal o melhor da história de uma das principais ligas da Europa",
-      "url": "https://news.google.com/rss/articles/CBMiuwJBVV95cUxOMEM2TENnQ0F2aUUxcXRKQUI3T1A5azA5dEp0WW9iS0xxU3U2RTh2NEQyaW9TUm5yTG9OWHNNV2FRT05CSmprZTVtRDdaUjE2NEpROTNDRjlUMFdOUnk1SmI5d0ROMFpBZjFsQVpHLVp2aTA5aDN6eHJac0dIRl9ObVFtTWg4MWxlS2g1NzBucG5sNlo0MC02bHllV1FlZ3RjQVJxbGNRc2ljNkpDUi1nRm9DbW0wcVZNV2dvZUdEY2lJaVFjcjVUYi1YaVBhWnB6dDJQWExQeVhYdnlSU2h4QW11VFJfeU4tU0NBR0tvMG52UGJ0RG8wZVpFbldodTUyVmRDcUVodGliS1JEdUVYQ2JrMlBQODYzVmpXUjBPMmhJNHRRYjd0VFBxRVpxeFJ0ZllNOFpzTVRyY3c",
-      "description": "Goleiro brasileiro supera lendas e é eleito por jornal o melhor da história de uma das principais ligas da Europa &nbsp;&nbsp; Terra",
-      "imageUrl": null,
-      "source": "Terra",
-      "publishedAt": "2026-11-23T22:17:00.000Z",
-      "firstSeenAt": "2026-11-24T01:13:47.200Z",
-      "lastSeenAt": "2026-11-24T01:13:47.200Z"
-    },
-    {
-      "id": "event-6662c7e0",
-      "category": "santa-catarina",
-      "title": "Frente fria deve provocar temporais e elevar risco de alagamentos em SC, alerta Defesa Civil",
-      "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxNREhHRDlPcXdGZExFZkNyZjhhTUNLbWt6b2VtRlpFelpHaDNGSkNsY0ZOSEtKRU0wRnZQVzNGY2tpc3JXWU0xeHU4QXFKZ18wZFlkNEo0UVY0UFZCVVhMc0JwUmRHVXA0MmpXR1IyNU9XemRZME42Zm5yUTBXd0U3RkFHZ1ZqbExzMHlHVFRHMVRoLVB0ZGZFVERHdV9qd3lVNWlfQkJvUG9VRnRVcWdvbXhXeGVadG8wZjJObm5PdDRRZGhrU2pFVG1ydw",
-      "description": "Frente fria deve provocar temporais e elevar risco de alagamentos em SC, alerta Defesa Civil &nbsp;&nbsp; AJ Notícias",
-      "imageUrl": null,
-      "source": "AJ Notícias",
-      "publishedAt": "2026-11-23T21:07:41.000Z",
-      "firstSeenAt": "2026-11-24T01:13:47.200Z",
-      "lastSeenAt": "2026-11-24T10:58:09.451Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-24T01:13:47.200Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 14,
-      "newArticles": 14,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "europa"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-24T10:58:09.451Z",
       "ok": true,
@@ -430,29 +390,32 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-25T04:10:35.018Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 13,
+      "newArticles": 10,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "europa",
+        "asia"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 3,
-  "lastSuccessfulAt": "2026-11-24T21:00:35.624Z",
+  "lastSuccessfulAt": "2026-11-25T04:10:35.018Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-24T21:00:35.624Z",
+      "checkedAt": "2026-11-25T04:10:35.018Z",
       "warnings": [
-        {
-          "id": "56501",
-          "title": "Tempestade",
-          "severity": "Perigo",
-          "phase": "previsto",
-          "regions": [
-            "DO",
-            "DE"
-          ],
-          "startsAt": "2026-11-25T00:00:00.000Z",
-          "endsAt": "2026-11-25T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
-        },
         {
           "id": "56503",
           "title": "Chuvas Intensas",
@@ -464,34 +427,6 @@
           ],
           "startsAt": "2026-11-26T00:00:00.000Z",
           "endsAt": "2026-11-26T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
-        },
-        {
-          "id": "56481",
-          "title": "Baixa Umidade",
-          "severity": "Perigo Potencial",
-          "phase": "vigente",
-          "regions": [
-            "DO"
-          ],
-          "startsAt": "2026-11-23T00:00:00.000Z",
-          "endsAt": "2026-11-25T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
-        },
-        {
-          "id": "56499",
-          "title": "Tempestade",
-          "severity": "Perigo Potencial",
-          "phase": "previsto",
-          "regions": [
-            "DO",
-            "DO",
-            "DE"
-          ],
-          "startsAt": "2026-11-25T00:00:00.000Z",
-          "endsAt": "2026-11-25T00:00:00.000Z",
           "source": "INMET",
           "url": "https://avisos.inmet.gov.br/"
         },
@@ -508,25 +443,12 @@
           "endsAt": "2026-11-26T00:00:00.000Z",
           "source": "INMET",
           "url": "https://avisos.inmet.gov.br/"
-        },
-        {
-          "id": "56504",
-          "title": "Ventos Costeiros",
-          "severity": "Perigo Potencial",
-          "phase": "previsto",
-          "regions": [
-            "DO"
-          ],
-          "startsAt": "2026-11-25T00:00:00.000Z",
-          "endsAt": "2026-11-25T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
         }
       ]
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-24T21:00:35.624Z",
+      "checkedAt": "2026-11-25T04:10:35.018Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
