@@ -11,6 +11,7 @@ export const ACTIONS={
  "ring.reset":"Centralizar anel",
  "ring.zoom":"Aproximar/afastar anel (direction in/out)",
  "news.refresh":"Atualizar boletim e apresentar notícias",
+ "news.monitor.status":"Consultar última coleta e alertas do Monitor Mundial de Notícias (leitura D1)",
  "devices.list":"Consultar dispositivos pareados",
  "files.list":"Listar arquivos autorizados",
  "system.status":"Consultar estado e módulos",
