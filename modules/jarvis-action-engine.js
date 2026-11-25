@@ -24,9 +24,9 @@ export function directPlan(message){
  }
  const q=normalizeCommand(message).replace(/[.!?]+$/,"").trim();
  // Historical monitored-news comparison must precede generic status and model planning.
- if(newsMonitorQueryMode(message)==="history"&&
+ if(["history","batches"].includes(newsMonitorQueryMode(message))&&
     /\b(?:noticias?|acontecimentos?|fontes|coletas?|registros)\b/.test(q))
-   return {steps:[action("news.monitor.status",{mode:"history"})]};
+   return {steps:[action("news.monitor.status",{mode:newsMonitorQueryMode(message)})]};
 
  // Explicit MONITOR WORLD NEWS commands are deterministic read-only actions.
  // Resolve BEFORE semantic action planning or the generic system.status route.
@@ -368,7 +368,7 @@ async function executeStep(step,original){
  case "devices.list":{const list=await requireApi(w.ULTRON_DEVICES,"listDevices").listDevices();if(!Array.isArray(list))throw Error("Lista não confirmada");const text=list.length?list.map(d=>(d.deviceName||d.name||"Dispositivo")+" — "+(d.status||"estado desconhecido")).join("\n"):"Nenhum dispositivo pareado encontrado.";publish(text);return text;}
  case "files.list":{const data=await requireApi(w.ULTRON_LOCAL_FILES,"files").files();const list=Array.isArray(data)?data:data?.files;if(!Array.isArray(list))throw Error("Arquivos indisponíveis");const text=list.length?list.slice(0,25).map(x=>typeof x==="string"?x:x.path||x.name||"Arquivo").join("\n"):"Nenhum arquivo autorizado encontrado.";publish(text);return text;}
  case "news.monitor.status":{
-   const endpoint=String(API_CONFIG.backendUrl||"").replace(/\/$/,"")+"/api/intelligence/news-alerts"+(a.mode==="history"?"?history=1":"");
+   const endpoint=String(API_CONFIG.backendUrl||"").replace(/\/$/,"")+"/api/intelligence/news-alerts"+(a.mode==="history"?"?history=1":a.mode==="batches"?"?batches=1":"");
    const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),15000);
    let report;
    try{
