@@ -11,6 +11,8 @@ const SCHEMA=[
  "CREATE TABLE IF NOT EXISTS jarvis_world_news_alerts ("+
  "id TEXT PRIMARY KEY,event_id TEXT NOT NULL,created_at TEXT NOT NULL,alert_json TEXT NOT NULL)",
  "CREATE INDEX IF NOT EXISTS idx_world_news_alerts_created ON jarvis_world_news_alerts(created_at DESC)",
+ "CREATE TABLE IF NOT EXISTS jarvis_world_news_monitor_snapshots ("+
+ "bucket TEXT PRIMARY KEY,checked_at TEXT NOT NULL,events_json TEXT NOT NULL)",
  "CREATE TABLE IF NOT EXISTS jarvis_world_news_monitor_diagnostics ("+
  "bucket TEXT PRIMARY KEY,diagnostics_json TEXT NOT NULL)"
 ];
@@ -100,6 +102,13 @@ export async function pollWorldNewsMonitor(env,{now=Date.now(),loadNews=loadLive
     .bind(trigger==="on-demand"?"on-demand-history-unavailable":"history-unavailable",bucket).run();
    return {ok:false,reason:"history-unavailable",bucket};
   }
+  const snapshotEvents=(Array.isArray(evolution.correlation?.events)?evolution.correlation.events:[])
+   .filter(e=>validEvent(e?.event_id)).slice(0,80).map(e=>({
+    id:e.event_id,title:clean(e.title,200),
+    urls:[...new Set((Array.isArray(e.sources)?e.sources:[]).map(s=>url(s.url)).filter(Boolean))].slice(0,10)
+   }));
+  await db.prepare("INSERT OR REPLACE INTO jarvis_world_news_monitor_snapshots (bucket,checked_at,events_json) VALUES(?,?,?)")
+   .bind(bucket,at(now),JSON.stringify(snapshotEvents)).run();
   const alerts=selectWorldNewsAlerts(evolution.correlation.events,{now});
   for(const alert of alerts){
    await db.prepare("INSERT OR IGNORE INTO jarvis_world_news_alerts "+
@@ -114,6 +123,7 @@ export async function pollWorldNewsMonitor(env,{now=Date.now(),loadNews=loadLive
   await db.prepare("DELETE FROM jarvis_world_news_monitor_runs WHERE checked_at < ?").bind(cutoff).run();
   await db.prepare("DELETE FROM jarvis_world_news_alerts WHERE created_at < ?").bind(cutoff).run();
   await db.prepare("DELETE FROM jarvis_world_news_monitor_diagnostics WHERE bucket < ?").bind(bucketFor(now-7*86400000)).run();
+  await db.prepare("DELETE FROM jarvis_world_news_monitor_snapshots WHERE checked_at < ?").bind(cutoff).run();
   return {ok:true,bucket,articleCount:count,recovered,alerts:alerts.length,
    firstObserved:evolution.summary.created,updated:evolution.summary.updated,intervalMinutes:30};
  }catch(error){
@@ -156,6 +166,44 @@ export async function latestWorldNewsAlerts(env,{limit=8}={}){
  }catch(error){return {ok:false,alerts:[],reason:"d1-read-failed"};}
 }
 
+
+// Compare exactly two completed, persisted observation windows. Earlier runs cannot
+// be reconstructed from an event's latest D1 state and must not be fabricated.
+export async function readWorldNewsBatchComparison(env){
+ const db=env?.ULTRON_DB;
+ if(!db?.prepare)return {ok:false,reason:"d1-unavailable"};
+ try{
+  await setup(db);
+  const result=await db.prepare(
+   "SELECT s.bucket,s.checked_at,s.events_json FROM jarvis_world_news_monitor_snapshots s "+
+   "JOIN jarvis_world_news_monitor_runs r ON r.bucket=s.bucket "+
+   "WHERE r.status IN ('completed','completed-rss-recovery','on-demand-completed','on-demand-completed-rss-recovery') "+
+   "ORDER BY s.checked_at DESC LIMIT 2"
+  ).all();
+  const rows=Array.isArray(result?.results)?result.results:[];
+  if(rows.length<2)return {ok:true,ready:false,available:rows.length};
+  const parse=row=>{
+   const events=JSON.parse(row.events_json);
+   if(!Array.isArray(events))throw Error("invalid-snapshot");
+   return {checkedAt:row.checked_at,count:events.length,events:events.filter(e=>validEvent(e?.id))};
+  };
+  const current=parse(rows[0]),previous=parse(rows[1]);
+  const before=new Map(previous.events.map(e=>[e.id,e]));
+  const after=new Map(current.events.map(e=>[e.id,e]));
+  const summarize=e=>({eventId:e.id,title:clean(e.title,180),urls:e.urls||[]});
+  const added=current.events.filter(e=>!before.has(e.id)).map(summarize);
+  const retained=current.events.filter(e=>before.has(e.id)).map(summarize);
+  const missing=previous.events.filter(e=>!after.has(e.id)).map(summarize);
+  const sourceChanges=current.events.filter(e=>before.has(e.id)).flatMap(e=>{
+   const oldUrls=new Set(before.get(e.id).urls||[]);
+   const addedUrls=(e.urls||[]).filter(u=>!oldUrls.has(u));
+   return addedUrls.length?[{...summarize(e),addedUrls}]:[];
+  });
+  return {ok:true,ready:true,current:{checkedAt:current.checkedAt,count:current.count},
+   previous:{checkedAt:previous.checkedAt,count:previous.count},
+   added,retained,missing,sourceChanges,scope:"two-persisted-monitor-batches"};
+ }catch{return {ok:false,reason:"d1-batch-comparison-failed"};}
+}
 
 // Read-only historical event snapshots. The last-seen time is a recorded observation,
 // not proof that the whole world was unchanged between cron windows.
