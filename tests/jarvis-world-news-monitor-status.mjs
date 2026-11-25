@@ -53,6 +53,6 @@ await readWorldNewsMonitorWithBootstrap(mock,{poll:async()=>{calls++}});
 assert.equal(calls,1,"existing baseline does not restart polling");
 const worker=readFileSync(new URL("../backend/worker.js",import.meta.url),"utf8");
 assert.match(worker,/if\(isWorldNewsMonitorStatusIntent\(originalBody\?\.message\)\)/);
-assert.match(worker,/buildWorldNewsMonitorStatusReply\(report\)/);
+assert.match(worker,/formatNewsMonitorReply\(report,\{mode:newsMonitorQueryMode\(originalBody\?\.message\)\}\)/);
 assert.match(worker,/readWorldNewsMonitorWithBootstrap\(env\)/);
 console.log("WORLD NEWS MONITOR STATUS PASS: intent routing, null-run bootstrap, explicit cron uncertainty, safe source URLs and no invented alerts");
