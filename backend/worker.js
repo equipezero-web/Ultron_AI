@@ -87,6 +87,7 @@ import { analyzeVisualFrame } from "./vision-analysis.js";
 import { getWebRtcIceServers, webRtcIceHealth } from "./webrtc-ice.js";
 import { loadLiveNewsContext, isGeneralNewsIntent, isLiveNewsIntent, isNewsHistoryRefreshIntent } from "./news-context.js";
 import {buildWorldNewsRefreshReport} from "./news-refresh-report.js";
+import {newsMonitorQueryMode,formatNewsMonitorReply} from "./news-monitor-response.js";
 import { createWorldBriefing } from "./world-briefing.js";
 import {pushConfiguration,pushAccountStatus,checkPushSubscription,registerPush,removePush,pollOfficialPush} from "./jarvis-push.js";
 import {
@@ -1027,7 +1028,7 @@ async function handleAi(request, env) {
   if(isWorldNewsMonitorStatusIntent(originalBody?.message)){
     const report=await readWorldNewsMonitorWithBootstrap(env);
     return json({
-      text:buildWorldNewsMonitorStatusReply(report),
+      text:formatNewsMonitorReply(report,{mode:newsMonitorQueryMode(originalBody?.message)}),
       provider:"jarvis-local",providerLabel:"J.A.R.V.I.S. / MONITOR MUNDIAL",
       model:"d1-world-news-monitor-status",
       attempts:[],audioBase64:null,audioMimeType:null,visualContext:null,
