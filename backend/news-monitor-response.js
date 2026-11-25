@@ -5,6 +5,8 @@ const short=(value,max=200)=>String(value??"").replace(/\s+/g," ").trim().slice(
 const httpUrl=value=>{try{const uri=new URL(String(value||""));return ["https:","http:"].includes(uri.protocol)&&!uri.username&&!uri.password?uri.href:null;}catch{return null;}};
 export function newsMonitorQueryMode(message){
  const q=normalized(message);
+ if(/\b(?:compar(?:e|ar|acao)|evoluc\w*|historico|registros anteriores)\b/.test(q)&&
+    /\b(?:noticias?|acontecimentos?|fontes|coleta|registros)\b/.test(q))return "history";
  if(/\b(?:diagnostic\w*|provedor(?:es)?|fonte(?:s)? utilizada(?:s)?|fontes de coleta|falh(?:a|aram)|timeout)\b/.test(q))return "diagnostics";
  if(/\b(?:alertas?|receberam novas fontes|novas fontes|alterac\w*|fontes modificadas)\b/.test(q)&&
    !/\b(?:ultima coleta|ultimo monitoramento|horario da coleta|hora da coleta|status da coleta)\b/.test(q))return "alerts";
@@ -21,6 +23,31 @@ export function formatNewsMonitorReply(report,{mode="overview"}={}){
   "Não foi possível consultar o histórico D1 do monitor. Nenhuma coleta ou alteração foi confirmada.";
  const run=report.latestRun,alerts=Array.isArray(report.alerts)?report.alerts.slice(0,6):[];
  const header="J.A.R.V.I.S. // MONITOR MUNDIAL DE NOTÍCIAS";
+ if(mode==="history"){
+  const lines=[header,"HISTÓRICO DOS ACONTECIMENTOS",timing(run)];
+  const history=report.history;
+  if(!history?.ok){
+   lines.push("Não foi possível consultar as linhas do tempo no D1. Nenhuma comparação histórica foi confirmada.");
+   return lines.join("\n\n");
+  }
+  if(!history.events?.length)lines.push("Nenhum acontecimento preservado no histórico D1 para esta consulta.");
+  for(const event of (history.events||[]).slice(0,6)){
+   const changes=(event.timeline||[]).filter(t=>t.kind==="source-update");
+   const latest=changes.at(-1);
+   const status=changes.length?
+    "Atualização registrada em "+short(latest.observedAt,45)+
+      "; novas fontes: "+(Number(latest.newSources)||0)+
+      "; fontes alteradas: "+(Number(latest.updatedSources)||0):
+    "Nenhuma atualização armazenada nesta linha do tempo.";
+   const links=(event.sources||[]).slice(0,3).map(x=>httpUrl(x.url)).filter(Boolean);
+   lines.push(short(event.title,200)+": "+status+
+    " Primeira observação: "+short(event.firstSeen,45)+
+    "; última observação: "+short(event.lastSeen,45)+
+    ". Fontes: "+(links.join(" ; ")||"sem links disponíveis")+".");
+  }
+  lines.push("A consulta mostra o histórico dos acontecimentos preservados, não uma comparação exaustiva entre todos os lotes. 'Sem atualização registrada' não significa que a notícia não mudou.");
+  return lines.join("\n\n");
+ }
  if(mode==="diagnostics"){
   const lines=[header,"DIAGNÓSTICO DE COLETA",timing(run)];
   const providers=Array.isArray(run?.diagnostics?.providers)?run.diagnostics.providers:[];
