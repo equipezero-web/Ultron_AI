@@ -42,7 +42,7 @@ export function validatePlan(value){
   const action=item?.action,a=item?.args||{};
   if(!Object.hasOwn(ACTIONS,action)||typeof a!=="object"||Array.isArray(a))return null;
   let args={};
-  if(action==="news.monitor.status"){if(a.mode!==undefined&&!["overview","alerts","diagnostics","history"].includes(a.mode))return null;args={mode:a.mode||"overview"};}
+  if(action==="news.monitor.status"){if(a.mode!==undefined&&!["overview","alerts","diagnostics","history","batches"].includes(a.mode))return null;args={mode:a.mode||"overview"};}
   if(action==="text.set"){if(typeof a.enabled!=="boolean")return null;args={enabled:a.enabled};}
   if(action==="geo.show"){
    if(!["enso","tsunami-japan"].includes(a.scenario)||!["2d","3d"].includes(a.view))return null;

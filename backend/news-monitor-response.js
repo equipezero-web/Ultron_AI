@@ -5,6 +5,8 @@ const short=(value,max=200)=>String(value??"").replace(/\s+/g," ").trim().slice(
 const httpUrl=value=>{try{const uri=new URL(String(value||""));return ["https:","http:"].includes(uri.protocol)&&!uri.username&&!uri.password?uri.href:null;}catch{return null;}};
 export function newsMonitorQueryMode(message){
  const q=normalized(message);
+ if(/\b(?:duas|2|dois)\s+(?:ultimas?\s+)?coletas?\b|\b(?:ultimas?\s+)?(?:duas|2)\s+coletas?\b|\b(?:lotes?\s+(?:de\s+)?coletas?|coletas?\s+(?:entre\s+si|anteriores?))\b/.test(q)&&
+    /\b(?:compar\w*|diferen\w*|novos?|permanec\w*|deixaram|alter\w*|fontes|acontecimentos?|lotes?)\b/.test(q))return "batches";
  if(/\b(?:compar(?:e|ar|acao)|evoluc\w*|historico|registros anteriores)\b/.test(q)&&
     /\b(?:noticias?|acontecimentos?|fontes|coleta|registros)\b/.test(q))return "history";
  if(/\b(?:diagnostic\w*|provedor(?:es)?|fonte(?:s)? utilizada(?:s)?|fontes de coleta|falh(?:a|aram)|timeout)\b/.test(q))return "diagnostics";
@@ -23,6 +25,24 @@ export function formatNewsMonitorReply(report,{mode="overview"}={}){
   "Não foi possível consultar o histórico D1 do monitor. Nenhuma coleta ou alteração foi confirmada.";
  const run=report.latestRun,alerts=Array.isArray(report.alerts)?report.alerts.slice(0,6):[];
  const header="J.A.R.V.I.S. // MONITOR MUNDIAL DE NOTÍCIAS";
+ if(mode==="batches"){
+  const lines=[header,"COMPARAÇÃO DAS DUAS ÚLTIMAS COLETAS",timing(run)];
+  const b=report.batches;
+  if(!b?.ok){lines.push("Não foi possível consultar os lotes do D1. Nenhuma comparação foi confirmada.");return lines.join("\n\n");}
+  if(!b.ready){lines.push("Ainda não existem duas coletas completas com snapshots armazenados para comparação. Os snapshots só são preservados a partir desta atualização, sem reconstrução retroativa.");return lines.join("\n\n");}
+  lines.push("Lote anterior: "+short(b.previous.checkedAt,50)+" ("+b.previous.count+" acontecimentos). Lote atual: "+short(b.current.checkedAt,50)+" ("+b.current.count+" acontecimentos).");
+  const summarize=(label,items)=>label+": "+(items.length?items.slice(0,8).map(x=>short(x.title,130)).join("; "):"nenhum registro")+".";
+  lines.push(summarize("Novos no lote",b.added));
+  lines.push(summarize("Permaneceram no lote",b.retained));
+  lines.push(summarize("Não observados no lote atual",b.missing));
+  lines.push(summarize("Novas URLs registradas para acontecimentos mantidos",b.sourceChanges));
+  for(const item of b.sourceChanges.slice(0,5)){
+   const urls=(item.addedUrls||[]).slice(0,3).map(httpUrl).filter(Boolean);
+   if(urls.length)lines.push(short(item.title,120)+": "+urls.join(" ; "));
+  }
+  lines.push("Ausência em um lote NÃO comprova que o acontecimento terminou nem que a notícia desapareceu da fonte. A comparação utiliza somente os eventos selecionados e registrados em cada coleta.");
+  return lines.join("\n\n");
+ }
  if(mode==="history"){
   const lines=[header,"HISTÓRICO DOS ACONTECIMENTOS",timing(run)];
   const history=report.history;
