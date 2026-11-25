@@ -502,7 +502,9 @@ async function prepareResearch(env, body) {
     const prior=await loadMemoryContext(env,{operatorId,conversationId,recentLimit:4});
     query=resolveResearchQuery(message,prior.lastUserMessage);
   }
-  const generalNews=isGeneralNewsIntent(query);
+  // An update of prior public news must search current news sources, never
+  // marketplace results for applications with the same name as J.A.R.V.I.S.
+  const generalNews=isGeneralNewsIntent(query)||isNewsHistoryRefreshIntent(query);
   const classified=shouldResearchBeforeAnswer(query);
   const policy = generalNews && classified.reason!=="private-context" ? {needed:true,reason:"brazil-first-news",ttlMinutes:15} : classified;
   if (!policy.needed) return { body: {...body,allowUncertaintyResearch:false,researchMeta:{...(body.researchMeta||{}),skipLegacyResearch:true}}, policy, active: false };
