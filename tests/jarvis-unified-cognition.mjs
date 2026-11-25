@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import {readFileSync} from "node:fs";
-import {generateUnifiedResponse,shouldUseCollaborativeReasoning} from "../backend/unified-cognition.js";
+import {generateUnifiedResponse,shouldUseCollaborativeReasoning,reviewPreservesEvidence} from "../backend/unified-cognition.js";
 const env={
  AI_PROVIDER_ORDER:"groq,cloudflare,cohere",
  AI_DISABLED_PROVIDERS:"gemini,openrouter,mistral,deepseek,cerebras",
@@ -45,6 +45,17 @@ const broken=async(e,p)=>{
 const fallback=await generateUnifiedResponse({env,prompt:question,userMessage:question,taskClass:"planning",generate:broken});
 assert.equal(fallback.text,"Primeira resposta útil");
 assert.equal(fallback.unifiedCognition.collaborated,false);
+assert.equal(reviewPreservesEvidence("Fonte: https://example.org/fato. Pendente de confirmação", "Confirmado."),false);
+assert.equal(reviewPreservesEvidence("Fonte: https://example.org/fato. Pendente de confirmação", "Fonte: https://example.org/fato. Ainda pendente"),true);
+assert.equal(reviewPreservesEvidence("Sem evidência suficiente", "Afirmo com certeza"),false);
+assert.equal(reviewPreservesEvidence("Resposta sem links", "Resposta melhorada sem links"),true);
+const grounded=async(e,p)=>{
+ const provider=String(e.AI_PROVIDER_ORDER).split(",")[0];
+ return {text:provider==="groq"?"Pendente de confirmação. Fonte: https://example.org/evidencia":"Tudo confirmado!",provider,attempts:[]};
+};
+const reviewed=await generateUnifiedResponse({env,prompt:question,userMessage:question,taskClass:"planning",generate:grounded,aiBinding:env.AI});
+assert.equal(reviewed.unifiedCognition.collaborated,false);
+assert.match(reviewed.text,/Pendente de confirmação/);
 const worker=readFileSync(new URL("../backend/worker.js",import.meta.url),"utf8");
 assert.match(worker,/generateUnifiedResponse/);
 assert.match(worker,/privateContext:Boolean\(memoryState\.context/);
