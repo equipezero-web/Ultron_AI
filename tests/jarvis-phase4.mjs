@@ -106,4 +106,6 @@ assert.deepEqual(validatePlan({steps:[{action:"news.monitor.status",args:{mode:"
  [{action:"news.monitor.status",args:{mode:"diagnostics"}}]);
 assert.notEqual(directPlan("JARVIS, atualize as notícias")?.steps?.[0]?.action,"news.monitor.status");
 assert.deepEqual(directPlan("J.A.R.V.I.S., consulte o monitoramento de notícias e informe o diagnóstico das fontes utilizadas na última coleta.")?.steps,[{action:"news.monitor.status",args:{mode:"diagnostics"}}]);
+assert.deepEqual(directPlan("Compare as duas últimas coletas efetivamente armazenadas no Monitor Mundial. Identifique os acontecimentos novos, os que permaneceram, os que tiveram novas fontes e os que deixaram de aparecer no lote.")?.steps,[{action:"news.monitor.status",args:{mode:"batches"}}]);
+assert.deepEqual(validatePlan({steps:[{action:"news.monitor.status",args:{mode:"batches"}}]})?.steps,[{action:"news.monitor.status",args:{mode:"batches"}}]);
 console.log("PHASE 4 PASS: live-data normalization, attribution, freshness, SSRF restrictions, weather routing, sequenced map commands and model labels");
