@@ -4,10 +4,154 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-25T04:10:35.018Z",
-  "oldestEventAt": "2026-11-24T08:30:00.000Z",
-  "windowStartAt": "2026-11-24T04:10:35.018Z",
+  "updatedAt": "2026-11-25T14:18:24.405Z",
+  "oldestEventAt": "2026-11-24T14:43:00.000Z",
+  "windowStartAt": "2026-11-24T14:18:24.405Z",
   "events": [
+    {
+      "id": "event-6207c614",
+      "category": "brasil",
+      "title": "Daniel Caesar cancela shows no Brasil; entenda o que aconteceu",
+      "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxNTEkxbmk5aTFlVEg3RUJyY0NIbWFhVUZSbnJwWnNqVG5zbXJUb0xoeUZLZEl5RDhqaWdaaW13VlNxSlI1YVBodERjcHpPSVdYdXN3OHcxaUo2ODVpRkpUd1R5VUlJc2xHTnpyRHVvVGJ1dnhqUVc5ZXA3Q2NJNGpfMk1lSzN1bEd2ZWp5NVFRMmh4R1VwVXc",
+      "description": "Daniel Caesar cancela shows no Brasil; entenda o que aconteceu &nbsp;&nbsp; tmc.com.br",
+      "imageUrl": null,
+      "source": "tmc.com.br",
+      "publishedAt": "2026-11-25T13:31:09.000Z",
+      "firstSeenAt": "2026-11-25T14:18:24.405Z",
+      "lastSeenAt": "2026-11-25T14:18:24.405Z"
+    },
+    {
+      "id": "event-6fcc403e",
+      "category": "mundo",
+      "title": "Tiago Splitter ganha documentário da NBA como 1º técnico brasileiro da liga",
+      "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxPcURnWFhOWTR3WGViQTFVeVNlSURWZFk1b3ZDNURJbGpKa0hMLTFGYmhDMjNiLTJJQ1RIZXZfeHdBZFBJSEE5b0g5bkk0bnJSRjZaZlptZTcxWnRYdmpLMndiUVVQbkljMFpFUWlWa0dVVmQ0cDFVeWZrUmVXT2g3S0xHR29wTnlaRFFPX1ZvQ1M4QVljcURNZXhPWHp5elllWnkxdEF6Y01WYmxLNnhmM2pELURxQk1nZkRWdkJ5VHY",
+      "description": "Tiago Splitter ganha documentário da NBA como 1º técnico brasileiro da liga &nbsp;&nbsp; CNN Brasil",
+      "imageUrl": null,
+      "source": "CNN Brasil",
+      "publishedAt": "2026-11-25T13:18:47.000Z",
+      "firstSeenAt": "2026-11-25T14:18:24.405Z",
+      "lastSeenAt": "2026-11-25T14:18:24.405Z"
+    },
+    {
+      "id": "event-e9ccdb90",
+      "category": "brasil",
+      "title": "Rio recebe nesta semana novas doses de vacina contra a mpox",
+      "url": "https://agenciabrasil.ebc.com.br/saude/noticia/2026-11/rio-recebe-nesta-semana-novas-doses-de-vacina-contra-mpox",
+      "description": "A Secretaria Municipal de Saúde (SMS) do Rio informou que mais de 8 mil pessoas foram vacinadas contra a mpox com todas as doses enviadas pelo Ministério da Saúde desde a retomada da imunização no dia 6 de novembro. No momento, os estoques da vacina no município estão esgotados. Em nota, o Ministério da Saúde informou que está disponibilizando nesta semana vacinas suficientes para até 10 mil aplicações na capital. Notícias relacionadas: SP ganha novas doses da vacina contra a mpox; saiba quem pode receber. Rio de Janeiro tem primeira morte confirmada por mpox no país. Mpox: com quase 400 casos, Rio passa a atualizar diariamente os dados. \"Essa nova remessa será destinada prioritariamente à aplicação da segunda dose em pessoas que já iniciaram o esquema vacinal, que prevê duas doses com intervalo de 28 dias. No dia 18 de novembro, o Ministério da Saúde havia enviado frascos para até 5 mil aplicações\". Para reforçar o estoque nacional, o Ministério da Saúde garantiu, por meio do Fundo Rotatório da Organização Pan-Americana da Saúde (Opas), a aquisição de 25 mil doses - todo o estoque d",
+      "imageUrl": "https://imagens.ebc.com.br/53hcquOO0_n4eUmVYDrC5zCxzJ0=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2024/08/22/2024-08-20t135719z_1736913444_rc2pj9addr69_rtrmadp_3_health-mpox.jpg?itok=Rm7ifGjj",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-25T13:18:00.000Z",
+      "firstSeenAt": "2026-11-25T14:18:24.405Z",
+      "lastSeenAt": "2026-11-25T14:18:24.405Z"
+    },
+    {
+      "id": "event-72523329",
+      "category": "brasil",
+      "title": "IBGE: coleta seletiva avança e atinge 2.675 municípios brasileiros",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/ibge-coleta-seletiva-avanca-e-atinge-2675-municipios-brasileiros",
+      "description": "A coleta seletiva avançou no país e atinge 2.675 municípios brasileiros entre aqueles que informaram a existência do serviço de limpeza urbana e manejo de resíduos sólidos (48,1% do total). Em 2008, esse número era de 994 municípios (17,9%). A coleta seletiva é um sistema de recolhimento de resíduos sólidos que separa os materiais recicláveis dos não recicláveis, facilitando seu reaproveitamento pelos catadores e pelas indústrias de reciclagem. Notícias relacionadas: Especialista alerta para urgência do saneamento na crise climática. Universalização do saneamento na Amazônia pode gerar R$ 330 bilhões. A informação está na Pesquisa Nacional de Saneamento Básico: Limpeza Urbana e Manejo de Resíduos Sólidos e Drenagem e Manejo de Águas Pluviais (2024) divulgada pelo Instituto Brasileiro de Geografia e Estatística (IBGE) nesta quarta-feira (25). A Região Norte apresentou o menor percentual de municípios com o serviço de coleta seletiva, (24,7% do total na região). Na sequência vieram as regiões Nordeste (33,4%); Centro-Oeste (38,8%); Sudeste (54,0%) e Sul (74,5%). O processamento de resí",
+      "imageUrl": "https://imagens.ebc.com.br/wqdN7lB9EhZtRno4U2lpT07Qqjw=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/plastic_bank_-_coletores_vidigal_1_0.jpeg?itok=rMGqRFiT",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-25T13:02:00.000Z",
+      "firstSeenAt": "2026-11-25T14:18:24.405Z",
+      "lastSeenAt": "2026-11-25T14:18:24.405Z"
+    },
+    {
+      "id": "event-ff145315",
+      "category": "brasil",
+      "title": "Justiça derruba liminar que suspendia novas regras para VA e VR",
+      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/justica-derruba-liminar-que-suspendia-novas-regras-para-va-e-vr",
+      "description": "O desembargador Alexandre Jorge Fontes Laranjeira, do Tribunal Regional Federal da 1ª Região (TRF1), derrubou decisão provisória que suspendia a aplicação de novas regras para as empresas de vale alimentação (VA) e vale refeição (VR). A liminar que suspendeu parte das regras havia sido concedida em 9 de novembro, dias depois da entrada em vigor de uma série de mudanças determinadas pelo governo no Programa de Alimentação do Trabalhador (PAT), que abrange a utilização de VA e VR Notícias relacionadas: Recebimento de vales-alimentação e refeição mudam a partir do dia 7. Justiça suspende regra que ampliou aceitação de VR e VA em maquininhas. Para o desembargador, a suspensão das novas regras não se justifica, uma vez que a Associação Brasileira das Empresas de Benefícios ao Trabalhador (ABBT) acionou a Justiça Federal mais de 180 dias depois de publicado o decreto com as novas regras, o que esvazia a necessidade de uma decisão urgente. O decreto foi publicado em 12 de novembro do ano passado, enquanto a ação sobre o assunto somente foi ajuizada em 25 de setembro deste ano, “circunstânci",
+      "imageUrl": "https://imagens.ebc.com.br/oLW-gljrAhKcAdwOrlAstFMgr4E=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2025/11/12/_d6a9161.jpg?itok=G4SyTJc-",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-25T12:53:00.000Z",
+      "firstSeenAt": "2026-11-25T14:18:24.405Z",
+      "lastSeenAt": "2026-11-25T14:18:24.405Z"
+    },
+    {
+      "id": "event-f4efed7a",
+      "category": "santa-catarina",
+      "title": "Chuvas intensas provocam ocorrências em Xanxerê e região",
+      "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxNT19hNVlnYV9QdVNRb05vYjNLWWNVcEFEVTZvakt3T3hDZ2RXeWh4MTU5WFljdVFraGdyX1pIUmJvUmlPeEhfVEhibDRwbW05bWZNTWhyaDB0ZjFyd3ZRWl9jWm1Sb2xjYVNWb3FVNHdrRTNPdW05TVM5SUpIUVdvVVVGblY2NHdZS0Y4NThjUkNCR3lXU0pVQkNoUnY1UVdEblJ5VFpMVWRDQXZocUNpc0VB",
+      "description": "Chuvas intensas provocam ocorrências em Xanxerê e região &nbsp;&nbsp; Tudo Sobre Xanxerê",
+      "imageUrl": null,
+      "source": "Tudo Sobre Xanxerê",
+      "publishedAt": "2026-11-25T12:51:00.000Z",
+      "firstSeenAt": "2026-11-25T14:18:24.405Z",
+      "lastSeenAt": "2026-11-25T14:18:24.405Z"
+    },
+    {
+      "id": "event-c68e4bf2",
+      "category": "mundo",
+      "title": "Três Pontos: Simone Deos é a convidada especial desta quarta",
+      "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxNeW04YkFGWUZ6aHRHWUdna216b2VZTk5DVk1hTWhocngtYXV2SEplYnd0WDBPbDNkT0ZOZElXMHduaW13eXFjNmlJbG8tcjk2Z2xmajhVMWs0S3ZSc0h2RXJFMThHNmh3QzRfSXJEYUNtRnduellSQ1FqWk1xZHF5cnJSZnp3VEoxbmJUVjZ2WE1kazJUZmRjbldPR2JwV1F2QjFDUndkNllueVR4Mnl3cGRYdEtsNDNv",
+      "description": "Três Pontos: Simone Deos é a convidada especial desta quarta &nbsp;&nbsp; Rádio Metrópole",
+      "imageUrl": null,
+      "source": "Rádio Metrópole",
+      "publishedAt": "2026-11-25T12:51:00.000Z",
+      "firstSeenAt": "2026-11-25T14:18:24.405Z",
+      "lastSeenAt": "2026-11-25T14:18:24.405Z"
+    },
+    {
+      "id": "event-f66278c4",
+      "category": "mundo",
+      "title": "Aloha Spirit Festival confirma calendário de 2027 celebrando muita história",
+      "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxPYUtYSDlON3RPdjI5UXFtdjBNeGZ4YkJNaFhjX194TW5lMDdYVXFKRlFCeW16QlN1NlVFUElhRnJfeFZiSXVpV1JzUzA1OWdSdEM3NkJobEswLS1TaGdiOHo0ajk0OURKQWd6aDVtTzFadHVQa182dVNxU0tzWHVXZ1Y2YWNNcURvMWdfWUdLQS1ZVjdRR01Hb0w2ZFU3QVkwbUxNSkRyWXY4RTRGalZyd1FYZktNUWpTSTdRUQ",
+      "description": "Aloha Spirit Festival confirma calendário de 2027 celebrando muita história &nbsp;&nbsp; Aloha Spirit Mídia",
+      "imageUrl": null,
+      "source": "Aloha Spirit Mídia",
+      "publishedAt": "2026-11-25T12:32:07.000Z",
+      "firstSeenAt": "2026-11-25T14:18:24.405Z",
+      "lastSeenAt": "2026-11-25T14:18:24.405Z"
+    },
+    {
+      "id": "event-2d61faf7",
+      "category": "clima",
+      "title": "El Niño pode bater recorde desde 1950 e ameaça chuvas na Amazônia",
+      "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxOVUp1dVBLWHBJbVRUSVdWSzl2Q0cyRUlRRUU1c2ZSbjQxSTJ1R2hMdGlpbDhCRjFYWXpwWFpaaGg2WGFYYm5PSng4NVFURXctZGhqZzZnNXR5Q0VqWTc5ZEQtS3ozODUtc1Z2UXhUbkNzcHY0VlFwY0dmSGNBTFlhWk93a2MtVUszNHJhY3dtUzhFbkU",
+      "description": "El Niño pode bater recorde desde 1950 e ameaça chuvas na Amazônia &nbsp;&nbsp; Revista Amazônia",
+      "imageUrl": null,
+      "source": "Revista Amazônia",
+      "publishedAt": "2026-11-25T11:31:00.000Z",
+      "firstSeenAt": "2026-11-25T14:18:24.405Z",
+      "lastSeenAt": "2026-11-25T14:18:24.405Z"
+    },
+    {
+      "id": "event-1e1419b5",
+      "category": "clima",
+      "title": "O El Niño voltou a ganhar força no Oceano Pacífico Equatorial depois de uma breve desaceleração observada entre o fim de outubro e o início de novembro. Conforme a MetSul Meteorolo",
+      "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5WZ244M3VMdlF3LUdNcWl2bWlsSUhxbU9jTUZsWlZJZWE5aUlmY1NzaDhmdW9iZXg5TmppTjJsem9RYkhGdXVOS1NLT2xRclN5Q3c",
+      "description": "O El Niño voltou a ganhar força no Oceano Pacífico Equatorial depois de uma breve desaceleração observada entre o fim de outubro e o início de novembro. Conforme a MetSul Meteorologia, os dados semanais da NOAA mostram que a temperatura da sup &nbsp;&nbsp; Instagram",
+      "imageUrl": null,
+      "source": "Instagram",
+      "publishedAt": "2026-11-25T11:14:05.000Z",
+      "firstSeenAt": "2026-11-25T14:18:24.405Z",
+      "lastSeenAt": "2026-11-25T14:18:24.405Z"
+    },
+    {
+      "id": "event-9106e3c6",
+      "category": "africa",
+      "title": "África está agora a partir-se onde ninguém esperava - ZAP Notícias",
+      "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxNOWNjdlprc1dPZ20tS0I4aF9sYXdoS2t4QmpYRGk4cUVQemNRTEFvaVIxMU9fUFdJd21Vb0lUbU9XZDF0bm1tLWhRXy12NW9qNkwzRUxMMV9UQnVKR0NCN3JRcVY1TWliZ3ZjU3JtczFldzM0Rm8ySXV5QXdZbGktNlJ0RDdDUQ",
+      "description": "África está agora a partir-se onde ninguém esperava &nbsp;&nbsp; ZAP Notícias",
+      "imageUrl": null,
+      "source": "ZAP Notícias",
+      "publishedAt": "2026-11-25T08:50:00.000Z",
+      "firstSeenAt": "2026-11-25T14:18:24.405Z",
+      "lastSeenAt": "2026-11-25T14:18:24.405Z"
+    },
+    {
+      "id": "event-e8b458da",
+      "category": "clima",
+      "title": "Maior parte do Brasil está sob alerta para tempestades nesta quarta (25)",
+      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxNSkRneG9WRHVwUzZIVlE2N0IyQ1hSeXBidHRiUV9FMm9OOGQySU44Z1U0eGxSUE1TbEhJajBmSzZITWFKV2tuYTVKM1lEMUJibVFnNi1abFYyeEtzRGtnMXI0aVIwaE56OUVBYndEUHVkX0hjQVROODNsTkliODFrQWxoTVhwRjh1VHI0Vi03aXlMYzk3b3JnX05lTmZuRHZ4RlZIM0FYa0k1b29zLU1yeUJSVEhSeTA",
+      "description": "Maior parte do Brasil está sob alerta para tempestades nesta quarta (25) &nbsp;&nbsp; CNN Brasil",
+      "imageUrl": null,
+      "source": "CNN Brasil",
+      "publishedAt": "2026-11-25T07:18:42.000Z",
+      "firstSeenAt": "2026-11-25T14:18:24.405Z",
+      "lastSeenAt": "2026-11-25T14:18:24.405Z"
+    },
     {
       "id": "event-ddd0e68c",
       "category": "brasil",
@@ -91,6 +235,30 @@
       "publishedAt": "2026-11-24T23:23:00.000Z",
       "firstSeenAt": "2026-11-25T04:10:35.018Z",
       "lastSeenAt": "2026-11-25T04:10:35.018Z"
+    },
+    {
+      "id": "event-728eb07",
+      "category": "santa-catarina",
+      "title": "Frente fria coloca SC em alerta para temporais e chuva intensa nesta terça e quarta-feira",
+      "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxNS1EyUE1xWGgtZXEzdW9sZHZJcldoaS1YdU00aDBlSFN1cXVTdDNVM0NURkN3eDYxUlZ3Tk1NVHJ2TXhvLTdTa1BuOWJsM09oN0RYdms3T3pLOWxEZDF3TkVKS1VoeExQMHFCeTl5UEVMRUJ5Nk1VeW10emRMaGRhSUItYS1PaGwzRHFKcDBvbHFubmhNMmF4bUdIUEpTT0RwSjVENHFXaHJMdTItSmdSNkpFaUZuODE4dHZXZTI0UEp6Tm9mejgtUGdoQ2E3REV4Qzdv",
+      "description": "Frente fria coloca SC em alerta para temporais e chuva intensa nesta terça e quarta-feira &nbsp;&nbsp; Folha Regional",
+      "imageUrl": null,
+      "source": "Folha Regional",
+      "publishedAt": "2026-11-24T23:09:24.000Z",
+      "firstSeenAt": "2026-11-25T14:18:24.405Z",
+      "lastSeenAt": "2026-11-25T14:18:24.405Z"
+    },
+    {
+      "id": "event-cf682cf2",
+      "category": "santa-catarina",
+      "title": "SC mantém alerta para chuva intensa nesta quarta-feira (25)",
+      "url": "https://news.google.com/rss/articles/CBMifEFVX3lxTE05NHdqUEVnN29kN25Ja0pwbzBEalZyTlh5Uk9pVmlxQVFWdGJKWExyRDN0YTFfSjRKTmM1eDJFSUJENlFNb3BtQWJ0Ty15YnA4LWVERVFfbTlHOF8tSFMzclpITE11UjhuVm5zZGlmZmJvUEZZd3paaGxzOTY",
+      "description": "SC mantém alerta para chuva intensa nesta quarta-feira (25) &nbsp;&nbsp; Testo Notícias",
+      "imageUrl": null,
+      "source": "Testo Notícias",
+      "publishedAt": "2026-11-24T23:04:08.000Z",
+      "firstSeenAt": "2026-11-25T14:18:24.405Z",
+      "lastSeenAt": "2026-11-25T14:18:24.405Z"
     },
     {
       "id": "event-b779c494",
@@ -271,109 +439,9 @@
       "publishedAt": "2026-11-24T14:43:00.000Z",
       "firstSeenAt": "2026-11-24T21:00:35.624Z",
       "lastSeenAt": "2026-11-24T21:00:35.624Z"
-    },
-    {
-      "id": "event-e655c962",
-      "category": "santa-catarina",
-      "title": "Frente fria traz chuva forte a Santa Catarina entre terça e quarta-feira",
-      "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxQQXQ0a0pVTHNtSmszMzBaamducnhkUlpHdVc3TkM2Zy1udnJKZ2NlQW41eTdaRE5Wckd6Y3dvSG5LQWtpbkVwR0NoblNBcG93RnY0NzhlTU9RaWlvel9MUFhYRmlYaWV4Smg4RHpwTTZ2SHNQSnU4Qkd3a2tYLUhmS2tLdjAzT1dJaFZ2VmJQRkIyT3BGMkMtLTZVM0M5Mm4wa1Y4M2dCVm9uZkw1TFk3R3dnbTV0OTN3b3lRZ0RSVHk4WGhmQ1Q0",
-      "description": "Frente fria traz chuva forte a Santa Catarina entre terça e quarta-feira &nbsp;&nbsp; Tudo Sobre Xanxerê",
-      "imageUrl": null,
-      "source": "Tudo Sobre Xanxerê",
-      "publishedAt": "2026-11-24T11:53:00.000Z",
-      "firstSeenAt": "2026-11-24T21:00:35.624Z",
-      "lastSeenAt": "2026-11-24T21:00:35.624Z"
-    },
-    {
-      "id": "event-f870e363",
-      "category": "brasil",
-      "title": "Mega-Sena sorteia prêmio de R$ 65 milhões nesta terça-feira",
-      "url": "https://agenciabrasil.ebc.com.br/geral/noticia/2026-11/mega-sena-sorteia-premio-de-r-65-milhoes-nesta-terca-feira",
-      "description": "A Mega-Sena sorteia nesta terça-feira (24) prêmio estimado em R$ 65 milhões. As seis dezenas do concurso 3.090 serão sorteadas a partir das 21h (horário de Brasília) no Espaço da Sorte, em São Paulo. As apostas podem ser feitas até às 20h (horário de Brasília) em casas lotéricas credenciadas pela Caixa em todo o país ou pela internet, no site ou aplicativo da Caixa. A aposta simples, com seis dezenas, custa R$ 6. Notícias relacionadas: Mega da Virada: Caixa anuncia que prêmio deve superar R$ 1 bilhão. No último concurso, foram sorteados os números 17, 18, 27, 36, 58 e 59 e nenhuma aposta acertou as seis dezenas .",
-      "imageUrl": "https://imagens.ebc.com.br/NI0hmU2ObG3i_RPjHekxclU6KSE=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/mega_sena-111220202168.jpg?itok=h3fJuH0H",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-24T10:02:00.000Z",
-      "firstSeenAt": "2026-11-24T10:58:09.451Z",
-      "lastSeenAt": "2026-11-24T10:58:09.451Z"
-    },
-    {
-      "id": "event-6acb51f6",
-      "category": "brasil",
-      "title": "Metodologia da Abin mostra diferenças entre organizações criminosas",
-      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/metodologia-da-abin-mostra-diferencas-entre-organizacoes-criminosas",
-      "description": "A Agência Brasileira de Inteligência (Abin) desenvolveu uma metodologia para identificar e analisar as organizações criminosas consideradas mais relevantes para a dinâmica criminal do país. Segundo a Abin, o levantamento permitiu compreender particularidades de cada organização criminosa, identificando como cada grupo atua, quais danos produz e de que forma se diferencia dos demais. Notícias relacionadas: Classificar PCC e CV como terroristas favorece o crime, diz secretário. O trabalho, feito em parceria com o Fórum Brasileiro de Segurança Pública (FBSP), deu origem ao estudo Cenários do Crime Organizado no Brasil, apresentado nesta segunda-feira (23) pela Abin aos demais órgãos integrantes do Sistema Brasileiro de Inteligência (Sisbin). Particularidades Segundo a Abin, o levantamento permitiu compreender particularidades de cada organização criminosa, identificando como cada grupo atua, quais danos produz e de que forma se diferencia dos demais. De acordo com o estudo, diferentes organizações criminosas apresentam estruturas, estratégias e formas de atuação distintas. A identificaç",
-      "imageUrl": "https://imagens.ebc.com.br/1Q7JR_ZFf7h3dphK_EtNGwd7YiE=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2025/10/28/2025-10-28t151656z_1384057025_rc22lhauapg0_rtrmadp_3_brazil-violence_0.jpg?itok=R1nsTYfx",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-24T09:01:00.000Z",
-      "firstSeenAt": "2026-11-24T10:58:09.451Z",
-      "lastSeenAt": "2026-11-24T10:58:09.451Z"
-    },
-    {
-      "id": "event-5ebea710",
-      "category": "brasil",
-      "title": "Brasil tem 31 organizações criminosas relevantes, aponta Abin",
-      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/brasil-tem-31-organizacoes-criminosas-relevantes-aponta-abin",
-      "description": "A Agência Brasileira de Inteligência (Abin) identificou 31 organizações criminosas relevantes e 75 células estaduais em um levantamento sobre os cenários do crime organizado no Brasil. O material foi apresentado na segunda-feira (23) aos órgãos integrantes do Sistema Brasileiro de Inteligência (Sisbin). O estudo, chamado de Cenários do Crime Organizado no Brasil, aponta: Consolidação de três grupos com atuação nacional; Expansão do Comando Vermelho (CV) no Norte e Nordeste; e Crescimento do Terceiro Comando Puro (TCP) como terceira via entre os principais grupos criminosos do país. Notícias relacionadas: AGU busca recuperar R$ 190 milhões de integrantes do PCC e do CV . Classificar PCC e CV como terroristas favorece o crime, diz secretário. Segundo a Abin, o levantamento utilizou uma metodologia desenvolvida em parceria com o Fórum Brasileiro de Segurança Pública (FBSP) para identificar as organizações consideradas “mais relevantes” para a dinâmica criminal do país. Foram analisados fatores como influência territorial, capacidade econômica e operacional dos grupos – excluindo organiz",
-      "imageUrl": "https://imagens.ebc.com.br/XgmY5H7CHlFfi0ub08oSCF3aEMw=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/atoms/image/1049422-1_10102016-_dsc7151.jpg?itok=eip5wC1m",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-24T09:00:00.000Z",
-      "firstSeenAt": "2026-11-24T10:58:09.451Z",
-      "lastSeenAt": "2026-11-24T10:58:09.451Z"
-    },
-    {
-      "id": "event-1bf78f1",
-      "category": "clima",
-      "title": "\"Super\" El Niño pode permanecer forte no outono de 2027 e bater recorde histórico: “Nunca observado”",
-      "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxOVGJveF8zS25Dc1RzRm1JTGg2ZUtKSEJSSEN5dl90N25DWkk5Z2FZZjRBUnZiMDlscVhFdXlEaENndWtWZkxoT0NKNUxjSHpLQ2h0Q3AyeVRpSHZUVjlodGRDYWJ1S2MzYXd0QWJLLTVKQXpvcU5JbUZlN1VfaXFQS3g2UVdRbkJKQ2xaa2FPdTU2SzRNSW1sdXM0WTlkTzYzTGJlTkI4Ri1vdDlXbWtsU2pvN01XVi10NzRJSFZNbUc1d2dDdEtvTg",
-      "description": "\"Super\" El Niño pode permanecer forte no outono de 2027 e bater recorde histórico: “Nunca observado” &nbsp;&nbsp; NSC Total",
-      "imageUrl": null,
-      "source": "NSC Total",
-      "publishedAt": "2026-11-24T09:00:00.000Z",
-      "firstSeenAt": "2026-11-24T10:58:09.451Z",
-      "lastSeenAt": "2026-11-24T10:58:09.451Z"
-    },
-    {
-      "id": "event-e84b6b6c",
-      "category": "mundo",
-      "title": "Conferência da ONU termina sem consenso para regular armas autônomas",
-      "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxQSTFpYmFkdzE3T1N6QlRHbUdSMG42S2Zxa0dENlBZdmY3WEk3WHVtSTZicEh5SUdxZnFqZ3hYQ3hjc0JXOXVxb3NTTUdwRjNyZ0xtN3hKZG1ReS1vWm5GeURBbTZNR29SR1U5V3lHT1F0NlRERDg5bHNGUHNqZUhpZXhYcE96UzZsQ0RoSnYzLXl3WWVkSmlyT3p5WTluOFNkRGItcUl3anpJRkh1bjBUTWdLMnFNVldVVlE",
-      "description": "Conferência da ONU termina sem consenso para regular armas autônomas &nbsp;&nbsp; Folha de S.Paulo",
-      "imageUrl": null,
-      "source": "Folha de S.Paulo",
-      "publishedAt": "2026-11-24T09:00:00.000Z",
-      "firstSeenAt": "2026-11-24T10:58:09.451Z",
-      "lastSeenAt": "2026-11-24T10:58:09.451Z"
-    },
-    {
-      "id": "event-600d9bd3",
-      "category": "mundo",
-      "title": "Jogos de hoje: quem joga no futebol e onde assistir ao vivo – terça-feira (24/11/2026)",
-      "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxObEd4bEswTkl0dHl4U25ia28xZjdUd202SlVUQURwYXVqSHotTndlZmxMZmJVWG15YXJoVlJCMzE4dGtXUnlvTG9VVVVjWTU4R00wcm42bFdkVzRnVF92Tm1VUXB5YkZNeC1CNnhuWGZSRnoxbG1qZ1VDUHhLT3h2dVNXbktQbHB1cUh5aVpLS3lxTWd5VGtMMTdjM091UTk0UEQ0V21RNkFRb3l5c05kTjcwYTRiV0RLdGY4N003aGRnSGM",
-      "description": "Jogos de hoje: quem joga no futebol e onde assistir ao vivo – terça-feira (24/11/2026) &nbsp;&nbsp; LANCE!",
-      "imageUrl": null,
-      "source": "LANCE!",
-      "publishedAt": "2026-11-24T08:30:00.000Z",
-      "firstSeenAt": "2026-11-24T10:58:09.451Z",
-      "lastSeenAt": "2026-11-24T10:58:09.451Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-24T10:58:09.451Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 14,
-      "newArticles": 9,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "europa"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-24T21:00:35.624Z",
       "ok": true,
@@ -407,14 +475,31 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-25T14:18:24.405Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 14,
+      "newArticles": 14,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "europa",
+        "africa"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 3,
-  "lastSuccessfulAt": "2026-11-25T04:10:35.018Z",
+  "lastSuccessfulAt": "2026-11-25T14:18:24.405Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-25T04:10:35.018Z",
+      "checkedAt": "2026-11-25T14:18:24.405Z",
       "warnings": [
         {
           "id": "56503",
@@ -431,6 +516,20 @@
           "url": "https://avisos.inmet.gov.br/"
         },
         {
+          "id": "56505",
+          "title": "Chuvas Intensas",
+          "severity": "Perigo Potencial",
+          "phase": "previsto",
+          "regions": [
+            "DO",
+            "DO"
+          ],
+          "startsAt": "2026-11-27T00:00:00.000Z",
+          "endsAt": "2026-11-27T00:00:00.000Z",
+          "source": "INMET",
+          "url": "https://avisos.inmet.gov.br/"
+        },
+        {
           "id": "56502",
           "title": "Chuvas Intensas",
           "severity": "Perigo Potencial",
@@ -443,12 +542,25 @@
           "endsAt": "2026-11-26T00:00:00.000Z",
           "source": "INMET",
           "url": "https://avisos.inmet.gov.br/"
+        },
+        {
+          "id": "56507",
+          "title": "Baixa Umidade",
+          "severity": "Perigo Potencial",
+          "phase": "previsto",
+          "regions": [
+            "DO"
+          ],
+          "startsAt": "2026-11-26T00:00:00.000Z",
+          "endsAt": "2026-11-26T00:00:00.000Z",
+          "source": "INMET",
+          "url": "https://avisos.inmet.gov.br/"
         }
       ]
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-25T04:10:35.018Z",
+      "checkedAt": "2026-11-25T14:18:24.405Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
