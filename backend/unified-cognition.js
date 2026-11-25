@@ -13,6 +13,20 @@ export function shouldUseCollaborativeReasoning({message,taskClass,privateContex
  if(!COMPLEX.test(q)||UNSAFE.test(q))return false;
  return q.length>=60&&q.length<=3500;
 }
+// A secondary model is only a stylistic reviewer. It must not erase evidence
+// from a grounded answer or silently assert certainty absent in the first pass.
+const extractLinks=text=>[...new Set(String(text||"").match(/https?:\/\/[^\s<>()[\]{}"']+/g)||[])].map(x=>x.replace(/[.,;!?]+$/,""));
+const UNCERTAIN=/\b(?:nao (?:foi possivel|posso|consigo|ha)|sem (?:evidencia|confirmacao|dados)|nao (?:confirmado|verificado)|pendente|indisponivel|incerto|nao tenho certeza|not (?:verified|confirmed)|unavailable|uncertain)\b/i;
+const assertionNormalize=value=>String(value||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+export function reviewPreservesEvidence(initial,refined){
+ const original=String(initial||"").trim(),candidate=String(refined||"").trim();
+ if(!original||!candidate)return false;
+ const citations=extractLinks(original);
+ if(citations.some(link=>!candidate.includes(link)))return false;
+ const uncertain=UNCERTAIN.test(assertionNormalize(original));
+ if(uncertain&&!UNCERTAIN.test(assertionNormalize(candidate)))return false;
+ return true;
+}
 function alternateProviderEnv(env,firstProvider,aiBinding){
  const disabled=String(env?.AI_DISABLED_PROVIDERS||"").split(",").map(x=>x.trim().toLowerCase()).filter(Boolean);
  const order=ACTIVE.filter(name=>name!==firstProvider&&!disabled.includes(name)&&!isProviderDisabled(env,name) &&
@@ -61,7 +75,8 @@ export async function generateUnifiedResponse({
  ].join("\n\n");
  try{
   const refined=await generate(alternate,reviewPrompt,telemetry,{aiBinding});
-  if(!refined?.text||!ACTIVE.includes(refined.provider)||refined.provider===initial.provider)return base;
+  if(!refined?.text||!ACTIVE.includes(refined.provider)||refined.provider===initial.provider||
+     !reviewPreservesEvidence(initial.text,refined.text))return base;
   return {
    ...refined,
    providerLabel:"J.A.R.V.I.S.",
