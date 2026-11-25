@@ -382,3 +382,33 @@ body.jarvis-command-center .ultron-evidence-timeline-list li{
 }
 body.jarvis-command-center .ultron-evidence-timeline-list li p{margin:2px 0 5px}
 body.jarvis-command-center .ultron-evidence-timeline-list small{color:#a7c9dc}
+
+
+/* Passive public-news updates inside the Neural Ring answer, no popup or push. */
+body.jarvis-command-center .ultron-world-news-alerts{
+ display:grid;gap:7px;padding:10px 0;margin:10px 0;
+ border-top:1px solid #35536a;min-width:0
+}
+body.jarvis-command-center .ultron-world-news-alerts>h3{
+ margin:0;font:700 12px/1.4 system-ui,sans-serif;color:#c2eaff
+}
+body.jarvis-command-center .ultron-world-news-alerts>p{
+ margin:0;font:11px/1.45 system-ui,sans-serif;color:#a8c2d2
+}
+body.jarvis-command-center .ultron-world-news-alert{
+ background:rgba(6,27,44,.75);border:1px solid #406079;border-radius:7px;
+ overflow:hidden;min-width:0
+}
+body.jarvis-command-center .ultron-world-news-alert summary{
+ padding:9px;cursor:pointer;color:#e2f3fb;font:600 12px/1.4 system-ui,sans-serif;
+ overflow-wrap:anywhere;touch-action:manipulation
+}
+body.jarvis-command-center .ultron-world-news-alert summary:focus-visible{
+ outline:2px solid #8de5ff;outline-offset:-2px
+}
+body.jarvis-command-center .ultron-world-news-alert>div{
+ padding:9px;color:#bfd7e3;font:11px/1.4 system-ui,sans-serif;overflow-wrap:anywhere
+}
+body.jarvis-command-center .ultron-world-news-alert>div p{margin:0 0 5px}
+body.jarvis-command-center .ultron-world-news-alert ul{padding-left:18px;margin:6px 0 0}
+body.jarvis-command-center .ultron-world-news-alert a{color:#8de5ff;overflow-wrap:anywhere}
