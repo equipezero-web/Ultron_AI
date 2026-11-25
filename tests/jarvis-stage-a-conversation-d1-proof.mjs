@@ -7,6 +7,15 @@ import {interfacePreferenceIntent} from "../backend/jarvis-memory-intents.js";
 const message="Lembre-se de que minha preferência de interface para este teste é azul-marinho.";
 assert.equal(explicitMemoryCandidate(message),message);
 assert.equal(explicitMemoryCandidate("Qual é a minha preferência de interface para este teste?"),null);
+for(const secret of [
+ "Lembre que minha senha é super-secreta-123",
+ "Guarde isso: meu token de acesso é abcdefghijkl",
+ "Lembre que minha API key é secret-value",
+ "Não esqueça meu CPF 123.456.789-00",
+ "Lembre-se de que minha chave privada começa com -----BEGIN PRIVATE KEY-----"
+])assert.equal(explicitMemoryCandidate(secret),null,"Do not store sensitive data as long-term memory");
+assert.equal(explicitMemoryCandidate("Lembre que meu projeto é sobre meteorologia."),"Lembre que meu projeto é sobre meteorologia.");
+
 assert.equal(shouldResearchBeforeAnswer(message).needed,false);
 
 const operator="operator-A";
