@@ -99,10 +99,11 @@ assert.equal(directPlan("Qual a previsão do tempo em Recife?"),null,"Questions 
 assert.equal(directPlan("JARVIS não mostre o mapa do tempo em Recife"),null,"Negated commands are not executed");
 // Regression: the observed monitoring command must not resolve to system.status.
 const monitorRequest="J.A.R.V.I.S., apresente as atualizações monitoradas da Inteligência Mundial, informe quando ocorreu a última coleta e mostre os acontecimentos que receberam novas fontes.";
-assert.deepEqual(directPlan(monitorRequest)?.steps,[{action:"news.monitor.status",args:{}}]);
-assert.deepEqual(directPlan("JARVIS, consulte os alertas de notícias")?.steps,[{action:"news.monitor.status",args:{}}]);
+assert.deepEqual(directPlan(monitorRequest)?.steps,[{action:"news.monitor.status",args:{mode:"overview"}}]);
+assert.deepEqual(directPlan("JARVIS, consulte os alertas de notícias")?.steps,[{action:"news.monitor.status",args:{mode:"alerts"}}]);
 assert.deepEqual(directPlan("JARVIS, verifique o status do sistema")?.steps,[{action:"system.status",args:{}}]);
-assert.deepEqual(validatePlan({steps:[{action:"news.monitor.status",args:{}}]})?.steps,
- [{action:"news.monitor.status",args:{}}]);
+assert.deepEqual(validatePlan({steps:[{action:"news.monitor.status",args:{mode:"diagnostics"}}]})?.steps,
+ [{action:"news.monitor.status",args:{mode:"diagnostics"}}]);
 assert.notEqual(directPlan("JARVIS, atualize as notícias")?.steps?.[0]?.action,"news.monitor.status");
+assert.deepEqual(directPlan("J.A.R.V.I.S., consulte o monitoramento de notícias e informe o diagnóstico das fontes utilizadas na última coleta.")?.steps,[{action:"news.monitor.status",args:{mode:"diagnostics"}}]);
 console.log("PHASE 4 PASS: live-data normalization, attribution, freshness, SSRF restrictions, weather routing, sequenced map commands and model labels");

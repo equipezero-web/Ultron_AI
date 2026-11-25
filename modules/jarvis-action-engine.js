@@ -12,6 +12,7 @@ import {loadWeatherInsight} from "../backend/weather-intelligence.js?v=4.75.0";
 import {insightSummary,insightScenario,monitorSummary} from "./jarvis-weather-insight-model.js?v=4.75.0";
 import {classifyOperatorTurn} from "./jarvis-intent-engine.js?v=4.69.0";
 import API_CONFIG from "../config.js";
+import {newsMonitorQueryMode,formatNewsMonitorReply} from "../backend/news-monitor-response.js";
 import {validatePlan,isActionRequest} from "../backend/action-catalog.js?v=4.75.0";
 import {normalizeCommand} from "./jarvis-local-commands.js?v=5.10.0";
 const W=()=>window;
@@ -27,7 +28,7 @@ export function directPlan(message){
  if(/\b(?:monitorad[ao]s?|monitoramento|alertas?|coleta|coletas|novas fontes)\b/.test(q)&&
     /\b(?:noticias?|acontecimentos?|inteligencia mundial|fontes|ultima coleta)\b/.test(q)&&
     /\b(?:apresente|mostre|informe|liste|consulte|verifique|qual|quando|status|estado|houve|tem|existem)\b/.test(q))
-   return {steps:[action("news.monitor.status")]};
+   return {steps:[action("news.monitor.status",{mode:newsMonitorQueryMode(message)})]};
 
  // Scientific visualizations require a known, cited dataset. Bare model
  // guesses must never become mapped "risk scores".
@@ -370,36 +371,7 @@ async function executeStep(step,original){
      report=await response.json();
      if(!response.ok||!report?.ok)throw Error("Consulta do monitor mundial indisponível no backend");
    }finally{clearTimeout(timer);}
-   const lines=["J.A.R.V.I.S. // MONITOR MUNDIAL DE NOTÍCIAS"];
-   const run=report.latestRun;
-   if(run){
-     lines.push("Última coleta: "+String(run.checkedAt||"não informada")+
-       ". Situação: "+String(run.status||"não informada")+
-       ". Artigos: "+Number(run.articleCount||0)+".");
-     if(!report.scheduledRunObserved)
-       lines.push("Execução automática do cron ainda não confirmada; a coleta pode ter sido feita sob demanda.");
-   }else{
-     lines.push("Última coleta: nenhuma execução registrada no D1.");
-   }
-   if(report.bootstrap?.attempted)
-     lines.push("Inicialização sob demanda: "+(report.bootstrap.ok?"registrada":"não concluída")+".");
-
-   const alerts=(Array.isArray(report.alerts)?report.alerts:[]).slice(0,6);
-   if(!alerts.length)lines.push("Nenhum alerta registrado de novas fontes nesta consulta; isso não comprova ausência de novidades.");
-   for(const alert of alerts){
-     const links=(Array.isArray(alert.sources)?alert.sources:[]).slice(0,3).map(source=>{
-       try{const link=new URL(String(source.url||""));
-         return ["https:","http:"].includes(link.protocol)&&!link.username&&!link.password?link.href:null;
-       }catch{return null;}
-     }).filter(Boolean);
-     lines.push(String(alert.title||"Acontecimento atualizado").slice(0,220)+
-       " — novas fontes: "+Number(alert.newSources||0)+
-       "; fontes modificadas: "+Number(alert.updatedSources||0)+
-       "; coletado em: "+String(alert.createdAt||"não informado")+
-       ". Fontes: "+(links.join("; ")||"indisponíveis"));
-   }
-   lines.push("O monitor registra mudanças em publicações; não verifica fatos independentemente.");
-   const text=lines.join("\n\n");
+   const text=formatNewsMonitorReply(report,{mode:a.mode});
    publish(text);return text;
  }
  case "system.status":{const status=await requireApi(w.ULTRON_CORE,"status").status();const text="Estado do sistema: "+JSON.stringify(status||{}).slice(0,1800);publish(text);return text;}
