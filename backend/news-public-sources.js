@@ -10,7 +10,7 @@ export async function collectPublicNewsFallback({
   agency({now,limit:Math.min(8,limit)}),
   camara({now,limit:Math.min(6,limit)})
  ]);
- const providers=[],seen=new Set(),articles=[];
+ const providers=[],seen=new Set(),articles=[],pools=[];
  const names=["agencia-brasil-rss","agencia-camara-rss"];
  for(let i=0;i<results.length;i++){
   const result=results[i],feed=result.status==="fulfilled"?result.value:null;
@@ -20,13 +20,32 @@ export async function collectPublicNewsFallback({
     String(result.reason?.message||result.reason||"unavailable").slice(0,120):
     feed?.diagnostics?.error||null,
    stale:feed?.diagnostics?.stale||0,invalid:feed?.diagnostics?.invalid||0});
+  const pool=[];
   for(const article of rows){
    if(!article?.url||seen.has(article.url))continue;
-   seen.add(article.url);articles.push(article);
+   seen.add(article.url);pool.push(article);
   }
+  pool.sort((a,b)=>Date.parse(b.publishedAt)-Date.parse(a.publishedAt));
+  pools.push(pool);
+ }
+ // Fair round-robin across sources: both publishers appear when both
+ // have valid articles, instead of truncating everything to the newest feed.
+ const max=Math.max(1,Math.min(12,limit)),offsets=pools.map(()=>0);
+ while(articles.length<max){
+  let added=false;
+  for(let i=0;i<pools.length&&articles.length<max;i++){
+   const next=pools[i][offsets[i]++];
+   if(!next)continue;
+   articles.push(next);added=true;
+  }
+  if(!added)break;
  }
  articles.sort((a,b)=>Date.parse(b.publishedAt)-Date.parse(a.publishedAt));
- return {ok:articles.length>0,articles:articles.slice(0,Math.max(1,Math.min(12,limit))),
-  diagnostics:{providers,providerCount:providers.filter(item=>item.ok).length,
+ const selectedByProvider=providers.map((p,i)=>({
+  provider:p.provider,count:articles.filter(a=>pools[i].includes(a)).length
+ }));
+ return {ok:articles.length>0,articles,
+  diagnostics:{providers,selectedByProvider,selectedCount:articles.length,
+   providerCount:providers.filter(item=>item.ok).length,
    distinctDomains:new Set(articles.map(a=>a.domain).filter(Boolean)).size}};
 }
