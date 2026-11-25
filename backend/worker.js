@@ -16,6 +16,7 @@ import {pollWeatherMonitor,latestWeatherMonitor} from "./weather-monitor.js";
 import {pollGlobalIntelligence,latestGlobalIntelligence,collectGlobalIntelligence} from "./global-intelligence-monitor.js";
 import {recordWorldEvidenceAudit} from "./news-evidence-audit.js";
 import {advanceWorldEventTimeline} from "./news-world-evolution.js";
+import {pollWorldNewsMonitor,latestWorldNewsAlerts} from "./world-news-monitor.js";
 import {pollTrendIntelligence,latestTrendIntelligence} from "./trend-intelligence.js";
 import {buildContinuityStatus} from "./continuity-status.js";
 import {configureWeatherWatch,listWeatherWatches,pollPersonalWeatherWatches} from "./weather-watchlist.js";
@@ -764,6 +765,19 @@ async function executeAiCore(env, body) {
     ? await recordWorldEvidenceAudit(env,newsState.eventCorrelation)
     : {saved:false,reason:"not-news"};
 
+  const worldNewsAlerts=newsState.active
+    ? await latestWorldNewsAlerts(env)
+    : {ok:false,alerts:[],reason:"not-news"};
+  if(newsState.active&&worldNewsAlerts.ok&&worldNewsAlerts.alerts.length){
+    newsState.contextText += "\n\nALERTAS RECENTES DO MONITOR MUNDIAL "+
+      "(mudanças de fontes, não fatos verificados):\n"+
+      JSON.stringify(worldNewsAlerts.alerts.slice(0,4).map(item=>({
+        title:item.title,createdAt:item.createdAt,
+        newSources:item.newSources,updatedSources:item.updatedSources,
+        sourceUrls:item.sources.map(source=>source.url)
+      })));
+  }
+
   // Same-conversation follow-ups use bounded recovered history, never a
   // client claim of completion or an implicit permission to execute tools.
   const lastAssistant = String(memoryState.lastAssistantMessage || '').trim();
@@ -948,7 +962,8 @@ async function executeAiCore(env, body) {
         fetchedAt: newsState.visualContext?.fetchedAt || null,
         eventCorrelation: newsState.eventCorrelation || null,
         evidenceAudit: newsAudit,
-        worldEvolution: worldEvolution.summary
+        worldEvolution: worldEvolution.summary,
+        worldNewsAlerts: worldNewsAlerts.ok?worldNewsAlerts:{ok:false,alerts:[],reason:worldNewsAlerts.reason}
       },
       visualContext,
       webResearch: fallbackResearch
@@ -1489,6 +1504,14 @@ export default {
       return new Response(JSON.stringify(report),{
         status:200,headers:{...corsHeaders(),
           "Cache-Control":"public, max-age=60",
+          "X-Content-Type-Options":"nosniff"}
+      });
+    }
+    if(path==="/api/intelligence/news-alerts"&&request.method==="GET"){
+      const report=await latestWorldNewsAlerts(env);
+      return new Response(JSON.stringify(report),{
+        status:report.ok?200:503,
+        headers:{...corsHeaders(),"Cache-Control":"public, max-age=60",
           "X-Content-Type-Options":"nosniff"}
       });
     }
@@ -2059,6 +2082,8 @@ export default {
   async scheduled(controller, env, ctx) {
     ctx.waitUntil(processDueAutomations(env, { limit: 50 }));
     ctx.waitUntil(pollWeatherMonitor(env).catch(error=>console.warn("JARVIS weather monitor unavailable",String(error?.message||error))));
+    ctx.waitUntil(pollWorldNewsMonitor(env).catch(error=>
+      console.warn("JARVIS world news monitor unavailable",String(error?.message||error))));
     ctx.waitUntil(pollGlobalIntelligence(env).catch(error=>
       console.warn("JARVIS global intelligence collection failed",String(error?.message||error))));
     ctx.waitUntil(pollTrendIntelligence(env).catch(error=>
