@@ -4,10 +4,166 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-25T14:18:24.405Z",
-  "oldestEventAt": "2026-11-24T14:43:00.000Z",
-  "windowStartAt": "2026-11-24T14:18:24.405Z",
+  "updatedAt": "2026-11-25T23:12:03.012Z",
+  "oldestEventAt": "2026-11-24T23:23:00.000Z",
+  "windowStartAt": "2026-11-24T23:12:03.012Z",
   "events": [
+    {
+      "id": "event-2b4aa42",
+      "category": "brasil",
+      "title": "Escultura de Naipi na Avenida Brasil será substituída",
+      "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxPMXVKZUkwdHdkRFl2SnN1cC15bDc5S3NoOTNmcHg1MU13X05ZYXNMaGxpaVVUYlN0bks0dURTQVNfYnUxb1VlcHZrMGV5NHQ2RGtuMk9kcnhZcThIQ0k4SW5aazZkWFAtdE5oTEZlZVkyb0RZNWNRLWxRWjhhVVlnX1ZrTVlaQk0yU0lSMDlLTQ",
+      "description": "Escultura de Naipi na Avenida Brasil será substituída &nbsp;&nbsp; H2FOZ",
+      "imageUrl": null,
+      "source": "H2FOZ",
+      "publishedAt": "2026-11-25T23:05:41.000Z",
+      "firstSeenAt": "2026-11-25T23:12:03.012Z",
+      "lastSeenAt": "2026-11-25T23:12:03.012Z"
+    },
+    {
+      "id": "event-e5a4552d",
+      "category": "brasil",
+      "title": "Dólar cai para R$ 5,81, em meio à discussão de nomes para Fazenda",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/dolar-cai-para-r-581-em-meio-discussao-de-nomes-para-fazenda",
+      "description": "Em dia de alívio no mercado financeiro, o dólar caiu cerca de 1,5% nesta quarta-feira (25), fechando próximo de R$ 5,82. A bolsa avançou 1,6%, aos 166,7 mil pontos. O mercado brasileiro reagiu às expectativas de novas medidas de ajuste fiscal e às discussões para a escolha do próximo ministro da Fazenda. No exterior, as bolsas estadunidenses tiveram desempenho misto e o petróleo fechou em alta. Notícias relacionadas: Governo deve renovar subsídio ao diesel por mais 30 dias. IBGE: coleta seletiva avança e atinge 2.675 municípios brasileiros. Confaz divulga preços médios de combustíveis para cálculo do ICMS. Principais números do dia Dólar comercial: R$ 5,8179 (-1,53%); Ibovespa: 166.674,67 pontos (+1,58%); Petróleo WTI para janeiro: US$ 83,68 (+1,99%); Petróleo Brent para janeiro: US$ 94,61 (+3,51%). Câmbio O dólar comercial fechou o dia em baixa de 1,53%, a R$ 5,818. Durante a sessão, a moeda chegou a subir e atingiu a máxima de R$ 5,95 nos primeiros minutos de negociação, mas passou a recuar ainda pela manhã e ampliou as perdas ao longo da tarde. A queda ocorreu apesar da valorizaçã",
+      "imageUrl": "https://imagens.ebc.com.br/HFstwjy7zSpn44qi13cjPPhd5Yc=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/02/28/2026-02-26t200758z_1_lynxmpem1p1ak_rtroptp_4_dollar-hedging-bny.jpg?itok=Ig_sdLcA",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-25T22:08:00.000Z",
+      "firstSeenAt": "2026-11-25T23:12:03.012Z",
+      "lastSeenAt": "2026-11-25T23:12:03.012Z"
+    },
+    {
+      "id": "event-507420f7",
+      "category": "brasil",
+      "title": "Com alerta de chuvas fortes, Rio suspende aulas na rede pública",
+      "url": "https://agenciabrasil.ebc.com.br/geral/noticia/2026-11/com-alerta-de-chuvas-fortes-rio-suspende-aulas-na-rede-publica",
+      "description": "Com alerta de fortes chuvas, o governo do Rio de Janeiro suspendeu as aulas em toda a rede estadual desde as 17h. A Faetec, a Universidade do Estado do Rio (Uerj) e a Universidade Federal do Rio de Janeiro (UFRJ) também suspenderam as aulas nesta quarta-feira. A Defesa Civil Estadual enviou durante a tarde alertas, via celular, para os moradores dos municípios de Sapucaia e São Gonçalo. Nas cidades de Teresópolis, Magé e Barra do Pirai, as sirenes foram acionadas. Notícias relacionadas: Temporais deixam mortos e desabrigados no Paraná. Tempestades e frente fria devem atingir Centro-Sul até sexta-feira. Há possibilidade de alertas de risco de deslizamentos em todas as regiões fluminenses, principalmente para região serrana do Rio e na Costa Verde, nas cidades de Paraty e Angra dos Reis. Para as próximas horas, a previsão é de céu parcialmente nublado a nublado, com chuva moderada a forte, podendo ser pontualmente muito forte. Há possibilidade de raios e rajadas de vento moderadas a fortes. Na quinta-feira (26), a passagem de uma frente fria deve manter o tempo instável, com previsão d",
+      "imageUrl": "https://imagens.ebc.com.br/mkkkb_6IiPWVr4nQg-p5WTqirag=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/tnrgo_abr_130220193111.jpg?itok=zxp2ihDE",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-25T22:06:00.000Z",
+      "firstSeenAt": "2026-11-25T23:12:03.012Z",
+      "lastSeenAt": "2026-11-25T23:12:03.012Z"
+    },
+    {
+      "id": "event-bf7ed482",
+      "category": "brasil",
+      "title": "Ministério da Justiça bloqueia 4 mil celulares em presídios",
+      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/ministerio-da-justica-bloqueia-4-mil-celulares-em-presidios",
+      "description": "O Ministério da Justiça e Segurança Pública (MJSP) bloqueou quase 4 mil aparelhos celulares utilizados por presos em quase 50 dias . O balanço foi apresentado nesta quarta-feira (25), durante a inauguração do Centro Nacional de Inteligência Penal (CNIP), em Brasília. Entre 13 de outubro e 24 de novembro, 3.941 aparelhos foram bloqueados administrativamente nas redes móveis. Em 13 de outubro, decreto presidencial estabeleceu normas e procedimentos para o bloqueio administrativo de celulares utilizados irregularmente dentro dos presídios, mesmo quando os aparelhos não são apreendidos fisicamente. Notícias relacionadas: Metodologia da Abin mostra diferenças entre organizações criminosas. Brasil tem 31 organizações criminosas relevantes, aponta Abin. CNJ cria regra para corrigir registros por mortes em ações policiais. “O resultado representa quase 30% dos 13.976 registros de bloqueio e apreensão, total que também inclui os 10.035 celulares apreendidos pela Operação MUTE Nacional desde 2023. O CNIP vai consolidar os dados da União, dos estados e do Distrito Federal sobre os aparelhos ide",
+      "imageUrl": "https://imagens.ebc.com.br/Fd1afV0xilewCxCZCBCyJP2v8_M=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/25/_mmm8898.jpg?itok=ThtQYwMr",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-25T22:05:00.000Z",
+      "firstSeenAt": "2026-11-25T23:12:03.012Z",
+      "lastSeenAt": "2026-11-25T23:12:03.012Z"
+    },
+    {
+      "id": "event-330f5707",
+      "category": "clima",
+      "title": "Super El Niño se aproxima do pico e coloca Brasil em alerta para calor extremo",
+      "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxPODZpYnBKOXN3OFlWUTI4V3hCQzdNR2Mwcm8tQmNkN2lzdzdJVWoybHp1aW9hbDZiMkYyaHBDbUo1bGJST2ViZHJmZEo2SVNFRlZaSXRQbXZrbFUwUVVack13SVBnMmRvSmpCWFJpR0ZoZmF6M1dpelV3UjBqbW13MEFaeEV0UEhhdW9BUGxYUURPMmRRWlVvVE5CQzc3dVY4SjhoeEl4NWtLcU1lYzc0ZXN6d0ZTUnBDQlUw0gHAAUFVX3lxTE52Rk9tMC1zRTZ2QlpoWGJ6MWxqUDBsVG9pZGdkcTZCSFozZmhBZmk2MnEyYUhDSlNEem1zUmhqM1huZ3prOEVpN3k1MnpUZ04xUTVERC1jcTBLQU5yNHZNa0htaFM2LVItT2huQVR0T2UySi1UOU00YUg2QjFaVXVnQy1hOVBQRG1yOVpuS0VKdTctVzN5UHlwRXB6MWxOb1NRMk9zZ212RXctb3hSUmtfWFR4ZFFnM1ozY0l6ZTU1QQ",
+      "description": "Super El Niño se aproxima do pico e coloca Brasil em alerta para calor extremo &nbsp;&nbsp; GMC Online",
+      "imageUrl": null,
+      "source": "GMC Online",
+      "publishedAt": "2026-11-25T21:13:00.000Z",
+      "firstSeenAt": "2026-11-25T23:12:03.012Z",
+      "lastSeenAt": "2026-11-25T23:12:03.012Z"
+    },
+    {
+      "id": "event-b2e1c1e3",
+      "category": "santa-catarina",
+      "title": "Sobe para seis o número de mortos após temporais no Paraná; cerca de 10 mil pessoas foram afetadas",
+      "url": "https://news.google.com/rss/articles/CBMi5AFBVV95cUxQSDZVQWdKckc1LXcteWRaYTlDRDB6VEcwRUlYeHM1YW9pMkU2dEhKQmZlUzdqVG9zYkJmZ0ZoSGd3Y1dIZWlMZHdBR2Vka0lDbzNrUU1ZNHRITEpOUGlMQ0U5MGJISzdNa2ptQTNHbE5Gd29jZS0tTVRicEtib29RMDdJcGZVTHl3cFBxb3l4bnh6VTJvcjFHM0JtaGIySVJITHZHQ3RIUURISk1WbVhObjJkQmg2cExXb0dFRlNpSU5FcHlxZ3pPdG52Z2I2MkY3ZWY3V05ZWk9pY3NfSjczUXRCN2I",
+      "description": "Sobe para seis o número de mortos após temporais no Paraná; cerca de 10 mil pessoas foram afetadas &nbsp;&nbsp; Oeste SC Notícias",
+      "imageUrl": null,
+      "source": "Oeste SC Notícias",
+      "publishedAt": "2026-11-25T20:44:00.000Z",
+      "firstSeenAt": "2026-11-25T23:12:03.012Z",
+      "lastSeenAt": "2026-11-25T23:12:03.012Z"
+    },
+    {
+      "id": "event-e386c84a",
+      "category": "mundo",
+      "title": "'Não acho que possamos mais coexistir com bilionários', diz escritora Naomi Klein",
+      "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE9mQXJYOWdxOFltUGZ5SmRmZ0dCelZ3bld1UHJuRzdiMjNGUnprYlczSGVBRk1HR21BUXZLLTh1R3dJVHp2cS1KdnNQbEo2M0Q4ZXFvZDJnNFczM2V2RlRFUElHc9IBaEFVX3lxTE5aUDJVLURGN0YzN2pxNjhGNFBuVE5PM2FXbVpnZldaQnV6cXAxaXA1SC1CQjN2SUpGekZsQXZfb0NHZXNoX2NGNUpkTVZCRTBMZG1VZUJnaDhxX25OOW84OXZpeEZaRy1r",
+      "description": "'Não acho que possamos mais coexistir com bilionários', diz escritora Naomi Klein &nbsp;&nbsp; BBC",
+      "imageUrl": null,
+      "source": "BBC",
+      "publishedAt": "2026-11-25T20:43:23.000Z",
+      "firstSeenAt": "2026-11-25T23:12:03.012Z",
+      "lastSeenAt": "2026-11-25T23:12:03.012Z"
+    },
+    {
+      "id": "event-e2486aef",
+      "category": "santa-catarina",
+      "title": "Chuvas fortes deixam seis mortos e provocam estragos em 40 cidades do Paraná. Segundo a Defesa Civil estadual, cerca de 10 mil pessoas foram afetadas pelos temporais. A previsão in",
+      "url": "https://news.google.com/rss/articles/CBMiVkFVX3lxTE01OVRXbE5JVkVOeWx0TEVkUjBlbGtGamVaVUJ5MUYtOEhZUWlXUjU2YUtpOXhXcWFjYmVOd2ZaeWthN2VPaFlvMzY3TzBCWlBIUldmalpR",
+      "description": "Chuvas fortes deixam seis mortos e provocam estragos em 40 cidades do Paraná. Segundo a Defesa Civil estadual, cerca de 10 mil pessoas foram afetadas pelos temporais. A previsão indica possibilidade de novas tempestades nesta quarta-feira, 25.⁣ ⁣ 📲 &nbsp;&nbsp; Instagram",
+      "imageUrl": null,
+      "source": "Instagram",
+      "publishedAt": "2026-11-25T20:00:52.000Z",
+      "firstSeenAt": "2026-11-25T23:12:03.012Z",
+      "lastSeenAt": "2026-11-25T23:12:03.012Z"
+    },
+    {
+      "id": "event-1ba56a39",
+      "category": "santa-catarina",
+      "title": "Por trás de um tornado: como a Defesa Civil de SC confirma e classifica o fenômeno",
+      "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxPenA5eFF1SW9IanBjN3ZVb2loa3RyWHg4MXA3M19UN0hKODlrUFVmZkhTU0lIQXJZS2pEbnRTR0lmUDBCOWl5TXloRktheF9saFBXNWVfS0sta3RYb0hHQ0ZxcENwUmNuM3VFR1RTQXRRcHdxVlkxX1lxcjNkRHFQSkJQQlRxd1p6NUhMTXhKc3hMcjBINk94bTFZLTZIdzJ5bEJXUW5FSDFmNVVRdkdseTRoRkloVF9CbGcxRFVnSUc1cG5jeEd6dm9CaEljTWdDQmR3",
+      "description": "Por trás de um tornado: como a Defesa Civil de SC confirma e classifica o fenômeno &nbsp;&nbsp; Tudo Sobre Xanxerê",
+      "imageUrl": null,
+      "source": "Tudo Sobre Xanxerê",
+      "publishedAt": "2026-11-25T19:53:00.000Z",
+      "firstSeenAt": "2026-11-25T23:12:03.012Z",
+      "lastSeenAt": "2026-11-25T23:12:03.012Z"
+    },
+    {
+      "id": "event-f62dea89",
+      "category": "mundo",
+      "title": "Bolsa recua e dólar fecha em queda após notícias fiscais",
+      "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxPbzZRaU9PTm9YZlJlY0Q5ZDR4Z3VaZG5IX2gxRHFGZFdqcC11RTkzVUZqT0owMEVlN1ZTc0swb3ktVWpWdHVlLUpVWVlNWnFCNG91VnRHaURfUzg2SUVjOC1faHczQjR6Y2x5MGplY24yUjMybk82YzJkcjlQSlEwS0tXYkxEYUNoUHQzOV9TcmhGdzQzT2hld3NpYVJUbjduTm5iR0pMVWc3NGw3SlNSMm5hbWhDbFJDX3Z3",
+      "description": "Bolsa recua e dólar fecha em queda após notícias fiscais &nbsp;&nbsp; www.correiodamanha.com.br",
+      "imageUrl": null,
+      "source": "www.correiodamanha.com.br",
+      "publishedAt": "2026-11-25T19:47:00.000Z",
+      "firstSeenAt": "2026-11-25T23:12:03.012Z",
+      "lastSeenAt": "2026-11-25T23:12:03.012Z"
+    },
+    {
+      "id": "event-f241ba74",
+      "category": "mundo",
+      "title": "Morre Veruschka, ícone da moda dos anos 1960, aos 87 anos",
+      "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQWFExMTZvMDVFZC1zV0Y5TENCQjYxcjVZa2NhV3FPemRDOXhBb0xhTzBCUExIRVdhaWhZWkVoWHJKWlhjZS1DWHp4TDNZa0otYTBhZHhuQUdmcU1PUEk0NjdxVkVSb05pWVFqOG8wWDdFZDB2YXRGbm8tYWtxU2xuWk00V2d3R0Vfa3VGS2ZOdnVGLUI0ZHN1TF9kLUU",
+      "description": "Morre Veruschka, ícone da moda dos anos 1960, aos 87 anos &nbsp;&nbsp; SBT News",
+      "imageUrl": null,
+      "source": "SBT News",
+      "publishedAt": "2026-11-25T19:24:13.000Z",
+      "firstSeenAt": "2026-11-25T23:12:03.012Z",
+      "lastSeenAt": "2026-11-25T23:12:03.012Z"
+    },
+    {
+      "id": "event-c71c5a48",
+      "category": "clima",
+      "title": "El Niño vai ficar mais forte e atingir pico antes do Natal com calor extremo de 45°C no Brasil",
+      "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxQRUxFX09DRU9LY0lOMFpuZzFUU01WN19zQ1Zxcmp2OGE5Skp1TkVydlUtS3RuVkpBSXp4STd5SWExbG9XTDRiQ1lLZVRvb1RkQlhzQTRfbUh5SW5FazJTZEk5aE1qa3Bka3U5bHBoTE4yN1JncDdxODRYU3hLUlVON0VwVjhIcGtGV2RURWJXWlQyYVZ3eEZHUFJ5U0V4NnVrdDNYS2J1WEcwazhYMlR6ekhn",
+      "description": "El Niño vai ficar mais forte e atingir pico antes do Natal com calor extremo de 45°C no Brasil &nbsp;&nbsp; Portal Tempo Novo",
+      "imageUrl": null,
+      "source": "Portal Tempo Novo",
+      "publishedAt": "2026-11-25T18:39:00.000Z",
+      "firstSeenAt": "2026-11-25T23:12:03.012Z",
+      "lastSeenAt": "2026-11-25T23:12:03.012Z"
+    },
+    {
+      "id": "event-3b44d97",
+      "category": "clima",
+      "title": "Defesa Civil emite alerta para semana de calor “acima do normal” em Fortaleza",
+      "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxOZTFDZVR5WWluUXBnQnJ3MENXemc2WnJad08xYUo3TmIzemhmNGxXalMyakxkTHFwbUFJZHhpZTBUY2Y1bnVENjFJY1oxbWRSek96VGJ5RGtLbmZBejlEbnVvMWkwXzdhVzRiSnFBejQ2emtiOXNNY0RRbERzNDV0ZFpPVDFpZEdRWUc4aC1kRnR0cW00WndnejVUbDRNN0dPU3R4blZMaUdnOUZLRHVN",
+      "description": "Defesa Civil emite alerta para semana de calor “acima do normal” em Fortaleza &nbsp;&nbsp; URB News",
+      "imageUrl": null,
+      "source": "URB News",
+      "publishedAt": "2026-11-25T17:03:00.000Z",
+      "firstSeenAt": "2026-11-25T23:12:03.012Z",
+      "lastSeenAt": "2026-11-25T23:12:03.012Z"
+    },
     {
       "id": "event-6207c614",
       "category": "brasil",
@@ -138,7 +294,7 @@
       "source": "ZAP Notícias",
       "publishedAt": "2026-11-25T08:50:00.000Z",
       "firstSeenAt": "2026-11-25T14:18:24.405Z",
-      "lastSeenAt": "2026-11-25T14:18:24.405Z"
+      "lastSeenAt": "2026-11-25T23:12:03.012Z"
     },
     {
       "id": "event-e8b458da",
@@ -235,230 +391,9 @@
       "publishedAt": "2026-11-24T23:23:00.000Z",
       "firstSeenAt": "2026-11-25T04:10:35.018Z",
       "lastSeenAt": "2026-11-25T04:10:35.018Z"
-    },
-    {
-      "id": "event-728eb07",
-      "category": "santa-catarina",
-      "title": "Frente fria coloca SC em alerta para temporais e chuva intensa nesta terça e quarta-feira",
-      "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxNS1EyUE1xWGgtZXEzdW9sZHZJcldoaS1YdU00aDBlSFN1cXVTdDNVM0NURkN3eDYxUlZ3Tk1NVHJ2TXhvLTdTa1BuOWJsM09oN0RYdms3T3pLOWxEZDF3TkVKS1VoeExQMHFCeTl5UEVMRUJ5Nk1VeW10emRMaGRhSUItYS1PaGwzRHFKcDBvbHFubmhNMmF4bUdIUEpTT0RwSjVENHFXaHJMdTItSmdSNkpFaUZuODE4dHZXZTI0UEp6Tm9mejgtUGdoQ2E3REV4Qzdv",
-      "description": "Frente fria coloca SC em alerta para temporais e chuva intensa nesta terça e quarta-feira &nbsp;&nbsp; Folha Regional",
-      "imageUrl": null,
-      "source": "Folha Regional",
-      "publishedAt": "2026-11-24T23:09:24.000Z",
-      "firstSeenAt": "2026-11-25T14:18:24.405Z",
-      "lastSeenAt": "2026-11-25T14:18:24.405Z"
-    },
-    {
-      "id": "event-cf682cf2",
-      "category": "santa-catarina",
-      "title": "SC mantém alerta para chuva intensa nesta quarta-feira (25)",
-      "url": "https://news.google.com/rss/articles/CBMifEFVX3lxTE05NHdqUEVnN29kN25Ja0pwbzBEalZyTlh5Uk9pVmlxQVFWdGJKWExyRDN0YTFfSjRKTmM1eDJFSUJENlFNb3BtQWJ0Ty15YnA4LWVERVFfbTlHOF8tSFMzclpITE11UjhuVm5zZGlmZmJvUEZZd3paaGxzOTY",
-      "description": "SC mantém alerta para chuva intensa nesta quarta-feira (25) &nbsp;&nbsp; Testo Notícias",
-      "imageUrl": null,
-      "source": "Testo Notícias",
-      "publishedAt": "2026-11-24T23:04:08.000Z",
-      "firstSeenAt": "2026-11-25T14:18:24.405Z",
-      "lastSeenAt": "2026-11-25T14:18:24.405Z"
-    },
-    {
-      "id": "event-b779c494",
-      "category": "brasil",
-      "title": "Superlua pode ser observada nesta terça-feira; veja melhor horário",
-      "url": "https://agenciabrasil.ebc.com.br/geral/noticia/2026-11/superlua-pode-ser-observada-nesta-terca-feira-veja-melhor-horario",
-      "description": "Nesta terça-feira (24), os brasileiros podem observar uma superlua. Pode ser vista de todo o país, mas dependerá das condições climáticas para uma melhor observação. E após o pôr do sol deverá ser o melhor momento para avistar o astro. Segundo o Observatório Nacional (ON), o instante exato da Lua Cheia foi às 11h53, no horário de Brasília, com a Lua a 360.768 km de distância da Terra. Para ser considerada uma superlua, é preciso preencher alguns critérios, entre eles, estar a uma distância menor ou igual a 360 mil km no instante da Lua Cheia, que é o critério oficial do Observatório Nacional; e estar a pelo menos 90% de proximidade do perigeu, que é ponto da órbita em que a Lua atinge a maior proximidade com a Terra. Esta superlua, de acordo com o ON, cumpre o segundo critério. Há ainda um terceiro critério, que não é cumprido pela superlua desta terça, que é um intervalo de tempo entre a Lua cheia e o perigeu menor ou igual a 12 horas. O perigeu ocorrerá nesta quarta-feira (25), às 18h02, a uma distância de aproximação máxima. Superluas do ano No dia 3 de janeiro deste ano, a Lua ch",
-      "imageUrl": "https://imagens.ebc.com.br/tMPZxkH4AyNBY8sbOL3ocu2wgcM=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2024/08/19/superlua_sp04.jpg?itok=4WzmYQ0s",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-24T20:24:00.000Z",
-      "firstSeenAt": "2026-11-24T21:00:35.624Z",
-      "lastSeenAt": "2026-11-24T21:00:35.624Z"
-    },
-    {
-      "id": "event-c7feb36b",
-      "category": "brasil",
-      "title": "Julgamento de extradição de Zambelli é adiado novamente na Itália",
-      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/julgamento-de-extraditcao-de-zambelli-e-adiado-novamente-na-italia",
-      "description": "A Justiça da Itália adiou nesta terça-feira (24) o julgamento do novo pedido do governo brasileiro para extraditar a ex-deputada federal Carla Zambelli. O julgamento estava previsto para ser realizado na Corte de Apelação de Roma, mas foi adiado para 2 de fevereiro de 2027. O tribunal citou uma greve de advogados criminalistas para cancelar os julgamentos previstos. Notícias relacionadas: Justiça italiana adia julgamento sobre extradição de Zambelli. Corte da Itália manda refazer julgamento sobre extradição de Zambelli. O caso envolve a segunda condenação de Zambelli pelo Supremo Tribunal Federal (STF). Em agosto do ano passado, o plenário da Corte condenou a ex-deputada a cinco anos e três meses de prisão pelos crimes de porte ilegal de arma de fogo e constrangimento ilegal com emprego de arma de fogo. Zambelli foi acusada de perseguir o jornalista Luan Araújo às vésperas do segundo turno das eleições de 2022. A perseguição começou após Zambelli e Luan trocarem provocações durante um ato político no bairro dos Jardins, em São Paulo. Após a condenação, o ministro Gilmar Mendes, relat",
-      "imageUrl": "https://imagens.ebc.com.br/CvcQsiWHGs1jaAFtrtNSfSGqtLs=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2025/09/24/lula7126.jpg?itok=tUsWU6iY",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-24T20:02:00.000Z",
-      "firstSeenAt": "2026-11-24T21:00:35.624Z",
-      "lastSeenAt": "2026-11-24T21:00:35.624Z"
-    },
-    {
-      "id": "event-23ad3396",
-      "category": "clima",
-      "title": "Até quando vai durar o El Niño no Brasil? Veja quando fenômeno deve perder força",
-      "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxOWDZpUjNKMDhQcEJDRDdjZjIwOVZaakdnSDhtN3piRE90Y09GMG15bVVSU3hTdDNxS0Z1SEdmYUhQZW83QmRlV0xNWS1yRWY5dVR1Vjl4VVowRDhJei1DNXNfTWZISnZMOVlNc1JUaVBTb0lfRG4zRHNRcFQwMi1zeGZpUUZEN09WaTZrZVBsUmRQeFBJQTFKTkZyN0JsVWF0aGVJZ1hUX2xjUjBoQS1IQ3JtQmZranoyTmRyWdIBwgFBVV95cUxNR1VjdzdGcUVmYW1VRjJLMG5hOFVrZG9nQXpFV2pzN0Q3UXFVRW1PQnd1Wm9HVjFQMHFyYXJYNHllR2ZnczBzWVN6MThDNkItZ2R1SkRiMmhtbWphUWEzNkM2NFZMay1ydmVMNXo4RzhLUzM2U0pwbmpCWFNCakVYeW5ZYVY0emxRZ0VJbThyMkZlNmhsTGctdGJGd3otY3ZwdUd0RXJVVk5FNHlpZjZObzNfX0l5Sk5HX1pSWnFpREcxZw",
-      "description": "Até quando vai durar o El Niño no Brasil? Veja quando fenômeno deve perder força &nbsp;&nbsp; GMC Online",
-      "imageUrl": null,
-      "source": "GMC Online",
-      "publishedAt": "2026-11-24T19:43:00.000Z",
-      "firstSeenAt": "2026-11-24T21:00:35.624Z",
-      "lastSeenAt": "2026-11-25T04:10:35.018Z"
-    },
-    {
-      "id": "event-1f4faefb",
-      "category": "brasil",
-      "title": "Extinta na natureza, ararinha-azul nasce no zoológico de São Paulo",
-      "url": "https://agenciabrasil.ebc.com.br/meio-ambiente/noticia/2026-11/extinta-na-natureza-ararinha-azul-nasce-no-zoologico-de-sao-paulo",
-      "description": "Uma ararinha-azul, uma das espécies de aves mais ameaçadas do planeta, nasceu no final de outubro no Zoológico de São Paulo. O filhote — uma fêmea chamada Hope —, que veio ao mundo por meio de reprodução assistida e manejo genético, foi apresentado nesta terça-feira (24) para a imprensa. Hope é a primeira ave a nascer em um zoológico no Brasil. Notícias relacionadas: Zoológico de São Paulo abre novo espaço dedicado às ararinhas-azuis. O animal nasceu com 12,4 gramas e precisou de ajuda para sair do ovo, a chamada eclosão. Hope estava mal posicionada e já havia atingido o limite do período de incubação, por isso precisou de auxílio dos biólogos para nascer. São Paulo (SP), 24/11/2026 - O Ministério do Meio Ambiente e Mudança do Clima (MMA), o Instituto Chico Mendes de Conservação da Biodiversidade (ICMBio) e o Zoológico de São Paulo apresentam o primeiro filhote de ararinha-azul (Cyanopsitta spixii) nascido em um zoológico brasileiro. Foto : Paulo Pinto/Agência Brasil Desde que saiu do ovo, recebe alimentação assistida e está sob monitoramento constante da equipe técnica. O nascimento",
-      "imageUrl": "https://imagens.ebc.com.br/CgT9k9NF6jz_XjCc2w7gCbtT1yo=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/24/_int0652.jpg?itok=wh2CtqOB",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-24T19:41:00.000Z",
-      "firstSeenAt": "2026-11-24T21:00:35.624Z",
-      "lastSeenAt": "2026-11-24T21:00:35.624Z"
-    },
-    {
-      "id": "event-2df5b459",
-      "category": "clima",
-      "title": "A NOAA calcula cerca de 60% de chance de o El Niño atual ser o mais forte desde 1950, com pico entre dezembro e janeiro: o que isso muda na chuva do Sul, do Norte e do Nordeste",
-      "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxOdzRYZm0wc1M2UFpTMjN2QmY0cEFZTldYNzFrUDUyWkRzVE5wX1pUbW1pNl8zNFBVZkVKQklMM09qX2tSZUFMcXp6VUdUdExyTS1XbkRNclF1T0lvWDRrTWVvVWZBaFFiWms3c2lrX0tMcUtOMjc2M2R0LXhmZUttZ2pVQVIwejQ2Ry1tX2lPaE45bkJsVXp2ZzFXakdiWG8",
-      "description": "A NOAA calcula cerca de 60% de chance de o El Niño atual ser o mais forte desde 1950, com pico entre dezembro e janeiro: o que isso muda na chuva do Sul, do Norte e do Nordeste &nbsp;&nbsp; Correio Braziliense",
-      "imageUrl": null,
-      "source": "Correio Braziliense",
-      "publishedAt": "2026-11-24T19:31:58.000Z",
-      "firstSeenAt": "2026-11-24T21:00:35.624Z",
-      "lastSeenAt": "2026-11-25T04:10:35.018Z"
-    },
-    {
-      "id": "event-d6dfc9c2",
-      "category": "brasil",
-      "title": "Pé-de-Meia começa a pagar oitava parcela de 2026 a estudantes",
-      "url": "https://agenciabrasil.ebc.com.br/educacao/noticia/2026-11/pe-de-meia-comeca-pagar-oitava-parcela-de-2026-estudantes",
-      "description": "Os beneficiários do programa Pé-de-Meia de 2026 do ensino médio regular e da educação de jovens e adultos (EJA) que atingiram pelo menos 80% de frequência nas aulas em setembro começaram a receber, nesta segunda-feira (23), a oitava parcela do incentivo à frequência. O repasse aos estudantes do ensino médio beneficiários do Pé-de-Meia será feito até 30 de novembro, de forma escalonada, de acordo com o mês de nascimento dos estudantes. Valores Notícias relacionadas: Pé-de-Meia Universitário deve começar em 2027 para aluno do CadÚnico. A parcela é no valor de R$ 200 para o estudante do ensino regular. Já o incentivo mensal pela frequência da educação de jovens e adultos (EJA) é de R$ 225. Ambos ficam disponíveis para saque. Também poderão ser pagas parcelas de meses anteriores para estudantes que tenham informações enviadas ou corrigidas pelas redes de ensino. O Pé-de-Meia é o programa de incentivo financeiro-educacional na modalidade de poupança, criado e coordenado pelo Ministério da Educação (MEC). A iniciativa é voltada à permanência escolar e conclusão dos estudos por alunos matri",
-      "imageUrl": "https://imagens.ebc.com.br/7M-FhEhukdDaBK-DTenfkQlP4yA=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/06/25/img_7273.jpg_0.jpg?itok=HIHkUuZK",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-24T19:30:00.000Z",
-      "firstSeenAt": "2026-11-24T21:00:35.624Z",
-      "lastSeenAt": "2026-11-24T21:00:35.624Z"
-    },
-    {
-      "id": "event-efbffff3",
-      "category": "mundo",
-      "title": "Trump cogita impor novas tarifas a parceiros comerciais",
-      "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQWXBoeDIwQXlYR3N1VVpkcmZVWkg4M0x0a21hdkY4X1lqc05fU2F6VWZoVFZiUkR0YlpDN3c4cjRIYmtqOUFCUXJHUGlNYjZOZGVlVVRlSFBRTEFiRHg5SUU0SWp3LU8wd3EtVGMwZmdSRi1QZW0wMXloMWhWd2ZfeEwzM2lKdEpCdmNEcDNndzVvdXlxZl90LUhaemE",
-      "description": "Trump cogita impor novas tarifas a parceiros comerciais &nbsp;&nbsp; SBT News",
-      "imageUrl": null,
-      "source": "SBT News",
-      "publishedAt": "2026-11-24T18:50:18.000Z",
-      "firstSeenAt": "2026-11-24T21:00:35.624Z",
-      "lastSeenAt": "2026-11-24T21:00:35.624Z"
-    },
-    {
-      "id": "event-7a1e2bc6",
-      "category": "mundo",
-      "title": "Sabores do Pará ultrapassam fronteiras e conquistam o mundo",
-      "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxPSE5WSXFTb2xCcXlTNmVuSTRvc2xlSUxVc016S0RCLUl2RTBTdFVxb3Vsak1FQ1F1UlZDS2V5YVFQSUJUTGx6S09kSld5QjhQVUhWVnhrVGZHZW1GUllsVGlsRXZPOEozVEhDN1RyRkZCei1PNFdsZXE1cWtuZVJqZElFelpiTkRoVkFPT1JEbTBXbUY0NEFHSUZESDlQbno1OXc",
-      "description": "Sabores do Pará ultrapassam fronteiras e conquistam o mundo &nbsp;&nbsp; Agência Pará de Notícias",
-      "imageUrl": null,
-      "source": "Agência Pará de Notícias",
-      "publishedAt": "2026-11-24T18:50:00.000Z",
-      "firstSeenAt": "2026-11-24T21:00:35.624Z",
-      "lastSeenAt": "2026-11-24T21:00:35.624Z"
-    },
-    {
-      "id": "event-196d8e2e",
-      "category": "santa-catarina",
-      "title": "Florianópolis entra em alerta laranja para temporais e ventos fortes",
-      "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxNM2JRcDNfX0lFem1iMzN2anZ2akNqRVZFbFdZaHBxNkl6Y2VHOWdjOGVkZGJ4Ql85MEhCaDBQOVRDcExTdEJRNDcyZ1NwNUNrOG5aZEkwMmRMY1VNbXZ0M0hvd3V6a3V3c20xeU5lbVN0N3hUdmhURXpycmZ3UW5MbDRfa2Z5M1BKdjdPdWpvUzVycXJTQmJUTEd4cw",
-      "description": "Florianópolis entra em alerta laranja para temporais e ventos fortes &nbsp;&nbsp; sctododia",
-      "imageUrl": null,
-      "source": "sctododia",
-      "publishedAt": "2026-11-24T18:24:11.000Z",
-      "firstSeenAt": "2026-11-25T04:10:35.018Z",
-      "lastSeenAt": "2026-11-25T04:10:35.018Z"
-    },
-    {
-      "id": "event-2b3964e4",
-      "category": "mundo",
-      "title": "ABRAPE reunirá profissionais e empresas de destaque para debater futuro do mercado de música ao vivo e grandes eventos",
-      "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxNcV9LWFhHYmNWWl9KVVF1YjlON0RnXzFyX0hPb2puWVk5b2VwUmNxTXZCOExyU2ttSGRsY2RYX2hWZUNDVklHVFZIMldhWnV6aGE3dkdUdVI4bWltQ2tlcHF2YllLamIwRzVaZTlhNXNaZHhsb25OeDlCLS1mWXlfWVJ4ZUxNMm5qbHlF",
-      "description": "ABRAPE reunirá profissionais e empresas de destaque para debater futuro do mercado de música ao vivo e grandes eventos &nbsp;&nbsp; Mundo da Música",
-      "imageUrl": null,
-      "source": "Mundo da Música",
-      "publishedAt": "2026-11-24T18:09:35.000Z",
-      "firstSeenAt": "2026-11-24T21:00:35.624Z",
-      "lastSeenAt": "2026-11-24T21:00:35.624Z"
-    },
-    {
-      "id": "event-731e3d7",
-      "category": "clima",
-      "title": "Inmet prevê formação de ciclone extratropical na costa do Sul do Brasil nas próximas 24h; veja o que diz o alerta",
-      "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE1IaEFzc0tRTEpHV2pmTFJsZng0ZzZicEVxMWQ5ZGhnQTVtVFRIX29zZGEtSUdNM3UtQk9KWFNGb1lnMjZIamZtd0JNZFYyckI2cWpDWTNfNjBMRUowaVVOdDREMWFXb3lPQTM5azlqdUhnUTFMNFFZdV9LMS0wQQ",
-      "description": "Inmet prevê formação de ciclone extratropical na costa do Sul do Brasil nas próximas 24h; veja o que diz o alerta &nbsp;&nbsp; ND Mais",
-      "imageUrl": null,
-      "source": "ND Mais",
-      "publishedAt": "2026-11-24T17:38:54.000Z",
-      "firstSeenAt": "2026-11-24T21:00:35.624Z",
-      "lastSeenAt": "2026-11-24T21:00:35.624Z"
-    },
-    {
-      "id": "event-2c51971f",
-      "category": "clima",
-      "title": "Até quando vai durar o El Niño no Brasil? Fenômeno que ameaça bater recorde histórico já tem previsão para perder força em 2027",
-      "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE1fSmlIYURTUjg0ZklNa1o1OGQ0SmVjWUtVQWd4cEM3WGFSTjdJRmtaeS1rTy1GQWpIb0loVjFSSUxZUWFtNnRMOHRDR21YeVpZZUkxbkVSUndLTnVVRV9GYl9JYlRtb0FRYUE1WFltQTlQendLLXhfUA",
-      "description": "Até quando vai durar o El Niño no Brasil? Fenômeno que ameaça bater recorde histórico já tem previsão para perder força em 2027 &nbsp;&nbsp; ND Mais",
-      "imageUrl": null,
-      "source": "ND Mais",
-      "publishedAt": "2026-11-24T17:33:57.000Z",
-      "firstSeenAt": "2026-11-25T04:10:35.018Z",
-      "lastSeenAt": "2026-11-25T04:10:35.018Z"
-    },
-    {
-      "id": "event-80955224",
-      "category": "santa-catarina",
-      "title": "Temporais severos e novo ciclone colocam Santa Catarina em alerta",
-      "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNTnhjNTNiamdCSURQM0J0dTlWTkdINFhEakFRd20yeTdvR1lRc0otNGNzOW5rZmFsbjBxZWZHbVV1cDZUOVR3TU0wSHJZdnRVYng0WmE1UGxjRGhLRkd4WmVxaVBwQkVKdGtIOEExUkV5dkdHb2VDMU5od3NkbkJhWVRHNVI0bWg3TF9VRWZyTTlSTjJm",
-      "description": "Temporais severos e novo ciclone colocam Santa Catarina em alerta &nbsp;&nbsp; TVBV ONLINE",
-      "imageUrl": null,
-      "source": "TVBV ONLINE",
-      "publishedAt": "2026-11-24T16:03:44.000Z",
-      "firstSeenAt": "2026-11-25T04:10:35.018Z",
-      "lastSeenAt": "2026-11-25T04:10:35.018Z"
-    },
-    {
-      "id": "event-264bfe50",
-      "category": "santa-catarina",
-      "title": "Defesa Civil atualiza previsão e eleva para “alto” risco de ocorrências associadas a temporais em Lages",
-      "url": "https://news.google.com/rss/articles/CBMigAJBVV95cUxQbTdxWWluTTFFWklJdUZNZTU0amp6elNrV0lmd3M5SVdWTHp1MlJMbURKX1FndFk4ZkxsQ0toRzhvTWtHa1dqUnljWm43RFpTOG5lSXBud2lmOEhibm0tQ1hBZDdhV3NNMzl3TFM5Q3RtNk5KM3hlbEVDcGlxd0s5UWM4TlV0WVJaWFJjQW5COHAyNUxteFIzQ3JwU3RUZDhSUnZkVXJhN0NOMXR1clJkRWZWOC1QdUUzSDN0MmRhbmN0U3BSckZYZzU1WVBXTWpCMnB6NzZDMEhVSWpyMHA2dno0ZXpfXzRNS0dWYk5UM2FJY2RHcElkN2hBWm1kRFRv",
-      "description": "Defesa Civil atualiza previsão e eleva para “alto” risco de ocorrências associadas a temporais em Lages &nbsp;&nbsp; Prefeitura de Lages",
-      "imageUrl": null,
-      "source": "Prefeitura de Lages",
-      "publishedAt": "2026-11-24T14:48:21.000Z",
-      "firstSeenAt": "2026-11-24T21:00:35.624Z",
-      "lastSeenAt": "2026-11-25T04:10:35.018Z"
-    },
-    {
-      "id": "event-8aa45d88",
-      "category": "santa-catarina",
-      "title": "Frente fria traz chuva intensa e risco de temporais a Santa Catarina",
-      "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxNWkM0bFZFVVRUMXpaT2F3UjJKR08xOFJPZ3I1UTVXMURjWlZoeVU0bmZIcnVCZXRzTUxoU2hGcldZX2xhZ1BZVzRkSFVQY3h5TUZ2WUlCTUt4VjhUSUhaX0h2WDcydUJ3a1pKTXY3eDRIV3ZFQ25EUHVjVnBmcnpudk9ody1GMlN0bjdUUWJiR21BZW9abFI5QWxBcVlFcHJHbk5FVXBSMA",
-      "description": "Frente fria traz chuva intensa e risco de temporais a Santa Catarina &nbsp;&nbsp; Sul. Agora",
-      "imageUrl": null,
-      "source": "Sul. Agora",
-      "publishedAt": "2026-11-24T14:43:00.000Z",
-      "firstSeenAt": "2026-11-24T21:00:35.624Z",
-      "lastSeenAt": "2026-11-24T21:00:35.624Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-24T21:00:35.624Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 14,
-      "newArticles": 13,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "europa",
-        "asia"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-25T04:10:35.018Z",
       "ok": true,
@@ -492,14 +427,32 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-25T23:12:03.012Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 14,
+      "newArticles": 13,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "europa",
+        "asia",
+        "africa"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 3,
-  "lastSuccessfulAt": "2026-11-25T14:18:24.405Z",
+  "lastSuccessfulAt": "2026-11-25T23:12:03.012Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-25T14:18:24.405Z",
+      "checkedAt": "2026-11-25T23:12:03.012Z",
       "warnings": [
         {
           "id": "56503",
@@ -560,7 +513,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-25T14:18:24.405Z",
+      "checkedAt": "2026-11-25T23:12:03.012Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
