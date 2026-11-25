@@ -64,6 +64,7 @@ export async function pollWorldNewsMonitor(env,{now=Date.now(),loadNews=loadLive
   let count=Array.isArray(news?.articles)?news.articles.length:0;
   let correlation=news?.eventCorrelation;
   let recovered=false;
+  let selectedByProvider=[];
   // Retry via an established, public RSS feed only if the primary
   // GDELT/Google News pipeline yielded no correlatable articles.
   if(!news?.active||!count||!correlation?.events?.length){
@@ -74,6 +75,7 @@ export async function pollWorldNewsMonitor(env,{now=Date.now(),loadNews=loadLive
       count:fallback.articles?.length||0,error:fallback.diagnostics?.error||null,
       stale:fallback.diagnostics?.stale||0,invalid:fallback.diagnostics?.invalid||0}];
    attempts.push(...sourceDiagnostics.slice(0,4));
+   selectedByProvider=Array.isArray(fallback.diagnostics?.selectedByProvider)?fallback.diagnostics.selectedByProvider.slice(0,4):[];
    if(fallback.ok&&Array.isArray(fallback.articles)&&fallback.articles.length){
     correlation=reviewCorrelatedEvents(correlateNewsEvents(fallback.articles));
     count=fallback.articles.length;
@@ -85,6 +87,7 @@ export async function pollWorldNewsMonitor(env,{now=Date.now(),loadNews=loadLive
    "INSERT OR REPLACE INTO jarvis_world_news_monitor_diagnostics (bucket,diagnostics_json) VALUES (?,?)"
   ).bind(bucket,JSON.stringify({providers:attempts.slice(0,14),recovered,
    successfulProviders:attempts.filter(item=>item.ok&&item.count>0).length,
+   selectedByProvider,selectedPublisherCount:selectedByProvider.filter(item=>item.count>0).length,
    checkedAt:at(now)})).run();}catch{}
   if(!count||!correlation?.events?.length){
    await db.prepare("UPDATE jarvis_world_news_monitor_runs SET status=?,article_count=? WHERE bucket=?")
