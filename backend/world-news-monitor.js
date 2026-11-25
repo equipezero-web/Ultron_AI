@@ -119,10 +119,10 @@ export function isWorldNewsMonitorStatusIntent(message){
 
 // A read can establish an initial D1 baseline when the cron never ran.
 // It is explicitly marked ON-DEMAND, not presented as a successful cron run.
-export async function readWorldNewsMonitorWithBootstrap(env,{now=Date.now(),startIfEmpty=true}={}){
+export async function readWorldNewsMonitorWithBootstrap(env,{now=Date.now(),startIfEmpty=true,poll=pollWorldNewsMonitor}={}){
  let report=await latestWorldNewsAlerts(env);
  if(!report.ok||report.latestRun||!startIfEmpty)return report;
- const bootstrap=await pollWorldNewsMonitor(env,{now,trigger:"on-demand"});
+ const bootstrap=await poll(env,{now,trigger:"on-demand"});
  report=await latestWorldNewsAlerts(env);
  return {...report,bootstrap:bootstrap.ok?
    {attempted:true,ok:true,status:bootstrap.skipped||"completed"}:
