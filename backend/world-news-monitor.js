@@ -56,7 +56,7 @@ export async function pollWorldNewsMonitor(env,{now=Date.now(),loadNews=loadLive
    "(bucket,checked_at,status,article_count) VALUES(?,?,?,?)"
   ).bind(bucket,at(now),"running",0).run();
   if(!Number(reservation?.meta?.changes))return {ok:true,skipped:"already-started",bucket};
-  const news=await loadNews("notícias Brasil hoje",{limit:6});
+  const news=await loadNews("notícias Brasil hoje",{limit:6,timeoutMs:6000});
   const attempts=Array.isArray(news?.attempts)?news.attempts.slice(0,12).map(item=>({
    provider:clean(item.label,60),ok:Boolean(item.ok),count:Number(item.count||0),
    error:item.error?clean(item.error,100):null
