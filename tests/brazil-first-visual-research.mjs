@@ -13,6 +13,14 @@ assert.equal(shouldResearchBeforeAnswer('Escreva uma história sobre a China hoj
 assert.equal(shouldResearchBeforeAnswer('Quanto é 2 + 2?').needed,false);
 assert.match(resolveResearchQuery('E hoje?','Como anda o governo da China?'),/China.*hoje/);
 assert.equal(resolveResearchQuery('E hoje?','Qual meu saldo?'),'E hoje?');
+assert.equal(isResearchFollowUp("E em Recife?"),true);
+assert.equal(isResearchFollowUp("E no Nordeste?"),true);
+assert.equal(isResearchFollowUp("E na minha conta?"),false);
+assert.match(resolveResearchQuery("E em Recife?","Como está a previsão do tempo hoje no Brasil?"),/previsão do tempo.*Recife/i);
+assert.match(resolveResearchQuery("E no Nordeste?","Quais as notícias de hoje no Brasil?"),/notícias.*Nordeste/i);
+assert.equal(resolveResearchQuery("E em Recife?","Qual meu saldo bancário?"),"E em Recife?");
+assert.equal(resolveResearchQuery("E na minha conta?","Notícias de hoje"),"E na minha conta?");
+
 assert.ok(answerLooksUncertain('Quer que eu pesquise?'));
 for(const question of [
  'Como funciona um motor turbo?', 'Quem foi Nikola Tesla?', 'Quanto custa a Pulsar N150?',
