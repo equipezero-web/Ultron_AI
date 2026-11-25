@@ -30,6 +30,20 @@ assert.equal(both.ok,true);
 assert.equal(both.articles.length,2);
 assert.equal(both.diagnostics.distinctDomains,2);
 assert.equal(both.diagnostics.providerCount,2);
+const freshSeries=(source,domain,prefix,count,offset)=>Array.from({length:count},(_,i)=>({
+ title:"Publicação relevante sobre política social "+prefix+" "+i,
+ url:"https://"+domain+"/"+(domain==="www.camara.leg.br"?"noticias/":"politica/noticia/2026-11/")+prefix+"-"+i,
+ publishedAt:new Date(now-(offset+i)*60000).toISOString(),
+ description:"Publicação pública",source,domain
+}));
+const crowded=await collectPublicNewsFallback({now,limit:8,
+ agency:async()=>({ok:true,articles:freshSeries("Agência Brasil","agenciabrasil.ebc.com.br","ab",8,1)}),
+ camara:async()=>({ok:true,articles:freshSeries("Agência Câmara","www.camara.leg.br","cam",6,30)})});
+assert.equal(crowded.articles.length,8);
+assert.deepEqual(crowded.diagnostics.selectedByProvider.map(x=>x.count),[4,4],
+ "both feeds must be represented even when all eight newest articles belong to one provider");
+assert.equal(crowded.diagnostics.distinctDomains,2);
+assert.equal(crowded.diagnostics.selectedCount,8);
 const partial=await collectPublicNewsFallback({now,agency,camara:async()=>{throw Error("simulated timeout")}});
 assert.equal(partial.ok,true,"one source failing does not erase the other");
 assert.equal(partial.diagnostics.providers[1].ok,false);
