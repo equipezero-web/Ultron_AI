@@ -211,8 +211,8 @@ jobs:
             inspected?.memory?.verified===true&&
             inspected?.d1?.ready===true&&
             inspected?.circuitBreaker?.cooldownMs===30000&&
-            /equipezero-web\\/Ultron_AI/.test(operatorData.text||"")&&
-            !/equipezero-web\\/Jarvis_AI|github.com\\/jarvisai\\/jarvis/i.test(operatorData.text||"");
+            String(operatorData.text||"").includes("equipezero-web/Ultron_AI")&&
+            !/Jarvis_AI|jarvisai/i.test(operatorData.text||"");
           if(!operatorPassed){
             console.error("OPERATOR LIVE ARCHITECTURE CONTRACT FAILED",{
               status:operatorResponse.status,model:operatorData.model||null,
