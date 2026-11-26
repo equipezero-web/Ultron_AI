@@ -192,6 +192,39 @@ jobs:
             });
             process.exit(1);
           }
+          // Reproduce the exact operator-facing request. This previously
+          // produced a false-positive CI pass while the user saw no manifest.
+          const operatorQuestion="J.A.R.V.I.S., execute uma auditoria da sua arquitetura agora. Informe o repositório técnico exato, o commit incorporado ao Worker, a origem da evidência do código, o horário da consulta, as colunas reais do D1 e o cooldown do circuit breaker. Não confunda uma consulta ao vivo com dados sincronizados no deploy.";
+          const operatorResponse=await fetch(process.env.JARVIS_AI_URL,{
+            method:"POST",headers:{"Content-Type":"application/json","Cache-Control":"no-cache"},
+            body:JSON.stringify({message:operatorQuestion,clientOwnsSpeech:true,
+              telemetry:{systemCapabilities:{memory:true,starkCore:true}}}),
+            cache:"no-store",signal:AbortSignal.timeout(20000)
+          });
+          const operatorData=await operatorResponse.json().catch(()=>({}));
+          const inspected=operatorData?.architectureInspection;
+          const operatorPassed=operatorResponse.ok&&operatorData.model==="live-architecture-audit"&&
+            inspected?.repository==="equipezero-web/Ultron_AI"&&
+            inspected?.github?.mode==="worker-deployed-source-manifest"&&
+            inspected?.github?.snapshotAvailable===true&&
+            /^[a-f0-9]{40}$/.test(inspected?.commit||"")&&
+            inspected?.memory?.verified===true&&
+            inspected?.d1?.ready===true&&
+            inspected?.circuitBreaker?.cooldownMs===30000&&
+            /equipezero-web\\/Ultron_AI/.test(operatorData.text||"")&&
+            !/equipezero-web\\/Jarvis_AI|github.com\\/jarvisai\\/jarvis/i.test(operatorData.text||"");
+          if(!operatorPassed){
+            console.error("OPERATOR LIVE ARCHITECTURE CONTRACT FAILED",{
+              status:operatorResponse.status,model:operatorData.model||null,
+              repository:inspected?.repository||null,
+              mode:inspected?.github?.mode||null,
+              snapshotAvailable:inspected?.github?.snapshotAvailable||false,
+              sourceCommit:inspected?.commit||null,d1Ready:inspected?.d1?.ready||false,
+              cooldownMs:inspected?.circuitBreaker?.cooldownMs??null
+            });
+            process.exit(1);
+          }
+          console.log("EXACT OPERATOR AUDIT VERIFIED:",inspected.github.mode,inspected.commit);
           console.log("LIVE ARCHITECTURE AUDIT DEPLOY SOURCE VERIFIED:",data.model,
             data.architectureInspection.commit,data.architectureInspection.checkedAt);
           NODE
