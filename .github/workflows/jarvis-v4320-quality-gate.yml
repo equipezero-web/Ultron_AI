@@ -94,6 +94,7 @@ jobs:
           node tests/jarvis-stage-a-conversation-d1-proof.mjs
           node tests/jarvis-stage-a-project-opinion.mjs
           node tests/jarvis-stage-a-frontend-response.mjs
+          node tests/jarvis-technical-evidence-ui.mjs
 
       - name: Guard production secrets
         run: |
