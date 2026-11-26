@@ -37,6 +37,7 @@ jobs:
           node --check weather-intelligence.js
           node --check weather-monitor.js
           node --check ../modules/jarvis-world-geodata.js
+          node ../tests/jarvis-architecture-snapshot.mjs
           node ../tests/jarvis-world-geodata.mjs
       - name: Validate Wrangler config
         run: |
