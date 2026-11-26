@@ -32,6 +32,51 @@ const workerSource=readFileSync(new URL("../backend/worker.js",import.meta.url),
 assert.match(workerSource,/const architectureReply=verifiedSelfArchitectureReply\(message\)/);
 assert.match(workerSource,/model:"live-architecture-audit"/);
 assert.doesNotMatch(workerSource,/const architectureReply=verifiedSelfArchitectureReply\\(message\\)/);
+
+const {inspectLiveJarvisArchitecture,formatLiveJarvisArchitecture}=await import("../backend/live-architecture-audit.js");
+const sourceMap={
+ "backend/memory.js":'CREATE TABLE IF NOT EXISTS memories (\n'+
+   ' id TEXT,\n operator_id TEXT,\n category TEXT,\n content TEXT,\n importance INTEGER,\n'+
+   ' source_message_id TEXT,\n created_at TEXT,\n updated_at TEXT,\n last_used_at TEXT,\n use_count INTEGER\n )',
+ "backend/providers.js":"import {providerCircuitBreaker} from './provider-circuit-breaker.js';",
+ "backend/provider-circuit-breaker.js":"const MAX_COOLDOWN_MS = 30000;",
+ "backend/provider-diagnostics.js":"export const providerDiagnostics=true;"
+};
+const pinnedCommit="a".repeat(40),githubCalls=[];
+const mockFetch=async(url,init)=>{
+ githubCalls.push({url,init});
+ const response=data=>new Response(JSON.stringify(data),{status:200,headers:{"Content-Type":"application/json"}});
+ if(url.endsWith("/commits/main"))return response({sha:pinnedCommit});
+ const file=Object.keys(sourceMap).find(p=>url.endsWith("/contents/"+p+"?ref="+pinnedCommit));
+ if(!file)throw Error("Unexpected github URL");
+ return response({encoding:"base64",content:Buffer.from(sourceMap[file]).toString("base64")});
+};
+const actualColumns=["id","operator_id","category","content","importance","source_message_id","created_at","updated_at","last_used_at","use_count"];
+const liveAudit=await inspectLiveJarvisArchitecture({ULTRON_DB:{prepare:sql=>{
+ assert.equal(sql,"PRAGMA table_info(memories)");
+ return {all:async()=>({results:actualColumns.map(name=>({name}))})};
+}}},{fetchImpl:mockFetch,now:()=>Date.parse("2026-11-26T14:00:00Z"),backendVersion:"4.30.1"});
+assert.equal(liveAudit.github.verified,true);
+assert.equal(liveAudit.github.files.length,4);
+assert.equal(liveAudit.memory.verified,true);
+assert.deepEqual(liveAudit.memory.columns,actualColumns);
+assert.equal(liveAudit.circuitBreaker.cooldownMs,30000);
+assert.equal(liveAudit.d1.ready,true);
+assert.equal(liveAudit.commit,pinnedCommit);
+assert.equal(liveAudit.writePermission,false);
+assert.equal(githubCalls.length,5);
+assert(githubCalls.every(c=>c.url.startsWith("https://api.github.com/repos/equipezero-web/Ultron_AI/")));
+assert(githubCalls.every(c=>c.init.method==="GET" && !JSON.stringify(c.init.headers).includes("Authorization")));
+assert.match(formatLiveJarvisArchitecture(liveAudit),/AUDITORIA DE ARQUITETURA AO VIVO/);
+assert.match(formatLiveJarvisArchitecture(liveAudit),/PRAGMA realizada/);
+const unavailable=await inspectLiveJarvisArchitecture({},{
+ fetchImpl:async()=>new Response("{}",{status:503}),now:()=>Date.parse("2026-11-26T14:00:00Z")
+});
+assert.equal(unavailable.github.verified,false);
+assert.equal(unavailable.memory.verified,false);
+assert.equal(unavailable.d1.ready,false);
+assert.doesNotMatch(formatLiveJarvisArchitecture(unavailable),/colunas memories: id, operator_id/);
+
 const operator="operator-A";
 const stored=[];
 let duplicate=false;
