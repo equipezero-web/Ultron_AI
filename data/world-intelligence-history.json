@@ -4,10 +4,130 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-26T05:04:05.863Z",
-  "oldestEventAt": "2026-11-25T07:18:42.000Z",
-  "windowStartAt": "2026-11-25T05:04:05.863Z",
+  "updatedAt": "2026-11-26T15:09:59.042Z",
+  "oldestEventAt": "2026-11-25T17:03:00.000Z",
+  "windowStartAt": "2026-11-25T15:09:59.042Z",
   "events": [
+    {
+      "id": "event-a70d04b0",
+      "category": "mundo",
+      "title": "Fifa confirma ataque cibernético com acesso a dados pessoais",
+      "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxQeU1tWVpGUnlwaEVvbWNkb2dqMkowMTNLekdWeUM4RFA0M3ZyZy1GZThjTG5jS0NsQ0ZDRExYMDFDRDFGRlQ2Sm1qTnZmWGFxV1RDc2VUbVFxVzlMMW91VTJnck5kLXNzcGdDaVpQNEcySU1QbzdVczVERlFBbExvWWF4TGhIdG1uSjV0TS1KMVFOM0NpUnYtell2ckhZdXZjRDJ3",
+      "description": "Fifa confirma ataque cibernético com acesso a dados pessoais &nbsp;&nbsp; SBT News",
+      "imageUrl": null,
+      "source": "SBT News",
+      "publishedAt": "2026-11-26T14:48:09.000Z",
+      "firstSeenAt": "2026-11-26T15:09:59.042Z",
+      "lastSeenAt": "2026-11-26T15:09:59.042Z"
+    },
+    {
+      "id": "event-5963c236",
+      "category": "clima",
+      "title": "Com alerta de “super El Niño” e até cinco ondas de calor, São Vicente reforça drenagem e prepara Defesa Civil para período de chuvas",
+      "url": "https://news.google.com/rss/articles/CBMiggJBVV95cUxNR19aV0JIMm45eWpaRlBUUVJnWHF3U21uaExFLWoyTmhoZE5GejloV2M3WThoRDczRXVfSmVlZzZwWmpTYjRIcm1LOEdpR1JNaDltc0FvdmVRWkltZzV5cnowd2FBdGVXZXhDckd0OU1BN3IxZExzY3lObGI4ekJ6dllGT0hzQU80S0pQVE50eE9kZ3l5WUd6MTNfTHJVUTQxRTFiczR1bFlod25JNVF4dl9rMjFSMTd4UnVxY2EtdGZYcXIyX0FVSzFBaXptS1JYU3RydjloZkVzWjRVeWhsVHgteURQRzZMR0o4cHFTQWFudEZDemd3TnlmTkVac2x3bEE",
+      "description": "Com alerta de “super El Niño” e até cinco ondas de calor, São Vicente reforça drenagem e prepara Defesa Civil para período de chuvas &nbsp;&nbsp; Diário do Litoral",
+      "imageUrl": null,
+      "source": "Diário do Litoral",
+      "publishedAt": "2026-11-26T14:40:00.000Z",
+      "firstSeenAt": "2026-11-26T15:09:59.042Z",
+      "lastSeenAt": "2026-11-26T15:09:59.042Z"
+    },
+    {
+      "id": "event-fea7a04f",
+      "category": "brasil",
+      "title": "Escritora sul-coreana de ficção científica desembarca no Brasil para eventos gratuitos",
+      "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxPLWE2Qmd6MlR3S3J2LWVhdC1KaFl1NHFfWFNuc21GRE5fdmQyekI2cXc2SkphY282NVJCSGV5LVNJZGZEZmxRNmg2dDBTMGU5ZVhVYlB6R05IT0JMUm9wWUJWQWVjaHphYjY5TmdaUkZvTlBCWVV0Ym9Md0VqOHQxdTBCWFE4R1hQRGE2b1E5anVlZ3N1ZmdkT0hFWkxDYnVnMUxMRlFCZzVHNFRlamJmc25rcWpuNnpjQ3FRVVU5dUhJZGpPcHJSeFNaUURNUkl0UDFxQThja1JheXYxUGxISdIB5gFBVV95cUxPajczOHZHTzROcWlka2NNOFZ5TXJ0dkE5RGdMcl8yVTB6TE1HdXB6eXA2TEJ3cWxMNEF1YXlwWkVVdTM1SmcxUll5dHI5enEzQV9ZSTRackNnUjNmZmJ1T3FYMWlOVHlKMk1QUE9WZTNQRVQ3STE3UFhrSlQ3dVBaaFIteldyOVdoV3RYTnZfYnRsejNKWXFHdWJLZWZiSWljczhCZE1yN2FOLVF4RHVobjBkdnN0NkY0bi1kTVpMOVFUWTZ2Z21Eb002dHlFdWh2V1lYcUVsekFlNTM5ZGdkcnJiNi1kUQ",
+      "description": "Escritora sul-coreana de ficção científica desembarca no Brasil para eventos gratuitos &nbsp;&nbsp; BNews Alagoas",
+      "imageUrl": null,
+      "source": "BNews Alagoas",
+      "publishedAt": "2026-11-26T14:18:00.000Z",
+      "firstSeenAt": "2026-11-26T15:09:59.042Z",
+      "lastSeenAt": "2026-11-26T15:09:59.042Z"
+    },
+    {
+      "id": "event-d363726c",
+      "category": "brasil",
+      "title": "Contas públicas: demanda por financiamento cresceu 27,1% em 2025",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/contas-publicas-demanda-por-financiamento-cresceu-271-em-2025",
+      "description": "Em 2025, a necessidade de financiamento líquida do governo geral foi de R$ 936,2 bilhões, aumento de 27,1% em relação a 2024. Esse resultado ocorreu, principalmente, em virtude do crescimento de 11,4% da despesa total. Os dados são das Estatísticas de Finanças Públicas e Conta Intermediária de Governo, elaboradas pelo Instituto Brasileiro de Geografia e Estatística (IBGE) em parceria com a Secretaria do Tesouro Nacional (STN) e o Banco Central do Brasil. Na análise dos principais agregados da receita, a arrecadação de impostos cresceu 8,8% em 2025, as contribuições sociais aumentaram 9,8% e outras receitas avançaram 7,9% em relação ao ano anterior. Segundo a pesquisa, a receita tributária totalizou R$ 3,3 trilhões em 2025. O principal destaque foi o crescimento de 16,4% da arrecadação de impostos sobre o comércio e transações internacionais, especialmente do imposto de importação, resultado da combinação de aumento das importações em volume, da taxa média de câmbio e da alíquota média do imposto. Também contribuíram para o resultado o aumento de 9,6% dos impostos sobre renda, lucros",
+      "imageUrl": "https://imagens.ebc.com.br/5ACOjU0BmGT_Z-dyrOe8MeNxubI=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/economia_1609210412_0.jpg?itok=pEt_terf",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-26T14:17:00.000Z",
+      "firstSeenAt": "2026-11-26T15:09:59.042Z",
+      "lastSeenAt": "2026-11-26T15:09:59.042Z"
+    },
+    {
+      "id": "event-5303cfa3",
+      "category": "brasil",
+      "title": "Brasil atinge recorde de 10,6 milhões de matrículas no ensino superior",
+      "url": "https://agenciabrasil.ebc.com.br/educacao/noticia/2026-11/brasil-atinge-recorde-de-106-milhoes-de-matriculas-no-ensino-superior",
+      "description": "O Brasil alcançou 10,6 milhões de matrículas em cursos de graduação em 2025 – maior número já registrado pelo Ministério da Educação (MEC) . Essa quantidade representa alta de 4%, em relação ao ano anterior, quando os registros alcançaram 10,2 milhões. Em uma década (entre 2015 e 2025), a matrícula na educação superior aumentou 32,4% – média de crescimento anual de 2,9%. Notícias relacionadas: IBGE: percentual de negros com ensino superior é metade do de brancos. UnB muda regras de ingresso para ampliar acesso às vagas de graduação. Os dados fazem parte do Censo da Educação Superior 2025 , divulgado pelo Instituto Nacional de Estudos e Pesquisas Educacionais Anísio Teixeira (Inep) , nesta quinta-feira (26). Em 2025, a partir da Nova Política de Educação a Distância ( Decreto nº 12.456/2025 ), o MEC incluiu a oferta de cursos semipresenciais, que prevê o mínimo de 50% de atividades presenciais. A norma também estabelece mudanças para a EaD, que precisa oferecer, no mínimo, 10% de atividades presenciais. Nesse contexto, o levantamento considera, até 2024, a existência de duas modalidad",
+      "imageUrl": "https://imagens.ebc.com.br/QwSrxrKcht-OKId9ztKLYLix2O8=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/06/toms6045.jpg?itok=FOCXYsi5",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-26T13:34:00.000Z",
+      "firstSeenAt": "2026-11-26T15:09:59.042Z",
+      "lastSeenAt": "2026-11-26T15:09:59.042Z"
+    },
+    {
+      "id": "event-bac64cc1",
+      "category": "brasil",
+      "title": "Contas externas têm déficit de US$ 4 bilhões em outubro",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/contas-externas-tem-deficit-de-us-4-bilhoes-em-outubro",
+      "description": "As contas externas brasileiras registraram déficit de US$ 4 bilhões em outubro de 2026, resultado igual ao verificado no mesmo mês do ano passado. Os dados constam das Estatísticas do Setor Externo divulgadas nesta quinta-feira (26) pelo Banco Central . Segundo a instituição, o déficit acumulado em 12 meses ficou em US$ 60,6 bilhões, o equivalente a 2,34% do Produto Interno Bruto (PIB) – soma dos bens e serviços produzidos no país). Em setembro, o saldo negativo acumulado era de US$ 60,7 bilhões, correspondentes a 2,36% do PIB. Notícias relacionadas: Déficit nas contas externas soma US$ 5,1 bilhões em agosto. Exportações batem recorde e déficit das contas externas cai em junho. O resultado das transações correntes refletiu movimentos opostos na comparação com outubro de 2025. Enquanto o superávit da balança comercial aumentou US$ 2,6 bilhões, os déficits das contas de serviços e de renda primária cresceram US$ 800 milhões e US$ 1,7 bilhão, respectivamente. As exportações de bens atingiram US$ 37,9 bilhões, alta de 19,7% em relação a outubro do ano passado. As importações somaram US$",
+      "imageUrl": "https://imagens.ebc.com.br/B3GHHE0Esonzs9jfkLkTGDk4PVs=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2020-09-25t121331z_1_lynxnpeg8o13a_rtroptp_4_dolar-abre.jpg?itok=jLwfl1bc",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-26T13:33:00.000Z",
+      "firstSeenAt": "2026-11-26T15:09:59.042Z",
+      "lastSeenAt": "2026-11-26T15:09:59.042Z"
+    },
+    {
+      "id": "event-de79d3f0",
+      "category": "mundo",
+      "title": "De Lionel Messi a Michael Jordan: As cinco maiores voltas por cima da história do esporte",
+      "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxQV0J0VDhwbW9GNW9tOFp4V2JxNk9sWTRmWnBkTWxJcEpsUEFUc1dXRndYQ05iTzhxVjAxQ2lzWV9pNW1FdHNqMUpERFM0RW5vVGM3Ymlxdkl5dFRjYWlxaUM0ejlXTE54RHNaWWEzckZSZU9lNkdXWE0zWE96NGxTajdmQ290R2M1MHJrdlpFQXhESUdnM1FqSlg4UHJQVDliSzlfYzFGd3RJOWo4RWY5SWhLaERWTnJFb0dDR0dKbFpHY2NaY193MlJJbXduajd5VWc",
+      "description": "De Lionel Messi a Michael Jordan: As cinco maiores voltas por cima da história do esporte &nbsp;&nbsp; DAZN",
+      "imageUrl": null,
+      "source": "DAZN",
+      "publishedAt": "2026-11-26T12:02:12.000Z",
+      "firstSeenAt": "2026-11-26T15:09:59.042Z",
+      "lastSeenAt": "2026-11-26T15:09:59.042Z"
+    },
+    {
+      "id": "event-8cd58f5e",
+      "category": "mundo",
+      "title": "China: questões comerciais com EUA devem ser resolvidas com diálogo",
+      "url": "https://agenciabrasil.ebc.com.br/internacional/noticia/2026-11/china-questoes-comerciais-com-eua-devem-ser-resolvidas-com-dialogo",
+      "description": "A China e os Estados Unidos (EUA) devem resolver suas questões comerciais por meio de consultas baseadas na igualdade, no respeito mútuo e na reciprocidade, afirmou nesta quinta-feira (26) o porta-voz do Ministério das Relações Exteriores da China, Guo Jiakun. A afirmação foi feita em resposta à mais recente onda de tarifas do governo Trump. “O chamada excesso de capacidade é uma premissa falsa, e a China se opõe a que ela seja usada como pretexto para manipulação política”, acrescentou Jiakun, em entrevista coletiva. Notícias relacionadas: Brasil critica possível novo tarifaço dos EUA e diz que não cederá. Brasil e EUA criam grupo específico para negociar tarifaço. Ao ser questionado sobre as novas tarifas, o porta-voz do Ministério do Comércio, He Yadong, disse que a China se reserva o direito de tomar as medidas necessárias para salvaguardar seus direitos e interesses legítimos, depois que os EUA propuseram novas tarifas sobre produtos chineses com base em uma investigação nos termos da Seção 301 sobre excesso de capacidade. \"A investigação dos EUA é um ato de unilateralismo, e a",
+      "imageUrl": "https://imagens.ebc.com.br/B_yllkBocCLcpmF48m3Dos-TGe4=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/26/2026-11-26t094138z_1_lop141326112026rp1_rtrmadp_baseimage-960x540_usa-trump-tariffs-china-commerce.jpg?itok=zqPXiAds",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-26T11:54:00.000Z",
+      "firstSeenAt": "2026-11-26T15:09:59.042Z",
+      "lastSeenAt": "2026-11-26T15:09:59.042Z"
+    },
+    {
+      "id": "event-b7aea461",
+      "category": "santa-catarina",
+      "title": "Quinta-feira terá variação de nuvens e possibilidade de chuva fraca no Litoral de SC",
+      "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxQeUZISU91UDI3alQ3QnktVWNnbnUxeEdPbXNtLUhBSjdrcUhsS0RpTGRNeFgzdDJZdldJNmpDZHRwVFV1MERQbWZudEU2S01vVjA4WVFLRVp3S1A1Zk94M2l2V3J0MnhEa3VlSmZLWmJWcnlWemtDRnh4NXF4RjlHTmlVYU5VM0EzUWxRbDZsdS1WcDE3MXhIZG1iaFo1d0lNbXZEdURRT2NxcUU4a3VzOWk2bVNoSXZDQUdsVnZ3",
+      "description": "Quinta-feira terá variação de nuvens e possibilidade de chuva fraca no Litoral de SC &nbsp;&nbsp; No Ponto SC",
+      "imageUrl": null,
+      "source": "No Ponto SC",
+      "publishedAt": "2026-11-26T09:26:18.000Z",
+      "firstSeenAt": "2026-11-26T15:09:59.042Z",
+      "lastSeenAt": "2026-11-26T15:09:59.042Z"
+    },
+    {
+      "id": "event-e5d0f306",
+      "category": "clima",
+      "title": "Brasil emite alerta laranja de tempestade para o Centro-Oeste e Sudeste",
+      "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxQSG5rZU1BaHlxNU9SaFBVaDlaeUI2aWpEUXpBQ3RWV25IdEx3M2xPOGExb01ad1ZTR2pVMU9tSjNXWndwSWtGTUR4T2syNktLOXJxa3I5UDN2dFNWeWJTNHkxNkp6ZGEzYnExbjhYdDFaVmhJUEZTSnlqZllkVHZhOHlQc2RMbGhUNVhsMFJKMXh0SDVpaEVZYmdHcmhxeTZVVVVONG9vWkxWSkZYYkxWNjFmTEVhaV9pYXc",
+      "description": "Brasil emite alerta laranja de tempestade para o Centro-Oeste e Sudeste &nbsp;&nbsp; CNN Brasil",
+      "imageUrl": null,
+      "source": "CNN Brasil",
+      "publishedAt": "2026-11-26T06:33:41.000Z",
+      "firstSeenAt": "2026-11-26T15:09:59.042Z",
+      "lastSeenAt": "2026-11-26T15:09:59.042Z"
+    },
     {
       "id": "event-69edbf47",
       "category": "brasil",
@@ -66,7 +186,7 @@
       "source": "Bem Paraná",
       "publishedAt": "2026-11-26T00:00:00.000Z",
       "firstSeenAt": "2026-11-26T05:04:05.863Z",
-      "lastSeenAt": "2026-11-26T05:04:05.863Z"
+      "lastSeenAt": "2026-11-26T15:09:59.042Z"
     },
     {
       "id": "event-f6944620",
@@ -79,6 +199,18 @@
       "publishedAt": "2026-11-25T23:52:00.000Z",
       "firstSeenAt": "2026-11-26T05:04:05.863Z",
       "lastSeenAt": "2026-11-26T05:04:05.863Z"
+    },
+    {
+      "id": "event-101c7f1f",
+      "category": "asia",
+      "title": "Frustração com empresas de IA derruba ações em índices asiáticos e americanos - Folha de S.Paulo",
+      "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxPSWtBaV9vNEFqaWxILV83REJSMWpZOWV2bFhaZS1EXy1sbkhxMGgwVi1EdUdZdXFBU0xoa3F3ek0tX0tEeTlvTkRBcC0tamY4amJYc1pKUnB1SWRzWVdteEJZek9vODFqbnV5VnRSS0NBUnZGWDBrVkVVVjJERFItZVc5a3RwenRXYkJtSkpya1pVWlJrS2lpZEM4WFpoWG9fMENNWUZneE5OOUE4QnVhZlNUUGZzTU5aS1NWM0VVYlhvaHdfS3dmeg",
+      "description": "Frustração com empresas de IA derruba ações em índices asiáticos e americanos &nbsp;&nbsp; Folha de S.Paulo",
+      "imageUrl": null,
+      "source": "Folha de S.Paulo",
+      "publishedAt": "2026-11-25T23:36:00.000Z",
+      "firstSeenAt": "2026-11-26T15:09:59.042Z",
+      "lastSeenAt": "2026-11-26T15:09:59.042Z"
     },
     {
       "id": "event-d7d3337c",
@@ -150,7 +282,7 @@
       "source": "GMC Online",
       "publishedAt": "2026-11-25T21:13:00.000Z",
       "firstSeenAt": "2026-11-25T23:12:03.012Z",
-      "lastSeenAt": "2026-11-26T05:04:05.863Z"
+      "lastSeenAt": "2026-11-26T15:09:59.042Z"
     },
     {
       "id": "event-b2e1c1e3",
@@ -162,7 +294,7 @@
       "source": "Oeste SC Notícias",
       "publishedAt": "2026-11-25T20:44:00.000Z",
       "firstSeenAt": "2026-11-25T23:12:03.012Z",
-      "lastSeenAt": "2026-11-26T05:04:05.863Z"
+      "lastSeenAt": "2026-11-26T15:09:59.042Z"
     },
     {
       "id": "event-e386c84a",
@@ -247,170 +379,9 @@
       "publishedAt": "2026-11-25T17:03:00.000Z",
       "firstSeenAt": "2026-11-25T23:12:03.012Z",
       "lastSeenAt": "2026-11-26T05:04:05.863Z"
-    },
-    {
-      "id": "event-6207c614",
-      "category": "brasil",
-      "title": "Daniel Caesar cancela shows no Brasil; entenda o que aconteceu",
-      "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxNTEkxbmk5aTFlVEg3RUJyY0NIbWFhVUZSbnJwWnNqVG5zbXJUb0xoeUZLZEl5RDhqaWdaaW13VlNxSlI1YVBodERjcHpPSVdYdXN3OHcxaUo2ODVpRkpUd1R5VUlJc2xHTnpyRHVvVGJ1dnhqUVc5ZXA3Q2NJNGpfMk1lSzN1bEd2ZWp5NVFRMmh4R1VwVXc",
-      "description": "Daniel Caesar cancela shows no Brasil; entenda o que aconteceu &nbsp;&nbsp; tmc.com.br",
-      "imageUrl": null,
-      "source": "tmc.com.br",
-      "publishedAt": "2026-11-25T13:31:09.000Z",
-      "firstSeenAt": "2026-11-25T14:18:24.405Z",
-      "lastSeenAt": "2026-11-25T14:18:24.405Z"
-    },
-    {
-      "id": "event-6fcc403e",
-      "category": "mundo",
-      "title": "Tiago Splitter ganha documentário da NBA como 1º técnico brasileiro da liga",
-      "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxPcURnWFhOWTR3WGViQTFVeVNlSURWZFk1b3ZDNURJbGpKa0hMLTFGYmhDMjNiLTJJQ1RIZXZfeHdBZFBJSEE5b0g5bkk0bnJSRjZaZlptZTcxWnRYdmpLMndiUVVQbkljMFpFUWlWa0dVVmQ0cDFVeWZrUmVXT2g3S0xHR29wTnlaRFFPX1ZvQ1M4QVljcURNZXhPWHp5elllWnkxdEF6Y01WYmxLNnhmM2pELURxQk1nZkRWdkJ5VHY",
-      "description": "Tiago Splitter ganha documentário da NBA como 1º técnico brasileiro da liga &nbsp;&nbsp; CNN Brasil",
-      "imageUrl": null,
-      "source": "CNN Brasil",
-      "publishedAt": "2026-11-25T13:18:47.000Z",
-      "firstSeenAt": "2026-11-25T14:18:24.405Z",
-      "lastSeenAt": "2026-11-25T14:18:24.405Z"
-    },
-    {
-      "id": "event-e9ccdb90",
-      "category": "brasil",
-      "title": "Rio recebe nesta semana novas doses de vacina contra a mpox",
-      "url": "https://agenciabrasil.ebc.com.br/saude/noticia/2026-11/rio-recebe-nesta-semana-novas-doses-de-vacina-contra-mpox",
-      "description": "A Secretaria Municipal de Saúde (SMS) do Rio informou que mais de 8 mil pessoas foram vacinadas contra a mpox com todas as doses enviadas pelo Ministério da Saúde desde a retomada da imunização no dia 6 de novembro. No momento, os estoques da vacina no município estão esgotados. Em nota, o Ministério da Saúde informou que está disponibilizando nesta semana vacinas suficientes para até 10 mil aplicações na capital. Notícias relacionadas: SP ganha novas doses da vacina contra a mpox; saiba quem pode receber. Rio de Janeiro tem primeira morte confirmada por mpox no país. Mpox: com quase 400 casos, Rio passa a atualizar diariamente os dados. \"Essa nova remessa será destinada prioritariamente à aplicação da segunda dose em pessoas que já iniciaram o esquema vacinal, que prevê duas doses com intervalo de 28 dias. No dia 18 de novembro, o Ministério da Saúde havia enviado frascos para até 5 mil aplicações\". Para reforçar o estoque nacional, o Ministério da Saúde garantiu, por meio do Fundo Rotatório da Organização Pan-Americana da Saúde (Opas), a aquisição de 25 mil doses - todo o estoque d",
-      "imageUrl": "https://imagens.ebc.com.br/53hcquOO0_n4eUmVYDrC5zCxzJ0=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2024/08/22/2024-08-20t135719z_1736913444_rc2pj9addr69_rtrmadp_3_health-mpox.jpg?itok=Rm7ifGjj",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-25T13:18:00.000Z",
-      "firstSeenAt": "2026-11-25T14:18:24.405Z",
-      "lastSeenAt": "2026-11-25T14:18:24.405Z"
-    },
-    {
-      "id": "event-72523329",
-      "category": "brasil",
-      "title": "IBGE: coleta seletiva avança e atinge 2.675 municípios brasileiros",
-      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/ibge-coleta-seletiva-avanca-e-atinge-2675-municipios-brasileiros",
-      "description": "A coleta seletiva avançou no país e atinge 2.675 municípios brasileiros entre aqueles que informaram a existência do serviço de limpeza urbana e manejo de resíduos sólidos (48,1% do total). Em 2008, esse número era de 994 municípios (17,9%). A coleta seletiva é um sistema de recolhimento de resíduos sólidos que separa os materiais recicláveis dos não recicláveis, facilitando seu reaproveitamento pelos catadores e pelas indústrias de reciclagem. Notícias relacionadas: Especialista alerta para urgência do saneamento na crise climática. Universalização do saneamento na Amazônia pode gerar R$ 330 bilhões. A informação está na Pesquisa Nacional de Saneamento Básico: Limpeza Urbana e Manejo de Resíduos Sólidos e Drenagem e Manejo de Águas Pluviais (2024) divulgada pelo Instituto Brasileiro de Geografia e Estatística (IBGE) nesta quarta-feira (25). A Região Norte apresentou o menor percentual de municípios com o serviço de coleta seletiva, (24,7% do total na região). Na sequência vieram as regiões Nordeste (33,4%); Centro-Oeste (38,8%); Sudeste (54,0%) e Sul (74,5%). O processamento de resí",
-      "imageUrl": "https://imagens.ebc.com.br/wqdN7lB9EhZtRno4U2lpT07Qqjw=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/plastic_bank_-_coletores_vidigal_1_0.jpeg?itok=rMGqRFiT",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-25T13:02:00.000Z",
-      "firstSeenAt": "2026-11-25T14:18:24.405Z",
-      "lastSeenAt": "2026-11-25T14:18:24.405Z"
-    },
-    {
-      "id": "event-ff145315",
-      "category": "brasil",
-      "title": "Justiça derruba liminar que suspendia novas regras para VA e VR",
-      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/justica-derruba-liminar-que-suspendia-novas-regras-para-va-e-vr",
-      "description": "O desembargador Alexandre Jorge Fontes Laranjeira, do Tribunal Regional Federal da 1ª Região (TRF1), derrubou decisão provisória que suspendia a aplicação de novas regras para as empresas de vale alimentação (VA) e vale refeição (VR). A liminar que suspendeu parte das regras havia sido concedida em 9 de novembro, dias depois da entrada em vigor de uma série de mudanças determinadas pelo governo no Programa de Alimentação do Trabalhador (PAT), que abrange a utilização de VA e VR Notícias relacionadas: Recebimento de vales-alimentação e refeição mudam a partir do dia 7. Justiça suspende regra que ampliou aceitação de VR e VA em maquininhas. Para o desembargador, a suspensão das novas regras não se justifica, uma vez que a Associação Brasileira das Empresas de Benefícios ao Trabalhador (ABBT) acionou a Justiça Federal mais de 180 dias depois de publicado o decreto com as novas regras, o que esvazia a necessidade de uma decisão urgente. O decreto foi publicado em 12 de novembro do ano passado, enquanto a ação sobre o assunto somente foi ajuizada em 25 de setembro deste ano, “circunstânci",
-      "imageUrl": "https://imagens.ebc.com.br/oLW-gljrAhKcAdwOrlAstFMgr4E=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2025/11/12/_d6a9161.jpg?itok=G4SyTJc-",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-25T12:53:00.000Z",
-      "firstSeenAt": "2026-11-25T14:18:24.405Z",
-      "lastSeenAt": "2026-11-25T14:18:24.405Z"
-    },
-    {
-      "id": "event-f4efed7a",
-      "category": "santa-catarina",
-      "title": "Chuvas intensas provocam ocorrências em Xanxerê e região",
-      "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxNT19hNVlnYV9QdVNRb05vYjNLWWNVcEFEVTZvakt3T3hDZ2RXeWh4MTU5WFljdVFraGdyX1pIUmJvUmlPeEhfVEhibDRwbW05bWZNTWhyaDB0ZjFyd3ZRWl9jWm1Sb2xjYVNWb3FVNHdrRTNPdW05TVM5SUpIUVdvVVVGblY2NHdZS0Y4NThjUkNCR3lXU0pVQkNoUnY1UVdEblJ5VFpMVWRDQXZocUNpc0VB",
-      "description": "Chuvas intensas provocam ocorrências em Xanxerê e região &nbsp;&nbsp; Tudo Sobre Xanxerê",
-      "imageUrl": null,
-      "source": "Tudo Sobre Xanxerê",
-      "publishedAt": "2026-11-25T12:51:00.000Z",
-      "firstSeenAt": "2026-11-25T14:18:24.405Z",
-      "lastSeenAt": "2026-11-25T14:18:24.405Z"
-    },
-    {
-      "id": "event-c68e4bf2",
-      "category": "mundo",
-      "title": "Três Pontos: Simone Deos é a convidada especial desta quarta",
-      "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxNeW04YkFGWUZ6aHRHWUdna216b2VZTk5DVk1hTWhocngtYXV2SEplYnd0WDBPbDNkT0ZOZElXMHduaW13eXFjNmlJbG8tcjk2Z2xmajhVMWs0S3ZSc0h2RXJFMThHNmh3QzRfSXJEYUNtRnduellSQ1FqWk1xZHF5cnJSZnp3VEoxbmJUVjZ2WE1kazJUZmRjbldPR2JwV1F2QjFDUndkNllueVR4Mnl3cGRYdEtsNDNv",
-      "description": "Três Pontos: Simone Deos é a convidada especial desta quarta &nbsp;&nbsp; Rádio Metrópole",
-      "imageUrl": null,
-      "source": "Rádio Metrópole",
-      "publishedAt": "2026-11-25T12:51:00.000Z",
-      "firstSeenAt": "2026-11-25T14:18:24.405Z",
-      "lastSeenAt": "2026-11-25T14:18:24.405Z"
-    },
-    {
-      "id": "event-f66278c4",
-      "category": "mundo",
-      "title": "Aloha Spirit Festival confirma calendário de 2027 celebrando muita história",
-      "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxPYUtYSDlON3RPdjI5UXFtdjBNeGZ4YkJNaFhjX194TW5lMDdYVXFKRlFCeW16QlN1NlVFUElhRnJfeFZiSXVpV1JzUzA1OWdSdEM3NkJobEswLS1TaGdiOHo0ajk0OURKQWd6aDVtTzFadHVQa182dVNxU0tzWHVXZ1Y2YWNNcURvMWdfWUdLQS1ZVjdRR01Hb0w2ZFU3QVkwbUxNSkRyWXY4RTRGalZyd1FYZktNUWpTSTdRUQ",
-      "description": "Aloha Spirit Festival confirma calendário de 2027 celebrando muita história &nbsp;&nbsp; Aloha Spirit Mídia",
-      "imageUrl": null,
-      "source": "Aloha Spirit Mídia",
-      "publishedAt": "2026-11-25T12:32:07.000Z",
-      "firstSeenAt": "2026-11-25T14:18:24.405Z",
-      "lastSeenAt": "2026-11-25T14:18:24.405Z"
-    },
-    {
-      "id": "event-2d61faf7",
-      "category": "clima",
-      "title": "El Niño pode bater recorde desde 1950 e ameaça chuvas na Amazônia",
-      "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxOVUp1dVBLWHBJbVRUSVdWSzl2Q0cyRUlRRUU1c2ZSbjQxSTJ1R2hMdGlpbDhCRjFYWXpwWFpaaGg2WGFYYm5PSng4NVFURXctZGhqZzZnNXR5Q0VqWTc5ZEQtS3ozODUtc1Z2UXhUbkNzcHY0VlFwY0dmSGNBTFlhWk93a2MtVUszNHJhY3dtUzhFbkU",
-      "description": "El Niño pode bater recorde desde 1950 e ameaça chuvas na Amazônia &nbsp;&nbsp; Revista Amazônia",
-      "imageUrl": null,
-      "source": "Revista Amazônia",
-      "publishedAt": "2026-11-25T11:31:00.000Z",
-      "firstSeenAt": "2026-11-25T14:18:24.405Z",
-      "lastSeenAt": "2026-11-25T14:18:24.405Z"
-    },
-    {
-      "id": "event-1e1419b5",
-      "category": "clima",
-      "title": "O El Niño voltou a ganhar força no Oceano Pacífico Equatorial depois de uma breve desaceleração observada entre o fim de outubro e o início de novembro. Conforme a MetSul Meteorolo",
-      "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE5WZ244M3VMdlF3LUdNcWl2bWlsSUhxbU9jTUZsWlZJZWE5aUlmY1NzaDhmdW9iZXg5TmppTjJsem9RYkhGdXVOS1NLT2xRclN5Q3c",
-      "description": "O El Niño voltou a ganhar força no Oceano Pacífico Equatorial depois de uma breve desaceleração observada entre o fim de outubro e o início de novembro. Conforme a MetSul Meteorologia, os dados semanais da NOAA mostram que a temperatura da sup &nbsp;&nbsp; Instagram",
-      "imageUrl": null,
-      "source": "Instagram",
-      "publishedAt": "2026-11-25T11:14:05.000Z",
-      "firstSeenAt": "2026-11-25T14:18:24.405Z",
-      "lastSeenAt": "2026-11-25T14:18:24.405Z"
-    },
-    {
-      "id": "event-9106e3c6",
-      "category": "africa",
-      "title": "África está agora a partir-se onde ninguém esperava - ZAP Notícias",
-      "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxNOWNjdlprc1dPZ20tS0I4aF9sYXdoS2t4QmpYRGk4cUVQemNRTEFvaVIxMU9fUFdJd21Vb0lUbU9XZDF0bm1tLWhRXy12NW9qNkwzRUxMMV9UQnVKR0NCN3JRcVY1TWliZ3ZjU3JtczFldzM0Rm8ySXV5QXdZbGktNlJ0RDdDUQ",
-      "description": "África está agora a partir-se onde ninguém esperava &nbsp;&nbsp; ZAP Notícias",
-      "imageUrl": null,
-      "source": "ZAP Notícias",
-      "publishedAt": "2026-11-25T08:50:00.000Z",
-      "firstSeenAt": "2026-11-25T14:18:24.405Z",
-      "lastSeenAt": "2026-11-26T05:04:05.863Z"
-    },
-    {
-      "id": "event-e8b458da",
-      "category": "clima",
-      "title": "Maior parte do Brasil está sob alerta para tempestades nesta quarta (25)",
-      "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxNSkRneG9WRHVwUzZIVlE2N0IyQ1hSeXBidHRiUV9FMm9OOGQySU44Z1U0eGxSUE1TbEhJajBmSzZITWFKV2tuYTVKM1lEMUJibVFnNi1abFYyeEtzRGtnMXI0aVIwaE56OUVBYndEUHVkX0hjQVROODNsTkliODFrQWxoTVhwRjh1VHI0Vi03aXlMYzk3b3JnX05lTmZuRHZ4RlZIM0FYa0k1b29zLU1yeUJSVEhSeTA",
-      "description": "Maior parte do Brasil está sob alerta para tempestades nesta quarta (25) &nbsp;&nbsp; CNN Brasil",
-      "imageUrl": null,
-      "source": "CNN Brasil",
-      "publishedAt": "2026-11-25T07:18:42.000Z",
-      "firstSeenAt": "2026-11-25T14:18:24.405Z",
-      "lastSeenAt": "2026-11-25T14:18:24.405Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-25T14:18:24.405Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 14,
-      "newArticles": 14,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "europa",
-        "africa"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-25T23:12:03.012Z",
       "ok": true,
@@ -445,23 +416,82 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-26T15:09:59.042Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 14,
+      "newArticles": 11,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "asia",
+        "africa"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 3,
-  "lastSuccessfulAt": "2026-11-26T05:04:05.863Z",
+  "lastSuccessfulAt": "2026-11-26T15:09:59.042Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-26T05:04:05.863Z",
+      "checkedAt": "2026-11-26T15:09:59.042Z",
       "warnings": [
         {
-          "id": "56505",
+          "id": "56515",
+          "title": "Chuvas Intensas",
+          "severity": "Perigo",
+          "phase": "previsto",
+          "regions": [
+            "DO"
+          ],
+          "startsAt": "2026-11-27T00:00:00.000Z",
+          "endsAt": "2026-11-27T00:00:00.000Z",
+          "source": "INMET",
+          "url": "https://avisos.inmet.gov.br/"
+        },
+        {
+          "id": "56512",
+          "title": "Baixa Umidade",
+          "severity": "Perigo Potencial",
+          "phase": "vigente",
+          "regions": [
+            "DO"
+          ],
+          "startsAt": "2026-11-26T00:00:00.000Z",
+          "endsAt": "2026-11-27T00:00:00.000Z",
+          "source": "INMET",
+          "url": "https://avisos.inmet.gov.br/"
+        },
+        {
+          "id": "56516",
           "title": "Chuvas Intensas",
           "severity": "Perigo Potencial",
           "phase": "previsto",
           "regions": [
             "DO",
+            "DE",
             "DO"
+          ],
+          "startsAt": "2026-11-28T00:00:00.000Z",
+          "endsAt": "2026-11-28T00:00:00.000Z",
+          "source": "INMET",
+          "url": "https://avisos.inmet.gov.br/"
+        },
+        {
+          "id": "56513",
+          "title": "Chuvas Intensas",
+          "severity": "Perigo Potencial",
+          "phase": "previsto",
+          "regions": [
+            "DO",
+            "DO",
+            "DE"
           ],
           "startsAt": "2026-11-27T00:00:00.000Z",
           "endsAt": "2026-11-27T00:00:00.000Z",
@@ -472,7 +502,7 @@
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-26T05:04:05.863Z",
+      "checkedAt": "2026-11-26T15:09:59.042Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
