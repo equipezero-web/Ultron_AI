@@ -29,9 +29,9 @@ assert.doesNotMatch(architectureReply,/colunas key, value/i);
 assert.equal(verifiedSelfArchitectureReply("Qual é minha preferência de interface?"),null);
 assert.equal(verifiedSelfArchitectureReply("Planeje melhorias no seu sistema"),null);
 const workerSource=readFileSync(new URL("../backend/worker.js",import.meta.url),"utf8");
-assert.match(workerSource,/const architectureReply=verifiedSelfArchitectureReply\(message\)/);
+assert.match(workerSource,/if\(verifiedSelfArchitectureReply\(originalBody\?\.message\)\)/);
 assert.match(workerSource,/model:"live-architecture-audit"/);
-assert.doesNotMatch(workerSource,/const architectureReply=verifiedSelfArchitectureReply\\(message\\)/);
+assert.doesNotMatch(workerSource,/const architectureReply=verifiedSelfArchitectureReply\(message\)/);
 
 const {inspectLiveJarvisArchitecture,formatLiveJarvisArchitecture}=await import("../backend/live-architecture-audit.js");
 const sourceMap={
