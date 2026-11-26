@@ -1012,7 +1012,9 @@ async function handleAi(request, env) {
   // Source-grounded self-audits are executed afresh on every request: GitHub
   // commit-pinned file reads plus live Worker D1 schema metadata (read only).
   // Do not allow static map or provider to substitute for a failed inspection.
-  if(verifiedSelfArchitectureReply(originalBody?.message)){
+  // Provider-health diagnostics take precedence even when a request mentions
+  // J.A.R.V.I.S., "informe", or "provedores" (generic architecture keywords).
+  if(!isProviderDiagnosticsIntent(originalBody?.message) && verifiedSelfArchitectureReply(originalBody?.message)){
     const inspection=await inspectLiveJarvisArchitecture(env,{backendVersion:BACKEND_VERSION});
     return json({
       text:formatLiveJarvisArchitecture(inspection),

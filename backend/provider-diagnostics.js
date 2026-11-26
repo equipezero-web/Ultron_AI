@@ -13,7 +13,9 @@ function clean(value) {
 
 export function isProviderDiagnosticsIntent(message){
   const q=clean(message).replace(/^(?:(?:ei|ola|oi) )?(?:jarvis|ultron) /,"");
-  if(!q || q.length>180)return false;
+  // Longer explicit health requests are common; limit to a bounded user turn,
+  // not an arbitrary short sentence that routes diagnostics to another intent.
+  if(!q || q.length>1000)return false;
   return /\b(?:provedor(?:es)? (?:de )?ia|modelos? (?:de )?ia|gateway (?:de )?ia)\b/.test(q)
     && /\b(?:status|estado|diagnostico|diagnosticos|saude|falhas|recuperacao|disponibilidade|monitoramento|monitorar)\b/.test(q);
 }

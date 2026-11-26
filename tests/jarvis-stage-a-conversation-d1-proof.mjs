@@ -34,7 +34,7 @@ assert.ok(verifiedSelfArchitectureReply("Jarvis, faça uma auditoria da sua arqu
 assert.equal(verifiedSelfArchitectureReply("Jarvis, informe as notícias atuais do Brasil"),null,"General research must not route to architecture");
 assert.equal(verifiedSelfArchitectureReply("Jarvis, execute uma pesquisa sobre memória humana"),null,"Unrelated memory request must not route to architecture");
 const workerSource=readFileSync(new URL("../backend/worker.js",import.meta.url),"utf8");
-assert.match(workerSource,/if\(verifiedSelfArchitectureReply\(originalBody\?\.message\)\)/);
+assert.match(workerSource,/if\(!isProviderDiagnosticsIntent\(originalBody\?\.message\) && verifiedSelfArchitectureReply\(originalBody\?\.message\)\)/);
 assert.match(workerSource,/model:"live-architecture-audit"/);
 assert.doesNotMatch(workerSource,/const architectureReply=verifiedSelfArchitectureReply\(message\)/);
 
