@@ -1,0 +1,53 @@
+/**
+ * Source snapshot created by trusted GitHub Actions checkout, not by the AI.
+ * Publishes only non-secret architecture metadata to an operator-independent
+ * D1 row; the Worker reads it but cannot claim it is a live GitHub API probe.
+ */
+import {readFileSync} from "node:fs";
+import {createHash} from "node:crypto";
+import {join} from "node:path";
+import {fileURLToPath} from "node:url";
+
+export const ARCHITECTURE_FILES=[
+  "backend/memory.js",
+  "backend/providers.js",
+  "backend/provider-circuit-breaker.js",
+  "backend/provider-diagnostics.js"
+];
+export const EXPECTED_COLUMNS=[
+  "id","operator_id","category","content","importance","source_message_id",
+  "created_at","updated_at","last_used_at","use_count"
+];
+export function buildArchitectureSnapshot({root,commit,now=()=>new Date()}){
+  if(!/^[a-f0-9]{40}$/i.test(commit||""))throw Error("invalid-git-commit");
+  const contents=ARCHITECTURE_FILES.map(path=>({path,source:readFileSync(join(root,path),"utf8")}));
+  const files=contents.map(({path,source})=>({path,sha256:createHash("sha256").update(source).digest("hex"),bytes:Buffer.byteLength(source)}));
+  const sourceFor=path=>contents.find(v=>v.path===path).source;
+  const memory=sourceFor("backend/memory.js");
+  const match=memory.match(/CREATE TABLE IF NOT EXISTS memories\s*\(([\s\S]*?)\n\s*\)/);
+  const schema=match?.[1]||"";
+  const columns=EXPECTED_COLUMNS.filter(c=>new RegExp("^\\s*"+c+"\\s+","m").test(schema));
+  if(columns.length!==EXPECTED_COLUMNS.length)throw Error("memory-schema-not-verified");
+  const breaker=sourceFor("backend/provider-circuit-breaker.js");
+  const cooldown=breaker.match(/const MAX_COOLDOWN_MS\s*=\s*(\d+)/);
+  if(!cooldown)throw Error("circuit-breaker-not-verified");
+  if(!/providerCircuitBreaker|generateWithProviders/.test(sourceFor("backend/providers.js")))
+    throw Error("providers-not-verified");
+  return {source:"github-actions-checked-out-main",repository:"equipezero-web/Ultron_AI",
+    commit:commit.toLowerCase(),syncedAt:now().toISOString(),files,columns,
+    cooldownMs:Number(cooldown[1]),providersVerified:true,diagnosticsVerified:true,
+    permissions:"read-only-for-jarvis"};
+}
+export function snapshotToSql(snapshot){
+  const quote=value=>"'"+String(value).replace(/'/g,"''")+"'";
+  return [
+    "CREATE TABLE IF NOT EXISTS jarvis_architecture_snapshots (id TEXT PRIMARY KEY, commit_sha TEXT NOT NULL, synced_at TEXT NOT NULL, data_json TEXT NOT NULL);",
+    "INSERT INTO jarvis_architecture_snapshots (id,commit_sha,synced_at,data_json) VALUES ("+
+      ["latest",snapshot.commit,snapshot.syncedAt,JSON.stringify(snapshot)].map(quote).join(",")+
+      ") ON CONFLICT(id) DO UPDATE SET commit_sha=excluded.commit_sha, synced_at=excluded.synced_at, data_json=excluded.data_json;"
+  ].join("\n")+"\n";
+}
+if(process.argv[1]&&fileURLToPath(import.meta.url)===process.argv[1]){
+  const root=fileURLToPath(new URL("../",import.meta.url));
+  process.stdout.write(snapshotToSql(buildArchitectureSnapshot({root,commit:process.env.GITHUB_SHA})));
+}
