@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import {readFileSync} from "node:fs";
 import {explicitMemoryCandidate,readExplicitInterfacePreference,saveExchange} from "../backend/memory.js";
 import {shouldResearchBeforeAnswer} from "../backend/web-research.js";
-import {interfacePreferenceIntent} from "../backend/jarvis-memory-intents.js";
+import {interfacePreferenceIntent,verifiedSelfArchitectureReply} from "../backend/jarvis-memory-intents.js";
 
 const message="Lembre-se de que minha preferência de interface para este teste é azul-marinho.";
 assert.equal(explicitMemoryCandidate(message),message);
@@ -18,6 +18,19 @@ assert.equal(explicitMemoryCandidate("Lembre que meu projeto é sobre meteorolog
 
 assert.equal(shouldResearchBeforeAnswer(message).needed,false);
 
+const architectureQuestion="J.A.R.V.I.S., antes de propor novas melhorias, analise sua arquitetura real. Identifique como funciona atualmente a memória D1, quais são as colunas utilizadas para armazenar preferências, como funciona o fallback entre Groq, Cloudflare e Cohere e quais mecanismos de diagnóstico já existem. Para cada afirmação, informe o arquivo ou módulo que a comprova.";
+const architectureReply=verifiedSelfArchitectureReply(architectureQuestion);
+assert.match(architectureReply,/backend\/memory\.js/);
+assert.match(architectureReply,/operator_id/);
+assert.match(architectureReply,/source_message_id/);
+assert.match(architectureReply,/30 segundos/);
+assert.match(architectureReply,/não é inspeção ao vivo/);
+assert.doesNotMatch(architectureReply,/colunas key, value/i);
+assert.equal(verifiedSelfArchitectureReply("Qual é minha preferência de interface?"),null);
+assert.equal(verifiedSelfArchitectureReply("Planeje melhorias no seu sistema"),null);
+const workerSource=readFileSync(new URL("../backend/worker.js",import.meta.url),"utf8");
+assert.match(workerSource,/const architectureReply=verifiedSelfArchitectureReply\(message\)/);
+assert.match(workerSource,/model:"verified-architecture-map"/);
 const operator="operator-A";
 const stored=[];
 let duplicate=false;
