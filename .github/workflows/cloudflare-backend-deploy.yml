@@ -72,6 +72,18 @@ jobs:
             fi
             sleep 15
           done
+      - name: Publish verified GitHub checkout snapshot to Cloudflare D1
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          snapshot_sql=$(mktemp)
+          trap 'rm -f "$snapshot_sql"' EXIT
+          node ../scripts/architecture-snapshot-to-sql.mjs > "$snapshot_sql"
+          npx --yes wrangler@4.157.0 d1 execute ultron-memory --config wrangler.jsonc --remote --file "$snapshot_sql"
+          echo "Architecture snapshot synchronized from trusted checkout: $GITHUB_SHA"
+
       - name: Verify production health
         env:
           BACKEND_HEALTH_URL: https://ultron-backend.lucaalves17-20.workers.dev/api/health
@@ -155,7 +167,8 @@ jobs:
           const data=await response.json().catch(()=>({}));
           const text=String(data?.text||"");
           const passed=response.ok&&data?.model==="live-architecture-audit"&&
-            data?.architectureInspection?.github?.liveReadAvailable===true&&
+            (data?.architectureInspection?.github?.liveReadAvailable===true||
+             data?.architectureInspection?.github?.snapshotAvailable===true)&&
             data?.architectureInspection?.github?.files?.every(f=>f.ok)===true&&
             data?.architectureInspection?.memory?.verified===true&&
             data?.architectureInspection?.circuitBreaker?.cooldownMs===30000&&
@@ -170,6 +183,7 @@ jobs:
               repository:data?.architectureInspection?.repository||null,
               mode:data?.architectureInspection?.github?.mode||null,
               githubError:data?.architectureInspection?.github?.error||null,
+              lastSyncedAt:data?.architectureInspection?.github?.snapshotSyncedAt||null,
               githubFiles:data?.architectureInspection?.github?.files||[],
               columnsConfirmed:data?.architectureInspection?.memory?.verified===true,
               d1Ready:data?.architectureInspection?.d1?.ready===true,
