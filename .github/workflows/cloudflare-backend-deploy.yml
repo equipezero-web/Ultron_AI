@@ -136,3 +136,37 @@ jobs:
           }
           console.log("STAGE A PRODUCTION CONVERSATION VERIFIED:",data.model);
           NODE
+
+      - name: Verify live JARVIS source-grounded architecture contract
+        env:
+          JARVIS_AI_URL: https://ultron-backend.lucaalves17-20.workers.dev/api/ai
+        run: |
+          node --input-type=module <<'NODE'
+          // Production proof: repository CI success alone does not show that
+          // the deployed Worker serves the corrected architecture-audit route.
+          const message="J.A.R.V.I.S., analise sua arquitetura real. Identifique as colunas da tabela memories no D1, os arquivos responsáveis pelo fallback dos provedores de IA e o tempo máximo de cooldown do circuit breaker. Cite os arquivos correspondentes e não invente informações.";
+          const response=await fetch(process.env.JARVIS_AI_URL,{
+            method:"POST",
+            headers:{"Content-Type":"application/json","Cache-Control":"no-cache"},
+            body:JSON.stringify({message,clientOwnsSpeech:true}),
+            cache:"no-store",
+            signal:AbortSignal.timeout(20000)
+          });
+          const data=await response.json().catch(()=>({}));
+          const text=String(data?.text||"");
+          const passed=response.ok&&data?.model==="verified-architecture-map"&&
+            /backend\\/memory\\.js/.test(text)&&
+            /backend\\/provider-circuit-breaker\\.js/.test(text)&&
+            /operator_id/.test(text)&&
+            /30 segundos/.test(text)&&
+            !/MemoryCore|AIOrchestrator|StarkCore/.test(text.split("EVIDÊNCIA")[0]);
+          if(!passed){
+            console.error("LIVE ARCHITECTURE AUDIT FAILED",{
+              status:response.status,model:data?.model||null,
+              backendVersion:data?.backendVersion||null,
+              reason:data?.error||"contract-not-satisfied"
+            });
+            process.exit(1);
+          }
+          console.log("LIVE ARCHITECTURE AUDIT VERIFIED:",data.model);
+          NODE
