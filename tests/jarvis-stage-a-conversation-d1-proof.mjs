@@ -30,7 +30,8 @@ assert.equal(verifiedSelfArchitectureReply("Qual é minha preferência de interf
 assert.equal(verifiedSelfArchitectureReply("Planeje melhorias no seu sistema"),null);
 const workerSource=readFileSync(new URL("../backend/worker.js",import.meta.url),"utf8");
 assert.match(workerSource,/const architectureReply=verifiedSelfArchitectureReply\(message\)/);
-assert.match(workerSource,/model:"verified-architecture-map"/);
+assert.match(workerSource,/model:"live-architecture-audit"/);
+assert.doesNotMatch(workerSource,/const architectureReply=verifiedSelfArchitectureReply\\(message\\)/);
 const operator="operator-A";
 const stored=[];
 let duplicate=false;
