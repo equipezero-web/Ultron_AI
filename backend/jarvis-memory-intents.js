@@ -1,7 +1,8 @@
 /** Operator-scoped preference requests. Intent recognition never grants tool authority. */
 export function interfacePreferenceIntent(message){
   const q=String(message||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"")
-    .toLowerCase().replace(/[?!.,;:]+$/g,"").replace(/\s+/g," ").trim();
+    .toLowerCase().replace(/^(?:(?:ei|ola|oi|hey)\s+)?(?:j\.?a\.?r\.?v\.?i\.?s\.?|jarvis|ultron)[,!:;\s]+/i,"")
+    .replace(/[?!.,;:]+$/g,"").replace(/\s+/g," ").trim();
   const isPreference=/\bpreferencia de interface\b/.test(q);
   if(isPreference && /^(?:lembre-se de que|lembre se de que|lembre-se que|lembre que|guarde|salve|registre)\b/.test(q))
     return "store";
