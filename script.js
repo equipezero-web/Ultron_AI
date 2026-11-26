@@ -348,7 +348,7 @@ async function askUltron(command) {
 
     if(data.correctedLegacyReply) log("ROTA DE CONVERSAÇÃO // resposta legada corrigida pela interface.", true);
     const provider = data.providerLabel || data.provider || "AI";
-    addLog(output, `ULTRON [${provider}]: ${data.text}`);
+    addLog(output, `J.A.R.V.I.S. [${provider}]: ${data.text}`, "normal", true);
     prepareNeuralResponse(data);
     TASK_CONTEXT?.captureQuestion(command);
     window.dispatchEvent(new CustomEvent("ultron:answer",{detail:{id:questionId,text:data.text,visualContext:data.visualContext,webResearch:data.webResearch,liveData:data.liveData||null}}));
