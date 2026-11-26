@@ -9,10 +9,17 @@ const breaker=createProviderCircuitBreaker({now,threshold:2,cooldownMs:30000});
 for(const command of [
   "Jarvis, status dos provedores de IA",
   "Diagnóstico dos modelos de IA",
-  "Como está a saúde do gateway de IA?"
+  "Como está a saúde do gateway de IA?",
+  "Jarvis, apresente o diagnóstico dos provedores de IA. Informe os sucessos e falhas observados nos últimos 15 minutos, identifique os provedores em cooldown e diferencie os resultados reais dos que não foram testados."
 ])assert.equal(isProviderDiagnosticsIntent(command),true,command);
 for(const command of ["Qual seu provedor de IA favorito?","Me diga que horas são","Jarvis, pare","Status dos dispositivos"])
  assert.equal(isProviderDiagnosticsIntent(command),false,command);
+// The long operator command previously fell into architecture audit because of
+// the 180-character cap; the provider intent must take precedence.
+import {verifiedSelfArchitectureReply} from "../backend/jarvis-memory-intents.js";
+const fullOperatorDiagnostic="Jarvis, apresente o diagnóstico dos provedores de IA. Informe os sucessos e falhas observados nos últimos 15 minutos, identifique os provedores em cooldown e diferencie os resultados reais dos que não foram testados.";
+assert.equal(isProviderDiagnosticsIntent(fullOperatorDiagnostic),true);
+assert.ok(verifiedSelfArchitectureReply(fullOperatorDiagnostic)); // Regression for overlap
 let answer=providerDiagnosticsAnswer(breaker,diagnostics);
 assert.match(answer.text,/sem observações/);
 assert.doesNotMatch(answer.text,/todos online/i);
