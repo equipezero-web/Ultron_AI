@@ -5,6 +5,7 @@ import {isProviderDiagnosticsIntent,providerDiagnosticsAnswer} from "./provider-
 import {providerCircuitBreaker} from "./provider-circuit-breaker.js";
 import {loadPersistentProviderDiagnostics} from "./provider-diagnostics-db.js";
 import {interfacePreferenceIntent,verifiedSelfArchitectureReply} from "./jarvis-memory-intents.js";
+import {inspectLiveJarvisArchitecture,formatLiveJarvisArchitecture} from "./live-architecture-audit.js";
 import {vetClientTaskContext,contextSearchQuery} from "./task-context.js";
 import {checkPublicAiQuota} from "./worker-ai-rate-limit.js";
 import {loadLiveWeather} from "./weather-live.js";
@@ -676,26 +677,6 @@ async function executeAiCore(env, body) {
     }};
   }
 
-  const architectureReply=verifiedSelfArchitectureReply(message);
-  if(architectureReply){
-    const memoryWrite=operatorId&&conversationId
-      ? await saveExchange(env,{operatorId,conversationId,userMessage:message,
-          assistantMessage:architectureReply,provider:"jarvis-local",model:"verified-architecture-map"})
-      : {saved:false};
-    return {status:200,data:{
-      text:architectureReply,provider:"jarvis-local",providerLabel:"J.A.R.V.I.S.",
-      model:"verified-architecture-map",attempts:[],
-      dialogueMode:{name:"architecture-audit",followup:false,claimedCompletion:false},
-      memory:{active:Boolean(memoryWrite.saved),identityReceived:Boolean(operatorId&&conversationId),
-        recalledMessages:0,recalledMemories:0,saved:Boolean(memoryWrite.saved),
-        explicitMemorySaved:false,error:memoryWrite.error||null},
-      liveData:{news:false,resultCount:0},visualContext:null,
-      webResearch:{requested:false,used:false,sourceCount:0,sources:[]},
-      performance:{aiMs:0,researchMs:0,aiPasses:0,voiceMs:0,totalMs:Date.now()-requestStartedAt},
-      audioBase64:null,audioMimeType:null
-    }};
-  }
-
   const preferenceIntent=interfacePreferenceIntent(message);
   if(preferenceIntent){
     const identityReady=Boolean(operatorId&&conversationId);
@@ -1025,6 +1006,23 @@ async function handleAi(request, env) {
   let originalBody;
   try { originalBody = await request.json(); }
   catch { return json({ error: "JSON inválido." }, 400); }
+
+  // Source-grounded self-audits are executed afresh on every request: GitHub
+  // commit-pinned file reads plus live Worker D1 schema metadata (read only).
+  // Do not allow static map or provider to substitute for a failed inspection.
+  if(verifiedSelfArchitectureReply(originalBody?.message)){
+    const inspection=await inspectLiveJarvisArchitecture(env,{backendVersion:BACKEND_VERSION});
+    return json({
+      text:formatLiveJarvisArchitecture(inspection),
+      model:"live-architecture-audit",provider:"jarvis-local",
+      providerLabel:"J.A.R.V.I.S. / AUDITORIA AO VIVO",attempts:[],
+      architectureInspection:inspection,
+      audioBase64:null,audioMimeType:null,
+      backendVersion:BACKEND_VERSION,
+      webResearch:{requested:true,used:inspection.github.verified,sourceCount:inspection.github.files.filter(f=>f.ok).length,sources:[]},
+      performance:{aiMs:0,researchMs:0,aiPasses:0,voiceMs:0,totalMs:Date.now()-startedAt}
+    },200);
+  }
 
   // Current time is a live operational value; cached web snippets and a model
   // must never override the server observation or accuse a device of drift.
