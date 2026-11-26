@@ -90,6 +90,7 @@ jobs:
           node tests/jarvis-stage-a-live-regressions.mjs
           node --check backend/worker.js
           node --check backend/providers.js
+          node tests/jarvis-architecture-snapshot.mjs
           node tests/jarvis-stage-a-conversation-d1-proof.mjs
           node tests/jarvis-stage-a-project-opinion.mjs
           node tests/jarvis-stage-a-frontend-response.mjs

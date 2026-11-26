@@ -47,6 +47,31 @@ function decodeFile(value){
     return new TextDecoder("utf-8",{fatal:true}).decode(Uint8Array.from(atob(raw),c=>c.charCodeAt(0)));
   }catch{return null;}
 }
+async function loadTrustedMirror(env){
+  if(typeof env?.ULTRON_DB?.prepare!=="function")return null;
+  try{
+    const result=await env.ULTRON_DB.prepare(
+      "SELECT commit_sha, synced_at, data_json FROM jarvis_architecture_snapshots WHERE id = ?"
+    ).bind("latest").first();
+    if(!result||typeof result.data_json!=="string"||result.data_json.length>12000)return null;
+    const data=JSON.parse(result.data_json);
+    const allowed=new Set(FILES);
+    if(data.repository!=="equipezero-web/Ultron_AI"||
+      data.source!=="github-actions-checked-out-main"||
+      !/^[a-f0-9]{40}$/.test(data.commit||"")||
+      data.commit!==result.commit_sha||
+      typeof data.syncedAt!=="string"||data.syncedAt!==result.synced_at||
+      !Number.isFinite(Date.parse(data.syncedAt))||
+      Date.parse(data.syncedAt)>Date.now()+300000||
+      !Array.isArray(data.files)||data.files.length!==FILES.length||
+      data.files.some(f=>!allowed.has(f.path)||!/^[a-f0-9]{64}$/.test(f.sha256||""))||
+      !COLUMNS.every(c=>data.columns?.includes(c))||
+      !Number.isSafeInteger(data.cooldownMs)||data.cooldownMs<1000||
+      data.providersVerified!==true)return null;
+    return data;
+  }catch{return null;}
+}
+
 export async function inspectLiveJarvisArchitecture(env,{fetchImpl=fetch,now=Date.now,backendVersion="unknown"}={}){
   const checkedAt=new Date(now()).toISOString();
   const head=await fetchJson("/commits/main",fetchImpl);
@@ -89,18 +114,26 @@ export async function inspectLiveJarvisArchitecture(env,{fetchImpl=fetch,now=Dat
         error:values.length?"":"d1-table-not-found"};
     }catch{d1={ready:false,configured:true,columns:[],error:"d1-query-failed"};}
   }
-  return {checkedAt,repository:"equipezero-web/Ultron_AI",commit,backendVersion,
+  // GitHub egress may be blocked in Workers. Read the latest trusted
+  // checkout snapshot from D1, published by GitHub Actions after deploy.
+  // This is a live D1 read of LAST SYNC, not a live GitHub HTTP request.
+  const mirror=!commit&&!files.some(f=>f.ok)?await loadTrustedMirror(env):null;
+  const mirrorFiles=mirror?.files?.map(f=>({path:f.path,ok:true,error:null,sha256:f.sha256}))||null;
+  return {checkedAt,repository:"equipezero-web/Ultron_AI",commit:commit||mirror?.commit||null,backendVersion,
     github:{verified:Boolean(commit),snapshotPinned:Boolean(commit),
       liveReadAvailable:files.some(f=>f.ok),
-      mode:commit?"github-rest-commit":"github-raw-main-unpinned",
+      snapshotAvailable:Boolean(mirror),
+      snapshotSyncedAt:mirror?.syncedAt||null,
+      mode:commit?"github-rest-commit":mirror?"github-actions-d1-snapshot":"github-raw-main-unpinned",
       error:head.error||(!commit?"github-commit-not-verified":null),
-      files:files.map(({path,ok,error})=>({path,ok,error}))},
-    memory:{verified:Boolean(memorySchema&&columns.length===COLUMNS.length),
-      columns:memorySchema?columns:[],schemaSource:"backend/memory.js"},
-    providers:{verified:Boolean(provider)&&/providerCircuitBreaker|generateWithProviders/.test(provider),
+      files:mirrorFiles||files.map(({path,ok,error})=>({path,ok,error}))},
+    memory:{verified:Boolean(mirror||memorySchema&&columns.length===COLUMNS.length),
+      columns:mirror?.columns||(memorySchema?columns:[]),schemaSource:"backend/memory.js"},
+    providers:{verified:Boolean(mirror?.providersVerified||provider)&&/providerCircuitBreaker|generateWithProviders/.test(provider)||Boolean(mirror?.providersVerified),
       source:"backend/providers.js"},
-    circuitBreaker:{verified:cooldownMs!==null,cooldownMs,source:"backend/provider-circuit-breaker.js"},
-    diagnostics:{verified:Boolean(diagnostics),source:"backend/provider-diagnostics.js"},
+    circuitBreaker:{verified:mirror?true:cooldownMs!==null,
+      cooldownMs:mirror?.cooldownMs??cooldownMs,source:"backend/provider-circuit-breaker.js"},
+    diagnostics:{verified:Boolean(mirror?.diagnosticsVerified||diagnostics),source:"backend/provider-diagnostics.js"},
     d1,
     comparison:"O commit GitHub consultado não foi comparado criptograficamente ao Worker publicado.",
     writePermission:false};
@@ -111,13 +144,16 @@ export function formatLiveJarvisArchitecture(result){
     "J.A.R.V.I.S. // AUDITORIA DE ARQUITETURA AO VIVO (SOMENTE LEITURA)",
     "Consulta UTC: "+result.checkedAt,
     "GitHub: https://github.com/"+result.repository,
-    "Commit HEAD/main consultado: "+(result.commit||"indisponível"),
+    "Commit "+(result.github.mode==="github-actions-d1-snapshot"?"da última sincronização GitHub Actions":"HEAD/main consultado")+": "+(result.commit||"indisponível"),
     "Worker em execução: versão informada "+result.backendVersion+"; commit de deploy NÃO comprovado.",
     "GitHub API: "+yes(result.github.verified)+(result.github.error?" ("+result.github.error+")":""),
     "Leitura GitHub: "+(result.github.snapshotPinned?"arquivos do commit verificado":
+      result.github.snapshotAvailable?"retrato verificável do checkout do GitHub Actions, sincronizado em "+result.github.snapshotSyncedAt+
+        "; NÃO houve acesso HTTP direto ao GitHub nesta consulta":
       result.github.liveReadAvailable?"fallback RAW/main ao vivo SEM commit verificado, arquivos podem ser de revisões distintas":
       "nenhuma leitura de arquivo confirmada"),
-    "Arquivos realmente consultados: "+(result.github.files.map(f=>f.path+" ["+(f.ok?"lido":f.error)+"]").join("; ")||"nenhum"),
+    "Arquivos "+(result.github.snapshotAvailable?"sincronizados pelo GitHub Actions":"realmente consultados nesta execução")+": "+
+      (result.github.files.map(f=>f.path+" ["+(f.ok?"confirmado":f.error)+"]").join("; ")||"nenhum"),
     "Memória (fonte GitHub): "+yes(result.memory.verified)+
       (result.memory.verified?"; colunas memories: "+result.memory.columns.join(", "):"; esquema não confirmado nesta leitura"),
     "D1 no Worker: "+(result.d1.ready?"consulta PRAGMA realizada; colunas atuais: "+result.d1.columns.join(", "):
