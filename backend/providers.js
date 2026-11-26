@@ -489,10 +489,12 @@ export async function generateWithProviders(
   const breaker = options.circuitBreaker || providerCircuitBreaker;
   const mistralRateGate = options.mistralRateGate || mistral429Gate;
   const ordered = providerOrder(env, status);
-  // Only skip cooled providers when at least one configured non-cooled
-  // alternative exists. Never strand the final configured provider.
-  const healthyAlternatives = ordered.some((name) =>
-    status[name]?.configured && !breaker.isCooling(name));
+  // A cooled provider is skipped whenever a non-cooled provider is available.
+  // If *all* configured providers are cooling, make only one bounded recovery
+  // attempt (in preference order). Never stampede every isolated upstream.
+  const configuredProviders=ordered.filter(name=>status[name]?.configured && !isProviderDisabled(env,name));
+  const healthyAlternatives=configuredProviders.some(name=>!breaker.isCooling(name));
+  const coolingRecovery=healthyAlternatives?null:configuredProviders[0]||null;
 
   for (const provider of ordered) {
     if (isProviderDisabled(env,provider)) {
@@ -511,7 +513,7 @@ export async function generateWithProviders(
       });
       continue;
     }
-    if (healthyAlternatives && breaker.isCooling(provider)) {
+    if (breaker.isCooling(provider) && (healthyAlternatives || provider!==coolingRecovery)) {
       recordAttempt({
         provider,
         status: "skipped",
