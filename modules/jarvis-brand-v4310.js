@@ -14,13 +14,13 @@ function brandNode(node) {
   if (!node) return;
   if (node.nodeType === Node.TEXT_NODE) {
     const parent = node.parentElement;
-    if (!parent || parent.closest('script,style,textarea,code,pre')) return;
+    if (!parent || parent.closest('script,style,textarea,code,pre,[data-preserve-legacy-name]')) return;
     const next = replaceBrandText(node.nodeValue);
     if (next !== node.nodeValue) node.nodeValue = next;
     return;
   }
   if (node.nodeType !== Node.ELEMENT_NODE) return;
-  if (node.matches('script,style,textarea,code,pre')) return;
+  if (node.matches('script,style,textarea,code,pre,[data-preserve-legacy-name]')) return;
   for (const attr of ['aria-label', 'title', 'placeholder']) {
     if (!node.hasAttribute(attr)) continue;
     const current = node.getAttribute(attr);
