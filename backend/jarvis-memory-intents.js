@@ -21,8 +21,8 @@ export function interfacePreferenceIntent(message){
 export function verifiedSelfArchitectureReply(message){
   const q=String(message||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
   const self=/\b(?:jarvis|j\.?a\.?r\.?v\.?i\.?s|sua arquitetura|seu codigo|seus modulos|seu repositorio)\b/.test(q);
-  const audit=/\b(?:analise|audite|verifique|identifique|inspecione|explique)\b/.test(q);
-  const specifics=/\b(?:memoria d1|colunas|esquema|fallback|provedores|diagnostico|arquivos|modulos)\b/.test(q);
+  const audit=/\b(?:analise|audite|auditoria|auditar|execute|executar|verifique|identifique|inspecione|explique|consulte|informe|mostre|confirme)\b/.test(q);
+  const specifics=/\b(?:memoria d1|colunas|esquema|fallback|provedores|diagnostico|arquivos|modulos|commit|repositorio|worker|deploy|circuit breaker|cooldown|fonte do codigo|origem da evidencia)\b/.test(q);
   if(!(self&&audit&&specifics))return null;
   return [
     "ARQUITETURA DOCUMENTADA NO CÓDIGO DO J.A.R.V.I.S. (não é inspeção ao vivo do D1 ou do deploy):",
