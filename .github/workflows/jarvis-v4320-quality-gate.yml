@@ -75,6 +75,7 @@ jobs:
           node tests/jarvis-gateway-fallback-safety.mjs
           node tests/jarvis-stage-b-binding-deadline.mjs
           node tests/jarvis-stage-b-provider-circuit-breaker.mjs
+          node tests/jarvis-stage-b-deploy-provenance.mjs
           node tests/jarvis-stage-b-provider-diagnostics.mjs
           node tests/jarvis-stage-b-provider-d1.mjs
           node tests/jarvis-stage-b-disable-providers.mjs

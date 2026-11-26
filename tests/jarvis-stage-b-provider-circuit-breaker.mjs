@@ -59,6 +59,19 @@ try {
     "Oi",{}, {circuitBreaker:solo});
   assert.equal(only.provider,"gemini");
 
+  // When every provider is cooling, attempt only one controlled recovery.
+  // A second still-cooling provider must not receive a stampede of requests.
+  const allCooling=createProviderCircuitBreaker({threshold:1,cooldownMs:30000,now:()=>timestamp});
+  allCooling.onFailure("gemini",{status:503});
+  allCooling.onFailure("groq",{status:503});
+  const groqBefore=groqCalls;
+  geminiHealthy=false;
+  await assert.rejects(()=>generateWithProviders(env,"Oi",{},{
+    circuitBreaker:allCooling
+  }),/Nenhum provedor/);
+  assert.equal(groqCalls,groqBefore,"Skip second provider when both are cooling");
+  assert.equal(allCooling.isCooling("groq"),true);
+
   // A permanent client/auth failure does not trigger a temporary outage.
   breaker.onFailure("groq",{status:401});
   assert.equal(breaker.isCooling("groq"),false);

@@ -132,6 +132,8 @@ import {
   startOrchestration
 } from "./orchestration-engine.js";
 
+import {ARCHITECTURE_DEPLOY_MANIFEST} from "./architecture-deploy-manifest.js";
+
 const BACKEND_VERSION = "4.30.1";
 const WORKER_ENTRYPOINT = "worker.js";
 
@@ -1401,6 +1403,13 @@ async function health(env) {
     service: "ultron-ai-cloudflare-worker",
     backendVersion: BACKEND_VERSION,
     workerEntrypoint: WORKER_ENTRYPOINT,
+    // Public, content-free release fingerprint to detect split Workers traffic.
+    // A missing manifest is explicitly marked unknown, never represented as HEAD.
+    deploymentProvenance: ARCHITECTURE_DEPLOY_MANIFEST?.repository==="equipezero-web/Ultron_AI" &&
+      /^[a-f0-9]{40}$/.test(ARCHITECTURE_DEPLOY_MANIFEST?.commit||"")
+      ? {source:"github-actions-checkout",commit:ARCHITECTURE_DEPLOY_MANIFEST.commit,
+         syncedAt:ARCHITECTURE_DEPLOY_MANIFEST.syncedAt}
+      : {source:"unverified",commit:null,syncedAt:null},
     singleEntrypoint: true,
     legacyWorkerChain: false,
     aiGateway: true,
