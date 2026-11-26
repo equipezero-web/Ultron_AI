@@ -162,9 +162,19 @@ jobs:
             /backend\/memory\.js/.test(text)&&
             /backend\/provider-circuit-breaker\.js/.test(text)&&
             /operator_id/.test(text)&&
-            /30 segundos/.test(text)&&
+            /30000 ms/.test(text)&&
             !/MemoryCore|AIOrchestrator|StarkCore/.test(text.split("EVIDÊNCIA")[0]);
           if(!passed){
+            // Log only non-sensitive code/schema provenance, never memory contents.
+            console.error("LIVE ARCHITECTURE EVIDENCE",{
+              repository:data?.architectureInspection?.repository||null,
+              mode:data?.architectureInspection?.github?.mode||null,
+              githubError:data?.architectureInspection?.github?.error||null,
+              githubFiles:data?.architectureInspection?.github?.files||[],
+              columnsConfirmed:data?.architectureInspection?.memory?.verified===true,
+              d1Ready:data?.architectureInspection?.d1?.ready===true,
+              cooldownMs:data?.architectureInspection?.circuitBreaker?.cooldownMs??null
+            });
             console.error("LIVE ARCHITECTURE AUDIT FAILED",{
               status:response.status,model:data?.model||null,
               backendVersion:data?.backendVersion||null,
