@@ -155,8 +155,8 @@ jobs:
           const data=await response.json().catch(()=>({}));
           const text=String(data?.text||"");
           const passed=response.ok&&data?.model==="verified-architecture-map"&&
-            /backend\\/memory\\.js/.test(text)&&
-            /backend\\/provider-circuit-breaker\\.js/.test(text)&&
+            /backend\/memory\.js/.test(text)&&
+            /backend\/provider-circuit-breaker\.js/.test(text)&&
             /operator_id/.test(text)&&
             /30 segundos/.test(text)&&
             !/MemoryCore|AIOrchestrator|StarkCore/.test(text.split("EVIDÊNCIA")[0]);
