@@ -18,6 +18,9 @@ if(center){
   head.append(status,close);
   const text=document.createElement('div');
   text.className='ultron-neural-answer-text';
+  // This surface renders verbatim backend evidence, including repository names,
+  // SHA and file paths. Branding transforms must never mutate it.
+  text.setAttribute('data-preserve-legacy-name','');
   text.setAttribute('aria-live','polite');
   const media=document.createElement('div');
   media.className='ultron-neural-answer-media';

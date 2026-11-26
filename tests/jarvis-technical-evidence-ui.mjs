@@ -14,6 +14,13 @@ assert.match(runtime,/parent\?\.closest\('script,style,textarea,\[data-preserve-
 assert.match(index,/jarvis-brand-v4310\.js\?v=4\.31\.1/);
 assert.match(index,/script\.js\?v=5\.65\.2/);
 assert.match(read("modules/stark-bootstrap.js"),/jarvis-runtime-v4320\.js\?v=4\.32\.1/);
+const neural=read("modules/ultron-neural-answer.js");
+const bridge=read("modules/ultron-core-bridge-v4270.js");
+assert.ok(neural.includes("text.setAttribute('data-preserve-legacy-name','')"));
+assert.ok(bridge.includes('if(preserveTechnical)line.setAttribute("data-preserve-legacy-name","")'));
+assert.ok(bridge.includes('log(`J.A.R.V.I.S. [${provider}]: ${data.text}`,false,true)'));
+assert.ok(index.includes('ultron-neural-answer.js?v=4.71.7'));
+assert.ok(index.includes('ultron-core-bridge-v4270.js?v=4.71.7'));
 const technical="https://github.com/equipezero-web/Ultron_AI Commit 8d940cab backend/memory.js";
 assert.match(technical,/Ultron_AI/);
 console.log("PRESERVE BACKEND TECHNICAL EVIDENCE: UI names must not mutate repository URLs, SHAs, identifiers or assistant answers");

@@ -8,10 +8,11 @@ const API_BASE = String(API_CONFIG?.backendUrl || "").replace(/\/$/, "");
 const output = document.getElementById("output-box");
 const video = document.getElementById("webcam");
 
-function log(message, alert = false) {
+function log(message, alert = false, preserveTechnical = false) {
   if (!output) return;
   const line = document.createElement("p");
   if (alert) line.className = "alert";
+  if(preserveTechnical)line.setAttribute("data-preserve-legacy-name","");
   line.textContent = `> [CORE] ${message}`;
   output.appendChild(line);
   output.scrollTop = output.scrollHeight;
@@ -118,7 +119,7 @@ async function ask(message) {
     if (!current()) return {ok:true,...data,superseded:true};
     if(data.correctedLegacyReply) log("ROTA DE CONVERSAÇÃO // resposta legada corrigida pela interface.", true);
     const provider = data.providerLabel || data.provider || "AI";
-    log(`ULTRON [${provider}]: ${data.text}`);
+    log(`J.A.R.V.I.S. [${provider}]: ${data.text}`,false,true);
     // The orchestrator handles both typed and spoken commands. Publish the
     // answer to the same Neural Jarvis surface before audio or legacy visuals.
     if(data?.text)TASK_CONTEXT?.captureQuestion(clean);
