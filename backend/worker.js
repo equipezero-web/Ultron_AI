@@ -4,7 +4,7 @@ import {clockAnswer} from "./jarvis-time-intent.js";
 import {isProviderDiagnosticsIntent,providerDiagnosticsAnswer} from "./provider-diagnostics.js";
 import {providerCircuitBreaker} from "./provider-circuit-breaker.js";
 import {loadPersistentProviderDiagnostics} from "./provider-diagnostics-db.js";
-import {interfacePreferenceIntent} from "./jarvis-memory-intents.js";
+import {interfacePreferenceIntent,verifiedSelfArchitectureReply} from "./jarvis-memory-intents.js";
 import {vetClientTaskContext,contextSearchQuery} from "./task-context.js";
 import {checkPublicAiQuota} from "./worker-ai-rate-limit.js";
 import {loadLiveWeather} from "./weather-live.js";
@@ -666,6 +666,26 @@ async function executeAiCore(env, body) {
       text:JARVIS_PROJECT_OPINION,provider:"jarvis-local",providerLabel:"J.A.R.V.I.S.",
       model:"project-evaluation",attempts:[],
       dialogueMode:{name:"conversation",followup:false,claimedCompletion:false},
+      memory:{active:Boolean(memoryWrite.saved),identityReceived:Boolean(operatorId&&conversationId),
+        recalledMessages:0,recalledMemories:0,saved:Boolean(memoryWrite.saved),
+        explicitMemorySaved:false,error:memoryWrite.error||null},
+      liveData:{news:false,resultCount:0},visualContext:null,
+      webResearch:{requested:false,used:false,sourceCount:0,sources:[]},
+      performance:{aiMs:0,researchMs:0,aiPasses:0,voiceMs:0,totalMs:Date.now()-requestStartedAt},
+      audioBase64:null,audioMimeType:null
+    }};
+  }
+
+  const architectureReply=verifiedSelfArchitectureReply(message);
+  if(architectureReply){
+    const memoryWrite=operatorId&&conversationId
+      ? await saveExchange(env,{operatorId,conversationId,userMessage:message,
+          assistantMessage:architectureReply,provider:"jarvis-local",model:"verified-architecture-map"})
+      : {saved:false};
+    return {status:200,data:{
+      text:architectureReply,provider:"jarvis-local",providerLabel:"J.A.R.V.I.S.",
+      model:"verified-architecture-map",attempts:[],
+      dialogueMode:{name:"architecture-audit",followup:false,claimedCompletion:false},
       memory:{active:Boolean(memoryWrite.saved),identityReceived:Boolean(operatorId&&conversationId),
         recalledMessages:0,recalledMemories:0,saved:Boolean(memoryWrite.saved),
         explicitMemorySaved:false,error:memoryWrite.error||null},
