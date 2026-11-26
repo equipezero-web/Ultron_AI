@@ -69,6 +69,34 @@ assert(githubCalls.every(c=>c.url.startsWith("https://api.github.com/repos/equip
 assert(githubCalls.every(c=>c.init.method==="GET" && !JSON.stringify(c.init.headers).includes("Authorization")));
 assert.match(formatLiveJarvisArchitecture(liveAudit),/AUDITORIA DE ARQUITETURA AO VIVO/);
 assert.match(formatLiveJarvisArchitecture(liveAudit),/PRAGMA realizada/);
+
+const rawCalls=[];
+const rawLive=await inspectLiveJarvisArchitecture({},{
+ fetchImpl:async(url,init)=>{
+   rawCalls.push({url,init});
+   if(url==="https://api.github.com/repos/equipezero-web/Ultron_AI/commits/main")
+     return new Response("{}",{status:503});
+   const path=Object.keys(sourceMap).find(p=>url===
+     "https://raw.githubusercontent.com/equipezero-web/Ultron_AI/main/"+p);
+   if(!path)throw Error("Unexpected URL: "+url);
+   return new Response(sourceMap[path],{status:200,headers:{"Content-Type":"text/plain"}});
+ },
+ now:()=>Date.parse("2026-11-26T18:31:27Z")
+});
+assert.equal(rawLive.commit,null,"RAW fallback does not prove commit identity");
+assert.equal(rawLive.github.verified,false);
+assert.equal(rawLive.github.snapshotPinned,false);
+assert.equal(rawLive.github.liveReadAvailable,true);
+assert.equal(rawLive.github.mode,"github-raw-main-unpinned");
+assert.equal(rawLive.memory.verified,true);
+assert.equal(rawLive.circuitBreaker.cooldownMs,30000);
+assert.equal(rawCalls.length,5);
+assert(rawCalls.every(({url,init})=>url.startsWith("https://api.github.com/repos/equipezero-web/Ultron_AI")||
+ (url.startsWith("https://raw.githubusercontent.com/equipezero-web/Ultron_AI/main/")&&init.method==="GET")));
+assert.match(formatLiveJarvisArchitecture(rawLive),/fallback RAW\/main ao vivo SEM commit verificado/);
+assert.match(formatLiveJarvisArchitecture(rawLive),/GitHub: https:\/\/github.com\/equipezero-web\/Ultron_AI/);
+assert.doesNotMatch(formatLiveJarvisArchitecture(rawLive),/github.com\/equipezero-web\/Jarvis_AI/);
+
 const unavailable=await inspectLiveJarvisArchitecture({},{
  fetchImpl:async()=>new Response("{}",{status:503}),now:()=>Date.parse("2026-11-26T14:00:00Z")
 });
