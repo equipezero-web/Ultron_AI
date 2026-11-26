@@ -25,7 +25,7 @@ if (!window[BOOT_KEY]) {
   }
 
   await import('./jarvis-performance-governor-v4320.js?v=4.32.0');
-  await import('./jarvis-runtime-v4320.js?v=4.32.0');
+  await import('./jarvis-runtime-v4320.js?v=4.32.1');
   loadStyle(MOBILE_PERF_STYLE_ID, 'modules/mobile-performance.css?v=4.24.0');
   await import('./mobile-performance.js?v=4.24.0');
 
