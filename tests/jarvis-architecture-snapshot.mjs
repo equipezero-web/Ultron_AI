@@ -1,0 +1,65 @@
+import assert from "node:assert/strict";
+import {fileURLToPath} from "node:url";
+import {buildArchitectureSnapshot,snapshotToSql,ARCHITECTURE_FILES} from "../scripts/architecture-snapshot-to-sql.mjs";
+import {inspectLiveJarvisArchitecture,formatLiveJarvisArchitecture} from "../backend/live-architecture-audit.js";
+
+const root=fileURLToPath(new URL("../",import.meta.url));
+const commit="a".repeat(40);
+const now=()=>new Date("2026-11-26T18:35:00.000Z");
+const snap=buildArchitectureSnapshot({root,commit,now});
+assert.equal(snap.source,"github-actions-checked-out-main");
+assert.equal(snap.commit,commit);
+assert.equal(snap.files.length,4);
+assert.deepEqual(snap.files.map(f=>f.path),ARCHITECTURE_FILES);
+assert.deepEqual(snap.columns,["id","operator_id","category","content","importance","source_message_id","created_at","updated_at","last_used_at","use_count"]);
+assert.equal(snap.cooldownMs,30000);
+assert(snap.files.every(f=>/^[a-f0-9]{64}$/.test(f.sha256)));
+const sql=snapshotToSql(snap);
+assert.match(sql,/CREATE TABLE IF NOT EXISTS jarvis_architecture_snapshots/);
+assert.match(sql,/ON CONFLICT\(id\) DO UPDATE/);
+assert.match(sql,/github-actions-checked-out-main/);
+assert.throws(()=>buildArchitectureSnapshot({root,commit:"not-a-real-commit"}),/invalid-git-commit/);
+
+const dbQueries=[];
+const env={ULTRON_DB:{prepare(sql){
+  dbQueries.push(sql);
+  if(sql==="PRAGMA table_info(memories)")return {all:async()=>({results:snap.columns.map(name=>({name}))})};
+  if(sql.includes("SELECT commit_sha"))return {bind(id){
+    assert.equal(id,"latest");
+    return {first:async()=>({commit_sha:snap.commit,synced_at:snap.syncedAt,data_json:JSON.stringify(snap)})};
+  }};
+  throw Error("unexpected-d1-query");
+}}};
+const result=await inspectLiveJarvisArchitecture(env,{
+  fetchImpl:async()=>new Response("",{status:503}),
+  now:()=>Date.parse("2026-11-26T18:35:10Z"),
+  backendVersion:"4.30.1"
+});
+assert.equal(result.github.verified,false);
+assert.equal(result.github.mode,"github-actions-d1-snapshot");
+assert.equal(result.github.snapshotAvailable,true);
+assert.equal(result.github.liveReadAvailable,false);
+assert.equal(result.commit,commit);
+assert.equal(result.memory.verified,true);
+assert.equal(result.circuitBreaker.cooldownMs,30000);
+assert.equal(result.d1.ready,true);
+assert.equal(result.github.files.length,4);
+assert(dbQueries.includes("PRAGMA table_info(memories)"));
+const reply=formatLiveJarvisArchitecture(result);
+assert.match(reply,/sincronizado em 2026-11-26T18:35:00.000Z/);
+assert.match(reply,/NÃO houve acesso HTTP direto ao GitHub/);
+assert.match(reply,/Commit da última sincronização GitHub Actions/);
+assert.match(reply,/equipezero-web\/Ultron_AI/);
+assert.doesNotMatch(reply,/equipezero-web\/Jarvis_AI/);
+
+const brokenEnv={ULTRON_DB:{prepare(sql){
+  if(sql==="PRAGMA table_info(memories)")return {all:async()=>({results:[]})};
+  return {bind:()=>({first:async()=>({commit_sha:commit,synced_at:snap.syncedAt,data_json:
+    JSON.stringify({...snap,repository:"attacker/fake"})})})};
+}}};
+const invalid=await inspectLiveJarvisArchitecture(brokenEnv,{
+  fetchImpl:async()=>new Response("",{status:503}),now:()=>Date.parse("2026-11-26T18:35:10Z")
+});
+assert.equal(invalid.github.snapshotAvailable,false);
+assert.equal(invalid.memory.verified,false);
+console.log("JARVIS ARCHITECTURE MIRROR PASS: trusted checkout, read-only D1 fallback, no spoofed repository or direct GitHub claims");
