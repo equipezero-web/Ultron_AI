@@ -49,9 +49,9 @@ assert.equal(result.d1.ready,true);
 assert.equal(result.github.files.length,4);
 assert(dbQueries.includes("PRAGMA table_info(memories)"));
 const reply=formatLiveJarvisArchitecture(result);
-assert.match(reply,/sincronizado em 2026-11-26T18:35:00.000Z/);
+assert.match(reply,/gerado em 2026-11-26T18:35:00.000Z/);
 assert.match(reply,/NÃO houve acesso HTTP direto ao GitHub/);
-assert.match(reply,/Commit da última sincronização GitHub Actions/);
+assert.match(reply,/Commit do último checkout GitHub Actions/);
 assert.match(reply,/equipezero-web\/Ultron_AI/);
 assert.doesNotMatch(reply,/equipezero-web\/Jarvis_AI/);
 
