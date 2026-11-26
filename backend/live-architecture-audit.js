@@ -19,6 +19,26 @@ const fetchJson=async(path,fetchImpl)=>{
   }catch(e){return {ok:false,error:e?.name==="AbortError"?"github-timeout":"github-unavailable"};}
   finally{clearTimeout(timer);}
 };
+// Public read-only degraded mode when GitHub REST is unreachable.
+// A raw /main/ read is LIVE but not commit-pinned; explicitly label it.
+async function fetchRawMainFile(path,fetchImpl){
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),5000);
+  try{
+    const response=await fetchImpl("https://raw.githubusercontent.com/equipezero-web/Ultron_AI/main/"+path,{
+      method:"GET",headers:{"Accept":"text/plain","User-Agent":"JARVIS-Live-Architecture-ReadOnly"},
+      redirect:"error",signal:controller.signal
+    });
+    if(!response?.ok)return {ok:false,error:"github-raw-http-"+(response?.status||0)};
+    if(Number(response.headers?.get?.("content-length")||0)>160000)
+      return {ok:false,error:"github-raw-too-large"};
+    const source=await response.text();
+    if(!source||source.length>160000||source.startsWith("<!DOCTYPE"))
+      return {ok:false,error:"github-raw-invalid"};
+    return {ok:true,source};
+  }catch(e){return {ok:false,error:e?.name==="AbortError"?"github-raw-timeout":"github-raw-unavailable"};}
+  finally{clearTimeout(timer);}
+}
 function decodeFile(value){
   if(value?.encoding!=="base64"||typeof value.content!=="string"||value.content.length>180000)return null;
   try{
@@ -39,6 +59,14 @@ export async function inspectLiveJarvisArchitecture(env,{fetchImpl=fetch,now=Dat
       const data=results[i],source=data.ok?decodeFile(data.data):null;
       files.push({path:FILES[i],ok:Boolean(source),source,
         error:source?null:(data.error||"github-file-unreadable")});
+    }
+  }else{
+    // Degraded, clearly marked fresh reads. Never infer a commit from raw/main.
+    const results=await Promise.all(FILES.map(path=>fetchRawMainFile(path,fetchImpl)));
+    for(let i=0;i<FILES.length;i++){
+      const data=results[i];
+      files.push({path:FILES[i],ok:data.ok,source:data.source||null,
+        error:data.ok?null:data.error});
     }
   }
   const find=path=>files.find(f=>f.path===path);
@@ -62,7 +90,10 @@ export async function inspectLiveJarvisArchitecture(env,{fetchImpl=fetch,now=Dat
     }catch{d1={ready:false,configured:true,columns:[],error:"d1-query-failed"};}
   }
   return {checkedAt,repository:"equipezero-web/Ultron_AI",commit,backendVersion,
-    github:{verified:Boolean(commit),error:head.error||(!commit?"github-commit-not-verified":null),
+    github:{verified:Boolean(commit),snapshotPinned:Boolean(commit),
+      liveReadAvailable:files.some(f=>f.ok),
+      mode:commit?"github-rest-commit":"github-raw-main-unpinned",
+      error:head.error||(!commit?"github-commit-not-verified":null),
       files:files.map(({path,ok,error})=>({path,ok,error}))},
     memory:{verified:Boolean(memorySchema&&columns.length===COLUMNS.length),
       columns:memorySchema?columns:[],schemaSource:"backend/memory.js"},
@@ -83,6 +114,9 @@ export function formatLiveJarvisArchitecture(result){
     "Commit HEAD/main consultado: "+(result.commit||"indisponível"),
     "Worker em execução: versão informada "+result.backendVersion+"; commit de deploy NÃO comprovado.",
     "GitHub API: "+yes(result.github.verified)+(result.github.error?" ("+result.github.error+")":""),
+    "Leitura GitHub: "+(result.github.snapshotPinned?"arquivos do commit verificado":
+      result.github.liveReadAvailable?"fallback RAW/main ao vivo SEM commit verificado, arquivos podem ser de revisões distintas":
+      "nenhuma leitura de arquivo confirmada"),
     "Arquivos realmente consultados: "+(result.github.files.map(f=>f.path+" ["+(f.ok?"lido":f.error)+"]").join("; ")||"nenhum"),
     "Memória (fonte GitHub): "+yes(result.memory.verified)+
       (result.memory.verified?"; colunas memories: "+result.memory.columns.join(", "):"; esquema não confirmado nesta leitura"),
@@ -95,6 +129,8 @@ export function formatLiveJarvisArchitecture(result){
       "não confirmado nesta inspeção"),
     "Diagnósticos: "+yes(result.diagnostics.verified)+" em "+result.diagnostics.source,
     "Integridade: "+result.comparison,
+    "Origem do código: "+result.github.mode+
+      "; repositório canônico fixo: "+result.repository+".",
     "Nenhum arquivo foi alterado e nenhum segredo ou conteúdo de preferências foi consultado."
   ];
   return lines.join("\n\n");
