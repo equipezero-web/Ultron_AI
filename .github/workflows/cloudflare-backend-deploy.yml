@@ -154,7 +154,10 @@ jobs:
           });
           const data=await response.json().catch(()=>({}));
           const text=String(data?.text||"");
-          const passed=response.ok&&data?.model==="verified-architecture-map"&&
+          const passed=response.ok&&data?.model==="live-architecture-audit"&&
+            data?.architectureInspection?.github?.verified===true&&
+            data?.architectureInspection?.memory?.verified===true&&
+            data?.architectureInspection?.circuitBreaker?.cooldownMs===30000&&
             /backend\/memory\.js/.test(text)&&
             /backend\/provider-circuit-breaker\.js/.test(text)&&
             /operator_id/.test(text)&&
@@ -168,5 +171,6 @@ jobs:
             });
             process.exit(1);
           }
-          console.log("LIVE ARCHITECTURE AUDIT VERIFIED:",data.model);
+          console.log("LIVE ARCHITECTURE AUDIT VERIFIED:",data.model,
+            data.architectureInspection.commit,data.architectureInspection.checkedAt);
           NODE
