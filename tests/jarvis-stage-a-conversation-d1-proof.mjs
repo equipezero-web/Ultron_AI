@@ -70,6 +70,12 @@ const currentPrompt=providers.slice(providers.indexOf("function promptFrom("),pr
 assert.match(currentPrompt,/currentTurn/);
 assert.doesNotMatch(currentPrompt,/JSON\.stringify\(telemetry \|\| \{\}\)/);
 assert.equal(interfacePreferenceIntent(message),"store");
+assert.equal(interfacePreferenceIntent("J.A.R.V.I.S., lembre-se de que minha preferência de interface para o teste de memória persistente é verde-esmeralda. Confirme se conseguiu salvar essa informação no banco D1."),"store");
+assert.equal(interfacePreferenceIntent("Jarvis, lembre que minha preferência de interface é verde-esmeralda."),"store");
+assert.equal(interfacePreferenceIntent("JARVIS, qual é minha preferência de interface?"),"recall");
+assert.equal(interfacePreferenceIntent("J.A.R.V.I.S., qual é minha preferência de interface?"),"recall");
+assert.equal(interfacePreferenceIntent("Jarvis, não salve minha preferência de interface."),null);
+
 assert.equal(interfacePreferenceIntent("Qual é a minha preferência de interface para este teste?"),"recall");
 assert.equal(interfacePreferenceIntent("E qual foi a preferência que acabei de informar?"),"recall");
 assert.equal(interfacePreferenceIntent("Pesquise informações sobre El Niño."),null);
