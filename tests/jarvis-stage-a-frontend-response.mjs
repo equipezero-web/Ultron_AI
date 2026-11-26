@@ -30,5 +30,5 @@ for(const path of ["modules/ultron-core-bridge-v4270.js","script.js"]){
 }
 const html=read("index.html");
 assert.match(html,/ultron-core-bridge-v4270\.js\?v=4\.71\.6/);
-assert.match(html,/script\.js\?v=5\.65\.1/);
+assert.match(html,/script\.js\?v=5\.65\.2/);
 console.log("STAGE A UI ROUTING PASS: malformed old model answers corrected on both front-end paths; other requests untouched; no false success");
