@@ -2,6 +2,7 @@
  * Runtime, read-only self-architecture evidence. Never claims deploy==GitHub HEAD.
  * Fixed GitHub repository/file allowlist, no arbitrary URLs or access tokens.
  */
+import {ARCHITECTURE_DEPLOY_MANIFEST} from "./architecture-deploy-manifest.js";
 const API="https://api.github.com/repos/equipezero-web/Ultron_AI";
 const FILES=["backend/memory.js","backend/providers.js","backend/provider-circuit-breaker.js","backend/provider-diagnostics.js"];
 const COLUMNS=["id","operator_id","category","content","importance","source_message_id","created_at","updated_at","last_used_at","use_count"];
@@ -72,7 +73,21 @@ async function loadTrustedMirror(env){
   }catch{return null;}
 }
 
-export async function inspectLiveJarvisArchitecture(env,{fetchImpl=fetch,now=Date.now,backendVersion="unknown"}={}){
+function validDeployManifest(data){
+  const allowed=new Set(FILES);
+  return data?.source==="github-actions-checked-out-main"&&
+    data.repository==="equipezero-web/Ultron_AI"&&
+    /^[a-f0-9]{40}$/.test(data.commit||"")&&
+    typeof data.syncedAt==="string"&&Number.isFinite(Date.parse(data.syncedAt))&&
+    Date.parse(data.syncedAt)<=Date.now()+300000&&
+    Array.isArray(data.files)&&data.files.length===FILES.length&&
+    data.files.every(f=>allowed.has(f.path)&&/^[a-f0-9]{64}$/.test(f.sha256||""))&&
+    COLUMNS.every(c=>data.columns?.includes(c))&&
+    Number.isSafeInteger(data.cooldownMs)&&data.cooldownMs>=1000&&
+    data.providersVerified===true;
+}
+
+export async function inspectLiveJarvisArchitecture(env,{fetchImpl=fetch,now=Date.now,backendVersion="unknown",deployManifest=ARCHITECTURE_DEPLOY_MANIFEST}={}){
   const checkedAt=new Date(now()).toISOString();
   const head=await fetchJson("/commits/main",fetchImpl);
   const commit=head.ok&&/^[a-f0-9]{40}$/.test(head.data?.sha||"")?head.data.sha:null;
@@ -117,14 +132,16 @@ export async function inspectLiveJarvisArchitecture(env,{fetchImpl=fetch,now=Dat
   // GitHub egress may be blocked in Workers. Read the latest trusted
   // checkout snapshot from D1, published by GitHub Actions after deploy.
   // This is a live D1 read of LAST SYNC, not a live GitHub HTTP request.
-  const mirror=!commit&&!files.some(f=>f.ok)?await loadTrustedMirror(env):null;
+  const mirror=!commit&&!files.some(f=>f.ok)?
+    (await loadTrustedMirror(env))|| (validDeployManifest(deployManifest)?deployManifest:null):null;
+  const manifestInWorker=Boolean(mirror&&mirror===deployManifest);
   const mirrorFiles=mirror?.files?.map(f=>({path:f.path,ok:true,error:null,sha256:f.sha256}))||null;
   return {checkedAt,repository:"equipezero-web/Ultron_AI",commit:commit||mirror?.commit||null,backendVersion,
     github:{verified:Boolean(commit),snapshotPinned:Boolean(commit),
       liveReadAvailable:files.some(f=>f.ok),
       snapshotAvailable:Boolean(mirror),
       snapshotSyncedAt:mirror?.syncedAt||null,
-      mode:commit?"github-rest-commit":mirror?"github-actions-d1-snapshot":"github-raw-main-unpinned",
+      mode:commit?"github-rest-commit":mirror?(manifestInWorker?"worker-deployed-source-manifest":"github-actions-d1-snapshot"):"github-raw-main-unpinned",
       error:head.error||(!commit?"github-commit-not-verified":null),
       files:mirrorFiles||files.map(({path,ok,error})=>({path,ok,error}))},
     memory:{verified:Boolean(mirror||memorySchema&&columns.length===COLUMNS.length),
@@ -135,7 +152,7 @@ export async function inspectLiveJarvisArchitecture(env,{fetchImpl=fetch,now=Dat
       cooldownMs:mirror?.cooldownMs??cooldownMs,source:"backend/provider-circuit-breaker.js"},
     diagnostics:{verified:Boolean(mirror?.diagnosticsVerified||diagnostics),source:"backend/provider-diagnostics.js"},
     d1,
-    comparison:"O commit GitHub consultado não foi comparado criptograficamente ao Worker publicado.",
+    comparison:manifestInWorker?"O commit identificado veio do manifesto gerado durante o deploy deste Worker; o HEAD atual do GitHub não foi consultado.":"O commit GitHub consultado não foi comparado criptograficamente ao Worker publicado.",
     writePermission:false};
 }
 export function formatLiveJarvisArchitecture(result){
@@ -144,11 +161,11 @@ export function formatLiveJarvisArchitecture(result){
     "J.A.R.V.I.S. // AUDITORIA DE ARQUITETURA AO VIVO (SOMENTE LEITURA)",
     "Consulta UTC: "+result.checkedAt,
     "GitHub: https://github.com/"+result.repository,
-    "Commit "+(result.github.mode==="github-actions-d1-snapshot"?"da última sincronização GitHub Actions":"HEAD/main consultado")+": "+(result.commit||"indisponível"),
-    "Worker em execução: versão informada "+result.backendVersion+"; commit de deploy NÃO comprovado.",
+    "Commit "+(result.github.snapshotAvailable?"do último checkout GitHub Actions incluído no deploy ou D1":"HEAD/main consultado")+": "+(result.commit||"indisponível"),
+    "Worker em execução: versão informada "+result.backendVersion+"; "+(result.github.mode==="worker-deployed-source-manifest"?"SHA do checkout incorporado ao Worker no momento do deploy.":"commit de deploy NÃO comprovado."),
     "GitHub API: "+yes(result.github.verified)+(result.github.error?" ("+result.github.error+")":""),
     "Leitura GitHub: "+(result.github.snapshotPinned?"arquivos do commit verificado":
-      result.github.snapshotAvailable?"retrato verificável do checkout do GitHub Actions, sincronizado em "+result.github.snapshotSyncedAt+
+      result.github.snapshotAvailable?"retrato verificável do checkout do GitHub Actions, gerado em "+result.github.snapshotSyncedAt+
         "; NÃO houve acesso HTTP direto ao GitHub nesta consulta":
       result.github.liveReadAvailable?"fallback RAW/main ao vivo SEM commit verificado, arquivos podem ser de revisões distintas":
       "nenhuma leitura de arquivo confirmada"),
