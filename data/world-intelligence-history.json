@@ -4,10 +4,94 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-25T23:12:03.012Z",
-  "oldestEventAt": "2026-11-24T23:23:00.000Z",
-  "windowStartAt": "2026-11-24T23:12:03.012Z",
+  "updatedAt": "2026-11-26T05:04:05.863Z",
+  "oldestEventAt": "2026-11-25T07:18:42.000Z",
+  "windowStartAt": "2026-11-25T05:04:05.863Z",
   "events": [
+    {
+      "id": "event-69edbf47",
+      "category": "brasil",
+      "title": "Brasileirão: Atlético-MG empata no fim e mantém Corinthians ameaçado",
+      "url": "https://agenciabrasil.ebc.com.br/esportes/noticia/2026-11/brasileirao-atletico-mg-empata-no-fim-e-mantem-corinthians-ameacado",
+      "description": "O Corinthians estava próximo de conseguir um respiro na luta contra o rebaixamento, mas acabou frustrado pelo Atlético-MG nos instantes finais do confronto que encerrou a 36ª rodada do Campeonato Brasileiro. Na noite desta quarta-feira (25), Timão e Galo empataram por 1 a 1 na Arena MRV, em Belo Horizonte, em resultado pouco útil às pretensões de ambos. Notícias relacionadas: Primeiros vice-campeões, Botafogo e Inter se enfrentam pela Copinha F. Os mineiros, que chegaram ao nono jogo sem vitória na temporada, perderam a chance de entrar no grupo dos seis primeiros colocados (G-6), que vão à próxima Libertadores. O Timão, que voltou a sofrer gols após três partidas, até deixou a zona de rebaixamento (Z-4), que engloba as quatro piores campanhas, mas permanece em situação delicada. Até os acréscimos do segundo tempo, o duelo em Belo Horizonte tinha Kaio César como figura decisiva. Aos 21 minutos do segundo tempo, o corintiano avançou pela direita em velocidade e recebeu um carrinho por trás do também atacante Thiago Borbas. Após rever o lance no vídeo, o árbitro Bráulio da Silva Machad",
+      "imageUrl": "https://imagens.ebc.com.br/_LW4Rwa7tgoBzPqM34dvMSF7pKo=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/25/atletico_e_timao.jpg?itok=njPpEtS_",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-26T01:38:00.000Z",
+      "firstSeenAt": "2026-11-26T05:04:05.863Z",
+      "lastSeenAt": "2026-11-26T05:04:05.863Z"
+    },
+    {
+      "id": "event-7410e588",
+      "category": "brasil",
+      "title": "Gana é eleita na ONU Turismo e Brasil assume vice-presidência",
+      "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxPRjI0SzBJbURlSEhHVWhPWVZMTnUwdkdwQ1BvUlVkdlJDME1jbEV3bVFHMEtLMXBVVDBtSllCYVNISW55MFdvTzFNR2FHVzlRWS1uZGRfWVpvZzh5Q2pIbjFfcXY5NGxBdVJXMkxBUEdxT3lGek1lWlRvWDlsbDFBWmhLUW1IVnhXUURTRkNPOUNlMHA1QzhiclhWNmFtbC1QVGNTa2w3Z2FlNFlmV1lBd3pOWXlSRTJOcU1r",
+      "description": "Gana é eleita na ONU Turismo e Brasil assume vice-presidência &nbsp;&nbsp; Agência Brasil",
+      "imageUrl": null,
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-26T00:36:00.000Z",
+      "firstSeenAt": "2026-11-26T05:04:05.863Z",
+      "lastSeenAt": "2026-11-26T05:04:05.863Z"
+    },
+    {
+      "id": "event-dfa96cd5",
+      "category": "mundo",
+      "title": "Gana é eleita na ONU Turismo e Brasil assume vice-presidência",
+      "url": "https://agenciabrasil.ebc.com.br/esportes/noticia/2026-11/gana-e-eleita-na-onu-turismo-e-brasil-assume-vice-presidencia",
+      "description": "Gana foi eleita para presidir o Conselho Executivo da ONU Turismo em 2027. A escolha ocorreu durante a 127ª reunião do colegiado nesta quarta-feira (25), nos Emirados Árabes Unidos. O país africano recebeu 19 votos, vencendo a Argentina, que teve 14 votos. O Brasil, que deixa a presidência do conselho no biênio 2025-2026, permanecerá na vice-presidência ao longo do próximo ano, junto com a Bulgária. Notícias relacionadas: ONU aprova proposta do Brasil de turismo amigável para muçulmanos. Ao presidir a organização, Gana pretende defender as prioridades do turismo na África, aprofundar a cooperação internacional e promover o desenvolvimento turístico sustentável e inclusivo em escala global, bandeiras compartilhadas com o Brasil. “Encerramos a presidência do Conselho Executivo da ONU Turismo com a certeza do dever cumprido e celebramos a eleição de Gana, desejando sucesso na gestão. Seguir na vice-presidência em 2027, ao lado da Bulgária, reflete o prestígio da política externa do presidente Lula, fortalece o multilateralismo e garante que o Brasil continuará na linha de frente das dec",
+      "imageUrl": "https://imagens.ebc.com.br/Cl3VbzY8unEBegs0R623CwL2v4w=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/24/ad_7.jpg.jpeg?itok=9PPzse3V",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-26T00:36:00.000Z",
+      "firstSeenAt": "2026-11-26T05:04:05.863Z",
+      "lastSeenAt": "2026-11-26T05:04:05.863Z"
+    },
+    {
+      "id": "event-b870620",
+      "category": "brasil",
+      "title": "Pesquisadoras recebem prêmio por inovações e valorizam trajetória",
+      "url": "https://agenciabrasil.ebc.com.br/educacao/noticia/2026-11/pesquisadoras-recebem-premio-por-inovacoes-e-valorizam-percurso",
+      "description": "Atuar pela população da Amazônia foi um sonho de infância para a pesquisadora mineira Fabiane Almeida, de 43 anos. A bióloga foi uma das 10 vencedoras do Prêmio Mulheres Inovadoras, promovido pelo governo federal, que foram reconhecidas nesta quarta (25). Ela é uma das responsáveis por uma empresa que extrai uma biomassa de alto valor nutricional a partir de microalgas. >>Confira os projetos contemplados Notícias relacionadas: Com tema Ciência Delas, Semana de Ciência e Tecnologia vai até sábado. Comissão fixa carga mínima de filosofia e sociologia no ensino médio. Escolas já podem se inscrever para a Olitef 2027. A startup trabalha com cinco produtos, três voltados a animais e outros dois, à alimentação humana. Ela sorriu diante da conquista, mas se emocionou ao lembrar das origens. “Meu sonho começou aos 6 anos de idade ao apresentar um trabalho de ciências na minha escola em Pará de Minas. Apresentei o bioma da Amazônia”, disse à Agência Brasil . Fabiane Almeida e Taina Brito participam da entrega de troféus às vencedoras da 7ª edição do Prêmio Mulheres Inovadoras. Foto: Bruno Per",
+      "imageUrl": "https://imagens.ebc.com.br/MXP6dtblkWsbWFPqc2Yjp5EwPjo=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/25/_mg_6672.jpg?itok=d0jFdHks",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-26T00:03:00.000Z",
+      "firstSeenAt": "2026-11-26T05:04:05.863Z",
+      "lastSeenAt": "2026-11-26T05:04:05.863Z"
+    },
+    {
+      "id": "event-f46e78cb",
+      "category": "santa-catarina",
+      "title": "Defesa Civil Alerta já emitiu 412 avisos de desastres climáticos no PR neste ano",
+      "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxNQ2NBdXA5SFN6ZWp2NFNJRzFNSy1DVW5VdHZVa0tIS1F4U0NZVWhwYU12X3NQamFMNHZ2QUk4d2VIS2ltZ1Jma0xiM211NGJNWTJ6LXNPeUpTQW56eUlwV0ZIMlJiaUlxV0NGampiSkVTLWVVZUhNQWloZFowNzVlZTJvMTZNMC1kVXlSMkt2WXZZZ3Z1LWRVTDlGVDVSYTdGRC1VQzRmSVdJcUcwb1MxeGJKMVhjUdIBuwFBVV95cUxPcWZLZnA0THA1YVFDZHdJVU5nVjdXdUhldE12WjhUeUpPN3RhSnVVbGhPVnhoS2E1cm9sa1YtMVc2M1h1dVQtVzBveUNuZmdTejJyVWt5MUNJM2pMalpRTm83cmdZV0QyQXhibjJycENQc2FiakY0MHp4eWFyRzNoME42X2RYSHJyRktFVlNvbUVLN0ZaY3pfQUNuX0tHZW9NUlo2WnpHVUlMODROY0p1RFpPT3pfekhfSXpv",
+      "description": "Defesa Civil Alerta já emitiu 412 avisos de desastres climáticos no PR neste ano &nbsp;&nbsp; Bem Paraná",
+      "imageUrl": null,
+      "source": "Bem Paraná",
+      "publishedAt": "2026-11-26T00:00:00.000Z",
+      "firstSeenAt": "2026-11-26T05:04:05.863Z",
+      "lastSeenAt": "2026-11-26T05:04:05.863Z"
+    },
+    {
+      "id": "event-f6944620",
+      "category": "brasil",
+      "title": "Câmara aprova protocolo nacional para combater racismo nas escolas",
+      "url": "https://agenciabrasil.ebc.com.br/direitos-humanos/noticia/2026-11/camara-aprova-protocolo-nacional-para-combater-racismo-nas-escolas",
+      "description": "A Câmara dos Deputados aprovou, nesta quarta-feira (25), o Projeto de Lei (PL) 4887/2023 , que institui um protocolo nacional de acolhimento às vítimas de racismo e estabelece medidas de resposta a esses casos em estabelecimentos de ensino, tanto públicos quanto privados. De autoria da deputada federal Carol Dartora (PT-PR), o PL foi relatado pela deputada Benedita da Silva (PT-RJ), que apresentou um substitutivo em plenário. Foram 320 votos favoráveis e 102 contrários e a matéria seguirá para análise do Senado Federal. Notícias relacionadas: Ministério cria protocolo policial com foco em raça e gênero. Incubadora vai apoiar empreendimentos de afroturismo no país. Negra, mãe e vítima de agressão: estudo traça perfil de detentas no RJ. A proposta estabelece procedimentos obrigatórios para identificar, acolher e encaminhar casos de racismo, discriminação racial, injúria racial e condutas semelhantes, inclusive em ambientes virtuais relacionados à comunidade escolar. Entre as medidas previstas estão a designação de um profissional responsável pela aplicação do protocolo em cada institui",
+      "imageUrl": "https://imagens.ebc.com.br/D3xMcnRv35Upk02ztOUTcHvDRdk=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/mcamg_abr_10052019_9651.jpg?itok=89_USuKd",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-25T23:52:00.000Z",
+      "firstSeenAt": "2026-11-26T05:04:05.863Z",
+      "lastSeenAt": "2026-11-26T05:04:05.863Z"
+    },
+    {
+      "id": "event-d7d3337c",
+      "category": "mundo",
+      "title": "Líderes árabes em Israel assinam projeto de lei que chama Hamas de terrorista",
+      "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxNTEdHWkhhVmNPeXkzTzhLR2dmd0NFR3kxakdQMzdEUTdCRHRFbGkzakhkWmVBZlVRc0tWWWJfbmhrNm9ESTd0ZTkyc25maTN4SEZ2enFOSWNWWjV2VVFneEtvQXRUalR2Q1hqVUZuc1FpdmgyZGNLRjdEQWRtRUJLWC1YZlVBb1hWVnBISGs3Y01CemY3aVJ3V2lUcmJNbm5XcGZkZ0phODRDN3NaTXlPRUZXTFp2a1Vlb1B5NGFwSWtXWlljZUE",
+      "description": "Líderes árabes em Israel assinam projeto de lei que chama Hamas de terrorista &nbsp;&nbsp; Folha de S.Paulo",
+      "imageUrl": null,
+      "source": "Folha de S.Paulo",
+      "publishedAt": "2026-11-25T23:33:00.000Z",
+      "firstSeenAt": "2026-11-26T05:04:05.863Z",
+      "lastSeenAt": "2026-11-26T05:04:05.863Z"
+    },
     {
       "id": "event-2b4aa42",
       "category": "brasil",
@@ -66,7 +150,7 @@
       "source": "GMC Online",
       "publishedAt": "2026-11-25T21:13:00.000Z",
       "firstSeenAt": "2026-11-25T23:12:03.012Z",
-      "lastSeenAt": "2026-11-25T23:12:03.012Z"
+      "lastSeenAt": "2026-11-26T05:04:05.863Z"
     },
     {
       "id": "event-b2e1c1e3",
@@ -78,7 +162,7 @@
       "source": "Oeste SC Notícias",
       "publishedAt": "2026-11-25T20:44:00.000Z",
       "firstSeenAt": "2026-11-25T23:12:03.012Z",
-      "lastSeenAt": "2026-11-25T23:12:03.012Z"
+      "lastSeenAt": "2026-11-26T05:04:05.863Z"
     },
     {
       "id": "event-e386c84a",
@@ -90,7 +174,7 @@
       "source": "BBC",
       "publishedAt": "2026-11-25T20:43:23.000Z",
       "firstSeenAt": "2026-11-25T23:12:03.012Z",
-      "lastSeenAt": "2026-11-25T23:12:03.012Z"
+      "lastSeenAt": "2026-11-26T05:04:05.863Z"
     },
     {
       "id": "event-e2486aef",
@@ -114,7 +198,7 @@
       "source": "Tudo Sobre Xanxerê",
       "publishedAt": "2026-11-25T19:53:00.000Z",
       "firstSeenAt": "2026-11-25T23:12:03.012Z",
-      "lastSeenAt": "2026-11-25T23:12:03.012Z"
+      "lastSeenAt": "2026-11-26T05:04:05.863Z"
     },
     {
       "id": "event-f62dea89",
@@ -150,7 +234,7 @@
       "source": "Portal Tempo Novo",
       "publishedAt": "2026-11-25T18:39:00.000Z",
       "firstSeenAt": "2026-11-25T23:12:03.012Z",
-      "lastSeenAt": "2026-11-25T23:12:03.012Z"
+      "lastSeenAt": "2026-11-26T05:04:05.863Z"
     },
     {
       "id": "event-3b44d97",
@@ -162,7 +246,7 @@
       "source": "URB News",
       "publishedAt": "2026-11-25T17:03:00.000Z",
       "firstSeenAt": "2026-11-25T23:12:03.012Z",
-      "lastSeenAt": "2026-11-25T23:12:03.012Z"
+      "lastSeenAt": "2026-11-26T05:04:05.863Z"
     },
     {
       "id": "event-6207c614",
@@ -294,7 +378,7 @@
       "source": "ZAP Notícias",
       "publishedAt": "2026-11-25T08:50:00.000Z",
       "firstSeenAt": "2026-11-25T14:18:24.405Z",
-      "lastSeenAt": "2026-11-25T23:12:03.012Z"
+      "lastSeenAt": "2026-11-26T05:04:05.863Z"
     },
     {
       "id": "event-e8b458da",
@@ -307,110 +391,9 @@
       "publishedAt": "2026-11-25T07:18:42.000Z",
       "firstSeenAt": "2026-11-25T14:18:24.405Z",
       "lastSeenAt": "2026-11-25T14:18:24.405Z"
-    },
-    {
-      "id": "event-ddd0e68c",
-      "category": "brasil",
-      "title": "Final do Miss Universo 2026: Brasil busca 3ª coroa na história; acompanhe",
-      "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxOT044YmI1SEJMaF9QNWhzVXIxRTJuRHJjY1NqNHJKMjlXX3R1cDdVRTl2LU5nbkNlX2JLXzV4dU83VzNzeGlzRUswRFdIVVNZeEdodEUtaHBTSXFvakJlUDdPQThpVW5tMHZBRWlNVF9KUjFpQkZtRElLMDFqZHg4a245RjExdw",
-      "description": "Final do Miss Universo 2026: Brasil busca 3ª coroa na história; acompanhe &nbsp;&nbsp; UOL",
-      "imageUrl": null,
-      "source": "UOL",
-      "publishedAt": "2026-11-25T01:02:24.000Z",
-      "firstSeenAt": "2026-11-25T04:10:35.018Z",
-      "lastSeenAt": "2026-11-25T04:10:35.018Z"
-    },
-    {
-      "id": "event-50e73d68",
-      "category": "brasil",
-      "title": "Mega-Sena acumula para R$ 75 milhões; confira os números sorteados",
-      "url": "https://agenciabrasil.ebc.com.br/geral/noticia/2026-11/mega-sena-acumula-para-r-75-milhoes-confira-os-numeros-sorteados",
-      "description": "Nenhum apostador acertou as seis dezenas do Concurso 3.090 da Mega-Sena, realizado nesta terça-feira (24). O prêmio acumulou e está estimado em R$ 75 milhões para o próximo sorteio. Os números sorteados foram: 10 - 14 - 27 - 28 - 47 - 57. 41 apostas acertaram cinco dezenas e irão receber R$ 38.160,32 cada 3.800 apostas acertaram quatro dezenas e irão receber R$ 588,18 cada Apostas Notícias relacionadas: Mega da Virada: Caixa anuncia que prêmio deve superar R$ 1 bilhão. Para o próximo concurso, as apostas podem ser feitas até às 20h de quinta-feira (26) em qualquer lotérica do país ou pela internet, no site ou aplicativo da Caixa. A aposta simples, com seis dezenas, custa R$ 6.",
-      "imageUrl": "https://imagens.ebc.com.br/-ejdlONl_IKBmajjlY6Wr2cCfMk=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/mega_sena-1112203504_0.jpg?itok=96awa_l8",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-25T00:32:00.000Z",
-      "firstSeenAt": "2026-11-25T04:10:35.018Z",
-      "lastSeenAt": "2026-11-25T04:10:35.018Z"
-    },
-    {
-      "id": "event-cfc5871b",
-      "category": "mundo",
-      "title": "Copa do Mundo feminina deve movimentar R$ 8,8 bi no Brasil",
-      "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxPc0hyZVo5eVVBc3VXQmR4NWRLM1l0aGMwbmxEZWN2Uk5UazRIWnM4bURvckdycGlIdGphQUNkbnh4Nnp4c0ZCeUI1Q1RDMkhwS0dwSFBwQmRHb3V1VWtDUnpQQ3RnbUdYVVBsOHYwel9CdWpvSTkyeWtEOGo2SWtvaHZra0xDMHA0M0hLQVppU0pXTGlBVU0zdVZwWWNzOE8wcndn",
-      "description": "Copa do Mundo feminina deve movimentar R$ 8,8 bi no Brasil &nbsp;&nbsp; SBT News",
-      "imageUrl": null,
-      "source": "SBT News",
-      "publishedAt": "2026-11-24T23:34:05.000Z",
-      "firstSeenAt": "2026-11-25T04:10:35.018Z",
-      "lastSeenAt": "2026-11-25T04:10:35.018Z"
-    },
-    {
-      "id": "event-a65498df",
-      "category": "mundo",
-      "title": "Aliado dos Bolsonaros e crítico de Moraes deixa Departamento de Estado dos EUA",
-      "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxQT3c1M3hfLTNLcmRZbTlCSUNIZGZ3R1ptUXVhcDNTN1gxZTFGMTlHMjNpbWRVMXlXcnpkS091N01YRmNfODNTR1BRX3ZCdjZzV2dwQWJPWGwxME1NNFZENWRQN0RMdDAzWERzeGxXT3gxR1JwMEd2STJSTGJRbURZTkNiVFB0Nk4tbDUzQ2lQZlVSVWlKZEZwUXo5Rk5yOU5wY3oyOTBneTFsTHR3UEtmbldHU0Y2djBka1VjRjIzTDlqTmJmS2xz",
-      "description": "Aliado dos Bolsonaros e crítico de Moraes deixa Departamento de Estado dos EUA &nbsp;&nbsp; Folha de S.Paulo",
-      "imageUrl": null,
-      "source": "Folha de S.Paulo",
-      "publishedAt": "2026-11-24T23:34:00.000Z",
-      "firstSeenAt": "2026-11-25T04:10:35.018Z",
-      "lastSeenAt": "2026-11-25T04:10:35.018Z"
-    },
-    {
-      "id": "event-1cdf42b0",
-      "category": "mundo",
-      "title": "Principais notícias do mundo na noite de hoje (24)",
-      "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxOamRRdXhiUF91Vm9DenJGbEU1TXh1VEtDVktsZlE3T05HUU9yWG9vM0k0T1d3dXdiZXNmLU9HcWZIMThha0xHVVcwYkRCRVRMNktvUFdneE9xV0lMWVdFWm8yckJGRk56NXZxcjR1ZGxDN0pacVVoYUFaQktoWFoyamRNcV9KaHNORmgwYUlSSS1hSG1GUVc2dnB2cU5ha0RmSEd5RHVvRWc1TGRt",
-      "description": "Principais notícias do mundo na noite de hoje (24) &nbsp;&nbsp; Tribuna do Sertão",
-      "imageUrl": null,
-      "source": "Tribuna do Sertão",
-      "publishedAt": "2026-11-24T23:31:01.000Z",
-      "firstSeenAt": "2026-11-25T04:10:35.018Z",
-      "lastSeenAt": "2026-11-25T04:10:35.018Z"
-    },
-    {
-      "id": "event-cfbf9e4b",
-      "category": "brasil",
-      "title": "MPF pede mudanças na gestão de políticas para população de rua em SP",
-      "url": "https://agenciabrasil.ebc.com.br/direitos-humanos/noticia/2026-11/mpf-pede-mudancas-na-gestao-de-politicas-para-populacao-de-rua-em-sp",
-      "description": "O Ministério Público Federal (MPF) e o Ministério Público de Contas do Estado de São Paulo (MPC-SP) divulgaram na tarde desta terça-feira (24) um documento de 150 páginas no qual fazem diversas recomendações sobre políticas estaduais voltadas para a população em situação de rua. Os órgãos apontaram problemas de acompanhamento de atuação de organizações terceirizadas e entidades assistenciais, equívocos na escolha de modelos de assistência, má gestão e falhas na transparência de atendimento e prestação de contas. Segundo o documento, os problemas identificados incluem resultados muito abaixo das metas estipuladas, falta de transparência na aplicação de valores milionários e ausência de padrões orçamentários que permitam o acompanhamento das políticas assistenciais. As políticas públicas analisadas estão ligadas à Secretaria de Desenvolvimento Social do Estado de São Paulo (SEDS) e à Secretaria de Desenvolvimento Urbano e Habitação (SDUH). Notícias relacionadas: Saúde anuncia ampliação do atendimento à população em situação de rua. Governo anuncia R$ 130 milhões em apoio à população em",
-      "imageUrl": "https://imagens.ebc.com.br/5aC3ZX8lJfDNnDqOpXQFOoct0h8=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/atoms/image/1025309-14062016-dsc_0266_1.jpg?itok=0yxR_WSW",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-24T23:29:00.000Z",
-      "firstSeenAt": "2026-11-25T04:10:35.018Z",
-      "lastSeenAt": "2026-11-25T04:10:35.018Z"
-    },
-    {
-      "id": "event-40c2b0f9",
-      "category": "brasil",
-      "title": "Projeto de regulação das big techs será votado na próxima semana",
-      "url": "https://agenciabrasil.ebc.com.br/politica/noticia/2026-11/projeto-de-regulacao-das-big-techs-sera-votado-na-proxima-semana",
-      "description": "O Projeto de Lei 4675/2025 , conhecido como PL dos Mercados Digitais, vai entrar na pauta de votação do plenário da Câmara dos Deputados na próxima semana, informou o relator da matéria, deputado Aliel Machado (PV-PR). Em pronunciamento na tarde desta terça-feira (24), Machado afirmou que o calendário foi definido diretamente com o presidente da Casa, Hugo Motta (Republicanos-PB), e conta com apoio de líderes partidários. Notícias relacionadas: Lula sanciona ajuste fiscal aprovado no Congresso. Lula lamenta falta de acordo na COP31 e pede união pelo meio ambiente. Câmara aprova ajuste fiscal sem alterações; projeto segue para sanção. \"Esse é um projeto que não trata de regulamentação de conteúdo. É um projeto que pode trazer uma economia de até R$ 50 bilhões para os brasileiros , para os pequenos empresários, para os consumidores. É um projeto de lei que vem sendo debatido há mais de dois anos pelo governo federal e depois encaminhado a essa Casa\", disse o parlamentar. Apresentada pelo governo federal no ano passado, a proposta pretende atualizar a legislação brasileira de defesa da",
-      "imageUrl": "https://imagens.ebc.com.br/CYDf8pNNb9WBN3JlcbhSYYWjHGg=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/05/20/big_techs.jpeg?itok=vUweTTYa",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-24T23:23:00.000Z",
-      "firstSeenAt": "2026-11-25T04:10:35.018Z",
-      "lastSeenAt": "2026-11-25T04:10:35.018Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-25T04:10:35.018Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 13,
-      "newArticles": 10,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "europa",
-        "asia"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-25T14:18:24.405Z",
       "ok": true,
@@ -445,29 +428,32 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-26T05:04:05.863Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 14,
+      "newArticles": 7,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "europa",
+        "africa"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 3,
-  "lastSuccessfulAt": "2026-11-25T23:12:03.012Z",
+  "lastSuccessfulAt": "2026-11-26T05:04:05.863Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-25T23:12:03.012Z",
+      "checkedAt": "2026-11-26T05:04:05.863Z",
       "warnings": [
-        {
-          "id": "56503",
-          "title": "Chuvas Intensas",
-          "severity": "Perigo",
-          "phase": "previsto",
-          "regions": [
-            "DO",
-            "DE"
-          ],
-          "startsAt": "2026-11-26T00:00:00.000Z",
-          "endsAt": "2026-11-26T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
-        },
         {
           "id": "56505",
           "title": "Chuvas Intensas",
@@ -481,39 +467,12 @@
           "endsAt": "2026-11-27T00:00:00.000Z",
           "source": "INMET",
           "url": "https://avisos.inmet.gov.br/"
-        },
-        {
-          "id": "56502",
-          "title": "Chuvas Intensas",
-          "severity": "Perigo Potencial",
-          "phase": "previsto",
-          "regions": [
-            "DO",
-            "DE"
-          ],
-          "startsAt": "2026-11-26T00:00:00.000Z",
-          "endsAt": "2026-11-26T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
-        },
-        {
-          "id": "56507",
-          "title": "Baixa Umidade",
-          "severity": "Perigo Potencial",
-          "phase": "previsto",
-          "regions": [
-            "DO"
-          ],
-          "startsAt": "2026-11-26T00:00:00.000Z",
-          "endsAt": "2026-11-26T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
         }
       ]
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-25T23:12:03.012Z",
+      "checkedAt": "2026-11-26T05:04:05.863Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
