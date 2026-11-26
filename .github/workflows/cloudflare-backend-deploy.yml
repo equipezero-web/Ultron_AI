@@ -56,6 +56,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Embed source provenance from checked-out GitHub commit
+        run: |
+          set -euo pipefail
+          node ../scripts/architecture-snapshot-to-sql.mjs --module > architecture-deploy-manifest.js
+          grep -q "$GITHUB_SHA" architecture-deploy-manifest.js
+          node --check architecture-deploy-manifest.js
+
       - name: Deploy canonical Worker to Cloudflare
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -73,18 +80,6 @@ jobs:
             fi
             sleep 15
           done
-      - name: Publish verified GitHub checkout snapshot to Cloudflare D1
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: |
-          set -euo pipefail
-          snapshot_sql=$(mktemp)
-          trap 'rm -f "$snapshot_sql"' EXIT
-          node ../scripts/architecture-snapshot-to-sql.mjs > "$snapshot_sql"
-          npx --yes wrangler@4.157.0 d1 execute ultron-memory --config wrangler.jsonc --remote --file "$snapshot_sql"
-          echo "Architecture snapshot synchronized from trusted checkout: $GITHUB_SHA"
-
       - name: Verify production health
         env:
           BACKEND_HEALTH_URL: https://ultron-backend.lucaalves17-20.workers.dev/api/health
@@ -197,6 +192,6 @@ jobs:
             });
             process.exit(1);
           }
-          console.log("LIVE ARCHITECTURE AUDIT READ VERIFIED (SHA MAY BE UNAVAILABLE):",data.model,
+          console.log("LIVE ARCHITECTURE AUDIT DEPLOY SOURCE VERIFIED:",data.model,
             data.architectureInspection.commit,data.architectureInspection.checkedAt);
           NODE
