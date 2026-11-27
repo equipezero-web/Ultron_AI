@@ -4,10 +4,70 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-26T23:49:02.183Z",
-  "oldestEventAt": "2026-11-25T23:52:00.000Z",
-  "windowStartAt": "2026-11-25T23:49:02.183Z",
+  "updatedAt": "2026-11-27T06:17:40.147Z",
+  "oldestEventAt": "2026-11-26T06:33:41.000Z",
+  "windowStartAt": "2026-11-26T06:17:40.147Z",
   "events": [
+    {
+      "id": "event-7a8ae3d1",
+      "category": "clima",
+      "title": "Antena 10 FM",
+      "url": "https://news.google.com/rss/articles/CBMi4wFBVV95cUxQcTZ5d1E3THNxRXZfNEVnbTI2V01BZkZaY3FGajRhcUdZSVJTY0JHQ0VpZDRQZ3pYT21KRk9zYWhxa0VkMjhqb25Pb0JRaTZoODVGM21Dc0lOUURXRVUybXg1aTFlLTR5M0xvZ01YRUcyY2pkWEU2QTZCTGhuOXdndHBCQlFuREVHc3oxZjRVazJZMWdUU1h5UE9Rd1c4anF1Q25iTUdmSlZaZGZ4NmxQZjBVRHV4VHdZek1vaTBONzhqbS1kcUZIS2dsbC1zbE5MYnBCdV9wTVE4S05WRXhEV0JFNA",
+      "description": "Antena 10 FM &nbsp;&nbsp; Antena 10 FM",
+      "imageUrl": null,
+      "source": "Antena 10 FM",
+      "publishedAt": "2026-11-27T06:16:29.000Z",
+      "firstSeenAt": "2026-11-27T06:17:40.147Z",
+      "lastSeenAt": "2026-11-27T06:17:40.147Z"
+    },
+    {
+      "id": "event-cd747b46",
+      "category": "brasil",
+      "title": "Grupo Lufthansa comemora 100 anos de história e 70 anos de Brasil; fotos",
+      "url": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxQNm1NbzNjX1ZtNmZrdGFxVmZDYU11RVBUQ2gxb3FJQ3YwQVVzTjI5ZkY3SzZXbEVyYkJhN1hLd0dmb0g5czkweGFDeHYxSkx0YzJnY0Y1WlUzRExVZlRuV1RBQ0g3eXI5VWtSMm9heGx6TDdKaDF0azhvNi05TnNvZ2FXaDhlcjE5ZkZzbG1tNVgwR2hZaEk3cnVXbFNoY3RlTWM2LXRDVGV6NGlKOUlCMUowZWdrbF9hcGt5REN5TUF2aXltcmQ4YWhGc1hldkdqcExSZ0JYOGM",
+      "description": "Grupo Lufthansa comemora 100 anos de história e 70 anos de Brasil; fotos &nbsp;&nbsp; Panrotas",
+      "imageUrl": null,
+      "source": "Panrotas",
+      "publishedAt": "2026-11-27T01:42:00.000Z",
+      "firstSeenAt": "2026-11-27T06:17:40.147Z",
+      "lastSeenAt": "2026-11-27T06:17:40.147Z"
+    },
+    {
+      "id": "event-356c5f60",
+      "category": "brasil",
+      "title": "Trabuco aceita convite de Lula: quem é o novo ministro da Fazenda que defende ajuste fiscal e redução 'das desigualdades'",
+      "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE9fX29ERTlsUzl5bE1OUDdqRC1jM0luckNRdEpLX0RHb3VybG40ZXVEYWFDeDJKSF9lRXRCS3dadEN1WjN4c3NkQXNsZWZVNjJHTW9uR2NfdUNBcGd4UURVRW1wWdIBaEFVX3lxTE5iWWJvN3ZDZkt1YzJYczhXeUdSQVNZMjhTd25qV1o2VmVqejZwTks3MnJ3QmhqZU51WjQ4LWxmaW1uX2dmTG84aDEydFU2YnFPN29HbVQ5ZjdwVUlXSE5lMzA4ZF8yel9k",
+      "description": "Trabuco aceita convite de Lula: quem é o novo ministro da Fazenda que defende ajuste fiscal e redução 'das desigualdades' &nbsp;&nbsp; BBC",
+      "imageUrl": null,
+      "source": "BBC",
+      "publishedAt": "2026-11-27T01:20:07.000Z",
+      "firstSeenAt": "2026-11-27T06:17:40.147Z",
+      "lastSeenAt": "2026-11-27T06:17:40.147Z"
+    },
+    {
+      "id": "event-d35d9a7",
+      "category": "brasil",
+      "title": "Mega-Sena não tem ganhador e prêmio acumula para R$ 82 milhões",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/mega-sena-nao-tem-ganhador-e-premio-acumula-para-r-82-milhoes",
+      "description": "Nenhum apostador acertou as seis dezenas do Concurso 3.091 da Mega-Sena, realizado nesta quinta-feira (26). O prêmio acumulou e está estimado em R$ 82 milhões para o próximo sorteio. Os números sorteados foram: 04 - 19 - 22 - 23 - 28 - 37 64 apostas acertaram cinco dezenas e irão receber R$ 25.521,49 cada 5.321 apostas acertaram quatro dezenas e irão receber R$ 438,52 cada Notícias relacionadas: Pix terá novas regras de segurança e melhorias em 2027. A aposta simples, com seis dezenas, custa R$ 6.",
+      "imageUrl": "https://imagens.ebc.com.br/NV7QxIdQy4qKznHljh79YdF_RP4=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/20230622_182547.jpg?itok=slhN8uJs",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-27T00:58:00.000Z",
+      "firstSeenAt": "2026-11-27T06:17:40.147Z",
+      "lastSeenAt": "2026-11-27T06:17:40.147Z"
+    },
+    {
+      "id": "event-6bb58bb2",
+      "category": "brasil",
+      "title": "Veja a repercussão da escolha de Trabuco para o Ministério da Fazenda",
+      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/veja-repercussao-da-escolha-de-trabuco-para-o-ministerio-da-fazenda",
+      "description": "O Palácio do Planalto confirmou, em nota, na noite desta quinta-feira (26) que o banqueiro Luiz Carlos Trabuco Cappi, de 75 anos, foi escolhido para comandar o Ministério da Fazenda no próximo mandato do presidente Lula. Trabuco aceitou o convite durante uma reunião nesta quinta-feira (26) com Lula no Palácio da Alvorada. Trabuco é o atual presidente do Conselho de Administração do Bradesco e um dos nomes mais próximos de Lula no mercado financeiro. Trabuco assumirá o Ministério da Fazenda em 2027, no quarto mandato de Lula. O banqueiro construiu carreira no Bradesco, onde foi presidente executivo entre 2009 e 2018, antes de assumir o Conselho de Administração. O futuro ministro já havia sido convidado para comandar a Fazenda em 2014, durante o governo Dilma Rousseff (PT), mas recusou a proposta na ocasião. Notícias relacionadas: Trabuco aceita convite de Lula para comandar a Fazenda, diz Planalto. Bolsa sobe 6% e tem maior alta desde o 1º turno; dólar cai a R$ 5,74. A escolha ocorre em meio às discussões sobre medidas fiscais e à expectativa do mercado financeiro em relação à conduç",
+      "imageUrl": "https://imagens.ebc.com.br/Cj2WmsXWU4W3zJ1qn7SEPvgsA5Y=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/raf03857.jpg?itok=V6076K3L",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-27T00:51:00.000Z",
+      "firstSeenAt": "2026-11-27T06:17:40.147Z",
+      "lastSeenAt": "2026-11-27T06:17:40.147Z"
+    },
     {
       "id": "event-ccb2a9e6",
       "category": "mundo",
@@ -18,7 +78,19 @@
       "source": "Tribuna do Sertão",
       "publishedAt": "2026-11-26T23:31:00.000Z",
       "firstSeenAt": "2026-11-26T23:49:02.183Z",
-      "lastSeenAt": "2026-11-26T23:49:02.183Z"
+      "lastSeenAt": "2026-11-27T06:17:40.147Z"
+    },
+    {
+      "id": "event-a8866169",
+      "category": "mundo",
+      "title": "Eventos climáticos extremos exigem nova lógica de investimentos em energia",
+      "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPWEotTG9uc3B2eWlyalJzQkdhTlBmd1JmYmV4ZWRlWU5QOHVoZ01XWEV5R01Hd1JCUllJOElMWHJ5MGpRNlZvbDlrRDlFcUNnV202cUtkeUw4MjJQWWtucGZINGpXSDZTN3Nad18wa1JEOGx0Zi16QmFHMVMxVnRCaHF4Q1U2TTFzYUpLZGx4eVg4SnhZSmhvVndBcGRSOElOaWJhWFJHd1hhOVJ1ODln",
+      "description": "Eventos climáticos extremos exigem nova lógica de investimentos em energia &nbsp;&nbsp; CNN Brasil",
+      "imageUrl": null,
+      "source": "CNN Brasil",
+      "publishedAt": "2026-11-26T23:23:16.000Z",
+      "firstSeenAt": "2026-11-27T06:17:40.147Z",
+      "lastSeenAt": "2026-11-27T06:17:40.147Z"
     },
     {
       "id": "event-6aec0533",
@@ -78,7 +150,7 @@
       "source": "Nexo Jornal",
       "publishedAt": "2026-11-26T22:02:06.000Z",
       "firstSeenAt": "2026-11-26T23:49:02.183Z",
-      "lastSeenAt": "2026-11-26T23:49:02.183Z"
+      "lastSeenAt": "2026-11-27T06:17:40.147Z"
     },
     {
       "id": "event-148c0308",
@@ -90,7 +162,7 @@
       "source": "NSC Total",
       "publishedAt": "2026-11-26T21:54:35.000Z",
       "firstSeenAt": "2026-11-26T23:49:02.183Z",
-      "lastSeenAt": "2026-11-26T23:49:02.183Z"
+      "lastSeenAt": "2026-11-27T06:17:40.147Z"
     },
     {
       "id": "event-f9390aaf",
@@ -114,7 +186,31 @@
       "source": "Mix Vale",
       "publishedAt": "2026-11-26T20:49:53.000Z",
       "firstSeenAt": "2026-11-26T23:49:02.183Z",
-      "lastSeenAt": "2026-11-26T23:49:02.183Z"
+      "lastSeenAt": "2026-11-27T06:17:40.147Z"
+    },
+    {
+      "id": "event-c0071878",
+      "category": "santa-catarina",
+      "title": "Defesa Civil de SC moderniza regras para distribuição de ajuda humanitária",
+      "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxPdHpMTWJwWWp2ODN5MUhUTzd1Y1U1NkZUVGdUdHR2VlFqazZfM0RpYTRSU3pCeGgtaEhBQ3AyTGUyNEpsTmZlV1BNVXYyc0VzeDl2ZGM5Uk8tUGxTMVI2ZHJIZXZQNTFYYzhpNXdFVV9uTXhnVk9iUld6MTFrOUh4SHNOeXpEQndQUGd1RzUySlpiNnZHQkpQaExFdERlTVdtcmFacHd4dDAxLVVDN2doUThpWTZqSndN",
+      "description": "Defesa Civil de SC moderniza regras para distribuição de ajuda humanitária &nbsp;&nbsp; Rádio Centro Oeste",
+      "imageUrl": null,
+      "source": "Rádio Centro Oeste",
+      "publishedAt": "2026-11-26T20:13:52.000Z",
+      "firstSeenAt": "2026-11-27T06:17:40.147Z",
+      "lastSeenAt": "2026-11-27T06:17:40.147Z"
+    },
+    {
+      "id": "event-d522beae",
+      "category": "africa",
+      "title": "Lacunas nos dados financeiros encarecem financiamento em África - Notícias ao Minuto",
+      "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxQeTFZbWZGd0JJbzdFTjFfTVE2NmpVUE9STVQxTExiaG02c3QzSl8zb21pUjZkZEd0QmMzclpXUU52Qjl1NnBVemdXcTNRcXFtZ3ZyOURjZTVodVh1ZTVpRU9KajdWcDhLbWNodmJoNFBIc0FDMXZranlBRkN1TU1EcmRTcVdMcmg4aS1RaFljSlhISlVDYXJocUVIOVRyZ09Yc1lOdG83U19EY1c1M3dtRjJGZllIMWViYlE",
+      "description": "Lacunas nos dados financeiros encarecem financiamento em África &nbsp;&nbsp; Notícias ao Minuto",
+      "imageUrl": null,
+      "source": "Notícias ao Minuto",
+      "publishedAt": "2026-11-26T20:00:00.000Z",
+      "firstSeenAt": "2026-11-27T06:17:40.147Z",
+      "lastSeenAt": "2026-11-27T06:17:40.147Z"
     },
     {
       "id": "event-dc482210",
@@ -163,6 +259,18 @@
       "publishedAt": "2026-11-26T17:05:22.000Z",
       "firstSeenAt": "2026-11-26T23:49:02.183Z",
       "lastSeenAt": "2026-11-26T23:49:02.183Z"
+    },
+    {
+      "id": "event-b0fce648",
+      "category": "santa-catarina",
+      "title": "Defesa Civil confirma tornados em seis municípios de SC em 2026",
+      "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxPbGZUMVRrVUZFNjMtLWZTS0hjTzJPTHVnWUVlMUFxWXRad0dwTnpGUGtvUmF5ZzdsX2VFRUVmVVYwM0dNNjZtcEtwNzJQX3YtaWhfLTBkNnk2WFY4QTJVQS1MZ1ROeWZnbXk3M2xuLUJBcGp4SVRjaWdPLWRsa21HNFVSaVFlbUN1TGtYeExhZS1qRmFXZy15eXBkMFZjUQ",
+      "description": "Defesa Civil confirma tornados em seis municípios de SC em 2026 &nbsp;&nbsp; Rádio Centro Oeste",
+      "imageUrl": null,
+      "source": "Rádio Centro Oeste",
+      "publishedAt": "2026-11-26T16:39:37.000Z",
+      "firstSeenAt": "2026-11-27T06:17:40.147Z",
+      "lastSeenAt": "2026-11-27T06:17:40.147Z"
     },
     {
       "id": "event-a70d04b0",
@@ -283,98 +391,9 @@
       "publishedAt": "2026-11-26T06:33:41.000Z",
       "firstSeenAt": "2026-11-26T15:09:59.042Z",
       "lastSeenAt": "2026-11-26T15:09:59.042Z"
-    },
-    {
-      "id": "event-69edbf47",
-      "category": "brasil",
-      "title": "Brasileirão: Atlético-MG empata no fim e mantém Corinthians ameaçado",
-      "url": "https://agenciabrasil.ebc.com.br/esportes/noticia/2026-11/brasileirao-atletico-mg-empata-no-fim-e-mantem-corinthians-ameacado",
-      "description": "O Corinthians estava próximo de conseguir um respiro na luta contra o rebaixamento, mas acabou frustrado pelo Atlético-MG nos instantes finais do confronto que encerrou a 36ª rodada do Campeonato Brasileiro. Na noite desta quarta-feira (25), Timão e Galo empataram por 1 a 1 na Arena MRV, em Belo Horizonte, em resultado pouco útil às pretensões de ambos. Notícias relacionadas: Primeiros vice-campeões, Botafogo e Inter se enfrentam pela Copinha F. Os mineiros, que chegaram ao nono jogo sem vitória na temporada, perderam a chance de entrar no grupo dos seis primeiros colocados (G-6), que vão à próxima Libertadores. O Timão, que voltou a sofrer gols após três partidas, até deixou a zona de rebaixamento (Z-4), que engloba as quatro piores campanhas, mas permanece em situação delicada. Até os acréscimos do segundo tempo, o duelo em Belo Horizonte tinha Kaio César como figura decisiva. Aos 21 minutos do segundo tempo, o corintiano avançou pela direita em velocidade e recebeu um carrinho por trás do também atacante Thiago Borbas. Após rever o lance no vídeo, o árbitro Bráulio da Silva Machad",
-      "imageUrl": "https://imagens.ebc.com.br/_LW4Rwa7tgoBzPqM34dvMSF7pKo=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/25/atletico_e_timao.jpg?itok=njPpEtS_",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-26T01:38:00.000Z",
-      "firstSeenAt": "2026-11-26T05:04:05.863Z",
-      "lastSeenAt": "2026-11-26T05:04:05.863Z"
-    },
-    {
-      "id": "event-7410e588",
-      "category": "brasil",
-      "title": "Gana é eleita na ONU Turismo e Brasil assume vice-presidência",
-      "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxPRjI0SzBJbURlSEhHVWhPWVZMTnUwdkdwQ1BvUlVkdlJDME1jbEV3bVFHMEtLMXBVVDBtSllCYVNISW55MFdvTzFNR2FHVzlRWS1uZGRfWVpvZzh5Q2pIbjFfcXY5NGxBdVJXMkxBUEdxT3lGek1lWlRvWDlsbDFBWmhLUW1IVnhXUURTRkNPOUNlMHA1QzhiclhWNmFtbC1QVGNTa2w3Z2FlNFlmV1lBd3pOWXlSRTJOcU1r",
-      "description": "Gana é eleita na ONU Turismo e Brasil assume vice-presidência &nbsp;&nbsp; Agência Brasil",
-      "imageUrl": null,
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-26T00:36:00.000Z",
-      "firstSeenAt": "2026-11-26T05:04:05.863Z",
-      "lastSeenAt": "2026-11-26T05:04:05.863Z"
-    },
-    {
-      "id": "event-dfa96cd5",
-      "category": "mundo",
-      "title": "Gana é eleita na ONU Turismo e Brasil assume vice-presidência",
-      "url": "https://agenciabrasil.ebc.com.br/esportes/noticia/2026-11/gana-e-eleita-na-onu-turismo-e-brasil-assume-vice-presidencia",
-      "description": "Gana foi eleita para presidir o Conselho Executivo da ONU Turismo em 2027. A escolha ocorreu durante a 127ª reunião do colegiado nesta quarta-feira (25), nos Emirados Árabes Unidos. O país africano recebeu 19 votos, vencendo a Argentina, que teve 14 votos. O Brasil, que deixa a presidência do conselho no biênio 2025-2026, permanecerá na vice-presidência ao longo do próximo ano, junto com a Bulgária. Notícias relacionadas: ONU aprova proposta do Brasil de turismo amigável para muçulmanos. Ao presidir a organização, Gana pretende defender as prioridades do turismo na África, aprofundar a cooperação internacional e promover o desenvolvimento turístico sustentável e inclusivo em escala global, bandeiras compartilhadas com o Brasil. “Encerramos a presidência do Conselho Executivo da ONU Turismo com a certeza do dever cumprido e celebramos a eleição de Gana, desejando sucesso na gestão. Seguir na vice-presidência em 2027, ao lado da Bulgária, reflete o prestígio da política externa do presidente Lula, fortalece o multilateralismo e garante que o Brasil continuará na linha de frente das dec",
-      "imageUrl": "https://imagens.ebc.com.br/Cl3VbzY8unEBegs0R623CwL2v4w=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/24/ad_7.jpg.jpeg?itok=9PPzse3V",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-26T00:36:00.000Z",
-      "firstSeenAt": "2026-11-26T05:04:05.863Z",
-      "lastSeenAt": "2026-11-26T05:04:05.863Z"
-    },
-    {
-      "id": "event-b870620",
-      "category": "brasil",
-      "title": "Pesquisadoras recebem prêmio por inovações e valorizam trajetória",
-      "url": "https://agenciabrasil.ebc.com.br/educacao/noticia/2026-11/pesquisadoras-recebem-premio-por-inovacoes-e-valorizam-percurso",
-      "description": "Atuar pela população da Amazônia foi um sonho de infância para a pesquisadora mineira Fabiane Almeida, de 43 anos. A bióloga foi uma das 10 vencedoras do Prêmio Mulheres Inovadoras, promovido pelo governo federal, que foram reconhecidas nesta quarta (25). Ela é uma das responsáveis por uma empresa que extrai uma biomassa de alto valor nutricional a partir de microalgas. >>Confira os projetos contemplados Notícias relacionadas: Com tema Ciência Delas, Semana de Ciência e Tecnologia vai até sábado. Comissão fixa carga mínima de filosofia e sociologia no ensino médio. Escolas já podem se inscrever para a Olitef 2027. A startup trabalha com cinco produtos, três voltados a animais e outros dois, à alimentação humana. Ela sorriu diante da conquista, mas se emocionou ao lembrar das origens. “Meu sonho começou aos 6 anos de idade ao apresentar um trabalho de ciências na minha escola em Pará de Minas. Apresentei o bioma da Amazônia”, disse à Agência Brasil . Fabiane Almeida e Taina Brito participam da entrega de troféus às vencedoras da 7ª edição do Prêmio Mulheres Inovadoras. Foto: Bruno Per",
-      "imageUrl": "https://imagens.ebc.com.br/MXP6dtblkWsbWFPqc2Yjp5EwPjo=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/2026/11/25/_mg_6672.jpg?itok=d0jFdHks",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-26T00:03:00.000Z",
-      "firstSeenAt": "2026-11-26T05:04:05.863Z",
-      "lastSeenAt": "2026-11-26T05:04:05.863Z"
-    },
-    {
-      "id": "event-f46e78cb",
-      "category": "santa-catarina",
-      "title": "Defesa Civil Alerta já emitiu 412 avisos de desastres climáticos no PR neste ano",
-      "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxNQ2NBdXA5SFN6ZWp2NFNJRzFNSy1DVW5VdHZVa0tIS1F4U0NZVWhwYU12X3NQamFMNHZ2QUk4d2VIS2ltZ1Jma0xiM211NGJNWTJ6LXNPeUpTQW56eUlwV0ZIMlJiaUlxV0NGampiSkVTLWVVZUhNQWloZFowNzVlZTJvMTZNMC1kVXlSMkt2WXZZZ3Z1LWRVTDlGVDVSYTdGRC1VQzRmSVdJcUcwb1MxeGJKMVhjUdIBuwFBVV95cUxPcWZLZnA0THA1YVFDZHdJVU5nVjdXdUhldE12WjhUeUpPN3RhSnVVbGhPVnhoS2E1cm9sa1YtMVc2M1h1dVQtVzBveUNuZmdTejJyVWt5MUNJM2pMalpRTm83cmdZV0QyQXhibjJycENQc2FiakY0MHp4eWFyRzNoME42X2RYSHJyRktFVlNvbUVLN0ZaY3pfQUNuX0tHZW9NUlo2WnpHVUlMODROY0p1RFpPT3pfekhfSXpv",
-      "description": "Defesa Civil Alerta já emitiu 412 avisos de desastres climáticos no PR neste ano &nbsp;&nbsp; Bem Paraná",
-      "imageUrl": null,
-      "source": "Bem Paraná",
-      "publishedAt": "2026-11-26T00:00:00.000Z",
-      "firstSeenAt": "2026-11-26T05:04:05.863Z",
-      "lastSeenAt": "2026-11-26T15:09:59.042Z"
-    },
-    {
-      "id": "event-f6944620",
-      "category": "brasil",
-      "title": "Câmara aprova protocolo nacional para combater racismo nas escolas",
-      "url": "https://agenciabrasil.ebc.com.br/direitos-humanos/noticia/2026-11/camara-aprova-protocolo-nacional-para-combater-racismo-nas-escolas",
-      "description": "A Câmara dos Deputados aprovou, nesta quarta-feira (25), o Projeto de Lei (PL) 4887/2023 , que institui um protocolo nacional de acolhimento às vítimas de racismo e estabelece medidas de resposta a esses casos em estabelecimentos de ensino, tanto públicos quanto privados. De autoria da deputada federal Carol Dartora (PT-PR), o PL foi relatado pela deputada Benedita da Silva (PT-RJ), que apresentou um substitutivo em plenário. Foram 320 votos favoráveis e 102 contrários e a matéria seguirá para análise do Senado Federal. Notícias relacionadas: Ministério cria protocolo policial com foco em raça e gênero. Incubadora vai apoiar empreendimentos de afroturismo no país. Negra, mãe e vítima de agressão: estudo traça perfil de detentas no RJ. A proposta estabelece procedimentos obrigatórios para identificar, acolher e encaminhar casos de racismo, discriminação racial, injúria racial e condutas semelhantes, inclusive em ambientes virtuais relacionados à comunidade escolar. Entre as medidas previstas estão a designação de um profissional responsável pela aplicação do protocolo em cada institui",
-      "imageUrl": "https://imagens.ebc.com.br/D3xMcnRv35Upk02ztOUTcHvDRdk=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/mcamg_abr_10052019_9651.jpg?itok=89_USuKd",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-25T23:52:00.000Z",
-      "firstSeenAt": "2026-11-26T05:04:05.863Z",
-      "lastSeenAt": "2026-11-26T05:04:05.863Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-26T05:04:05.863Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 14,
-      "newArticles": 7,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "europa",
-        "africa"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-26T15:09:59.042Z",
       "ok": true,
@@ -409,41 +428,31 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-27T06:17:40.147Z",
+      "ok": true,
+      "partial": false,
+      "observedArticles": 14,
+      "newArticles": 9,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "africa"
+      ],
+      "inmetChecked": true,
+      "ensoChecked": true
     }
   ],
   "checkCount": 3,
-  "lastSuccessfulAt": "2026-11-26T23:49:02.183Z",
+  "lastSuccessfulAt": "2026-11-27T06:17:40.147Z",
   "latest": {
     "alerts": {
       "checked": true,
-      "checkedAt": "2026-11-26T23:49:02.183Z",
+      "checkedAt": "2026-11-27T06:17:40.147Z",
       "warnings": [
-        {
-          "id": "56515",
-          "title": "Chuvas Intensas",
-          "severity": "Perigo",
-          "phase": "previsto",
-          "regions": [
-            "DO"
-          ],
-          "startsAt": "2026-11-27T00:00:00.000Z",
-          "endsAt": "2026-11-27T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
-        },
-        {
-          "id": "56512",
-          "title": "Baixa Umidade",
-          "severity": "Perigo Potencial",
-          "phase": "vigente",
-          "regions": [
-            "DO"
-          ],
-          "startsAt": "2026-11-26T00:00:00.000Z",
-          "endsAt": "2026-11-27T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
-        },
         {
           "id": "56516",
           "title": "Chuvas Intensas",
@@ -458,27 +467,12 @@
           "endsAt": "2026-11-28T00:00:00.000Z",
           "source": "INMET",
           "url": "https://avisos.inmet.gov.br/"
-        },
-        {
-          "id": "56513",
-          "title": "Chuvas Intensas",
-          "severity": "Perigo Potencial",
-          "phase": "previsto",
-          "regions": [
-            "DO",
-            "DO",
-            "DE"
-          ],
-          "startsAt": "2026-11-27T00:00:00.000Z",
-          "endsAt": "2026-11-27T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
         }
       ]
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-26T23:49:02.183Z",
+      "checkedAt": "2026-11-27T06:17:40.147Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
