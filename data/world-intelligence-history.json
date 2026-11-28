@@ -4,10 +4,46 @@
   "windowHours": 24,
   "monitoredBy": "github-actions-scheduled",
   "targetIntervalMinutes": 15,
-  "updatedAt": "2026-11-28T00:20:05.054Z",
-  "oldestEventAt": "2026-11-27T00:51:00.000Z",
-  "windowStartAt": "2026-11-27T00:20:05.054Z",
+  "updatedAt": "2026-11-28T08:14:19.960Z",
+  "oldestEventAt": "2026-11-27T11:00:00.000Z",
+  "windowStartAt": "2026-11-27T08:14:19.960Z",
   "events": [
+    {
+      "id": "event-22faaf78",
+      "category": "brasil",
+      "title": "'Pelo Telefone': Brasil celebra 110 anos de registro do primeiro samba",
+      "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxPZzF0NWxlaFpEa3JGT0RET0c4THBWYlcxXzN0bXoyejdHMWxzdjU0ck5aZElBMUcyd0xNd1RhcVF5N3dodUVaMzRpM3VPbUJrWkhsb1A0bk5LZm43S1hCNDZsLXN0aENfblFldmE4MXZLNEJGWS1ybV9tb1BGMEw4U1VlMkxKY21oMEdSbVNlMUhhVl9OZWt4eTV3cUlDbVRWT1JtM1c1dDJLakMyb2FEdFNvcjZobE1fWHBkWmVoRVZub3Q0dEV2UdIB1wFBVV95cUxOSnZlSllrbDUzb1FuRWdGS01iZjdfMFFNajFSMmhCY1owTkFOczQ2Rm1VWXVqUG9fSGxuWmI2S3JvZEJfb1E5ZkpVZzllZkZnVGhRci1jUG1FcTBEUTlkekZwZW04b1dYa1pFWGJicmFwYjBGSDBRVUJiTU1fc2I1a0ZoaHJfMzBsZDhOeUZySFVKSUJjU1ItMXBLYlp5MzJSMjVOYWg0WDBYdERMbFJKZVJ1SFlPamtvcXQydGZZSkJnWmdabmIzcUZYVkI5a0pEQnZ2ektldw",
+      "description": "'Pelo Telefone': Brasil celebra 110 anos de registro do primeiro samba &nbsp;&nbsp; G1",
+      "imageUrl": null,
+      "source": "G1",
+      "publishedAt": "2026-11-28T01:50:09.000Z",
+      "firstSeenAt": "2026-11-28T08:14:19.960Z",
+      "lastSeenAt": "2026-11-28T08:14:19.960Z"
+    },
+    {
+      "id": "event-de59cb71",
+      "category": "mundo",
+      "title": "Irã nega ataque com drones que matou dois italianos no Kuwait",
+      "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxPTnZEM0ItSnFJWmhZQlJNUnl2UnF5RlRxNWRMU3ZkOXdvVnlybllWUUVRZFU3UU1mdFFaYXlpd1MxUDgxNGZpbjhCMVpSdWwyUUlkeWVjR0g2SnZ0dWtTSXY2Y2g2SmdLeUQxeXVqaXNQOEY1SXhWcUJVU3pVZ0RSeGJPSENUS0RHWG9VeEVSLVI5dnFpcThlN29vS3ZFMF9taGt4UE1YQ056Umx1Rk1WU2VadXBTWHhWVFdvSHVGRTNlb0ZRZENCVk9pTU53cURNbEE",
+      "description": "Irã nega ataque com drones que matou dois italianos no Kuwait &nbsp;&nbsp; UOL Notícias",
+      "imageUrl": null,
+      "source": "UOL Notícias",
+      "publishedAt": "2026-11-28T01:41:34.000Z",
+      "firstSeenAt": "2026-11-28T08:14:19.960Z",
+      "lastSeenAt": "2026-11-28T08:14:19.960Z"
+    },
+    {
+      "id": "event-e0521ddd",
+      "category": "brasil",
+      "title": "Omã valoriza comércio com Brasil e defende Estado palestino",
+      "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxQSHR5dTBhcDRKVkQ1bmcwcGNFc2VmU2otVU92Vzdwa0FfVlhmVGZnbjk0WXNSU3BORy1aZXBkbEYwMlNPaURKY1RpYnhKUFNKV0c5dnJRZUNGam9nclRXaHFvZnRUOVpwMWVyMHVkc3RvTG9ZRXJkeGtTQmI1bFNoYUZzQVlTdzFHSGxqbWYwRzdhQkg2UDBSaGxR",
+      "description": "Omã valoriza comércio com Brasil e defende Estado palestino &nbsp;&nbsp; Vero Notícias",
+      "imageUrl": null,
+      "source": "Vero Notícias",
+      "publishedAt": "2026-11-28T00:32:50.000Z",
+      "firstSeenAt": "2026-11-28T08:14:19.960Z",
+      "lastSeenAt": "2026-11-28T08:14:19.960Z"
+    },
     {
       "id": "event-5d9e7f08",
       "category": "mundo",
@@ -30,7 +66,19 @@
       "source": "Tribuna do Sertão",
       "publishedAt": "2026-11-27T23:31:01.000Z",
       "firstSeenAt": "2026-11-28T00:20:05.054Z",
-      "lastSeenAt": "2026-11-28T00:20:05.054Z"
+      "lastSeenAt": "2026-11-28T08:14:19.960Z"
+    },
+    {
+      "id": "event-13169320",
+      "category": "brasil",
+      "title": "PM do Rio ocupa comunidades de Jacarepaguá por tempo indeterminado",
+      "url": "https://agenciabrasil.ebc.com.br/justica/noticia/2026-11/pm-do-rio-ocupa-comunidades-de-jacarepagua-por-tempo-indeterminado",
+      "description": "A Polícia Militar do Rio de Janeiro está ocupando, a partir desta sexta-feira (27), por tempo indeterminado, as comunidades dos Teixeiras e do Jordão, em Jacarepaguá, zona sudoeste do Rio. Na manhã de hoje, policiais encontraram uma cabeça humana em estado de decomposição dentro de um saco plástico no pátio do 18º batalhão, em Jacarepaguá, durante a limpeza do local. Notícias relacionadas: Polícia do Rio prende mais dois envolvidos em agressões a professor. No início da tarde, durante o patrulhamento na comunidade dos Teixeiras, equipes foram atacadas a tiros. Um suspeito que foi baleado e socorrido portava um fuzil M16 com a inscrição \"Terror do 18\", em uma alusão à unidade da PM responsável pelo policiamento ostensivo e repressivo nas comunidades da região. O caso desta sexta-feira ocorre em meio a uma escalada de ameaças contra agentes do batalhão, atribuídas a represálias pelas operações contra o tráfico na região, especialmente na Gardênia Azul, controlada pela facção criminosa Comando Vermelho. No dia 11 deste mês, a PM prendeu Marcus Vinicius Salviano de Farias Rocha, conhecid",
+      "imageUrl": "https://imagens.ebc.com.br/S9SUb08GMXjRIl2IMPcYVCGOKXY=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/trbr6266.jpg?itok=9Jo8g00d",
+      "source": "Agência Brasil",
+      "publishedAt": "2026-11-27T23:27:00.000Z",
+      "firstSeenAt": "2026-11-28T08:14:19.960Z",
+      "lastSeenAt": "2026-11-28T08:14:19.960Z"
     },
     {
       "id": "event-98d3e1d3",
@@ -42,7 +90,7 @@
       "source": "Agência Brasil",
       "publishedAt": "2026-11-27T22:47:00.000Z",
       "firstSeenAt": "2026-11-28T00:20:05.054Z",
-      "lastSeenAt": "2026-11-28T00:20:05.054Z"
+      "lastSeenAt": "2026-11-28T08:14:19.960Z"
     },
     {
       "id": "event-8eab3ff5",
@@ -81,6 +129,30 @@
       "lastSeenAt": "2026-11-28T00:20:05.054Z"
     },
     {
+      "id": "event-e241ea4f",
+      "category": "santa-catarina",
+      "title": "Ciclone pode ampliar temporais em SC a partir de sexta",
+      "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxQREtXMEhxZDZrM2lranA3TUU5ZHAxY1RYaTQ2LVZyank4TFlkWGJLSjhXXzFJRzdkSmxSLWhLWllGSlo4Z2xxRG9rZE1xdG1EUzRHY29CTlR2d2UtRTdUVWU4UkZUX08tRXdoZXVhOW9qOE5sN2JrbXRLdmxPZTBGcmdKUnowU1d3elE",
+      "description": "Ciclone pode ampliar temporais em SC a partir de sexta &nbsp;&nbsp; Real News",
+      "imageUrl": null,
+      "source": "Real News",
+      "publishedAt": "2026-11-27T21:25:55.000Z",
+      "firstSeenAt": "2026-11-28T08:14:19.960Z",
+      "lastSeenAt": "2026-11-28T08:14:19.960Z"
+    },
+    {
+      "id": "event-7776109",
+      "category": "mundo",
+      "title": "Brasil é um dos dez maiores mercados da PepsiCo - Times Brasil | CNBC",
+      "url": "https://news.google.com/rss/articles/CBMiqwJBVV95cUxPMlNzMU1fZXdZOWRIOTZoaVdRWEFyWjAwLTdOdk51SVNuY1NoVTlobmRabERDM3dOaWc1TUxSWU1KQmxUaDJHNkJreXAtS0tZMTV6X29vaTloVGUxN3FrSzh3R3N6dDY0RTd5TFVLeXNENktURUlGcl9nblRDajM5cE5HV01DdzFfUTVTbjBreFZ0eEFmUE12NXEyeTE2R1cwMnZ3ZXhNQ3ROekVxOUE1a1ZONURwQ0tXV3pIbzNFc1hkRUI0M3NxMHBRclN4NTU0U2hReDhmWE5OVGx4QUw0SFJnTDFGWkpYTGZEWlJ1NUVpSkZSUFluVldPWW95Qko3dzVVbUFuLVNCbWZuekZIYTVURG1JQzRoT2lJNDdEU05hOGxCYnYxX1kxQQ",
+      "description": "Brasil é um dos dez maiores mercados da PepsiCo - Times Brasil | CNBC &nbsp;&nbsp; Times Brasil | CNBC",
+      "imageUrl": null,
+      "source": "Times Brasil | CNBC",
+      "publishedAt": "2026-11-27T21:04:00.000Z",
+      "firstSeenAt": "2026-11-28T08:14:19.960Z",
+      "lastSeenAt": "2026-11-28T08:14:19.960Z"
+    },
+    {
       "id": "event-36a32d48",
       "category": "mundo",
       "title": "Brasil quer aproximar Mercosul de mercados do Caribe e América Central",
@@ -102,7 +174,7 @@
       "source": "Portal Tela",
       "publishedAt": "2026-11-27T20:55:32.000Z",
       "firstSeenAt": "2026-11-28T00:20:05.054Z",
-      "lastSeenAt": "2026-11-28T00:20:05.054Z"
+      "lastSeenAt": "2026-11-28T08:14:19.960Z"
     },
     {
       "id": "event-a3407d47",
@@ -114,7 +186,7 @@
       "source": "TVBV ONLINE",
       "publishedAt": "2026-11-27T20:32:44.000Z",
       "firstSeenAt": "2026-11-28T00:20:05.054Z",
-      "lastSeenAt": "2026-11-28T00:20:05.054Z"
+      "lastSeenAt": "2026-11-28T08:14:19.960Z"
     },
     {
       "id": "event-33d7b3ef",
@@ -138,7 +210,7 @@
       "source": "Governo de Santa Catarina",
       "publishedAt": "2026-11-27T17:55:00.000Z",
       "firstSeenAt": "2026-11-28T00:20:05.054Z",
-      "lastSeenAt": "2026-11-28T00:20:05.054Z"
+      "lastSeenAt": "2026-11-28T08:14:19.960Z"
     },
     {
       "id": "event-659968bc",
@@ -150,7 +222,7 @@
       "source": "Notícias ao Minuto",
       "publishedAt": "2026-11-27T17:40:00.000Z",
       "firstSeenAt": "2026-11-28T00:20:05.054Z",
-      "lastSeenAt": "2026-11-28T00:20:05.054Z"
+      "lastSeenAt": "2026-11-28T08:14:19.960Z"
     },
     {
       "id": "event-bf85cbb5",
@@ -222,7 +294,7 @@
       "source": "IRGA",
       "publishedAt": "2026-11-27T15:02:41.000Z",
       "firstSeenAt": "2026-11-27T16:53:08.593Z",
-      "lastSeenAt": "2026-11-28T00:20:05.054Z"
+      "lastSeenAt": "2026-11-28T08:14:19.960Z"
     },
     {
       "id": "event-843419e4",
@@ -246,7 +318,7 @@
       "source": "PPNews",
       "publishedAt": "2026-11-27T13:13:25.000Z",
       "firstSeenAt": "2026-11-27T16:53:08.593Z",
-      "lastSeenAt": "2026-11-28T00:20:05.054Z"
+      "lastSeenAt": "2026-11-28T08:14:19.960Z"
     },
     {
       "id": "event-c5bad629",
@@ -271,97 +343,9 @@
       "publishedAt": "2026-11-27T11:00:00.000Z",
       "firstSeenAt": "2026-11-27T16:53:08.593Z",
       "lastSeenAt": "2026-11-27T16:53:08.593Z"
-    },
-    {
-      "id": "event-7a8ae3d1",
-      "category": "clima",
-      "title": "Antena 10 FM",
-      "url": "https://news.google.com/rss/articles/CBMi4wFBVV95cUxQcTZ5d1E3THNxRXZfNEVnbTI2V01BZkZaY3FGajRhcUdZSVJTY0JHQ0VpZDRQZ3pYT21KRk9zYWhxa0VkMjhqb25Pb0JRaTZoODVGM21Dc0lOUURXRVUybXg1aTFlLTR5M0xvZ01YRUcyY2pkWEU2QTZCTGhuOXdndHBCQlFuREVHc3oxZjRVazJZMWdUU1h5UE9Rd1c4anF1Q25iTUdmSlZaZGZ4NmxQZjBVRHV4VHdZek1vaTBONzhqbS1kcUZIS2dsbC1zbE5MYnBCdV9wTVE4S05WRXhEV0JFNA",
-      "description": "Antena 10 FM &nbsp;&nbsp; Antena 10 FM",
-      "imageUrl": null,
-      "source": "Antena 10 FM",
-      "publishedAt": "2026-11-27T06:16:29.000Z",
-      "firstSeenAt": "2026-11-27T06:17:40.147Z",
-      "lastSeenAt": "2026-11-27T06:17:40.147Z"
-    },
-    {
-      "id": "event-e28108f",
-      "category": "clima",
-      "title": "Por que a chegada do inverno amazônico não tem aliviado o calor em Rondônia? El Niño ajuda a explicar",
-      "url": "https://news.google.com/rss/articles/CBMi_gFBVV95cUxQenNqWmU4YjVxeE1MMmFuN1NCODdqc3NNSFhsVmpZbEhLeTVnU1NBclgyZERNMHdjTVZNYXg2clNZR081M0RVTWhLOHZYRUtsNkk4R2JLbTBHQnNoU1BKVnFZLV9YUzlkcU9ROVlEeFlEVERjMXl3OHJ1UjZsUjBJTGRCSHUwcGQwNDREZ1F3ejBNZFA3VmN6eXh6aURHZ2c3VzVCeDhUM2hCYkFSc1gydmhrcEFkMjJPdFo3WmVxTHdUc3E1NFFVUGxTMG9VVnpWaDBpVDh2blAySkN5T3plN1ZvcTd5WmNMRTRIeHhzclVlQnEtRmd1LWlTZEFDd9IB_gFBVV95cUxQenNqWmU4YjVxeE1MMmFuN1NCODdqc3NNSFhsVmpZbEhLeTVnU1NBclgyZERNMHdjTVZNYXg2clNZR081M0RVTWhLOHZYRUtsNkk4R2JLbTBHQnNoU1BKVnFZLV9YUzlkcU9ROVlEeFlEVERjMXl3OHJ1UjZsUjBJTGRCSHUwcGQwNDREZ1F3ejBNZFA3VmN6eXh6aURHZ2c3VzVCeDhUM2hCYkFSc1gydmhrcEFkMjJPdFo3WmVxTHdUc3E1NFFVUGxTMG9VVnpWaDBpVDh2blAySkN5T3plN1ZvcTd5WmNMRTRIeHhzclVlQnEtRmd1LWlTZEFDdw",
-      "description": "Por que a chegada do inverno amazônico não tem aliviado o calor em Rondônia? El Niño ajuda a explicar &nbsp;&nbsp; G1",
-      "imageUrl": null,
-      "source": "G1",
-      "publishedAt": "2026-11-27T06:00:00.000Z",
-      "firstSeenAt": "2026-11-27T16:53:08.593Z",
-      "lastSeenAt": "2026-11-27T16:53:08.593Z"
-    },
-    {
-      "id": "event-cd747b46",
-      "category": "brasil",
-      "title": "Grupo Lufthansa comemora 100 anos de história e 70 anos de Brasil; fotos",
-      "url": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxQNm1NbzNjX1ZtNmZrdGFxVmZDYU11RVBUQ2gxb3FJQ3YwQVVzTjI5ZkY3SzZXbEVyYkJhN1hLd0dmb0g5czkweGFDeHYxSkx0YzJnY0Y1WlUzRExVZlRuV1RBQ0g3eXI5VWtSMm9heGx6TDdKaDF0azhvNi05TnNvZ2FXaDhlcjE5ZkZzbG1tNVgwR2hZaEk3cnVXbFNoY3RlTWM2LXRDVGV6NGlKOUlCMUowZWdrbF9hcGt5REN5TUF2aXltcmQ4YWhGc1hldkdqcExSZ0JYOGM",
-      "description": "Grupo Lufthansa comemora 100 anos de história e 70 anos de Brasil; fotos &nbsp;&nbsp; Panrotas",
-      "imageUrl": null,
-      "source": "Panrotas",
-      "publishedAt": "2026-11-27T01:42:00.000Z",
-      "firstSeenAt": "2026-11-27T06:17:40.147Z",
-      "lastSeenAt": "2026-11-27T06:17:40.147Z"
-    },
-    {
-      "id": "event-356c5f60",
-      "category": "brasil",
-      "title": "Trabuco aceita convite de Lula: quem é o novo ministro da Fazenda que defende ajuste fiscal e redução 'das desigualdades'",
-      "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTE9fX29ERTlsUzl5bE1OUDdqRC1jM0luckNRdEpLX0RHb3VybG40ZXVEYWFDeDJKSF9lRXRCS3dadEN1WjN4c3NkQXNsZWZVNjJHTW9uR2NfdUNBcGd4UURVRW1wWdIBaEFVX3lxTE5iWWJvN3ZDZkt1YzJYczhXeUdSQVNZMjhTd25qV1o2VmVqejZwTks3MnJ3QmhqZU51WjQ4LWxmaW1uX2dmTG84aDEydFU2YnFPN29HbVQ5ZjdwVUlXSE5lMzA4ZF8yel9k",
-      "description": "Trabuco aceita convite de Lula: quem é o novo ministro da Fazenda que defende ajuste fiscal e redução 'das desigualdades' &nbsp;&nbsp; BBC",
-      "imageUrl": null,
-      "source": "BBC",
-      "publishedAt": "2026-11-27T01:20:07.000Z",
-      "firstSeenAt": "2026-11-27T06:17:40.147Z",
-      "lastSeenAt": "2026-11-27T06:17:40.147Z"
-    },
-    {
-      "id": "event-d35d9a7",
-      "category": "brasil",
-      "title": "Mega-Sena não tem ganhador e prêmio acumula para R$ 82 milhões",
-      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/mega-sena-nao-tem-ganhador-e-premio-acumula-para-r-82-milhoes",
-      "description": "Nenhum apostador acertou as seis dezenas do Concurso 3.091 da Mega-Sena, realizado nesta quinta-feira (26). O prêmio acumulou e está estimado em R$ 82 milhões para o próximo sorteio. Os números sorteados foram: 04 - 19 - 22 - 23 - 28 - 37 64 apostas acertaram cinco dezenas e irão receber R$ 25.521,49 cada 5.321 apostas acertaram quatro dezenas e irão receber R$ 438,52 cada Notícias relacionadas: Pix terá novas regras de segurança e melhorias em 2027. A aposta simples, com seis dezenas, custa R$ 6.",
-      "imageUrl": "https://imagens.ebc.com.br/NV7QxIdQy4qKznHljh79YdF_RP4=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/20230622_182547.jpg?itok=slhN8uJs",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-27T00:58:00.000Z",
-      "firstSeenAt": "2026-11-27T06:17:40.147Z",
-      "lastSeenAt": "2026-11-27T06:17:40.147Z"
-    },
-    {
-      "id": "event-6bb58bb2",
-      "category": "brasil",
-      "title": "Veja a repercussão da escolha de Trabuco para o Ministério da Fazenda",
-      "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-11/veja-repercussao-da-escolha-de-trabuco-para-o-ministerio-da-fazenda",
-      "description": "O Palácio do Planalto confirmou, em nota, na noite desta quinta-feira (26) que o banqueiro Luiz Carlos Trabuco Cappi, de 75 anos, foi escolhido para comandar o Ministério da Fazenda no próximo mandato do presidente Lula. Trabuco aceitou o convite durante uma reunião nesta quinta-feira (26) com Lula no Palácio da Alvorada. Trabuco é o atual presidente do Conselho de Administração do Bradesco e um dos nomes mais próximos de Lula no mercado financeiro. Trabuco assumirá o Ministério da Fazenda em 2027, no quarto mandato de Lula. O banqueiro construiu carreira no Bradesco, onde foi presidente executivo entre 2009 e 2018, antes de assumir o Conselho de Administração. O futuro ministro já havia sido convidado para comandar a Fazenda em 2014, durante o governo Dilma Rousseff (PT), mas recusou a proposta na ocasião. Notícias relacionadas: Trabuco aceita convite de Lula para comandar a Fazenda, diz Planalto. Bolsa sobe 6% e tem maior alta desde o 1º turno; dólar cai a R$ 5,74. A escolha ocorre em meio às discussões sobre medidas fiscais e à expectativa do mercado financeiro em relação à conduç",
-      "imageUrl": "https://imagens.ebc.com.br/Cj2WmsXWU4W3zJ1qn7SEPvgsA5Y=/1600x800/https://agenciabrasil.ebc.com.br/sites/default/files/thumbnails/image/raf03857.jpg?itok=V6076K3L",
-      "source": "Agência Brasil",
-      "publishedAt": "2026-11-27T00:51:00.000Z",
-      "firstSeenAt": "2026-11-27T06:17:40.147Z",
-      "lastSeenAt": "2026-11-27T06:17:40.147Z"
     }
   ],
   "checks": [
-    {
-      "at": "2026-11-27T06:17:40.147Z",
-      "ok": true,
-      "partial": false,
-      "observedArticles": 14,
-      "newArticles": 9,
-      "categories": [
-        "brasil",
-        "santa-catarina",
-        "clima",
-        "mundo",
-        "africa"
-      ],
-      "inmetChecked": true,
-      "ensoChecked": true
-    },
     {
       "at": "2026-11-27T16:53:08.593Z",
       "ok": true,
@@ -396,74 +380,37 @@
       ],
       "inmetChecked": true,
       "ensoChecked": true
+    },
+    {
+      "at": "2026-11-28T08:14:19.960Z",
+      "ok": true,
+      "partial": true,
+      "observedArticles": 14,
+      "newArticles": 6,
+      "categories": [
+        "brasil",
+        "santa-catarina",
+        "clima",
+        "mundo",
+        "europa",
+        "africa",
+        "oriente-medio"
+      ],
+      "inmetChecked": false,
+      "ensoChecked": true
     }
   ],
   "checkCount": 3,
-  "lastSuccessfulAt": "2026-11-28T00:20:05.054Z",
+  "lastSuccessfulAt": "2026-11-28T08:14:19.960Z",
   "latest": {
     "alerts": {
-      "checked": true,
-      "checkedAt": "2026-11-28T00:20:05.054Z",
-      "warnings": [
-        {
-          "id": "56526",
-          "title": "Acumulado de Chuva",
-          "severity": "Perigo",
-          "phase": "previsto",
-          "regions": [
-            "DE"
-          ],
-          "startsAt": "2026-11-29T00:00:00.000Z",
-          "endsAt": "2026-11-29T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
-        },
-        {
-          "id": "56533",
-          "title": "Baixa Umidade",
-          "severity": "Perigo Potencial",
-          "phase": "vigente",
-          "regions": [
-            "DO"
-          ],
-          "startsAt": "2026-11-26T00:00:00.000Z",
-          "endsAt": "2026-11-30T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
-        },
-        {
-          "id": "56532",
-          "title": "Chuvas Intensas",
-          "severity": "Perigo Potencial",
-          "phase": "previsto",
-          "regions": [
-            "DO",
-            "DE"
-          ],
-          "startsAt": "2026-11-29T00:00:00.000Z",
-          "endsAt": "2026-11-29T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
-        },
-        {
-          "id": "56527",
-          "title": "Tempestade",
-          "severity": "Perigo Potencial",
-          "phase": "previsto",
-          "regions": [
-            "DO",
-            "DE"
-          ],
-          "startsAt": "2026-11-30T00:00:00.000Z",
-          "endsAt": "2026-11-30T00:00:00.000Z",
-          "source": "INMET",
-          "url": "https://avisos.inmet.gov.br/"
-        }
-      ]
+      "checked": false,
+      "checkedAt": "2026-11-28T08:14:19.960Z",
+      "warnings": []
     },
     "enso": {
       "checked": true,
-      "checkedAt": "2026-11-28T00:20:05.054Z",
+      "checkedAt": "2026-11-28T08:14:19.960Z",
       "bulletin": {
         "status": "El Niño Advisory",
         "issued": "12 November 2026",
